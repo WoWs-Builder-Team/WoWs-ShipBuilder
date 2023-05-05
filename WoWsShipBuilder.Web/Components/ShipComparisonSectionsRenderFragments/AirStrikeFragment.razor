@@ -26,10 +26,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlaneHp}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlaneHp)" T="GridDataWrapper" Title="@columnTitlePlaneHp" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.AirStrikePlanesHp is not null)
+                @if (context.Item.AirStrike?.PlaneHp is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AirStrikePlanesHp
+                        @context.Item.AirStrike.PlaneHp
                     </MudText>
                 }
                 else
@@ -43,10 +43,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDropRange}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDropRange)" T="GridDataWrapper" Title="@columnTitleDropRange" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.AirStrikeRange is not null)
+                @if (context.Item.AirStrike?.MaximumDistance is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AirStrikeRange
+                        @context.Item.AirStrike.MaximumDistance
                     </MudText>
                 }
                 else
@@ -60,10 +60,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDropLenght}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDropLenght)" T="GridDataWrapper" Title="@columnTitleDropLenght" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.AirStrikeMaxDropLength is not null)
+                @if (context.Item.AirStrike?.MaximumFlightDistance is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AirStrikeMaxDropLength
+                        @context.Item.AirStrike.MaximumFlightDistance
                     </MudText>
                 }
                 else
@@ -77,10 +77,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlanesInSquadron}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlanesInSquadron)" T="GridDataWrapper" Title="@columnTitlePlanesInSquadron" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.AirStrikePlanesInSquadron is not null)
+                @if (context.Item.AirStrike?.NumberDuringAttack is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AirStrikePlanesInSquadron
+                        @context.Item.AirStrike.NumberDuringAttack
                     </MudText>
                 }
                 else
@@ -94,10 +94,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBombsPerPlane}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBombsPerPlane)" T="GridDataWrapper" Title="@columnTitleBombsPerPlane" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.AirStrikeBombsPerPlane is not null)
+                @if (context.Item.AirStrike?.BombsPerPlane is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AirStrikeBombsPerPlane
+                        @context.Item.AirStrike.BombsPerPlane
                     </MudText>
                 }
                 else
@@ -111,10 +111,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCharges}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCharges)" T="GridDataWrapper" Title="@columnTitleCharges" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.AirStrikeUses is not null)
+                @if (context.Item.AirStrike?.NumberOfUses is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AirStrikeUses
+                        @context.Item.AirStrike.NumberOfUses
                     </MudText>
                 }
                 else
@@ -128,10 +128,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReload}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleReload)" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.AirStrikeReload is not null)
+                @if (context.Item.AirStrike?.ReloadTime is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AirStrikeReload
+                        @context.Item.AirStrike.ReloadTime
                     </MudText>
                 }
                 else
@@ -145,10 +145,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBombType}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBombType)" T="GridDataWrapper" Title="@columnTitleBombType" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.AirStrikeBombType))
+                @if (!string.IsNullOrEmpty(context.Item.AirStrikeWeapon?.BombType))
                 {
                     <MudText Typo="Typo.body2">
-                        @element.localizer.GetAppLocalization(context.Item.AirStrikeBombType).Localization
+                        @element.localizer.GetAppLocalization(context.Item.AirStrikeWeapon.BombType).Localization
                     </MudText>
                 }
                 else
@@ -162,10 +162,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDamage)" T="GridDataWrapper" Title="@columnTitleDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.AirStrikeDamage is not null)
+                @if (context.Item.AirStrikeWeapon?.Damage is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AirStrikeDamage
+                        @context.Item.AirStrikeWeapon.Damage
                     </MudText>
                 }
                 else
@@ -179,10 +179,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFireChance}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireChance)" T="GridDataWrapper" Title="@columnTitleFireChance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.AirStrikeFireChance is not null)
+                @if (context.Item.AirStrikeWeapon?.FireChance is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AirStrikeFireChance
+                        @context.Item.AirStrikeWeapon.FireChance
                     </MudText>
                 }
                 else
@@ -196,10 +196,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashRadius}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSplashRadius)" T="GridDataWrapper" Title="@columnTitleSplashRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.AirStrikeSplashRadius is not null)
+                @if (context.Item.AirStrikeWeapon?.SplashRadius is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AirStrikeSplashRadius
+                        @context.Item.AirStrikeWeapon.SplashRadius
                     </MudText>
                 }
                 else
@@ -213,10 +213,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSplashDamage)" T="GridDataWrapper" Title="@columnTitleSplashDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.AirStrikeSplashDamage is not null)
+                @if (context.Item.AirStrikeWeapon?.SplashDmg is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AirStrikeSplashDamage
+                        @context.Item.AirStrikeWeapon.SplashDmg
                     </MudText>
                 }
                 else
@@ -230,10 +230,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePenetration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePenetration)" T="GridDataWrapper" Title="@columnTitlePenetration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.AirStrikePenetration is not null)
+                @if (context.Item.AirStrikeWeapon?.Penetration is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AirStrikePenetration
+                        @context.Item.AirStrikeWeapon.Penetration
                     </MudText>
                 }
                 else
@@ -247,10 +247,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastRadius}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBlastRadius)" T="GridDataWrapper" Title="@columnTitleBlastRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.AirStrikeBlastRadius is not null)
+                @if (context.Item.AirStrikeWeapon?.ExplosionRadius is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AirStrikeBlastRadius
+                        @context.Item.AirStrikeWeapon.ExplosionRadius
                     </MudText>
                 }
                 else
@@ -264,10 +264,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastPenetration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBlastPenetration)" T="GridDataWrapper" Title="@columnTitleBlastPenetration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.AirStrikeBlastDamage is not null)
+                @if (context.Item.AirStrikeWeapon?.SplashCoeff is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AirStrikeBlastDamage
+                        @context.Item.AirStrikeWeapon.SplashCoeff
                     </MudText>
                 }
                 else

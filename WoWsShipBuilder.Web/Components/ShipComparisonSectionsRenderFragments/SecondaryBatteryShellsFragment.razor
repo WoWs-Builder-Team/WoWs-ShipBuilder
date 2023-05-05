@@ -25,9 +25,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCaliber}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCaliber)" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryBatteryCaliber.Any())
+                @if (context.Item.Secondary.Caliber.Any())
                 {
-                    List<decimal> items = context.Item.SecondaryBatteryCaliber;
+                    List<decimal> items = context.Item.Secondary.Caliber;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -49,12 +49,12 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleType}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleType)" T="GridDataWrapper" Title="@columnTitleType" SortBy="@(x=> string.IsNullOrEmpty(x.SecondaryType) ? string.Empty : element.localizer.GetAppLocalization(x.SecondaryType).Localization)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleType}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleType)" T="GridDataWrapper" Title="@columnTitleType" SortBy="@(x=> string.IsNullOrEmpty(x.Secondary.Type) ? string.Empty : element.localizer.GetAppLocalization(x.Secondary.Type).Localization)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.SecondaryType))
+                @if (!string.IsNullOrEmpty(context.Item.Secondary.Type))
                 {
                     <MudText Typo="Typo.body2">
-                        @element.localizer.GetAppLocalization(context.Item.SecondaryType).Localization
+                        @element.localizer.GetAppLocalization(context.Item.Secondary.Type).Localization
                     </MudText>
                 }
                 else
@@ -68,9 +68,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMass}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMass)" T="GridDataWrapper" Title="@columnTitleMass" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryMass.Any())
+                @if (context.Item.Secondary.Mass.Any())
                 {
-                    List<decimal> items = context.Item.SecondaryMass;
+                    List<decimal> items = context.Item.Secondary.Mass;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -94,9 +94,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDamage)" T="GridDataWrapper" Title="@columnTitleDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryDamage.Any())
+                @if (context.Item.Secondary.Damage.Any())
                 {
-                    List<decimal> items = context.Item.SecondaryDamage;
+                    List<decimal> items = context.Item.Secondary.Damage;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -120,9 +120,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashRadius}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSplashRadius)" T="GridDataWrapper" Title="@columnTitleSplashRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondarySplashRadius.Any())
+                @if (context.Item.Secondary.SplashRadius.Any())
                 {
-                    List<decimal> items = context.Item.SecondarySplashRadius;
+                    List<decimal> items = context.Item.Secondary.SplashRadius;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -146,9 +146,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSplashDamage)" T="GridDataWrapper" Title="@columnTitleSplashDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondarySplashDamage.Any())
+                @if (context.Item.Secondary.SplashDamage.Any())
                 {
-                    List<decimal> items = context.Item.SecondarySplashDamage;
+                    List<decimal> items = context.Item.Secondary.SplashDamage;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -172,9 +172,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePenetration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePenetration)" T="GridDataWrapper" Title="@columnTitlePenetration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryPenetration.Any())
+                @if (context.Item.Secondary.Penetration.Any())
                 {
-                    List<int> items = context.Item.SecondaryPenetration;
+                    List<int> items = context.Item.Secondary.Penetration;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -198,9 +198,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleInitialSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleInitialSpeed)" T="GridDataWrapper" Title="@columnTitleInitialSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondarySpeed.Any())
+                @if (context.Item.Secondary.Speed.Any())
                 {
-                    List<decimal> items = context.Item.SecondarySpeed;
+                    List<decimal> items = context.Item.Secondary.Speed;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -224,9 +224,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAirDrag}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAirDrag)" T="GridDataWrapper" Title="@columnTitleAirDrag" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryAirDrag.Any())
+                @if (context.Item.Secondary.AirDrag.Any())
                 {
-                    List<decimal> items = context.Item.SecondaryAirDrag;
+                    List<decimal> items = context.Item.Secondary.AirDrag;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -250,9 +250,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFireChance}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireChance)" T="GridDataWrapper" Title="@columnTitleFireChance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryHeShellFireChance.Any(x => x != 0))
+                @if (context.Item.Secondary.HeShellFireChance.Any(x => x != 0))
                 {
-                    List<decimal> items = context.Item.SecondaryHeShellFireChance;
+                    List<decimal> items = context.Item.Secondary.HeShellFireChance;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -276,9 +276,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastRadius}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBlastRadius)" T="GridDataWrapper" Title="@columnTitleBlastRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryHeBlastRadius.Any(x => x != 0))
+                @if (context.Item.Secondary.HeBlastRadius.Any(x => x != 0))
                 {
-                    List<decimal> items = context.Item.SecondaryHeBlastRadius;
+                    List<decimal> items = context.Item.Secondary.HeBlastRadius;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -302,9 +302,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastPenetration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBlastPenetration)" T="GridDataWrapper" Title="@columnTitleBlastPenetration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryHeBlastPenetration.Any(x => x != 0))
+                @if (context.Item.Secondary.HeBlastPenetration.Any(x => x != 0))
                 {
-                    List<decimal> items = context.Item.SecondaryHeBlastPenetration;
+                    List<decimal> items = context.Item.Secondary.HeBlastPenetration;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -328,9 +328,9 @@
 
          <TemplateColumn ID="@($"{dataSectionString}_{columnTitleOvermatch}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleOvermatch)" T="GridDataWrapper" Title="@columnTitleOvermatch" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondarySapOvermatch.Any(x => x != 0))
+                @if (context.Item.Secondary.SapOvermatch.Any(x => x != 0))
                 {
-                    List<decimal> items = context.Item.SecondarySapOvermatch;
+                    List<decimal> items = context.Item.Secondary.SapOvermatch;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -352,11 +352,11 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRicochetAngles}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRicochetAngles)" T="GridDataWrapper" Title="@columnTitleRicochetAngles" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.SecondarySapRicochet.Select(y => double.Parse(string.IsNullOrEmpty(y) ? "0" : y.Split(" - ").First())).ToList())">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRicochetAngles}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRicochetAngles)" T="GridDataWrapper" Title="@columnTitleRicochetAngles" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.Secondary.SapRicochet.Select(y => double.Parse(string.IsNullOrEmpty(y) ? "0" : y.Split(" - ").First())).ToList())">
             <CellTemplate>
-                @if (context.Item.SecondarySapRicochet.Any() && !context.Item.SecondarySapRicochet.Any(string.IsNullOrEmpty))
+                @if (context.Item.Secondary.SapRicochet.Any() && !context.Item.Secondary.SapRicochet.Any(string.IsNullOrEmpty))
                 {
-                    List<string> items = context.Item.SecondarySapRicochet;
+                    List<string> items = context.Item.Secondary.SapRicochet;
                     for (var i = 0; i < items.Count; i++)
                     {
                         string item = items[i];

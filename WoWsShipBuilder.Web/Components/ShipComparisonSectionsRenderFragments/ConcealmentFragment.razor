@@ -15,14 +15,14 @@
         var columnTitleFromPlanesOnFire = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ConcealmentFromPlanes))}: {element.localizer.SimpleAppLocalization(Translation.ShipComparison_OnFire)} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
         var columnTitleFromSubs = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FromSubs))}: {element.localizer.SimpleAppLocalization(Translation.ShipStats_ConcealmentBySubPeriscope)} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
 
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFromShipBase}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromShipBase)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ConcealmentFromShipsBase)" Title="@columnTitleFromShipBase" HeaderClass="column-text-center" CellClass="column-text-center"/>
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFromShipOnFire}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromShipOnFire)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ConcealmentFromShipsOnFire)" Title="@columnTitleFromShipOnFire" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFromShipBase}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromShipBase)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Concealment.ConcealmentBySea)" Title="@columnTitleFromShipBase" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFromShipOnFire}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromShipOnFire)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Concealment.ConcealmentBySeaFire)" Title="@columnTitleFromShipOnFire" HeaderClass="column-text-center" CellClass="column-text-center"/>
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFromShipSmokeFiring}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromShipSmokeFiring)" T="GridDataWrapper" Title="@columnTitleFromShipSmokeFiring" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.ConcealmentFromShipsSmokeFiring != 0)
+                @if (context.Item.Concealment.ConcealmentBySeaFiringSmoke != 0)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.ConcealmentFromShipsSmokeFiring
+                        @context.Item.Concealment.ConcealmentBySeaFiringSmoke
                     </MudText>
                 }
                 else
@@ -33,8 +33,8 @@
                 }
             </CellTemplate>
         </TemplateColumn>
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFromPlanesBase}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromPlanesBase)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ConcealmentFromPlanesBase)" Title="@columnTitleFromPlanesBase" HeaderClass="column-text-center" CellClass="column-text-center"/>
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFromPlanesOnFire}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromPlanesOnFire)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ConcealmentFromPlanesOnFire)" Title="@columnTitleFromPlanesOnFire" HeaderClass="column-text-center" CellClass="column-text-center"/>
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFromSubs}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromSubs)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ConcealmentFromSubsPeriscopeDepth)" Title="@columnTitleFromSubs" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFromPlanesBase}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromPlanesBase)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Concealment.ConcealmentByAir)" Title="@columnTitleFromPlanesBase" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFromPlanesOnFire}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromPlanesOnFire)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Concealment.ConcealmentByAirFire)" Title="@columnTitleFromPlanesOnFire" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFromSubs}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromSubs)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Concealment.ConcealmentBySubPeriscope)" Title="@columnTitleFromSubs" HeaderClass="column-text-center" CellClass="column-text-center"/>
     };
 }

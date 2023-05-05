@@ -23,9 +23,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCaliber}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCaliber)" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryBatteryCaliber.Any())
+                @if (context.Item.Secondary.Caliber.Any())
                 {
-                    List<decimal> items = context.Item.SecondaryBatteryCaliber;
+                    List<decimal> items = context.Item.Secondary.Caliber;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -47,15 +47,15 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBarrels}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBarrels)" T="GridDataWrapper" SortBy="@(x => x.SecondaryBatteryBarrelCount.Sum())" Title="@columnTitleBarrels" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBarrels}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBarrels)" T="GridDataWrapper" SortBy="@(x => x.Secondary.BarrelCount.Sum())" Title="@columnTitleBarrels" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryBatteryBarrelCount.Any() && context.Item.SecondaryBatteryBarrelsLayout.Any())
+                @if (context.Item.Secondary.BarrelCount.Any() && context.Item.Secondary.BarrelsLayout.Any())
                 {
-                    List<int> items = context.Item.SecondaryBatteryBarrelCount;
+                    List<int> items = context.Item.Secondary.BarrelCount;
                     for (var i = 0; i < items.Count; i++)
                     {
                         int item = items[i];
-                        string itemLayout = context.Item.SecondaryBatteryBarrelsLayout[i];
+                        string itemLayout = context.Item.Secondary.BarrelsLayout[i];
                         <MudText Typo="Typo.body2">
                             @($"{item} ({itemLayout})")
                         </MudText>
@@ -76,10 +76,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxRange}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxRange)" T="GridDataWrapper" Title="@columnTitleMaxRange" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryBatteryRange is not null)
+                @if (context.Item.Secondary.Range is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SecondaryBatteryRange
+                        @context.Item.Secondary.Range
                     </MudText>
                 }
                 else
@@ -93,9 +93,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReload}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleReload)" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryBatteryReload.Any())
+                @if (context.Item.Secondary.Reload.Any())
                 {
-                    List<decimal> items = context.Item.SecondaryBatteryReload;
+                    List<decimal> items = context.Item.Secondary.Reload;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -117,11 +117,11 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRof}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRof)" T="GridDataWrapper" Title="@columnTitleRof" SortBy="@(x => x.SecondaryBatteryRoF.Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRof}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRof)" T="GridDataWrapper" Title="@columnTitleRof" SortBy="@(x => x.Secondary.RoF.Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryBatteryRoF.Any())
+                @if (context.Item.Secondary.RoF.Any())
                 {
-                    List<decimal> items = context.Item.SecondaryBatteryRoF;
+                    List<decimal> items = context.Item.Secondary.RoF;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -143,11 +143,11 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDpm}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDpm)" T="GridDataWrapper" Title="@columnTitleDpm" SortBy="@(x => x.SecondaryBatteryDpm.Select(y => int.Parse(y, NumberStyles.AllowThousands, nfi)).Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDpm}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDpm)" T="GridDataWrapper" Title="@columnTitleDpm" SortBy="@(x => x.Secondary.Dpm.Select(y => int.Parse(y, NumberStyles.AllowThousands, nfi)).Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryBatteryDpm.Any())
+                @if (context.Item.Secondary.Dpm.Any())
                 {
-                    List<string> items = context.Item.SecondaryBatteryDpm;
+                    List<string> items = context.Item.Secondary.Dpm;
                     for (var i = 0; i < items.Count; i++)
                     {
                         string item = items[i];
@@ -169,11 +169,11 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFpm}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFpm)" T="GridDataWrapper" Title="@columnTitleFpm" SortBy="@(x => x.SecondaryBatteryFpm.Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFpm}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFpm)" T="GridDataWrapper" Title="@columnTitleFpm" SortBy="@(x => x.Secondary.Fpm.Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryBatteryFpm.Any())
+                @if (context.Item.Secondary.Fpm.Any())
                 {
-                    List<decimal> items = context.Item.SecondaryBatteryFpm;
+                    List<decimal> items = context.Item.Secondary.Fpm;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -197,10 +197,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSigma}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSigma)" T="GridDataWrapper" Title="@columnTitleSigma" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryBatterySigma is not null)
+                @if (context.Item.Secondary.Sigma is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SecondaryBatterySigma
+                        @context.Item.Secondary.Sigma
                     </MudText>
                 }
                 else

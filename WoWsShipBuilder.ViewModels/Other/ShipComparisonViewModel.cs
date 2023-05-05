@@ -458,9 +458,9 @@ public partial class ShipComparisonViewModel : ViewModelBase
         Dictionary<Guid, GridDataWrapper> newList = SelectedDataSection switch
         {
             ShipComparisonDataSections.MainBattery => list.Where(x => x.Value.ShipDataContainer.MainBatteryDataContainer is not null).ToDictionary(x => x.Key, x => x.Value),
-            ShipComparisonDataSections.He => list.Where(x => x.Value.HeDamage is not null).ToDictionary(x => x.Key, x => x.Value),
-            ShipComparisonDataSections.Ap => list.Where(x => x.Value.ApDamage is not null).ToDictionary(x => x.Key, x => x.Value),
-            ShipComparisonDataSections.Sap => list.Where(x => x.Value.SapDamage is not null).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.He => list.Where(x => x.Value.HeShell?.Damage is not null).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.Ap => list.Where(x => x.Value.ApShell?.Damage is not null).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.Sap => list.Where(x => x.Value.SapShell?.Damage is not null).ToDictionary(x => x.Key, x => x.Value),
             ShipComparisonDataSections.Torpedo => list.Where(x => x.Value.ShipDataContainer.TorpedoArmamentDataContainer is not null).ToDictionary(x => x.Key, x => x.Value),
             ShipComparisonDataSections.RocketPlanes => list.Where(x => x.Value.RocketPlanesType.Any()).ToDictionary(x => x.Key, x => x.Value),
             ShipComparisonDataSections.Rockets => list.Where(x => x.Value.RocketPlanesWeaponType.Any()).ToDictionary(x => x.Key, x => x.Value),
@@ -503,19 +503,19 @@ public partial class ShipComparisonViewModel : ViewModelBase
                         }
                         break;
                     case ShipComparisonDataSections.He:
-                        if (!shipList.Any(x => x.Value.HeDamage is not null))
+                        if (!shipList.Any(x => x.Value.HeShell?.Damage is not null))
                         {
                             dataSections.Remove(dataSection);
                         }
                         break;
                     case ShipComparisonDataSections.Ap:
-                        if (!shipList.Any(x => x.Value.ApDamage is not null))
+                        if (!shipList.Any(x => x.Value.ApShell?.Damage is not null))
                         {
                             dataSections.Remove(dataSection);
                         }
                         break;
                     case ShipComparisonDataSections.Sap:
-                        if (!shipList.Any(x => x.Value.SapDamage is not null))
+                        if (!shipList.Any(x => x.Value.SapShell?.Damage is not null))
                         {
                             dataSections.Remove(dataSection);
                         }

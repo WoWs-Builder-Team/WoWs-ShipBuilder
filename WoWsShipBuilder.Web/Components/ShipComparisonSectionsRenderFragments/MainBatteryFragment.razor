@@ -30,10 +30,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCaliber}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCaliber)" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
            <CellTemplate>
-               @if (context.Item.MainBatteryCaliber is not null)
+               @if (context.Item.MainBattery?.GunCaliber is not null)
                {
                    <MudText Typo="Typo.body2">
-                       @context.Item.MainBatteryCaliber
+                       @context.Item.MainBattery.GunCaliber
                    </MudText>
                }
                else
@@ -47,10 +47,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBarrels}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBarrels)" T="GridDataWrapper" Title="@columnTitleBarrels" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.MainBatteryBarrelCount is not null && context.Item.MainBatteryBarrelsLayout is not null)
+                @if (context.Item.MainBattery?.BarrelsCount is not null && context.Item.MainBattery?.BarrelsLayout is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @($"{context.Item.MainBatteryBarrelCount} ({context.Item.MainBatteryBarrelsLayout})")
+                        @($"{context.Item.MainBattery.BarrelsCount} ({context.Item.MainBattery.BarrelsLayout})")
                     </MudText>
                 }
                 else
@@ -64,10 +64,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxRange}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxRange)" T="GridDataWrapper" Title="@columnTitleMaxRange" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.MainBatteryRange is not null)
+                @if (context.Item.MainBattery?.Range is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryRange
+                        @context.Item.MainBattery.Range
                     </MudText>
                 }
                 else
@@ -82,10 +82,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTurnTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTurnTime)" T="GridDataWrapper" Title="@columnTitleTurnTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.MainBatteryTurnTime is not null)
+                @if (context.Item.MainBattery?.TurnTime is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryTurnTime
+                        @context.Item.MainBattery.TurnTime
                     </MudText>
                 }
                 else
@@ -99,10 +99,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTraverseSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTraverseSpeed)" T="GridDataWrapper" Title="@columnTitleTraverseSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.MainBatteryTraverseSpeed is not null)
+                @if (context.Item.MainBattery?.TraverseSpeed is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryTraverseSpeed
+                        @context.Item.MainBattery.TraverseSpeed
                     </MudText>
                 }
                 else
@@ -117,10 +117,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReload}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleReload)" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.MainBatteryReload is not null)
+                @if (context.Item.MainBattery?.Reload is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryReload
+                        @context.Item.MainBattery.Reload
                     </MudText>
                 }
                 else
@@ -134,10 +134,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRof}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRof)" T="GridDataWrapper" Title="@columnTitleRof" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.MainBatteryRoF is not null)
+                @if (context.Item.MainBattery?.RoF is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryRoF
+                        @context.Item.MainBattery.RoF
                     </MudText>
                 }
                 else
@@ -150,12 +150,12 @@
         </TemplateColumn>
 
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleHeDpm}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHeDpm)" T="GridDataWrapper" Title="@columnTitleHeDpm" SortBy="@(x => int.Parse(x.MainBatteryHeDpm ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleHeDpm}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHeDpm)" T="GridDataWrapper" Title="@columnTitleHeDpm" SortBy="@(x => int.Parse(x.MainBattery?.TheoreticalHeDpm ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.MainBatteryHeDpm))
+                @if (!string.IsNullOrEmpty(context.Item.MainBattery?.TheoreticalHeDpm))
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryHeDpm
+                        @context.Item.MainBattery.TheoreticalHeDpm
                     </MudText>
                 }
                 else
@@ -167,12 +167,12 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleApDpm}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleApDpm)" T="GridDataWrapper" Title="@columnTitleApDpm" SortBy="@(x => int.Parse(x.MainBatteryApDpm ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleApDpm}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleApDpm)" T="GridDataWrapper" Title="@columnTitleApDpm" SortBy="@(x => int.Parse(x.MainBattery?.TheoreticalApDpm ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.MainBatteryApDpm))
+                @if (!string.IsNullOrEmpty(context.Item.MainBattery?.TheoreticalApDpm))
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryApDpm
+                        @context.Item.MainBattery.TheoreticalApDpm
                     </MudText>
                 }
                 else
@@ -184,12 +184,12 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSapDpm}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSapDpm)" T="GridDataWrapper" Title="@columnTitleSapDpm" SortBy="@(x => int.Parse(x.MainBatterySapDpm ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSapDpm}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSapDpm)" T="GridDataWrapper" Title="@columnTitleSapDpm" SortBy="@(x => int.Parse(x.MainBattery?.TheoreticalSapDpm ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.MainBatterySapDpm))
+                @if (!string.IsNullOrEmpty(context.Item.MainBattery?.TheoreticalSapDpm))
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatterySapDpm
+                        @context.Item.MainBattery.TheoreticalSapDpm
                     </MudText>
                 }
                 else
@@ -201,12 +201,12 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleHeSalvo}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHeSalvo)" T="GridDataWrapper" Title="@columnTitleHeSalvo" SortBy="@(x => int.Parse(x.MainBatteryHeSalvo ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleHeSalvo}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHeSalvo)" T="GridDataWrapper" Title="@columnTitleHeSalvo" SortBy="@(x => int.Parse(x.MainBattery?.HeSalvo ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.MainBatteryHeSalvo))
+                @if (!string.IsNullOrEmpty(context.Item.MainBattery?.HeSalvo))
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryHeSalvo
+                        @context.Item.MainBattery.HeSalvo
                     </MudText>
                 }
                 else
@@ -218,12 +218,12 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleApSalvo}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleApSalvo)" T="GridDataWrapper" Title="@columnTitleApSalvo" SortBy="@(x => int.Parse(x.MainBatteryApSalvo ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleApSalvo}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleApSalvo)" T="GridDataWrapper" Title="@columnTitleApSalvo" SortBy="@(x => int.Parse(x.MainBattery?.ApSalvo ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.MainBatteryApSalvo))
+                @if (!string.IsNullOrEmpty(context.Item.MainBattery?.ApSalvo))
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryApSalvo
+                        @context.Item.MainBattery.ApSalvo
                     </MudText>
                 }
                 else
@@ -235,12 +235,12 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSapSalvo}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSapSalvo)" T="GridDataWrapper" Title="@columnTitleSapSalvo" SortBy="@(x => int.Parse(x.MainBatterySapSalvo ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSapSalvo}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSapSalvo)" T="GridDataWrapper" Title="@columnTitleSapSalvo" SortBy="@(x => int.Parse(x.MainBattery?.SapSalvo ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.MainBatterySapSalvo))
+                @if (!string.IsNullOrEmpty(context.Item.MainBattery?.SapSalvo))
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatterySapSalvo
+                        @context.Item.MainBattery.SapSalvo
                     </MudText>
                 }
                 else
@@ -254,10 +254,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFpm}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFpm)" T="GridDataWrapper" Title="@columnTitleFpm" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.MainBatteryFpm is not null && context.Item.MainBatteryFpm != 0)
+                @if (context.Item.MainBattery?.PotentialFpm is not null && context.Item.MainBattery.PotentialFpm != 0)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryFpm
+                        @context.Item.MainBattery.PotentialFpm
                     </MudText>
                 }
                 else
@@ -271,10 +271,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSigma}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSigma)" T="GridDataWrapper" Title="@columnTitleSigma" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.MainBatterySigma is not null)
+                @if (context.Item.MainBattery?.Sigma is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatterySigma
+                        @context.Item.MainBattery.Sigma
                     </MudText>
                 }
                 else

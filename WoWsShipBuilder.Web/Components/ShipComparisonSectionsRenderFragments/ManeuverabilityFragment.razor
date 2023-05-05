@@ -18,13 +18,13 @@
         var columnTitleRudderProtection = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RudderBlastProtection))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_BlastProtection))}";
         var columnTitleEngineProtection = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_EngineBlastProtection))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_BlastProtection))}";
 
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleMaxSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxSpeed)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityMaxSpeed)" Title="@columnTitleMaxSpeed" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleMaxSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxSpeed)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityData.MaxSpeed)" Title="@columnTitleMaxSpeed" HeaderClass="column-text-center" CellClass="column-text-center"/>
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxSpeedAtPeriscopeDepth}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxSpeedAtPeriscopeDepth)" T="GridDataWrapper" Title="@columnTitleMaxSpeedAtPeriscopeDepth" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.ManeuverabilityMaxSpeedAtPeriscopeDepth != 0)
+                @if (context.Item.ManeuverabilityData.MaxSpeedAtPeriscopeDepth != 0)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.ManeuverabilityMaxSpeedAtPeriscopeDepth
+                        @context.Item.ManeuverabilityData.MaxSpeedAtPeriscopeDepth
                     </MudText>
                 }
                 else
@@ -37,10 +37,10 @@
         </TemplateColumn>
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxSpeedAtMaxDepth}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxSpeedAtMaxDepth)" T="GridDataWrapper" Title="@columnTitleMaxSpeedAtMaxDepth" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.ManeuverabilityMaxSpeedAtMaxDepth != 0)
+                @if (context.Item.ManeuverabilityData.MaxSpeedAtMaxDepth != 0)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.ManeuverabilityMaxSpeedAtMaxDepth
+                        @context.Item.ManeuverabilityData.MaxSpeedAtMaxDepth
                     </MudText>
                 }
                 else
@@ -51,11 +51,11 @@
                 }
             </CellTemplate>
         </TemplateColumn>
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleRudderShiftTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRudderShiftTime)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityRudderShiftTime)" Title="@columnTitleRudderShiftTime" HeaderClass="column-text-center" CellClass="column-text-center"/>
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleTurningCircle}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTurningCircle)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityTurningCircle)" Title="@columnTitleTurningCircle" HeaderClass="column-text-center" CellClass="column-text-center"/>
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFullAhead}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFullAhead)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityTimeToFullAhead)" Title="@columnTitleFullAhead" HeaderClass="column-text-center" CellClass="column-text-center"/>
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFullReverse}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFullReverse)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityTimeToFullReverse)" Title="@columnTitleFullReverse" HeaderClass="column-text-center" CellClass="column-text-center"/>
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleRudderProtection}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRudderProtection)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityRudderProtection)" Title="@columnTitleRudderProtection" HeaderClass="column-text-center" CellClass="column-text-center"/>
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleEngineProtection}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleEngineProtection)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityEngineProtection)" Title="@columnTitleEngineProtection" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleRudderShiftTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRudderShiftTime)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityData.RudderShiftTime)" Title="@columnTitleRudderShiftTime" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleTurningCircle}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTurningCircle)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityData.TurningCircle)" Title="@columnTitleTurningCircle" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFullAhead}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFullAhead)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityData.TimeToFullAhead)" Title="@columnTitleFullAhead" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFullReverse}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFullReverse)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityData.TimeToFullReverse)" Title="@columnTitleFullReverse" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleRudderProtection}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRudderProtection)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityData.RudderProtection)" Title="@columnTitleRudderProtection" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleEngineProtection}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleEngineProtection)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityData.EngineProtection)" Title="@columnTitleEngineProtection" HeaderClass="column-text-center" CellClass="column-text-center"/>
     };
 }

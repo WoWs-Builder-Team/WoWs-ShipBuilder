@@ -21,10 +21,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCaliber}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCaliber)" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SapDamage is not null)
+                @if (context.Item.MainBattery is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryCaliber
+                        @context.Item.MainBattery.GunCaliber
                     </MudText>
                 }
                 else
@@ -38,10 +38,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMass}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMass)" T="GridDataWrapper" Title="@columnTitleMass" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SapMass is not null)
+                @if (context.Item.SapShell?.Mass is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SapMass
+                        @context.Item.SapShell.Mass
                     </MudText>
                 }
                 else
@@ -55,10 +55,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDamage)" T="GridDataWrapper" Title="@columnTitleDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SapDamage is not null)
+                @if (context.Item.SapShell?.Damage is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SapDamage
+                        @context.Item.SapShell.Damage
                     </MudText>
                 }
                 else
@@ -72,10 +72,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashRadius}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSplashRadius)" T="GridDataWrapper" Title="@columnTitleSplashRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SapSplashRadius is not null)
+                @if (context.Item.SapShell?.SplashRadius is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SapSplashRadius
+                        @context.Item.SapShell.SplashRadius
                     </MudText>
                 }
                 else
@@ -89,10 +89,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSplashDamage)" T="GridDataWrapper" Title="@columnTitleSplashDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SapSplashDamage is not null)
+                @if (context.Item.SapShell?.SplashDmg is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SapSplashDamage
+                        @context.Item.SapShell.SplashDmg
                     </MudText>
                 }
                 else
@@ -106,10 +106,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePenetration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePenetration)" T="GridDataWrapper" Title="@columnTitlePenetration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SapPenetration is not null)
+                @if (context.Item.SapShell?.Penetration is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SapPenetration
+                        @context.Item.SapShell.Penetration
                     </MudText>
                 }
                 else
@@ -123,10 +123,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleInitialSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleInitialSpeed)" T="GridDataWrapper" Title="@columnTitleInitialSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SapSpeed is not null)
+                @if (context.Item.SapShell?.ShellVelocity is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SapSpeed
+                        @context.Item.SapShell.ShellVelocity
                     </MudText>
                 }
                 else
@@ -140,10 +140,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAirDrag}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAirDrag)" T="GridDataWrapper" Title="@columnTitleAirDrag" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SapAirDrag is not null)
+                @if (context.Item.SapShell?.AirDrag is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SapAirDrag
+                        @context.Item.SapShell.AirDrag
                     </MudText>
                 }
                 else
@@ -157,10 +157,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleOvermatch}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleOvermatch)" T="GridDataWrapper" Title="@columnTitleOvermatch" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SapOvermatch is not null)
+                @if (context.Item.SapShell?.Overmatch is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SapOvermatch
+                        @context.Item.SapShell.Overmatch
                     </MudText>
                 }
                 else
@@ -172,12 +172,12 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRicochetAngles}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRicochetAngles)" T="GridDataWrapper" Title="@columnTitleRicochetAngles" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => double.Parse(x.SapRicochet?.Split(" - ").First() ?? "0"))">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRicochetAngles}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRicochetAngles)" T="GridDataWrapper" Title="@columnTitleRicochetAngles" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => double.Parse(x.SapShell?.RicochetAngles?.Split(" - ").First() ?? "0"))">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.SapRicochet))
+                @if (!string.IsNullOrEmpty(context.Item.SapShell?.RicochetAngles))
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SapRicochet
+                        @context.Item.SapShell.RicochetAngles
                     </MudText>
                 }
                 else

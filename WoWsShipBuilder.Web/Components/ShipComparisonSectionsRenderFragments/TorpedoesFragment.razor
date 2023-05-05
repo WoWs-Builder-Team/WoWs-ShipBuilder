@@ -35,10 +35,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAmount}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAmount)" T="GridDataWrapper" Title="@columnTitleAmount" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoCount is not null && context.Item.TorpedoLayout is not null)
+                @if (context.Item.TorpedoLauncher?.TorpCount is not null && context.Item.TorpedoLauncher?.TorpLayout is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @($"{context.Item.TorpedoCount} ({context.Item.TorpedoLayout})")
+                        @($"{context.Item.TorpedoLauncher.TorpCount} ({context.Item.TorpedoLauncher.TorpLayout})")
                     </MudText>
                 }
                 else
@@ -52,10 +52,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTurnTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTurnTime)" T="GridDataWrapper" Title="@columnTitleTurnTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoTurnTime is not null)
+                @if (context.Item.TorpedoLauncher?.TurnTime is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.TorpedoTurnTime
+                        @context.Item.TorpedoLauncher.TurnTime
                     </MudText>
                 }
                 else
@@ -69,10 +69,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTraverseSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTraverseSpeed)" T="GridDataWrapper" Title="@columnTitleTraverseSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoTraverseSpeed is not null)
+                @if (context.Item.TorpedoLauncher?.TraverseSpeed is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.TorpedoTraverseSpeed
+                        @context.Item.TorpedoLauncher.TraverseSpeed
                     </MudText>
                 }
                 else
@@ -86,10 +86,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReload}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleReload)" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoReload is not null)
+                @if (context.Item.TorpedoLauncher?.Reload is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.TorpedoReload
+                        @context.Item.TorpedoLauncher.Reload
                     </MudText>
                 }
                 else
@@ -103,10 +103,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSpread}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSpread)" T="GridDataWrapper" Title="@columnTitleSpread" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> x.ShipDataContainer.TorpedoArmamentDataContainer?.TorpedoLaunchers.First().TorpedoAngles[1] - x.ShipDataContainer.TorpedoArmamentDataContainer?.TorpedoLaunchers.First().TorpedoAngles[0] ?? -1)">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.TorpedoSpread))
+                @if (!string.IsNullOrEmpty(context.Item.TorpedoLauncher?.TorpedoArea))
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.TorpedoSpread
+                        @context.Item.TorpedoLauncher.TorpedoArea
                     </MudText>
                 }
                 else
@@ -120,10 +120,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSwitchTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSwitchTime)" T="GridDataWrapper" Title="@columnTitleSwitchTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoTimeToSwitch is not null && context.Item.TorpedoType.Count > 1)
+                @if (context.Item.TorpedoLauncher?.TimeToSwitch is not null && context.Item.TorpedoType.Count > 1)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.TorpedoTimeToSwitch
+                        @context.Item.TorpedoLauncher.TimeToSwitch
                     </MudText>
                 }
                 else

@@ -26,10 +26,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleType}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleType)" T="GridDataWrapper" Title="@columnTitleType" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.AswDcType is not null)
+                @if (context.Item.Asw.DcType is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @element.localizer.GetAppLocalization(context.Item.AswDcType).Localization
+                        @element.localizer.GetAppLocalization(context.Item.Asw.DcType).Localization
                     </MudText>
                 }
                 else
@@ -43,10 +43,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCharges}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCharges)" T="GridDataWrapper" Title="@columnTitleCharges" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.AswDcUses is not null)
+                @if (context.Item.Asw.DcUses is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AswDcUses
+                        @context.Item.Asw.DcUses
                     </MudText>
                 }
                 else
@@ -60,10 +60,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDropRange}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDropRange)" T="GridDataWrapper" Title="@columnTitleDropRange" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.AswRange is not null)
+                @if (context.Item.Asw.Range is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AswRange
+                        @context.Item.Asw.Range
                     </MudText>
                 }
                 else
@@ -77,10 +77,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDropLenght}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDropLenght)" T="GridDataWrapper" Title="@columnTitleDropLenght" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.AswMaxDropLength is not null)
+                @if (context.Item.Asw.MaxDropLength is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AswMaxDropLength
+                        @context.Item.Asw.MaxDropLength
                     </MudText>
                 }
                 else
@@ -94,10 +94,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlanesInSquadron}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlanesInSquadron)" T="GridDataWrapper" Title="@columnTitlePlanesInSquadron" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.AswPlanesInSquadron is not null)
+                @if (context.Item.Asw.PlanesInSquadron is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AswPlanesInSquadron
+                        @context.Item.Asw.PlanesInSquadron
                     </MudText>
                 }
                 else
@@ -111,10 +111,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBombsPerPlane}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBombsPerPlane)" T="GridDataWrapper" Title="@columnTitleBombsPerPlane" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.AswBombsPerPlane is not null)
+                @if (context.Item.Asw.BombsPerPlane is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AswBombsPerPlane
+                        @context.Item.Asw.BombsPerPlane
                     </MudText>
                 }
                 else
@@ -128,10 +128,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBombsPerCharge}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBombsPerCharge)" T="GridDataWrapper" Title="@columnTitleBombsPerCharge" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.DcPerAttack is not null)
+                @if (context.Item.Asw.DcPerAttack is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.DcPerAttack
+                        @context.Item.Asw.DcPerAttack
                     </MudText>
                 }
                 else
@@ -145,10 +145,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReload}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleReload)" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.AswDcReload is not null)
+                @if (context.Item.Asw.DcReload is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AswDcReload
+                        @context.Item.Asw.DcReload
                     </MudText>
                 }
                 else
@@ -162,10 +162,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDamage)" T="GridDataWrapper" Title="@columnTitleDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.DcDamage is not null)
+                @if (context.Item.Asw.DcDamage is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.DcDamage
+                        @context.Item.Asw.DcDamage
                     </MudText>
                 }
                 else
@@ -179,10 +179,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFireChance}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireChance)" T="GridDataWrapper" Title="@columnTitleFireChance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.DcFireChance is not null)
+                @if (context.Item.Asw.DcFireChance is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.DcFireChance
+                        @context.Item.Asw.DcFireChance
                     </MudText>
                 }
                 else
@@ -196,10 +196,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFloodChance}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFloodChance)" T="GridDataWrapper" Title="@columnTitleFloodChance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.DcFloodingChance is not null)
+                @if (context.Item.Asw.DcFloodingChance is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.DcFloodingChance
+                        @context.Item.Asw.DcFloodingChance
                     </MudText>
                 }
                 else
@@ -213,10 +213,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashRadius}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSplashRadius)" T="GridDataWrapper" Title="@columnTitleSplashRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.DcSplashRadius is not null)
+                @if (context.Item.Asw.DcSplashRadius is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.DcSplashRadius
+                        @context.Item.Asw.DcSplashRadius
                     </MudText>
                 }
                 else
@@ -228,12 +228,12 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSinkSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSinkSpeed)" T="GridDataWrapper" Title="@columnTitleSinkSpeed" SortBy="@(x => double.Parse(x.DcSinkSpeed?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSinkSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSinkSpeed)" T="GridDataWrapper" Title="@columnTitleSinkSpeed" SortBy="@(x => double.Parse(x.Asw.DcSinkSpeed?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.DcSinkSpeed))
+                @if (!string.IsNullOrEmpty(context.Item.Asw.DcSinkSpeed))
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.DcSinkSpeed
+                        @context.Item.Asw.DcSinkSpeed
                     </MudText>
                 }
                 else
@@ -245,12 +245,12 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDetonationTimer}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDetonationTimer)" T="GridDataWrapper" Title="@columnTitleDetonationTimer" SortBy="@(x => double.Parse(x.DcDetonationTimer?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDetonationTimer}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDetonationTimer)" T="GridDataWrapper" Title="@columnTitleDetonationTimer" SortBy="@(x => double.Parse(x.Asw.DcDetonationTimer?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.DcDetonationTimer))
+                @if (!string.IsNullOrEmpty(context.Item.Asw.DcDetonationTimer))
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.DcDetonationTimer
+                        @context.Item.Asw.DcDetonationTimer
                     </MudText>
                 }
                 else
@@ -262,12 +262,12 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDetonationDepth}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDetonationDepth)" T="GridDataWrapper" Title="@columnTitleDetonationDepth" SortBy="@(x => double.Parse(x.DcDetonationDepth?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDetonationDepth}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDetonationDepth)" T="GridDataWrapper" Title="@columnTitleDetonationDepth" SortBy="@(x => double.Parse(x.Asw.DcDetonationDepth?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.DcDetonationDepth))
+                @if (!string.IsNullOrEmpty(context.Item.Asw.DcDetonationDepth))
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.DcDetonationDepth
+                        @context.Item.Asw.DcDetonationDepth
                     </MudText>
                 }
                 else

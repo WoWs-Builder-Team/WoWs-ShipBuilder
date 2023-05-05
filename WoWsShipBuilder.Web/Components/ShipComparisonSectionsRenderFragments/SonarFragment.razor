@@ -19,10 +19,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReload}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleReload)" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SonarReloadTime is not null)
+                @if (context.Item.Sonar?.Reload is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SonarReloadTime
+                        @context.Item.Sonar.Reload
                     </MudText>
                 }
                 else
@@ -36,10 +36,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTraverseSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTraverseSpeed)" T="GridDataWrapper" Title="@columnTitleTraverseSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SonarTraverseSpeed is not null)
+                @if (context.Item.Sonar?.TraverseSpeed is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SonarTraverseSpeed
+                        @context.Item.Sonar.TraverseSpeed
                     </MudText>
                 }
                 else
@@ -53,10 +53,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTurnTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTurnTime)" T="GridDataWrapper" Title="@columnTitleTurnTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SonarTurnTime is not null)
+                @if (context.Item.Sonar?.TurnTime is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SonarTurnTime
+                        @context.Item.Sonar.TurnTime
                     </MudText>
                 }
                 else
@@ -70,10 +70,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxRange}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxRange)" T="GridDataWrapper" Title="@columnTitleMaxRange" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SonarRange is not null)
+                @if (context.Item.Sonar?.Range is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SonarRange
+                        @context.Item.Sonar.Range
                     </MudText>
                 }
                 else
@@ -87,10 +87,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleWidth}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleWidth)" T="GridDataWrapper" Title="@columnTitleWidth" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SonarWidth is not null)
+                @if (context.Item.Sonar?.PingWidth is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SonarWidth
+                        @context.Item.Sonar.PingWidth
                     </MudText>
                 }
                 else
@@ -104,10 +104,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSpeed)" T="GridDataWrapper" Title="@columnTitleSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SonarSpeed is not null)
+                @if (context.Item.Sonar?.PingSpeed is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SonarSpeed
+                        @context.Item.Sonar.PingSpeed
                     </MudText>
                 }
                 else
@@ -121,10 +121,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFirstPingDuration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFirstPingDuration)" T="GridDataWrapper" Title="@columnTitleFirstPingDuration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SonarFirstPingDuration is not null)
+                @if (context.Item.Sonar?.FirstPingDuration is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SonarFirstPingDuration
+                        @context.Item.Sonar.FirstPingDuration
                     </MudText>
                 }
                 else
@@ -138,10 +138,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSecondPingDuration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSecondPingDuration)" T="GridDataWrapper" Title="@columnTitleSecondPingDuration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SonarSecondPingDuration is not null)
+                @if (context.Item.Sonar?.SecondPingDuration is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SonarSecondPingDuration
+                        @context.Item.Sonar.SecondPingDuration
                     </MudText>
                 }
                 else

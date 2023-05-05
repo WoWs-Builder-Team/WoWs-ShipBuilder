@@ -4,8 +4,8 @@ using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.Extensions;
-using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.ViewModels.Helper.GridData;
 
 namespace WoWsShipBuilder.ViewModels.Helper;
 
@@ -34,77 +34,21 @@ public sealed class GridDataWrapper
         BuildName = shipBuildContainer.Build?.BuildName;
 
         //Main battery
+        MainBattery = this.shipBuildContainer.ShipDataContainer?.MainBatteryDataContainer;
         var mainBattery = shipBuildContainer.ShipDataContainer.MainBatteryDataContainer;
 
-        MainBatteryCaliber = mainBattery?.GunCaliber;
-        MainBatteryBarrelCount = mainBattery?.BarrelsCount;
-        MainBatteryBarrelsLayout = mainBattery?.BarrelsLayout;
-        MainBatteryRange = mainBattery?.Range;
-        MainBatteryTurnTime = mainBattery?.TurnTime;
-        MainBatteryTraverseSpeed = mainBattery?.TraverseSpeed;
-        MainBatteryReload = mainBattery?.Reload;
-        MainBatteryRoF = mainBattery?.RoF;
-        MainBatteryHeDpm = mainBattery?.TheoreticalHeDpm;
-        MainBatterySapDpm = mainBattery?.TheoreticalSapDpm;
-        MainBatteryApDpm = mainBattery?.TheoreticalApDpm;
-        MainBatteryHeSalvo = mainBattery?.HeSalvo;
-        MainBatterySapSalvo = mainBattery?.SapSalvo;
-        MainBatteryApSalvo = mainBattery?.ApSalvo;
-        MainBatteryFpm = mainBattery?.PotentialFpm;
-        MainBatterySigma = mainBattery?.Sigma;
-
         //HE shells
-        var heShellData = mainBattery?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.HE.ShellTypeToString()}"));
-
-        HeMass = heShellData?.Mass;
-        HeDamage = heShellData?.Damage;
-        HeSplashRadius = heShellData?.SplashRadius;
-        HeSplashDamage = heShellData?.SplashDmg;
-        HePenetration = heShellData?.Penetration;
-        HeSpeed = heShellData?.ShellVelocity;
-        HeAirDrag = heShellData?.AirDrag;
-        HeShellFireChance = heShellData?.ShellFireChance;
-        HeSalvoFireChance = heShellData?.FireChancePerSalvo;
-        HeBlastRadius = heShellData?.ExplosionRadius;
-        HeBlastPenetration = heShellData?.SplashCoeff;
+        HeShell = mainBattery?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.HE.ShellTypeToString()}"));
 
         //AP shells
-        var apShellData = mainBattery?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP.ShellTypeToString()}"));
-
-        ApMass = apShellData?.Mass;
-        ApDamage = apShellData?.Damage;
-        ApSplashRadius = apShellData?.SplashRadius;
-        ApSplashDamage = apShellData?.SplashDmg;
-        ApSpeed = apShellData?.ShellVelocity;
-        ApAirDrag = apShellData?.AirDrag;
-        ApOvermatch = apShellData?.Overmatch;
-        ApRicochet = apShellData?.RicochetAngles;
-        ApArmingThreshold = apShellData?.ArmingThreshold;
-        ApFuseTimer = apShellData?.FuseTimer;
+        ApShell = mainBattery?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP.ShellTypeToString()}"));
 
         //SAP shells
-        var sapShellData = mainBattery?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP.ShellTypeToString()}"));
-
-        SapMass = sapShellData?.Mass;
-        SapDamage = sapShellData?.Damage;
-        SapSplashRadius = sapShellData?.SplashRadius;
-        SapSplashDamage = sapShellData?.SplashDmg;
-        SapPenetration = sapShellData?.Penetration;
-        SapSpeed = sapShellData?.ShellVelocity;
-        SapAirDrag = sapShellData?.AirDrag;
-        SapOvermatch = sapShellData?.Overmatch;
-        SapRicochet = sapShellData?.RicochetAngles;
+        SapShell = mainBattery?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP.ShellTypeToString()}"));
 
         //TorpLaunchers
         var torpedoArmament = shipBuildContainer.ShipDataContainer.TorpedoArmamentDataContainer;
-
-        TorpedoCount = torpedoArmament?.TorpCount;
-        TorpedoLayout = torpedoArmament?.TorpLayout;
-        TorpedoTurnTime = torpedoArmament?.TurnTime;
-        TorpedoTraverseSpeed = torpedoArmament?.TraverseSpeed;
-        TorpedoReload = torpedoArmament?.Reload;
-        TorpedoSpread = torpedoArmament?.TorpedoArea;
-        TorpedoTimeToSwitch = torpedoArmament?.TimeToSwitch;
+        TorpedoLauncher = torpedoArmament;
 
         //Torpedoes
         List<TorpedoDataContainer>? torpedoes = torpedoArmament?.Torpedoes;
@@ -123,140 +67,32 @@ public sealed class GridDataWrapper
         TorpedoCanHit = torpedoes?.Select(x => x.CanHitClasses).ToList() ?? new();
 
         //Secondaries
-        List<SecondaryBatteryDataContainer>? secondaryBattery = shipBuildContainer.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries;
-
-        SecondaryBatteryCaliber = secondaryBattery?.Select(x => x.GunCaliber).ToList() ?? new();
-        SecondaryBatteryBarrelCount = secondaryBattery?.Select(x => x.BarrelsCount).ToList() ?? new();
-        SecondaryBatteryBarrelsLayout = secondaryBattery?.Select(x => x.BarrelsLayout).ToList() ?? new();
-        SecondaryBatteryRange = secondaryBattery?.Select(x => x.Range).First();
-        SecondaryBatteryReload = secondaryBattery?.Select(x => x.Reload).ToList() ?? new();
-        SecondaryBatteryRoF = secondaryBattery?.Select(x => x.RoF).ToList() ?? new();
-        SecondaryBatteryDpm = secondaryBattery?.Select(x => x.TheoreticalDpm).ToList() ?? new();
-        SecondaryBatteryFpm = secondaryBattery?.Select(x => x.PotentialFpm).ToList() ?? new();
-        SecondaryBatterySigma = secondaryBattery?.Select(x => x.Sigma).First();
-
-        //Secondary shells
-        List<ShellDataContainer?>? secondaryShellData = secondaryBattery?.Select(x => x.Shell).ToList();
-
-        SecondaryType = secondaryShellData?.Select(x => x?.Type).First();
-        SecondaryMass = secondaryShellData?.Select(x => x?.Mass ?? 0).ToList() ?? new();
-        SecondaryDamage = secondaryShellData?.Select(x => x?.Damage ?? 0).ToList() ?? new();
-        SecondarySplashRadius = secondaryShellData?.Select(x => x?.SplashRadius ?? 0).ToList() ?? new();
-        SecondarySplashDamage = secondaryShellData?.Select(x => x?.SplashDmg ?? 0).ToList() ?? new();
-        SecondaryPenetration = secondaryShellData?.Select(x => x?.Penetration ?? 0).ToList() ?? new();
-        SecondarySpeed = secondaryShellData?.Select(x => x?.ShellVelocity ?? 0).ToList() ?? new();
-        SecondaryAirDrag = secondaryShellData?.Select(x => x?.AirDrag ?? 0).ToList() ?? new();
-        SecondaryHeShellFireChance = secondaryShellData?.Select(x => x?.ShellFireChance ?? 0).ToList() ?? new();
-        SecondaryHeBlastRadius = secondaryShellData?.Select(x => x?.ExplosionRadius ?? 0).ToList() ?? new();
-        SecondaryHeBlastPenetration = secondaryShellData?.Select(x => x?.SplashCoeff ?? 0).ToList() ?? new();
-        SecondarySapOvermatch = secondaryShellData?.Select(x => x?.Overmatch ?? 0).ToList() ?? new();
-        SecondarySapRicochet = secondaryShellData?.Select(x => x?.RicochetAngles ?? default!).ToList() ?? new();
+        Secondary = new(shipBuildContainer.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries);
 
         //AA
-        var aaData = shipBuildContainer.ShipDataContainer.AntiAirDataContainer;
-
-        LongAaRange = aaData?.LongRangeAura?.Range;
-        MediumAaRange = aaData?.MediumRangeAura?.Range;
-        ShortAaRange = aaData?.ShortRangeAura?.Range;
-        LongAaConstantDamage = aaData?.LongRangeAura?.ConstantDamage;
-        MediumAaConstantDamage = aaData?.MediumRangeAura?.ConstantDamage;
-        ShortAaConstantDamage = aaData?.ShortRangeAura?.ConstantDamage;
-        LongAaHitChance = aaData?.LongRangeAura?.HitChance;
-        MediumAaHitChance = aaData?.MediumRangeAura?.HitChance;
-        ShortAaHitChance = aaData?.ShortRangeAura?.HitChance;
-        Flak = aaData?.LongRangeAura?.Flak;
-        FlakDamage = aaData?.LongRangeAura?.FlakDamage;
+        AntiAirArmament = shipBuildContainer.ShipDataContainer.AntiAirDataContainer;
 
         //ASW
         var aswAirStrike = shipBuildContainer.ShipDataContainer.AswAirstrikeDataContainer;
         var depthChargeLauncher = shipBuildContainer.ShipDataContainer.DepthChargeLauncherDataContainer;
-        var depthCharge = depthChargeLauncher?.DepthCharge ?? aswAirStrike?.Weapon as DepthChargeDataContainer;
-
-        AswDcType = aswAirStrike is not null ? nameof(Translation.ShipStats_AswAirstrike) : depthChargeLauncher is not null ? nameof(Translation.DepthCharge) : null;
-        AswRange = aswAirStrike?.MaximumDistance;
-        AswMaxDropLength = aswAirStrike?.MaximumFlightDistance;
-        AswDcReload = depthChargeLauncher?.Reload ?? aswAirStrike?.ReloadTime;
-        AswDcUses = depthChargeLauncher?.NumberOfUses ?? aswAirStrike?.NumberOfUses;
-        AswPlanesInSquadron = aswAirStrike?.NumberDuringAttack;
-        AswBombsPerPlane = aswAirStrike?.BombsPerPlane;
-        DcPerAttack = depthChargeLauncher?.BombsPerCharge;
-        DcDamage = depthCharge?.Damage;
-        DcFireChance = depthCharge?.FireChance;
-        DcFloodingChance = depthCharge?.FloodingChance;
-        DcSplashRadius = depthCharge?.DcSplashRadius;
-        DcSinkSpeed = depthCharge?.SinkSpeed;
-        DcDetonationTimer = depthCharge?.DetonationTimer;
-        DcDetonationDepth = depthCharge?.DetonationDepth;
+        Asw = new(aswAirStrike, depthChargeLauncher);
 
         //AirStrike
-        var airStrike = shipBuildContainer.ShipDataContainer.AirstrikeDataContainer;
-        var airStrikeWeapon = airStrike?.Weapon as BombDataContainer;
-
-        AirStrikePlanesHp = airStrike?.PlaneHp;
-        AirStrikeRange = airStrike?.MaximumDistance;
-        AirStrikeMaxDropLength = airStrike?.MaximumFlightDistance;
-        AirStrikeReload = airStrike?.ReloadTime;
-        AirStrikeUses = airStrike?.NumberOfUses;
-        AirStrikePlanesInSquadron = airStrike?.NumberDuringAttack;
-        AirStrikeBombsPerPlane = airStrike?.BombsPerPlane;
-        AirStrikeBombType = airStrikeWeapon?.BombType;
-        AirStrikeDamage = airStrikeWeapon?.Damage;
-        AirStrikeFireChance = airStrikeWeapon?.FireChance;
-        AirStrikeSplashRadius = airStrikeWeapon?.SplashRadius;
-        AirStrikeSplashDamage = airStrikeWeapon?.SplashDmg;
-        AirStrikePenetration = airStrikeWeapon?.Penetration;
-        AirStrikeBlastRadius = airStrikeWeapon?.ExplosionRadius;
-        AirStrikeBlastDamage = airStrikeWeapon?.SplashCoeff;
+        AirStrike = shipBuildContainer.ShipDataContainer.AirstrikeDataContainer;
+        AirStrikeWeapon = AirStrike?.Weapon as BombDataContainer;
 
         //Maneuverability
         var maneuverability = shipBuildContainer.ShipDataContainer.ManeuverabilityDataContainer;
-
-        ManeuverabilityMaxSpeed = maneuverability.ManeuverabilityMaxSpeed != 0 ? maneuverability.ManeuverabilityMaxSpeed : maneuverability.ManeuverabilitySubsMaxSpeedOnSurface;
-        ManeuverabilityMaxSpeedAtPeriscopeDepth = maneuverability.ManeuverabilitySubsMaxSpeedAtPeriscope;
-        ManeuverabilityMaxSpeedAtMaxDepth = maneuverability.ManeuverabilitySubsMaxSpeedAtMaxDepth;
-        ManeuverabilityRudderShiftTime = maneuverability.ManeuverabilityRudderShiftTime;
-        ManeuverabilityTurningCircle = maneuverability.ManeuverabilityTurningCircle;
-        ManeuverabilityTimeToFullAhead = maneuverability.ForwardMaxSpeedTime;
-        ManeuverabilityTimeToFullReverse = maneuverability.ReverseMaxSpeedTime;
-        ManeuverabilityRudderProtection = maneuverability.RudderBlastProtection;
-        ManeuverabilityEngineProtection = maneuverability.EngineBlastProtection;
+        ManeuverabilityData = new(maneuverability);
 
         //Concealment
-        var concealment = shipBuildContainer.ShipDataContainer.ConcealmentDataContainer;
-
-        ConcealmentFromShipsBase = concealment.ConcealmentBySea;
-        ConcealmentFromShipsOnFire = concealment.ConcealmentBySeaFire;
-        ConcealmentFromShipsSmokeFiring = concealment.ConcealmentBySeaFiringSmoke;
-        ConcealmentFromPlanesBase = concealment.ConcealmentByAir;
-        ConcealmentFromPlanesOnFire = concealment.ConcealmentByAirFire;
-        ConcealmentFromSubsPeriscopeDepth = concealment.ConcealmentBySubPeriscope;
+        Concealment = shipBuildContainer.ShipDataContainer.ConcealmentDataContainer;
 
         //Survivability
-        var survivability = shipBuildContainer.ShipDataContainer.SurvivabilityDataContainer;
-
-        SurvivabilityShipHp = survivability.HitPoints;
-        SurvivabilityFireMaxAmount = survivability.FireAmount;
-        SurvivabilityFireDuration = survivability.FireDuration;
-        SurvivabilityFireDps = survivability.FireDPS;
-        SurvivabilityFireMaxDmg = survivability.FireTotalDamage;
-        SurvivabilityFireChanceReduction = survivability.FireReduction;
-        SurvivabilityFloodingMaxAmount = survivability.FloodAmount;
-        SurvivabilityFloodingDuration = survivability.FloodDuration;
-        SurvivabilityFloodingDps = survivability.FloodDPS;
-        SurvivabilityFloodingMaxDmg = survivability.FloodTotalDamage;
-        SurvivabilityFloodingTorpedoProtection = survivability.FloodTorpedoProtection;
+        Survivability = shipBuildContainer.ShipDataContainer.SurvivabilityDataContainer;
 
         //Sonar
-        var pingerGun = shipBuildContainer.ShipDataContainer.PingerGunDataContainer;
-
-        SonarReloadTime = pingerGun?.Reload;
-        SonarTraverseSpeed = pingerGun?.TraverseSpeed;
-        SonarTurnTime = pingerGun?.TurnTime;
-        SonarRange = pingerGun?.Range;
-        SonarWidth = pingerGun?.PingWidth;
-        SonarSpeed = pingerGun?.PingSpeed;
-        SonarFirstPingDuration = pingerGun?.FirstPingDuration;
-        SonarSecondPingDuration = pingerGun?.SecondPingDuration;
+        Sonar = shipBuildContainer.ShipDataContainer.PingerGunDataContainer;
 
         //RocketPlanes
         List<CvAircraftDataContainer>? rocketPlanes = shipBuildContainer.ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ProjectileTypeToString())).ToList();
@@ -417,115 +253,19 @@ public sealed class GridDataWrapper
     public string? BuildName { get; }
 
     //Main battery
-    public decimal? MainBatteryCaliber { get; }
-
-    public int? MainBatteryBarrelCount { get; }
-
-    public string? MainBatteryBarrelsLayout { get; }
-
-    public decimal? MainBatteryRange { get; }
-
-    public decimal? MainBatteryTurnTime { get; }
-
-    public decimal? MainBatteryTraverseSpeed { get; }
-
-    public decimal? MainBatteryReload { get; }
-
-    public decimal? MainBatteryRoF { get; }
-
-    public string? MainBatteryHeDpm { get; }
-
-    public string? MainBatterySapDpm { get; }
-
-    public string? MainBatteryApDpm { get; }
-
-    public string? MainBatteryHeSalvo { get; }
-
-    public string? MainBatterySapSalvo { get; }
-
-    public string? MainBatteryApSalvo { get; }
-
-    public decimal? MainBatteryFpm { get; }
-
-    public decimal? MainBatterySigma { get; }
+    public MainBatteryDataContainer? MainBattery { get; }
 
     //HE shells
-    public decimal? HeMass { get; }
-
-    public decimal? HeDamage { get; }
-
-    public decimal? HeSplashRadius { get; }
-
-    public decimal? HeSplashDamage { get; }
-
-    public decimal? HePenetration { get; }
-
-    public decimal? HeSpeed { get; }
-
-    public decimal? HeAirDrag { get; }
-
-    public decimal? HeShellFireChance { get; }
-
-    public decimal? HeSalvoFireChance { get; }
-
-    public decimal? HeBlastRadius { get; }
-
-    public decimal? HeBlastPenetration { get; }
+    public ShellDataContainer? HeShell { get; }
 
     //AP shells
-    public decimal? ApMass { get; }
-
-    public decimal? ApDamage { get; }
-
-    public decimal? ApSplashRadius { get; }
-
-    public decimal? ApSplashDamage { get; }
-
-    public decimal? ApSpeed { get; }
-
-    public decimal? ApAirDrag { get; }
-
-    public decimal? ApOvermatch { get; }
-
-    public string? ApRicochet { get; }
-
-    public decimal? ApArmingThreshold { get; }
-
-    public decimal? ApFuseTimer { get; }
+    public ShellDataContainer? ApShell { get; }
 
     //SAP shells
-    public decimal? SapMass { get; }
-
-    public decimal? SapDamage { get; }
-
-    public decimal? SapSplashRadius { get; }
-
-    public decimal? SapSplashDamage { get; }
-
-    public decimal? SapPenetration { get; }
-
-    public decimal? SapSpeed { get; }
-
-    public decimal? SapAirDrag { get; }
-
-    public decimal? SapOvermatch { get; }
-
-    public string? SapRicochet { get; }
+    public ShellDataContainer? SapShell { get; }
 
     //TorpLaunchers
-    public int? TorpedoCount { get; }
-
-    public string? TorpedoLayout { get; }
-
-    public decimal? TorpedoTurnTime { get; }
-
-    public decimal? TorpedoTraverseSpeed { get; }
-
-    public decimal? TorpedoReload { get; }
-
-    public string? TorpedoSpread { get; }
-
-    public decimal? TorpedoTimeToSwitch { get; }
+    public TorpedoArmamentDataContainer? TorpedoLauncher { get; set; }
 
     //Torpedoes
     public List<string?> TorpedoFullSalvoDamage { get; }
@@ -553,207 +293,31 @@ public sealed class GridDataWrapper
     public List<List<ShipClass>?> TorpedoCanHit { get; }
 
     //Secondaries
-    public List<decimal> SecondaryBatteryCaliber { get; }
-
-    public List<int> SecondaryBatteryBarrelCount { get; }
-
-    public List<string> SecondaryBatteryBarrelsLayout { get; }
-
-    public decimal? SecondaryBatteryRange { get; }
-
-    public List<decimal> SecondaryBatteryReload { get; }
-
-    public List<decimal> SecondaryBatteryRoF { get; }
-
-    public List<string> SecondaryBatteryDpm { get; }
-
-    public List<decimal> SecondaryBatteryFpm { get; }
-
-    public decimal? SecondaryBatterySigma { get; }
-
-    //Secondary shells
-    public string? SecondaryType { get; }
-
-    public List<decimal> SecondaryMass { get; }
-
-    public List<decimal> SecondaryDamage { get; }
-
-    public List<decimal> SecondarySplashRadius { get; }
-
-    public List<decimal> SecondarySplashDamage { get; }
-
-    public List<int> SecondaryPenetration { get; }
-
-    public List<decimal> SecondarySpeed { get; }
-
-    public List<decimal> SecondaryAirDrag { get; }
-
-    public List<decimal> SecondaryHeShellFireChance { get; }
-
-    public List<decimal> SecondaryHeBlastRadius { get; }
-
-    public List<decimal> SecondaryHeBlastPenetration { get; }
-
-    public List<decimal> SecondarySapOvermatch { get; }
-
-    public List<string> SecondarySapRicochet { get; }
+    public SecondaryGridDataWrapper Secondary { get; }
 
     //AA
-    public decimal? LongAaRange { get; }
-
-    public decimal? MediumAaRange { get; }
-
-    public decimal? ShortAaRange { get; }
-
-    public decimal? LongAaConstantDamage { get; }
-
-    public decimal? MediumAaConstantDamage { get; }
-
-    public decimal? ShortAaConstantDamage { get; }
-
-    public decimal? LongAaHitChance { get; }
-
-    public decimal? MediumAaHitChance { get; }
-
-    public decimal? ShortAaHitChance { get; }
-
-    public string? Flak { get; }
-
-    public decimal? FlakDamage { get; }
+    public AntiAirDataContainer? AntiAirArmament { get; }
 
     //ASW
-    public string? AswDcType { get; }
-
-    public decimal? AswRange { get; }
-
-    public decimal? AswMaxDropLength { get; }
-
-    public decimal? AswDcReload { get; }
-
-    public int? AswDcUses { get; }
-
-    public int? AswPlanesInSquadron { get; }
-
-    public int? AswBombsPerPlane { get; }
-
-    public decimal? DcPerAttack { get; }
-
-    public decimal? DcDamage { get; }
-
-    public decimal? DcFireChance { get; }
-
-    public decimal? DcFloodingChance { get; }
-
-    public decimal? DcSplashRadius { get; }
-
-    public string? DcSinkSpeed { get; }
-
-    public string? DcDetonationTimer { get; }
-
-    public string? DcDetonationDepth { get; }
+    public AswGridDataWrapper Asw { get; }
 
     //AirStrike
-    public decimal? AirStrikePlanesHp { get; }
+    public AirstrikeDataContainer? AirStrike { get; }
 
-    public decimal? AirStrikeRange { get; }
-
-    public decimal? AirStrikeMaxDropLength { get; }
-
-    public decimal? AirStrikeReload { get; }
-
-    public int? AirStrikeUses { get; }
-
-    public int? AirStrikePlanesInSquadron { get; }
-
-    public int? AirStrikeBombsPerPlane { get; }
-
-    public string? AirStrikeBombType { get; }
-
-    public decimal? AirStrikeDamage { get; }
-
-    public decimal? AirStrikeFireChance { get; }
-
-    public decimal? AirStrikeSplashRadius { get; }
-
-    public decimal? AirStrikeSplashDamage { get; }
-
-    public int? AirStrikePenetration { get; }
-
-    public decimal? AirStrikeBlastRadius { get; }
-
-    public decimal? AirStrikeBlastDamage { get; }
+    public BombDataContainer? AirStrikeWeapon { get; }
 
     //Maneuverability
-    public decimal ManeuverabilityMaxSpeed { get; }
-
-    public decimal ManeuverabilityMaxSpeedAtPeriscopeDepth { get; }
-
-    public decimal ManeuverabilityMaxSpeedAtMaxDepth { get; }
-
-    public decimal ManeuverabilityRudderShiftTime { get; }
-
-    public decimal ManeuverabilityTurningCircle { get; }
-
-    public decimal ManeuverabilityTimeToFullAhead { get; }
-
-    public decimal ManeuverabilityTimeToFullReverse { get; }
-
-    public decimal ManeuverabilityRudderProtection { get; }
-
-    public decimal ManeuverabilityEngineProtection { get; }
+    public ManeuverabilityGridDataWrapper ManeuverabilityData { get; }
 
     //Concealment
-    public decimal ConcealmentFromShipsBase { get; }
 
-    public decimal ConcealmentFromShipsOnFire { get; }
-
-    public decimal ConcealmentFromShipsSmokeFiring { get; }
-
-    public decimal ConcealmentFromPlanesBase { get; }
-
-    public decimal ConcealmentFromPlanesOnFire { get; }
-
-    public decimal ConcealmentFromSubsPeriscopeDepth { get; }
+    public ConcealmentDataContainer Concealment { get; }
 
     //Survivability
-    public decimal SurvivabilityShipHp { get; }
-
-    public decimal SurvivabilityFireMaxAmount { get; }
-
-    public decimal SurvivabilityFireDuration { get; }
-
-    public decimal SurvivabilityFireDps { get; }
-
-    public decimal SurvivabilityFireMaxDmg { get; }
-
-    public decimal SurvivabilityFireChanceReduction { get; }
-
-    public decimal SurvivabilityFloodingMaxAmount { get; }
-
-    public decimal SurvivabilityFloodingDuration { get; }
-
-    public decimal SurvivabilityFloodingDps { get; }
-
-    public decimal SurvivabilityFloodingMaxDmg { get; }
-
-    public decimal SurvivabilityFloodingTorpedoProtection { get; }
+    public SurvivabilityDataContainer Survivability { get; }
 
     //Sonar
-    public decimal? SonarReloadTime { get; }
-
-    public decimal? SonarTraverseSpeed { get; }
-
-    public decimal? SonarTurnTime { get; }
-
-    public decimal? SonarRange { get; }
-
-    public decimal? SonarWidth { get; }
-
-    public decimal? SonarSpeed { get; }
-
-    public decimal? SonarFirstPingDuration { get; }
-
-    public decimal? SonarSecondPingDuration { get; }
+    public PingerGunDataContainer? Sonar { get; }
 
     //RocketPlanes
     public List<string> RocketPlanesType { get; }

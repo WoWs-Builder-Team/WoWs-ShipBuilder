@@ -23,10 +23,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCaliber}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCaliber)" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.HeDamage is not null)
+                @if (context.Item.HeShell?.Damage is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryCaliber
+                        @context.Item.MainBattery?.GunCaliber
                     </MudText>
                 }
                 else
@@ -40,10 +40,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMass}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMass)" T="GridDataWrapper" Title="@columnTitleMass" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.HeMass is not null)
+                @if (context.Item.HeShell?.Mass is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.HeMass
+                        @context.Item.HeShell.Mass
                     </MudText>
                 }
                 else
@@ -57,10 +57,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDamage)" T="GridDataWrapper" Title="@columnTitleDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.HeDamage is not null)
+                @if (context.Item.HeShell?.Damage is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.HeDamage
+                        @context.Item.HeShell.Damage
                     </MudText>
                 }
                 else
@@ -74,10 +74,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashRadius}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSplashRadius)" T="GridDataWrapper" Title="@columnTitleSplashRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.HeSplashRadius is not null)
+                @if (context.Item.HeShell?.SplashRadius is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.HeSplashRadius
+                        @context.Item.HeShell.SplashRadius
                     </MudText>
                 }
                 else
@@ -91,10 +91,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSplashDamage)" T="GridDataWrapper" Title="@columnTitleSplashDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.HeSplashDamage is not null)
+                @if (context.Item.HeShell?.SplashDmg is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.HeSplashDamage
+                        @context.Item.HeShell.SplashDmg
                     </MudText>
                 }
                 else
@@ -108,10 +108,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePenetration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePenetration)" T="GridDataWrapper" Title="@columnTitlePenetration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.HePenetration is not null)
+                @if (context.Item.HeShell?.Penetration is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.HePenetration
+                        @context.Item.HeShell.Penetration
                     </MudText>
                 }
                 else
@@ -125,10 +125,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleInitialSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleInitialSpeed)" T="GridDataWrapper" Title="@columnTitleInitialSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.HeSpeed is not null)
+                @if (context.Item.HeShell?.ShellVelocity is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.HeSpeed
+                        @context.Item.HeShell?.ShellVelocity
                     </MudText>
                 }
                 else
@@ -142,10 +142,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAirDrag}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAirDrag)" T="GridDataWrapper" Title="@columnTitleAirDrag" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.HeAirDrag is not null)
+                @if (context.Item.HeShell?.AirDrag is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.HeAirDrag
+                        @context.Item.HeShell.AirDrag
                     </MudText>
                 }
                 else
@@ -159,10 +159,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFireChance}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireChance)" T="GridDataWrapper" Title="@columnTitleFireChance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.HeShellFireChance is not null)
+                @if (context.Item.HeShell?.ShellFireChance is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.HeShellFireChance
+                        @context.Item.HeShell.ShellFireChance
                     </MudText>
                 }
                 else
@@ -176,10 +176,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSalvoFireChance}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSalvoFireChance)" T="GridDataWrapper" Title="@columnTitleSalvoFireChance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.HeSalvoFireChance is not null)
+                @if (context.Item.HeShell?.FireChancePerSalvo is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.HeSalvoFireChance
+                        @context.Item.HeShell?.FireChancePerSalvo
                     </MudText>
                 }
                 else
@@ -193,10 +193,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastRadius}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBlastRadius)" T="GridDataWrapper" Title="@columnTitleBlastRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.HeBlastRadius is not null)
+                @if (context.Item.HeShell?.ExplosionRadius is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.HeBlastRadius
+                        @context.Item.HeShell.ExplosionRadius
                     </MudText>
                 }
                 else
@@ -210,10 +210,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastPenetration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBlastPenetration)" T="GridDataWrapper" Title="@columnTitleBlastPenetration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.HeBlastPenetration is not null)
+                @if (context.Item.HeShell?.SplashCoeff is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.HeBlastPenetration
+                        @context.Item.HeShell.SplashCoeff
                     </MudText>
                 }
                 else
