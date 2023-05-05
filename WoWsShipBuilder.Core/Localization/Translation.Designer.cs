@@ -3900,6 +3900,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max reverse speed.
+        /// </summary>
+        public static string ShipStats_MaxReverseSpeed {
+            get {
+                return ResourceManager.GetString("ShipStats_MaxReverseSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max speed.
         /// </summary>
         public static string ShipStats_MaxSpeed {

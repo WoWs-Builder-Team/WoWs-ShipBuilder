@@ -1991,4 +1991,7 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipComparison_TorpsPerPlane" xml:space="preserve">
       <value>Torpedoes per plane</value>
   </data>
+  <data name="ShipStats_MaxReverseSpeed" xml:space="preserve">
+      <value>Max reverse speed</value>
+  </data>
 </root>
