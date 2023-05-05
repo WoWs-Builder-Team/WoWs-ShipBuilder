@@ -1,6 +1,7 @@
 ﻿@using WoWsShipBuilder.ViewModels.Helper
 @using WoWsShipBuilder.ViewModels.Other
 @using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.ViewModels.Helper.GridData
 @code {
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
@@ -22,11 +23,11 @@
         var columnTitleArmingThreshold = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ArmingThreshold))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
         var columnTitleRicochetAngles = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RicochetAngles))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Degree)})";
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlane}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlane)" T="GridDataWrapper" Title="@columnTitlePlane" SortBy="@(x=> !x.RocketPlanesType.Any() ? string.Empty : element.localizer.GetAppLocalization($"ShipStats_{x.RocketPlanesType.First()}").Localization)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlane}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlane)" T="GridDataWrapper" Title="@columnTitlePlane" SortBy="@(x=> !x.RocketPlanes.Type.Any() ? string.Empty : element.localizer.GetAppLocalization($"ShipStats_{x.RocketPlanes.Type.First()}").Localization)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesType.Any())
+                @if (context.Item.RocketPlanes.Type.Any())
                 {
-                    List<string> items = context.Item.RocketPlanesType;
+                    List<string> items = context.Item.RocketPlanes.Type;
                     for (var i = 0; i < items.Count; i++)
                     {
                         string item = items[i];
@@ -48,11 +49,11 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleType}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleType)" T="GridDataWrapper" Title="@columnTitleType" SortBy="@(x=> !x.RocketPlanesWeaponType.Any() ? string.Empty : element.localizer.GetAppLocalization(x.RocketPlanesWeaponType.First()).Localization)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleType}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleType)" T="GridDataWrapper" Title="@columnTitleType" SortBy="@(x=> !x.RocketPlanes.WeaponType.Any() ? string.Empty : element.localizer.GetAppLocalization(x.RocketPlanes.WeaponType.First()).Localization)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesWeaponType.Any())
+                @if (context.Item.RocketPlanes.WeaponType.Any())
                 {
-                    List<string> items = context.Item.RocketPlanesWeaponType;
+                    List<string> items = context.Item.RocketPlanes.WeaponType;
                     for (var i = 0; i < items.Count; i++)
                     {
                         string item = items[i];
@@ -76,9 +77,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDamage)" T="GridDataWrapper" Title="@columnTitleDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesWeaponDamage.Any())
+                @if (context.Item.RocketPlanes.WeaponDamage.Any())
                 {
-                    List<decimal> items = context.Item.RocketPlanesWeaponDamage;
+                    List<decimal> items = context.Item.RocketPlanes.WeaponDamage;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -102,9 +103,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashRadius}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSplashRadius)" T="GridDataWrapper" Title="@columnTitleSplashRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesWeaponSplashRadius.Any())
+                @if (context.Item.RocketPlanes.WeaponSplashRadius.Any())
                 {
-                    List<decimal> items = context.Item.RocketPlanesWeaponSplashRadius;
+                    List<decimal> items = context.Item.RocketPlanes.WeaponSplashRadius;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -128,9 +129,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSplashDamage)" T="GridDataWrapper" Title="@columnTitleSplashDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesWeaponSplashDamage.Any())
+                @if (context.Item.RocketPlanes.WeaponSplashDamage.Any())
                 {
-                    List<decimal> items = context.Item.RocketPlanesWeaponSplashDamage;
+                    List<decimal> items = context.Item.RocketPlanes.WeaponSplashDamage;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -154,9 +155,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePenetration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePenetration)" T="GridDataWrapper" Title="@columnTitlePenetration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesWeaponPenetration.Any())
+                @if (context.Item.RocketPlanes.WeaponPenetration.Any())
                 {
-                    List<int> items = context.Item.RocketPlanesWeaponPenetration;
+                    List<int> items = context.Item.RocketPlanes.WeaponPenetration;
                     for (var i = 0; i < items.Count; i++)
                     {
                         int item = items[i];
@@ -189,9 +190,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFireChance}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireChance)" T="GridDataWrapper" Title="@columnTitleFireChance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesWeaponFireChance.Any())
+                @if (context.Item.RocketPlanes.WeaponFireChance.Any())
                 {
-                    List<decimal> items = context.Item.RocketPlanesWeaponFireChance;
+                    List<decimal> items = context.Item.RocketPlanes.WeaponFireChance;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -224,13 +225,13 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastRadius}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBlastRadius)" T="GridDataWrapper" Title="@columnTitleBlastRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesWeaponBlastRadius.Any())
+                @if (context.Item.RocketPlanes.WeaponBlastRadius.Any())
                 {
-                    List<decimal> items = context.Item.RocketPlanesWeaponBlastRadius;
+                    List<decimal> items = context.Item.RocketPlanes.WeaponBlastRadius;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
-                        if (context.Item.RocketPlanesWeaponType[i].Equals($"ArmamentType_{RocketType.HE}"))
+                        if (context.Item.RocketPlanes.WeaponType[i].Equals($"ArmamentType_{RocketType.HE}"))
                         {
                             <MudText Typo="Typo.body2">
                                 @item
@@ -259,13 +260,13 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastPenetration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBlastPenetration)" T="GridDataWrapper" Title="@columnTitleBlastPenetration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesWeaponBlastPenetration.Any())
+                @if (context.Item.RocketPlanes.WeaponBlastPenetration.Any())
                 {
-                    List<decimal> items = context.Item.RocketPlanesWeaponBlastPenetration;
+                    List<decimal> items = context.Item.RocketPlanes.WeaponBlastPenetration;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
-                        if (context.Item.RocketPlanesWeaponType[i].Equals($"ArmamentType_{RocketType.HE}"))
+                        if (context.Item.RocketPlanes.WeaponType[i].Equals($"ArmamentType_{RocketType.HE}"))
                         {
                             <MudText Typo="Typo.body2">
                                 @item
@@ -294,9 +295,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFuseTimer}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFuseTimer)" T="GridDataWrapper" Title="@columnTitleFuseTimer" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesWeaponFuseTimer.Any())
+                @if (context.Item.RocketPlanes.WeaponFuseTimer.Any())
                 {
-                    List<decimal> items = context.Item.RocketPlanesWeaponFuseTimer;
+                    List<decimal> items = context.Item.RocketPlanes.WeaponFuseTimer;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -329,9 +330,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleArmingThreshold}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleArmingThreshold)" T="GridDataWrapper" Title="@columnTitleArmingThreshold" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesWeaponArmingThreshold.Any())
+                @if (context.Item.RocketPlanes.WeaponArmingThreshold.Any())
                 {
-                    List<int> items = context.Item.RocketPlanesWeaponArmingThreshold;
+                    List<int> items = context.Item.RocketPlanes.WeaponArmingThreshold;
                     for (var i = 0; i < items.Count; i++)
                     {
                         int item = items[i];
@@ -362,11 +363,11 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRicochetAngles}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRicochetAngles)" T="GridDataWrapper" Title="@columnTitleRicochetAngles" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.RocketPlanesWeaponRicochetAngles.Select(y => double.Parse(y.Split(" - ").First())).ToList())">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRicochetAngles}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRicochetAngles)" T="GridDataWrapper" Title="@columnTitleRicochetAngles" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.RocketPlanes.WeaponRicochetAngles.Select(y => double.Parse(y.Split(" - ").First())).ToList())">
             <CellTemplate>
-                @if (context.Item.RocketPlanesWeaponRicochetAngles.Any())
+                @if (context.Item.RocketPlanes.WeaponRicochetAngles.Any())
                 {
-                    List<string> items = context.Item.RocketPlanesWeaponRicochetAngles;
+                    List<string> items = context.Item.RocketPlanes.WeaponRicochetAngles;
                     for (var i = 0; i < items.Count; i++)
                     {
                         string item = items[i];

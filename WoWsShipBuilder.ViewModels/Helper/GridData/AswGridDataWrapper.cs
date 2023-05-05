@@ -9,7 +9,13 @@ public class AswGridDataWrapper
     {
         var depthCharge = depthChargeLauncher?.DepthCharge ?? aswAirStrike?.Weapon as DepthChargeDataContainer;
 
-        DcType = aswAirStrike is not null ? nameof(Translation.ShipStats_AswAirstrike) : depthChargeLauncher is not null ? nameof(Translation.DepthCharge) : null;
+        DcType = aswAirStrike switch
+        {
+            not null => nameof(Translation.ShipStats_AswAirstrike),
+            null when depthChargeLauncher is not null => nameof(Translation.DepthCharge),
+            _ => null,
+        };
+
         Range = aswAirStrike?.MaximumDistance;
         MaxDropLength = aswAirStrike?.MaximumFlightDistance;
         DcReload = depthChargeLauncher?.Reload ?? aswAirStrike?.ReloadTime;

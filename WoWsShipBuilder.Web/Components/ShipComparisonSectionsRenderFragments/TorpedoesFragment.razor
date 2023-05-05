@@ -3,6 +3,7 @@
 @using System.Globalization
 @using WoWsShipBuilder.Core.Utility
 @using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.ViewModels.Helper.GridData
 @code {
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
@@ -120,7 +121,7 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSwitchTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSwitchTime)" T="GridDataWrapper" Title="@columnTitleSwitchTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoLauncher?.TimeToSwitch is not null && context.Item.TorpedoType.Count > 1)
+                @if (context.Item.TorpedoLauncher?.TimeToSwitch is not null && context.Item.Torpedo.Type.Count > 1)
                 {
                     <MudText Typo="Typo.body2">
                         @context.Item.TorpedoLauncher.TimeToSwitch
@@ -135,11 +136,11 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleType}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleType)" T="GridDataWrapper" Title="@columnTitleType" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> !x.TorpedoType.Any() ? string.Empty : element.localizer.GetAppLocalization(x.TorpedoType.First()).Localization)">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleType}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleType)" T="GridDataWrapper" Title="@columnTitleType" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> !x.Torpedo.Type.Any() ? string.Empty : element.localizer.GetAppLocalization(x.Torpedo.Type.First()).Localization)">
             <CellTemplate>
-                @if (context.Item.TorpedoType.Any())
+                @if (context.Item.Torpedo.Type.Any())
                 {
-                    List<string> torps = context.Item.TorpedoType;
+                    List<string> torps = context.Item.Torpedo.Type;
                     for (var i = 0; i < torps.Count; i++)
                     {
                         string torp = torps[i];
@@ -163,9 +164,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDamage)" T="GridDataWrapper" Title="@columnTitleDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoDamage.Any())
+                @if (context.Item.Torpedo.Damage.Any())
                 {
-                    List<decimal> torps = context.Item.TorpedoDamage;
+                    List<decimal> torps = context.Item.Torpedo.Damage;
                     for (var i = 0; i < torps.Count; i++)
                     {
                         decimal torp = torps[i];
@@ -187,10 +188,10 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSalvoDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSalvoDamage)" T="GridDataWrapper" Title="@columnTitleSalvoDamage" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.TorpedoFullSalvoDamage.Where(y => !string.IsNullOrEmpty(y)).Select(z => int.Parse(z ?? "0", NumberStyles.AllowThousands, nfi)).ToList())">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSalvoDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSalvoDamage)" T="GridDataWrapper" Title="@columnTitleSalvoDamage" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.Torpedo.FullSalvoDamage.Where(y => !string.IsNullOrEmpty(y)).Select(z => int.Parse(z ?? "0", NumberStyles.AllowThousands, nfi)).ToList())">
             <CellTemplate>
                 @{
-                   List<string?> torps = context.Item.TorpedoFullSalvoDamage.Where(x => !string.IsNullOrEmpty(x)).ToList();
+                   List<string?> torps = context.Item.Torpedo.FullSalvoDamage.Where(x => !string.IsNullOrEmpty(x)).ToList();
                    if (torps.Count == 0)
                    {
                        <MudText Typo="Typo.body2" Color="Color.Primary">
@@ -217,9 +218,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxRange}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxRange)" T="GridDataWrapper" Title="@columnTitleMaxRange" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoRange.Any())
+                @if (context.Item.Torpedo.Range.Any())
                 {
-                    List<decimal> torps = context.Item.TorpedoRange;
+                    List<decimal> torps = context.Item.Torpedo.Range;
                     for (var i = 0; i < torps.Count; i++)
                     {
                         decimal torp = torps[i];
@@ -243,9 +244,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSpeed)" T="GridDataWrapper" Field="TorpedoSpeed" Title="@columnTitleSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoSpeed.Any())
+                @if (context.Item.Torpedo.Speed.Any())
                 {
-                    List<decimal> torps = context.Item.TorpedoSpeed;
+                    List<decimal> torps = context.Item.Torpedo.Speed;
                     for (var i = 0; i < torps.Count; i++)
                     {
                         decimal torp = torps[i];
@@ -269,9 +270,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDetectionRange}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDetectionRange)" T="GridDataWrapper" Title="@columnTitleDetectionRange" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoDetectRange.Any())
+                @if (context.Item.Torpedo.DetectRange.Any())
                 {
-                    List<decimal> torps = context.Item.TorpedoDetectRange;
+                    List<decimal> torps = context.Item.Torpedo.DetectRange;
                     for (var i = 0; i < torps.Count; i++)
                     {
                         decimal torp = torps[i];
@@ -295,9 +296,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleArmingDistance}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleArmingDistance)" T="GridDataWrapper" Title="@columnTitleArmingDistance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoArmingDistance.Any())
+                @if (context.Item.Torpedo.ArmingDistance.Any())
                 {
-                    List<int> torps = context.Item.TorpedoArmingDistance;
+                    List<int> torps = context.Item.Torpedo.ArmingDistance;
                     for (var i = 0; i < torps.Count; i++)
                     {
                         decimal torp = torps[i];
@@ -321,9 +322,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReactionTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleReactionTime)" T="GridDataWrapper" Title="@columnTitleReactionTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoReactionTime.Any())
+                @if (context.Item.Torpedo.ReactionTime.Any())
                 {
-                    List<decimal> torps = context.Item.TorpedoReactionTime;
+                    List<decimal> torps = context.Item.Torpedo.ReactionTime;
                     for (var i = 0; i < torps.Count; i++)
                     {
                         decimal torp = torps[i];
@@ -347,9 +348,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFloodChance}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFloodChance)" T="GridDataWrapper" Title="@columnTitleFloodChance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoFloodingChance.Any())
+                @if (context.Item.Torpedo.FloodingChance.Any())
                 {
-                    List<decimal> torps = context.Item.TorpedoFloodingChance;
+                    List<decimal> torps = context.Item.Torpedo.FloodingChance;
                     for (var i = 0; i < torps.Count; i++)
                     {
                         decimal torp = torps[i];
@@ -373,9 +374,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastRadius}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBlastRadius)" T="GridDataWrapper" Title="@columnTitleBlastRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoBlastRadius.Any())
+                @if (context.Item.Torpedo.BlastRadius.Any())
                 {
-                    List<decimal> torps = context.Item.TorpedoBlastRadius;
+                    List<decimal> torps = context.Item.Torpedo.BlastRadius;
                     for (var i = 0; i < torps.Count; i++)
                     {
                         decimal torp = torps[i];
@@ -399,9 +400,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastPenetration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBlastPenetration)" T="GridDataWrapper" Title="@columnTitleBlastPenetration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoBlastPenetration.Any())
+                @if (context.Item.Torpedo.BlastPenetration.Any())
                 {
-                    List<decimal> torps = context.Item.TorpedoBlastPenetration;
+                    List<decimal> torps = context.Item.Torpedo.BlastPenetration;
                     for (var i = 0; i < torps.Count; i++)
                     {
                         decimal torp = torps[i];
@@ -423,15 +424,15 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCanHit}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCanHit)" T="GridDataWrapper" Title="@columnTitleCanHit" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> !x.TorpedoCanHit.Any() ? 0 : x.TorpedoCanHit.First()?.Count ?? (x.TorpedoDamage.Any() ? 5 : 0))">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCanHit}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCanHit)" T="GridDataWrapper" Title="@columnTitleCanHit" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> !x.Torpedo.CanHit.Any() ? 0 : x.Torpedo.CanHit.First()?.Count ?? (x.Torpedo.Damage.Any() ? 5 : 0))">
             <CellTemplate>
-                @if (context.Item.TorpedoCanHit.Any())
+                @if (context.Item.Torpedo.CanHit.Any())
                 {
-                    List<List<ShipClass>?> torps = context.Item.TorpedoCanHit;
+                    List<List<ShipClass>?> torps = context.Item.Torpedo.CanHit;
                     for (var i = 0; i < torps.Count; i++)
                     {
                         List<ShipClass>? classes = torps[i];
-                        if (classes is null && context.Item.TorpedoDamage.Any())
+                        if (classes is null && context.Item.Torpedo.Damage.Any())
                         {
                             <MudStack row Justify="Justify.Center" AlignItems="AlignItems.Center">
                                 @foreach (var shipClass in Enum.GetValues(typeof(ShipClass)).Cast<ShipClass>().ToList())
@@ -440,7 +441,7 @@
                                 }
                             </MudStack>
                         }
-                        else if (classes is null && !context.Item.TorpedoDamage.Any())
+                        else if (classes is null && !context.Item.Torpedo.Damage.Any())
                         {
                             <MudText Typo="Typo.body2" Color="Color.Primary">
                                 @ShipComparisonViewModel.DataNotAvailable

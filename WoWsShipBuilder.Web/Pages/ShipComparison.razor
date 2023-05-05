@@ -11,7 +11,7 @@
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.Settings
 @using WoWsShipBuilder.DataStructures
-@using WoWsShipBuilder.ViewModels.Helper
+@using WoWsShipBuilder.ViewModels.Helper.GridData
 @using WoWsShipBuilder.Web.Data
 @using WoWsShipBuilder.Web.Services
 @using WoWsShipBuilder.Web.Utility
@@ -262,7 +262,7 @@
 
             <TemplateColumn T="GridDataWrapper" TProperty="string" Title="@Localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Name))" Hideable="false" StickyLeft HeaderStyle="background-clip: padding-box; background-color: #282828;" CellStyle="@($"cursor: pointer; background-clip: padding-box; {StickyColumnsBackgroundColor}")" SortBy="@(x => LocalizeShipName(x.Ship.Index))" InitialDirection="SortDirection.Ascending" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
-                    <MudText Typo="Typo.body2" @onclick="@(() => ViewShipStats(context.Item.GetShipBuildContainer()))">
+                    <MudText Typo="Typo.body2" @onclick="@(() => ViewShipStats(context.Item.ShipBuildContainer))">
                         @LocalizeShipName(context.Item.Ship.Index)
                     </MudText>
                 </CellTemplate>
@@ -463,11 +463,11 @@
         var shipBuildContainers = new List<ShipBuildContainer>();
         if (wrapper is not null)
         {
-            shipBuildContainers.Add(wrapper.GetShipBuildContainer());
+            shipBuildContainers.Add(wrapper.ShipBuildContainer);
         }
         else
         {
-            shipBuildContainers.AddRange(ViewModel!.SelectedShipList.Values.Select(x => x.GetShipBuildContainer()).OrderBy(x => LocalizeShipName(x.Ship.Index)));
+            shipBuildContainers.AddRange(ViewModel!.SelectedShipList.Values.Select(x => x.ShipBuildContainer).OrderBy(x => LocalizeShipName(x.Ship.Index)));
         }
         IEnumerable<ShipBuildContainer>? results = await buildConfigurationHelper.ShowDialogAsync(shipBuildContainers);
         isDialogOpen = false;
@@ -718,7 +718,7 @@
 
     private void StoreBuildsForTransfer()
     {
-        SessionStateCache.SetBuildTransferContainers(ViewModel!.SelectedShipList.Values.Select(x => x.GetShipBuildContainer()).ToList());
+        SessionStateCache.SetBuildTransferContainers(ViewModel!.SelectedShipList.Values.Select(x => x.ShipBuildContainer).ToList());
     }
 
     private void SetupAndOpenNewTab(string url)

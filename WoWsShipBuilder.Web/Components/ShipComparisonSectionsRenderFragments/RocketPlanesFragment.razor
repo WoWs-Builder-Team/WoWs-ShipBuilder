@@ -1,4 +1,5 @@
 ﻿@using WoWsShipBuilder.ViewModels.Helper
+@using WoWsShipBuilder.ViewModels.Helper.GridData
 @using WoWsShipBuilder.ViewModels.Other
 @code {
 
@@ -34,11 +35,11 @@
         var columnTitleAreaChangeWhileAiming = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_AreaChange))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AimingRateMoving))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
         var columnTitleAreaChangeDuringPreparation = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_AreaChange))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AimingPreparationRateMoving))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleType}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleType)" T="GridDataWrapper" Title="@columnTitleType" SortBy="@(x=> !x.RocketPlanesType.Any() ? string.Empty : element.localizer.GetAppLocalization($"ShipStats_{x.RocketPlanesType.First()}").Localization)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleType}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleType)" T="GridDataWrapper" Title="@columnTitleType" SortBy="@(x=> !x.RocketPlanes.Type.Any() ? string.Empty : element.localizer.GetAppLocalization($"ShipStats_{x.RocketPlanes.Type.First()}").Localization)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesType.Any())
+                @if (context.Item.RocketPlanes.Type.Any())
                 {
-                    List<string> items = context.Item.RocketPlanesType;
+                    List<string> items = context.Item.RocketPlanes.Type;
                     for (var i = 0; i < items.Count; i++)
                     {
                         string item = items[i];
@@ -62,9 +63,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlanesInSquadron}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlanesInSquadron)" T="GridDataWrapper" Title="@columnTitlePlanesInSquadron" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesInSquadron.Any())
+                @if (context.Item.RocketPlanes.InSquadron.Any())
                 {
-                    List<int> items = context.Item.RocketPlanesInSquadron;
+                    List<int> items = context.Item.RocketPlanes.InSquadron;
                     for (var i = 0; i < items.Count; i++)
                     {
                         int item = items[i];
@@ -88,9 +89,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlanesPerAttack}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlanesPerAttack)" T="GridDataWrapper" Title="@columnTitlePlanesPerAttack" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesPerAttack.Any())
+                @if (context.Item.RocketPlanes.PerAttack.Any())
                 {
-                    List<int> items = context.Item.RocketPlanesPerAttack;
+                    List<int> items = context.Item.RocketPlanes.PerAttack;
                     for (var i = 0; i < items.Count; i++)
                     {
                         int item = items[i];
@@ -114,9 +115,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlanesOnDeck}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlanesOnDeck)" T="GridDataWrapper" Title="@columnTitlePlanesOnDeck" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesOnDeck.Any())
+                @if (context.Item.RocketPlanes.OnDeck.Any())
                 {
-                    List<int> items = context.Item.RocketPlanesOnDeck;
+                    List<int> items = context.Item.RocketPlanes.OnDeck;
                     for (var i = 0; i < items.Count; i++)
                     {
                         int item = items[i];
@@ -140,9 +141,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRestorationTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRestorationTime)" T="GridDataWrapper" Title="@columnTitleRestorationTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesRestorationTime.Any())
+                @if (context.Item.RocketPlanes.RestorationTime.Any())
                 {
-                    List<decimal> items = context.Item.RocketPlanesRestorationTime;
+                    List<decimal> items = context.Item.RocketPlanes.RestorationTime;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -166,9 +167,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCruisingSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCruisingSpeed)" T="GridDataWrapper" Title="@columnTitleCruisingSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesCruisingSpeed.Any())
+                @if (context.Item.RocketPlanes.CruisingSpeed.Any())
                 {
-                    List<decimal> items = context.Item.RocketPlanesCruisingSpeed;
+                    List<decimal> items = context.Item.RocketPlanes.CruisingSpeed;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -192,9 +193,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxSpeed)" T="GridDataWrapper" Title="@columnTitleMaxSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesMaxSpeed.Any())
+                @if (context.Item.RocketPlanes.MaxSpeed.Any())
                 {
-                    List<decimal> items = context.Item.RocketPlanesMaxSpeed;
+                    List<decimal> items = context.Item.RocketPlanes.MaxSpeed;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -218,9 +219,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMinSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMinSpeed)" T="GridDataWrapper" Title="@columnTitleMinSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesMinSpeed.Any())
+                @if (context.Item.RocketPlanes.MinSpeed.Any())
                 {
-                    List<decimal> items = context.Item.RocketPlanesMinSpeed;
+                    List<decimal> items = context.Item.RocketPlanes.MinSpeed;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -244,9 +245,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleEngineBoost}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleEngineBoost)" T="GridDataWrapper" Title="@columnTitleEngineBoost" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesEngineBoostDuration.Any())
+                @if (context.Item.RocketPlanes.EngineBoostDuration.Any())
                 {
-                    List<decimal> items = context.Item.RocketPlanesEngineBoostDuration;
+                    List<decimal> items = context.Item.RocketPlanes.EngineBoostDuration;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -270,9 +271,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleInitialBoostDuration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleInitialBoostDuration)" T="GridDataWrapper" Title="@columnTitleInitialBoostDuration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesInitialBoostDuration.Any(x => x != 0))
+                @if (context.Item.RocketPlanes.InitialBoostDuration.Any(x => x != 0))
                 {
-                    List<decimal> items = context.Item.RocketPlanesInitialBoostDuration;
+                    List<decimal> items = context.Item.RocketPlanes.InitialBoostDuration;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -296,9 +297,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleInitialBoostSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleInitialBoostSpeed)" T="GridDataWrapper" Title="@columnTitleInitialBoostSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesInitialBoostValue.Any(x => x != 0))
+                @if (context.Item.RocketPlanes.InitialBoostValue.Any(x => x != 0))
                 {
-                    List<decimal> items = context.Item.RocketPlanesInitialBoostValue;
+                    List<decimal> items = context.Item.RocketPlanes.InitialBoostValue;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -322,9 +323,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlaneHp}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlaneHp)" T="GridDataWrapper" Title="@columnTitlePlaneHp" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesPlaneHp.Any())
+                @if (context.Item.RocketPlanes.PlaneHp.Any())
                 {
-                    List<int> items = context.Item.RocketPlanesPlaneHp;
+                    List<int> items = context.Item.RocketPlanes.PlaneHp;
                     for (var i = 0; i < items.Count; i++)
                     {
                         int item = items[i];
@@ -348,9 +349,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSquadronHp}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSquadronHp)" T="GridDataWrapper" Title="@columnTitleSquadronHp" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesSquadronHp.Any())
+                @if (context.Item.RocketPlanes.SquadronHp.Any())
                 {
-                    List<int> items = context.Item.RocketPlanesSquadronHp;
+                    List<int> items = context.Item.RocketPlanes.SquadronHp;
                     for (var i = 0; i < items.Count; i++)
                     {
                         int item = items[i];
@@ -374,9 +375,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAttackGroupHp}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAttackGroupHp)" T="GridDataWrapper" Title="@columnTitleAttackGroupHp" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesAttackGroupHp.Any())
+                @if (context.Item.RocketPlanes.AttackGroupHp.Any())
                 {
-                    List<int> items = context.Item.RocketPlanesAttackGroupHp;
+                    List<int> items = context.Item.RocketPlanes.AttackGroupHp;
                     for (var i = 0; i < items.Count; i++)
                     {
                         int item = items[i];
@@ -400,9 +401,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDamageTakenWhileAttacking}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDamageTakenWhileAttacking)" T="GridDataWrapper" Title="@columnTitleDamageTakenWhileAttacking" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesDamageDuringAttack.Any())
+                @if (context.Item.RocketPlanes.DamageDuringAttack.Any())
                 {
-                    List<int> items = context.Item.RocketPlanesDamageDuringAttack;
+                    List<int> items = context.Item.RocketPlanes.DamageDuringAttack;
                     for (var i = 0; i < items.Count; i++)
                     {
                         int item = items[i];
@@ -426,9 +427,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRocketsPerPlane}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRocketsPerPlane)" T="GridDataWrapper" Title="@columnTitleRocketsPerPlane" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesWeaponsPerPlane.Any())
+                @if (context.Item.RocketPlanes.WeaponsPerPlane.Any())
                 {
-                    List<int> items = context.Item.RocketPlanesWeaponsPerPlane;
+                    List<int> items = context.Item.RocketPlanes.WeaponsPerPlane;
                     for (var i = 0; i < items.Count; i++)
                     {
                         int item = items[i];
@@ -452,9 +453,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePreparationTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePreparationTime)" T="GridDataWrapper" Title="@columnTitlePreparationTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesPreparationTime.Any())
+                @if (context.Item.RocketPlanes.PreparationTime.Any())
                 {
-                    List<decimal> items = context.Item.RocketPlanesPreparationTime;
+                    List<decimal> items = context.Item.RocketPlanes.PreparationTime;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -478,9 +479,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAimingTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAimingTime)" T="GridDataWrapper" Title="@columnTitleAimingTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesAimingTime.Any())
+                @if (context.Item.RocketPlanes.AimingTime.Any())
                 {
-                    List<decimal> items = context.Item.RocketPlanesAimingTime;
+                    List<decimal> items = context.Item.RocketPlanes.AimingTime;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -504,9 +505,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFullyAimedTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFullyAimedTime)" T="GridDataWrapper" Title="@columnTitleFullyAimedTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesTimeToFullyAimed.Any())
+                @if (context.Item.RocketPlanes.TimeToFullyAimed.Any())
                 {
-                    List<decimal> items = context.Item.RocketPlanesTimeToFullyAimed;
+                    List<decimal> items = context.Item.RocketPlanes.TimeToFullyAimed;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -530,9 +531,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleInvulnerabilityTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleInvulnerabilityTime)" T="GridDataWrapper" Title="@columnTitleInvulnerabilityTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesPostAttackInvulnerability.Any())
+                @if (context.Item.RocketPlanes.PostAttackInvulnerability.Any())
                 {
-                    List<decimal> items = context.Item.RocketPlanesPostAttackInvulnerability;
+                    List<decimal> items = context.Item.RocketPlanes.PostAttackInvulnerability;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -556,9 +557,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAttackCooldown}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAttackCooldown)" T="GridDataWrapper" Title="@columnTitleAttackCooldown" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesAttackCooldown.Any())
+                @if (context.Item.RocketPlanes.AttackCooldown.Any())
                 {
-                    List<decimal> items = context.Item.RocketPlanesAttackCooldown;
+                    List<decimal> items = context.Item.RocketPlanes.AttackCooldown;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -582,9 +583,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleConcealment}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleConcealment)" T="GridDataWrapper" Title="@columnTitleConcealment" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesConcealment.Any())
+                @if (context.Item.RocketPlanes.Concealment.Any())
                 {
-                    List<decimal> items = context.Item.RocketPlanesConcealment;
+                    List<decimal> items = context.Item.RocketPlanes.Concealment;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -608,9 +609,9 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleViewRange}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleViewRange)" T="GridDataWrapper" Title="@columnTitleViewRange" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesSpotting.Any())
+                @if (context.Item.RocketPlanes.Spotting.Any())
                 {
-                    List<decimal> items = context.Item.RocketPlanesSpotting;
+                    List<decimal> items = context.Item.RocketPlanes.Spotting;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -632,11 +633,11 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAreaChangeWhileAiming}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAreaChangeWhileAiming)" T="GridDataWrapper" Title="@columnTitleAreaChangeWhileAiming" SortBy="@(x => !x.RocketPlanesAreaChangeAiming.Any() ? double.MinValue : x.RocketPlanesAreaChangeAiming.Select(decimal.Parse).ToList())" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAreaChangeWhileAiming}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAreaChangeWhileAiming)" T="GridDataWrapper" Title="@columnTitleAreaChangeWhileAiming" SortBy="@(x => !x.RocketPlanes.AreaChangeAiming.Any() ? double.MinValue : x.RocketPlanes.AreaChangeAiming.Select(decimal.Parse).ToList())" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesAreaChangeAiming.Any())
+                @if (context.Item.RocketPlanes.AreaChangeAiming.Any())
                 {
-                    List<string> items = context.Item.RocketPlanesAreaChangeAiming;
+                    List<string> items = context.Item.RocketPlanes.AreaChangeAiming;
                     for (var i = 0; i < items.Count; i++)
                     {
                         string item = items[i];
@@ -658,11 +659,11 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAreaChangeDuringPreparation}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAreaChangeDuringPreparation)" T="GridDataWrapper" Title="@columnTitleAreaChangeDuringPreparation" SortBy="@(x => !x.RocketPlanesAreaChangePreparation.Any() ? double.MinValue : x.RocketPlanesAreaChangePreparation.Select(decimal.Parse).ToList())" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAreaChangeDuringPreparation}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAreaChangeDuringPreparation)" T="GridDataWrapper" Title="@columnTitleAreaChangeDuringPreparation" SortBy="@(x => !x.RocketPlanes.AreaChangePreparation.Any() ? double.MinValue : x.RocketPlanes.AreaChangePreparation.Select(decimal.Parse).ToList())" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.RocketPlanesAreaChangePreparation.Any())
+                @if (context.Item.RocketPlanes.AreaChangePreparation.Any())
                 {
-                    List<string> items = context.Item.RocketPlanesAreaChangePreparation;
+                    List<string> items = context.Item.RocketPlanes.AreaChangePreparation;
                     for (var i = 0; i < items.Count; i++)
                     {
                         string item = items[i];

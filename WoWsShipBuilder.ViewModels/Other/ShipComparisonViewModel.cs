@@ -11,7 +11,7 @@ using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.ViewModels.Base;
-using WoWsShipBuilder.ViewModels.Helper;
+using WoWsShipBuilder.ViewModels.Helper.GridData;
 
 namespace WoWsShipBuilder.ViewModels.Other;
 
@@ -462,12 +462,12 @@ public partial class ShipComparisonViewModel : ViewModelBase
             ShipComparisonDataSections.Ap => list.Where(x => x.Value.ApShell?.Damage is not null).ToDictionary(x => x.Key, x => x.Value),
             ShipComparisonDataSections.Sap => list.Where(x => x.Value.SapShell?.Damage is not null).ToDictionary(x => x.Key, x => x.Value),
             ShipComparisonDataSections.Torpedo => list.Where(x => x.Value.ShipDataContainer.TorpedoArmamentDataContainer is not null).ToDictionary(x => x.Key, x => x.Value),
-            ShipComparisonDataSections.RocketPlanes => list.Where(x => x.Value.RocketPlanesType.Any()).ToDictionary(x => x.Key, x => x.Value),
-            ShipComparisonDataSections.Rockets => list.Where(x => x.Value.RocketPlanesWeaponType.Any()).ToDictionary(x => x.Key, x => x.Value),
-            ShipComparisonDataSections.TorpedoBombers => list.Where(x => x.Value.TorpedoBombersType.Any()).ToDictionary(x => x.Key, x => x.Value),
-            ShipComparisonDataSections.AerialTorpedoes => list.Where(x => x.Value.TorpedoBombersWeaponType.Any()).ToDictionary(x => x.Key, x => x.Value),
-            ShipComparisonDataSections.Bombers => list.Where(x => x.Value.BombersType.Any()).ToDictionary(x => x.Key, x => x.Value),
-            ShipComparisonDataSections.Bombs => list.Where(x => x.Value.BombersWeaponType.Any()).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.RocketPlanes => list.Where(x => x.Value.RocketPlanes.Type.Any()).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.Rockets => list.Where(x => x.Value.RocketPlanes.WeaponType.Any()).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.TorpedoBombers => list.Where(x => x.Value.TorpedoBombers.Type.Any()).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.AerialTorpedoes => list.Where(x => x.Value.TorpedoBombers.WeaponType.Any()).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.Bombers => list.Where(x => x.Value.Bombers.Type.Any()).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.Bombs => list.Where(x => x.Value.Bombers.WeaponType.Any()).ToDictionary(x => x.Key, x => x.Value),
             ShipComparisonDataSections.Sonar => list.Where(x => x.Value.ShipDataContainer.PingerGunDataContainer is not null).ToDictionary(x => x.Key, x => x.Value),
             ShipComparisonDataSections.SecondaryBattery => list.Where(x => x.Value.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries is not null).ToDictionary(x => x.Key, x => x.Value),
             ShipComparisonDataSections.SecondaryBatteryShells => list.Where(x => x.Value.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries is not null).ToDictionary(x => x.Key, x => x.Value),
@@ -552,37 +552,37 @@ public partial class ShipComparisonViewModel : ViewModelBase
                         }
                         break;
                     case ShipComparisonDataSections.RocketPlanes:
-                        if (!shipList.Any(x => x.Value.RocketPlanesType.Any()))
+                        if (!shipList.Any(x => x.Value.RocketPlanes.Type.Any()))
                         {
                             dataSections.Remove(dataSection);
                         }
                         break;
                     case ShipComparisonDataSections.Rockets:
-                        if (!shipList.Any(x => x.Value.RocketPlanesWeaponType.Any()))
+                        if (!shipList.Any(x => x.Value.RocketPlanes.WeaponType.Any()))
                         {
                             dataSections.Remove(dataSection);
                         }
                         break;
                     case ShipComparisonDataSections.TorpedoBombers:
-                        if (!shipList.Any(x => x.Value.TorpedoBombersType.Any()))
+                        if (!shipList.Any(x => x.Value.TorpedoBombers.Type.Any()))
                         {
                             dataSections.Remove(dataSection);
                         }
                         break;
                     case ShipComparisonDataSections.AerialTorpedoes:
-                        if (!shipList.Any(x => x.Value.TorpedoBombersWeaponType.Any()))
+                        if (!shipList.Any(x => x.Value.TorpedoBombers.WeaponType.Any()))
                         {
                             dataSections.Remove(dataSection);
                         }
                         break;
                     case ShipComparisonDataSections.Bombers:
-                        if (!shipList.Any(x => x.Value.BombersType.Any()))
+                        if (!shipList.Any(x => x.Value.Bombers.Type.Any()))
                         {
                             dataSections.Remove(dataSection);
                         }
                         break;
                     case ShipComparisonDataSections.Bombs:
-                        if (!shipList.Any(x => x.Value.BombersWeaponType.Any()))
+                        if (!shipList.Any(x => x.Value.Bombers.WeaponType.Any()))
                         {
                             dataSections.Remove(dataSection);
                         }
@@ -664,7 +664,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
     {
         foreach (var selectedShip in SelectedShipList)
         {
-            var newWrapper = new GridDataWrapper(selectedShip.Value.GetShipBuildContainer() with { Id = Guid.NewGuid() });
+            var newWrapper = new GridDataWrapper(selectedShip.Value.ShipBuildContainer with { Id = Guid.NewGuid() });
             FilteredShipList.Add(newWrapper.Id, newWrapper);
             if (PinnedShipList.ContainsKey(selectedShip.Key))
             {
@@ -711,7 +711,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
 
     private GridDataWrapper ResetBuild(GridDataWrapper wrapper)
     {
-        return new(wrapper.GetShipBuildContainer() with { Build = null, ActivatedConsumableSlots = null, SpecialAbilityActive = false, ShipDataContainer = GetShipDataContainer(wrapper.Ship), Modifiers = null });
+        return new(wrapper.ShipBuildContainer with { Build = null, ActivatedConsumableSlots = null, SpecialAbilityActive = false, ShipDataContainer = GetShipDataContainer(wrapper.Ship), Modifiers = null });
     }
 
     public void UpdateRange(double selectedValue)
