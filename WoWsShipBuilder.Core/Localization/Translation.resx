@@ -1994,4 +1994,19 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipStats_MaxReverseSpeed" xml:space="preserve">
       <value>Max reverse speed</value>
   </data>
+  <data name="ShipStats_PenetrationAtMaxRange" xml:space="preserve">
+      <value>Penetration</value>
+  </data>
+  <data name="ShipStats_FlightTimeAtMaxRange" xml:space="preserve">
+      <value>Flight time</value>
+  </data>
+  <data name="ShipStats_AtMaxRange" xml:space="preserve">
+      <value>At max range</value>
+  </data>
+  <data name="ShipStats_ImpactVelocityAtMaxRange" xml:space="preserve">
+      <value>Impact velocity</value>
+  </data>
+  <data name="ShipStats_ImpactAngleAtMaxRange" xml:space="preserve">
+      <value>Impact angle</value>
+  </data>
 </root>

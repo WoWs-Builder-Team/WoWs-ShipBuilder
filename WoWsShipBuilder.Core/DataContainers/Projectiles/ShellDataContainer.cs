@@ -37,14 +37,26 @@ public partial record ShellDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.Tooltip, TooltipKey = "TrueReloadTooltip")]
     public string TheoreticalTrueDpm { get; set; } = default!;
 
-    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MPS")]
-    public decimal ShellVelocity { get; set; }
-
     [DataElementType(DataElementTypes.KeyValue)]
     public decimal AirDrag { get; set; }
 
+    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MPS")]
+    public decimal ShellVelocity { get; set; }
+
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MM")]
     public int Penetration { get; set; }
+
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "AtMaxRange", UnitKey = "MM")]
+    public decimal PenetrationAtMaxRange { get; set; }
+
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "AtMaxRange", UnitKey = "S")]
+    public decimal FlightTimeAtMaxRange { get; set; }
+
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "AtMaxRange", UnitKey = "MPS")]
+    public decimal ImpactVelocityAtMaxRange { get; set; }
+
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "AtMaxRange", UnitKey = "Degree")]
+    public decimal ImpactAngleAtMaxRange { get; set; }
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MM")]
     public decimal Overmatch { get; set; }
@@ -81,7 +93,9 @@ public partial record ShellDataContainer : DataContainerBase
 
     public bool ShowBlastPenetration { get; private set; }
 
-    public static List<ShellDataContainer> FromShellName(List<string> shellNames, List<(string Name, float Value)> modifiers, int barrelCount, bool isMainGunShell)
+    public Dictionary<double, Ballistic> ShellBallistic { get; private set; } = new();
+
+    public static List<ShellDataContainer> FromShellName(List<string> shellNames, List<(string Name, float Value)> modifiers, int barrelCount, double maxRange, bool isMainGunShell)
     {
         var shells = new List<ShellDataContainer>();
         foreach (string shellName in shellNames)
@@ -186,6 +200,14 @@ public partial record ShellDataContainer : DataContainerBase
 
             float splashRadius = modifiers.FindModifiers("dcSplashRadiusMultiplier").Aggregate(shell.DepthSplashRadius, (current, modifier) => current * modifier);
 
+            Dictionary<double, Ballistic> ballistic = BallisticHelper.CalculateBallistic(shell, maxRange, shellPenetration);
+            (double penetrationAtMaxRange, double impactVelocityAtMaxRange, double flightTimeAtMaxRange, double impactAngleAtMaxRange, _) = ballistic[ballistic.First(x => x.Key >= maxRange).Key];
+
+            if (shell.ShellType != ShellType.AP)
+            {
+                penetrationAtMaxRange = 0;
+            }
+
             var shellDataContainer = new ShellDataContainer
             {
                 Name = shell.Name,
@@ -194,8 +216,12 @@ public partial record ShellDataContainer : DataContainerBase
                 Damage = Math.Round((decimal)shellDamage),
                 ExplosionRadius = (decimal)shell.ExplosionRadius,
                 SplashCoeff = (decimal)shell.SplashCoeff,
-                ShellVelocity = Math.Round((decimal)shell.MuzzleVelocity, 2),
                 Penetration = (int)Math.Truncate(shellPenetration),
+                PenetrationAtMaxRange = Math.Round((decimal)penetrationAtMaxRange, 2),
+                FlightTimeAtMaxRange = Math.Round((decimal)flightTimeAtMaxRange, 2),
+                ShellVelocity = Math.Round((decimal)shell.MuzzleVelocity, 2),
+                ImpactVelocityAtMaxRange = Math.Round((decimal)impactVelocityAtMaxRange),
+                ImpactAngleAtMaxRange = Math.Round((decimal)impactAngleAtMaxRange, 2),
                 AirDrag = Math.Round((decimal)shellAirDrag, 2),
                 ShellFireChance = Math.Round((decimal)shellFireChance, 1),
                 FireChancePerSalvo = Math.Round(fireChancePerSalvo * 100, 1),
@@ -206,6 +232,7 @@ public partial record ShellDataContainer : DataContainerBase
                 SplashRadius = Math.Round((decimal)splashRadius, 1),
                 SplashDmg = Math.Round((decimal)(shellDamage * shell.SplashDamageCoefficient)),
                 Krupp = (decimal)shell.Krupp,
+                ShellBallistic = ballistic,
             };
 
             if (minRicochet > 0 || maxRicochet > 0)

@@ -2754,6 +2754,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to At max range.
+        /// </summary>
+        public static string ShipStats_AtMaxRange {
+            get {
+                return ResourceManager.GetString("ShipStats_AtMaxRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attack cooldown.
         /// </summary>
         public static string ShipStats_AttackCd {
@@ -3441,6 +3450,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Flight time.
+        /// </summary>
+        public static string ShipStats_FlightTimeAtMaxRange {
+            get {
+                return ResourceManager.GetString("ShipStats_FlightTimeAtMaxRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max together.
         /// </summary>
         public static string ShipStats_FloodAmount {
@@ -3662,6 +3680,24 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_Hull {
             get {
                 return ResourceManager.GetString("ShipStats_Hull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Impact angle.
+        /// </summary>
+        public static string ShipStats_ImpactAngleAtMaxRange {
+            get {
+                return ResourceManager.GetString("ShipStats_ImpactAngleAtMaxRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Impact velocity.
+        /// </summary>
+        public static string ShipStats_ImpactVelocityAtMaxRange {
+            get {
+                return ResourceManager.GetString("ShipStats_ImpactVelocityAtMaxRange", resourceCulture);
             }
         }
         
@@ -4058,6 +4094,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_Penetration {
             get {
                 return ResourceManager.GetString("ShipStats_Penetration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Penetration.
+        /// </summary>
+        public static string ShipStats_PenetrationAtMaxRange {
+            get {
+                return ResourceManager.GetString("ShipStats_PenetrationAtMaxRange", resourceCulture);
             }
         }
         
