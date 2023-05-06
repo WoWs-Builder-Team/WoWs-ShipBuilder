@@ -1994,4 +1994,10 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipStats_MaxReverseSpeed" xml:space="preserve">
       <value>Max reverse speed</value>
   </data>
+  <data name="ShipComparison_TypeName" xml:space="preserve">
+      <value>Type name...</value>
+  </data>
+  <data name="ShipComparison_SearchAndPin" xml:space="preserve">
+      <value>Search &amp; Pin Ship</value>
+  </data>
 </root>

@@ -2376,6 +2376,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search &amp; Pin Ship.
+        /// </summary>
+        public static string ShipComparison_SearchAndPin {
+            get {
+                return ResourceManager.GetString("ShipComparison_SearchAndPin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Secondary Battery Shells.
         /// </summary>
         public static string ShipComparison_SecondaryBatteryShells {
@@ -2444,6 +2453,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipComparison_TorpsPerPlane {
             get {
                 return ResourceManager.GetString("ShipComparison_TorpsPerPlane", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type name....
+        /// </summary>
+        public static string ShipComparison_TypeName {
+            get {
+                return ResourceManager.GetString("ShipComparison_TypeName", resourceCulture);
             }
         }
         
