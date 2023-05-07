@@ -59,7 +59,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
 
     public List<Ship> SearchedShips { get; } = new();
 
-    public double Range { private set; get; }
+    public double Range { private set; get; } = 10;
 
     private readonly Dictionary<Guid, GridDataWrapper> wrappersCache = new();
 
