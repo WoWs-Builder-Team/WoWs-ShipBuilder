@@ -17,7 +17,7 @@
         var columnTitleFirstPingDuration = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_1st))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_PingDuration))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
         var columnTitleSecondPingDuration = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_2nd))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_PingDuration))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReload}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleReload)" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReload}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleReload)" T="GridDataWrapper" Title="@columnTitleReload" SortBy="@(x => x.Sonar?.Reload ?? -1)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Sonar?.Reload is not null)
                 {
@@ -34,7 +34,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTraverseSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTraverseSpeed)" T="GridDataWrapper" Title="@columnTitleTraverseSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTraverseSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTraverseSpeed)" T="GridDataWrapper" Title="@columnTitleTraverseSpeed" SortBy="@(x => x.Sonar?.TraverseSpeed ?? -1)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Sonar?.TraverseSpeed is not null)
                 {
@@ -51,7 +51,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTurnTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTurnTime)" T="GridDataWrapper" Title="@columnTitleTurnTime" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTurnTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTurnTime)" T="GridDataWrapper" Title="@columnTitleTurnTime" SortBy="@(x => x.Sonar?.TurnTime ?? -1)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Sonar?.TurnTime is not null)
                 {
@@ -68,7 +68,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxRange}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxRange)" T="GridDataWrapper" Title="@columnTitleMaxRange" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxRange}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxRange)" T="GridDataWrapper" Title="@columnTitleMaxRange" SortBy="@(x => x.Sonar?.Range ?? -1)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Sonar?.Range is not null)
                 {
@@ -85,7 +85,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleWidth}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleWidth)" T="GridDataWrapper" Title="@columnTitleWidth" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleWidth}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleWidth)" T="GridDataWrapper" Title="@columnTitleWidth" SortBy="@(x => x.Sonar?.PingWidth ?? -1)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Sonar?.PingWidth is not null)
                 {
@@ -102,7 +102,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSpeed)" T="GridDataWrapper" Title="@columnTitleSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSpeed)" T="GridDataWrapper" Title="@columnTitleSpeed" SortBy="@(x => x.Sonar?.PingSpeed ?? -1)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Sonar?.PingSpeed is not null)
                 {
@@ -119,7 +119,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFirstPingDuration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFirstPingDuration)" T="GridDataWrapper" Title="@columnTitleFirstPingDuration" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFirstPingDuration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFirstPingDuration)" T="GridDataWrapper" Title="@columnTitleFirstPingDuration" SortBy="@(x => x.Sonar?.FirstPingDuration ?? -1)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Sonar?.FirstPingDuration is not null)
                 {
@@ -136,7 +136,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSecondPingDuration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSecondPingDuration)" T="GridDataWrapper" Title="@columnTitleSecondPingDuration" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSecondPingDuration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSecondPingDuration)" T="GridDataWrapper" Title="@columnTitleSecondPingDuration" SortBy="@(x => x.Sonar?.SecondPingDuration ?? -1)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Sonar?.SecondPingDuration is not null)
                 {
