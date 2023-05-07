@@ -2000,4 +2000,10 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipComparison_SearchAndPin" xml:space="preserve">
       <value>Search &amp; Pin Ship</value>
   </data>
+  <data name="ShipComparison_DispersionAt" xml:space="preserve">
+      <value>Dispersion at</value>
+  </data>
+  <data name="ShipComparison_FiringRange" xml:space="preserve">
+      <value>Firing Range</value>
+  </data>
 </root>

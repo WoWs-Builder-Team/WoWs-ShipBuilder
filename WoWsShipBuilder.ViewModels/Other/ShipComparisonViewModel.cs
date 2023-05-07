@@ -718,4 +718,14 @@ public partial class ShipComparisonViewModel : ViewModelBase
     {
         Range = selectedValue;
     }
+
+    public static double CalculateHorizontalDispersion(Dispersion dispersion, double range, double dispersionModifier)
+    {
+        return Math.Round(dispersion.CalculateHorizontalDispersion(range, dispersionModifier), 2);
+    }
+
+    public static double CalculateVerticalDispersion(Dispersion dispersion, double range, double maxRange, double dispersionModifier)
+    {
+        return Math.Round(dispersion.CalculateVerticalDispersion(maxRange, dispersion.CalculateHorizontalDispersion(range, dispersionModifier), range), 2);
+    }
 }

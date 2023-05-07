@@ -1,5 +1,4 @@
-﻿@using WoWsShipBuilder.ViewModels.Helper
-@using WoWsShipBuilder.ViewModels.Other
+﻿@using WoWsShipBuilder.ViewModels.Other
 @using System.Globalization
 @using WoWsShipBuilder.ViewModels.Helper.GridData
 @code {
@@ -16,6 +15,8 @@
         var columnTitleCaliber = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Caliber))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
         var columnTitleBarrels = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Barrels))}";
         var columnTitleMaxRange = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_MaxRange))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
+        var columnTitleHorizontalDispersion = $"{element.localizer.SimpleAppLocalization(nameof(Translation.DispersionGraphWindow_Horizontal))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Dispersion))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
+        var columnTitleVerticalDispersion = $"{element.localizer.SimpleAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Dispersion))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
         var columnTitleTurnTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TurnTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
         var columnTitleTraverseSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TraverseSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_DegreePerSecond)})";
         var columnTitleReload = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ReloadTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
@@ -80,6 +81,39 @@
             </CellTemplate>
         </TemplateColumn>
 
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleHorizontalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHorizontalDispersion)" T="GridDataWrapper" Title="@columnTitleHorizontalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.MainBattery?.DispersionData is not null && context.Item.MainBattery?.DispersionModifier is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @ShipComparisonViewModel.CalculateHorizontalDispersion(context.Item.MainBattery.DispersionData, element.range * 1000, context.Item.MainBattery.DispersionModifier)
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleVerticalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleVerticalDispersion)" T="GridDataWrapper" Title="@columnTitleVerticalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.MainBattery?.DispersionData is not null && context.Item.MainBattery?.DispersionModifier is not null && context.Item.MainBattery?.Range is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @ShipComparisonViewModel.CalculateVerticalDispersion(context.Item.MainBattery.DispersionData, element.range * 1000, decimal.ToDouble(context.Item.MainBattery.Range * 1000), context.Item.MainBattery.DispersionModifier)
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTurnTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTurnTime)" T="GridDataWrapper" Title="@columnTitleTurnTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
@@ -114,7 +148,6 @@
                 }
             </CellTemplate>
         </TemplateColumn>
-
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReload}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleReload)" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>

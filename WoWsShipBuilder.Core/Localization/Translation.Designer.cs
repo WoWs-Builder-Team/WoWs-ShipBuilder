@@ -2142,6 +2142,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dispersion at.
+        /// </summary>
+        public static string ShipComparison_DispersionAt {
+            get {
+                return ResourceManager.GetString("ShipComparison_DispersionAt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Display only pinned ships.
         /// </summary>
         public static string ShipComparison_DisplayOnlyPinnedShips {
@@ -2183,6 +2192,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipComparison_Filters {
             get {
                 return ResourceManager.GetString("ShipComparison_Filters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Firing Range.
+        /// </summary>
+        public static string ShipComparison_FiringRange {
+            get {
+                return ResourceManager.GetString("ShipComparison_FiringRange", resourceCulture);
             }
         }
         
