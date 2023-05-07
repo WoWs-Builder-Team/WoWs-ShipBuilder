@@ -15,6 +15,7 @@
         nfi.NumberGroupSeparator = "'";
 
         var columnTitleAmount = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Amount))}";
+        var columnTitleLoaders = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Loaders))}";
         var columnTitleTurnTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TurnTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
         var columnTitleTraverseSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TraverseSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_DegreePerSecond)})";
         var columnTitleReload = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ReloadTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
@@ -40,6 +41,46 @@
                     <MudText Typo="Typo.body2">
                         @($"{context.Item.TorpedoLauncher.TorpCount} ({context.Item.TorpedoLauncher.TorpLayout})")
                     </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleLoaders}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleLoaders)" T="GridDataWrapper" Title="@columnTitleLoaders" SortBy="@(x => x.TorpedoLauncher?.LoadersCount ?? 0)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoLauncher is not null)
+                {
+                    string loaders = default!;
+                    if (!string.IsNullOrEmpty(context.Item.TorpedoLauncher.BowLoaders) && string.IsNullOrEmpty(context.Item.TorpedoLauncher.SternLoaders))
+                    {
+                        loaders = context.Item.TorpedoLauncher.BowLoaders;
+                    }
+                    else if (string.IsNullOrEmpty(context.Item.TorpedoLauncher.BowLoaders) && !string.IsNullOrEmpty(context.Item.TorpedoLauncher.SternLoaders))
+                    {
+                        loaders = context.Item.TorpedoLauncher.SternLoaders;
+                    }
+                    else if (!string.IsNullOrEmpty(context.Item.TorpedoLauncher.BowLoaders) && !string.IsNullOrEmpty(context.Item.TorpedoLauncher.SternLoaders))
+                    {
+                        loaders = string.Join(" + ", context.Item.TorpedoLauncher.BowLoaders, context.Item.TorpedoLauncher.SternLoaders);
+                    }
+
+                    if (!string.IsNullOrEmpty(loaders))
+                    {
+                        <MudText Typo="Typo.body2">
+                            @loaders
+                        </MudText>
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.body2" Color="Color.Primary">
+                            @ShipComparisonViewModel.DataNotAvailable
+                        </MudText>
+                    }
                 }
                 else
                 {

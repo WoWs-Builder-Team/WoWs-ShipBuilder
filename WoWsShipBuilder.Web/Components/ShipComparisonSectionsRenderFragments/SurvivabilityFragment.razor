@@ -9,6 +9,8 @@
         string dataSectionString = ShipComparisonDataSections.Survivability.ShipComparisonDataSectionToString();
 
         var columnTitleHp = $"{element.localizer.SimpleAppLocalization(nameof(Translation.Unit_HP))}";
+        var columnDiveCapacity = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Battery))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_DiveCapacity))} ({element.localizer.SimpleAppLocalization(nameof(Translation.Unit_U))})";
+        var columnDiveCapacityRechargeRate = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Battery))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_DiveCapacityRechargeRate))} ({element.localizer.SimpleAppLocalization(nameof(Translation.Unit_UPS))})";
         var columnTitleFireMaxAmount = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Fire))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Max))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Amount))}";
         var columnTitleFireMaxDuration = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Fire))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Max))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Duration))} ({element.localizer.SimpleAppLocalization(nameof(Translation.Unit_S))})";
         var columnTitleFireDps = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Fire))} {element.localizer.SimpleAppLocalization(Translation.Unit_DPS)}";
@@ -21,6 +23,38 @@
         var columnTitleFloodingChanceReduction = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TorpedoProtection))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
 
         <PropertyColumn ID="@($"{dataSectionString}_{columnTitleHp}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHp)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Survivability.HitPoints)" Title="@columnTitleHp" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <TemplateColumn ID="@($"{dataSectionString}_{columnDiveCapacity}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnDiveCapacity)" T="GridDataWrapper" Title="@columnDiveCapacity" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.Survivability.DiveCapacity != 0)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.Survivability.DiveCapacity
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+        <TemplateColumn ID="@($"{dataSectionString}_{columnDiveCapacityRechargeRate}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnDiveCapacityRechargeRate)" T="GridDataWrapper" Title="@columnDiveCapacityRechargeRate" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.Survivability.DiveCapacityRechargeRate != 0)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.Survivability.DiveCapacityRechargeRate
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
         <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFireMaxAmount}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireMaxAmount)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Survivability.FireAmount)" Title="@columnTitleFireMaxAmount" HeaderClass="column-text-center" CellClass="column-text-center"/>
         <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFireMaxDuration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireMaxDuration)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Survivability.FireDuration)" Title="@columnTitleFireMaxDuration" HeaderClass="column-text-center" CellClass="column-text-center"/>
         <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFireDps}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireDps)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Survivability.FireDPS)" Title="@columnTitleFireDps" HeaderClass="column-text-center" CellClass="column-text-center"/>

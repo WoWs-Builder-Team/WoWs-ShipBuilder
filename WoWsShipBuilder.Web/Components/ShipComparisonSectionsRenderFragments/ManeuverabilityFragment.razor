@@ -11,9 +11,14 @@
         var columnTitleMaxSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ManeuverabilityMaxSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Knots)})";
         var columnTitleMaxSpeedAtPeriscopeDepth = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ManeuverabilityMaxSpeed))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Knots)})";
         var columnTitleMaxSpeedAtMaxDepth = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ManeuverabilityMaxSpeed))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Knots)})";
+        var columnTitleMaxReverseSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MaxReverseSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Knots)})";
+        var columnTitleMaxReverseSpeedAtPeriscopeDepth = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MaxReverseSpeed))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Knots)})";
+        var columnTitleMaxReverseSpeedAtMaxDepth = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MaxReverseSpeed))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Knots)})";
+        var columnTitleDiveSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ManeuverabilitySubsMaxDiveSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Knots)})";
+        var columnTitleDivingPlaneShiftTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ManeuverabilitySubsDivingPlaneShiftTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
         var columnTitleRudderShiftTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ManeuverabilityRudderShiftTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
         var columnTitleTurningCircle = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ManeuverabilityTurningCircle))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
-        var columnTitleFullAhead = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TimeToFullyAimed))} {element.localizer.SimpleAppLocalization(nameof(Translation.AccelerationChart_Time))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleFullAhead = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ForwardMaxSpeedTime))} {element.localizer.SimpleAppLocalization(nameof(Translation.AccelerationChart_Time))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
         var columnTitleFullReverse = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_FullReverseTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
         var columnTitleRudderProtection = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RudderBlastProtection))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_BlastProtection))}";
         var columnTitleEngineProtection = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_EngineBlastProtection))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_BlastProtection))}";
@@ -41,6 +46,71 @@
                 {
                     <MudText Typo="Typo.body2">
                         @context.Item.ManeuverabilityData.MaxSpeedAtMaxDepth
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleMaxReverseSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxReverseSpeed)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityData.MaxReverseSpeed)" Title="@columnTitleMaxReverseSpeed" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxReverseSpeedAtPeriscopeDepth}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxReverseSpeedAtPeriscopeDepth)" T="GridDataWrapper" Title="@columnTitleMaxReverseSpeedAtPeriscopeDepth" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.ManeuverabilityData.MaxReverseSpeedAtPeriscopeDepth != 0)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.ManeuverabilityData.MaxReverseSpeedAtPeriscopeDepth
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxReverseSpeedAtMaxDepth}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxReverseSpeedAtMaxDepth)" T="GridDataWrapper" Title="@columnTitleMaxReverseSpeedAtMaxDepth" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.ManeuverabilityData.MaxReverseSpeedAtMaxDepth != 0)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.ManeuverabilityData.MaxReverseSpeedAtMaxDepth
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDiveSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDiveSpeed)" T="GridDataWrapper" Title="@columnTitleDiveSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.ManeuverabilityData.MaxDiveSpeed != 0)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.ManeuverabilityData.MaxDiveSpeed
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDivingPlaneShiftTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDivingPlaneShiftTime)" T="GridDataWrapper" Title="@columnTitleDivingPlaneShiftTime" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.ManeuverabilityData.DivingPlaneShiftTime != 0)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.ManeuverabilityData.DivingPlaneShiftTime
                     </MudText>
                 }
                 else

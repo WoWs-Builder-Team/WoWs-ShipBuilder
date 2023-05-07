@@ -9,6 +9,11 @@ public class ManeuverabilityGridDataWrapper
         MaxSpeed = maneuverability.ManeuverabilityMaxSpeed != 0 ? maneuverability.ManeuverabilityMaxSpeed : maneuverability.ManeuverabilitySubsMaxSpeedOnSurface;
         MaxSpeedAtPeriscopeDepth = maneuverability.ManeuverabilitySubsMaxSpeedAtPeriscope;
         MaxSpeedAtMaxDepth = maneuverability.ManeuverabilitySubsMaxSpeedAtMaxDepth;
+        MaxReverseSpeed = maneuverability.ManeuverabilityMaxReverseSpeed != 0 ? maneuverability.ManeuverabilityMaxReverseSpeed : maneuverability.ManeuverabilitySubsMaxReverseSpeedOnSurface;
+        MaxReverseSpeedAtPeriscopeDepth = maneuverability.ManeuverabilitySubsMaxReverseSpeedAtPeriscope;
+        MaxReverseSpeedAtMaxDepth = maneuverability.ManeuverabilitySubsMaxReverseSpeedAtMaxDepth;
+        MaxDiveSpeed = maneuverability.ManeuverabilitySubsMaxDiveSpeed;
+        DivingPlaneShiftTime = maneuverability.ManeuverabilitySubsDivingPlaneShiftTime;
         RudderShiftTime = maneuverability.ManeuverabilityRudderShiftTime;
         TurningCircle = maneuverability.ManeuverabilityTurningCircle;
         TimeToFullAhead = maneuverability.ForwardMaxSpeedTime;
@@ -22,6 +27,16 @@ public class ManeuverabilityGridDataWrapper
     public decimal MaxSpeedAtPeriscopeDepth { get; }
 
     public decimal MaxSpeedAtMaxDepth { get; }
+
+    public decimal MaxReverseSpeed { get; }
+
+    public decimal MaxReverseSpeedAtPeriscopeDepth { get; }
+
+    public decimal MaxReverseSpeedAtMaxDepth { get; }
+
+    public decimal MaxDiveSpeed { get; }
+
+    public decimal DivingPlaneShiftTime { get; }
 
     public decimal RudderShiftTime { get; }
 

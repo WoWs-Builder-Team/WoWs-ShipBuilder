@@ -48,6 +48,8 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "FullSalvoDamage", NameLocalizationKey = "SecondOption")]
     public string AltTorpFullSalvoDmg { get; set; } = default!;
 
+    public int LoadersCount { get; set; }
+
     public int TorpCount { get; set; }
 
     public string TorpLayout { get; set; } = default!;
@@ -149,8 +151,21 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
 
         torpedoModule.TorpedoLoaders.TryGetValue(SubTorpLauncherLoaderPosition.BowLoaders, out List<string>? bowLoaders);
         torpedoModule.TorpedoLoaders.TryGetValue(SubTorpLauncherLoaderPosition.SternLoaders, out List<string>? sternLoaders);
-        torpedoArmamentDataContainer.BowLoaders = bowLoaders is not null ? string.Join(" + ", bowLoaders) : default!;
-        torpedoArmamentDataContainer.SternLoaders = sternLoaders is not null ? string.Join(" + ", sternLoaders) : default!;
+
+        var loadersSum = 0;
+        if (bowLoaders is not null)
+        {
+            torpedoArmamentDataContainer.BowLoaders = string.Join(" + ", bowLoaders);
+            loadersSum += bowLoaders.Select(x => x.Split('x').Select(int.Parse).First()).Sum();
+        }
+
+        if (sternLoaders is not null)
+        {
+            torpedoArmamentDataContainer.SternLoaders = string.Join(" + ", sternLoaders);
+            loadersSum += sternLoaders.Select(x => x.Split('x').Select(int.Parse).First()).Sum();
+        }
+
+        torpedoArmamentDataContainer.LoadersCount = loadersSum;
 
         torpedoArmamentDataContainer.Torpedoes.Last().IsLast = true;
 
