@@ -2,7 +2,7 @@
     [string]$buildConfig="Release"
 )
 
-$frameworkVersion="net6.0"
+$frameworkVersion="net7.0"
 
 Write-Output "Building application"
 dotnet build -c $buildConfig

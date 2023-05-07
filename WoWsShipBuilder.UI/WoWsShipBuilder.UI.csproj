@@ -13,11 +13,6 @@
         <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     </PropertyGroup>
-    <PropertyGroup>
-        <NuspecFile>WoWsShipBuilder.nuspec</NuspecFile>
-        <NuspecBasePath>bin/$(Configuration)/net6.0/publish</NuspecBasePath>
-        <NuspecProperties>$(NuspecProperties);version=$(VersionPrefix)</NuspecProperties>
-    </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <ILLinkTreatWarningsAsErrors>false</ILLinkTreatWarningsAsErrors>
