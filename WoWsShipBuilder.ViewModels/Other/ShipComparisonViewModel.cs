@@ -59,6 +59,8 @@ public partial class ShipComparisonViewModel : ViewModelBase
 
     public List<Ship> SearchedShips { get; } = new();
 
+    public Dictionary<Guid, DispersionContainer> DispersionCache { get; } = new();
+
     public double Range { private set; get; } = 10;
 
     private readonly Dictionary<Guid, GridDataWrapper> wrappersCache = new();
@@ -719,13 +721,35 @@ public partial class ShipComparisonViewModel : ViewModelBase
         Range = selectedValue;
     }
 
-    public static double CalculateHorizontalDispersion(Dispersion dispersion, double range, double dispersionModifier)
+    public double CalculateHorizontalDispersion(Guid wrapperId, Dispersion dispersion, double range, double dispersionModifier)
     {
-        return Math.Round(dispersion.CalculateHorizontalDispersion(range, dispersionModifier), 2);
+        var horizontalDispersion = Math.Round(dispersion.CalculateHorizontalDispersion(range, dispersionModifier), 2);
+
+        if (DispersionCache.ContainsKey(wrapperId))
+        {
+            DispersionCache[wrapperId] = DispersionCache[wrapperId] with { Horizontal = horizontalDispersion };
+        }
+        else
+        {
+            DispersionCache.Add(wrapperId, new (horizontalDispersion, 0));
+        }
+
+        return horizontalDispersion;
     }
 
-    public static double CalculateVerticalDispersion(Dispersion dispersion, double range, double maxRange, double dispersionModifier)
+    public double CalculateVerticalDispersion(Guid wrapperId, Dispersion dispersion, double range, double maxRange, double dispersionModifier)
     {
-        return Math.Round(dispersion.CalculateVerticalDispersion(maxRange, dispersion.CalculateHorizontalDispersion(range, dispersionModifier), range), 2);
+        var verticalDispersion = Math.Round(dispersion.CalculateVerticalDispersion(maxRange, dispersion.CalculateHorizontalDispersion(range, dispersionModifier), range), 2);
+
+        if (DispersionCache.ContainsKey(wrapperId))
+        {
+            DispersionCache[wrapperId] = DispersionCache[wrapperId] with { Vertical = verticalDispersion };
+        }
+        else
+        {
+            DispersionCache.Add(wrapperId, new (0, verticalDispersion));
+        }
+
+        return verticalDispersion;
     }
 }

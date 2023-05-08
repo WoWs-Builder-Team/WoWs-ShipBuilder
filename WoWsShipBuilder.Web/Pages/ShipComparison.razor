@@ -288,7 +288,7 @@
                 </CellTemplate>
             </TemplateColumn>
 
-            @MainBatteryDataFragment((IsColumnHidden, Localizer, ViewModel.Range))
+            @MainBatteryDataFragment((IsColumnHidden, Localizer, ViewModel.Range, ViewModel.DispersionCache, ViewModel.CalculateVerticalDispersion, ViewModel.CalculateHorizontalDispersion))
             @HeShellDataFragment((IsColumnHidden, Localizer))
             @ApShellDataFragment((IsColumnHidden, Localizer))
             @SapShellDataFragment((IsColumnHidden, Localizer))

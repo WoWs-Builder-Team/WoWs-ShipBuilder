@@ -1,11 +1,13 @@
 ﻿@using WoWsShipBuilder.ViewModels.Other
 @using System.Globalization
+@using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.ViewModels.Helper.GridData
 @code {
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer, double range)> MainBatteryDataFragment = element => __builder =>
+    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer, double range, Dictionary<Guid, DispersionContainer> dispersionCache, Func<Guid, Dispersion, double, double, double, double> GetverticalDispersion, Func<Guid, Dispersion, double, double, double> GetHorizontalDispersion)> MainBatteryDataFragment = element => __builder =>
     {
         string dataSectionString = ShipComparisonDataSections.MainBattery.ShipComparisonDataSectionToString();
 
@@ -81,12 +83,12 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleHorizontalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHorizontalDispersion)" T="GridDataWrapper" Title="@columnTitleHorizontalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleHorizontalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHorizontalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Horizontal : 0)" T="GridDataWrapper" Title="@columnTitleHorizontalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.MainBattery?.DispersionData is not null && context.Item.MainBattery?.DispersionModifier is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @ShipComparisonViewModel.CalculateHorizontalDispersion(context.Item.MainBattery.DispersionData, element.range * 1000, context.Item.MainBattery.DispersionModifier)
+                        @element.GetHorizontalDispersion(context.Item.Id, context.Item.MainBattery.DispersionData, element.range * 1000, context.Item.MainBattery.DispersionModifier)
                     </MudText>
                 }
                 else
@@ -98,12 +100,12 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleVerticalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleVerticalDispersion)" T="GridDataWrapper" Title="@columnTitleVerticalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleVerticalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleVerticalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Vertical : 0)" T="GridDataWrapper" Title="@columnTitleVerticalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.MainBattery?.DispersionData is not null && context.Item.MainBattery?.DispersionModifier is not null && context.Item.MainBattery?.Range is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @ShipComparisonViewModel.CalculateVerticalDispersion(context.Item.MainBattery.DispersionData, element.range * 1000, decimal.ToDouble(context.Item.MainBattery.Range * 1000), context.Item.MainBattery.DispersionModifier)
+                        @element.GetverticalDispersion.Invoke(context.Item.Id, context.Item.MainBattery.DispersionData, element.range * 1000, decimal.ToDouble(context.Item.MainBattery.Range * 1000), context.Item.MainBattery.DispersionModifier)
                     </MudText>
                 }
                 else
