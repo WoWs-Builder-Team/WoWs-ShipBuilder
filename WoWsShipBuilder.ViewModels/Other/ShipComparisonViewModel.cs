@@ -272,10 +272,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
             list = HideShipsIfNoSelectedSection(list);
         }
 
-        foreach (var wrapper in list.Values)
-        {
-            CacheDispersion(wrapper);
-        }
+        CacheDispersion(list.Values);
 
         return list;
     }
@@ -732,11 +729,14 @@ public partial class ShipComparisonViewModel : ViewModelBase
     }
 
     // this is needed because dispersion is not calculated inside the GridDataWrapper in order to not recalculate oll of it upon each range variation
-    private void CacheDispersion(GridDataWrapper wrapper)
+    private void CacheDispersion(IEnumerable<GridDataWrapper> wrappers)
     {
-        if(wrapper.MainBattery?.DispersionData is not null && wrapper.MainBattery?.DispersionModifier is not null && wrapper.MainBattery?.Range is not null)
+        foreach (var wrapper in wrappers)
         {
-            DispersionCache[wrapper.Id] = wrapper.MainBattery.DispersionData.CalculateDispersion(decimal.ToDouble(wrapper.MainBattery.Range * 1000), wrapper.MainBattery.DispersionModifier, Range * 1000);
+            if(wrapper.MainBattery?.DispersionData is not null && wrapper.MainBattery?.DispersionModifier is not null && wrapper.MainBattery?.Range is not null)
+            {
+                DispersionCache[wrapper.Id] = wrapper.MainBattery.DispersionData.CalculateDispersion(decimal.ToDouble(wrapper.MainBattery.Range * 1000), wrapper.MainBattery.DispersionModifier, Range * 1000);
+            }
         }
     }
 }
