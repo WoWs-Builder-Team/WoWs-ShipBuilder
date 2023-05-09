@@ -2,8 +2,8 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-      <PackageReference Include="NLog" Version="5.1.1" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+      <PackageReference Include="NLog" Version="5.1.4" />
       <PackageReference Include="Roslyn.System.IO.Abstractions.Analyzers" Version="12.2.19">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -12,8 +12,8 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="System.IO.Abstractions" Version="19.1.18" />
-      <PackageReference Include="WoWsShipBuilder.DataStructures" Version="3.1.5" />
+      <PackageReference Include="System.IO.Abstractions" Version="19.2.22" />
+      <PackageReference Include="WoWsShipBuilder.DataStructures" Version="3.1.6" />
     </ItemGroup>
 
     <ItemGroup>
