@@ -23,7 +23,7 @@
         var columnTitleFloodingChanceReduction = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TorpedoProtection))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
 
         <PropertyColumn ID="@($"{dataSectionString}_{columnTitleHp}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHp)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Survivability.HitPoints)" Title="@columnTitleHp" HeaderClass="column-text-center" CellClass="column-text-center"/>
-        <TemplateColumn ID="@($"{dataSectionString}_{columnDiveCapacity}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnDiveCapacity)" T="GridDataWrapper" Title="@columnDiveCapacity" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnDiveCapacity}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnDiveCapacity)" SortBy="@(x => x.Survivability.DiveCapacity)" T="GridDataWrapper" Title="@columnDiveCapacity" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Survivability.DiveCapacity != 0)
                 {
@@ -39,7 +39,7 @@
                 }
             </CellTemplate>
         </TemplateColumn>
-        <TemplateColumn ID="@($"{dataSectionString}_{columnDiveCapacityRechargeRate}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnDiveCapacityRechargeRate)" T="GridDataWrapper" Title="@columnDiveCapacityRechargeRate" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnDiveCapacityRechargeRate}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnDiveCapacityRechargeRate)" SortBy="@(x => x.Survivability.DiveCapacityRechargeRate)" T="GridDataWrapper" Title="@columnDiveCapacityRechargeRate" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Survivability.DiveCapacityRechargeRate != 0)
                 {

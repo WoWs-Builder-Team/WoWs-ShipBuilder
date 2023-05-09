@@ -17,7 +17,7 @@
 
         <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFromShipBase}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromShipBase)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Concealment.ConcealmentBySea)" Title="@columnTitleFromShipBase" HeaderClass="column-text-center" CellClass="column-text-center"/>
         <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFromShipOnFire}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromShipOnFire)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Concealment.ConcealmentBySeaFire)" Title="@columnTitleFromShipOnFire" HeaderClass="column-text-center" CellClass="column-text-center"/>
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFromShipSmokeFiring}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromShipSmokeFiring)" T="GridDataWrapper" Title="@columnTitleFromShipSmokeFiring" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFromShipSmokeFiring}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromShipSmokeFiring)" SortBy="@(x => x.Concealment.ConcealmentBySeaFiringSmoke)" T="GridDataWrapper" Title="@columnTitleFromShipSmokeFiring" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Concealment.ConcealmentBySeaFiringSmoke != 0)
                 {

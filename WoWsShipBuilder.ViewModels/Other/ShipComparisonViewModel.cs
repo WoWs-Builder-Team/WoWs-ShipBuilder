@@ -272,6 +272,11 @@ public partial class ShipComparisonViewModel : ViewModelBase
             list = HideShipsIfNoSelectedSection(list);
         }
 
+        foreach (var wrapper in list.Values)
+        {
+            CacheDispersion(wrapper);
+        }
+
         return list;
     }
 
@@ -322,15 +327,14 @@ public partial class ShipComparisonViewModel : ViewModelBase
             {
                 FilteredShipList.Remove(wrapper.Key);
 
-                if (PinnedShipList.ContainsKey(wrapper.Key))
-                {
-                    PinnedShipList.Remove(wrapper.Key);
-                }
+                PinnedShipList.Remove(wrapper.Key);
 
                 if (wrappersCache.ContainsKey(wrapper.Key))
                 {
                     wrappersCache[wrapper.Key] = wrapper.Value;
                 }
+
+                DispersionCache.Remove(wrapper.Key);
             }
             else
             {
@@ -672,6 +676,11 @@ public partial class ShipComparisonViewModel : ViewModelBase
             {
                 PinnedShipList.Add(newWrapper.Id, newWrapper);
             }
+
+            if (DispersionCache.ContainsKey(selectedShip.Key))
+            {
+                DispersionCache[newWrapper.Id] = DispersionCache[selectedShip.Key];
+            }
         }
 
         SetSelectAndPinAllButtonsStatus();
@@ -685,13 +694,13 @@ public partial class ShipComparisonViewModel : ViewModelBase
         {
             newWrapper = container;
         }
-        else if (obj is not Ship ship)
+        else if (obj is Ship ship)
         {
-            return;
+            newWrapper = new (ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer =  GetShipDataContainer(ship) });
         }
         else
         {
-            newWrapper = new (ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer =  GetShipDataContainer(ship) });
+            return;
         }
 
         FilteredShipList.Add(newWrapper.Id, newWrapper);
@@ -713,7 +722,8 @@ public partial class ShipComparisonViewModel : ViewModelBase
 
     private GridDataWrapper ResetBuild(GridDataWrapper wrapper)
     {
-        return new(wrapper.ShipBuildContainer with { Build = null, ActivatedConsumableSlots = null, SpecialAbilityActive = false, ShipDataContainer = GetShipDataContainer(wrapper.Ship), Modifiers = null });
+        GridDataWrapper reset = new(wrapper.ShipBuildContainer with { Build = null, ActivatedConsumableSlots = null, SpecialAbilityActive = false, ShipDataContainer = GetShipDataContainer(wrapper.Ship), Modifiers = null });
+        return reset;
     }
 
     public void UpdateRange(double selectedValue)
@@ -721,35 +731,12 @@ public partial class ShipComparisonViewModel : ViewModelBase
         Range = selectedValue;
     }
 
-    public double CalculateHorizontalDispersion(Guid wrapperId, Dispersion dispersion, double range, double dispersionModifier)
+    // this is needed because dispersion is not calculated inside the GridDataWrapper in order to not recalculate oll of it upon each range variation
+    private void CacheDispersion(GridDataWrapper wrapper)
     {
-        var horizontalDispersion = Math.Round(dispersion.CalculateHorizontalDispersion(range, dispersionModifier), 2);
-
-        if (DispersionCache.ContainsKey(wrapperId))
+        if(wrapper.MainBattery?.DispersionData is not null && wrapper.MainBattery?.DispersionModifier is not null && wrapper.MainBattery?.Range is not null)
         {
-            DispersionCache[wrapperId] = DispersionCache[wrapperId] with { Horizontal = horizontalDispersion };
+            DispersionCache[wrapper.Id] = wrapper.MainBattery.DispersionData.CalculateDispersion(decimal.ToDouble(wrapper.MainBattery.Range * 1000), wrapper.MainBattery.DispersionModifier, Range * 1000);
         }
-        else
-        {
-            DispersionCache.Add(wrapperId, new (horizontalDispersion, 0));
-        }
-
-        return horizontalDispersion;
-    }
-
-    public double CalculateVerticalDispersion(Guid wrapperId, Dispersion dispersion, double range, double maxRange, double dispersionModifier)
-    {
-        var verticalDispersion = Math.Round(dispersion.CalculateVerticalDispersion(maxRange, dispersion.CalculateHorizontalDispersion(range, dispersionModifier), range), 2);
-
-        if (DispersionCache.ContainsKey(wrapperId))
-        {
-            DispersionCache[wrapperId] = DispersionCache[wrapperId] with { Vertical = verticalDispersion };
-        }
-        else
-        {
-            DispersionCache.Add(wrapperId, new (0, verticalDispersion));
-        }
-
-        return verticalDispersion;
     }
 }

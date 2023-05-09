@@ -210,6 +210,9 @@
             </MudPaper>
         </MudStack>
     </MudStack>
+    <MudButton OnClick="@(_=>Console.WriteLine(ViewModel.DispersionCache.Count))">
+        test
+    </MudButton>
 
     <MudDataGrid @ref="dataGrid" T="GridDataWrapper" ServerData="@ReloadData" Groupable="false" SortMode="SortMode.Multiple" Hideable ShowColumnOptions="false" Filterable="false" ShowFilterIcons="false" FilterMode="DataGridFilterMode.Simple" Hover Outlined Bordered Dense Breakpoint="Breakpoint.None" Virtualize ColumnResizeMode="ResizeMode.Column">
         <ToolBarContent>
@@ -288,7 +291,7 @@
                 </CellTemplate>
             </TemplateColumn>
 
-            @MainBatteryDataFragment((IsColumnHidden, Localizer, ViewModel.Range, ViewModel.DispersionCache, ViewModel.CalculateVerticalDispersion, ViewModel.CalculateHorizontalDispersion))
+            @MainBatteryDataFragment((IsColumnHidden, Localizer, ViewModel.Range, ViewModel.DispersionCache))
             @HeShellDataFragment((IsColumnHidden, Localizer))
             @ApShellDataFragment((IsColumnHidden, Localizer))
             @SapShellDataFragment((IsColumnHidden, Localizer))

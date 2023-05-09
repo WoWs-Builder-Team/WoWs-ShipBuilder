@@ -23,7 +23,6 @@ public sealed class GridDataWrapper
         Build = shipBuildContainer.Build;
         Id = shipBuildContainer.Id;
 
-        //base
         ShipIndex = shipBuildContainer.Ship.Index;
         ShipNation = shipBuildContainer.Ship.ShipNation;
         ShipClass = shipBuildContainer.Ship.ShipClass;
@@ -66,7 +65,6 @@ public sealed class GridDataWrapper
 
     public Guid Id { get; }
 
-    //base
     public string ShipIndex { get; }
 
     public Nation ShipNation { get; }

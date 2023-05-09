@@ -1,13 +1,12 @@
 ﻿@using WoWsShipBuilder.ViewModels.Other
 @using System.Globalization
 @using WoWsShipBuilder.DataStructures
-@using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.ViewModels.Helper.GridData
 @code {
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer, double range, Dictionary<Guid, DispersionContainer> dispersionCache, Func<Guid, Dispersion, double, double, double, double> GetverticalDispersion, Func<Guid, Dispersion, double, double, double> GetHorizontalDispersion)> MainBatteryDataFragment = element => __builder =>
+    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer, double range, Dictionary<Guid, DispersionContainer> dispersionCache)> MainBatteryDataFragment = element => __builder =>
     {
         string dataSectionString = ShipComparisonDataSections.MainBattery.ShipComparisonDataSectionToString();
 
@@ -32,7 +31,7 @@
         var columnTitleFpm = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Fpm))} ({element.localizer.SimpleAppLocalization(Translation.Unit_FPM)})";
         var columnTitleSigma = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Sigma))}";
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCaliber}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCaliber)" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCaliber}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCaliber)" SortBy="@(x => x.MainBattery?.GunCaliber ?? 0)" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
            <CellTemplate>
                @if (context.Item.MainBattery?.GunCaliber is not null)
                {
@@ -49,7 +48,7 @@
            </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBarrels}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBarrels)" T="GridDataWrapper" Title="@columnTitleBarrels" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBarrels}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBarrels)" SortBy="@(x => x.MainBattery?.BarrelsCount ?? 0)" T="GridDataWrapper" Title="@columnTitleBarrels" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.MainBattery?.BarrelsCount is not null && context.Item.MainBattery?.BarrelsLayout is not null)
                 {
@@ -66,7 +65,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxRange}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxRange)" T="GridDataWrapper" Title="@columnTitleMaxRange" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxRange}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxRange)" SortBy="@(x => x.MainBattery?.Range ?? 0)" T="GridDataWrapper" Title="@columnTitleMaxRange" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.MainBattery?.Range is not null)
                 {
@@ -85,10 +84,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleHorizontalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHorizontalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Horizontal : 0)" T="GridDataWrapper" Title="@columnTitleHorizontalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.MainBattery?.DispersionData is not null && context.Item.MainBattery?.DispersionModifier is not null)
+                @if (element.dispersionCache.TryGetValue(context.Item.Id, out var value))
                 {
                     <MudText Typo="Typo.body2">
-                        @element.GetHorizontalDispersion(context.Item.Id, context.Item.MainBattery.DispersionData, element.range * 1000, context.Item.MainBattery.DispersionModifier)
+                        @Math.Round(value.Horizontal, 2)
                     </MudText>
                 }
                 else
@@ -102,10 +101,10 @@
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleVerticalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleVerticalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Vertical : 0)" T="GridDataWrapper" Title="@columnTitleVerticalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.MainBattery?.DispersionData is not null && context.Item.MainBattery?.DispersionModifier is not null && context.Item.MainBattery?.Range is not null)
+                @if (element.dispersionCache.TryGetValue(context.Item.Id, out var value))
                 {
                     <MudText Typo="Typo.body2">
-                        @element.GetverticalDispersion.Invoke(context.Item.Id, context.Item.MainBattery.DispersionData, element.range * 1000, decimal.ToDouble(context.Item.MainBattery.Range * 1000), context.Item.MainBattery.DispersionModifier)
+                        @Math.Round(value.Vertical, 2)
                     </MudText>
                 }
                 else
@@ -117,7 +116,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTurnTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTurnTime)" T="GridDataWrapper" Title="@columnTitleTurnTime" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTurnTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTurnTime)" SortBy="@(x => x.MainBattery?.TurnTime ?? 0)" T="GridDataWrapper" Title="@columnTitleTurnTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.MainBattery?.TurnTime is not null)
                 {
@@ -134,7 +133,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTraverseSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTraverseSpeed)" T="GridDataWrapper" Title="@columnTitleTraverseSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTraverseSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTraverseSpeed)" SortBy="@(x => x.MainBattery?.TraverseSpeed ?? 0)" T="GridDataWrapper" Title="@columnTitleTraverseSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.MainBattery?.TraverseSpeed is not null)
                 {
@@ -151,7 +150,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReload}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleReload)" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReload}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleReload)" SortBy="@(x => x.MainBattery?.Reload ?? 0)" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.MainBattery?.Reload is not null)
                 {
@@ -168,7 +167,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRof}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRof)" T="GridDataWrapper" Title="@columnTitleRof" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRof}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRof)" SortBy="@(x => x.MainBattery?.RoF ?? 0)" T="GridDataWrapper" Title="@columnTitleRof" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.MainBattery?.RoF is not null)
                 {
@@ -288,7 +287,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFpm}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFpm)" T="GridDataWrapper" Title="@columnTitleFpm" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFpm}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFpm)" SortBy="@(x => x.MainBattery?.PotentialFpm ?? 0)" T="GridDataWrapper" Title="@columnTitleFpm" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.MainBattery?.PotentialFpm is not null && context.Item.MainBattery.PotentialFpm != 0)
                 {
@@ -305,7 +304,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSigma}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSigma)" T="GridDataWrapper" Title="@columnTitleSigma" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSigma}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSigma)" SortBy="@(x => x.MainBattery?.Sigma ?? 0)" T="GridDataWrapper" Title="@columnTitleSigma" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.MainBattery?.Sigma is not null)
                 {
