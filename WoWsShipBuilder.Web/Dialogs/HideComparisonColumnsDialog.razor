@@ -6,7 +6,7 @@
         <div style="max-height: 85vh; overflow: scroll;">
             <MudText Typo="Typo.body2" Align="Align.Center" Style="font-weight: bold" Class="mb-1">@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_ActiveColumns)).ToUpper()</MudText>
             <MudStack Row>
-                @foreach (var (section, columns) in structure)
+                @foreach (var (section, columns) in switchesLayout)
                 {
                     <MudPaper Outlined Elevation="0" Square="true" @key="@(section.ShipComparisonDataSectionToString())">
                         <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
@@ -15,7 +15,7 @@
                             </MudText>
                             @foreach (var column in columns)
                             {
-                                <MudSwitch @bind-Checked="@(structure[section][column.Key])" Label="@column.Key" LabelPosition="LabelPosition.End" Size="Size.Medium" Color="Color.Warning" @key="@($"{section}_{column}")" Style="width: 100%;" Class="ml-1"/>
+                                <MudSwitch @bind-Checked="@(switchesLayout[section][column.Key])" Label="@column.Key" LabelPosition="LabelPosition.End" Size="Size.Medium" Color="Color.Warning" @key="@($"{section}_{column}")" Style="width: 100%;" Class="ml-1"/>
                             }
                         </MudStack>
                     </MudPaper>
@@ -37,7 +37,7 @@
     [Parameter, EditorRequired]
     public Dictionary<string, bool> HiddenColumns { get; set; } = new();
 
-    private readonly Dictionary<ShipComparisonDataSections, Dictionary<string, bool>> structure = new();
+    private readonly Dictionary<ShipComparisonDataSections, Dictionary<string, bool>> switchesLayout = new();
 
     protected override void OnInitialized()
     {
@@ -47,13 +47,13 @@
         {
             string[] split = key.Split('_');
             var section = Enum.Parse<ShipComparisonDataSections>(split[0]);
-            if (structure.TryGetValue(section, out Dictionary<string, bool>? dataSection))
+            if (switchesLayout.TryGetValue(section, out Dictionary<string, bool>? dataSection))
             {
                 dataSection.Add(split[1], !HiddenColumns[key]);
             }
             else
             {
-                structure.Add(section, new() { { split[1], !HiddenColumns[key] } });
+                switchesLayout.Add(section, new() { { split[1], !HiddenColumns[key] } });
             }
         }
     }
@@ -66,7 +66,7 @@
     private void Confirm()
     {
         Dictionary<string, bool> result = new();
-        foreach (var section in structure)
+        foreach (var section in switchesLayout)
         {
             foreach (var column in section.Value)
             {

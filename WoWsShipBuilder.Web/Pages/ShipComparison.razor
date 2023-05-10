@@ -10,6 +10,7 @@
 @using Prometheus
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.Settings
+@using WoWsShipBuilder.Core.Utility
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.ViewModels.Helper.GridData
 @using WoWsShipBuilder.Web.Data
@@ -382,19 +383,19 @@
         if (!string.IsNullOrEmpty(selectedClasses))
         {
             applyFilters = true;
-            ViewModel.SelectedClasses.AddRange(selectedClasses.Split(',').Select(UrlIndexToClass));
+            ViewModel.SelectedClasses.AddRange(selectedClasses.Split(',').Select(GameDataHelper.UrlIndexToClass));
         }
 
         if (!string.IsNullOrEmpty(selectedNations))
         {
             applyFilters = true;
-            ViewModel.SelectedNations.AddRange(selectedNations.Split(',').Select(UrlIndexToNation));
+            ViewModel.SelectedNations.AddRange(selectedNations.Split(',').Select(GameDataHelper.UrlIndexToNation));
         }
 
         if (!string.IsNullOrEmpty(selectedCategories))
         {
             applyFilters = true;
-            ViewModel.SelectedCategories.AddRange(selectedCategories.Split(',').Select(UrlIndexToCategory));
+            ViewModel.SelectedCategories.AddRange(selectedCategories.Split(',').Select(GameDataHelper.UrlIndexToCategory));
         }
 
         if (!string.IsNullOrEmpty(upgradedModules))
@@ -744,100 +745,6 @@
         return !ViewModel!.SelectedDataSection.ShipComparisonDataSectionToString().Equals(section) || hiddenColumns.TryGetValue($"{section}_{columnTitle}", out bool hidden) && hidden;
     }
 
-    private static char ClassToUrlIndex(ShipClass shipClass)
-    {
-        return shipClass switch
-        {
-            ShipClass.Submarine => 'S',
-            ShipClass.Destroyer => 'D',
-            ShipClass.Cruiser => 'C',
-            ShipClass.Battleship => 'B',
-            ShipClass.AirCarrier => 'A',
-            _ => throw new ArgumentOutOfRangeException(nameof(shipClass), shipClass, null),
-        };
-    }
-
-    private static ShipClass UrlIndexToClass(string index)
-    {
-        return index[0] switch
-        {
-            'S' => ShipClass.Submarine,
-            'D' => ShipClass.Destroyer,
-            'C' => ShipClass.Cruiser,
-            'B' => ShipClass.Battleship,
-            'A' => ShipClass.AirCarrier,
-            _ => throw new ArgumentOutOfRangeException(nameof(index), index, null),
-        };
-    }
-
-    private static Nation UrlIndexToNation(string index)
-    {
-        return index[0] switch
-        {
-            'A' => Nation.Usa,
-            'B' => Nation.UnitedKingdom,
-            'F' => Nation.France,
-            'G' => Nation.Germany,
-            'H' => Nation.Netherlands,
-            'I' => Nation.Italy,
-            'J' => Nation.Japan,
-            'R' => Nation.Russia,
-            'S' => Nation.Spain,
-            'U' => Nation.Commonwealth,
-            'V' => Nation.PanAmerica,
-            'W' => Nation.Europe,
-            'Z' => Nation.PanAsia,
-            _ => Nation.Common,
-        };
-    }
-
-    private static char NationToUrlIndex(Nation nation)
-    {
-        return nation switch
-        {
-            Nation.Usa =>'A',
-            Nation.UnitedKingdom =>'B',
-            Nation.France =>'F',
-            Nation.Germany =>'G',
-            Nation.Netherlands =>'H',
-            Nation.Italy =>'I',
-            Nation.Japan =>'J',
-            Nation.Russia =>'R',
-            Nation.Spain =>'S',
-            Nation.Commonwealth =>'U',
-            Nation.PanAmerica =>'V',
-            Nation.Europe =>'W',
-            Nation.PanAsia =>'Z',
-            _ => 'C',
-        };
-    }
-
-    private static string CategoryToUrlIndex(ShipCategory category)
-    {
-        return category switch
-        {
-            ShipCategory.TechTree => "Tt",
-            ShipCategory.Premium => "P",
-            ShipCategory.Special => "S",
-            ShipCategory.TestShip => "Ts",
-            ShipCategory.SuperShip => "Ss",
-            _ => throw new ArgumentOutOfRangeException(nameof(category), category, null),
-        };
-    }
-
-    private static ShipCategory UrlIndexToCategory(string index)
-    {
-        return index switch
-        {
-            "Tt" => ShipCategory.TechTree,
-            "P" => ShipCategory.Premium,
-            "S" => ShipCategory.Special,
-            "Ts" => ShipCategory.TestShip,
-            "Ss" => ShipCategory.SuperShip,
-            _ => throw new ArgumentOutOfRangeException(nameof(index), index, null),
-        };
-    }
-
     private async Task UpdateUrl()
     {
         QueryBuilder url = new();
@@ -848,17 +755,17 @@
 
         if (ViewModel!.SelectedClasses.Any())
         {
-            url.Add(ClassesUrlParameter, string.Join(',', ViewModel!.SelectedClasses.Select(ClassToUrlIndex)));
+            url.Add(ClassesUrlParameter, string.Join(',', ViewModel!.SelectedClasses.Select(GameDataHelper.ClassToUrlIndex)));
         }
 
         if (ViewModel!.SelectedNations.Any())
         {
-            url.Add(NationsUrlParameter, string.Join(',', ViewModel!.SelectedNations.Select(NationToUrlIndex)));
+            url.Add(NationsUrlParameter, string.Join(',', ViewModel!.SelectedNations.Select(GameDataHelper.NationToUrlIndex)));
         }
 
         if (ViewModel!.SelectedCategories.Any())
         {
-            url.Add(CategoriesUrlParameter, string.Join(',', ViewModel!.SelectedCategories.Select(CategoryToUrlIndex)));
+            url.Add(CategoriesUrlParameter, string.Join(',', ViewModel!.SelectedCategories.Select(GameDataHelper.CategoryToUrlIndex)));
         }
 
         if (ViewModel!.UseUpgradedModules)

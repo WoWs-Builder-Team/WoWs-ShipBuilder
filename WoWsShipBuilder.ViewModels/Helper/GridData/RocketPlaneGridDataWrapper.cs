@@ -1,9 +1,8 @@
 ﻿using WoWsShipBuilder.Core.DataContainers;
-using WoWsShipBuilder.Core.Extensions;
 
 namespace WoWsShipBuilder.ViewModels.Helper.GridData;
 
-public class RocketPlaneGridDataWrapper
+public class RocketPlaneGridDataWrapper : PlaneGridDataWrapper
 {
     public RocketPlaneGridDataWrapper(IReadOnlyCollection<CvAircraftDataContainer>? rocketPlanes)
     {
@@ -48,56 +47,6 @@ public class RocketPlaneGridDataWrapper
         WeaponBlastRadius = rockets?.Select(x => x?.ExplosionRadius ?? 0).ToList() ?? new();
         WeaponBlastPenetration = rockets?.Select(x => x?.SplashCoeff ?? 0).ToList() ?? new();
     }
-
-    public List<string> Type { get; }
-
-    public List<int> InSquadron { get; }
-
-    public List<int> PerAttack { get; }
-
-    public List<int> OnDeck { get; }
-
-    public List<decimal> RestorationTime { get; }
-
-    public List<decimal> CruisingSpeed { get; }
-
-    public List<decimal> MaxSpeed { get; }
-
-    public List<decimal> MinSpeed { get; }
-
-    public List<decimal> EngineBoostDuration { get; }
-
-    public List<decimal> InitialBoostDuration { get; }
-
-    public List<decimal> InitialBoostValue { get; }
-
-    public List<int> PlaneHp { get; }
-
-    public List<int> SquadronHp { get; }
-
-    public List<int> AttackGroupHp { get; }
-
-    public List<int> DamageDuringAttack { get; }
-
-    public List<int> WeaponsPerPlane { get; }
-
-    public List<decimal> PreparationTime { get; }
-
-    public List<decimal> AimingTime { get; }
-
-    public List<decimal> TimeToFullyAimed { get; }
-
-    public List<decimal> PostAttackInvulnerability { get; }
-
-    public List<decimal> AttackCooldown { get; }
-
-    public List<decimal> Concealment { get; }
-
-    public List<decimal> Spotting { get; }
-
-    public List<string> AreaChangeAiming { get; }
-
-    public List<string> AreaChangePreparation { get; }
 
     public List<string> WeaponType { get; }
 
