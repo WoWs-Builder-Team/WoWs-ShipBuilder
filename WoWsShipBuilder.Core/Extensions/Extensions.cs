@@ -17,6 +17,27 @@ public static class Extensions
         }
     }
 
+    // ReSharper disable once InconsistentNaming
+    public static void AddRange<T, S>(this Dictionary<T, S> thisDict, IEnumerable<KeyValuePair<T, S>> otherDict) where T : struct where S : class
+    {
+        foreach ((T key, S value) in otherDict)
+        {
+            thisDict.Add(key, value);
+        }
+    }
+
+    // ReSharper disable once InconsistentNaming
+    public static void RemoveMany<T, S>(this Dictionary<T, S> thisDict, IEnumerable<KeyValuePair<T, S>> otherDict) where T : struct where S : class => thisDict.RemoveMany(otherDict.Select(x => x.Key));
+
+    // ReSharper disable once InconsistentNaming
+    public static void RemoveMany<T, S>(this Dictionary<T, S> thisDict, IEnumerable<T> keyList) where T : struct where S : class
+    {
+        foreach (T key in keyList)
+        {
+            thisDict.Remove(key);
+        }
+    }
+
     public static int FindModifierIndex(this List<(string Key, float Value)> dataSource, string filter, bool strict = false)
     {
         if (strict)

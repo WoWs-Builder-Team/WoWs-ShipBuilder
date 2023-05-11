@@ -2025,6 +2025,528 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 1st.
+        /// </summary>
+        public static string ShipComparison_1st {
+            get {
+                return ResourceManager.GetString("ShipComparison_1st", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 2nd.
+        /// </summary>
+        public static string ShipComparison_2nd {
+            get {
+                return ResourceManager.GetString("ShipComparison_2nd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active columns.
+        /// </summary>
+        public static string ShipComparison_ActiveColumns {
+            get {
+                return ResourceManager.GetString("ShipComparison_ActiveColumns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aerial Torpedoes.
+        /// </summary>
+        public static string ShipComparison_AerialTorpedoes {
+            get {
+                return ResourceManager.GetString("ShipComparison_AerialTorpedoes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string ShipComparison_All {
+            get {
+                return ResourceManager.GetString("ShipComparison_All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amount.
+        /// </summary>
+        public static string ShipComparison_Amount {
+            get {
+                return ResourceManager.GetString("ShipComparison_Amount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Area Change.
+        /// </summary>
+        public static string ShipComparison_AreaChange {
+            get {
+                return ResourceManager.GetString("ShipComparison_AreaChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ASW.
+        /// </summary>
+        public static string ShipComparison_Asw {
+            get {
+                return ResourceManager.GetString("ShipComparison_Asw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Barrels.
+        /// </summary>
+        public static string ShipComparison_Barrels {
+            get {
+                return ResourceManager.GetString("ShipComparison_Barrels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bombers.
+        /// </summary>
+        public static string ShipComparison_Bombers {
+            get {
+                return ResourceManager.GetString("ShipComparison_Bombers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bombs.
+        /// </summary>
+        public static string ShipComparison_Bombs {
+            get {
+                return ResourceManager.GetString("ShipComparison_Bombs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Caliber.
+        /// </summary>
+        public static string ShipComparison_Caliber {
+            get {
+                return ResourceManager.GetString("ShipComparison_Caliber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Charges.
+        /// </summary>
+        public static string ShipComparison_Charges {
+            get {
+                return ResourceManager.GetString("ShipComparison_Charges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dispersion at.
+        /// </summary>
+        public static string ShipComparison_DispersionAt {
+            get {
+                return ResourceManager.GetString("ShipComparison_DispersionAt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display only pinned ships.
+        /// </summary>
+        public static string ShipComparison_DisplayOnlyPinnedShips {
+            get {
+                return ResourceManager.GetString("ShipComparison_DisplayOnlyPinnedShips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drop range.
+        /// </summary>
+        public static string ShipComparison_DropRange {
+            get {
+                return ResourceManager.GetString("ShipComparison_DropRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate.
+        /// </summary>
+        public static string ShipComparison_Duplicate {
+            get {
+                return ResourceManager.GetString("ShipComparison_Duplicate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Engine boost duration.
+        /// </summary>
+        public static string ShipComparison_EngineBoostDuration {
+            get {
+                return ResourceManager.GetString("ShipComparison_EngineBoostDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filters.
+        /// </summary>
+        public static string ShipComparison_Filters {
+            get {
+                return ResourceManager.GetString("ShipComparison_Filters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Firing Range.
+        /// </summary>
+        public static string ShipComparison_FiringRange {
+            get {
+                return ResourceManager.GetString("ShipComparison_FiringRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FPM.
+        /// </summary>
+        public static string ShipComparison_Fpm {
+            get {
+                return ResourceManager.GetString("ShipComparison_Fpm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Reverse Time.
+        /// </summary>
+        public static string ShipComparison_FullReverseTime {
+            get {
+                return ResourceManager.GetString("ShipComparison_FullReverseTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        public static string ShipComparison_General {
+            get {
+                return ResourceManager.GetString("ShipComparison_General", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide ships without selected section.
+        /// </summary>
+        public static string ShipComparison_HideIfNoSection {
+            get {
+                return ResourceManager.GetString("ShipComparison_HideIfNoSection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image.
+        /// </summary>
+        public static string ShipComparison_Image {
+            get {
+                return ResourceManager.GetString("ShipComparison_Image", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initial speed.
+        /// </summary>
+        public static string ShipComparison_InitialSpeed {
+            get {
+                return ResourceManager.GetString("ShipComparison_InitialSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invulnerability.
+        /// </summary>
+        public static string ShipComparison_Invulnerability {
+            get {
+                return ResourceManager.GetString("ShipComparison_Invulnerability", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Range.
+        /// </summary>
+        public static string ShipComparison_MaxRange {
+            get {
+                return ResourceManager.GetString("ShipComparison_MaxRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No matching ships found.
+        /// </summary>
+        public static string ShipComparison_NoMatchingShipsFound {
+            get {
+                return ResourceManager.GetString("ShipComparison_NoMatchingShipsFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string ShipComparison_None {
+            get {
+                return ResourceManager.GetString("ShipComparison_None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On Deck.
+        /// </summary>
+        public static string ShipComparison_OnDeck {
+            get {
+                return ResourceManager.GetString("ShipComparison_OnDeck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On Fire.
+        /// </summary>
+        public static string ShipComparison_OnFire {
+            get {
+                return ResourceManager.GetString("ShipComparison_OnFire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Per Plane.
+        /// </summary>
+        public static string ShipComparison_PerPlane {
+            get {
+                return ResourceManager.GetString("ShipComparison_PerPlane", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pin all.
+        /// </summary>
+        public static string ShipComparison_PinAll {
+            get {
+                return ResourceManager.GetString("ShipComparison_PinAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plane.
+        /// </summary>
+        public static string ShipComparison_Plane {
+            get {
+                return ResourceManager.GetString("ShipComparison_Plane", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plane HP.
+        /// </summary>
+        public static string ShipComparison_PlaneHp {
+            get {
+                return ResourceManager.GetString("ShipComparison_PlaneHp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Planes.
+        /// </summary>
+        public static string ShipComparison_Planes {
+            get {
+                return ResourceManager.GetString("ShipComparison_Planes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Planes in squadron.
+        /// </summary>
+        public static string ShipComparison_PlanesInSquadron {
+            get {
+                return ResourceManager.GetString("ShipComparison_PlanesInSquadron", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove builds.
+        /// </summary>
+        public static string ShipComparison_RemoveBuilds {
+            get {
+                return ResourceManager.GetString("ShipComparison_RemoveBuilds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset all.
+        /// </summary>
+        public static string ShipComparison_ResetAll {
+            get {
+                return ResourceManager.GetString("ShipComparison_ResetAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rocket Planes.
+        /// </summary>
+        public static string ShipComparison_RocketPlanes {
+            get {
+                return ResourceManager.GetString("ShipComparison_RocketPlanes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search &amp; Pin Ship.
+        /// </summary>
+        public static string ShipComparison_SearchAndPin {
+            get {
+                return ResourceManager.GetString("ShipComparison_SearchAndPin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Secondary Battery Shells.
+        /// </summary>
+        public static string ShipComparison_SecondaryBatteryShells {
+            get {
+                return ResourceManager.GetString("ShipComparison_SecondaryBatteryShells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Section.
+        /// </summary>
+        public static string ShipComparison_Section {
+            get {
+                return ResourceManager.GetString("ShipComparison_Section", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select all.
+        /// </summary>
+        public static string ShipComparison_SelectAll {
+            get {
+                return ResourceManager.GetString("ShipComparison_SelectAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Smoke Firing.
+        /// </summary>
+        public static string ShipComparison_SmokeFiring {
+            get {
+                return ResourceManager.GetString("ShipComparison_SmokeFiring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Splash radius.
+        /// </summary>
+        public static string ShipComparison_SplashRadius {
+            get {
+                return ResourceManager.GetString("ShipComparison_SplashRadius", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spread.
+        /// </summary>
+        public static string ShipComparison_Spread {
+            get {
+                return ResourceManager.GetString("ShipComparison_Spread", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Switch time.
+        /// </summary>
+        public static string ShipComparison_SwitchTime {
+            get {
+                return ResourceManager.GetString("ShipComparison_SwitchTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Torpedoes per plane.
+        /// </summary>
+        public static string ShipComparison_TorpsPerPlane {
+            get {
+                return ResourceManager.GetString("ShipComparison_TorpsPerPlane", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type name....
+        /// </summary>
+        public static string ShipComparison_TypeName {
+            get {
+                return ResourceManager.GetString("ShipComparison_TypeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unpin all.
+        /// </summary>
+        public static string ShipComparison_UnpinAll {
+            get {
+                return ResourceManager.GetString("ShipComparison_UnpinAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unselect all.
+        /// </summary>
+        public static string ShipComparison_UnselectAll {
+            get {
+                return ResourceManager.GetString("ShipComparison_UnselectAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use upgraded modules if no build.
+        /// </summary>
+        public static string ShipComparison_UseUpgradedModules {
+            get {
+                return ResourceManager.GetString("ShipComparison_UseUpgradedModules", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View acceleration.
+        /// </summary>
+        public static string ShipComparison_ViewAcceleration {
+            get {
+                return ResourceManager.GetString("ShipComparison_ViewAcceleration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View ballistic.
+        /// </summary>
+        public static string ShipComparison_ViewBallistic {
+            get {
+                return ResourceManager.GetString("ShipComparison_ViewBallistic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View distance.
+        /// </summary>
+        public static string ShipComparison_ViewDistance {
+            get {
+                return ResourceManager.GetString("ShipComparison_ViewDistance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View stats.
+        /// </summary>
+        public static string ShipComparison_ViewStats {
+            get {
+                return ResourceManager.GetString("ShipComparison_ViewStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Class.
         /// </summary>
         public static string ShipSelectionWindow_ClassFilter {
@@ -2757,6 +3279,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DPM.
+        /// </summary>
+        public static string ShipStats_Dpm {
+            get {
+                return ResourceManager.GetString("ShipStats_Dpm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drop.
         /// </summary>
         public static string ShipStats_DropTime {
@@ -3405,6 +3936,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max reverse speed.
+        /// </summary>
+        public static string ShipStats_MaxReverseSpeed {
+            get {
+                return ResourceManager.GetString("ShipStats_MaxReverseSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max speed.
         /// </summary>
         public static string ShipStats_MaxSpeed {
@@ -3594,7 +4134,7 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hp per plane.
+        ///   Looks up a localized string similar to HP per plane.
         /// </summary>
         public static string ShipStats_PlaneHp {
             get {
@@ -3788,6 +4328,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_RudderBlastProtection {
             get {
                 return ResourceManager.GetString("ShipStats_RudderBlastProtection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Salvo.
+        /// </summary>
+        public static string ShipStats_Salvo {
+            get {
+                return ResourceManager.GetString("ShipStats_Salvo", resourceCulture);
             }
         }
         
@@ -3995,6 +4544,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_ShowInBallisticCharts {
             get {
                 return ResourceManager.GetString("ShipStats_ShowInBallisticCharts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show all in ship comparison.
+        /// </summary>
+        public static string ShipStats_ShowInShipComparison {
+            get {
+                return ResourceManager.GetString("ShipStats_ShowInShipComparison", resourceCulture);
             }
         }
         

@@ -22,7 +22,7 @@
         <ChildContent>
             @foreach (var container in shipContainers)
             {
-                <MudTabPanel Style="@(GetStyle(container.Id))" Text="@Localizer.GetGameLocalization(container.Ship.Index + "_FULL").Localization" Tag="@container.Id" ID="@container.Id" @key="@container.Id">
+                <MudTabPanel Style="@GetStyle(container.Id)" Text="@Localizer.GetGameLocalization(container.Ship.Index + "_FULL").Localization" Tag="@container.Id" ID="@container.Id" @key="@container.Id">
                     <ShipStatsContainer Cache="@cache" CurrentTabId="container.Id" ShipIndex="@container.Ship.Index" OnShipChanged="@OnShipIndexChanged" Build="@container.Build"/>
                 </MudTabPanel>
             }
@@ -40,6 +40,9 @@
                 </MudTooltip>
                 <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInAccelerationCharts).Localization" Arrow Delay="350">
                     <MudIconButton Icon="@Icons.Material.Filled.Speed" OnClick="@OpenAccelerationCharts" Color="Color.Secondary"/>
+                </MudTooltip>
+                <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInShipComparison).Localization" Arrow Delay="350">
+                    <MudIconButton Icon="@Icons.Material.Filled.FormatListBulleted" OnClick="@OpenShipComparison" Color="Color.Secondary"/>
                 </MudTooltip>
             </MudStack>
         </Header>
@@ -143,7 +146,7 @@
 
     private void RemoveTab(MudTabPanel panel)
     {
-        var id = (Guid) panel.Tag;
+        var id = (Guid) panel.Tag!;
         var ship = shipContainers.First(x => x.Id.Equals(id));
         int index = shipContainers.IndexOf(ship);
         shipContainers.Remove(ship);
@@ -247,6 +250,12 @@
         NavManager.NavigateTo($"/acceleration-charts?shipIndexes={string.Join(",", shipIndexes)}");
     }
 
+    private async Task OpenShipComparison()
+    {
+        await StoreBuildsForCharts();
+        NavManager.NavigateTo("/comparison");
+    }
+
     private void UpdateUrl()
     {
         var shipsString = string.Join(",", shipContainers.Select(x => x.Ship.Index));
@@ -256,7 +265,7 @@
 
     private string GetStyle(Guid id)
     {
-        if (mudTabs.ActivePanel is not null && mudTabs.ActivePanel.Tag.Equals(id))
+        if (mudTabs.ActivePanel is not null && mudTabs.ActivePanel.Tag!.Equals(id))
         {
             return " background-color: rgba(0, 0, 0, 0.4);";
         }

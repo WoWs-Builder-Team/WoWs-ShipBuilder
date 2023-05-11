@@ -1,53 +1,32 @@
-﻿@using WoWsShipBuilder.ViewModels.Helper
+﻿@using WoWsShipBuilder.ViewModels.Helper.GridData
 @using WoWsShipBuilder.ViewModels.Other
 @code {
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer)> HeShellDataFragment = element => __builder =>
+    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer)> HeShellDataFragment = element => __builder =>
     {
-        bool hide = element.section != ShipComparisonDataSections.He;
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryCaliber" Title="Caliber (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @if (context.Item.HeDamage is not null)
-                {
-                    <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryCaliber
-                    </MudText>
-                }
-                else
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
-                }
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeMass" Title="Mass (kg)" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @if (context.Item.HeMass is not null)
-                {
-                    <MudText Typo="Typo.body2">
-                        @context.Item.HeMass
-                    </MudText>
-                }
-                else
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
-                }
-            </CellTemplate>
-        </Column>
+        string dataSectionString = ShipComparisonDataSections.He.AsString();
 
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeDamage" Title="Damage" HeaderClass="column-text-center" CellClass="column-text-center">
+        var columnTitleCaliber = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Caliber))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
+        var columnTitleMass = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Mass))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KG)})";
+        var columnTitleDamage = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Damage))}";
+        var columnTitleSplashRadius = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SplashRadius))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
+        var columnTitleSplashDamage = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Splash))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Damage)}";
+        var columnTitlePenetration = $"{element.localizer.SimpleAppLocalization(Translation.ShipStats_Penetration)} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
+        var columnTitleInitialSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_InitialSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MPS)})";
+        var columnTitleAirDrag = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AirDrag))}";
+        var columnTitleFireChance = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FireChance))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+        var columnTitleSalvoFireChance = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Salvo))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FireChance))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+        var columnTitleBlastRadius = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Blast))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ExplosionRadius))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
+        var columnTitleBlastPenetration = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Blast))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Penetration))}";
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCaliber}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCaliber)" SortBy="@(x => x.MainBattery?.GunCaliber ?? 0)" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.HeDamage is not null)
+                @if (context.Item.HeShell?.Damage is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.HeDamage
+                        @context.Item.MainBattery?.GunCaliber
                     </MudText>
                 }
                 else
@@ -57,14 +36,14 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeSplashRadius" Title="Splash radius (m)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMass}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMass)" SortBy="@(x => x.HeShell?.Mass ?? 0)" T="GridDataWrapper" Title="@columnTitleMass" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.HeSplashRadius is not null)
+                @if (context.Item.HeShell?.Mass is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.HeSplashRadius
+                        @context.Item.HeShell.Mass
                     </MudText>
                 }
                 else
@@ -74,14 +53,14 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeSplashDamage" Title="Splash damage" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDamage)" SortBy="@(x => x.HeShell?.Damage ?? 0)" T="GridDataWrapper" Title="@columnTitleDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.HeSplashDamage is not null)
+                @if (context.Item.HeShell?.Damage is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.HeSplashDamage
+                        @context.Item.HeShell.Damage
                     </MudText>
                 }
                 else
@@ -91,14 +70,14 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HePenetration" Title="Penetration (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashRadius}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSplashRadius)" SortBy="@(x => x.HeShell?.SplashRadius ?? 0)" T="GridDataWrapper" Title="@columnTitleSplashRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.HePenetration is not null)
+                @if (context.Item.HeShell?.SplashRadius is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.HePenetration
+                        @context.Item.HeShell.SplashRadius
                     </MudText>
                 }
                 else
@@ -108,14 +87,14 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeSpeed" Title="Initial Speed (m/s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSplashDamage)" SortBy="@(x => x.HeShell?.SplashDmg ?? 0)" T="GridDataWrapper" Title="@columnTitleSplashDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.HeSpeed is not null)
+                @if (context.Item.HeShell?.SplashDmg is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.HeSpeed
+                        @context.Item.HeShell.SplashDmg
                     </MudText>
                 }
                 else
@@ -125,14 +104,14 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeAirDrag" Title="Air drag" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePenetration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePenetration)" SortBy="@(x => x.HeShell?.Penetration ?? 0)" T="GridDataWrapper" Title="@columnTitlePenetration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.HeAirDrag is not null)
+                @if (context.Item.HeShell?.Penetration is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.HeAirDrag
+                        @context.Item.HeShell.Penetration
                     </MudText>
                 }
                 else
@@ -142,14 +121,14 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeShellFireChance" Title="Fire chance (%)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleInitialSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleInitialSpeed)" SortBy="@(x => x.HeShell?.ShellVelocity ?? 0)" T="GridDataWrapper" Title="@columnTitleInitialSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.HeShellFireChance is not null)
+                @if (context.Item.HeShell?.ShellVelocity is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.HeShellFireChance
+                        @context.Item.HeShell?.ShellVelocity
                     </MudText>
                 }
                 else
@@ -159,14 +138,14 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeSalvoFireChance" Title="Salvo fire chance (%)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAirDrag}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAirDrag)" SortBy="@(x => x.HeShell?.AirDrag ?? 0)" T="GridDataWrapper" Title="@columnTitleAirDrag" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.HeSalvoFireChance is not null)
+                @if (context.Item.HeShell?.AirDrag is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.HeSalvoFireChance
+                        @context.Item.HeShell.AirDrag
                     </MudText>
                 }
                 else
@@ -176,14 +155,14 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeBlastRadius" Title="Blast radius (m)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFireChance}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireChance)" SortBy="@(x => x.HeShell?.ShellFireChance ?? 0)" T="GridDataWrapper" Title="@columnTitleFireChance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.HeBlastRadius is not null)
+                @if (context.Item.HeShell?.ShellFireChance is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.HeBlastRadius
+                        @context.Item.HeShell.ShellFireChance
                     </MudText>
                 }
                 else
@@ -193,14 +172,14 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeBlastPenetration" Title="Blast penetration" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSalvoFireChance}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSalvoFireChance)" SortBy="@(x => x.HeShell?.FireChancePerSalvo ?? 0)" T="GridDataWrapper" Title="@columnTitleSalvoFireChance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.HeBlastPenetration is not null)
+                @if (context.Item.HeShell?.FireChancePerSalvo is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.HeBlastPenetration
+                        @context.Item.HeShell?.FireChancePerSalvo
                     </MudText>
                 }
                 else
@@ -210,6 +189,40 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastRadius}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBlastRadius)" SortBy="@(x => x.HeShell?.ExplosionRadius ?? 0)" T="GridDataWrapper" Title="@columnTitleBlastRadius" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.HeShell?.ExplosionRadius is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.HeShell.ExplosionRadius
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastPenetration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBlastPenetration)" SortBy="@(x => x.HeShell?.SplashCoeff ?? 0)" T="GridDataWrapper" Title="@columnTitleBlastPenetration" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.HeShell?.SplashCoeff is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.HeShell.SplashCoeff
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
     };
 }
