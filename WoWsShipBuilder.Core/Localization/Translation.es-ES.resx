@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
+  <!--
+    Microsoft ResX Schema
+
     Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
     associated with the data types.
-    
+
     Example:
-    
+
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-                
-    There are any number of "resheader" rows that contain simple 
+
+    There are any number of "resheader" rows that contain simple
     name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
     mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
     extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
     read any of the formats listed below.
-    
+
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-    
+
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
+    value   : The object must be serialized into a byte array
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -846,30 +846,6 @@
   <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
     <value>Referencia Fuso</value>
   </data>
-  <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
-    <value>La elípse BLANCA muestra el área de dispersión máxima en el rango de puntería seleccionado.
-La elipse ROJA muestra el área donde el 50% de los proyectiles caen de media.
-La elipse NEGRA muestra el tamaño de un Fuso como referencia.
-
-Dibujar planos:
-1) HORIZONTAL: 
-    muestra el punto de impacto con el agua;
-    seleccionando este plano obtendrás una vista desde arriba;
-    esta es el plano que se desea analizar principalmente cuando se comparan las dispersiones de los barcos;
-    la elipse de este plano se estira verticalmente debido a la velocidad de los proyectiles.
-2) VERTICAL: 
-    muestra el punto de impacto de los proyectiles con una superficie vertical;
-    seleccionando este avión obtendrás una vista desde el frente;
-    útil para un análisis de precisión vertical detallado.
-3) ANGULO DE IMPACTO: 
-    muestra el punto de impacto de los proyectiles con una superficie angulada en el ángulo de impacto de los proyectiles;
-    seleccionando este plano obtendrás una vista desde el ángulo de impacto de los proyectiles;
-    es el plano en el que el juego realmente dibuja la elípse de dispersión durante las batallas;
-    la velocidad de los proyectiles no afecta a la elipse de este plano;
-    útil si quieres comparar la dispersión de buques sin tener en cuenta la velocidad de los proyectiles.
-
-Los barcos en el juego son el doble de grandes que el entorno, por lo que un barco de 200 metros de largo ocupa el espacio de 400m.</value>
-  </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
     <value>Explicación de la trama</value>
   </data>
@@ -890,12 +866,6 @@ Los barcos en el juego son el doble de grandes que el entorno, por lo que un bar
   </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
       <value>Penetración</value>
-  </data>
-  <data name="ShipStats_BlastExplanation" xml:space="preserve">
-    <value>Si el resultado "protección ante explosión del módulo" + "penetración explosiva del armamento" &gt; 0 
-     El módulo puede ser incapacitado.
-Si el resultado "protección ante explosión del módulo" + "penetración explosiva del armamento" &lt;= 0
-     El módulo no puede ser incapacitado.</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
     <value>Reinicio requerido</value>
@@ -1100,5 +1070,26 @@ Si el resultado "protección ante explosión del módulo" + "penetración explos
   </data>
   <data name="ShipStats_SapSalvo" xml:space="preserve">
       <value>SAP</value>
+  </data>
+  <data name="ShipStats_AirCarrier" xml:space="preserve">
+      <value>Portaaviones</value>
+  </data>
+  <data name="ShipStats_Submarine" xml:space="preserve">
+      <value>Submarino</value>
+  </data>
+  <data name="ShipStats_Cruiser" xml:space="preserve">
+      <value>Crucero</value>
+  </data>
+  <data name="ShipStats_Battleship" xml:space="preserve">
+      <value>Acorazado</value>
+  </data>
+  <data name="ShipStats_Destroyer" xml:space="preserve">
+      <value>Destructor</value>
+  </data>
+  <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
+      <value>Habilidades de capitán</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
+      <value>Señales</value>
   </data>
 </root>

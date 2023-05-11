@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
+  <!--
+    Microsoft ResX Schema
+
     Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
     associated with the data types.
-    
+
     Example:
-    
+
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-                
-    There are any number of "resheader" rows that contain simple 
+
+    There are any number of "resheader" rows that contain simple
     name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
     mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
     extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
     read any of the formats listed below.
-    
+
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-    
+
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
+    value   : The object must be serialized into a byte array
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -627,11 +627,11 @@
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>最低速度</value>
   </data>
+  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
+      <value>攻撃中隊のサイズ</value>
+  </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>中隊の機数</value>
-  </data>
-  <data name="ShipStats_PlaneHp" xml:space="preserve">
-    <value>1機あたりのHP</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>復旧時間</value>
@@ -933,30 +933,6 @@
   <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
     <value>扶桑を基準にする</value>
   </data>
-  <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
-    <value>白の楕円は、選択された射撃距離における最大散布界を示しています。
-赤の楕円は、平均50%の砲弾が着弾する面積を示しています。
-黒の楕円は、基準として扶桑の大きさを示しています。
-
-プロット平面:
-1) 水平方向: 
-    砲弾が水面と接触する点を表示します;
-    この面を選択すると、鉛直上方向からの視点に切り替わります;
-    他の船と散布界を比較する場合は、このプロットを使用するとよいでしょう;
-    この平面上の楕円は、砲弾速度の影響で引き伸ばされています。
-2) 垂直方向: 
-    海面に対して垂直な平面と砲弾が接触する点を表示します;
-    この面を選択すると、正面からの視点に切り替わります;
-    垂直散布界の精密な分析を行う際に有効です。
-3) 着弾角度方向: 
-    砲弾の着弾角度に対して垂直な平面と砲弾が接触する点を表示します;
-    この面を選択すると、砲弾の着弾角度からの視点に切り替わります;
-    戦闘において、ゲームが実際に使用する楕円です;
-    この楕円は砲弾速度の影響を受けません;
-    砲弾速度を考慮しない散布界の比較に有効です.
-
-ゲーム内の船は周辺環境の2倍に拡大されているため、200mの船が実際に占めるスペースは400mです。</value>
-  </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
     <value>プロットの説明</value>
   </data>
@@ -992,12 +968,6 @@
   </data>
   <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
       <value>操舵装置</value>
-  </data>
-  <data name="ShipStats_BlastExplanation" xml:space="preserve">
-    <value>"モジュールの爆風耐性" + "兵装の爆風貫通力" &gt; 0 の場合
-     モジュールは機能停止する可能性があります
-"モジュールの爆風耐性" + "兵装の爆風貫通力" &lt;= 0 の場合
-     モジュールは機能停止しません</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
     <value>再起動が必要です</value>
@@ -1504,6 +1474,57 @@
   <data name="BetaAccess_Duplicate" xml:space="preserve">
       <value>は既に有効になっています。</value>
   </data>
+  <data name="ShipStats_MaxSpeedTime" xml:space="preserve">
+      <value>最高速度到達時間</value>
+  </data>
+  <data name="ShipStats_ForwardMaxSpeedTime" xml:space="preserve">
+      <value>最大全速</value>
+  </data>
+  <data name="ShipStats_ReverseMaxSpeedTime" xml:space="preserve">
+      <value>後進</value>
+  </data>
+  <data name="AccelerationChart_Acceleration" xml:space="preserve">
+      <value>加速</value>
+  </data>
+  <data name="AccelerationChart_Time" xml:space="preserve">
+      <value>時間</value>
+  </data>
+  <data name="AccelerationChart_AddRemoveShip" xml:space="preserve">
+      <value>艦艇の追加/削除</value>
+  </data>
+  <data name="Charts_ChangeBuilds" xml:space="preserve">
+      <value>ビルドを変更</value>
+  </data>
+  <data name="AccelerationChart_Explanation" xml:space="preserve">
+      <value>加速チャートの説明</value>
+  </data>
+  <data name="AccelerationChart_CustomDataTitle" xml:space="preserve">
+      <value>カスタムデータを追加</value>
+  </data>
+  <data name="ShipStats_EnginePower" xml:space="preserve">
+      <value>エンジン出力</value>
+  </data>
+  <data name="ShipStats_Tonnage" xml:space="preserve">
+      <value>トン数</value>
+  </data>
+  <data name="ShipStats_ForwardEngineUpTime" xml:space="preserve">
+      <value>前進時エンジン始動時間</value>
+  </data>
+  <data name="ShipStats_BackwardEngineUpTime" xml:space="preserve">
+      <value>後進時エンジン始動時間</value>
+  </data>
+  <data name="ShipStats_ForwardEngineForsag" xml:space="preserve">
+      <value>前進開始時のエンジンブースト</value>
+  </data>
+  <data name="ShipStats_BackwardEngineForsag" xml:space="preserve">
+      <value>後進開始時のエンジンブースト倍率</value>
+  </data>
+  <data name="ShipStats_ForwardEngineForsagMaxSpeed" xml:space="preserve">
+      <value>前進開始時のエンジンブースト作動速度</value>
+  </data>
+  <data name="ShipStats_BackwardEngineForsagMaxSpeed" xml:space="preserve">
+      <value>後進開始時のエンジンブースト作動速度</value>
+  </data>
   <data name="ShipStats_HeSalvo" xml:space="preserve">
       <value>HE</value>
   </data>
@@ -1557,5 +1578,149 @@
   </data>
   <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
       <value>戦術反跳爆撃機</value>
+  </data>
+  <data name="ChartsWeb_Build" xml:space="preserve">
+      <value>ビルド</value>
+  </data>
+  <data name="ShipSelectionWindow_EditBuilds" xml:space="preserve">
+      <value>ビルドを編集</value>
+  </data>
+  <data name="ShipAndShellsSelectionDialog_NoShipSelected" xml:space="preserve">
+      <value>艦艇が選択されていません</value>
+  </data>
+  <data name="ShipStats_TargetAreaRadius" xml:space="preserve">
+      <value>ターゲット半径</value>
+  </data>
+  <data name="ShipStats_ProgressPerAction" xml:space="preserve">
+      <value>アクションごとの進捗増加</value>
+  </data>
+  <data name="ShipStats_InactivityDelay" xml:space="preserve">
+      <value>進捗喪失までの非アクティブ時間</value>
+  </data>
+  <data name="ShipStats_ProgressLossInterval" xml:space="preserve">
+      <value>進捗損失の間隔</value>
+  </data>
+  <data name="ShipStats_ProgressLossPerInterval" xml:space="preserve">
+      <value>1回の進捗損失</value>
+  </data>
+  <data name="ShipStats_ShowAccelerationCharts" xml:space="preserve">
+      <value>加速チャートを表示</value>
+  </data>
+  <data name="BuildStringInputDialog_EnterBuildStringOrLink" xml:space="preserve">
+      <value>ビルド文字列またはリンクを入力してください</value>
+  </data>
+  <data name="WebApp_LoadBuild" xml:space="preserve">
+      <value>ビルドを読み込む</value>
+  </data>
+  <data name="WebApp_GoToShipsPage" xml:space="preserve">
+      <value>艦艇ページに移動</value>
+  </data>
+  <data name="Validation_InvalidBuild" xml:space="preserve">
+      <value>無効なビルド</value>
+  </data>
+  <data name="Validation_Incompatibility" xml:space="preserve">
+      <value>互換性なし</value>
+  </data>
+  <data name="Validation_SelectedShip" xml:space="preserve">
+      <value>選択された艦艇</value>
+  </data>
+  <data name="Validation_ShipInBuild" xml:space="preserve">
+      <value>ビルド内の艦艇</value>
+  </data>
+  <data name="ShipStats_Loaders" xml:space="preserve">
+      <value>装填手</value>
+  </data>
+  <data name="ShipStats_BowLoaders" xml:space="preserve">
+      <value>艦首</value>
+  </data>
+  <data name="ShipStats_SternLoaders" xml:space="preserve">
+      <value>艦尾</value>
+  </data>
+  <data name="ShipStats_First" xml:space="preserve">
+      <value>1番目</value>
+  </data>
+  <data name="ShipStats_Second" xml:space="preserve">
+      <value>2番目</value>
+  </data>
+  <data name="Unit_U" xml:space="preserve">
+      <value>単位</value>
+  </data>
+  <data name="Unit_UPS" xml:space="preserve">
+      <value>単位/s</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxDiveSpeed" xml:space="preserve">
+      <value>最大垂直速度</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsDivingPlaneShiftTime" xml:space="preserve">
+      <value>潜航舵の転舵所要時間</value>
+  </data>
+  <data name="ShipStats_DiveCapacity" xml:space="preserve">
+      <value>容量</value>
+  </data>
+  <data name="ShipStats_DiveCapacityRechargeRate" xml:space="preserve">
+      <value>リチャージ速度</value>
+  </data>
+  <data name="ShipStats_Battery" xml:space="preserve">
+      <value>バッテリー</value>
+  </data>
+  <data name="ShipStats_FirstPing" xml:space="preserve">
+      <value>1 ping</value>
+  </data>
+  <data name="ShipStats_SecondPing" xml:space="preserve">
+      <value>2 ping</value>
+  </data>
+  <data name="Unit_MPS2" xml:space="preserve">
+      <value>m/s²</value>
+  </data>
+  <data name="ShipStats_MaxTurningSpeed" xml:space="preserve">
+      <value>最大旋回速度</value>
+  </data>
+  <data name="ShipStats_TurningAcceleration" xml:space="preserve">
+      <value>旋回加速度</value>
+  </data>
+  <data name="ShipStats_MaxVerticalSpeed" xml:space="preserve">
+      <value>最大垂直速度</value>
+  </data>
+  <data name="ShipStats_VerticalAcceleration" xml:space="preserve">
+      <value>垂直加速度</value>
+  </data>
+  <data name="ShipStats_SearchRadius" xml:space="preserve">
+      <value>探知半径</value>
+  </data>
+  <data name="ShipStats_SearchAngle" xml:space="preserve">
+      <value>探知角度</value>
+  </data>
+  <data name="ShipStats_AirCarrier" xml:space="preserve">
+      <value>航空母船</value>
+  </data>
+  <data name="ShipStats_Submarine" xml:space="preserve">
+      <value>潜水艦</value>
+  </data>
+  <data name="ShipStats_Cruiser" xml:space="preserve">
+      <value>巡洋艦</value>
+  </data>
+  <data name="ShipStats_Battleship" xml:space="preserve">
+      <value>戦艦</value>
+  </data>
+  <data name="ShipStats_Destroyer" xml:space="preserve">
+      <value>駆逐艦</value>
+  </data>
+  <data name="ShipStats_MoreDetails" xml:space="preserve">
+      <value>詳細</value>
+  </data>
+  <data name="ShipStats_CutOffDistances" xml:space="preserve">
+      <value>誘導停止距離</value>
+  </data>
+  <data name="Unit_DegreePerSecond2" xml:space="preserve">
+      <value>°/s²</value>
+  </data>
+  <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
+      <value>艦長スキル</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
+      <value>信号旗</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Consumables" xml:space="preserve">
+      <value>消耗品</value>
   </data>
 </root>
