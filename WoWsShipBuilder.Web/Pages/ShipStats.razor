@@ -197,7 +197,7 @@
     private void AddNewIndexes(List<string> indexList, List<ShipBuildContainer>? buildContainers)
     {
         List<ShipBuildContainer> newShips = new();
-        newShips.AddRange(buildContainers ?? indexList.Select(index => ShipBuildContainer.CreateNew(AppData.ShipDictionary[index], null, null)));
+        newShips.AddRange(buildContainers ?? indexList.Select(index => ShipBuildContainer.CreateNew(AppData.ShipDictionary[index], null, null) with { ShipDataContainer = Helpers.GetStockShipDataContainer(AppData.ShipDictionary[index])} ));
         shipContainers.AddRange(newShips);
     }
 
