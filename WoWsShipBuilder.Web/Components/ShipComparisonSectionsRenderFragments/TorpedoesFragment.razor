@@ -12,7 +12,7 @@
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
     public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer)> TorpedoDataFragment = element => __builder =>
     {
-        string dataSectionString = ShipComparisonDataSections.Torpedo.ShipComparisonDataSectionToString();
+        string dataSectionString = ShipComparisonDataSections.Torpedo.AsString();
 
         var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
         nfi.NumberGroupSeparator = "'";

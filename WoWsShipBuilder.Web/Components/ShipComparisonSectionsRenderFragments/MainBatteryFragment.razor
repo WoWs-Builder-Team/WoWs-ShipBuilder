@@ -8,7 +8,7 @@
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
     public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer, double range, Dictionary<Guid, DispersionContainer> dispersionCache)> MainBatteryDataFragment = element => __builder =>
     {
-        string dataSectionString = ShipComparisonDataSections.MainBattery.ShipComparisonDataSectionToString();
+        string dataSectionString = ShipComparisonDataSections.MainBattery.AsString();
 
         var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
         nfi.NumberGroupSeparator = "'";

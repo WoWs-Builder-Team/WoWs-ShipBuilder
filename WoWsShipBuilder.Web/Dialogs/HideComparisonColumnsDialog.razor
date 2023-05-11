@@ -8,10 +8,10 @@
             <MudStack Row>
                 @foreach (var (section, columns) in switchesLayout)
                 {
-                    <MudPaper Outlined Elevation="0" Square="true" @key="@(section.ShipComparisonDataSectionToString())">
+                    <MudPaper Outlined Elevation="0" Square="true" @key="@(section.AsString())">
                         <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
                             <MudText Typo="Typo.body2" Align="Align.Center" Style="font-weight: bold">
-                                @(section.LocalizeShipComparisonDataSection(Localizer).ToUpper())
+                                @(section.Localize(Localizer).ToUpper())
                             </MudText>
                             @foreach (var column in columns)
                             {
@@ -70,7 +70,7 @@
         {
             foreach (var column in section.Value)
             {
-                result.Add($"{section.Key.ShipComparisonDataSectionToString()}_{column.Key}", !column.Value);
+                result.Add($"{section.Key.AsString()}_{column.Key}", !column.Value);
             }
         }
 

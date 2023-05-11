@@ -4,7 +4,7 @@ namespace WoWsShipBuilder.ViewModels.Other;
 
 public static class ShipComparisonDataSectionExtensions
 {
-    public static string ShipComparisonDataSectionToString(this ShipComparisonDataSections dataSection)
+    public static string AsString(this ShipComparisonDataSections dataSection)
     {
         return dataSection switch
         {
@@ -33,7 +33,7 @@ public static class ShipComparisonDataSectionExtensions
         };
     }
 
-    public static string LocalizeShipComparisonDataSection(this ShipComparisonDataSections dataSection, ILocalizer localizer)
+    public static string Localize(this ShipComparisonDataSections dataSection, ILocalizer localizer)
     {
         return dataSection switch
         {
@@ -58,7 +58,7 @@ public static class ShipComparisonDataSectionExtensions
             ShipComparisonDataSections.Bombers => localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Bombers)),
             ShipComparisonDataSections.Bombs => localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Bombs)),
             ShipComparisonDataSections.Sonar => localizer.SimpleAppLocalization(nameof(Translation.ShipStats_PingerGun)),
-            _ => ShipComparisonDataSectionToString(dataSection),
+            _ => AsString(dataSection),
         };
     }
 }

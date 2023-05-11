@@ -7,7 +7,7 @@
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
     public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer)> RocketsDataFragment = element => __builder =>
     {
-        string dataSectionString = ShipComparisonDataSections.Rockets.ShipComparisonDataSectionToString();
+        string dataSectionString = ShipComparisonDataSections.Rockets.AsString();
 
         var columnTitlePlane = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Plane))}";
         var columnTitleType = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Type))}";

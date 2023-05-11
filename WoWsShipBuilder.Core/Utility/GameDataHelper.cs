@@ -70,7 +70,7 @@ public static class GameDataHelper
         };
     }
 
-    public static char ClassToUrlIndex(ShipClass shipClass)
+    public static char ClassToIndex(ShipClass shipClass)
     {
         return shipClass switch
         {
@@ -83,7 +83,7 @@ public static class GameDataHelper
         };
     }
 
-    public static ShipClass UrlIndexToClass(string index)
+    public static ShipClass IndexToClass(string index)
     {
         return index[0] switch
         {
@@ -96,7 +96,7 @@ public static class GameDataHelper
         };
     }
 
-    public static Nation UrlIndexToNation(string index)
+    public static Nation IndexToNation(string index)
     {
         return index[0] switch
         {
@@ -117,7 +117,7 @@ public static class GameDataHelper
         };
     }
 
-    public static char NationToUrlIndex(Nation nation)
+    public static char NationToIndex(Nation nation)
     {
         return nation switch
         {
@@ -138,7 +138,7 @@ public static class GameDataHelper
         };
     }
 
-    public static string CategoryToUrlIndex(ShipCategory category)
+    public static string CategoryToIndex(ShipCategory category)
     {
         return category switch
         {
@@ -151,7 +151,7 @@ public static class GameDataHelper
         };
     }
 
-    public static ShipCategory UrlIndexToCategory(string index)
+    public static ShipCategory IndexToCategory(string index)
     {
         return index switch
         {
