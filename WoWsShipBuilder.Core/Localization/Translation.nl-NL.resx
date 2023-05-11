@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
+  <!--
+    Microsoft ResX Schema
+
     Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
     associated with the data types.
-    
+
     Example:
-    
+
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-                
-    There are any number of "resheader" rows that contain simple 
+
+    There are any number of "resheader" rows that contain simple
     name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
     mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
     extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
     read any of the formats listed below.
-    
+
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-    
+
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
+    value   : The object must be serialized into a byte array
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -849,30 +849,6 @@
   <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
     <value>Fuso Referentie</value>
   </data>
-  <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
-    <value>De WITTE ellips toont het maximale dispersiegebied op de geselecteerde afstand.
-De RODE ellips laat zien waar gemiddeld 50% van de granaten terechtkomt.
-De ZWARTE ellips toont de grootte van een Fuso als referentie.
-
-Plot oppervlak:
-1) HORIZONTAAL: 
-    toont het impact punt van de granaten met het water;
-    door dit vlak te selecteren krijgt je een weergave van bovenaf;
-    dit is de plot waar je vooral naar wilt kijken als je de dispersie van schepen vergelijkt;
-    de ellips op dit oppervlak is verticaal uitgerekt vanwege de snelheid van granaten.
-2) VERTICAAL: 
-    toont het impact punt van de granaten met een verticaal oppervlak;
-    door dit vlak te selecteren krijg je een beeld vanaf de voorkant;
-    handig voor nauwkeurige verticale dispersie analyse.
-3) IMPACT HOEK: 
-     toont het impact punt van de granaten met een oppervlak onder een hoek van de inslaghoek van de granaten;
-    door dit vlak te selecteren krijg je een beeld vanuit de invalshoek van de granaten.
-    dit is het vlak waar het spel de dispersie ellips tekent tijdens gevechten;
-    de ellips op dit vlak is niet beïnvloed door de snelheid van granaten;
-    handig als je de dispersie van schepen wilt vergelijken zonder rekening te houden met de snelheid van de granaten.
-
-Schepen in het spel zijn twee keer zo groot als de omgeving, dus een 200 meter lang schip neemt 400 m ruimte in.</value>
-  </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
     <value>Plot uitleg</value>
   </data>
@@ -893,12 +869,6 @@ Schepen in het spel zijn twee keer zo groot als de omgeving, dus een 200 meter l
   </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
       <value>Penetratie</value>
-  </data>
-  <data name="ShipStats_BlastExplanation" xml:space="preserve">
-    <value>Als "module explosie bescherming" + "bewapening explosie penetratie" &gt; 0 
-     De module kan beschadigd worden.
-Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
-     De module kan niet beschadigd worden.</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
     <value>Herstart vereist</value>
@@ -1103,5 +1073,26 @@ Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
   </data>
   <data name="ShipStats_SapSalvo" xml:space="preserve">
       <value>SPD</value>
+  </data>
+  <data name="ShipStats_AirCarrier" xml:space="preserve">
+      <value>Vliegdekschip</value>
+  </data>
+  <data name="ShipStats_Submarine" xml:space="preserve">
+      <value>Duikboot</value>
+  </data>
+  <data name="ShipStats_Cruiser" xml:space="preserve">
+      <value>Kruiser</value>
+  </data>
+  <data name="ShipStats_Battleship" xml:space="preserve">
+      <value>Slagschip</value>
+  </data>
+  <data name="ShipStats_Destroyer" xml:space="preserve">
+      <value>Torpedobootjager</value>
+  </data>
+  <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
+      <value>Kapitein vaardigheden</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
+      <value>Signalen</value>
   </data>
 </root>
