@@ -687,9 +687,13 @@ public partial class ShipComparisonViewModel : ViewModelBase
     {
         GridDataWrapper newWrapper;
 
-        if (obj is GridDataWrapper container)
+        if (obj is GridDataWrapper wrapper)
         {
-            newWrapper = container;
+            newWrapper = wrapper;
+        }
+        else if (obj is ShipBuildContainer container)
+        {
+            newWrapper = new(container);
         }
         else if (obj is Ship ship)
         {
