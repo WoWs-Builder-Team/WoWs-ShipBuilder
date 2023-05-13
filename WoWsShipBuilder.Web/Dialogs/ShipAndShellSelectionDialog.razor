@@ -38,16 +38,16 @@
                         <MudItem Class="d-flex" Style="flex-direction: column">
                             <MudItem Class="d-flex mt-2" Style="justify-content: space-between">
                                 <MudText Typo="Typo.caption" Class="my-auto">
-                                    @Localizer.GetGameLocalization($"{dataWrapper.ShipContainer.Ship.Index}_FULL").Localization
+                                    @Localizer.GetGameLocalization($"{dataWrapper.ShipBuildContainer.Ship.Index}_FULL").Localization
                                 </MudText>
                                 <MudIconButton Icon="@Icons.Material.Filled.Clear" Color="Color.Primary" Size="Size.Small" OnClick="@(() => RemoveShip(dataWrapper))"/>
                             </MudItem>
-                            @if (dataWrapper.ShipContainer.ShipDataContainer!.MainBatteryDataContainer is not null && dataWrapper.ShipContainer.ShipDataContainer.MainBatteryDataContainer.ShellData.Count > 0)
+                            @if (dataWrapper.ShipBuildContainer.Ship.MainBatteryModuleList.Any())
                             {
                                 <MudButtonGroup OverrideStyles="false" VerticalAlign="true" Class="gap-1">
-                                    @foreach (string shell in dataWrapper.ShipContainer.Ship.ShellCompatibilities.Keys)
+                                    @foreach (string shell in dataWrapper.ShipBuildContainer.Ship.ShellCompatibilities.Keys)
                                     {
-                                        <MudButton Disabled="@(disabledShells.ContainsKey(dataWrapper.ShipContainer.Id) && disabledShells[dataWrapper.ShipContainer.Id].Any(item => item.Value.Contains(shell)))" Color="@(GetColorFromBool(dataWrapper.SelectedShells.ContainsKey(shell)))" Variant="@(GetVariantFromBool(dataWrapper.SelectedShells.ContainsKey(shell)))" DisableElevation="true" OnClick="@(() => ToggleSelection(dataWrapper, shell))">
+                                        <MudButton Disabled="@(disabledShells.ContainsKey(dataWrapper.ShipBuildContainer.Id) && disabledShells[dataWrapper.ShipBuildContainer.Id].Any(item => item.Value.Contains(shell)))" Color="@(GetColorFromBool(dataWrapper.SelectedShells.ContainsKey(shell)))" Variant="@(GetVariantFromBool(dataWrapper.SelectedShells.ContainsKey(shell)))" DisableElevation="true" OnClick="@(() => ToggleSelection(dataWrapper, shell))">
                                             @Localizer.GetGameLocalization(shell).Localization
                                         </MudButton>
                                     }
@@ -60,7 +60,7 @@
                                 </MudText>
                             }
                             <MudText Typo="Typo.caption" Class="my-1">
-                                @($"{Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {(!string.IsNullOrWhiteSpace(dataWrapper.ShipContainer.Build?.BuildName) ? dataWrapper.ShipContainer.Build.BuildName : ShipComparisonViewModel.DefaultBuildName)}")
+                                @($"{Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {(!string.IsNullOrWhiteSpace(dataWrapper.ShipBuildContainer.Build?.BuildName) ? dataWrapper.ShipBuildContainer.Build.BuildName : ShipComparisonViewModel.DefaultBuildName)}")
                             </MudText>
                             <MudDivider Light="true"/>
                         </MudItem>
@@ -164,17 +164,17 @@
         List<Guid> shipsToRemove = new();
 
         //newly added ships
-        shipsToAdd.AddRange(dataWrappers.Where(current => !initialShips.Select(x => x.ShipContainer.Id).Contains(current.ShipContainer.Id) && current.SelectedShells.Count != 0));
+        shipsToAdd.AddRange(dataWrappers.Where(current => !initialShips.Select(x => x.ShipBuildContainer.Id).Contains(current.ShipBuildContainer.Id) && current.SelectedShells.Count != 0));
 
         //removed ships
-        shipsToRemove.AddRange(initialShips.Where(current => !dataWrappers.Select(x => x.ShipContainer.Id).Contains(current.ShipContainer.Id)).Select(x => x.ShipContainer.Id));
+        shipsToRemove.AddRange(initialShips.Where(current => !dataWrappers.Select(x => x.ShipBuildContainer.Id).Contains(current.ShipBuildContainer.Id)).Select(x => x.ShipBuildContainer.Id));
 
         //modified ship
-        var commonShips = dataWrappers.Where(current => initialShips.Select(x => x.ShipContainer.Id).Contains(current.ShipContainer.Id));
+        var commonShips = dataWrappers.Where(current => initialShips.Select(x => x.ShipBuildContainer.Id).Contains(current.ShipBuildContainer.Id));
         foreach (var ship in commonShips)
         {
 
-            var initialShip = initialShips.First(x => x.ShipContainer.Id.Equals(ship.ShipContainer.Id));
+            var initialShip = initialShips.First(x => x.ShipBuildContainer.Id.Equals(ship.ShipBuildContainer.Id));
             //we sort the lists
             var initialShells = initialShip.SelectedShells.Keys.ToList();
             initialShells.Sort();
@@ -183,7 +183,7 @@
 
             if (ship.SelectedShells.Count == 0)
             {
-                shipsToRemove.Add(ship.ShipContainer.Id);
+                shipsToRemove.Add(ship.ShipBuildContainer.Id);
             }
             else if (!initialShells.SequenceEqual(currentShells))
             {
@@ -191,7 +191,7 @@
             }
         }
 
-        ShipAndShellSelectionDialogOutput output = new(SetCompatibleModules(shipsToAdd), SetCompatibleModules(shipsToModify).ToDictionary(item => item.ShipContainer.Id, item => item), shipsToRemove, shouldGoToBuildWindow);
+        ShipAndShellSelectionDialogOutput output = new(SetCompatibleModules(shipsToAdd), SetCompatibleModules(shipsToModify).ToDictionary(item => item.ShipBuildContainer.Id, item => item), shipsToRemove, shouldGoToBuildWindow);
         processing = false;
         MudDialog.Close(DialogResult.Ok(output));
     }
@@ -211,42 +211,42 @@
             var selectedShells = wrapper.SelectedShells.Keys;
             if (selectedShells.Count > 1)
             {
-                var shellModuleList = wrapper.ShipContainer.Ship.ShellCompatibilities.Where(x => selectedShells.Contains(x.Key)).Select(x => x.Value).SelectMany(x => x.CompatibleHullArtilleryModulesCombo);
+                var shellModuleList = wrapper.ShipBuildContainer.Ship.ShellCompatibilities.Where(x => selectedShells.Contains(x.Key)).Select(x => x.Value).SelectMany(x => x.CompatibleHullArtilleryModulesCombo);
                 var commonHulls = shellModuleList.GroupBy(x => x.Key).Where(x => x.Count() > 1).SelectMany(x => x).ToList();
                 commonHullName = commonHulls.MinBy(x => x.Key).Key;
                 commonArtilleryName = commonHulls.SelectMany(x => x.Value).GroupBy(x => x).Where(x => x.Count() > 1).SelectMany(x => x).MinBy(x => x)!;
             }
             else
             {
-                commonHullName = wrapper.ShipContainer.Ship.ShellCompatibilities[selectedShells.Single()].CompatibleHullArtilleryModulesCombo.Keys.First();
-                commonArtilleryName = wrapper.ShipContainer.Ship.ShellCompatibilities[selectedShells.Single()].CompatibleHullArtilleryModulesCombo[commonHullName].First();
+                commonHullName = wrapper.ShipBuildContainer.Ship.ShellCompatibilities[selectedShells.Single()].CompatibleHullArtilleryModulesCombo.Keys.First();
+                commonArtilleryName = wrapper.ShipBuildContainer.Ship.ShellCompatibilities[selectedShells.Single()].CompatibleHullArtilleryModulesCombo[commonHullName].First();
             }
 
-            var ship = wrapper.ShipContainer.Ship;
+            var ship = wrapper.ShipBuildContainer.Ship;
             var commonHull = ship.ShipUpgradeInfo.ShipUpgrades.Single(x => x.UcType.Equals(ComponentType.Hull) && x.Components.Any(y => y.Value.Contains(commonHullName)) && x.Components.Any(y => y.Value.Contains(commonArtilleryName)));
             var commonArtillery = ship.ShipUpgradeInfo.ShipUpgrades.Single(x => x.UcType.Equals(ComponentType.Artillery) && x.Components.Any(y => y.Value.Contains(commonArtilleryName)));
 
-            if (wrapper.ShipContainer.Build is null)
+            if (wrapper.ShipBuildContainer.Build is null)
             {
                 var shipConfiguration = Helpers.GetStockShipConfiguration(ship);
                 Helpers.UpgradeModuleInShipConfiguration(shipConfiguration, commonHull);
                 Helpers.UpgradeModuleInShipConfiguration(shipConfiguration, commonArtillery);
-                var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, wrapper.ShipContainer.Modifiers ?? new());
+                var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, wrapper.ShipBuildContainer.Modifiers ?? new());
                 Build build = new(string.Empty, ship.Index, ship.ShipNation, shipConfiguration.Select(x => x.Name.NameToIndex()).ToList(), new(), Helpers.GetStockConsumableNames(ship), "PCW001", new(), new());
-                var container = wrapper.ShipContainer with { ShipDataContainer = dataContainer, Build = build };
-                var newWrapper = wrapper with { ShipContainer = container };
+                var container = wrapper.ShipBuildContainer with { ShipDataContainer = dataContainer, Build = build };
+                var newWrapper = wrapper with { ShipBuildContainer = container };
                 newWrappers.Add(newWrapper);
             }
             else
             {
-                var build = wrapper.ShipContainer.Build;
+                var build = wrapper.ShipBuildContainer.Build;
                 var shipConfiguration = Helpers.GetShipConfigurationFromBuild(build.Modules, ship.ShipUpgradeInfo.ShipUpgrades);
                 Helpers.UpgradeModuleInShipConfiguration(shipConfiguration, commonHull);
                 Helpers.UpgradeModuleInShipConfiguration(shipConfiguration, commonArtillery);
-                var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, wrapper.ShipContainer.Modifiers ?? new());
+                var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, wrapper.ShipBuildContainer.Modifiers ?? new());
                 Build newBuild = new(build.BuildName, ship.Index, ship.ShipNation, shipConfiguration.Select(x => x.Name.NameToIndex()).ToList(), build.Upgrades.ToList(), build.Consumables.ToList(), build.Captain, build.Skills.ToList(), build.Signals.ToList());
-                var container = wrapper.ShipContainer with { ShipDataContainer = dataContainer, Build = newBuild };
-                var newWrapper = wrapper with { ShipContainer = container };
+                var container = wrapper.ShipBuildContainer with { ShipDataContainer = dataContainer, Build = newBuild };
+                var newWrapper = wrapper with { ShipBuildContainer = container };
                 newWrappers.Add(newWrapper);
             }
         }
@@ -270,7 +270,7 @@
 
     private void AddDisableShells(ChartsDataWrapper wrapper, string shellIndex)
     {
-        var shellCompatibilities = wrapper.ShipContainer.Ship.ShellCompatibilities.ToDictionary(item => item.Key, item => item.Value);
+        var shellCompatibilities = wrapper.ShipBuildContainer.Ship.ShellCompatibilities.ToDictionary(item => item.Key, item => item.Value);
         var compatibleCombo = shellCompatibilities[shellIndex];
         shellCompatibilities.Remove(shellIndex);
         List<string> incompatibleShells = new();
@@ -292,7 +292,7 @@
                 }
             }
         }
-        var id = wrapper.ShipContainer.Id;
+        var id = wrapper.ShipBuildContainer.Id;
         if (disabledShells.TryGetValue(id, out Dictionary<string, List<string>>? disabledShell))
         {
             disabledShell.Add(shellIndex, incompatibleShells);
@@ -305,7 +305,7 @@
 
     private void RemoveDisabledShells(ChartsDataWrapper wrapper, string shellIndex)
     {
-        var id = wrapper.ShipContainer.Id;
+        var id = wrapper.ShipBuildContainer.Id;
         disabledShells[id].Remove(shellIndex);
         if (!disabledShells[id].Any())
         {

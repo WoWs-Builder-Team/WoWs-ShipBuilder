@@ -107,9 +107,9 @@
                 buildList = null;
             }
 
-            var indexes = shipIndexesFromUrl.Split(",").ToList();
-            AddNewIndexes(indexes, buildList);
+            AddNewIndexes(shipIndexesFromUrl.Split(",").ToList(), buildList);
         }
+
         UpdateUrl();
     }
 
@@ -138,6 +138,7 @@
             AddNewIndexes(new() { newShipIndex }, null);
             selectedTabId = shipContainers.Last().Id;
         }
+
         UpdateUrl();
         updateTab = true;
         StateHasChanged();
@@ -167,6 +168,7 @@
                 mudTabs.ActivatePanel(shipContainers.Last().Id);
             }
         }
+
         UpdateUrl();
     }
 
@@ -196,12 +198,10 @@
 
     private void AddNewIndexes(List<string> indexList, List<ShipBuildContainer>? buildContainers)
     {
-        List<ShipBuildContainer> newShips = new();
-        newShips.AddRange(buildContainers ?? indexList.Select(index => ShipBuildContainer.CreateNew(AppData.ShipDictionary[index], null, null)));
-        shipContainers.AddRange(newShips);
+        shipContainers.AddRange(buildContainers ?? indexList.Select(index => ShipBuildContainer.CreateNew(AppData.ShipDictionary[index], null, null)));
     }
 
-    private async Task<List<string>> StoreBuildsForCharts()
+    private async Task<List<string>> StoreBuildsForTransfer(bool calculateShipDataContainer)
     {
         List<ShipBuildContainer> buildContainers = new();
         List<string> shipIndexes = new();
@@ -210,7 +210,7 @@
             var vmCacheEntry = cache.GetOrDefault(container.Id);
             if (vmCacheEntry is not null)
             {
-                buildContainers.Add(ShipStatsContainer.GetBuildContainer(container.Id, vmCacheEntry));
+                buildContainers.Add(ShipStatsContainer.GetBuildContainer(container.Id, vmCacheEntry, calculateShipDataContainer));
             }
             else
             {
@@ -223,11 +223,11 @@
                     modifiers.AddRange(viewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
                     modifiers.AddRange(viewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
 
-                    buildContainers.Add(container with { Modifiers = modifiers, ShipDataContainer = Helpers.GetShipDataContainerFromBuild(container.Ship, container.Build.Modules, container.Ship.ShipUpgradeInfo.ShipUpgrades, modifiers) });
+                    buildContainers.Add(container with { Modifiers = modifiers, ShipDataContainer = calculateShipDataContainer ? Helpers.GetShipDataContainerFromBuild(container.Ship, container.Build.Modules, container.Ship.ShipUpgradeInfo.ShipUpgrades, modifiers) : null });
                 }
                 else
                 {
-                    buildContainers.Add(container.ShipDataContainer is not null ? container : container with { ShipDataContainer = Helpers.GetStockShipDataContainer(container.Ship) });
+                    buildContainers.Add(container with { ShipDataContainer = calculateShipDataContainer ? Helpers.GetStockShipDataContainer(container.Ship) : null });
                 }
             }
 
@@ -240,19 +240,19 @@
 
     private async Task OpenBallisticCharts()
     {
-        var shipIndexes = await StoreBuildsForCharts();
+        var shipIndexes = await StoreBuildsForTransfer(false);
         NavManager.NavigateTo($"/charts?shipIndex={string.Join(",", shipIndexes)}");
     }
 
     private async Task OpenAccelerationCharts()
     {
-        var shipIndexes = await StoreBuildsForCharts();
+        var shipIndexes = await StoreBuildsForTransfer(false);
         NavManager.NavigateTo($"/acceleration-charts?shipIndexes={string.Join(",", shipIndexes)}");
     }
 
     private async Task OpenShipComparison()
     {
-        await StoreBuildsForCharts();
+        await StoreBuildsForTransfer(true);
         NavManager.NavigateTo("/comparison");
     }
 

@@ -267,12 +267,12 @@
         if (MultiSelect)
         {
             var ship = AppData.ShipDictionary[shipIndex];
-            SelectedShips.Add(ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer = Helpers.GetStockShipDataContainer(ship) });
+            SelectedShips.Add(ShipBuildContainer.CreateNew(ship, null, null));
         }
         else if (!MultiSelect && SelectedShips.Count == 0)
         {
             var ship = AppData.ShipDictionary[shipIndex];
-            SelectedShips.Add(ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer = Helpers.GetStockShipDataContainer(ship) });
+            SelectedShips.Add(ShipBuildContainer.CreateNew(ship, null, null));
         }
         if (AllowCopies)
         {
@@ -300,7 +300,7 @@
         var result = await dialog.Result;
         if (!result.Canceled && result.Data is Build build)
         {
-            SelectedShips.Replace(SelectedShips.Single(x => x.Id.Equals(ship.Id)), ship with { Build = build, ShipDataContainer = null });
+            SelectedShips.Replace(SelectedShips.Single(x => x.Id.Equals(ship.Id)), ship with { Build = build });
         }
     }
 }

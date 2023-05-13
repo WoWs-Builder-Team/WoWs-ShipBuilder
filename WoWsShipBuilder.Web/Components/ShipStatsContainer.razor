@@ -171,7 +171,9 @@
             Cache[CurrentTabId] = new(null!);
             ViewModel = await LoadShipViewModel(ShipIndex);
             Cache[CurrentTabId] = Cache[CurrentTabId]! with { ViewModel = ViewModel };
-            await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
+
+            //Is this really needed?
+            //await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
         }
 
         initialized = true;
@@ -323,12 +325,12 @@
         }
     }
 
-    private void StoreBuildsForTransfer()
+    private void StoreBuildsForTransfer(bool calculateShipDataContainer)
     {
-        SessionStateCache.SetBuildTransferContainers(GetBuildContainer(CurrentTabId, Cache[CurrentTabId]!));
+        SessionStateCache.SetBuildTransferContainers(GetBuildContainer(CurrentTabId, Cache[CurrentTabId]!, calculateShipDataContainer));
     }
 
-    public static ShipBuildContainer GetBuildContainer(Guid containerId, VmCacheEntry cacheEntry)
+    public static ShipBuildContainer GetBuildContainer(Guid containerId, VmCacheEntry cacheEntry, bool calculateShipDataContainer)
     {
         List<(string, float)> modifiers = cacheEntry.ViewModel.UpgradePanelViewModel.GetModifierList();
         modifiers.AddRange(cacheEntry.ViewModel.ConsumableViewModel.GetModifiersList());
@@ -342,7 +344,11 @@
         var ship = AppData.FindShipFromSummary(cacheEntry.ViewModel.CurrentShip);
         var build = isCustomBuild ? cacheEntry.ViewModel.CreateBuild(cacheEntry.BuildName) : null;
         var activeConsumables = cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.Any() ? cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots : null;
-        var shipDataContainer = build is null ? Helpers.GetStockShipDataContainer(ship) : Helpers.GetShipDataContainerFromBuild(ship, build.Modules, ship.ShipUpgradeInfo.ShipUpgrades, modifiers);
+        ShipDataContainer? shipDataContainer = null;
+        if (calculateShipDataContainer)
+        {
+            shipDataContainer = build is null ? Helpers.GetStockShipDataContainer(ship) : Helpers.GetShipDataContainerFromBuild(ship, build.Modules, ship.ShipUpgradeInfo.ShipUpgrades, modifiers);
+        }
 
         return new(ship, build, containerId, activeConsumables, false, shipDataContainer, modifiers);
     }

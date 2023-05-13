@@ -112,7 +112,7 @@
 
             NavManager.TryGetQueryString("shipIndexes", out string shipIndexesFromUrl);
 
-            var buildContainers = SessionStateCache.GetAndResetBuildTransferContainers() ?? (!string.IsNullOrWhiteSpace(shipIndexesFromUrl) ? shipIndexesFromUrl.Split(',').Select(x => ShipBuildContainer.CreateNew(AppData.ShipDictionary[x], null, null) with { ShipDataContainer = Helpers.GetStockShipDataContainer(AppData.ShipDictionary[x]) }) : null);
+            var buildContainers = SessionStateCache.GetAndResetBuildTransferContainers() ?? (!string.IsNullOrWhiteSpace(shipIndexesFromUrl) ? shipIndexesFromUrl.Split(',').Select(x => ShipBuildContainer.CreateNew(AppData.ShipDictionary[x], null, null)) : null);
 
             if (buildContainers is not null)
             {
