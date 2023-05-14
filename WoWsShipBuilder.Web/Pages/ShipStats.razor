@@ -223,11 +223,11 @@
                     modifiers.AddRange(viewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
                     modifiers.AddRange(viewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
 
-                    buildContainers.Add(container with { Modifiers = modifiers, ShipDataContainer = calculateShipDataContainer ? Helpers.GetShipDataContainerFromBuild(container.Ship, container.Build.Modules, container.Ship.ShipUpgradeInfo.ShipUpgrades, modifiers) : null });
+                    buildContainers.Add(container with { Modifiers = modifiers, ShipDataContainer = calculateShipDataContainer ? Helpers.GetShipDataContainerFromBuild(container.Ship, container.Build.Modules, container.Ship.ShipUpgradeInfo.ShipUpgrades, modifiers) : container.ShipDataContainer });
                 }
                 else
                 {
-                    buildContainers.Add(container with { ShipDataContainer = calculateShipDataContainer ? Helpers.GetStockShipDataContainer(container.Ship) : null });
+                    buildContainers.Add(calculateShipDataContainer ? container with { ShipDataContainer = Helpers.GetStockShipDataContainer(container.Ship) } : container);
                 }
             }
 

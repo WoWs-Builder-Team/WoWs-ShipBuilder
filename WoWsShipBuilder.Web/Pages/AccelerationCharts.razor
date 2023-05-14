@@ -150,7 +150,8 @@
                 {
                     modules.AddRange(upgradeList.Where(upgrade => shipWrapper.Build.Modules.Contains(upgrade.Name.NameToIndex())));
                 }
-                hull = shipWrapper.Ship.Hulls[modules.First(x => x.UcType == ComponentType.Hull).Components.First(x => x.Key == ComponentType.Hull).Value.Single()];
+
+                hull = shipWrapper.Ship.Hulls[modules.First(x => x.UcType == ComponentType.Hull).Components.First(x => x.Key == ComponentType.Hull).Value.First()];
                 engine = shipWrapper.Ship.Engines[modules.First(x => x.UcType == ComponentType.Engine).Components.First(x => x.Key == ComponentType.Engine).Value.First()];
             }
             else
@@ -166,6 +167,7 @@
             var newChartData = new NewChartDataInput(shipWrapper.Id.ToString(), label, shipData, chartShipCounter);
             newData.Add(newChartData);
         }
+
         await ChartJsInterop.BatchAddDataAsync(chartIds, newData);
     }
 
@@ -186,6 +188,7 @@
                 {
                     modules.AddRange(upgradeList.Where(upgrade => shipWrapper.Build.Modules.Contains(upgrade.Name.NameToIndex())));
                 }
+
                 hull = shipWrapper.Ship.Hulls[modules.First(x => x.UcType == ComponentType.Hull).Components.First(x => x.Key == ComponentType.Hull).Value.First()];
                 engine = shipWrapper.Ship.Engines[modules.First(x => x.UcType == ComponentType.Engine).Components.First(x => x.Key == ComponentType.Engine).Value.First()];
             }
@@ -206,7 +209,6 @@
     {
         string knots = Localizer.GetAppLocalization(nameof(Translation.Unit_Knots)).Localization;
         string s = Localizer.GetAppLocalization(nameof(Translation.Unit_S)).Localization;
-
 
         double aspectRatio = 3;
         if (Breakpoint is Breakpoint.Sm or Breakpoint.Xs)
@@ -276,6 +278,7 @@
                 guidsToRemove.Add(shipContainer.Id.ToString());
                 shipBuildCache.Remove(shipCounter);
             }
+
             if (shipBuildCache.Count == 0)
             {
                 counter = 0;
@@ -310,7 +313,6 @@
                             shipsToUpdate.Add(chartShipCounter, newContainer);
                         }
                     }
-
                 }
 
                 await AddShipsBatchAsync(shipsToAdd);
@@ -326,6 +328,7 @@
                     shipBuildCache.Add(counter, shipBuildContainer);
                     counter++;
                 }
+
                 await AddShipsBatchAsync(shipsToAdd);
             }
 
@@ -362,6 +365,7 @@
             {
                 shipBuildCache[chartShipCounter] = newContainer;
             }
+
             await UpdateShipsBatchAsync(changedShips);
         }
     }
@@ -381,6 +385,7 @@
                 thirdGear = value;
                 break;
         }
+
         await UpdateShipsBatchAsync(shipBuildCache);
     }
 
@@ -395,6 +400,7 @@
                 filteredList.Add(oldContainer.Key, newContainer);
             }
         }
+
         return filteredList;
     }
 

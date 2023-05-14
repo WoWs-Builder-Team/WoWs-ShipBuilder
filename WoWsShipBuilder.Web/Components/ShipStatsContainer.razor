@@ -171,9 +171,6 @@
             Cache[CurrentTabId] = new(null!);
             ViewModel = await LoadShipViewModel(ShipIndex);
             Cache[CurrentTabId] = Cache[CurrentTabId]! with { ViewModel = ViewModel };
-
-            //Is this really needed?
-            //await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
         }
 
         initialized = true;

@@ -94,8 +94,8 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
         var speedBoostBackwardEngineForsag = modifiers.FindModifiers("speedBoost_backwardEngineForsag", true).FirstOrDefault(0);
         var speedBoostAccelerationModifiers = new AccelerationHelper.SpeedBoostAccelerationModifiers(speedBoostEngineForwardForsageMaxSpeedOverride, speedBoostEngineBackwardEngineForsagOverride, speedBoostForwardEngineForsagOverride, speedBoostBackwardEngineForsag);
 
-        List<int> forward = new List<int> { AccelerationHelper.Zero, AccelerationHelper.FullAhead };
-        List<int> reverse = new List<int> { AccelerationHelper.Zero, AccelerationHelper.FullReverse };
+        List<int> forward = new() { AccelerationHelper.Zero, AccelerationHelper.FullAhead };
+        List<int> reverse = new() { AccelerationHelper.Zero, AccelerationHelper.FullReverse };
 
         var timeForward = AccelerationHelper.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, forward, accelerationModifiers, speedBoostAccelerationModifiers).TimeForGear.Single();
         var timeBackward = AccelerationHelper.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, reverse, accelerationModifiers, speedBoostAccelerationModifiers).TimeForGear.Single();
