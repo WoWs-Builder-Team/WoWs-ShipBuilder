@@ -32,7 +32,7 @@
                     <MudItem xs="12">
                         <MudDivider Light="true"/>
                     </MudItem>
-                    @foreach (var modifier in ViewModel.ConditionalModifiersList)
+                    foreach (var modifier in ViewModel.ConditionalModifiersList)
                     {
                         <MudItem xs="7">
                             <MudText Style="font-weight: bold">@Localizer.GetGameLocalization("SKILL_" + ToSnakeCase(modifier.SkillName)).Localization</MudText>
@@ -51,7 +51,7 @@
                     <MudItem xs="12">
                         <MudDivider Light="true"/>
                     </MudItem>
-                    @foreach (var talent in ViewModel.CaptainTalentsList)
+                    foreach (var talent in ViewModel.CaptainTalentsList)
                     {
                         <MudItem xs="7">
                             <MudStack>
@@ -61,7 +61,7 @@
                                 {
                                     // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
                                     var modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
-                                    @if (!string.IsNullOrEmpty(modifierString))
+                                    if (!string.IsNullOrEmpty(modifierString))
                                     {
                                         <MudText Align="Align.Left" Typo="Typo.body2">@modifierString</MudText>
                                     }

@@ -100,7 +100,7 @@ public static class ModifierProcessor
                               str.Contains("regenerationHPSpeed", StringComparison.InvariantCultureIgnoreCase) ||
                               (str.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase) && !returnFilter.Equals(ReturnFilter.All)):
             {
-                value = $"+{Math.Round(modifier * 100, 1)}%";
+                value = modifier > 1 ? $"+{modifier}" : $"+{Math.Round(modifier * 100, 1)} %";
                 if (str.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase))
                 {
                     value += $"/{localizer.GetAppLocalization(nameof(Translation.Unit_S)).Localization}";
