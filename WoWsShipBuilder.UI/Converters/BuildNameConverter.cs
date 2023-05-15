@@ -2,7 +2,7 @@
 using System.Globalization;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
-using WoWsShipBuilder.Core.Builds;
+using WoWsShipBuilder.Common.Builds;
 using WoWsShipBuilder.UI.Settings;
 
 namespace WoWsShipBuilder.UI.Converters;

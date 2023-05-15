@@ -3,7 +3,8 @@ using System.Globalization;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
-using WoWsShipBuilder.Core.Utility;
+using WoWsShipBuilder.Common.Infrastructure;
+using WoWsShipBuilder.Common.Infrastructure.GameData;
 using WoWsShipBuilder.DataStructures;
 using Brushes = Avalonia.Media.Brushes;
 

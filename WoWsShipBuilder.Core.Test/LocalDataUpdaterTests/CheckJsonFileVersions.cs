@@ -6,6 +6,8 @@ using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using NUnit.Framework;
+using WoWsShipBuilder.Common.Infrastructure;
+using WoWsShipBuilder.Common.Infrastructure.GameData;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataProvider.Updater;
 using WoWsShipBuilder.DataStructures;

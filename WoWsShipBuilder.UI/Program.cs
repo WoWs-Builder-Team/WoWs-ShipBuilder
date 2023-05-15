@@ -5,6 +5,7 @@ using Avalonia;
 using NLog;
 using Sentry;
 using Squirrel;
+using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Settings;

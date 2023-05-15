@@ -1,10 +1,11 @@
-﻿@using WoWsShipBuilder.Core.DataContainers
-@using WoWsShipBuilder.Web.Services
+﻿@using WoWsShipBuilder.Web.Services
 @using DynamicData
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.Web.Pages
 @using WoWsShipBuilder.Web.Utility
 @using System.Collections.Immutable
+@using WoWsShipBuilder.Common.DataContainers
+@using WoWsShipBuilder.Common.Infrastructure.Localization
 @implements IAsyncDisposable
 @inject IJSRuntime Runtime
 @inject ILocalizer Localizer
@@ -51,7 +52,7 @@
     public bool IsVertical { get; set; }
     [Parameter, EditorRequired]
     public ChartsHelper.ChartsTabs Tab { get; set; }
-    
+
     private IJSObjectReference? module;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -62,7 +63,7 @@
             await DrawDispersionPlot();
         }
     }
-    
+
     private async Task DrawDispersionPlot()
     {
         string vertical = Localizer.GetAppLocalization(nameof(Translation.DispersionPlot_Vertical)).Localization;
@@ -75,7 +76,7 @@
         var outerHorizontal = $"{max} {horizontal}";
         string innerVertical = $"50{perCent} {hits} {vertical}";
         string innerHorizontal = $"50{perCent} {hits} {horizontal}";
-        
+
         if (IsVertical)
         {
             (outerVertical, outerHorizontal, innerVertical, innerHorizontal) = (outerHorizontal, outerVertical, innerHorizontal, innerVertical);
@@ -84,7 +85,7 @@
         var text = new DispPlotAxisLabels(outerVertical, outerHorizontal, innerVertical, innerHorizontal, m);
 
         Dictionary<string, DrawingData> data = Ships.Where(x => x.Value.IsValid).ToDictionary(dispersionEllipse => dispersionEllipse.Key.ToString(), dispersionEllipse => SetupData(dispersionEllipse.Value));
-        
+
         module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/Components/DispersionPlot.razor.js");
         await module.InvokeVoidAsync("drawDispersionPlotBatched", data, PlotScaling, GetFusoReference(), text);
     }
@@ -102,7 +103,7 @@
         var innerEllipse = GetInnerEllipse(dispersionEllipse);
         return new(outerEllipse.xRadius, outerEllipse.yRadius, innerEllipse.xRadius, innerEllipse.yRadius, GetHitPoints(dispersionEllipse));
     }
-    
+
     private (double xRadius, double yRadius) GetOuterEllipse(DispersionEllipse dispersionEllipse)
     {
         double xRadius = EllipsePlane switch
@@ -121,7 +122,7 @@
         }
         return (xRadius, yRadius);
     }
-    
+
     private List<ChartsHelper.Point> GetHitPoints(DispersionEllipse dispersionEllipse)
     {
         List<DispersionPlotHelper.Point> hitPoints = EllipsePlane switch
@@ -133,7 +134,7 @@
 
         return IsVertical ? hitPoints.Select(point => new ChartsHelper.Point(point.X * PlotScaling, point.Y * PlotScaling)).ToList() : hitPoints.Select(point => new ChartsHelper.Point(point.Y * PlotScaling, point.X * PlotScaling)).ToList();
     }
-    
+
     private (double xRadius, double yRadius) GetInnerEllipse(DispersionEllipse dispersionEllipse)
     {
         double xRadius = EllipsePlane switch
@@ -152,14 +153,14 @@
         }
         return (xRadius, yRadius);
     }
-    
+
     private Size GetFusoReference()
     {
         if (FusoPosition == FusoPositions.DontShow)
         {
             return new(0, 0);
         }
-        
+
         const double length = 212.7;
         const double width = 32.2;
         const int height = 45;
@@ -187,7 +188,7 @@
         }
         return new(xRadius, yRadius);
     }
-    
+
     public async ValueTask DisposeAsync()
     {
         if (module is not null)
@@ -201,7 +202,7 @@
             }
         }
     }
-    
+
     private sealed record DrawingData(double XRadiusOuterEllipse, double YRadiusOuterEllipse, double XRadiusInnerEllipse, double YRadiusInnerEllipse, List<ChartsHelper.Point> HitPoints);
 
     private sealed record Size(double Width, double Length);

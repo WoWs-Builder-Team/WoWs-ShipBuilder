@@ -8,11 +8,11 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Name="SignalSelector"
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
-             xmlns:shipVm="clr-namespace:WoWsShipBuilder.ViewModels.ShipVm;assembly=WoWsShipBuilder.ViewModels"
+             xmlns:viewModels="clr-namespace:WoWsShipBuilder.Common.ShipStats.ViewModels;assembly=WoWsShipBuilder.Common"
              x:Class="WoWsShipBuilder.UI.UserControls.SignalSelector">
-    
+
     <Design.DataContext>
-        <shipVm:SignalSelectorViewModel />
+        <viewModels:SignalSelectorViewModel />
     </Design.DataContext>
 
     <UserControl.Resources>
@@ -20,7 +20,7 @@
         <conv:ListContainsToBoolConverter x:Key="ListContainsToBoolConverter" />
     </UserControl.Resources>
 
-    <DockPanel>  
+    <DockPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
             <TextBlock Text="{x:Static translations:Translation.SignalSelector_Flags}" FontSize="13" />
             <TextBlock Text="{Binding SignalsNumber}" FontSize="13" />

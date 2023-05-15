@@ -3,7 +3,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Text.RegularExpressions;
 using ReactiveUI;
-using WoWsShipBuilder.Core.Settings;
+using WoWsShipBuilder.Common.Settings;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.ViewModels.Base;
 

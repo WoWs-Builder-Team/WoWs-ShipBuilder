@@ -2,6 +2,10 @@
 using System.Reflection;
 using Moq;
 using NUnit.Framework;
+using WoWsShipBuilder.Common.Infrastructure;
+using WoWsShipBuilder.Common.Infrastructure.Data;
+using WoWsShipBuilder.Common.Infrastructure.GameData;
+using WoWsShipBuilder.Common.Infrastructure.HttpClients;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Services;

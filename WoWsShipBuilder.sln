@@ -50,6 +50,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.DataElement
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.ViewModels.Test", "WoWsShipBuilder.ViewModels.Test\WoWsShipBuilder.ViewModels.Test.csproj", "{415A9E6E-4F74-42E7-BE39-0405CD6DC521}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.Common", "WoWsShipBuilder.Common\WoWsShipBuilder.Common.csproj", "{5236BCFD-053A-40AC-A919-11A0381FD7A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.Common.Test", "WoWsShipBuilder.Common.Test\WoWsShipBuilder.Common.Test.csproj", "{ADF8F4FA-286D-42FE-B5D2-E3FBEBE3732A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,5 +125,17 @@ Global
 		{415A9E6E-4F74-42E7-BE39-0405CD6DC521}.Release|Any CPU.Build.0 = Release|Any CPU
 		{415A9E6E-4F74-42E7-BE39-0405CD6DC521}.ReleaseTest|Any CPU.ActiveCfg = Debug|Any CPU
 		{415A9E6E-4F74-42E7-BE39-0405CD6DC521}.ReleaseTest|Any CPU.Build.0 = Debug|Any CPU
+		{5236BCFD-053A-40AC-A919-11A0381FD7A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5236BCFD-053A-40AC-A919-11A0381FD7A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5236BCFD-053A-40AC-A919-11A0381FD7A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5236BCFD-053A-40AC-A919-11A0381FD7A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5236BCFD-053A-40AC-A919-11A0381FD7A9}.ReleaseTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{5236BCFD-053A-40AC-A919-11A0381FD7A9}.ReleaseTest|Any CPU.Build.0 = Debug|Any CPU
+		{ADF8F4FA-286D-42FE-B5D2-E3FBEBE3732A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADF8F4FA-286D-42FE-B5D2-E3FBEBE3732A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADF8F4FA-286D-42FE-B5D2-E3FBEBE3732A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADF8F4FA-286D-42FE-B5D2-E3FBEBE3732A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADF8F4FA-286D-42FE-B5D2-E3FBEBE3732A}.ReleaseTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADF8F4FA-286D-42FE-B5D2-E3FBEBE3732A}.ReleaseTest|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal

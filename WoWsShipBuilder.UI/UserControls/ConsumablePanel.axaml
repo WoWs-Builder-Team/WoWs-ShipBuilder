@@ -3,15 +3,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
-             xmlns:shipVm="clr-namespace:WoWsShipBuilder.ViewModels.ShipVm;assembly=WoWsShipBuilder.ViewModels"
              xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Localization;assembly=WoWsShipBuilder.Core"
+             xmlns:viewModels="clr-namespace:WoWsShipBuilder.Common.ShipStats.ViewModels;assembly=WoWsShipBuilder.Common"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="WoWsShipBuilder.UI.UserControls.ConsumablePanel"
              Name="ConsumablePanel">
     <Design.DataContext>
-        <shipVm:ConsumableViewModel />
+        <viewModels:ConsumableViewModel />
     </Design.DataContext>
-    
+
     <StackPanel Orientation="Vertical" Spacing="2">
         <ItemsControl HorizontalAlignment="Center" Items="{Binding ConsumableSlots}">
             <ItemsControl.ItemsPanel>
@@ -20,7 +20,7 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="shipVm:ConsumableSlotViewModel">
+                <DataTemplate DataType="viewModels:ConsumableSlotViewModel">
                     <userControls:ConsumablePanelItem />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

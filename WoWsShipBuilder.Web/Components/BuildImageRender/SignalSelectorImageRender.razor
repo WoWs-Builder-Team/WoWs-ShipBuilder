@@ -1,6 +1,7 @@
 ﻿@using WoWsShipBuilder.ViewModels.ShipVm;
-@using WoWsShipBuilder.Core.DataContainers
-@inherits ReactiveComponentBase<SignalSelectorViewModel>
+@using WoWsShipBuilder.Common.Infrastructure.Localization
+@using WoWsShipBuilder.Common.DataContainers
+@inherits ReactiveComponentBase<WoWsShipBuilder.Common.ShipStats.ViewModels.SignalSelectorViewModel>
 @inject ILocalizer Localizer
 
 @if (ViewModel is not null)

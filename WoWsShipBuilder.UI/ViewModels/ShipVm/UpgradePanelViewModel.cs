@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using WoWsShipBuilder.Common.Infrastructure.Data;
+using WoWsShipBuilder.Common.ShipStats.ViewModels;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;

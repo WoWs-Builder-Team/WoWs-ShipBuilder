@@ -9,4 +9,8 @@
       <PackageReference Include="ReactiveUI" Version="18.4.34" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Base\" />
+    </ItemGroup>
+
 </Project>

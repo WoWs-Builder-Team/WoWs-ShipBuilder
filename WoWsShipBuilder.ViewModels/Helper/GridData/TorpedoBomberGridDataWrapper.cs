@@ -1,4 +1,5 @@
-﻿using WoWsShipBuilder.Core.DataContainers;
+﻿using CvAircraftDataContainer = WoWsShipBuilder.Common.DataContainers.CvAircraftDataContainer;
+using TorpedoDataContainer = WoWsShipBuilder.Common.DataContainers.TorpedoDataContainer;
 
 namespace WoWsShipBuilder.ViewModels.Helper.GridData;
 

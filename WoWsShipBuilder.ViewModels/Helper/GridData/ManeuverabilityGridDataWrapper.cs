@@ -1,4 +1,4 @@
-﻿using WoWsShipBuilder.Core.DataContainers;
+﻿using ManeuverabilityDataContainer = WoWsShipBuilder.Common.DataContainers.ManeuverabilityDataContainer;
 
 namespace WoWsShipBuilder.ViewModels.Helper.GridData;
 

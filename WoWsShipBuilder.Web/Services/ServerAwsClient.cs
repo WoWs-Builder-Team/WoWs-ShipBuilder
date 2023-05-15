@@ -1,8 +1,9 @@
-﻿using System.IO.Abstractions;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.HttpClients;
+using WoWsShipBuilder.Common.Infrastructure;
+using WoWsShipBuilder.Common.Infrastructure.Data;
+using WoWsShipBuilder.Common.Infrastructure.GameData;
+using WoWsShipBuilder.Common.Infrastructure.HttpClients;
 using WoWsShipBuilder.DataStructures.Versioning;
 using WoWsShipBuilder.Web.Data;
 
@@ -75,10 +76,5 @@ public class ServerAwsClient : IAwsClient
     {
         var str = await httpClient.GetStringAsync(uri);
         await DataCacheHelper.AddToCache(fileName, category, str);
-    }
-
-    public Task DownloadImages(IFileSystem fileSystem, string? fileName = null)
-    {
-        throw new NotImplementedException();
     }
 }

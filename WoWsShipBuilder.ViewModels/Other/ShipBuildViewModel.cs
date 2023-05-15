@@ -1,11 +1,11 @@
-﻿using WoWsShipBuilder.Core;
-using WoWsShipBuilder.Core.Builds;
+﻿using WoWsShipBuilder.Common.Builds;
+using WoWsShipBuilder.Common.DataContainers;
+using WoWsShipBuilder.Common.Infrastructure;
+using WoWsShipBuilder.Common.Infrastructure.Data;
+using WoWsShipBuilder.Common.ShipStats.ViewModels;
 using WoWsShipBuilder.Core.Data;
-using WoWsShipBuilder.Core.DataContainers;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.ViewModels.Base;
-using WoWsShipBuilder.ViewModels.ShipVm;
 
 namespace WoWsShipBuilder.ViewModels.Other;
 

@@ -2,15 +2,16 @@
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using WoWsShipBuilder.Core.Builds;
-using WoWsShipBuilder.Core.Data;
-using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.Localization;
+using WoWsShipBuilder.Common.Builds;
+using WoWsShipBuilder.Common.Infrastructure.Data;
+using WoWsShipBuilder.Common.Infrastructure.Localization;
+using WoWsShipBuilder.Common.Infrastructure.Navigation;
+using WoWsShipBuilder.Common.ShipStats;
+using WoWsShipBuilder.Common.ShipStats.ViewModels;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.UI.Services;
 using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.ViewModels.Helper;
-using WoWsShipBuilder.ViewModels.ShipVm;
 
 namespace WoWsShipBuilder.UI.ViewModels.ShipVm
 {
@@ -37,7 +38,8 @@ namespace WoWsShipBuilder.UI.ViewModels.ShipVm
         {
             logger.LogInformation("Saving build");
             string shipName = localizer.GetGameLocalization(CurrentShipIndex).Localization;
-            var dialogResult = await BuildCreationInteraction.Handle(new(AppSettingsHelper.Settings, shipName, CurrentBuildName)) ?? BuildCreationResult.Canceled;
+            // var dialogResult = await BuildCreationInteraction.Handle(new(AppSettingsHelper.Settings, shipName, CurrentBuildName)) ?? BuildCreationResult.Canceled;
+            var dialogResult = BuildCreationResult.Canceled;
             if (!dialogResult.Save)
             {
                 return;

@@ -1,9 +1,10 @@
-﻿@using WoWsShipBuilder.Core.Localization
-@using WoWsShipBuilder.DataStructures
+﻿@using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.ViewModels.ShipVm
-@using WoWsShipBuilder.Core.DataContainers
-@using WoWsShipBuilder.Core.Utility
 @using WoWsShipBuilder.DataElements.DataElements
+@using WoWsShipBuilder.Common.Infrastructure
+@using ConsumableDataContainer = WoWsShipBuilder.Common.DataContainers.ConsumableDataContainer
+@using WoWsShipBuilder.Common.DataContainers
+@using WoWsShipBuilder.Common.ShipStats.ViewModels
 @inherits ReactiveComponentBase<ConsumableViewModel>
 @inject ILocalizer Localizer
 

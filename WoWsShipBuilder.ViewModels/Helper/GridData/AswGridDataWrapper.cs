@@ -1,5 +1,7 @@
-﻿using WoWsShipBuilder.Core.DataContainers;
-using WoWsShipBuilder.Core.Localization;
+﻿using WoWsShipBuilder.Core.Localization;
+using AirstrikeDataContainer = WoWsShipBuilder.Common.DataContainers.AirstrikeDataContainer;
+using DepthChargeDataContainer = WoWsShipBuilder.Common.DataContainers.DepthChargeDataContainer;
+using DepthChargesLauncherDataContainer = WoWsShipBuilder.Common.DataContainers.DepthChargesLauncherDataContainer;
 
 namespace WoWsShipBuilder.ViewModels.Helper.GridData;
 

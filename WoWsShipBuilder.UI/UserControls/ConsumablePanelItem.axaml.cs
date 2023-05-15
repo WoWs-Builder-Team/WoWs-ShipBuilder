@@ -4,8 +4,8 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using WoWsShipBuilder.Core.DataContainers;
-using WoWsShipBuilder.ViewModels.ShipVm;
+using WoWsShipBuilder.Common.ShipStats.ViewModels;
+using ConsumableDataContainer = WoWsShipBuilder.Common.DataContainers.ConsumableDataContainer;
 
 namespace WoWsShipBuilder.UI.UserControls;
 

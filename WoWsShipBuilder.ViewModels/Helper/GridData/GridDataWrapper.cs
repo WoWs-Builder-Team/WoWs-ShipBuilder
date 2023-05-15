@@ -1,10 +1,18 @@
 ﻿using System;
 using System.IO;
-using WoWsShipBuilder.Core.Builds;
+using WoWsShipBuilder.Common.Builds;
+using WoWsShipBuilder.Common.DataContainers;
 using WoWsShipBuilder.Core.Data;
-using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.DataStructures.Ship;
+using AirstrikeDataContainer = WoWsShipBuilder.Common.DataContainers.AirstrikeDataContainer;
+using BombDataContainer = WoWsShipBuilder.Common.DataContainers.BombDataContainer;
+using ConcealmentDataContainer = WoWsShipBuilder.Common.DataContainers.ConcealmentDataContainer;
+using MainBatteryDataContainer = WoWsShipBuilder.Common.DataContainers.MainBatteryDataContainer;
+using PingerGunDataContainer = WoWsShipBuilder.Common.DataContainers.PingerGunDataContainer;
+using ShellDataContainer = WoWsShipBuilder.Common.DataContainers.ShellDataContainer;
+using SurvivabilityDataContainer = WoWsShipBuilder.Common.DataContainers.SurvivabilityDataContainer;
+using TorpedoArmamentDataContainer = WoWsShipBuilder.Common.DataContainers.TorpedoArmamentDataContainer;
 
 namespace WoWsShipBuilder.ViewModels.Helper.GridData;
 

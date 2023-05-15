@@ -1,4 +1,4 @@
-﻿using WoWsShipBuilder.Core.DataContainers;
+﻿using WoWsShipBuilder.Common.DataContainers;
 
 namespace WoWsShipBuilder.Web.Utility;
 

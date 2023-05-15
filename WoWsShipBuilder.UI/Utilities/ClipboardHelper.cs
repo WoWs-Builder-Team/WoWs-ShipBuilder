@@ -6,6 +6,7 @@ using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using Microsoft.Extensions.Logging;
+using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Core;
 
 namespace WoWsShipBuilder.UI.Utilities

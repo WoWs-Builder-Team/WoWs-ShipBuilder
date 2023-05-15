@@ -1,4 +1,5 @@
-﻿using WoWsShipBuilder.Core.DataContainers;
+﻿using SecondaryBatteryDataContainer = WoWsShipBuilder.Common.DataContainers.SecondaryBatteryDataContainer;
+using ShellDataContainer = WoWsShipBuilder.Common.DataContainers.ShellDataContainer;
 
 namespace WoWsShipBuilder.ViewModels.Helper.GridData;
 

@@ -26,5 +26,11 @@
     <ItemGroup>
       <ProjectReference Include="..\WoWsShipBuilder.Core\WoWsShipBuilder.Core.csproj" />
     </ItemGroup>
+    
+    <ItemGroup>
+        <!-- TODO: move to UI.Tests -->
+        <Compile Remove="HttpTest/**" />
+        <Compile Remove="LocalDataUpdaterTests/**" />
+    </ItemGroup>
 
 </Project>

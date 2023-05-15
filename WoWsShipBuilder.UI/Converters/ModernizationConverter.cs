@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
+using WoWsShipBuilder.Common.ShipStats.ViewModels;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.DataStructures.Upgrade;
 using WoWsShipBuilder.ViewModels.ShipVm;

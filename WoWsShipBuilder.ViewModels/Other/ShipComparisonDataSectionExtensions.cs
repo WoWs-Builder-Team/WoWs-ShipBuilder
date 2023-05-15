@@ -1,4 +1,4 @@
-﻿using WoWsShipBuilder.Core.Localization;
+﻿using WoWsShipBuilder.Common.Infrastructure.Localization;
 
 namespace WoWsShipBuilder.ViewModels.Other;
 

@@ -4,6 +4,7 @@ using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using WoWsShipBuilder.Common.Infrastructure.Data;
 
 namespace WoWsShipBuilder.Core.Services;
 

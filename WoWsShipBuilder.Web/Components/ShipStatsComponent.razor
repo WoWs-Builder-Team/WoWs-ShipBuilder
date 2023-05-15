@@ -1,20 +1,22 @@
-﻿@using WoWsShipBuilder.Core.DataContainers
-@using WoWsShipBuilder.Core.Localization
-@using WoWsShipBuilder.DataElements.DataElements
+﻿@using WoWsShipBuilder.DataElements.DataElements
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.ViewModels.ShipVm;
 @using static WoWsShipBuilder.Web.Components.SharedFragments
 @using Microsoft.Extensions.Logging.Console
 @using System.Text
-@using WoWsShipBuilder.Core.Settings
-@using WoWsShipBuilder.Core.Utility
 @using WoWsShipBuilder.DataStructures.Ship.Components
 @using WoWsShipBuilder.Web.Data
 @using WoWsShipBuilder.Web.Dialogs
 @using WoWsShipBuilder.Web.Services
 @using System.ComponentModel.DataAnnotations
+@using WoWsShipBuilder.Common.DataContainers
+@using WoWsShipBuilder.Common.Infrastructure
+@using WoWsShipBuilder.Common.Infrastructure.GameData
+@using WoWsShipBuilder.Common.Infrastructure.Localization
+@using WoWsShipBuilder.Common.Settings
 @using WoWsShipBuilder.Core.Extensions
-@inherits ReactiveComponentBase<ShipStatsControlViewModel>
+@using DepthChargeDataContainer = WoWsShipBuilder.Common.DataContainers.DepthChargeDataContainer
+@inherits ReactiveComponentBase<WoWsShipBuilder.Common.ShipStats.ViewModels.ShipStatsControlViewModel>
 @inject ILocalizer Localizer
 @inject NavigationManager NavManager
 @inject AppSettings AppSettings

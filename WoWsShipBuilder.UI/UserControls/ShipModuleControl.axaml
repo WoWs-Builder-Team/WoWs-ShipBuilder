@@ -3,13 +3,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:converters="clr-namespace:WoWsShipBuilder.UI.Converters"
-             xmlns:shipVm="clr-namespace:WoWsShipBuilder.ViewModels.ShipVm;assembly=WoWsShipBuilder.ViewModels"
              xmlns:ship="clr-namespace:WoWsShipBuilder.DataStructures.Ship;assembly=WoWsShipBuilder.DataStructures"
+             xmlns:viewModels="clr-namespace:WoWsShipBuilder.Common.ShipStats.ViewModels;assembly=WoWsShipBuilder.Common"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="WoWsShipBuilder.UI.UserControls.ShipModuleControl"
              Name="ShipModuleControl">
     <Design.DataContext>
-        <shipVm:ShipModuleViewModel />
+        <viewModels:ShipModuleViewModel />
     </Design.DataContext>
     <UserControl.Resources>
         <converters:IsModuleSelectedConverter x:Key="ModuleSelectedConverter" />

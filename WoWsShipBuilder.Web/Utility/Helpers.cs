@@ -1,10 +1,9 @@
 ﻿using System.Net;
 using DynamicData;
 using MudBlazor;
-using WoWsShipBuilder.Core.DataContainers;
-using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Common.DataContainers;
+using WoWsShipBuilder.Common.Infrastructure.GameData;
 using WoWsShipBuilder.Core.Extensions;
-using WoWsShipBuilder.Core.Utility;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 

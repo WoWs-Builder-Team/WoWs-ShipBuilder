@@ -8,8 +8,8 @@
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
         xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
-        xmlns:dataProvider="clr-namespace:WoWsShipBuilder.Core.DataProvider;assembly=WoWsShipBuilder.Core"
         xmlns:ui="clr-namespace:WoWsShipBuilder.UI"
+        xmlns:infrastructure="clr-namespace:WoWsShipBuilder.Common.Infrastructure;assembly=WoWsShipBuilder.Common"
         Height="635" Width="750" CanResize="False"
         x:DataType="viewModels:SettingsWindowViewModel"
         Design.DataContext="{x:Static ui:DesignDataHelper.SettingsWindowViewModel}"
@@ -32,7 +32,7 @@
                                     <ComboBox SelectedIndex="0" VerticalAlignment="Center" Items="{Binding LanguagesList}"
                                               SelectedItem="{Binding Path=SelectedLanguage}">
                                         <ComboBox.ItemTemplate>
-                                            <DataTemplate DataType="dataProvider:CultureDetails">
+                                            <DataTemplate DataType="infrastructure:CultureDetails">
                                                 <TextBlock Text="{Binding CultureInfo.DisplayName}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
                                             </DataTemplate>
                                         </ComboBox.ItemTemplate>

@@ -8,6 +8,8 @@ using Avalonia.Threading;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using Splat;
+using WoWsShipBuilder.Common.Infrastructure;
+using WoWsShipBuilder.Common.Infrastructure.Navigation;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;

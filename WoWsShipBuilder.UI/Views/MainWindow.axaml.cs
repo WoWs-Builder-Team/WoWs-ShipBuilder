@@ -29,55 +29,55 @@ namespace WoWsShipBuilder.UI.Views
 #endif
             this.WhenActivated(disposables =>
             {
-                ViewModel?.BuildCreationInteraction.RegisterHandler(async interaction =>
-                {
-                    var result = await new BuildCreationWindow
-                    {
-                        ShowInTaskbar = false,
-                        DataContext = interaction.Input,
-                    }.ShowDialog<BuildCreationResult?>(this);
-                    interaction.SetOutput(result);
-                }).DisposeWith(disposables);
-
-                ViewModel?.CloseChildrenInteraction.RegisterHandler(interaction =>
-                {
-                    foreach (var childWindow in ChildWindows)
-                    {
-                        childWindow.Close();
-                    }
-
-                    interaction.SetOutput(Unit.Default);
-                }).DisposeWith(disposables);
-
-                ViewModel?.SelectNewShipInteraction.RegisterHandler(async interaction =>
-                {
-                    var result = await new ShipSelectionWindow
-                    {
-                        DataContext = new ShipSelectionWindowViewModel(false, ShipSelectionWindowViewModel.LoadParams(AppSettingsHelper.LocalizerInstance)),
-                    }.ShowDialog<List<ShipSummary>?>(this);
-                    interaction.SetOutput(result);
-                }).DisposeWith(disposables);
-
-                ViewModel?.BuildCreatedInteraction.RegisterHandler(async interaction =>
-                {
-                    await MessageBox.Show(this, interaction.Input, Translation.BuildCreationWindow_BuildSaved, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Info);
-                    interaction.SetOutput(Unit.Default);
-                }).DisposeWith(disposables);
-
-                ViewModel?.OpenStartMenuInteraction.RegisterHandler(interaction =>
-                {
-                    StartMenuWindow win = new()
-                    {
-                        DataContext = interaction.Input,
-                    };
-                    if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-                    {
-                        desktop.MainWindow = win;
-                    }
-
-                    win.Show();
-                    interaction.SetOutput(Unit.Default);
-                }).DisposeWith(disposables);
+                // ViewModel?.BuildCreationInteraction.RegisterHandler(async interaction =>
+                // {
+                //     var result = await new BuildCreationWindow
+                //     {
+                //         ShowInTaskbar = false,
+                //         DataContext = interaction.Input,
+                //     }.ShowDialog<BuildCreationResult?>(this);
+                //     interaction.SetOutput(result);
+                // }).DisposeWith(disposables);
+                //
+                // ViewModel?.CloseChildrenInteraction.RegisterHandler(interaction =>
+                // {
+                //     foreach (var childWindow in ChildWindows)
+                //     {
+                //         childWindow.Close();
+                //     }
+                //
+                //     interaction.SetOutput(Unit.Default);
+                // }).DisposeWith(disposables);
+                //
+                // ViewModel?.SelectNewShipInteraction.RegisterHandler(async interaction =>
+                // {
+                //     var result = await new ShipSelectionWindow
+                //     {
+                //         DataContext = new ShipSelectionWindowViewModel(false, ShipSelectionWindowViewModel.LoadParams(AppSettingsHelper.LocalizerInstance)),
+                //     }.ShowDialog<List<ShipSummary>?>(this);
+                //     interaction.SetOutput(result);
+                // }).DisposeWith(disposables);
+                //
+                // ViewModel?.BuildCreatedInteraction.RegisterHandler(async interaction =>
+                // {
+                //     await MessageBox.Show(this, interaction.Input, Translation.BuildCreationWindow_BuildSaved, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Info);
+                //     interaction.SetOutput(Unit.Default);
+                // }).DisposeWith(disposables);
+                //
+                // ViewModel?.OpenStartMenuInteraction.RegisterHandler(interaction =>
+                // {
+                //     StartMenuWindow win = new()
+                //     {
+                //         DataContext = interaction.Input,
+                //     };
+                //     if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                //     {
+                //         desktop.MainWindow = win;
+                //     }
+                //
+                //     win.Show();
+                //     interaction.SetOutput(Unit.Default);
+                // }).DisposeWith(disposables);
             });
         }
 

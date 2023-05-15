@@ -2,7 +2,8 @@
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.DataStructures.Ship
-@inherits ReactiveComponentBase<ShipModuleViewModel>
+@using WoWsShipBuilder.Common.Infrastructure.Localization
+@inherits ReactiveComponentBase<WoWsShipBuilder.Common.ShipStats.ViewModels.ShipModuleViewModel>
 @inject ILocalizer Localizer
 
 @if (ViewModel is not null)

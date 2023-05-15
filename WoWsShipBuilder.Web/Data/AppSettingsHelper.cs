@@ -1,9 +1,10 @@
-﻿namespace WoWsShipBuilder.Web.Data;
+﻿using WoWsShipBuilder.Common.Settings;
+
+namespace WoWsShipBuilder.Web.Data;
 
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
-using WoWsShipBuilder.Core.Settings;
 
 public class AppSettingsHelper : IAsyncDisposable
 {

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
-using WoWsShipBuilder.Core.DataContainers;
-using WoWsShipBuilder.Core.Localization;
+using WoWsShipBuilder.Common.DataContainers;
+using WoWsShipBuilder.Common.Infrastructure.Localization;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Settings;
 

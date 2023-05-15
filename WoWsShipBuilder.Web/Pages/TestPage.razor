@@ -1,13 +1,14 @@
 ﻿@page "/test"
-@using WoWsShipBuilder.Core.Services
-@using WoWsShipBuilder.Core.DataProvider
-@using WoWsShipBuilder.Core.Settings
 @using WoWsShipBuilder.Web.Data
 @using WoWsShipBuilder.Web.Services
-@using WoWsShipBuilder.Core.DataContainers
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.Web.Dialogs
+@using WoWsShipBuilder.Common.Infrastructure
+@using WoWsShipBuilder.Common.Infrastructure.Data
+@using WoWsShipBuilder.Common.Infrastructure.GameData
+@using WoWsShipBuilder.Common.Settings
+@using MainBatteryDataContainer = WoWsShipBuilder.Common.DataContainers.MainBatteryDataContainer
 @inject AppSettingsHelper AppSettingsHelper
 @inject AppSettings AppSettings
 @inject ILocalizer Localizer
@@ -28,7 +29,7 @@
 @code {
 
     private CultureDetails selectedCulture = AppConstants.DefaultCultureDetails;
-    
+
 
     protected override void OnInitialized()
     {
@@ -42,11 +43,11 @@
         await AppSettingsHelper.SaveSettings(AppSettings);
         RefreshNotifierService.NotifyRefreshRequested();
     }
-    
+
     private (Ship Ship, List<ShipUpgrade> Configuration) LoadPreviewShip(string shipIndex)
     {
         var ship = AppData.FindShipFromSummary(AppData.ShipSummaryList!.First(s => s.Index.Equals(shipIndex)));
-        
+
         var configuration = ShipModuleHelper.GroupAndSortUpgrades(ship!.ShipUpgradeInfo.ShipUpgrades)
             .Select(entry => entry.Value.FirstOrDefault())
             .Where(item => item != null)
@@ -59,7 +60,7 @@
     private (Ship Ship, List<ShipUpgrade> Configuration) LoadPreviewShip(ShipClass shipClass, int tier, Nation nation)
     {
         var ship = AppData.FindShipFromSummary(AppData.ShipSummaryList!.First(s => s.ShipClass == shipClass && s.Nation == nation && s.Tier == tier));
-        
+
         var configuration = ShipModuleHelper.GroupAndSortUpgrades(ship!.ShipUpgradeInfo.ShipUpgrades)
             .Select(entry => entry.Value.FirstOrDefault())
             .Where(item => item != null)
@@ -79,7 +80,7 @@
             var deadZones = gun.HorizontalDeadZones.Select(z => z.Select(a => a + gun.BaseAngle).ToArray()).ToArray() ?? Array.Empty<decimal[]>();
             return new GunDataContainer(gun.HorizontalPosition, gun.VerticalPosition, gun.BaseAngle, sector, deadZones);
         });
-        
+
         var parameters = new DialogParameters
         {
             { nameof(FiringAngleDialog.IsArtillery), true },

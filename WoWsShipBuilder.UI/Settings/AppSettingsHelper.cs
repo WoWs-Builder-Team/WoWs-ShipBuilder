@@ -5,11 +5,14 @@ using System.IO;
 using System.Threading;
 using Microsoft.Extensions.Logging;
 using Splat;
+using WoWsShipBuilder.Common.Infrastructure;
+using WoWsShipBuilder.Common.Infrastructure.Data;
+using WoWsShipBuilder.Common.Infrastructure.Localization;
+using WoWsShipBuilder.Common.Settings;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
-using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.UI.Extensions;
 
 namespace WoWsShipBuilder.UI.Settings;

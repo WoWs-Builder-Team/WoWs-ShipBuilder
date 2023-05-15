@@ -1,4 +1,8 @@
-﻿using WoWsShipBuilder.Core.Localization;
+﻿using WoWsShipBuilder.Common.Infrastructure.Localization;
+using WoWsShipBuilder.Common.Infrastructure.Navigation;
+using WoWsShipBuilder.Common.ShipStats;
+using WoWsShipBuilder.Common.ShipStats.ViewModels;
+using WoWsShipBuilder.Core.Localization;
 
 namespace WoWsShipBuilder.Web.ViewModels;
 

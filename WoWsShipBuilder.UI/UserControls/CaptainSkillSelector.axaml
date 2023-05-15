@@ -8,10 +8,10 @@
              x:Class="WoWsShipBuilder.UI.UserControls.CaptainSkillSelector"
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
              xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Localization;assembly=WoWsShipBuilder.Core"
-             xmlns:shipVm="clr-namespace:WoWsShipBuilder.ViewModels.ShipVm;assembly=WoWsShipBuilder.ViewModels"
+             xmlns:viewModels="clr-namespace:WoWsShipBuilder.Common.ShipStats.ViewModels;assembly=WoWsShipBuilder.Common"
              x:Name="Control">
     <Design.DataContext>
-        <shipVm:CaptainSkillSelectorViewModel />
+        <viewModels:CaptainSkillSelectorViewModel />
     </Design.DataContext>
 
     <UserControl.Resources>
@@ -21,17 +21,17 @@
         <conv:BorderBrushConverter x:Key="BorderBrushConverter"/>
         <conv:ModifierConverter x:Key="ModifierConverter" />
     </UserControl.Resources>
-    
+
     <Grid ColumnDefinitions="*">
         <DockPanel>
             <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,*" DockPanel.Dock="Top">
-                <StackPanel Name="CaptainPoints" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="0" Margin="0,5,0,5">                
+                <StackPanel Name="CaptainPoints" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="0" Margin="0,5,0,5">
                     <TextBlock Text="{x:Static translations:Translation.CaptainSkillSelector_Points}" FontSize="13" VerticalAlignment="Center"/>
                     <TextBlock Text="{Binding AssignedPoints}" Margin="5,0,0,0" FontSize="13" VerticalAlignment="Center" />
                     <TextBlock Text="/21" FontSize="13" VerticalAlignment="Center" />
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Grid.Column="0" Grid.Row="1" Margin="0,5,0,5" IsVisible="{Binding !ScreenshotMode}">
-                    <ComboBox Items="{Binding CaptainList}" SelectedItem="{Binding SelectedCaptain}" 
+                    <ComboBox Items="{Binding CaptainList}" SelectedItem="{Binding SelectedCaptain}"
                               VerticalAlignment="Center" MaxWidth="150" Margin="10,0">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
@@ -40,15 +40,15 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                 </StackPanel>
-                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Spacing="3" Margin="0 5" 
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Spacing="3" Margin="0 5"
                             IsVisible="{Binding ScreenshotMode}">
                     <TextBlock Text="{x:Static translations:Translation.ScreenshotWindow_Captain}" FontSize="15"/>
                     <TextBlock Text="{Binding SelectedCaptain.Name, Converter={StaticResource Localizer}, FallbackValue=Default}" FontSize="15" />
                 </StackPanel>
-                <Button Name="SkillActivationButton" Grid.Column="1" Grid.Row="1" IsEnabled="{Binding SkillActivationButtonEnabled}" Content="{x:Static translations:Translation.CaptainSkillSelector_SkillTalent}"  
+                <Button Name="SkillActivationButton" Grid.Column="1" Grid.Row="1" IsEnabled="{Binding SkillActivationButtonEnabled}" Content="{x:Static translations:Translation.CaptainSkillSelector_SkillTalent}"
                         Click="OnSkillActiation_Click" VerticalAlignment="Center" IsVisible="{Binding !ScreenshotMode}"
                         BorderBrush="{Binding TalentOrConditionalSkillEnabled, Converter={StaticResource BorderBrushConverter}}"/>
-                
+
                 <!--Popup to manage skill activation-->
                 <Popup Grid.Row="1" Grid.Column="1" IsOpen="{Binding SkillActivationPopupOpen, Mode=TwoWay}" PlacementTarget="SkillActivationButton" PlacementAnchor="Bottom" VerticalOffset="5" IsLightDismissEnabled="True" Width="500">
                     <Border Background="{DynamicResource ThemeBackgroundBrush}" BorderThickness="1" BorderBrush="Gray">
@@ -120,7 +120,7 @@
                                 </ItemsControl>
                             </StackPanel>
                         </Grid>
-                    </Border>                  
+                    </Border>
                 </Popup>
             </Grid>
             <ItemsControl Name="SkillContainer" HorizontalAlignment="Center" Classes="SkillContainer" Items="{Binding SkillList}" DockPanel.Dock="Bottom">

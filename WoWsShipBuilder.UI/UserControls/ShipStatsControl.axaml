@@ -11,7 +11,7 @@
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
              xmlns:shipVm="clr-namespace:WoWsShipBuilder.UI.ViewModels.ShipVm"
              xmlns:dataElements="clr-namespace:WoWsShipBuilder.DataElements.DataElements;assembly=WoWsShipBuilder.DataElements"
-             xmlns:dataContainers="clr-namespace:WoWsShipBuilder.Core.DataContainers;assembly=WoWsShipBuilder.Core">
+             xmlns:dataContainers="clr-namespace:WoWsShipBuilder.Common.DataContainers;assembly=WoWsShipBuilder.Common">
 
     <Design.DataContext>
         <shipVm:ShipStatsControlPreviewViewModel />
@@ -418,7 +418,7 @@
                                 </DockPanel>
                                 <ItemsControl Items="{Binding Weapon.DataElements}" Classes="Stagger" />
                                 <TextBlock Classes="Clickable" Text="{x:Static translations:Translation.ShipStats_ShowDcDamageDistribution}"
-                                           PointerReleased="OpenDepthChargeDamageDistributionChart" TextDecorations="Underline" Margin="10 8 0 0" 
+                                           PointerReleased="OpenDepthChargeDamageDistributionChart" TextDecorations="Underline" Margin="10 8 0 0"
                                            IsVisible="{Binding WeaponType, Converter={StaticResource WeaponTypeToBooleanConverter}, FallbackValue=false}"/>
                             </StackPanel>
                         </Expander>

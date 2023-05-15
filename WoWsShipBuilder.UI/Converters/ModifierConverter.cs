@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Avalonia.Data.Converters;
-using WoWsShipBuilder.Core.DataContainers;
-using WoWsShipBuilder.Core.Localization;
+using WoWsShipBuilder.Common.DataContainers;
+using WoWsShipBuilder.Common.Infrastructure.Localization;
 using WoWsShipBuilder.UI.Settings;
 
 namespace WoWsShipBuilder.UI.Converters;

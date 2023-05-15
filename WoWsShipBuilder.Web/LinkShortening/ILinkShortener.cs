@@ -1,4 +1,4 @@
-﻿using WoWsShipBuilder.Core.Builds;
+﻿using WoWsShipBuilder.Common.Builds;
 
 namespace WoWsShipBuilder.Web.LinkShortening;
 

@@ -6,6 +6,7 @@ using Prometheus;
 using ReactiveUI;
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
+using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Web.Extensions;
