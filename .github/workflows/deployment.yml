@@ -38,9 +38,15 @@ jobs:
 
       - name: Test application
         run: dotnet test --no-build -c Release --verbosity normal
+      - name: Extract certificate
+        run: |
+          $certB64 = '${{ secrets.WOWSSB_CERT }}'
+          [IO.File]::WriteAllBytes(".\wowssb.pfx", $dec)
       - name: Squirrel build and release
-        run: Tools\SquirrelBuildAndRelease.ps1
+        run: Tools\SquirrelBuildAndRelease.ps1 --signingCert wowssb.pfx --signingPassword '${{ secrets.WOWSSB_CERT_KEY }}'
         shell: powershell
+      - name: Cleanup certificate
+        run: Remove-Item .\wowssb.pfx
 
       - name: Release
         uses: ncipollo/release-action@v1
