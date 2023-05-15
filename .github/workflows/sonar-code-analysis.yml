@@ -7,8 +7,8 @@ on:
       - 'deployment/**/*.*'
   pull_request:
     types: [opened, synchronize, reopened]
-  workflow_dispatch: 
-    
+  workflow_dispatch:
+
 jobs:
   build:
     name: Build and analyze
@@ -25,7 +25,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 6.0.x
+          global-json-file: global.json
       - name: Cache SonarCloud scanner
         id: cache-sonar-scanner
         uses: actions/cache@v3

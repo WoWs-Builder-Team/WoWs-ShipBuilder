@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
@@ -22,6 +23,9 @@ public partial record ConsumableDataContainer : DataContainerBase
 
     [DataElementType(DataElementTypes.KeyValue)]
     public string NumberOfUses { get; set; } = default!;
+
+    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
+    public decimal PreparationTime { get; set; }
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
     public decimal Cooldown { get; set; }
@@ -47,7 +51,7 @@ public partial record ConsumableDataContainer : DataContainerBase
         var usingFallback = false;
         if (!(AppData.ConsumableList?.TryGetValue(consumableIdentifier, out var consumable) ?? false))
         {
-            Logging.Logger.Error("Consumable {} not found in cached consumable list. Using dummy consumable instead.", consumableIdentifier);
+            Logging.Logger.LogError("Consumable {Identifier} not found in cached consumable list. Using dummy consumable instead", consumableIdentifier);
             usingFallback = true;
             consumable = new()
             {
@@ -250,18 +254,13 @@ public partial record ConsumableDataContainer : DataContainerBase
             else if (name.Contains("PCY045", StringComparison.InvariantCultureIgnoreCase))
             {
                 var hydrophoneUpdateFrequencyModifiers = modifiers.FindModifiers("hydrophoneUpdateFrequencyCoeff");
-                if (!consumableModifiers.TryGetValue("hydrophoneUpdateFrequencyCoeff", out float baseUpdateFrequency))
-                {
-                    consumableModifiers.TryGetValue("updateFrequency", out baseUpdateFrequency);
-                }
-
-                var hydrophoneUpdateFrequency = hydrophoneUpdateFrequencyModifiers.Aggregate(baseUpdateFrequency, (current, modifier) => current * modifier);
-                consumableModifiers["hydrophoneUpdateFrequencyCoeff"] = hydrophoneUpdateFrequency;
+                var hydrophoneUpdateFrequency = hydrophoneUpdateFrequencyModifiers.Aggregate(consumableModifiers["hydrophoneUpdateFrequency"], (current, modifier) => current * modifier);
+                consumableModifiers["hydrophoneUpdateFrequency"] = hydrophoneUpdateFrequency;
             }
         }
         else if (usingFallback)
         {
-            Logging.Logger.Warn("Skipping consumable modifier calculation due to fallback consumable.");
+            Logging.Logger.LogWarning("Skipping consumable modifier calculation due to fallback consumable.");
         }
 
         var consumableDataContainer = new ConsumableDataContainer
@@ -272,6 +271,7 @@ public partial record ConsumableDataContainer : DataContainerBase
             Slot = slot,
             Desc = "",
             Cooldown = Math.Round((decimal)cooldown, 1),
+            PreparationTime = Math.Round((decimal)consumable.PreparationTime, 1),
             WorkTime = Math.Round((decimal)workTime, 1),
             Modifiers = consumableModifiers,
         };

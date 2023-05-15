@@ -71,6 +71,8 @@ public partial record ShellDataContainer : DataContainerBase
     [DataElementFiltering(true, "ShouldDisplayBlastPenetration")]
     public decimal SplashCoeff { get; set; }
 
+    public decimal Krupp { get; set; }
+
     public decimal MinRicochetAngle { get; set; }
 
     public decimal MaxRicochetAngle { get; set; }
@@ -182,6 +184,8 @@ public partial record ShellDataContainer : DataContainerBase
 
             var fireChancePerSalvo = (decimal)(1 - Math.Pow((double)(1 - ((decimal)shellFireChance / 100)), barrelCount));
 
+            float splashRadius = modifiers.FindModifiers("dcSplashRadiusMultiplier").Aggregate(shell.DepthSplashRadius, (current, modifier) => current * modifier);
+
             var shellDataContainer = new ShellDataContainer
             {
                 Name = shell.Name,
@@ -190,7 +194,7 @@ public partial record ShellDataContainer : DataContainerBase
                 Damage = Math.Round((decimal)shellDamage),
                 ExplosionRadius = (decimal)shell.ExplosionRadius,
                 SplashCoeff = (decimal)shell.SplashCoeff,
-                ShellVelocity = Math.Round((decimal)shell.MuzzleVelocity, 1),
+                ShellVelocity = Math.Round((decimal)shell.MuzzleVelocity, 2),
                 Penetration = (int)Math.Truncate(shellPenetration),
                 AirDrag = Math.Round((decimal)shellAirDrag, 2),
                 ShellFireChance = Math.Round((decimal)shellFireChance, 1),
@@ -199,8 +203,9 @@ public partial record ShellDataContainer : DataContainerBase
                 ArmingThreshold = armingThreshold,
                 FuseTimer = fuseTimer,
                 ShowBlastPenetration = showBlastPenetration,
-                SplashRadius = (decimal)shell.DepthSplashRadius,
+                SplashRadius = Math.Round((decimal)splashRadius, 1),
                 SplashDmg = Math.Round((decimal)(shellDamage * shell.SplashDamageCoefficient)),
+                Krupp = (decimal)shell.Krupp,
             };
 
             if (minRicochet > 0 || maxRicochet > 0)

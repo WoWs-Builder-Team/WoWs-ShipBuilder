@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Specialized;
 using System.Reactive.Linq;
-using NLog;
+using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
@@ -23,7 +23,7 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
 
     private readonly ShipClass currentClass;
 
-    private readonly Logger logger;
+    private readonly ILogger<CaptainSkillSelectorViewModel> logger;
 
     private readonly Dictionary<int, bool> canAddSkillCache = new();
 
@@ -36,7 +36,7 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
 
     public CaptainSkillSelectorViewModel(ShipClass shipClass, (Captain defaultCaptain, Dictionary<string, Captain>? captainList) vmParams, bool screenshotMode = false)
     {
-        logger = Logging.GetLogger("CaptainSkillVM");
+        logger = Logging.LoggerFactory.CreateLogger<CaptainSkillSelectorViewModel>();
         ScreenshotMode = screenshotMode;
         currentClass = shipClass;
 
@@ -225,13 +225,13 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
     /// <returns>A dictionary containing the skill for the class from the captain.</returns>
     private Dictionary<string, SkillItemViewModel> ConvertSkillToViewModel(ShipClass shipClass, Captain? captain)
     {
-        logger.Info("Getting skill for class {0} from captain {1}", shipClass.ToString(), captain!.Name);
+        logger.LogDebug("Getting skill for class {ShipClass} from captain {CaptainName}", shipClass.ToString(), captain!.Name);
         var skills = captain.Skills;
 
         var filteredSkills = skills.Where(x => x.Value.LearnableOn.Contains(shipClass)).ToList();
 
         var dictionary = filteredSkills.ToDictionary(x => x.Key, x => new SkillItemViewModel(x.Value, this, shipClass, canAddSkillCache, canRemoveSkillCache));
-        logger.Info("Found {0} skills", dictionary.Count);
+        logger.LogDebug("Found {SkillCount} skills", dictionary.Count);
         return dictionary;
     }
 
@@ -262,6 +262,7 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
     {
         if (SkillOrderList.Contains(skill))
         {
+            logger.LogDebug("Adding skill {Skill} to skill order list", skill.SkillNumber);
             SkillOrderList.Remove(skill);
             ReorderSkillList();
             int pointCost = skill.Tiers.First(x => x.ShipClass == currentClass).Tier + 1;
@@ -281,6 +282,7 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
         }
         else
         {
+            logger.LogDebug("Removing skill {Skill} from skill order list", skill.SkillNumber);
             SkillOrderList.Add(skill);
             var pointCost = skill.Tiers.First(x => x.ShipClass == currentClass).Tier + 1;
             AssignedPoints += pointCost;
@@ -331,7 +333,7 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
             return;
         }
 
-        logger.Info("Reordering skills");
+        logger.LogDebug("Reordering skills");
 
         // AvaloniaList is missing one of the extension methods, so we copy the list to a normal one,
         var groups = SkillOrderList.GroupBy(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier)
@@ -409,7 +411,7 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
             }
         }
 
-        logger.Info("Finished reordering skills");
+        logger.LogDebug("Finished reordering skills");
     }
 
     /// <summary>

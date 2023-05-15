@@ -1,19 +1,28 @@
-﻿@using WoWsShipBuilder.ViewModels.Helper
+﻿@using WoWsShipBuilder.ViewModels.Helper.GridData
 @using WoWsShipBuilder.ViewModels.Other
 @code {
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer)> SonarDataFragment = element => __builder =>
+    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer)> SonarDataFragment = element => __builder =>
     {
-        bool hide = element.section != ShipComparisonDataSections.Sonar;
+        string dataSectionString = ShipComparisonDataSections.Sonar.AsString();
 
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SonarReloadTime" Title="Reload (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        var columnTitleReload = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ReloadTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleTraverseSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TraverseSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_DegreePerSecond)})";
+        var columnTitleTurnTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TurnTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleMaxRange = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_MaxRange))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
+        var columnTitleWidth = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_PingWidth))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
+        var columnTitleSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_PingSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MPS)})";
+        var columnTitleFirstPingDuration = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_1st))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_PingDuration))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleSecondPingDuration = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_2nd))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_PingDuration))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReload}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleReload)" T="GridDataWrapper" Title="@columnTitleReload" SortBy="@(x => x.Sonar?.Reload ?? 0)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SonarReloadTime is not null)
+                @if (context.Item.Sonar?.Reload is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SonarReloadTime
+                        @context.Item.Sonar.Reload
                     </MudText>
                 }
                 else
@@ -23,14 +32,14 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SonarTraverseSpeed" Title="Traverse speed (°/s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTraverseSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTraverseSpeed)" T="GridDataWrapper" Title="@columnTitleTraverseSpeed" SortBy="@(x => x.Sonar?.TraverseSpeed ?? 0)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SonarTraverseSpeed is not null)
+                @if (context.Item.Sonar?.TraverseSpeed is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SonarTraverseSpeed
+                        @context.Item.Sonar.TraverseSpeed
                     </MudText>
                 }
                 else
@@ -40,14 +49,14 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SonarTurnTime" Title="180° turn (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTurnTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTurnTime)" T="GridDataWrapper" Title="@columnTitleTurnTime" SortBy="@(x => x.Sonar?.TurnTime ?? 0)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SonarTurnTime is not null)
+                @if (context.Item.Sonar?.TurnTime is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SonarTurnTime
+                        @context.Item.Sonar.TurnTime
                     </MudText>
                 }
                 else
@@ -57,14 +66,14 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SonarRange" Title="Range (km)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxRange}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxRange)" T="GridDataWrapper" Title="@columnTitleMaxRange" SortBy="@(x => x.Sonar?.Range ?? 0)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SonarRange is not null)
+                @if (context.Item.Sonar?.Range is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SonarRange
+                        @context.Item.Sonar.Range
                     </MudText>
                 }
                 else
@@ -74,14 +83,14 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SonarWidth" Title="Width (m)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleWidth}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleWidth)" T="GridDataWrapper" Title="@columnTitleWidth" SortBy="@(x => x.Sonar?.PingWidth ?? 0)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SonarWidth is not null)
+                @if (context.Item.Sonar?.PingWidth is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SonarWidth
+                        @context.Item.Sonar.PingWidth
                     </MudText>
                 }
                 else
@@ -91,14 +100,14 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SonarSpeed" Title="Speed (m/s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSpeed)" T="GridDataWrapper" Title="@columnTitleSpeed" SortBy="@(x => x.Sonar?.PingSpeed ?? 0)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SonarSpeed is not null)
+                @if (context.Item.Sonar?.PingSpeed is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SonarSpeed
+                        @context.Item.Sonar.PingSpeed
                     </MudText>
                 }
                 else
@@ -108,14 +117,14 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SonarFirstPingDuration" Title="1st ping duration (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFirstPingDuration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFirstPingDuration)" T="GridDataWrapper" Title="@columnTitleFirstPingDuration" SortBy="@(x => x.Sonar?.FirstPingDuration ?? 0)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SonarFirstPingDuration is not null)
+                @if (context.Item.Sonar?.FirstPingDuration is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SonarFirstPingDuration
+                        @context.Item.Sonar.FirstPingDuration
                     </MudText>
                 }
                 else
@@ -125,14 +134,14 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SonarSecondPingDuration" Title="2nd ping duration (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSecondPingDuration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSecondPingDuration)" T="GridDataWrapper" Title="@columnTitleSecondPingDuration" SortBy="@(x => x.Sonar?.SecondPingDuration ?? 0)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SonarSecondPingDuration is not null)
+                @if (context.Item.Sonar?.SecondPingDuration is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SonarSecondPingDuration
+                        @context.Item.Sonar.SecondPingDuration
                     </MudText>
                 }
                 else
@@ -142,6 +151,6 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
+        </TemplateColumn>
     };
 }

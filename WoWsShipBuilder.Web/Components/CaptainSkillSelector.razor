@@ -46,7 +46,7 @@
             @foreach ((string skillName, var skill) in ViewModel.SkillList!)
             {
                 <MudItem @key="skill.Skill.SkillNumber" Class="d-flex justify-center" xs="2" Style="@(GetOrder(skill.Skill.Tiers.Single(x => x.ShipClass == ShipClass)) + GetSubFix())">
-                    <MudTooltip Placement="Placement.Right" Color="Color.Transparent" Delay="400">
+                    <MudTooltip Placement="Placement.Right" Color="Color.Transparent" Delay="350">
                         <ChildContent>
                             <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" BadgeClass="skill-special-icon" Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">
                                 <MudBadge Content="@(ViewModel.SkillOrderList.IndexOf(skill.Skill) + 1)" Color="Color.Error" Origin="Origin.TopLeft" Overlap="true" BadgeClass="skill-order-number" Visible="@ShouldShowBadge(skill.Skill)">
@@ -67,27 +67,31 @@
                                         string localization = Localizer.GetGameLocalization("SKILL_DESC_" + ToSnakeCase(skillName)).Localization;
                                         if (!string.IsNullOrWhiteSpace(localization))
                                         {
-                                            <MudText Align="Align.Left" Typo="Typo.body2" Style="white-space: break-spaces">@localization</MudText>
+                                            <MudText Align="Align.Left" Typo="Typo.body2" Style="white-space: break-spaces">
+                                                @localization
+                                            </MudText>
                                         }
                                     }
-                                    @if (skill.Modifiers is {Count: > 0 })
+                                    @if (skill.Modifiers is { Count: > 0 })
                                     {
                                         <MudDivider Light="true" Class="ma-1"/>
                                         foreach ((string modifierName, float modifierValue) in skill.Modifiers)
                                         {
                                             // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
                                             string modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
-                                            @if (!string.IsNullOrWhiteSpace(modifierString))
+                                            if (!string.IsNullOrWhiteSpace(modifierString))
                                             {
-                                                <MudText Align="Align.Left" Typo="Typo.body2">@modifierString</MudText>
+                                                <MudText Align="Align.Left" Typo="Typo.body2">
+                                                    @modifierString
+                                                </MudText>
                                             }
                                         }
                                     }
-                                    @if (skill.ConditionalModifiers is {Count: > 0 })
+                                    @if (skill.ConditionalModifiers is { Count: > 0 })
                                     {
                                         <MudDivider Light="true" Class="ma-1"/>
                                         <MudText Align="Align.Left" Typo="Typo.body2" GutterBottom>
-                                            @Localizer.GetGameLocalization("SKILL_TRIGGER_" + skill.Skill.ConditionalTriggerType).Localization
+                                            @Localizer.GetGameLocalization(!string.IsNullOrWhiteSpace(skill.Skill.ConditionalTriggerDescription) ? skill.Skill.ConditionalTriggerDescription : "SKILL_TRIGGER_" + skill.Skill.ConditionalTriggerType).Localization
                                         </MudText>
                                         foreach ((string modifierName, float modifierValue) in skill.ConditionalModifiers)
                                         {
@@ -95,7 +99,9 @@
                                             string modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
                                             if (!string.IsNullOrWhiteSpace(modifierString))
                                             {
-                                                <MudText Align="Align.Left" Typo="Typo.body2">@modifierString</MudText>
+                                                <MudText Align="Align.Left" Typo="Typo.body2">
+                                                    @modifierString
+                                                </MudText>
                                             }
                                         }
                                     }
@@ -113,12 +119,12 @@
 
     [Parameter]
     public ShipClass ShipClass { get; set; }
-    
+
     [CascadingParameter]
     private Breakpoint Breakpoint { get; set; }
 
     private string specialIconPath = @"<path style=""fill:#ffffff;fill-opacity:1;"" d=""m 9.1521727,1.5579681 h 5.6956543 v 7.5942036 h 7.594205 v 5.6956533 h -7.594205 v 7.594206 H 9.1521727 V 14.847825 H 1.5579678 V 9.1521717 h 7.5942049 z""/>";
-    
+
     private static string ToSnakeCase(string camelCaseString)
     {
         if (camelCaseString == null)
@@ -176,9 +182,19 @@
 
     private Color GetColorFromState(SkillItemViewModel skillItem)
     {
-        return ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? Color.Error : !skillItem.CanExecute ? Color.Primary : Color.Secondary;
+        if (ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)))
+        {
+            return Color.Error;
+        }
+
+        if (!skillItem.CanExecute)
+        {
+            return Color.Primary;
+        }
+
+        return Color.Secondary;
     }
-    
+
     private void OnSkillClick(SkillItemViewModel skillItem)
     {
         if (!skillItem.CanExecute) return;
@@ -194,7 +210,7 @@
     {
         return ViewModel!.ArHpPercentage < 100 || ViewModel.TalentOrConditionalSkillEnabled ? "border: #BF0000FF solid 1px" : string.Empty;
     }
-    
+
     private int GetImageSize()
     {
         switch (Breakpoint)
@@ -206,7 +222,7 @@
                 return 40;
         }
     }
-    
+
     private string GetImageBreakpointStyle()
     {
         switch (Breakpoint)
@@ -217,6 +233,11 @@
             default:
                 return "min-width: 55px; width: 55px; height: 55px;";
         }
+    }
+
+    private string GetMudPaperBorderColor(SkillItemViewModel skillItem)
+    {
+        return " border-color: " + (ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? "#BC0606" : "#3C3C3C") + ";";
     }
 
     private async Task OpenSkillDialog()
@@ -232,7 +253,7 @@
             ["ViewModel"] = ViewModel,
         };
 
-        var dialog = DialogService.Show<CaptainTalentsAndConditionalSkillDialog>("CaptainTalentsAndConditionalSkillDialog", parameters, options);
+        var dialog = await DialogService.ShowAsync<CaptainTalentsAndConditionalSkillDialog>("CaptainTalentsAndConditionalSkillDialog", parameters, options);
         // this is needed to wait for the dialog to close to change the SkillActivationPopupOpen, to get the values to update
         await dialog.Result;
         ViewModel!.SkillActivationPopupOpen = false;

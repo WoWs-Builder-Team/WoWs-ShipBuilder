@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
+  <!--
+    Microsoft ResX Schema
+
     Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
     associated with the data types.
-    
+
     Example:
-    
+
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-                
-    There are any number of "resheader" rows that contain simple 
+
+    There are any number of "resheader" rows that contain simple
     name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
     mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
     extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
     read any of the formats listed below.
-    
+
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-    
+
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
+    value   : The object must be serialized into a byte array
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -634,7 +634,7 @@
       <value>In squadron</value>
   </data>
   <data name="ShipStats_PlaneHp" xml:space="preserve">
-    <value>Hp per plane</value>
+      <value>HP per plane</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>Restoration time</value>
@@ -942,16 +942,16 @@ The RED ellipse shows the area where 50% of the shells lands on average.
 The BLACK ellipse shows the size of a Fuso as reference.
 
 Plot planes:
-1) HORIZONTAL: 
+1) HORIZONTAL:
     shows the shells impact point with the water;
     by selecting this plane you get a view from above;
     this is the plot you mainly want to look at when comparing ships dispersions;
     the ellipse on this plane is vertically stretched because of shells speed.
-2) VERTICAL: 
+2) VERTICAL:
     shows the shells impact point with a vertical surface;
     by selecting this plane you get a view from the front;
     useful for very precise vertical accuracy analysis.
-3) IMPACT ANGLE: 
+3) IMPACT ANGLE:
     shows the shells impact point with a surface angled at the shells impact angle;
     by selecting this plane you get a view from the shells impact angle;
     it's the plane where the game actually draws the dispersion ellipse during battles;
@@ -997,7 +997,7 @@ Ships in game are twice as big as the environment so a 200m long ship takes the 
       <value>Rudder</value>
   </data>
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
-    <value>If "module blast protection" + "armament blast penetration" &gt; 0 
+    <value>If "module blast protection" + "armament blast penetration" &gt; 0
      The module can be incapacitated.
 If "module blast protection" + "armament blast penetration" &lt;= 0
      The module can not be incapacitated.</value>
@@ -1526,7 +1526,7 @@ They do not have any effect on surface ships.</value>
   <data name="AccelerationChart_AddRemoveShip" xml:space="preserve">
       <value>Add/remove ships</value>
   </data>
-  <data name="AccelerationChart_ChangeBuilds" xml:space="preserve">
+  <data name="Charts_ChangeBuilds" xml:space="preserve">
       <value>Change builds</value>
   </data>
   <data name="AccelerationChart_ExplanationText" xml:space="preserve">
@@ -1619,6 +1619,15 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
       <value>Tactical Skip Bombers</value>
   </data>
+  <data name="ChartsWeb_Build" xml:space="preserve">
+      <value>Build</value>
+  </data>
+  <data name="ShipSelectionWindow_EditBuilds" xml:space="preserve">
+      <value>Edit builds</value>
+  </data>
+  <data name="ShipAndShellsSelectionDialog_NoShipSelected" xml:space="preserve">
+      <value>No Ship Selected</value>
+  </data>
   <data name="ShipStats_TargetAreaRadius" xml:space="preserve">
       <value>Target area radius</value>
   </data>
@@ -1633,5 +1642,368 @@ You can use the Change builds button to manage the builds of single ships. You c
   </data>
   <data name="ShipStats_ProgressLossPerInterval" xml:space="preserve">
       <value>Progress loss per interval</value>
+  </data>
+  <data name="ShipStats_ShowAccelerationCharts" xml:space="preserve">
+      <value>Show acceleration charts</value>
+  </data>
+  <data name="BuildStringInputDialog_EnterBuildStringOrLink" xml:space="preserve">
+      <value>Enter build string or link</value>
+  </data>
+  <data name="WebApp_LoadBuild" xml:space="preserve">
+      <value>Load Build</value>
+  </data>
+  <data name="WebApp_GoToShipsPage" xml:space="preserve">
+      <value>Go to ships page</value>
+  </data>
+  <data name="ShipStats_ShowInBallisticCharts" xml:space="preserve">
+      <value>Show all in Ballistic Charts</value>
+  </data>
+  <data name="ShipStats_ShowInAccelerationCharts" xml:space="preserve">
+      <value>Show all in Acceleration Charts</value>
+  </data>
+  <data name="Validation_InvalidBuild" xml:space="preserve">
+      <value>Invalid build</value>
+  </data>
+  <data name="Validation_Incompatibility" xml:space="preserve">
+      <value>Incompatibility</value>
+  </data>
+  <data name="Validation_SelectedShip" xml:space="preserve">
+      <value>Selected ship</value>
+  </data>
+  <data name="Validation_ShipInBuild" xml:space="preserve">
+      <value>Ship in the build</value>
+  </data>
+  <data name="ShipStats_Loaders" xml:space="preserve">
+      <value>Loaders</value>
+  </data>
+  <data name="ShipStats_BowLoaders" xml:space="preserve">
+      <value>Bow</value>
+  </data>
+  <data name="ShipStats_SternLoaders" xml:space="preserve">
+      <value>Stern</value>
+  </data>
+  <data name="ShipStats_First" xml:space="preserve">
+      <value>First</value>
+  </data>
+  <data name="ShipStats_Second" xml:space="preserve">
+      <value>Second</value>
+  </data>
+  <data name="Unit_U" xml:space="preserve">
+      <value>unit</value>
+  </data>
+  <data name="Unit_UPS" xml:space="preserve">
+      <value>unit/s</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxDiveSpeed" xml:space="preserve">
+      <value>Max dive speed</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsDivingPlaneShiftTime" xml:space="preserve">
+      <value>Diving plane shift time</value>
+  </data>
+  <data name="ShipStats_DiveCapacity" xml:space="preserve">
+      <value>Capacity</value>
+  </data>
+  <data name="ShipStats_DiveCapacityRechargeRate" xml:space="preserve">
+      <value>Recharge rate</value>
+  </data>
+  <data name="ShipStats_Battery" xml:space="preserve">
+      <value>Battery</value>
+  </data>
+  <data name="ShipStats_FirstPing" xml:space="preserve">
+      <value>1 ping</value>
+  </data>
+  <data name="ShipStats_SecondPing" xml:space="preserve">
+      <value>2 pings</value>
+  </data>
+  <data name="Unit_MPS2" xml:space="preserve">
+      <value>m/s²</value>
+  </data>
+  <data name="ShipStats_MaxTurningSpeed" xml:space="preserve">
+      <value>Max turning speed</value>
+  </data>
+  <data name="ShipStats_TurningAcceleration" xml:space="preserve">
+      <value>Turning acceleration</value>
+  </data>
+  <data name="ShipStats_MaxVerticalSpeed" xml:space="preserve">
+      <value>Max vertical speed</value>
+  </data>
+  <data name="ShipStats_VerticalAcceleration" xml:space="preserve">
+      <value>Vertical acceleration</value>
+  </data>
+  <data name="ShipStats_SearchRadius" xml:space="preserve">
+      <value>Search radius</value>
+  </data>
+  <data name="ShipStats_SearchAngle" xml:space="preserve">
+      <value>Search angle</value>
+  </data>
+  <data name="ShipStats_AirCarrier" xml:space="preserve">
+      <value>Aircraft Carrier</value>
+  </data>
+  <data name="ShipStats_Submarine" xml:space="preserve">
+      <value>Submarine</value>
+  </data>
+  <data name="ShipStats_Cruiser" xml:space="preserve">
+      <value>Cruiser</value>
+  </data>
+  <data name="ShipStats_Battleship" xml:space="preserve">
+      <value>Battleship</value>
+  </data>
+  <data name="ShipStats_Destroyer" xml:space="preserve">
+      <value>Destroyer</value>
+  </data>
+  <data name="ShipStats_MoreDetails" xml:space="preserve">
+      <value>More Details</value>
+  </data>
+  <data name="ShipStats_CutOffDistances" xml:space="preserve">
+      <value>Cut-off Distances</value>
+  </data>
+  <data name="Unit_DegreePerSecond2" xml:space="preserve">
+      <value>°/s²</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Modules" xml:space="preserve">
+      <value>Modules</value>
+  </data>
+  <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
+      <value>Captain skills</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
+      <value>Signals</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Consumables" xml:space="preserve">
+      <value>Consumables</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Upgrades" xml:space="preserve">
+      <value>Upgrades</value>
+  </data>
+  <data name="BuildImageSettingsDialog_TwoColumns" xml:space="preserve">
+      <value>Two columns</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Layout" xml:space="preserve">
+      <value>LAYOUT</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Elements" xml:space="preserve">
+      <value>ELEMENTS</value>
+  </data>
+  <data name="BuildImageSettingsDialog_TwoColumnsTooltip" xml:space="preserve">
+      <value>Widens the image layout by splitting elements into 2 side by side columns (captain skills and signals will not be concealable).</value>
+  </data>
+  <data name="BuildNameDialog_BuildName" xml:space="preserve">
+      <value>Build name</value>
+  </data>
+  <data name="BuildNameDialog_EnterBuildName" xml:space="preserve">
+      <value>Enter build name</value>
+  </data>
+  <data name="BuildImageRenderDialog_SaveImage" xml:space="preserve">
+      <value>Save Image</value>
+  </data>
+  <data name="BuildImageRenderDialog_GetUrl" xml:space="preserve">
+      <value>Get URL</value>
+  </data>
+  <data name="BuildImageRenderDialog_GetShortLink" xml:space="preserve">
+      <value>Get Short-Link</value>
+  </data>
+  <data name="ServerTypeLive" xml:space="preserve">
+      <value>Live</value>
+  </data>
+  <data name="ServerTypePts" xml:space="preserve">
+      <value>PTS</value>
+  </data>
+  <data name="NavigationCharts" xml:space="preserve">
+      <value>Dispersion and Ballistic Charts</value>
+  </data>
+  <data name="NavigationAccelerationCharts" xml:space="preserve">
+      <value>Acceleration Charts</value>
+  </data>
+  <data name="NavigationComparison" xml:space="preserve">
+      <value>Ship Comparison</value>
+  </data>
+  <data name="NavigationHome" xml:space="preserve">
+      <value>Start Page</value>
+  </data>
+  <data name="ShipComparison_Image" xml:space="preserve">
+      <value>Image</value>
+  </data>
+  <data name="ShipComparison_NoMatchingShipsFound" xml:space="preserve">
+      <value>No matching ships found</value>
+  </data>
+  <data name="ShipComparison_ActiveColumns" xml:space="preserve">
+      <value>Active columns</value>
+  </data>
+  <data name="ShipComparison_Section" xml:space="preserve">
+      <value>Section</value>
+  </data>
+  <data name="ShipComparison_Filters" xml:space="preserve">
+      <value>Filters</value>
+  </data>
+  <data name="ShipComparison_All" xml:space="preserve">
+      <value>All</value>
+  </data>
+  <data name="ShipComparison_None" xml:space="preserve">
+      <value>None</value>
+  </data>
+  <data name="ShipComparison_ResetAll" xml:space="preserve">
+      <value>Reset all</value>
+  </data>
+  <data name="ShipComparison_Duplicate" xml:space="preserve">
+      <value>Duplicate</value>
+  </data>
+  <data name="ShipComparison_RemoveBuilds" xml:space="preserve">
+      <value>Remove builds</value>
+  </data>
+  <data name="ShipComparison_ViewStats" xml:space="preserve">
+      <value>View stats</value>
+  </data>
+  <data name="ShipComparison_ViewBallistic" xml:space="preserve">
+      <value>View ballistic</value>
+  </data>
+  <data name="ShipComparison_ViewAcceleration" xml:space="preserve">
+      <value>View acceleration</value>
+  </data>
+  <data name="ShipComparison_DisplayOnlyPinnedShips" xml:space="preserve">
+      <value>Display only pinned ships</value>
+  </data>
+  <data name="ShipComparison_UseUpgradedModules" xml:space="preserve">
+      <value>Use upgraded modules if no build</value>
+  </data>
+  <data name="ShipComparison_HideIfNoSection" xml:space="preserve">
+      <value>Hide ships without selected section</value>
+  </data>
+  <data name="ShipComparison_SelectAll" xml:space="preserve">
+      <value>Select all</value>
+  </data>
+  <data name="ShipComparison_UnselectAll" xml:space="preserve">
+      <value>Unselect all</value>
+  </data>
+  <data name="ShipComparison_PinAll" xml:space="preserve">
+      <value>Pin all</value>
+  </data>
+  <data name="ShipComparison_UnpinAll" xml:space="preserve">
+      <value>Unpin all</value>
+  </data>
+  <data name="ShipStats_ShowInShipComparison" xml:space="preserve">
+      <value>Show all in ship comparison</value>
+  </data>
+  <data name="ShipComparison_General" xml:space="preserve">
+      <value>General</value>
+  </data>
+  <data name="ShipComparison_SecondaryBatteryShells" xml:space="preserve">
+      <value>Secondary Battery Shells</value>
+  </data>
+  <data name="ShipComparison_Asw" xml:space="preserve">
+      <value>ASW</value>
+  </data>
+  <data name="ShipComparison_RocketPlanes" xml:space="preserve">
+      <value>Rocket Planes</value>
+  </data>
+  <data name="ShipComparison_AerialTorpedoes" xml:space="preserve">
+      <value>Aerial Torpedoes</value>
+  </data>
+  <data name="ShipComparison_Bombers" xml:space="preserve">
+      <value>Bombers</value>
+  </data>
+  <data name="ShipComparison_Bombs" xml:space="preserve">
+      <value>Bombs</value>
+  </data>
+  <data name="ShipComparison_Caliber" xml:space="preserve">
+      <value>Caliber</value>
+  </data>
+  <data name="ShipComparison_Barrels" xml:space="preserve">
+      <value>Barrels</value>
+  </data>
+  <data name="ShipComparison_MaxRange" xml:space="preserve">
+      <value>Max Range</value>
+  </data>
+  <data name="ShipStats_Dpm" xml:space="preserve">
+      <value>DPM</value>
+  </data>
+  <data name="ShipStats_Salvo" xml:space="preserve">
+      <value>Salvo</value>
+  </data>
+  <data name="ShipComparison_Fpm" xml:space="preserve">
+      <value>FPM</value>
+  </data>
+  <data name="ShipComparison_1st" xml:space="preserve">
+      <value>1st</value>
+  </data>
+  <data name="ShipComparison_2nd" xml:space="preserve">
+      <value>2nd</value>
+  </data>
+  <data name="ShipComparison_Amount" xml:space="preserve">
+      <value>Amount</value>
+  </data>
+  <data name="ShipComparison_OnFire" xml:space="preserve">
+      <value>On Fire</value>
+  </data>
+  <data name="ShipComparison_SmokeFiring" xml:space="preserve">
+      <value>Smoke Firing</value>
+  </data>
+  <data name="ShipComparison_FullReverseTime" xml:space="preserve">
+      <value>Full Reverse Time</value>
+  </data>
+  <data name="ShipComparison_Charges" xml:space="preserve">
+      <value>Charges</value>
+  </data>
+  <data name="ShipComparison_DropRange" xml:space="preserve">
+      <value>Drop range</value>
+  </data>
+  <data name="ShipComparison_PlanesInSquadron" xml:space="preserve">
+      <value>Planes in squadron</value>
+  </data>
+  <data name="ShipComparison_SplashRadius" xml:space="preserve">
+      <value>Splash radius</value>
+  </data>
+  <data name="ShipComparison_InitialSpeed" xml:space="preserve">
+      <value>Initial speed</value>
+  </data>
+  <data name="ShipComparison_PlaneHp" xml:space="preserve">
+      <value>Plane HP</value>
+  </data>
+  <data name="ShipComparison_Spread" xml:space="preserve">
+      <value>Spread</value>
+  </data>
+  <data name="ShipComparison_SwitchTime" xml:space="preserve">
+      <value>Switch time</value>
+  </data>
+  <data name="ShipComparison_Plane" xml:space="preserve">
+      <value>Plane</value>
+  </data>
+  <data name="ShipComparison_Planes" xml:space="preserve">
+      <value>Planes</value>
+  </data>
+  <data name="ShipComparison_OnDeck" xml:space="preserve">
+      <value>On Deck</value>
+  </data>
+  <data name="ShipComparison_EngineBoostDuration" xml:space="preserve">
+      <value>Engine boost duration</value>
+  </data>
+  <data name="ShipComparison_Invulnerability" xml:space="preserve">
+      <value>Invulnerability</value>
+  </data>
+  <data name="ShipComparison_ViewDistance" xml:space="preserve">
+      <value>View distance</value>
+  </data>
+  <data name="ShipComparison_AreaChange" xml:space="preserve">
+      <value>Area Change</value>
+  </data>
+  <data name="ShipComparison_PerPlane" xml:space="preserve">
+      <value>Per Plane</value>
+  </data>
+  <data name="ShipComparison_TorpsPerPlane" xml:space="preserve">
+      <value>Torpedoes per plane</value>
+  </data>
+  <data name="ShipStats_MaxReverseSpeed" xml:space="preserve">
+      <value>Max reverse speed</value>
+  </data>
+  <data name="ShipComparison_TypeName" xml:space="preserve">
+      <value>Type name...</value>
+  </data>
+  <data name="ShipComparison_SearchAndPin" xml:space="preserve">
+      <value>Search &amp; Pin Ship</value>
+  </data>
+  <data name="ShipComparison_DispersionAt" xml:space="preserve">
+      <value>Dispersion at</value>
+  </data>
+  <data name="ShipComparison_FiringRange" xml:space="preserve">
+      <value>Firing Range</value>
   </data>
 </root>

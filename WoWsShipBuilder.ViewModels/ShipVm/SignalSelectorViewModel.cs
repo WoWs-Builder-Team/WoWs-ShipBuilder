@@ -1,6 +1,6 @@
 using System;
 using System.Reactive.Linq;
-using NLog;
+using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
@@ -11,11 +11,11 @@ namespace WoWsShipBuilder.ViewModels.ShipVm;
 
 public class SignalSelectorViewModel : ViewModelBase
 {
-    private readonly Logger logger;
+    private readonly ILogger<SignalSelectorViewModel> logger;
 
     public SignalSelectorViewModel()
     {
-        logger = Logging.GetLogger("SignalSelectorVM");
+        logger = Logging.LoggerFactory.CreateLogger<SignalSelectorViewModel>();
         SignalList = LoadSignalList();
 
         this.WhenAnyValue(x => x.SignalsNumber).Do(_ => UpdateCanToggleSkill()).Subscribe();
@@ -91,7 +91,7 @@ public class SignalSelectorViewModel : ViewModelBase
 
     public void LoadBuild(IReadOnlyList<string> initialSignalsNames)
     {
-        logger.Info("Initial signal configuration found {0}", string.Join(", ", initialSignalsNames));
+        logger.LogInformation("Initial signal configuration found {SignalNames}", string.Join(", ", initialSignalsNames));
         var list = SignalList.Select(x => x.Value.Signal).Where(signal => initialSignalsNames.Contains(signal.Index));
         SelectedSignals.AddRange(list);
         SignalsNumber = SelectedSignals.Count;

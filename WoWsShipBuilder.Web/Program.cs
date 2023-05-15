@@ -6,16 +6,14 @@ using Prometheus;
 using ReactiveUI;
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Web.Extensions;
 using WoWsShipBuilder.Web.Services;
 using WoWsShipBuilder.Web.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Host.ConfigureAppConfiguration((_, config) =>
-{
-    config.AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true);
-});
+builder.Configuration.AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true);
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor(options =>
@@ -25,7 +23,7 @@ builder.Services.AddServerSideBlazor(options =>
 builder.ConfigureShipBuilderOptions();
 
 builder.Logging.ClearProviders();
-builder.Host.UseNLog(new() { RemoveLoggerFactoryFilter = false });
+builder.Host.UseNLog(new() { RemoveLoggerFactoryFilter = false, ParseMessageTemplates = true });
 SetupExtensions.ConfigureNlog(builder.Configuration.GetValue<bool>("DisableLoki"), builder.Environment.IsDevelopment());
 
 PlatformRegistrationManager.SetRegistrationNamespaces(RegistrationNamespace.Blazor);
@@ -40,6 +38,7 @@ builder.Services.AddShipBuilderServerServices();
 
 var app = builder.Build();
 app.Services.UseMicrosoftDependencyResolver();
+Logging.Initialize(app.Services.GetRequiredService<ILoggerFactory>());
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -58,13 +57,10 @@ app.UseHttpMetrics(options =>
 });
 app.UseReferrerTracking();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-    endpoints.MapMetrics();
-    endpoints.MapBlazorHub();
-    endpoints.MapFallbackToPage("/_Host");
-});
+app.MapControllers();
+app.MapMetrics();
+app.MapBlazorHub();
+app.MapFallbackToPage("/_Host");
 
 var culture = AppConstants.DefaultCultureDetails.CultureInfo;
 CultureInfo.DefaultThreadCurrentCulture = culture;

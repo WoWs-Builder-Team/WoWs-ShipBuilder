@@ -7,6 +7,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
@@ -52,7 +53,7 @@ namespace WoWsShipBuilder.ViewModels.Other
 
         public SettingsWindowViewModelBase(IClipboardService clipboardService, IAppDataService appDataService, AppSettings appSettings)
         {
-            Logging.Logger.Info("Creating setting window view model");
+            Logging.Logger.LogInformation("Creating setting window view model");
             this.clipboardService = clipboardService;
             this.appSettings = appSettings;
             AppDataService = appDataService;
@@ -82,7 +83,7 @@ namespace WoWsShipBuilder.ViewModels.Other
         {
             if (AppData.DataVersion is null)
             {
-                Logging.Logger.Info("AppData.DataVersion is null, reading from VersionInfo.");
+                Logging.Logger.LogInformation("AppData.DataVersion is null, reading from VersionInfo");
 
                 var localVersionInfo = await appDataService.GetCurrentVersionInfo(appSettings.SelectedServerType);
                 if (localVersionInfo?.CurrentVersion?.MainVersion != null)
@@ -193,7 +194,7 @@ namespace WoWsShipBuilder.ViewModels.Other
 
         public async void Save()
         {
-            Logging.Logger.Info("Saving settings");
+            Logging.Logger.LogInformation("Saving settings");
             bool serverChanged = appSettings.SelectedServerType != Enum.Parse<ServerType>(SelectedServer);
             bool pathChanged = appSettings.CustomDataPath != null && !IsCustomPathEnabled;
             bool imagePathChanged = IsCustomBuildImagePathEnabled ? !(CustomBuildImagePath?.Equals(appSettings.CustomImagePath) ?? false) : appSettings.CustomImagePath != null;

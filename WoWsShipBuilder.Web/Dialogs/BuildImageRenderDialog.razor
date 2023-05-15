@@ -1,0 +1,340 @@
+﻿@using Microsoft.Extensions.Options
+@using WoWsShipBuilder.Core.Extensions
+@using WoWsShipBuilder.Core.Settings
+@using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.ViewModels.Other
+@using WoWsShipBuilder.ViewModels.ShipVm
+@using WoWsShipBuilder.Web.Data
+@using WoWsShipBuilder.Web.Utility
+@using WoWsShipBuilder.Web.Components.BuildImageRender
+
+@implements IAsyncDisposable
+
+@inject IOptions<CdnOptions> CdnOptions
+@inject IHostEnvironment Environment
+@inject ILocalizer Localizer
+@inject IJSRuntime Runtime
+@inject IDialogService DialogService
+@inject AppSettings AppSettings
+@inject AppSettingsHelper AppSettingsHelper
+
+<MudDialog Style="max-height: 100vh;  max-width: 1000px" DefaultFocus="DefaultFocus.Element">
+    <DialogContent>
+        <MudBreakpointProvider>
+            <div id="image" class="pa-2" style="@GetImageWidth()">
+                <MudStack Spacing="2">
+                    <MudStack Row AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+                        <div style="align-self: start; width: 151px;">
+                            <MudImage Height="89" ObjectFit="ObjectFit.ScaleDown" Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{Ship.Index}.png")" Style="position: absolute; z-index: 10"/>
+                            <MudImage Height="89" Width="151" ObjectFit="ObjectFit.Cover" Src="@GetBackgroundFlag(Ship.Nation, Ship.Index)" Style="position: absolute; z-index: 9"/>
+                        </div>
+                        <MudStack Class="align-center">
+                            <MudStack Row Class="align-center">
+                                <MudIcon Icon="@Helpers.GetIconFromClass(Ship.ShipClass, Ship.Category)" Size="Size.Large" ViewBox="-1 -1 24 10"/>
+                                <MudText Typo="Typo.body2" Style="font-size: x-large; font-weight: bold; align-self: center;" Align="Align.Center">
+                                    @Ship.Tier.ToTierString()
+                                </MudText>
+                                <MudText Typo="Typo.body2" Style="font-size: x-large; font-weight: bold;">
+                                    @Localizer.GetGameLocalization(Ship.Index + "_FULL").Localization
+                                </MudText>
+                            </MudStack>
+                            <MudStack Row AlignItems="AlignItems.Baseline">
+                                <MudText Style="text-overflow: ellipsis; overflow: hidden; font-size: medium; cursor: pointer;" Typo="Typo.body2" Class="ml-2 mt-n1" @onclick="@(_ => EditBuildName())">
+                                    @Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization: @(!string.IsNullOrEmpty(BuildName) ? BuildName : ShipComparisonViewModel.DefaultBuildName)
+                                </MudText>
+                                <MudIcon id="editBuildNameIcon" Size="Size.Small" Icon="@Icons.Material.Filled.Edit" @onclick="@(_ => EditBuildName())" Style="cursor: pointer; alignment-baseline: hanging; font-size: small" ViewBox="0 -3 24 24"/>
+                            </MudStack>
+                        </MudStack>
+                        <MudStack Row Spacing="0">
+                            <MudHidden Breakpoint="Breakpoint.Always" Invert>
+                                <div style="width: 62px"></div>
+                            </MudHidden>
+                            <MudImage Height="89" ObjectFit="ObjectFit.ScaleDown" Src="@("/assets/ship-builder.svg")"/>
+                        </MudStack>
+                    </MudStack>
+                    @if (showModules)
+                    {
+                        <ShipModulesSelectorImageRender ViewModel="@ShipModuleViewModel"/>
+                    }
+                    @if (twoColumns)
+                    {
+                        <MudStack Row Spacing="2">
+                            <MudStack Spacing="2" Style="width: 50%">
+                                @if (showCaptainSkills)
+                                {
+                                    <CaptainSkillSelectorImageRender ViewModel="@CaptainSkillSelectorViewModel" ShipClass="@Ship.ShipClass"/>
+                                }
+                                @if (showUpgrades)
+                                {
+                                    <ShipUpgradeSelectorImageRender ViewModel="@UpgradePanelViewModel"/>
+                                }
+                            </MudStack>
+                            <MudStack Spacing="2" Style="width: 50%">
+                                @if (showSignals)
+                                {
+                                    <div style="@((showConsumables ? "height: 83.13%;" : "height: 100%;") + "display: flex")">
+                                        <SignalSelectorImageRender ViewModel="@SignalSelectorViewModel"/>
+                                    </div>
+                                }
+                                @if (showConsumables)
+                                {
+                                    <div style="height: 16.87%; display: flex">
+                                        <ConsumableSelectorImageRender ViewModel="@ConsumableViewModel"/>
+                                    </div>
+                                }
+                            </MudStack>
+                        </MudStack>
+                    }
+                    else
+                    {
+                        if (showCaptainSkills)
+                        {
+                            <CaptainSkillSelectorImageRender ViewModel="@CaptainSkillSelectorViewModel" ShipClass="@Ship.ShipClass"/>
+                        }
+                        if (showUpgrades)
+                        {
+                            <ShipUpgradeSelectorImageRender ViewModel="@UpgradePanelViewModel"/>
+                        }
+                        if (showConsumables)
+                        {
+                            <ConsumableSelectorImageRender ViewModel="@ConsumableViewModel"/>
+                        }
+                        if (showSignals)
+                        {
+                            <SignalSelectorImageRender ViewModel="@SignalSelectorViewModel"/>
+                        }
+                    }
+                </MudStack>
+            </div>
+        </MudBreakpointProvider>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel" Color="Color.Error">
+            @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
+        </MudButton>
+        <MudButton OnClick="@OpenSettingsDialog">
+            @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Settings))
+        </MudButton>
+        <MudButton OnClick="@OnConfirm" Color="Color.Info">
+            @Localizer.SimpleAppLocalization(nameof(Translation.BuildImageRenderDialog_GetUrl))
+        </MudButton>
+        @if (!ShortLinkDisabled)
+        {
+            <MudButton OnClick="@OnConfirmShortLink" Color="Color.Info">
+                @Localizer.SimpleAppLocalization(nameof(Translation.BuildImageRenderDialog_GetShortLink))
+            </MudButton>
+        }
+        <MudButton Color="Color.Success" OnClick="@SaveImage">
+            @Localizer.SimpleAppLocalization(nameof(Translation.BuildImageRenderDialog_SaveImage))
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code
+{
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = new();
+
+    [Parameter, EditorRequired]
+    public ShipSummary Ship { get; set; } = default!;
+    [Parameter, EditorRequired]
+    public string BuildName { get; set; } = default!;
+    [Parameter, EditorRequired]
+    public string BuildString { get; set; } = default!;
+    [Parameter, EditorRequired]
+    public ShipModuleViewModel ShipModuleViewModel { get; set; } = default!;
+    [Parameter, EditorRequired]
+    public CaptainSkillSelectorViewModel CaptainSkillSelectorViewModel { get; set; } = default!;
+    [Parameter, EditorRequired]
+    public UpgradePanelViewModelBase UpgradePanelViewModel { get; set; } = default!;
+    [Parameter, EditorRequired]
+    public ConsumableViewModel ConsumableViewModel { get; set; } = default!;
+    [Parameter, EditorRequired]
+    public SignalSelectorViewModel SignalSelectorViewModel { get; set; } = default!;
+
+    [Parameter]
+    public Breakpoint Breakpoint { get; set; }
+    [Parameter]
+    public bool ShortLinkDisabled { get; set; }
+
+    private IJSObjectReference? module;
+
+    private bool twoColumns = true;
+    private bool showModules;
+    private bool showCaptainSkills = true;
+    private bool showUpgrades = true;
+    private bool showConsumables = true;
+    private bool showSignals = true;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        CheckScreenSize();
+        LoadDialogSettings();
+    }
+
+    private string GetBackgroundFlag(Nation shipNation, string shipIndex)
+    {
+        string imgName = shipIndex;
+        if (!File.Exists(Path.Combine(Environment.ContentRootPath, "wwwroot", "assets", "nation_flags", $"flag_{shipIndex}.png")))
+        {
+            imgName = shipNation.ToString();
+        }
+        return $"/assets/nation_flags/flag_{imgName}.png";
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private async Task EditBuildName()
+    {
+        DialogOptions options = new()
+        {
+            NoHeader = true,
+            CloseOnEscapeKey = true,
+        };
+        DialogParameters parameters = new()
+        {
+            ["BuildName"] = BuildName,
+        };
+        var result = await (await DialogService.ShowAsync<BuildNameDialog>(string.Empty, parameters, options)).Result;
+        if (!result.Canceled && result.Data is string buildName)
+        {
+            BuildName = buildName;
+        }
+    }
+
+    private async Task SaveImage()
+    {
+        if (string.IsNullOrWhiteSpace(BuildName))
+        {
+            await EditBuildName();
+        }
+
+        StateHasChanged();
+
+        if (!string.IsNullOrWhiteSpace(BuildName))
+        {
+            module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/Dialogs/BuildImageRenderDialog.razor.js");
+            await module.InvokeVoidAsync("downloadBuildImage", "image", $"{Localizer.GetGameLocalization(Ship.Index + "_FULL").Localization}_{BuildName}", BuildString[..(BuildString.LastIndexOf(';') + 1)] + BuildName);
+            MudDialog.Close(BuildName);
+        }
+    }
+
+    private async Task OnConfirm()
+    {
+        if (string.IsNullOrWhiteSpace(BuildName))
+        {
+            await EditBuildName();
+        }
+
+        if (!string.IsNullOrWhiteSpace(BuildName))
+        {
+            MudDialog.Close(new BuildShareResult(BuildName));
+        }
+    }
+
+    private async Task OnConfirmShortLink()
+    {
+        if (string.IsNullOrWhiteSpace(BuildName))
+        {
+            await EditBuildName();
+        }
+
+        if (!string.IsNullOrWhiteSpace(BuildName))
+        {
+            MudDialog.Close(new BuildShareResult(BuildName, true));
+        }
+    }
+
+    private void CheckScreenSize()
+    {
+        if (Breakpoint is Breakpoint.Xs or Breakpoint.Sm)
+        {
+            twoColumns = false;
+        }
+    }
+
+    private string GetImageWidth()
+    {
+        if (Breakpoint is Breakpoint.Xs or Breakpoint.Sm)
+        {
+            return string.Empty;
+        }
+        return "width: " + (twoColumns ? "944px;" : "544px;");
+    }
+
+    private async Task OpenSettingsDialog()
+    {
+        DialogOptions options = new()
+        {
+            NoHeader = true,
+            CloseOnEscapeKey = true,
+        };
+        var parameters = new DialogParameters
+        {
+            ["ShowModules"] = showModules,
+            ["ShowCaptainSkills"] = showCaptainSkills,
+            ["ShowUpgrades"] = showUpgrades,
+            ["ShowConsumables"] = showConsumables,
+            ["ShowSignals"] = showSignals,
+            ["TwoColumns"] = twoColumns,
+            ["Breakpoint"] = Breakpoint,
+        };
+        var dialogResult = await (await DialogService.ShowAsync<BuildImageSettingsDialog>(string.Empty, parameters, options)).Result;
+        if (!dialogResult.Canceled && dialogResult.Data is bool[] result)
+        {
+            showModules = result[0];
+            showCaptainSkills = result[1];
+            showUpgrades = result[2];
+            showConsumables = result[3];
+            showSignals = result[4];
+            twoColumns = result[5];
+
+            await SaveDialogSettings();
+        }
+    }
+
+    private async Task SaveDialogSettings()
+    {
+        if (AppSettings.WebAppSettings is not null)
+        {
+            AppSettings.WebAppSettings.BuildImageLayoutSettings[0] = twoColumns;
+            AppSettings.WebAppSettings.BuildImageLayoutSettings[1] = showModules;
+            AppSettings.WebAppSettings.BuildImageLayoutSettings[2] = showCaptainSkills;
+            AppSettings.WebAppSettings.BuildImageLayoutSettings[3] = showUpgrades;
+            AppSettings.WebAppSettings.BuildImageLayoutSettings[4] = showConsumables;
+            AppSettings.WebAppSettings.BuildImageLayoutSettings[5] = showSignals;
+            await AppSettingsHelper.SaveSettings(AppSettings);
+        }
+    }
+
+    private void LoadDialogSettings()
+    {
+        if (AppSettings.WebAppSettings is not null)
+        {
+            twoColumns = AppSettings.WebAppSettings.BuildImageLayoutSettings[0];
+            showModules = AppSettings.WebAppSettings.BuildImageLayoutSettings[1];
+            showCaptainSkills = AppSettings.WebAppSettings.BuildImageLayoutSettings[2];
+            showUpgrades = AppSettings.WebAppSettings.BuildImageLayoutSettings[3];
+            showConsumables = AppSettings.WebAppSettings.BuildImageLayoutSettings[4];
+            showSignals = AppSettings.WebAppSettings.BuildImageLayoutSettings[5];
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (module is not null)
+        {
+            try
+            {
+                await module.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+            }
+        }
+    }
+}

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
@@ -23,10 +24,10 @@ namespace WoWsShipBuilder.Core.DataContainers
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
         public decimal Range { get; set; }
 
-        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "PingDuration", UnitKey = "S", NameLocalizationKey = "First")]
         public decimal FirstPingDuration { get; set; }
 
-        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "PingDuration", UnitKey = "S", NameLocalizationKey = "Second")]
         public decimal SecondPingDuration { get; set; }
 
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
@@ -43,7 +44,17 @@ namespace WoWsShipBuilder.Core.DataContainers
             }
 
             PingerGun pingerGun;
-            var pingerUpgrade = shipConfiguration.First(c => c.UcType == ComponentType.Sonar);
+            var pingerUpgrade = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Sonar);
+            if (pingerUpgrade is null && ship.PingerGunList.Count is 1)
+            {
+                Logging.Logger.LogWarning("No sonar upgrade information found for ship {ShipName} even though there is one sonar module available", ship.Name);
+                return null;
+            }
+
+            if (pingerUpgrade is null)
+            {
+                throw new InvalidOperationException($"No sonar upgrade information found for ship {ship.Name} but there is more than one sonar module.");
+            }
 
             // Safe approach is necessary because data up until 0.11.9#1 does not include this data due to an issue in the data converter
             if (pingerUpgrade.Components.TryGetValue(ComponentType.Sonar, out string[]? pingerGunInfo))
@@ -52,7 +63,7 @@ namespace WoWsShipBuilder.Core.DataContainers
             }
             else
             {
-                Logging.Logger.Warn("Unable to retrieve sonar component from upgrade info for ship {} and ship upgrade {}", ship.Index, pingerUpgrade.Name);
+                Logging.Logger.LogWarning("Unable to retrieve sonar component from upgrade info for ship {} and ship upgrade {}", ship.Index, pingerUpgrade.Name);
                 pingerGun = ship.PingerGunList.First().Value;
             }
 

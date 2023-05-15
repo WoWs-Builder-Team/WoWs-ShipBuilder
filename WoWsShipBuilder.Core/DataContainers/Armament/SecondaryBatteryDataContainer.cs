@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
@@ -111,7 +112,7 @@ public partial record SecondaryBatteryDataContainer : DataContainerBase
             catch (KeyNotFoundException e)
             {
                 // TODO: fix issue properly for next minor release
-                Logging.Logger.Warn(e, "One or more keys of the secondary data were not found.");
+                Logging.Logger.LogWarning(e, "One or more keys of the secondary data were not found");
                 shellData = new()
                 {
                     Name = "Error",

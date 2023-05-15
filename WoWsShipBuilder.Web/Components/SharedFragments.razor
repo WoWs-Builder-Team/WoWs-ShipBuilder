@@ -38,7 +38,7 @@
                         <div class="d-flex justify-space-between">
                             <MudText Class="flex-grow-0 flex-shrink-1" Typo="Typo.body2">
                                     @group.localizer.GetAppLocalization(element.Key).Localization
-                                    <MudIcon ViewBox="0 -14 36 36" Icon="@Icons.Outlined.Info" Size="Size.Small" Class="mt-n2"/>
+                                    <MudIcon ViewBox="0 -14 36 36" Icon="@Icons.Material.Outlined.Info" Size="Size.Small" Class="mt-n2"/>
                                 </MudText>
                             <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@(element.Value + " " + group.localizer.GetAppLocalization(element.Unit).Localization)</MudText>
                         </div>
@@ -54,7 +54,9 @@
                 <MudText Typo="Typo.body2">@ConvertValue(element.Value, element.IsValueKey, element.IsValueAppLocalization, group.localizer)</MudText>
                 break;
             case FormattedTextDataElement element:
-                <MudText Typo="Typo.body2">@ConvertFormattedText(element, group.localizer)</MudText>
+                <MudText Typo="Typo.body2" Class="mb-2">
+                    <MultilineString InputString="@ConvertFormattedText(element, group.localizer)"/>
+                </MudText>
                 break;
         }
     };

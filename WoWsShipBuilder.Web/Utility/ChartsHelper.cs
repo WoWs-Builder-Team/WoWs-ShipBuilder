@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using DynamicData;
 using WoWsShipBuilder.Core.DataContainers;
+using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.Web.Utility;
@@ -13,10 +14,11 @@ public static class ChartsHelper
     /// </summary>
     /// <param name="dispersion"><see cref="Dispersion"/> data of the gun.</param>
     /// <param name="maxRange">Max range of the gun.</param>
+    /// <param name="modifier">The dispersion modifier</param>
     /// <returns>The horizontal dispersion series for the given parameter.</returns>
-    public static IEnumerable<Point> CreateHorizontalDispersionSeries(Dispersion dispersion, double maxRange)
+    public static IEnumerable<Point> CreateHorizontalDispersionChartDataset(Dispersion dispersion, double maxRange, double modifier)
     {
-        return CreateFunctionSeries(x => dispersion.CalculateHorizontalDispersion(x * 1000), 0, (maxRange * 1.5) / 1000, 0.1);
+        return CreateFunctionSeries(x => dispersion.CalculateHorizontalDispersion(x * 1000, modifier), 0, (maxRange * 1.5) / 1000, 0.1);
     }
 
     /// <summary>
@@ -25,23 +27,24 @@ public static class ChartsHelper
     /// <param name="dispersion"><see cref="Dispersion"/> data of the gun.</param>
     /// <param name="maxRange">Max range of the gun.</param>
     /// <param name="impactAngles">Dictionary containing the impact angle for each range.</param>
+    /// <param name="modifier">The dispersion modifier</param>
     /// <returns>The vertical dispersion series for the given parameter.</returns>
-    public static (IEnumerable<Point> verticalDispersionAtImpactAngle, IEnumerable<Point> verticalDispersionOnWater, IEnumerable<Point> verticalDispersionOnPerpendicularToWater) CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange, Dictionary<double, Ballistic> impactAngles)
+    public static VerticalDispersions CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange, Dictionary<double, Ballistic> impactAngles, double modifier)
     {
-        List<Point> series = CreateFunctionSeries(x => dispersion.CalculateVerticalDispersion(maxRange, x * 1000), 0, (maxRange * 1.5) / 1000, 0.1).ToList();
+        List<Point> series = CreateFunctionSeries(x => dispersion.CalculateDispersion(maxRange, modifier, x * 1000).Vertical, 0, (maxRange * 1.5) / 1000, 0.1).ToList();
 
         List<Point> vertDispOnWater = new();
         List<Point> vertDispOnPerpendicularToWater = new();
 
         foreach ((double range, var data) in impactAngles)
         {
-            double disp = dispersion.CalculateVerticalDispersion(maxRange, range);
+            double disp = dispersion.CalculateDispersion(maxRange, modifier, range).Vertical;
             vertDispOnWater.Add(new(range / 1000, disp / Math.Sin(Math.PI / 180 * data.ImpactAngle)));
             vertDispOnPerpendicularToWater.Add(new(range / 1000, disp / Math.Cos(Math.PI / 180 * data.ImpactAngle)));
         }
 
         vertDispOnWater.RemoveAt(0);
-        return (series, vertDispOnWater, vertDispOnPerpendicularToWater);
+        return new(series, vertDispOnWater, vertDispOnPerpendicularToWater);
     }
 
     /// <summary>
@@ -60,20 +63,20 @@ public static class ChartsHelper
         return dispSeries;
     }
 
-    public static IEnumerable<Point> SelectVerticalDispersionDataset((IEnumerable<Point> verticalDispersionAtImpactAngle, IEnumerable<Point> verticalDispersionOnWater, IEnumerable<Point> verticalDispersionOnPerpendicularToWater) vertDispSeries, EllipsePlanes selectedVertDispPlane)
+    public static IEnumerable<Point> SelectVerticalDispersionDataset(VerticalDispersions vertDispSeries, EllipsePlanes selectedVertDispPlane)
     {
         IEnumerable<Point> verticalDispSeries;
         switch (selectedVertDispPlane)
         {
             case EllipsePlanes.HorizontalPlane:
-                verticalDispSeries = vertDispSeries.verticalDispersionOnWater;
+                verticalDispSeries = vertDispSeries.VerticalDispersionOnWater;
                 break;
             case EllipsePlanes.VerticalPlane:
-                verticalDispSeries = vertDispSeries.verticalDispersionOnPerpendicularToWater;
+                verticalDispSeries = vertDispSeries.VerticalDispersionOnPerpendicularToWater;
                 break;
             case EllipsePlanes.RealPlane:
             default:
-                verticalDispSeries = vertDispSeries.verticalDispersionAtImpactAngle;
+                verticalDispSeries = vertDispSeries.VerticalDispersionAtImpactAngle;
                 break;
         }
 

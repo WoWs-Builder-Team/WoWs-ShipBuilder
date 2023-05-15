@@ -2,8 +2,17 @@
 @using WoWsShipBuilder.Core.DataProvider
 @using System.Globalization
 @using System.Collections.ObjectModel
+@using System.Net
+@using DynamicData
+@using WoWsShipBuilder.Core.Builds
+@using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.Localization
+@using WoWsShipBuilder.ViewModels.Other
+@using WoWsShipBuilder.Web.Dialogs
+@using WoWsShipBuilder.Web.Utility
 @inject ILocalizer Localizer
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
 
 <MudGrid Justify="Justify.Center" Spacing="2">
     <MudItem xs="6" md="3">
@@ -56,7 +65,7 @@
                 <MudVirtualize IsEnabled="true" Items="@filteredSummaryList" Context="pair">
                     <MudListItem Style="text-align: center" Value="@pair.Value.Index">
                         <MudText Color="Color.Secondary">
-                            @(pair.Key)
+                            @pair.Key
                         </MudText>
                     </MudListItem>
                 </MudVirtualize>
@@ -66,23 +75,41 @@
     @if (!LargerList)
     {
         <MudItem xs="12" md="4">
-            <MudButton StartIcon="@Icons.Outlined.Cancel" Color="Color.Primary" DisableElevation="true" FullWidth Style="height: 14.6%; outline: inherit" Class="mt-4 mb-2" Variant="Variant.Filled" OnClick="RemoveAllShips" >Clear all</MudButton>
+            <MudButton StartIcon="@Icons.Material.Outlined.Cancel" Color="Color.Primary" DisableElevation="true" FullWidth Style="height: 14.6%; outline: inherit" Class="mt-4 mb-2" Variant="Variant.Filled" OnClick="RemoveAllShips" >Clear all</MudButton>
             <MudPaper Outlined="true" Style="height: 300px; max-height: 300px; overflow: auto">
-                @if (SelectedShips.Any())
-                {
-                    @if (MultiSelect)
+                <MudList Style="max-height: 300px;" Dense>
+                    @if (!SelectedShips.Any())
                     {
-                        @foreach (var ship in SelectedShips)
+                        <MudListItem>
+                            <MudText Color="Color.Primary" Align="Align.Center">
+                                @Localizer.GetAppLocalization(Translation.ShipAndShellsSelectionDialog_NoShipSelected).Localization
+                            </MudText>
+                        </MudListItem>
+                    }
+                    else
+                    {
+                        foreach (var shipContainer in SelectedShips)
                         {
-                            <MudChip Text="@Localizer.GetGameLocalization(ship + "_FULL").Localization" Label="true" OnClose="@(() => RemoveShip(ship))"/>
+                            <MudListItem key="@shipContainer.Id">
+                                <MudStack Style="align-items: stretch" Class="mt-n2">
+                                    <MudStack Row Justify="Justify.SpaceBetween">
+                                        <MudText>
+                                            @Localizer.GetGameLocalization(shipContainer.Ship.Index + "_FULL").Localization
+                                        </MudText>
+                                        <MudIcon Icon="@Icons.Material.Filled.Close" @onclick="@(_ => RemoveShip(shipContainer))" Style="cursor: pointer"/>
+                                    </MudStack>
+                                    <MudStack Row AlignItems="AlignItems.Baseline">
+                                        <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1" @onclick="@(_ => AddBuild(shipContainer))">
+                                            @(Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (!string.IsNullOrWhiteSpace(shipContainer.Build?.BuildName) ? shipContainer.Build.BuildName : ShipComparisonViewModel.DefaultBuildName))
+                                        </MudText>
+                                        <MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.Edit" @onclick="@(_ => AddBuild(shipContainer))" Style="cursor: pointer; alignment-baseline: hanging; font-size: small" ViewBox="0 -3 24 24"/>
+                                    </MudStack>
+                                </MudStack>
+                                <MudDivider Class="mt-1"/>
+                            </MudListItem>
                         }
                     }
-
-                }
-                else
-                {
-                    <MudText Color="Color.Primary" Align="Align.Center" Typo="Typo.h5" Style="position: relative; top: 50%; transform: translateY(-50%);">No ship selected</MudText>
-                }
+                </MudList>
             </MudPaper>
         </MudItem>
     }
@@ -92,7 +119,7 @@
 {
 
     [Parameter]
-    public IList<string> SelectedShips { get; set; } = default!;
+    public IList<ShipBuildContainer> SelectedShips { get; set; } = default!;
 
     [Parameter]
     public bool MultiSelect { get; set; } = true;
@@ -101,7 +128,7 @@
     public bool LargerList { get; set; }
 
     [Parameter]
-    public bool AllowCopies { get; set; } = false;
+    public bool AllowCopies { get; set; }
 
     private SortedDictionary<string, ShipSummary> totalShipNameDictionary = new();
 
@@ -184,7 +211,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        totalShipNameDictionary = new(AppData.ShipSummaryList!.ToDictionary(ship => Localizer.GetGameLocalization($"{ship.Index}_FULL").Localization, ship => ship));
+        totalShipNameDictionary = new(AppData.ShipSummaryList.ToDictionary(ship => Localizer.GetGameLocalization($"{ship.Index}_FULL").Localization, ship => ship));
         filteredSummaryList = totalShipNameDictionary.ToList().OrderBy(x => x.Key).ToList();
     }
 
@@ -226,9 +253,9 @@
         return result;
     }
 
-    private void RemoveShip(string shipIndex)
+    private void RemoveShip(ShipBuildContainer container)
     {
-        SelectedShips.Remove(shipIndex);
+        SelectedShips.Remove(container);
 #pragma warning disable BL0005
         mudList.SelectedValue = null;
 #pragma warning restore BL0005
@@ -236,14 +263,16 @@
 
     private void AddShip(object? obj)
     {
-        if (obj is not string shipIndex || (!AllowCopies && SelectedShips.Contains(shipIndex))) return;
+        if (obj is not string shipIndex || !AllowCopies && SelectedShips.Any(x => x.Ship.Index.Equals(shipIndex))) return;
         if (MultiSelect)
         {
-            SelectedShips.Add(shipIndex);
+            var ship = AppData.ShipDictionary[shipIndex];
+            SelectedShips.Add(ShipBuildContainer.CreateNew(ship, null, null));
         }
         else if (!MultiSelect && SelectedShips.Count == 0)
         {
-            SelectedShips.Add(shipIndex);
+            var ship = AppData.ShipDictionary[shipIndex];
+            SelectedShips.Add(ShipBuildContainer.CreateNew(ship, null, null));
         }
         if (AllowCopies)
         {
@@ -259,5 +288,19 @@
 #pragma warning disable BL0005
         mudList.SelectedValue = null;
 #pragma warning restore BL0005
+    }
+
+    private async Task AddBuild(ShipBuildContainer ship)
+    {
+        var parameters = new DialogParameters
+        {
+            ["SelectedShipIndex"] = ship.Ship.Index,
+        };
+        var dialog = await DialogService.ShowAsync<BuildStringInputDialog>(Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)), parameters);
+        var result = await dialog.Result;
+        if (!result.Canceled && result.Data is Build build)
+        {
+            SelectedShips.Replace(SelectedShips.Single(x => x.Id.Equals(ship.Id)), ship with { Build = build });
+        }
     }
 }

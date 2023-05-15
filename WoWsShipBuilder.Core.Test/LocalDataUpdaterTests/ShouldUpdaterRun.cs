@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using NUnit.Framework;
 using WoWsShipBuilder.Core.DataProvider;
@@ -22,7 +23,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
             };
 
             // Act
-            bool result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, appSettings).ShouldUpdaterRun(ServerType.Live);
+            bool result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, appSettings, NullLogger<LocalDataUpdater>.Instance).ShouldUpdaterRun(ServerType.Live);
 
             // Assert
             result.Should().BeTrue();
@@ -39,7 +40,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
             appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(CreateTestVersionInfo(1, GameVersion.Default));
 
             // Act
-            bool result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, appSettings).ShouldUpdaterRun(ServerType.Live);
+            bool result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, appSettings, NullLogger<LocalDataUpdater>.Instance).ShouldUpdaterRun(ServerType.Live);
 
             // Assert
             result.Should().BeFalse();
@@ -56,7 +57,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
             appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync((VersionInfo?)null);
 
             // Act
-            bool result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, appSettings).ShouldUpdaterRun(ServerType.Live);
+            bool result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, appSettings, NullLogger<LocalDataUpdater>.Instance).ShouldUpdaterRun(ServerType.Live);
 
             // Assert
             result.Should().BeTrue();

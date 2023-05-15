@@ -1,26 +1,31 @@
-﻿@using WoWsShipBuilder.ViewModels.Helper
-@using WoWsShipBuilder.ViewModels.Other
+﻿@using WoWsShipBuilder.ViewModels.Other
 @using System.Globalization
+@using WoWsShipBuilder.ViewModels.Helper.GridData
 @code {
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer)> SecondaryBatteryDataFragment = element => __builder =>
+    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer)> SecondaryBatteryDataFragment = element => __builder =>
     {
-        bool hide = element.section != ShipComparisonDataSections.SecondaryBattery;
-        
-        NumberFormatInfo nfi = default!;
-        if (!hide)
-        {
-            nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
-            nfi.NumberGroupSeparator = "'";
-        }
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SecondaryBatteryCaliber" Title="Caliber (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
+        string dataSectionString = ShipComparisonDataSections.SecondaryBattery.AsString();
+
+        var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
+        nfi.NumberGroupSeparator = "'";
+
+        var columnTitleCaliber = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Caliber))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
+        var columnTitleBarrels = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Barrels))}";
+        var columnTitleMaxRange = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_MaxRange))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
+        var columnTitleReload = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ReloadTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleRof = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RoF))} ({element.localizer.SimpleAppLocalization(Translation.Unit_ShotsPerMinute)})";
+        var columnTitleDpm = $"{element.localizer.SimpleAppLocalization(Translation.ShipStats_Dpm)}";
+        var columnTitleFpm = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Fpm))} ({element.localizer.SimpleAppLocalization(Translation.Unit_FPM)})";
+        var columnTitleSigma = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Sigma))}";
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCaliber}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCaliber)" SortBy="@(x => x.Secondary.Caliber)" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryBatteryCaliber.Any())
+                @if (context.Item.Secondary.Caliber.Any())
                 {
-                    List<decimal> items = context.Item.SecondaryBatteryCaliber;
+                    List<decimal> items = context.Item.Secondary.Caliber;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -40,17 +45,17 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SecondaryBatteryBarrelCount" SortBy="@(x => x.SecondaryBatteryBarrelCount.Sum())" Title="Barrels" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBarrels}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBarrels)" T="GridDataWrapper" SortBy="@(x => x.Secondary.BarrelCount.Sum())" Title="@columnTitleBarrels" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryBatteryBarrelCount.Any() && context.Item.SecondaryBatteryBarrelsLayout.Any())
+                @if (context.Item.Secondary.BarrelCount.Any() && context.Item.Secondary.BarrelsLayout.Any())
                 {
-                    List<int> items = context.Item.SecondaryBatteryBarrelCount;
+                    List<int> items = context.Item.Secondary.BarrelCount;
                     for (var i = 0; i < items.Count; i++)
                     {
                         int item = items[i];
-                        string itemLayout = context.Item.SecondaryBatteryBarrelsLayout[i];
+                        string itemLayout = context.Item.Secondary.BarrelsLayout[i];
                         <MudText Typo="Typo.body2">
                             @($"{item} ({itemLayout})")
                         </MudText>
@@ -67,14 +72,14 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SecondaryBatteryRange" Title="Range (km)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxRange}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxRange)" SortBy="@(x => x.Secondary.Range ?? 0)" T="GridDataWrapper" Title="@columnTitleMaxRange" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryBatteryRange is not null)
+                @if (context.Item.Secondary.Range is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SecondaryBatteryRange
+                        @context.Item.Secondary.Range
                     </MudText>
                 }
                 else
@@ -84,13 +89,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SecondaryBatteryReload" Title="Reload (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReload}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleReload)" SortBy="@(x => x.Secondary.Reload)" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryBatteryReload.Any())
+                @if (context.Item.Secondary.Reload.Any())
                 {
-                    List<decimal> items = context.Item.SecondaryBatteryReload;
+                    List<decimal> items = context.Item.Secondary.Reload;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -110,13 +115,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SecondaryBatteryRoF" Title="ROF (shots/min)" SortBy="@(x => x.SecondaryBatteryRoF.Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRof}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRof)" T="GridDataWrapper" Title="@columnTitleRof" SortBy="@(x => x.Secondary.RoF.Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryBatteryRoF.Any())
+                @if (context.Item.Secondary.RoF.Any())
                 {
-                    List<decimal> items = context.Item.SecondaryBatteryRoF;
+                    List<decimal> items = context.Item.Secondary.RoF;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -136,13 +141,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SecondaryBatteryDpm" Title="DPM" SortBy="@(x => x.SecondaryBatteryDpm.Select(y => int.Parse(y, NumberStyles.AllowThousands, nfi)).Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDpm}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDpm)" T="GridDataWrapper" Title="@columnTitleDpm" SortBy="@(x => x.Secondary.Dpm.Select(y => int.Parse(y, NumberStyles.AllowThousands, nfi)).Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryBatteryDpm.Any())
+                @if (context.Item.Secondary.Dpm.Any())
                 {
-                    List<string> items = context.Item.SecondaryBatteryDpm;
+                    List<string> items = context.Item.Secondary.Dpm;
                     for (var i = 0; i < items.Count; i++)
                     {
                         string item = items[i];
@@ -162,13 +167,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
+        </TemplateColumn>
 
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SecondaryBatteryFpm" Title="FPM (fires/min)" SortBy="@(x => x.SecondaryBatteryFpm.Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFpm}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFpm)" T="GridDataWrapper" Title="@columnTitleFpm" SortBy="@(x => x.Secondary.Fpm.Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryBatteryFpm.Any())
+                @if (context.Item.Secondary.Fpm.Any())
                 {
-                    List<decimal> items = context.Item.SecondaryBatteryFpm;
+                    List<decimal> items = context.Item.Secondary.Fpm;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -188,14 +193,14 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SecondaryBatterySigma" Title="Sigma" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSigma}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSigma)" SortBy="@(x => x.Secondary.Sigma ?? 0)" T="GridDataWrapper" Title="@columnTitleSigma" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryBatterySigma is not null)
+                @if (context.Item.Secondary.Sigma is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SecondaryBatterySigma
+                        @context.Item.Secondary.Sigma
                     </MudText>
                 }
                 else
@@ -205,6 +210,6 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
+        </TemplateColumn>
     };
 }

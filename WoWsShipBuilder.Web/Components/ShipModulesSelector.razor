@@ -17,7 +17,7 @@
                         <MudStack AlignItems="AlignItems.Center">
                             @if (columnUpgrade.IndexOf(upgrade) != 0)
                             {
-                                <MudIcon Icon="@Icons.Filled.ArrowDropDown"/>
+                                <MudIcon Icon="@Icons.Material.Filled.ArrowDropDown"/>
                             }
                             <MudButton OnClick="@(_ => ViewModel.SelectModuleExecute(upgrade))" Class="pa-2" Style="@GetImageStyle()" Variant="Variant.Outlined" >
                                 <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetModuleIcon(upgrade, ViewModel.SelectedModules.Contains(upgrade))"/>
@@ -27,7 +27,9 @@
                                                                                                    text-overflow: ellipsis;
                                                                                                    display: -webkit-box;
                                                                                                    -webkit-line-clamp: 2;
-                                                                                                   -webkit-box-orient: vertical;" Align="Align.Center" Typo="Typo.body2">@Localizer.GetGameLocalization(upgrade.Name).Localization</MudText>
+                                                                                                   -webkit-box-orient: vertical;" Align="Align.Center" Typo="Typo.body2">
+                                @Localizer.GetGameLocalization(upgrade.Name).Localization
+                            </MudText>
                         </MudStack>
                     }
                 </MudStack>
@@ -40,14 +42,19 @@
 
     [CascadingParameter]
     private Breakpoint Breakpoint { get; set; }
-    
+
     private string GetModuleIcon(ShipUpgrade upgrade, bool isSelected)
     {
         string uriSuffix = isSelected ? "_installed" : string.Empty;
         var path = $"/assets/modules/icon_module_{upgrade.UcType.ToString()}{uriSuffix}.png";
         return path;
     }
-    
+
+    private string GetImageStyle(bool isSelected)
+    {
+        return isSelected ? string.Empty : "opacity: 0.4;";
+    }
+
     private int GetImageSize()
     {
         switch (Breakpoint)
@@ -59,7 +66,7 @@
                 return 40;
         }
     }
-    
+
     private string GetImageStyle()
     {
         switch (Breakpoint)

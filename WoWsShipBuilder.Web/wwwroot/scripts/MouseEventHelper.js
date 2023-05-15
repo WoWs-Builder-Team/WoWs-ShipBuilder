@@ -1,7 +1,9 @@
 ﻿export function PreventMiddleClickDefault(id) {
     const element = document.getElementById(id);
-    element.removeEventListener("mousedown", handleMiddleClick);
-    element.addEventListener("mousedown", handleMiddleClick);
+    if (element !== null) {
+        element.removeEventListener("mousedown", handleMiddleClick);
+        element.addEventListener("mousedown", handleMiddleClick);
+    }
 }
 
 function handleMiddleClick(event) {

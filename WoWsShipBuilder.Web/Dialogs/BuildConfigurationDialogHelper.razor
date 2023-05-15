@@ -6,13 +6,7 @@
 @inject IOptions<CdnOptions> CdnOptions
 
 @code {
-
-    /// <summary>
-    /// A read-only collection of <see cref="ShipBuildContainer"/> objects that contain the base data for the dialog.
-    /// </summary>
-    [Parameter, EditorRequired]
-    public IReadOnlyCollection<ShipBuildContainer> ShipBuildContainers { get; set; } = default!;
-    
+   
     /// <summary>
     /// The base path to use for ship images, assuming an image path matches the pattern {ImageBasePath}/{ShipIndex}.png with ImageBasePath containing also the protocol (https or http).
     /// <br/>
@@ -31,21 +25,21 @@
     
     [Parameter]
     public bool NoHeader { get; set; }
-    
-    [Parameter]
-    public bool DisableBackdropClick { get; set; }
 
-    public async Task<IEnumerable<ShipBuildContainer>?> ShowDialogAsync()
+    [Parameter]
+    public bool DisableBackdropClick { get; set; } = true;
+
+    public async Task<IEnumerable<ShipBuildContainer>?> ShowDialogAsync(IReadOnlyCollection<ShipBuildContainer> shipBuildContainers)
     {
         var options = new DialogOptions { MaxWidth = MaxWidth, FullWidth = FullWidth, NoHeader = NoHeader, DisableBackdropClick = DisableBackdropClick };
         var cdnOptions = CdnOptions.Value;
         var parameters = new DialogParameters
         {
             ["ImageBasePath"] = ImageBasePath ?? $"{cdnOptions.Host}{cdnOptions.ShipImagePath}",
-            ["Ships"] = ShipBuildContainers,
+            ["Ships"] = shipBuildContainers,
         };
         
-        var dialogResult = await DialogService.Show<BuildConfigurationDialog>("Configure builds", parameters, options).Result;
+        var dialogResult = await (await DialogService.ShowAsync<BuildConfigurationDialog>("Configure builds", parameters, options)).Result;
         if (dialogResult.Data is List<ShipBuildContainer> buildContainers)
         {
             return buildContainers;

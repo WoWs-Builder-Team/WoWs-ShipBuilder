@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Windows.Input;
 using DynamicData.Binding;
+using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.Builds;
@@ -29,6 +30,8 @@ public partial class ShipViewModelBase : ViewModelBase
     private readonly INavigationService navigationService;
 
     private readonly ILocalizer localizer;
+
+    private readonly ILogger<ShipViewModelBase> logger;
 
     private CancellationTokenSource tokenSource;
 
@@ -73,11 +76,12 @@ public partial class ShipViewModelBase : ViewModelBase
 
     protected string? CurrentBuildName;
 
-    protected ShipViewModelBase(INavigationService navigationService, ILocalizer localizer, ShipViewModelParams viewModelParams)
+    protected ShipViewModelBase(INavigationService navigationService, ILocalizer localizer, ILogger<ShipViewModelBase> logger, ShipViewModelParams viewModelParams)
     {
         this.navigationService = navigationService;
         this.localizer = localizer;
         tokenSource = new();
+        this.logger = logger;
         PreviousShip = viewModelParams.ShipSummary.PrevShipIndex is null ? null : AppData.ShipSummaryList!.First(sum => sum.Index == viewModelParams.ShipSummary.PrevShipIndex);
         CurrentShip = viewModelParams.ShipSummary;
 
@@ -86,7 +90,7 @@ public partial class ShipViewModelBase : ViewModelBase
 
     public async void ResetBuild()
     {
-        Logging.Logger.Info("Resetting build");
+        logger.LogDebug("Resetting build");
         await LoadNewShip(AppData.ShipSummaryList!.First(summary => summary.Index.Equals(CurrentShipIndex)));
     }
 
@@ -110,12 +114,12 @@ public partial class ShipViewModelBase : ViewModelBase
 
     public async void NewShipSelection()
     {
-        Logging.Logger.Info("Selecting new ship");
+        logger.LogDebug("Selecting new ship");
 
         var result = (await SelectNewShipInteraction.Handle(new(false, ShipSelectionWindowViewModel.LoadParams(localizer))))?.FirstOrDefault();
         if (result != null)
         {
-            Logging.Logger.Info("New ship selected: {0}", result.Index);
+            logger.LogDebug("New ship selected: {Index}", result.Index);
             await LoadNewShip(result);
         }
     }
@@ -134,12 +138,12 @@ public partial class ShipViewModelBase : ViewModelBase
         disposables.Clear();
         var ship = AppData.FindShipFromSummary(summary);
 
-        await InitializeData(ship, summary.PrevShipIndex, summary.NextShipsIndex);
+        InitializeData(ship, summary.PrevShipIndex, summary.NextShipsIndex);
     }
 
-    public async Task InitializeData(ShipViewModelParams viewModelParams)
+    public void InitializeData(ShipViewModelParams viewModelParams)
     {
-        await InitializeData(viewModelParams.Ship, viewModelParams.ShipSummary.PrevShipIndex, viewModelParams.ShipSummary.NextShipsIndex, viewModelParams.Build);
+        InitializeData(viewModelParams.Ship, viewModelParams.ShipSummary.PrevShipIndex, viewModelParams.ShipSummary.NextShipsIndex, viewModelParams.Build);
     }
 
     public Build CreateBuild(string buildName)
@@ -147,10 +151,10 @@ public partial class ShipViewModelBase : ViewModelBase
         return new(buildName, CurrentShipIndex, RawShipData.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel!.GetCaptainIndex(), CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
     }
 
-    private async Task InitializeData(Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
+    private void InitializeData(Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
     {
-        Logging.Logger.Info("Loading data for ship {0}", ship.Index);
-        Logging.Logger.Info("Build is null: {0}", build is null);
+        logger.LogInformation("Loading data for ship {Index}", ship.Index);
+        logger.LogDebug("Build is null: {BuildIsNull}", build is null);
 
         ShipDataContainer.ExpanderStateMapper.Clear();
 
@@ -158,21 +162,20 @@ public partial class ShipViewModelBase : ViewModelBase
         RawShipData = ship;
         EffectiveShipData = RawShipData;
 
-        Logging.Logger.Info("Initializing view models");
+        logger.LogDebug("Initializing view models");
 
         // Viewmodel inits
         SignalSelectorViewModel = new();
         CaptainSkillSelectorViewModel = new(RawShipData.ShipClass, CaptainSkillSelectorViewModel.LoadParams(ship.ShipNation));
         ShipModuleViewModel = new(RawShipData.ShipUpgradeInfo);
         UpgradePanelViewModel = new(RawShipData, AppData.ModernizationCache);
-        ConsumableViewModel = ConsumableViewModel.Create(RawShipData, new List<string>());
+        ConsumableViewModel = ConsumableViewModel.Create(RawShipData, new List<string>(), Logging.LoggerFactory);
 
         ShipStatsControlViewModel = new(EffectiveShipData);
-        await ShipStatsControlViewModel.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList());
 
         if (build != null)
         {
-            Logging.Logger.Info("Loading build");
+            logger.LogDebug("Loading build");
             SignalSelectorViewModel.LoadBuild(build.Signals);
             CaptainSkillSelectorViewModel.LoadBuild(build.Skills, build.Captain);
             ShipModuleViewModel.LoadBuild(build.Modules);
@@ -188,7 +191,7 @@ public partial class ShipViewModelBase : ViewModelBase
         NextShips = nextShipsIndexes?.Select(index => AppData.ShipSummaryList.First(sum => sum.Index == index)).ToList();
 
         AddChangeListeners();
-        UpdateStatsViewModel();
+        UpdateStatsViewModel(true);
         if (build != null)
         {
             CurrentBuildName = build.BuildName;
@@ -215,7 +218,7 @@ public partial class ShipViewModelBase : ViewModelBase
         }
     }
 
-    private void UpdateStatsViewModel()
+    private void UpdateStatsViewModel(bool skipDelay = false)
     {
         tokenSource.Cancel();
         tokenSource.Dispose();
@@ -227,14 +230,18 @@ public partial class ShipViewModelBase : ViewModelBase
             {
                 try
                 {
-                    await Task.Delay(250, token);
+                    if (!skipDelay)
+                    {
+                        await Task.Delay(250, token);
+                    }
+
                     if (!token.IsCancellationRequested)
                     {
                         await semaphore.WaitAsync(token);
                         var modifiers = GenerateModifierList();
                         if (ShipStatsControlViewModel != null)
                         {
-                            Logging.Logger.Info("Updating ship stats");
+                            logger.LogDebug("Updating ship stats");
                             await ShipStatsControlViewModel.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), modifiers);
                         }
                         var hp = ShipStatsControlViewModel!.CurrentShipStats!.SurvivabilityDataContainer.HitPoints;

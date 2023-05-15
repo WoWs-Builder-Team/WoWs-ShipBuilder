@@ -1,14 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <Nullable>enable</Nullable>
-        <LangVersion>10</LangVersion>
-    </PropertyGroup>
-
     <ItemGroup>
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-      <PackageReference Include="NLog" Version="5.1.1" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+      <PackageReference Include="NLog" Version="5.1.4" />
       <PackageReference Include="Roslyn.System.IO.Abstractions.Analyzers" Version="12.2.19">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -17,15 +12,15 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="System.IO.Abstractions" Version="19.1.18" />
-      <PackageReference Include="WoWsShipBuilder.DataStructures" Version="3.1.0" />
+      <PackageReference Include="System.IO.Abstractions" Version="19.2.22" />
+      <PackageReference Include="WoWsShipBuilder.DataStructures" Version="3.1.6" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\WoWsShipBuilder.Data.Generator\WoWsShipBuilder.Data.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\WoWsShipBuilder.DataElements\WoWsShipBuilder.DataElements.csproj" />
     </ItemGroup>
-    
+
     <ItemGroup>
       <AdditionalFiles Include="..\stylecop.json">
         <Link>stylecop.json</Link>

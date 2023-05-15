@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
+using Microsoft.Extensions.Logging;
 using Splat;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.Localization;
@@ -45,7 +46,7 @@ namespace WoWsShipBuilder.UI.Views
                 }
                 catch (Exception e)
                 {
-                    Logging.Logger.Error(e, "Encountered unexpected error during data download.");
+                    Logging.Logger.LogError(e, "Encountered unexpected error during data download");
                     await Dispatcher.UIThread.InvokeAsync(async () =>
                         await MessageBox.Show(
                             this,

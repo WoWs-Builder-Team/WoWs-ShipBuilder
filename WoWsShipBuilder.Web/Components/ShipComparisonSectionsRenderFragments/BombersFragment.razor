@@ -1,18 +1,45 @@
-﻿@using WoWsShipBuilder.ViewModels.Helper
+﻿@using WoWsShipBuilder.ViewModels.Helper.GridData
 @using WoWsShipBuilder.ViewModels.Other
 @code {
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer)> BombersDataFragment = element => __builder =>
+    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer)> BombersDataFragment = element => __builder =>
     {
-        bool hide = element.section != ShipComparisonDataSections.Bombers;
+        string dataSectionString = ShipComparisonDataSections.Bombers.AsString();
 
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersType" Title="Type" SortBy="@(x=> !x.BombersType.Any() ? string.Empty : element.localizer.GetAppLocalization($"ShipStats_{x.BombersType.First()}").Localization)" HeaderClass="column-text-center" CellClass="column-text-center">
+        var columnTitleType = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Type))}";
+        var columnTitlePlanesInSquadron = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_PlanesInSquadron))}";
+        var columnTitlePlanesPerAttack = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Planes))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_NumberDuringAttack))}";
+        var columnTitlePlanesOnDeck = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Planes))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_OnDeck))}";
+        var columnTitleRestorationTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RestorationTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleCruisingSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_CruisingSpeed))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Speed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Knots)})";
+        var columnTitleMaxSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MaxSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Knots)})";
+        var columnTitleMinSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MinSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Knots)})";
+        var columnTitleEngineBoost = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_EngineBoostDuration))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleInitialBoostDuration = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_InitialBoost))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Duration))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleInitialBoostSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_InitialBoost))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Amount))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+        var columnTitlePlaneHp = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_PlaneHp))}";
+        var columnTitleSquadronHp = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_SquadronHp))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_HP))}";
+        var columnTitleAttackGroupHp = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AttackGroupHp))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_HP))}";
+        var columnTitleDamageTakenWhileAttacking = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_DamageTakenDuringAttack))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+        var columnTitleBombsPerPlane = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_BombsPerPlane))}";
+        var columnTitlePreparationTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_PreparationTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleAimingTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AimingTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleFullyAimedTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TimeToFullyAimed))} {element.localizer.SimpleAppLocalization(nameof(Translation.AccelerationChart_Time))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleInvulnerabilityTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Invulnerability))} {element.localizer.SimpleAppLocalization(nameof(Translation.AccelerationChart_Time))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleAttackCooldown = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AttackCd))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleConcealment = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Concealment))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
+        var columnTitleViewRange = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_ViewDistance))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
+        var columnTitleAreaChangeWhileAiming = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_AreaChange))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AimingRateMoving))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+        var columnTitleAreaChangeDuringPreparation = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_AreaChange))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AimingPreparationRateMoving))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+        var columnTitleBombsInInnerEllipse = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_InnerBombPercentage))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleType}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleType)" T="GridDataWrapper" Title="@columnTitleType" SortBy="@(x=> !x.Bombers.Type.Any() ? string.Empty : element.localizer.GetAppLocalization($"ShipStats_{x.Bombers.Type.First()}").Localization)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersType.Any())
+                @if (context.Item.Bombers.Type.Any())
                 {
-                    List<string> items = context.Item.BombersType;
+                    List<string> items = context.Item.Bombers.Type;
                     for (var i = 0; i < items.Count; i++)
                     {
                         string item = items[i];
@@ -32,13 +59,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersInSquadron" Title="Planes in squadron" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlanesInSquadron}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlanesInSquadron)" SortBy="@(x => x.Bombers.InSquadron)" T="GridDataWrapper" Title="@columnTitlePlanesInSquadron" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersInSquadron.Any())
+                @if (context.Item.Bombers.InSquadron.Any())
                 {
-                    List<int> items = context.Item.BombersInSquadron;
+                    List<int> items = context.Item.Bombers.InSquadron;
                     for (var i = 0; i < items.Count; i++)
                     {
                         int item = items[i];
@@ -58,13 +85,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersPerAttack" Title="Planes per attack" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlanesPerAttack}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlanesPerAttack)" SortBy="@(x => x.Bombers.PerAttack)" T="GridDataWrapper" Title="@columnTitlePlanesPerAttack" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersPerAttack.Any())
+                @if (context.Item.Bombers.PerAttack.Any())
                 {
-                    List<int> items = context.Item.BombersPerAttack;
+                    List<int> items = context.Item.Bombers.PerAttack;
                     for (var i = 0; i < items.Count; i++)
                     {
                         int item = items[i];
@@ -84,13 +111,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersOnDeck" Title="Planes on deck" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlanesOnDeck}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlanesOnDeck)" SortBy="@(x => x.Bombers.OnDeck)" T="GridDataWrapper" Title="@columnTitlePlanesOnDeck" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersOnDeck.Any())
+                @if (context.Item.Bombers.OnDeck.Any())
                 {
-                    List<int> items = context.Item.BombersOnDeck;
+                    List<int> items = context.Item.Bombers.OnDeck;
                     for (var i = 0; i < items.Count; i++)
                     {
                         int item = items[i];
@@ -110,13 +137,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersRestorationTime" Title="Restoration time (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRestorationTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRestorationTime)" SortBy="@(x => x.Bombers.RestorationTime)" T="GridDataWrapper" Title="@columnTitleRestorationTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersRestorationTime.Any())
+                @if (context.Item.Bombers.RestorationTime.Any())
                 {
-                    List<decimal> items = context.Item.BombersRestorationTime;
+                    List<decimal> items = context.Item.Bombers.RestorationTime;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -136,13 +163,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersCruisingSpeed" Title="Cruising speed (kts)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCruisingSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCruisingSpeed)" SortBy="@(x => x.Bombers.CruisingSpeed)" T="GridDataWrapper" Title="@columnTitleCruisingSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersCruisingSpeed.Any())
+                @if (context.Item.Bombers.CruisingSpeed.Any())
                 {
-                    List<decimal> items = context.Item.BombersCruisingSpeed;
+                    List<decimal> items = context.Item.Bombers.CruisingSpeed;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -162,13 +189,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersMaxSpeed" Title="Max speed (kts)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxSpeed)" SortBy="@(x => x.Bombers.MaxSpeed)" T="GridDataWrapper" Title="@columnTitleMaxSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersMaxSpeed.Any())
+                @if (context.Item.Bombers.MaxSpeed.Any())
                 {
-                    List<decimal> items = context.Item.BombersMaxSpeed;
+                    List<decimal> items = context.Item.Bombers.MaxSpeed;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -188,13 +215,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersMinSpeed" Title="Min speed (kts)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMinSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMinSpeed)" SortBy="@(x => x.Bombers.MinSpeed)" T="GridDataWrapper" Title="@columnTitleMinSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersMinSpeed.Any())
+                @if (context.Item.Bombers.MinSpeed.Any())
                 {
-                    List<decimal> items = context.Item.BombersMinSpeed;
+                    List<decimal> items = context.Item.Bombers.MinSpeed;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -214,13 +241,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersEngineBoostDuration" Title="Engine boost duration (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleEngineBoost}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleEngineBoost)" SortBy="@(x => x.Bombers.EngineBoostDuration)" T="GridDataWrapper" Title="@columnTitleEngineBoost" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersEngineBoostDuration.Any())
+                @if (context.Item.Bombers.EngineBoostDuration.Any())
                 {
-                    List<decimal> items = context.Item.BombersEngineBoostDuration;
+                    List<decimal> items = context.Item.Bombers.EngineBoostDuration;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -240,13 +267,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersInitialBoostDuration" Title="Initial boost duration (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleInitialBoostDuration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleInitialBoostDuration)" SortBy="@(x => x.Bombers.InitialBoostDuration)" T="GridDataWrapper" Title="@columnTitleInitialBoostDuration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersInitialBoostDuration.Any(x => x != 0))
+                @if (context.Item.Bombers.InitialBoostDuration.Any(x => x != 0))
                 {
-                    List<decimal> items = context.Item.BombersInitialBoostDuration;
+                    List<decimal> items = context.Item.Bombers.InitialBoostDuration;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -266,13 +293,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersInitialBoostValue" Title="Initial boost amount (%)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleInitialBoostSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleInitialBoostSpeed)" SortBy="@(x => x.Bombers.InitialBoostValue)" T="GridDataWrapper" Title="@columnTitleInitialBoostSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersInitialBoostValue.Any(x => x != 0))
+                @if (context.Item.Bombers.InitialBoostValue.Any(x => x != 0))
                 {
-                    List<decimal> items = context.Item.BombersInitialBoostValue;
+                    List<decimal> items = context.Item.Bombers.InitialBoostValue;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -292,13 +319,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersPlaneHp" Title="Plane HP" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlaneHp}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlaneHp)" SortBy="@(x => x.Bombers.PlaneHp)" T="GridDataWrapper" Title="@columnTitlePlaneHp" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersPlaneHp.Any())
+                @if (context.Item.Bombers.PlaneHp.Any())
                 {
-                    List<int> items = context.Item.BombersPlaneHp;
+                    List<int> items = context.Item.Bombers.PlaneHp;
                     for (var i = 0; i < items.Count; i++)
                     {
                         int item = items[i];
@@ -318,13 +345,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersSquadronHp" Title="Squadron HP" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSquadronHp}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSquadronHp)" SortBy="@(x => x.Bombers.SquadronHp)" T="GridDataWrapper" Title="@columnTitleSquadronHp" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersSquadronHp.Any())
+                @if (context.Item.Bombers.SquadronHp.Any())
                 {
-                    List<int> items = context.Item.BombersSquadronHp;
+                    List<int> items = context.Item.Bombers.SquadronHp;
                     for (var i = 0; i < items.Count; i++)
                     {
                         int item = items[i];
@@ -344,13 +371,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersAttackGroupHp" Title="Attack group HP" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAttackGroupHp}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAttackGroupHp)" SortBy="@(x => x.Bombers.AttackGroupHp)" T="GridDataWrapper" Title="@columnTitleAttackGroupHp" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersAttackGroupHp.Any())
+                @if (context.Item.Bombers.AttackGroupHp.Any())
                 {
-                    List<int> items = context.Item.BombersAttackGroupHp;
+                    List<int> items = context.Item.Bombers.AttackGroupHp;
                     for (var i = 0; i < items.Count; i++)
                     {
                         int item = items[i];
@@ -370,13 +397,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersDamageDuringAttack" Title="Damage taken while attacking (%)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDamageTakenWhileAttacking}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDamageTakenWhileAttacking)" SortBy="@(x => x.Bombers.DamageDuringAttack)" T="GridDataWrapper" Title="@columnTitleDamageTakenWhileAttacking" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersDamageDuringAttack.Any())
+                @if (context.Item.Bombers.DamageDuringAttack.Any())
                 {
-                    List<int> items = context.Item.BombersDamageDuringAttack;
+                    List<int> items = context.Item.Bombers.DamageDuringAttack;
                     for (var i = 0; i < items.Count; i++)
                     {
                         int item = items[i];
@@ -396,13 +423,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersWeaponsPerPlane" Title="Rockets per plane" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBombsPerPlane}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBombsPerPlane)" T="GridDataWrapper" SortBy="@(x => x.Bombers.WeaponsPerPlane)" Title="@columnTitleBombsPerPlane" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersWeaponsPerPlane.Any())
+                @if (context.Item.Bombers.WeaponsPerPlane.Any())
                 {
-                    List<int> items = context.Item.BombersWeaponsPerPlane;
+                    List<int> items = context.Item.Bombers.WeaponsPerPlane;
                     for (var i = 0; i < items.Count; i++)
                     {
                         int item = items[i];
@@ -422,13 +449,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersPreparationTime" Title="Preparation time (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePreparationTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePreparationTime)" SortBy="@(x => x.Bombers.PreparationTime)" T="GridDataWrapper" Title="@columnTitlePreparationTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersPreparationTime.Any())
+                @if (context.Item.Bombers.PreparationTime.Any())
                 {
-                    List<decimal> items = context.Item.BombersPreparationTime;
+                    List<decimal> items = context.Item.Bombers.PreparationTime;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -448,13 +475,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersAimingTime" Title="Aiming time (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAimingTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAimingTime)" SortBy="@(x => x.Bombers.AimingTime)" T="GridDataWrapper" Title="@columnTitleAimingTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersAimingTime.Any())
+                @if (context.Item.Bombers.AimingTime.Any())
                 {
-                    List<decimal> items = context.Item.BombersAimingTime;
+                    List<decimal> items = context.Item.Bombers.AimingTime;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -474,13 +501,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersTimeToFullyAimed" Title="To fully aimed time (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFullyAimedTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFullyAimedTime)" SortBy="@(x => x.Bombers.TimeToFullyAimed)" T="GridDataWrapper" Title="@columnTitleFullyAimedTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersTimeToFullyAimed.Any())
+                @if (context.Item.Bombers.TimeToFullyAimed.Any())
                 {
-                    List<decimal> items = context.Item.BombersTimeToFullyAimed;
+                    List<decimal> items = context.Item.Bombers.TimeToFullyAimed;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -500,13 +527,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersPostAttackInvulnerability" Title="Invulnerability time (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleInvulnerabilityTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleInvulnerabilityTime)" SortBy="@(x => x.Bombers.PostAttackInvulnerability)" T="GridDataWrapper" Title="@columnTitleInvulnerabilityTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersPostAttackInvulnerability.Any())
+                @if (context.Item.Bombers.PostAttackInvulnerability.Any())
                 {
-                    List<decimal> items = context.Item.BombersPostAttackInvulnerability;
+                    List<decimal> items = context.Item.Bombers.PostAttackInvulnerability;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -526,13 +553,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersAttackCooldown" Title="Attack cooldown (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAttackCooldown}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAttackCooldown)" SortBy="@(x => x.Bombers.AttackCooldown)" T="GridDataWrapper" Title="@columnTitleAttackCooldown" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersAttackCooldown.Any())
+                @if (context.Item.Bombers.AttackCooldown.Any())
                 {
-                    List<decimal> items = context.Item.BombersAttackCooldown;
+                    List<decimal> items = context.Item.Bombers.AttackCooldown;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -552,13 +579,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersConcealment" Title="Concealment (km)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleConcealment}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleConcealment)" SortBy="@(x => x.Bombers.Concealment)" T="GridDataWrapper" Title="@columnTitleConcealment" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersConcealment.Any())
+                @if (context.Item.Bombers.Concealment.Any())
                 {
-                    List<decimal> items = context.Item.BombersConcealment;
+                    List<decimal> items = context.Item.Bombers.Concealment;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -578,13 +605,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersSpotting" Title="View range (km)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleViewRange}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleViewRange)" SortBy="@(x => x.Bombers.Spotting)" T="GridDataWrapper" Title="@columnTitleViewRange" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersSpotting.Any())
+                @if (context.Item.Bombers.Spotting.Any())
                 {
-                    List<decimal> items = context.Item.BombersSpotting;
+                    List<decimal> items = context.Item.Bombers.Spotting;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
@@ -604,13 +631,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersAreaChangeAiming" Title="Area change while aiming (%)" SortBy="@(x => !x.BombersAreaChangeAiming.Any() ? double.MinValue : x.BombersAreaChangeAiming.Select(decimal.Parse).ToList())" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAreaChangeWhileAiming}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAreaChangeWhileAiming)" T="GridDataWrapper" Title="@columnTitleAreaChangeWhileAiming" SortBy="@(x => !x.Bombers.AreaChangeAiming.Any() ? double.MinValue : x.Bombers.AreaChangeAiming.Select(decimal.Parse).ToList())" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersAreaChangeAiming.Any())
+                @if (context.Item.Bombers.AreaChangeAiming.Any())
                 {
-                    List<string> items = context.Item.BombersAreaChangeAiming;
+                    List<string> items = context.Item.Bombers.AreaChangeAiming;
                     for (var i = 0; i < items.Count; i++)
                     {
                         string item = items[i];
@@ -630,13 +657,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersAreaChangePreparation" Title="Area change during preparation (%)" SortBy="@(x => !x.BombersAreaChangePreparation.Any() ? double.MinValue : x.BombersAreaChangePreparation.Select(decimal.Parse).ToList())" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAreaChangeDuringPreparation}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAreaChangeDuringPreparation)" T="GridDataWrapper" Title="@columnTitleAreaChangeDuringPreparation" SortBy="@(x => !x.Bombers.AreaChangePreparation.Any() ? double.MinValue : x.Bombers.AreaChangePreparation.Select(decimal.Parse).ToList())" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersAreaChangePreparation.Any())
+                @if (context.Item.Bombers.AreaChangePreparation.Any())
                 {
-                    List<string> items = context.Item.BombersAreaChangePreparation;
+                    List<string> items = context.Item.Bombers.AreaChangePreparation;
                     for (var i = 0; i < items.Count; i++)
                     {
                         string item = items[i];
@@ -656,13 +683,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersInnerEllipse" Title="Bombs in inner ellipse (%)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBombsInInnerEllipse}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBombsInInnerEllipse)" SortBy="@(x => x.Bombers.InnerEllipse)" T="GridDataWrapper" Title="@columnTitleBombsInInnerEllipse" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersInnerEllipse.Any())
+                @if (context.Item.Bombers.InnerEllipse.Any())
                 {
-                    List<int> items = context.Item.BombersInnerEllipse;
+                    List<int> items = context.Item.Bombers.InnerEllipse;
                     for (var i = 0; i < items.Count; i++)
                     {
                         int item = items[i];
@@ -682,6 +709,6 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
+        </TemplateColumn>
     };
 }

@@ -17,10 +17,9 @@ public static class ModifierProcessor
         string value;
 
         // Because removing unused things is too hard, right WG?
-        if (localizerKey.Contains("[UNUSED]", StringComparison.InvariantCultureIgnoreCase) ||
-            localizerKey.Contains("torpedoDetectionCoefficientByPlane", StringComparison.InvariantCultureIgnoreCase))
+        if (localizerKey.Contains("torpedoDetectionCoefficientByPlane", StringComparison.InvariantCultureIgnoreCase))
         {
-            return "";
+            return string.Empty;
         }
 
         switch (localizerKey)
@@ -46,13 +45,13 @@ public static class ModifierProcessor
 
             // this is for Vigilance for BBs
             case { } str when str.Contains("uwCoeffBonus", StringComparison.InvariantCultureIgnoreCase) ||
-                                     str.Contains("ignorePTZBonus", StringComparison.InvariantCultureIgnoreCase):
+                              str.Contains("ignorePTZBonus", StringComparison.InvariantCultureIgnoreCase):
                 value = $"+{(int)modifier} %";
                 break;
 
             // This is for IFHE. At the start because of DE sharing similar modifier name
             case { } str when str.Contains("burnChanceFactorHighLevel", StringComparison.InvariantCultureIgnoreCase) ||
-                                     str.Contains("burnChanceFactorLowLevel", StringComparison.InvariantCultureIgnoreCase):
+                              str.Contains("burnChanceFactorLowLevel", StringComparison.InvariantCultureIgnoreCase):
                 value = $"-{(int)Math.Round(modifier * 100)} %";
                 break;
 
@@ -98,20 +97,15 @@ public static class ModifierProcessor
             // UPDATE: remember what i said about similar names? Wanna take a guess how they did captain talents?
             case { } str when str.Contains("Bonus", StringComparison.InvariantCultureIgnoreCase) ||
                               str.Contains("burnChanceFactor", StringComparison.InvariantCultureIgnoreCase) ||
+                              str.Contains("regenerationHPSpeed", StringComparison.InvariantCultureIgnoreCase) ||
                               (str.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase) && !returnFilter.Equals(ReturnFilter.All)):
             {
-                value = $"+{Math.Round(modifier * 100, 1)}%";
+                value = modifier > 1 ? $"+{modifier}" : $"+{Math.Round(modifier * 100, 1)} %";
                 if (str.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase))
                 {
-                        value += $"/{localizer.GetAppLocalization(nameof(Translation.Unit_S)).Localization}";
+                    value += $"/{localizer.GetAppLocalization(nameof(Translation.Unit_S)).Localization}";
                 }
 
-                break;
-            }
-
-            case { } str when str.Contains("regenerationHPSpeed", StringComparison.InvariantCultureIgnoreCase):
-            {
-                value = $"+{(modifier - 1) * 100:#} %";
                 break;
             }
 
@@ -133,7 +127,7 @@ public static class ModifierProcessor
             // Radar and hydro spotting distances
             case { } str when str.Contains("distShip", StringComparison.InvariantCultureIgnoreCase) ||
                               str.Contains("distTorpedo", StringComparison.InvariantCultureIgnoreCase):
-                value = $"{Math.Round(modifier * 30) / 1000} {localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization}";
+                value = $"{(modifier * 30) / 1000:.##} {localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization}";
                 break;
 
             // Speed boost modifier
@@ -158,9 +152,16 @@ public static class ModifierProcessor
                 value = $"{Math.Round(modifier * 30 / 1000, 1)} {localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization}";
                 break;
 
+            case { } str when str.Equals("lifeTime", StringComparison.InvariantCultureIgnoreCase) ||
+                              str.Contains("timeFromHeaven", StringComparison.InvariantCultureIgnoreCase) ||
+                              str.Contains("torpedoReloadTime", StringComparison.InvariantCultureIgnoreCase) ||
+                              str.Equals("hydrophoneUpdateFrequency", StringComparison.InvariantCultureIgnoreCase):
+                value = $"{modifier} {localizer.SimpleAppLocalization(nameof(Translation.Unit_S))}";
+                break;
+
             case { } str when Math.Abs(modifier % 1) > (double.Epsilon * 100) ||
-                                     str.Contains("WorkTimeCoeff", StringComparison.InvariantCultureIgnoreCase) ||
-                                     str.Contains("smokeGeneratorLifeTime"):
+                              str.Contains("WorkTimeCoeff", StringComparison.InvariantCultureIgnoreCase) ||
+                              str.Contains("smokeGeneratorLifeTime"):
             {
                 if (modifier > 1)
                 {
@@ -176,9 +177,8 @@ public static class ModifierProcessor
                 break;
             }
 
-            case { } str when str.Contains("lifeTime", StringComparison.InvariantCultureIgnoreCase) ||
-                              str.Contains("timeFromHeaven", StringComparison.InvariantCultureIgnoreCase):
-                value = $"{modifier} {localizer.GetAppLocalization(nameof(Translation.Unit_S)).Localization}";
+            case { } str when str.Contains("hydrophoneWaveRadius", StringComparison.InvariantCultureIgnoreCase):
+                value = $"{modifier / 1000} {localizer.SimpleAppLocalization(nameof(Translation.Unit_KM))}";
                 break;
 
             default:
@@ -196,7 +196,7 @@ public static class ModifierProcessor
 
         if (localizerKey.Contains("regenerationHPSpeedUnits", StringComparison.InvariantCultureIgnoreCase))
         {
-            return "";
+            return string.Empty;
         }
 
         // There is one translation per class, but all values are equal, so we can just choose a random one. I like DDs.
@@ -285,7 +285,12 @@ public static class ModifierProcessor
 
         if (localizerKey.Contains("hpPerHeal", StringComparison.InvariantCultureIgnoreCase))
         {
-           description = localizer.GetAppLocalization(nameof(Translation.Consumable_HpPerHeal)).Localization;
+            description = localizer.GetAppLocalization(nameof(Translation.Consumable_HpPerHeal)).Localization;
+        }
+
+        if (description.Contains("[UNUSED]", StringComparison.InvariantCultureIgnoreCase))
+        {
+            return string.Empty;
         }
 
         return description;
@@ -310,12 +315,10 @@ public static class ModifierProcessor
         {
             return "";
         }
-        else
-        {
-            // Remove [HIDDEN] text from some skills modifiers.
-            description = description.Replace("[HIDDEN]", "");
-            return value + " " + description.Trim();
-        }
+
+        // Remove [HIDDEN] text from some skills modifiers.
+        description = description.Replace("[HIDDEN]", "");
+        return value + " " + description.Trim();
     }
 
     public static string GetUiModifierString(string localizerKey, double modifier, ReturnFilter returnFilter, ILocalizer localizer)

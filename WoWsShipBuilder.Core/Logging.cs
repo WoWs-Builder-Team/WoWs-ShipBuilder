@@ -1,10 +1,20 @@
-﻿using NLog;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using NLog;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
+using NullLogger = Microsoft.Extensions.Logging.Abstractions.NullLogger;
 
 namespace WoWsShipBuilder.Core;
 
 public static class Logging
 {
-    public static Logger Logger { get; } = LogManager.GetLogger("ShipBuilder");
+    public static ILogger Logger { get; private set; } = NullLogger.Instance;
 
-    public static Logger GetLogger(string name = "ShipBuilder") => LogManager.GetLogger(name);
+    public static ILoggerFactory LoggerFactory { get; private set; } = NullLoggerFactory.Instance;
+
+    public static void Initialize(ILoggerFactory loggerFactory)
+    {
+        LoggerFactory = loggerFactory;
+        Logger = LoggerFactory.CreateLogger("WoWsShipBuilder");
+    }
 }

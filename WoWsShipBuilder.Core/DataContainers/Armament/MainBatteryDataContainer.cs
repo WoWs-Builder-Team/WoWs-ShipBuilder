@@ -85,6 +85,8 @@ public partial record MainBatteryDataContainer : DataContainerBase
 
     public Dispersion DispersionData { get; set; } = default!;
 
+    public double DispersionModifier { get; set; }
+
     public TurretModule OriginalMainBatteryData { get; set; } = default!;
 
     public bool DisplayHeDpm { get; set; }
@@ -171,28 +173,20 @@ public partial record MainBatteryDataContainer : DataContainerBase
         range = talentRangeModifiers.Aggregate(range, (current, modifier) => current * (decimal)modifier) / 1000;
 
         // Consider dispersion modifiers
-        var idealRadius = modifiers.FindModifiers("GMIdealRadius").Aggregate(mainBattery.DispersionValues.IdealRadius, (current, modifier) => current * modifier);
-        var modifiedDispersion = new Dispersion
-        {
-            IdealRadius = idealRadius,
-            MinRadius = mainBattery.DispersionValues.MinRadius,
-            IdealDistance = mainBattery.DispersionValues.IdealDistance,
-            TaperDist = mainBattery.DispersionValues.TaperDist,
-            RadiusOnZero = mainBattery.DispersionValues.RadiusOnZero,
-            RadiusOnDelim = mainBattery.DispersionValues.RadiusOnDelim,
-            RadiusOnMax = mainBattery.DispersionValues.RadiusOnMax,
-            Delim = mainBattery.DispersionValues.Delim,
-        };
+        var dispersionModifier = modifiers.FindModifiers("GMIdealRadius").Aggregate(1f, (current, modifier) => current * modifier);
+        var dispersion = mainBattery.DispersionValues;
 
         decimal rateOfFire = 60 / reload;
 
         var maxRangeBw = (double)(mainBattery.MaxRange / 30);
-        double vRadiusCoeff = (modifiedDispersion.RadiusOnMax - modifiedDispersion.RadiusOnDelim) / (maxRangeBw * (1 - modifiedDispersion.Delim));
+        double vRadiusCoeff = (dispersion.RadiusOnMax - dispersion.RadiusOnDelim) / (maxRangeBw * (1 - dispersion.Delim));
 
         var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
         nfi.NumberGroupSeparator = "'";
 
         var shellData = ShellDataContainer.FromShellName(mainBattery.Guns.First().AmmoList, modifiers, barrelCount, true);
+
+        var (horizontalDispersion, verticalDispersion) = dispersion.CalculateDispersion((double)range * 1000, dispersionModifier);
 
         // rounding reload in here to get a more accurate True reload
         var mainBatteryDataContainer = new MainBatteryDataContainer
@@ -205,15 +199,16 @@ public partial record MainBatteryDataContainer : DataContainerBase
             TurnTime = Math.Round(180 / traverseSpeed, 1),
             TraverseSpeed = Math.Round(traverseSpeed, 2),
             Sigma = mainBattery.Sigma,
-            DelimDist = mainBattery.MaxRange * (decimal)modifiedDispersion.Delim / 1000,
-            TaperDist = (decimal)modifiedDispersion.TaperDist / 1000,
-            HorizontalDisp = Math.Round((decimal)modifiedDispersion.CalculateHorizontalDispersion((double)range * 1000), 2),
-            VerticalDisp = Math.Round((decimal)modifiedDispersion.CalculateVerticalDispersion((double)range * 1000), 2),
-            HorizontalDispFormula = $"X * {Math.Round((modifiedDispersion.IdealRadius - modifiedDispersion.MinRadius) / modifiedDispersion.IdealDistance * 1000, 4)} + {30 * modifiedDispersion.MinRadius}",
-            VerticalCoeffFormula = $"(X * {(decimal)Math.Round(vRadiusCoeff / 30 * 1000, 4)} + {((-maxRangeBw * modifiedDispersion.Delim) * vRadiusCoeff) + modifiedDispersion.RadiusOnDelim})",
-            HorizontalDispFormulaAtShortRange = $"X * {Math.Round(((modifiedDispersion.IdealRadius - modifiedDispersion.MinRadius) / modifiedDispersion.IdealDistance * 1000) + (modifiedDispersion.MinRadius / (modifiedDispersion.TaperDist / 30)), 4)}",
-            VerticalCoeffFormulaAtShortRange = $"(X * {(decimal)Math.Round(((modifiedDispersion.RadiusOnDelim - modifiedDispersion.RadiusOnZero) / (maxRangeBw * modifiedDispersion.Delim)) / 30 * 1000, 4)} + {modifiedDispersion.RadiusOnZero})",
-            DispersionData = mainBattery.DispersionValues,
+            DelimDist = mainBattery.MaxRange * (decimal)dispersion.Delim / 1000,
+            TaperDist = (decimal)dispersion.TaperDist / 1000,
+            HorizontalDisp = Math.Round((decimal)horizontalDispersion, 2),
+            VerticalDisp = Math.Round((decimal)verticalDispersion, 2),
+            HorizontalDispFormula = $"X * {Math.Round((dispersion.IdealRadius - dispersion.MinRadius) / dispersion.IdealDistance * 1000, 4)} + {30 * dispersion.MinRadius}",
+            VerticalCoeffFormula = $"(X * {(decimal)Math.Round(vRadiusCoeff / 30 * 1000, 4)} + {((-maxRangeBw * dispersion.Delim) * vRadiusCoeff) + dispersion.RadiusOnDelim})",
+            HorizontalDispFormulaAtShortRange = $"X * {Math.Round(((dispersion.IdealRadius - dispersion.MinRadius) / dispersion.IdealDistance * 1000) + (dispersion.MinRadius / (dispersion.TaperDist / 30)), 4)}",
+            VerticalCoeffFormulaAtShortRange = $"(X * {(decimal)Math.Round(((dispersion.RadiusOnDelim - dispersion.RadiusOnZero) / (maxRangeBw * dispersion.Delim)) / 30 * 1000, 4)} + {dispersion.RadiusOnZero})",
+            DispersionData = dispersion,
+            DispersionModifier = dispersionModifier,
             OriginalMainBatteryData = mainBattery,
             ShellData = shellData,
             DisplayHeDpm = shellData.Select(x => x.Type).Contains($"ArmamentType_{ShellType.HE.ShellTypeToString()}"),

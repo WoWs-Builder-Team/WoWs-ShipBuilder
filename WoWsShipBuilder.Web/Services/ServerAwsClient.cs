@@ -1,8 +1,6 @@
 ﻿using System.IO.Abstractions;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using NLog;
-using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.DataStructures.Versioning;
@@ -12,16 +10,17 @@ namespace WoWsShipBuilder.Web.Services;
 
 public class ServerAwsClient : IAwsClient
 {
-    private static readonly Logger Logger = Logging.GetLogger("AwsClient");
+    private readonly ILogger logger;
 
     private readonly HttpClient httpClient;
 
     private readonly CdnOptions options;
 
-    public ServerAwsClient(HttpClient httpClient, IOptions<CdnOptions> options)
+    public ServerAwsClient(HttpClient httpClient, IOptions<CdnOptions> options, ILogger<ServerAwsClient> logger)
     {
         this.httpClient = httpClient;
         this.options = options.Value;
+        this.logger = logger;
     }
 
     public async Task<VersionInfo> DownloadVersionInfo(ServerType serverType)
@@ -54,7 +53,7 @@ public class ServerAwsClient : IAwsClient
                 }
                 catch (HttpRequestException e)
                 {
-                    Logger.Warn(e, "Encountered an exception while downloading a file with uri {}.", uri);
+                    logger.LogWarning(e, "Encountered an exception while downloading a file with uri {Uri}", uri);
                 }
 
                 progress.Report(1);

@@ -11,4 +11,6 @@ public record WebAppSettings
     public bool OpenSecondariesAndAaExpandersByDefault { get; set; } = true;
 
     public List<string> BetaAccessCodes { get; set; } = new();
+
+    public bool[] BuildImageLayoutSettings { get; set; } = { true, false, true, true, true, true };
 }

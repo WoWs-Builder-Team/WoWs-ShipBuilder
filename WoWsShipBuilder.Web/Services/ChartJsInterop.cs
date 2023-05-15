@@ -33,35 +33,54 @@ public class ChartJsInterop : IAsyncDisposable
         await module.InvokeVoidAsync("ChangeSuggestedMax", chartId, newSuggestedMax);
     }
 
-    public async Task BatchAddDataAsync(List<string> chartIds, List<string> labels, List<List<IEnumerable<ChartsHelper.Point>>> data, List<int> indexes)
+    public async Task BatchAddDataAsync(List<string> chartIds, List<NewChartDataInput> newChartData)
     {
+        if (newChartData.Any(x => x.Datasets.Count != chartIds.Count))
+        {
+            throw new InvalidOperationException("The number of chartId is not equal to the number of dataset of each NewChartDataInput");
+        }
         await InitializeModule();
-        await module.InvokeVoidAsync("BatchAddData", chartIds, data, labels, indexes);
+        await module.InvokeVoidAsync("BatchAddData", chartIds, newChartData);
     }
 
-    public async Task BatchRemoveDataAsync(List<string> chartId, List<string> labels)
+    public async Task BatchRemoveDataAsync(List<string> chartId, List<string> id)
     {
         await InitializeModule();
-        await module.InvokeVoidAsync("BatchRemoveData", chartId, labels);
+        await module.InvokeVoidAsync("BatchRemoveData", chartId, id);
     }
 
-    public async Task RemoveAllDataAsync(List<string> chartId)
+    public async Task BatchUpdateDataAsync(string chartId, List<UpdateChartDataInput> updatedChartData)
     {
         await InitializeModule();
-        await module.InvokeVoidAsync("RemoveAllData", chartId);
+        await module.InvokeVoidAsync("BatchUpdateData", chartId, updatedChartData);
     }
 
-    public async Task BatchUpdateDataAsync(string chartId, List<string> labels, List<IEnumerable<ChartsHelper.Point>> datas)
+    public async Task BatchUpdateDataNewLabelsAsync(string chartId, List<UpdateChartDataLabelInput> updatedChartData)
     {
         await InitializeModule();
-        await module.InvokeVoidAsync("BatchUpdateData", chartId, labels, datas);
+        await module.InvokeVoidAsync("BatchUpdateDataNewLabels", chartId, updatedChartData);
     }
 
-    public async Task BatchUpdateDataNewLabelsAsync(string chartId, List<string> labels, List<IEnumerable<ChartsHelper.Point>> datas, List<string> newLabels)
+    public async Task MultipleBatchUpdateDataNewLabels(List<string> chartIds, List<MultipleUpdateChartDataLabelInput> multipleUpdatedChartDataList)
     {
+        if (multipleUpdatedChartDataList.Any(x => x.Datasets.Count != chartIds.Count))
+        {
+            throw new InvalidOperationException("The number of chartId is not equal to the number of dataset of each MultipleUpdatedChartDataList");
+        }
         await InitializeModule();
-        await module.InvokeVoidAsync("BatchUpdateDataNewLabels", chartId, labels, datas, newLabels);
+        await module.InvokeVoidAsync("MultipleBatchUpdateDataNewLabels", chartIds, multipleUpdatedChartDataList);
     }
+
+    public async Task MultipleBatchAddOrUpdateDataNewLabels(List<string> chartIds, List<MultipleUpdateChartDataLabelInput> multipleUpdatedChartDataList)
+    {
+        if (multipleUpdatedChartDataList.Any(x => x.Datasets.Count != chartIds.Count))
+        {
+            throw new InvalidOperationException("The number of chartId is not equal to the number of dataset of each MultipleUpdatedChartDataList");
+        }
+        await InitializeModule();
+        await module.InvokeVoidAsync("MultipleBatchAddOrUpdateDataNewLabels", chartIds, multipleUpdatedChartDataList);
+    }
+
 
     [MemberNotNull(nameof(module))]
     private async Task InitializeModule()
@@ -87,3 +106,11 @@ public class ChartJsInterop : IAsyncDisposable
         }
     }
 }
+
+public record NewChartDataInput(string Id, string Label, List<IEnumerable<ChartsHelper.Point>> Datasets, int Index);
+
+public record UpdateChartDataInput(string Id, IEnumerable<ChartsHelper.Point> Datasets);
+
+public record UpdateChartDataLabelInput(string Id, string NewId, string NewLabel, IEnumerable<ChartsHelper.Point> Datasets);
+
+public record MultipleUpdateChartDataLabelInput(string Id, int Index, string NewId, string NewLabel, List<IEnumerable<ChartsHelper.Point>> Datasets);

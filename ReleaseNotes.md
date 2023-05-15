@@ -1,15 +1,12 @@
-# Update 1.6.2
+# Update 1.6.3
 
 ## Additions
 
 
 ## Changes
 
-
 ## Bugfixes
-- Builds are ordered incorrectly when opening a build from Track
-- IFHE skill increases pen twice
-- Fixed various minor bugs
+- Various consumable modifiers are formatted with wrong units or values
 
 ## Known Issues
 - Hull A only consumables are still displayed as available when selecting hull B on some ships.

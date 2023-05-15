@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.Utility;
 using WoWsShipBuilder.DataStructures;
@@ -83,7 +84,7 @@ public static class AppData
         AircraftCache.Clear();
         ShipDictionary.Clear();
         DataVersion = null;
-        Logging.Logger.Info("Cleared all appdata caches.");
+        Logging.Logger.LogInformation("Cleared all appdata caches");
     }
 
     /// <summary>

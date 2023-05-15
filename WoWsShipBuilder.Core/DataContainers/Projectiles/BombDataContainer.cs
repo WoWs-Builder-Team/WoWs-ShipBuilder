@@ -58,6 +58,8 @@ public partial record BombDataContainer : ProjectileDataContainer
         var armingThreshold = 0;
         decimal fuseTimer = 0;
         var showBlastPenetration = true;
+        decimal fireChance = 0;
+
         if (bomb.BombType.Equals(WoWsShipBuilder.DataStructures.BombType.AP))
         {
             List<float> bombDamageModifiers = modifiers.FindModifiers("bombApAlphaDamageMultiplier").ToList();
@@ -71,12 +73,11 @@ public partial record BombDataContainer : ProjectileDataContainer
         {
             List<float> bombDamageModifiers = modifiers.FindModifiers("bombAlphaDamageMultiplier").ToList();
             bombDamage = (decimal)bombDamageModifiers.Aggregate(bomb.Damage, (current, modifier) => current * modifier);
+            var fireChanceModifiers = modifiers.FindModifiers("bombBurnChanceBonus");
+            fireChance = (decimal)fireChanceModifiers.Aggregate(bomb.FireChance, (current, modifier) => current + modifier);
+            var fireChanceModifiersBombs = modifiers.FindModifiers("burnChanceFactorBig");
+            fireChance = fireChanceModifiersBombs.Aggregate(fireChance, (current, modifier) => current + (decimal)modifier);
         }
-
-        var fireChanceModifiers = modifiers.FindModifiers("bombBurnChanceBonus");
-        var fireChance = (decimal)fireChanceModifiers.Aggregate(bomb.FireChance, (current, modifier) => current + modifier);
-        var fireChanceModifiersBombs = modifiers.FindModifiers("burnChanceFactorBig");
-        fireChance = fireChanceModifiersBombs.Aggregate(fireChance, (current, modifier) => current + (decimal)modifier);
 
         var bombDataContainer = new BombDataContainer
         {

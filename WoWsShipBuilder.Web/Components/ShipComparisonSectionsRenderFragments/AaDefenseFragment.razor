@@ -1,172 +1,31 @@
-﻿@using WoWsShipBuilder.ViewModels.Helper
+﻿@using WoWsShipBuilder.ViewModels.Helper.GridData
 @using WoWsShipBuilder.ViewModels.Other
 @code {
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer)> AaDefenseDataFragment = element => __builder =>
+    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer)> AaDefenseDataFragment = element => __builder =>
     {
-        bool hide = element.section != ShipComparisonDataSections.AntiAir;
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="LongAaRange" Title="Long Aura Range (km)" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @if (context.Item.LongAaRange is not null)
-                {
-                    <MudText Typo="Typo.body2">
-                        @context.Item.LongAaRange
-                    </MudText>
-                }
-                else
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
-                }
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="LongAaConstantDamage" Title="Long aura DPS" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @if (context.Item.LongAaConstantDamage is not null)
-                {
-                    <MudText Typo="Typo.body2">
-                        @context.Item.LongAaConstantDamage
-                    </MudText>
-                }
-                else
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
-                }
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="LongAaHitChance" Title="Long aura hit chance (%)" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @if (context.Item.LongAaHitChance is not null)
-                {
-                    <MudText Typo="Typo.body2">
-                        @context.Item.LongAaHitChance
-                    </MudText>
-                }
-                else
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
-                }
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="Flak" Title="Flaks" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => int.Parse(x.Flak?.Split(" ± ").First() ?? "0"))">
-            <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.Flak))
-                {
-                    <MudText Typo="Typo.body2">
-                        @context.Item.Flak
-                    </MudText>
-                }
-                else
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
-                }
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="FlakDamage" Title="Flaks damage" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @if (context.Item.FlakDamage is not null)
-                {
-                    <MudText Typo="Typo.body2">
-                        @context.Item.FlakDamage
-                    </MudText>
-                }
-                else
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
-                }
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MediumAaRange" Title="Medium aura range (km)" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @if (context.Item.MediumAaRange is not null)
-                {
-                    <MudText Typo="Typo.body2">
-                        @context.Item.MediumAaRange
-                    </MudText>
-                }
-                else
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
-                }
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MediumAaConstantDamage" Title="Medium aura DPS" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @if (context.Item.MediumAaConstantDamage is not null)
-                {
-                    <MudText Typo="Typo.body2">
-                        @context.Item.MediumAaConstantDamage
-                    </MudText>
-                }
-                else
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
-                }
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MediumAaHitChance" Title="Medium aura hit chance (%)" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @if (context.Item.MediumAaHitChance is not null)
-                {
-                    <MudText Typo="Typo.body2">
-                        @context.Item.MediumAaHitChance
-                    </MudText>
-                }
-                else
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
-                }
-            </CellTemplate>
-        </Column>
+        string dataSectionString = ShipComparisonDataSections.AntiAir.AsString();
 
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ShortAaRange" Title="Short aura range (km)" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @if (context.Item.ShortAaRange is not null)
-                {
-                    <MudText Typo="Typo.body2">
-                        @context.Item.ShortAaRange
-                    </MudText>
-                }
-                else
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
-                }
-            </CellTemplate>
-        </Column>
+        var columnTitleLongAura = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_LongAura))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
+        var columnTitleLongAuraDps = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_LongAura))} {element.localizer.SimpleAppLocalization(Translation.Unit_DPS)}";
+        var columnTitleLongAuraHitChance = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_LongAura))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_HitChance)} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+        var columnTitleFlaks = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Flak))}";
+        var columnTitleFlaksDamage = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FlakDamage))}";
+        var columnTitleMediumAura = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MediumAura))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
+        var columnTitleMediumAuraDps = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MediumAura))} {element.localizer.SimpleAppLocalization(Translation.Unit_DPS)}";
+        var columnTitleMediumAuraHitChance = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MediumAura))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_HitChance)} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+        var columnTitleShortAura = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ShortAura))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
+        var columnTitleShortAuraDps = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ShortAura))} {element.localizer.SimpleAppLocalization(Translation.Unit_DPS)}";
+        var columnTitleShortAuraHitChance = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ShortAura))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_HitChance)} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
 
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ShortAaConstantDamage" Title="Short aura DPS" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleLongAura}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleLongAura)" SortBy="@(x => x.AntiAirArmament?.LongRangeAura?.Range ?? 0)" T="GridDataWrapper" Title="@columnTitleLongAura" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.ShortAaConstantDamage is not null)
+                @if (context.Item.AntiAirArmament?.LongRangeAura?.Range is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.ShortAaConstantDamage
+                        @context.Item.AntiAirArmament?.LongRangeAura?.Range
                     </MudText>
                 }
                 else
@@ -176,14 +35,14 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ShortAaHitChance" Title="Short aura hit chance (%)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleLongAuraDps}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleLongAuraDps)" SortBy="@(x => x.AntiAirArmament?.LongRangeAura?.ConstantDamage ?? 0)" T="GridDataWrapper" Title="@columnTitleLongAuraDps" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.ShortAaHitChance is not null)
+                @if (context.Item.AntiAirArmament?.LongRangeAura?.ConstantDamage is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.ShortAaHitChance
+                        @context.Item.AntiAirArmament?.LongRangeAura?.ConstantDamage
                     </MudText>
                 }
                 else
@@ -193,6 +52,159 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleLongAuraHitChance}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleLongAuraHitChance)" SortBy="@(x => x.AntiAirArmament?.LongRangeAura?.HitChance ?? 0)" T="GridDataWrapper" Title="@columnTitleLongAuraHitChance" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AntiAirArmament?.LongRangeAura?.HitChance is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AntiAirArmament?.LongRangeAura?.HitChance
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFlaks}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFlaks)" T="GridDataWrapper" Title="@columnTitleFlaks" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => int.Parse(x.AntiAirArmament?.LongRangeAura?.Flak.Split(" ± ").First() ?? "0"))">
+            <CellTemplate>
+                @if (!string.IsNullOrEmpty(context.Item.AntiAirArmament?.LongRangeAura?.Flak))
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AntiAirArmament?.LongRangeAura?.Flak
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFlaksDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFlaksDamage)" SortBy="@(x => x.AntiAirArmament?.LongRangeAura?.FlakDamage ?? 0)" T="GridDataWrapper" Title="@columnTitleFlaksDamage" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AntiAirArmament?.LongRangeAura?.FlakDamage is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AntiAirArmament?.LongRangeAura?.FlakDamage
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMediumAura}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMediumAura)" SortBy="@(x => x.AntiAirArmament?.MediumRangeAura?.Range ?? 0)" T="GridDataWrapper" Title="@columnTitleMediumAura" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AntiAirArmament?.MediumRangeAura?.Range is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AntiAirArmament?.MediumRangeAura?.Range
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMediumAuraDps}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMediumAuraDps)" SortBy="@(x => x.AntiAirArmament?.MediumRangeAura?.ConstantDamage ?? 0)" T="GridDataWrapper" Title="@columnTitleMediumAuraDps" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AntiAirArmament?.MediumRangeAura?.ConstantDamage is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AntiAirArmament?.MediumRangeAura?.ConstantDamage
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMediumAuraHitChance}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMediumAuraHitChance)" SortBy="@(x => x.AntiAirArmament?.MediumRangeAura?.HitChance ?? 0)" T="GridDataWrapper" Title="@columnTitleMediumAuraHitChance" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AntiAirArmament?.MediumRangeAura?.HitChance is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AntiAirArmament?.MediumRangeAura?.HitChance
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleShortAura}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleShortAura)" SortBy="@(x => x.AntiAirArmament?.ShortRangeAura?.Range ?? 0)" T="GridDataWrapper" Title="@columnTitleShortAura" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AntiAirArmament?.ShortRangeAura?.Range is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AntiAirArmament?.ShortRangeAura?.Range
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleShortAuraDps}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleShortAuraDps)" SortBy="@(x => x.AntiAirArmament?.ShortRangeAura?.ConstantDamage ?? 0)" T="GridDataWrapper" Title="@columnTitleShortAuraDps" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AntiAirArmament?.ShortRangeAura?.ConstantDamage is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AntiAirArmament?.ShortRangeAura?.ConstantDamage
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleShortAuraHitChance}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleShortAuraHitChance)" SortBy="@(x => x.AntiAirArmament?.ShortRangeAura?.HitChance ?? 0)" T="GridDataWrapper" Title="@columnTitleShortAuraHitChance" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AntiAirArmament?.ShortRangeAura?.HitChance is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AntiAirArmament?.ShortRangeAura?.HitChance
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
     };
 }

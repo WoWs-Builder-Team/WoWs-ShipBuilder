@@ -1,19 +1,32 @@
-﻿@using WoWsShipBuilder.ViewModels.Helper
-@using WoWsShipBuilder.ViewModels.Other
+﻿@using WoWsShipBuilder.ViewModels.Other
 @using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.ViewModels.Helper.GridData
 @code {
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer)> BombsDataFragment = element => __builder =>
+    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer)> BombsDataFragment = element => __builder =>
     {
-        bool hide = element.section != ShipComparisonDataSections.Bombs;
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersType" Title="Plane" SortBy="@(x=> !x.BombersType.Any() ? string.Empty : element.localizer.GetAppLocalization($"ShipStats_{x.BombersType.First()}").Localization)" HeaderClass="column-text-center" CellClass="column-text-center">
+        string dataSectionString = ShipComparisonDataSections.Bombs.AsString();
+
+        var columnTitlePlane = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Plane))}";
+        var columnTitleType = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Type))}";
+        var columnTitleDamage = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Damage))}";
+        var columnTitleSplashRadius = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SplashRadius))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
+        var columnTitleSplashDamage = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Splash))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Damage)}";
+        var columnTitlePenetration = $"{element.localizer.SimpleAppLocalization(Translation.ShipStats_Penetration)} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
+        var columnTitleFireChance = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FireChance))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+        var columnTitleBlastRadius = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Blast))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ExplosionRadius))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
+        var columnTitleBlastPenetration = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Blast))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Penetration))}";
+        var columnTitleFuseTimer = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FuseTimer))} ({element.localizer.SimpleAppLocalization(nameof(Translation.Unit_S))})";
+        var columnTitleArmingThreshold = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ArmingThreshold))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
+        var columnTitleRicochetAngles = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RicochetAngles))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Degree)})";
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlane}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlane)" T="GridDataWrapper" Title="@columnTitlePlane" SortBy="@(x=> !x.Bombers.Type.Any() ? string.Empty : element.localizer.GetAppLocalization($"ShipStats_{x.Bombers.Type.First()}").Localization)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersType.Any())
+                @if (context.Item.Bombers.Type.Any())
                 {
-                    List<string> items = context.Item.BombersType;
+                    List<string> items = context.Item.Bombers.Type;
                     for (var i = 0; i < items.Count; i++)
                     {
                         string item = items[i];
@@ -33,19 +46,19 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
+        </TemplateColumn>
 
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersWeaponType" Title="Type" SortBy="@(x=> !x.BombersWeaponType.Any() ? string.Empty : element.localizer.GetAppLocalization(x.BombersWeaponBombType.First()).Localization + " " + element.localizer.GetAppLocalization(x.BombersWeaponType.First()).Localization)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleType}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleType)" T="GridDataWrapper" Title="@columnTitleType" SortBy="@(x=> !x.Bombers.WeaponType.Any() ? string.Empty : element.localizer.GetAppLocalization(x.Bombers.WeaponBombType.First()).Localization + " " + element.localizer.GetAppLocalization(x.Bombers.WeaponType.First()).Localization)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersWeaponType.Any())
+                @if (context.Item.Bombers.WeaponType.Any())
                 {
-                    List<string> items = context.Item.BombersWeaponType;
+                    List<string> items = context.Item.Bombers.WeaponType;
                     for (var i = 0; i < items.Count; i++)
                     {
                         string item = items[i];
                         int j = i;
                         <MudText Typo="Typo.body2">
-                            @($"{element.localizer.GetAppLocalization(context.Item.BombersWeaponBombType[j]).Localization} {element.localizer.GetAppLocalization(item).Localization}")
+                            @($"{element.localizer.GetAppLocalization(context.Item.Bombers.WeaponBombType[j]).Localization} {element.localizer.GetAppLocalization(item).Localization}")
                         </MudText>
                         if (i < items.Count - 1)
                         {
@@ -60,141 +73,19 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersWeaponDamage" Title="Damage" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @if (context.Item.BombersWeaponDamage.Any())
-                {
-                    List<decimal> items = context.Item.BombersWeaponDamage;
-                    for (var i = 0; i < items.Count; i++)
-                    {
-                        decimal item = items[i];
-                        <MudText Typo="Typo.body2">
-                            @item
-                        </MudText>
-                        if (i < items.Count - 1)
-                        {
-                            <MudDivider Class="my-1"/>
-                        }
-                    }
-                }
-                else
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
-                }
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersWeaponSplashRadius" Title="Splash radius (m)" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @if (context.Item.BombersWeaponSplashRadius.Any())
-                {
-                    List<decimal> items = context.Item.BombersWeaponSplashRadius;
-                    for (var i = 0; i < items.Count; i++)
-                    {
-                        decimal item = items[i];
-                        <MudText Typo="Typo.body2">
-                            @item
-                        </MudText>
-                        if (i < items.Count - 1)
-                        {
-                            <MudDivider Class="my-1"/>
-                        }
-                    }
-                }
-                else
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
-                }
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersWeaponSplashDamage" Title="Splash damage" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @if (context.Item.BombersWeaponSplashDamage.Any())
-                {
-                    List<decimal> items = context.Item.BombersWeaponSplashDamage;
-                    for (var i = 0; i < items.Count; i++)
-                    {
-                        decimal item = items[i];
-                        <MudText Typo="Typo.body2">
-                            @item
-                        </MudText>
-                        if (i < items.Count - 1)
-                        {
-                            <MudDivider Class="my-1"/>
-                        }
-                    }
-                }
-                else
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
-                }
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersWeaponPenetration" Title="Penetration (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @if (context.Item.BombersWeaponPenetration.Any())
-                {
-                    List<int> items = context.Item.BombersWeaponPenetration;
-                    for (var i = 0; i < items.Count; i++)
-                    {
-                        int item = items[i];
-                        if (item != 0)
-                        {
-                            <MudText Typo="Typo.body2">
-                                @item
-                            </MudText>
-                        }
-                        else
-                        {
-                            <MudText Typo="Typo.body2" Color="Color.Primary">
-                                @ShipComparisonViewModel.DataNotAvailable
-                            </MudText>
-                        }
-                        if (i < items.Count - 1)
-                        {
-                            <MudDivider Class="my-1"/>
-                        }
-                    }
-                }
-                else
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
-                }
-            </CellTemplate>
-        </Column>
+        </TemplateColumn>
 
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersWeaponFireChance" Title="Fire chance (%)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDamage)" SortBy="@(x => x.Bombers.WeaponDamage)" T="GridDataWrapper" Title="@columnTitleDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersWeaponFireChance.Any())
+                @if (context.Item.Bombers.WeaponDamage.Any())
                 {
-                    List<decimal> items = context.Item.BombersWeaponFireChance;
+                    List<decimal> items = context.Item.Bombers.WeaponDamage;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
-                        if (item != 0)
-                        {
-                            <MudText Typo="Typo.body2">
-                                @item
-                            </MudText>
-                        }
-                        else
-                        {
-                            <MudText Typo="Typo.body2" Color="Color.Primary">
-                                @ShipComparisonViewModel.DataNotAvailable
-                            </MudText>
-                        }
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
                         if (i < items.Count - 1)
                         {
                             <MudDivider Class="my-1"/>
@@ -208,28 +99,19 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersWeaponBlastRadius" Title="Blast radius (m)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashRadius}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSplashRadius)" SortBy="@(x => x.Bombers.WeaponSplashRadius)" T="GridDataWrapper" Title="@columnTitleSplashRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersWeaponBlastRadius.Any())
+                @if (context.Item.Bombers.WeaponSplashRadius.Any())
                 {
-                    List<decimal> items = context.Item.BombersWeaponBlastRadius;
+                    List<decimal> items = context.Item.Bombers.WeaponSplashRadius;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
-                        if (context.Item.BombersWeaponBombType[i].Equals($"ArmamentType_{BombType.HE}"))
-                        {
-                            <MudText Typo="Typo.body2">
-                                @item
-                            </MudText>
-                        }
-                        else
-                        {
-                            <MudText Typo="Typo.body2" Color="Color.Primary">
-                                @ShipComparisonViewModel.DataNotAvailable
-                            </MudText>
-                        }
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
                         if (i < items.Count - 1)
                         {
                             <MudDivider Class="my-1"/>
@@ -243,28 +125,19 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersWeaponBlastPenetration" Title="Blast penetration" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSplashDamage)" SortBy="@(x => x.Bombers.WeaponSplashDamage)" T="GridDataWrapper" Title="@columnTitleSplashDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersWeaponBlastPenetration.Any())
+                @if (context.Item.Bombers.WeaponSplashDamage.Any())
                 {
-                    List<decimal> items = context.Item.BombersWeaponBlastPenetration;
+                    List<decimal> items = context.Item.Bombers.WeaponSplashDamage;
                     for (var i = 0; i < items.Count; i++)
                     {
                         decimal item = items[i];
-                        if (context.Item.BombersWeaponBombType[i].Equals($"ArmamentType_{BombType.HE}"))
-                        {
-                            <MudText Typo="Typo.body2">
-                                @item
-                            </MudText>
-                        }
-                        else
-                        {
-                            <MudText Typo="Typo.body2" Color="Color.Primary">
-                                @ShipComparisonViewModel.DataNotAvailable
-                            </MudText>
-                        }
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
                         if (i < items.Count - 1)
                         {
                             <MudDivider Class="my-1"/>
@@ -278,48 +151,13 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersWeaponFuseTimer" Title="Fuse timer (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePenetration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePenetration)" SortBy="@(x => x.Bombers.WeaponPenetration)" T="GridDataWrapper" Title="@columnTitlePenetration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersWeaponFuseTimer.Any())
+                @if (context.Item.Bombers.WeaponPenetration.Any())
                 {
-                    List<decimal> items = context.Item.BombersWeaponFuseTimer;
-                    for (var i = 0; i < items.Count; i++)
-                    {
-                        decimal item = items[i];
-                        if (item != 0)
-                        {
-                            <MudText Typo="Typo.body2">
-                                @item
-                            </MudText>
-                        }
-                        else
-                        {
-                            <MudText Typo="Typo.body2" Color="Color.Primary">
-                                @ShipComparisonViewModel.DataNotAvailable
-                            </MudText>
-                        }
-                        if (i < items.Count - 1)
-                        {
-                            <MudDivider Class="my-1"/>
-                        }
-                    }
-                }
-                else
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
-                }
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersWeaponArmingThreshold" Title="Arming threshold (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @if (context.Item.BombersWeaponArmingThreshold.Any())
-                {
-                    List<int> items = context.Item.BombersWeaponArmingThreshold;
+                    List<int> items = context.Item.Bombers.WeaponPenetration;
                     for (var i = 0; i < items.Count; i++)
                     {
                         int item = items[i];
@@ -348,13 +186,188 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="BombersWeaponRicochetAngles" Title="Ricochet angles (°)" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.BombersWeaponRicochetAngles.Select(y => double.Parse(y.Split(" - ").First())).ToList())">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFireChance}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireChance)" SortBy="@(x => x.Bombers.WeaponFireChance)" T="GridDataWrapper" Title="@columnTitleFireChance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.BombersWeaponRicochetAngles.Any())
+                @if (context.Item.Bombers.WeaponFireChance.Any())
                 {
-                    List<string> items = context.Item.BombersWeaponRicochetAngles;
+                    List<decimal> items = context.Item.Bombers.WeaponFireChance;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        decimal item = items[i];
+                        if (item != 0)
+                        {
+                            <MudText Typo="Typo.body2">
+                                @item
+                            </MudText>
+                        }
+                        else
+                        {
+                            <MudText Typo="Typo.body2" Color="Color.Primary">
+                                @ShipComparisonViewModel.DataNotAvailable
+                            </MudText>
+                        }
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastRadius}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBlastRadius)" SortBy="@(x => x.Bombers.WeaponBlastRadius)" T="GridDataWrapper" Title="@columnTitleBlastRadius" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.Bombers.WeaponBlastRadius.Any())
+                {
+                    List<decimal> items = context.Item.Bombers.WeaponBlastRadius;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        decimal item = items[i];
+                        if (context.Item.Bombers.WeaponBombType[i].Equals($"ArmamentType_{BombType.HE}"))
+                        {
+                            <MudText Typo="Typo.body2">
+                                @item
+                            </MudText>
+                        }
+                        else
+                        {
+                            <MudText Typo="Typo.body2" Color="Color.Primary">
+                                @ShipComparisonViewModel.DataNotAvailable
+                            </MudText>
+                        }
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastPenetration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBlastPenetration)" SortBy="@(x => x.Bombers.WeaponBlastPenetration)" T="GridDataWrapper" Title="@columnTitleBlastPenetration" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.Bombers.WeaponBlastPenetration.Any())
+                {
+                    List<decimal> items = context.Item.Bombers.WeaponBlastPenetration;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        decimal item = items[i];
+                        if (context.Item.Bombers.WeaponBombType[i].Equals($"ArmamentType_{BombType.HE}"))
+                        {
+                            <MudText Typo="Typo.body2">
+                                @item
+                            </MudText>
+                        }
+                        else
+                        {
+                            <MudText Typo="Typo.body2" Color="Color.Primary">
+                                @ShipComparisonViewModel.DataNotAvailable
+                            </MudText>
+                        }
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFuseTimer}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFuseTimer)" SortBy="@(x => x.Bombers.WeaponFuseTimer)" T="GridDataWrapper" Title="@columnTitleFuseTimer" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.Bombers.WeaponFuseTimer.Any())
+                {
+                    List<decimal> items = context.Item.Bombers.WeaponFuseTimer;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        decimal item = items[i];
+                        if (item != 0)
+                        {
+                            <MudText Typo="Typo.body2">
+                                @item
+                            </MudText>
+                        }
+                        else
+                        {
+                            <MudText Typo="Typo.body2" Color="Color.Primary">
+                                @ShipComparisonViewModel.DataNotAvailable
+                            </MudText>
+                        }
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleArmingThreshold}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleArmingThreshold)" SortBy="@(x => x.Bombers.WeaponArmingThreshold)" T="GridDataWrapper" Title="@columnTitleArmingThreshold" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.Bombers.WeaponArmingThreshold.Any())
+                {
+                    List<int> items = context.Item.Bombers.WeaponArmingThreshold;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        int item = items[i];
+                        if (item != 0)
+                        {
+                            <MudText Typo="Typo.body2">
+                                @item
+                            </MudText>
+                        }
+                        else
+                        {
+                            <MudText Typo="Typo.body2" Color="Color.Primary">
+                                @ShipComparisonViewModel.DataNotAvailable
+                            </MudText>
+                        }
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRicochetAngles}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRicochetAngles)" T="GridDataWrapper" Title="@columnTitleRicochetAngles" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.Bombers.WeaponRicochetAngles.Select(y => int.Parse(string.IsNullOrEmpty(y) ? "0" : y.Split("-").First())).ToList())">
+            <CellTemplate>
+                @if (context.Item.Bombers.WeaponRicochetAngles.Any())
+                {
+                    List<string> items = context.Item.Bombers.WeaponRicochetAngles;
                     for (var i = 0; i < items.Count; i++)
                     {
                         string item = items[i];
@@ -383,6 +396,6 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
+        </TemplateColumn>
     };
 }
