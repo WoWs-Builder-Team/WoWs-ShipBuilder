@@ -43,7 +43,7 @@ jobs:
           $certB64 = '${{ secrets.WOWSSB_CERT }}'
           [IO.File]::WriteAllBytes(".\wowssb.pfx", [Convert]::FromBase64String([char[]]$certB64))
       - name: Squirrel build and release
-        run: Tools\SquirrelBuildAndRelease.ps1 --signingCert wowssb.pfx --signingPassword '${{ secrets.WOWSSB_CERT_KEY }}'
+        run: Tools\SquirrelBuildAndRelease.ps1 -signingCert wowssb.pfx -signingPassword '${{ secrets.WOWSSB_CERT_KEY }}'
         shell: powershell
       - name: Cleanup certificate
         run: Remove-Item .\wowssb.pfx
