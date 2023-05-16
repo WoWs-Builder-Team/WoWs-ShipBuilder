@@ -3,9 +3,9 @@
 @using Microsoft.Extensions.Hosting
 @using Microsoft.Extensions.Options
 @using WoWsShipBuilder.Common.Builds
-@using WoWsShipBuilder.Common.Builds.ViewModels
+@using WoWsShipBuilder.Common.Infrastructure.DataTransfer
+@using WoWsShipBuilder.Common.Infrastructure.Utility
 @using WoWsShipBuilder.Common.LinkShortening
-@using WoWsShipBuilder.Core.Extensions
 @using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.Common.ShipStats.Components
 
@@ -162,7 +162,7 @@
                             <MudItem xs="12" md="6">
                                 <MudStack>
                                     <div class="mt-0 mb-auto">
-                                        <ShipModulesSelector ViewModel="@ViewModel.ShipModuleViewModel"/>
+                                        <ShipModuleSelector ViewModel="@ViewModel.ShipModuleViewModel"/>
                                     </div>
                                     <div class="mt-0 mb-0">
                                         <ShipUpgradeSelector ViewModel="@ViewModel.UpgradePanelViewModel"/>

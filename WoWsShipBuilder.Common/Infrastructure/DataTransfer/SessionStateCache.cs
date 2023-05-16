@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.Common.Infrastructure;
+﻿namespace WoWsShipBuilder.Common.Infrastructure.DataTransfer;
 
 /**
  * <summary>

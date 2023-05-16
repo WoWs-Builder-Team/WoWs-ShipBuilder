@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Common.Infrastructure.Data;
+using WoWsShipBuilder.Common.Infrastructure.DataTransfer;
 using WoWsShipBuilder.Common.Infrastructure.GameData;
 using WoWsShipBuilder.Common.Settings;
 using WoWsShipBuilder.Core;

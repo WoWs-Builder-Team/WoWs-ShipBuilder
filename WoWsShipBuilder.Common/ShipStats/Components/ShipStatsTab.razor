@@ -10,13 +10,14 @@
 @using WoWsShipBuilder.Common.DataContainers
 @using WoWsShipBuilder.Common.Infrastructure
 @using WoWsShipBuilder.Common.Infrastructure.Data
+@using WoWsShipBuilder.Common.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Common.Infrastructure.Localization
+@using WoWsShipBuilder.Common.Infrastructure.Utility
 @using WoWsShipBuilder.Common.LinkShortening
 @using WoWsShipBuilder.Common.Settings
 @using WoWsShipBuilder.Common.ShipStats
 @using WoWsShipBuilder.Common.ShipStats.ViewModels
 @using WoWsShipBuilder.Core
-@using WoWsShipBuilder.Core.Extensions
 
 @inject IHostEnvironment Environment
 @inject ILocalizer Localizer
@@ -101,7 +102,7 @@
         </MudItem>
         <MudItem xs="12" md="6" lg="4" xl="3">
             <MudStack>
-                <ShipModulesSelector ViewModel="@ViewModel.ShipModuleViewModel"/>
+                <ShipModuleSelector ViewModel="@ViewModel.ShipModuleViewModel"/>
                 <ShipUpgradeSelector ViewModel="@ViewModel.UpgradePanelViewModel"/>
                 <ConsumableSelector ViewModel="@ViewModel.ConsumableViewModel"/>
                 <CaptainSkillSelector ViewModel="@ViewModel.CaptainSkillSelectorViewModel" ShipClass="@ViewModel.CurrentShip.ShipClass"/>
@@ -111,7 +112,7 @@
         <MudItem xs="12" md="6" lg="8" xl="9">
             @if (ViewModel?.ShipStatsControlViewModel?.CurrentShipStats is not null)
             {
-                <ShipStatsComponent ViewModel="@ViewModel.ShipStatsControlViewModel" StoreBuildsForTransfer="@StoreBuildsForTransfer"/>
+                <ShipStatsPanel ViewModel="@ViewModel.ShipStatsControlViewModel" StoreBuildsForTransfer="@StoreBuildsForTransfer"/>
             }
         </MudItem>
     </MudGrid>

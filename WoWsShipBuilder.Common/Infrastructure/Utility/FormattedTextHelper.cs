@@ -1,7 +1,7 @@
 ﻿using WoWsShipBuilder.Common.Infrastructure.Localization;
 using WoWsShipBuilder.DataElements.DataElements;
 
-namespace WoWsShipBuilder.Common.Infrastructure;
+namespace WoWsShipBuilder.Common.Infrastructure.Utility;
 
 public static class FormattedTextHelper
 {

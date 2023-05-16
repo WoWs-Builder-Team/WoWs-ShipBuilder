@@ -6,7 +6,6 @@ using WoWsShipBuilder.Common.Builds;
 using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Common.Infrastructure.Data;
 using WoWsShipBuilder.Common.Infrastructure.Localization;
-using WoWsShipBuilder.Common.Infrastructure.Navigation;
 using WoWsShipBuilder.Common.ShipStats;
 using WoWsShipBuilder.Common.ShipStats.ViewModels;
 using WoWsShipBuilder.Core.Services;

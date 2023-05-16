@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Aircraft;
 using WoWsShipBuilder.DataStructures.Captain;

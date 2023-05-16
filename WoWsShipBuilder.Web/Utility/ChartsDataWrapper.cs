@@ -1,4 +1,5 @@
 ﻿using WoWsShipBuilder.Common.Infrastructure;
+using WoWsShipBuilder.Common.Infrastructure.DataTransfer;
 
 namespace WoWsShipBuilder.Web.Utility;
 

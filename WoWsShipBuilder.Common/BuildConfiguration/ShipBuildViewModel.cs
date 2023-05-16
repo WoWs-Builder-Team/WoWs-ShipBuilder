@@ -1,11 +1,13 @@
-﻿using WoWsShipBuilder.Common.DataContainers;
+﻿using WoWsShipBuilder.Common.Builds;
+using WoWsShipBuilder.Common.DataContainers;
 using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Common.Infrastructure.Data;
+using WoWsShipBuilder.Common.Infrastructure.DataTransfer;
 using WoWsShipBuilder.Common.ShipStats.ViewModels;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.ViewModels.Base;
 
-namespace WoWsShipBuilder.Common.Builds.ViewModels;
+namespace WoWsShipBuilder.Common.BuildConfiguration;
 
 /// <summary>
 /// ViewModel for the build configuration dialog.

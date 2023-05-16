@@ -3,7 +3,7 @@ using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Common.Settings;
 
-namespace WoWsShipBuilder.Common.Infrastructure;
+namespace WoWsShipBuilder.Common.Infrastructure.Utility;
 
 public class AppSettingsHelper : IAsyncDisposable
 {

@@ -4,6 +4,7 @@ using Avalonia.Data;
 using Avalonia.Data.Converters;
 using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Common.Infrastructure.Localization;
+using WoWsShipBuilder.Common.Infrastructure.Utility;
 using WoWsShipBuilder.DataElements.DataElements;
 using AppSettingsHelper = WoWsShipBuilder.UI.Settings.AppSettingsHelper;
 

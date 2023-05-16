@@ -3,7 +3,7 @@ using Autofac;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using WoWsShipBuilder.Common.Builds;
-using WoWsShipBuilder.Common.Infrastructure.Navigation;
+using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Common.ShipStats;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;

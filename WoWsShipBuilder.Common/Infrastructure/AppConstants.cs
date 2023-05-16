@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using WoWsShipBuilder.Common.Infrastructure.DataTransfer;
 
 namespace WoWsShipBuilder.Common.Infrastructure;
 

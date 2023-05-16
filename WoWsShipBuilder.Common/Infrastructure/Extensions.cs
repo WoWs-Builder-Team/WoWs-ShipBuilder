@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using WoWsShipBuilder.DataStructures;
 
-namespace WoWsShipBuilder.Core.Extensions;
+namespace WoWsShipBuilder.Common.Infrastructure;
 
 public static class Extensions
 {

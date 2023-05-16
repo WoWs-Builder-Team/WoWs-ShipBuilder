@@ -2,7 +2,7 @@
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 
-namespace WoWsShipBuilder.Common.Infrastructure.Navigation
+namespace WoWsShipBuilder.Common.Infrastructure
 {
     public interface INavigationService
     {

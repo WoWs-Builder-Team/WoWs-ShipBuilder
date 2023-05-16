@@ -1,9 +1,10 @@
 ﻿@using Microsoft.Extensions.Options
 @using WoWsShipBuilder.Common.Settings
 @using WoWsShipBuilder.Common.ShipStats.ViewModels
-@using WoWsShipBuilder.Core.Extensions
 @using WoWsShipBuilder.DataStructures
 @using Microsoft.Extensions.Hosting
+@using WoWsShipBuilder.Common.Infrastructure.DataTransfer
+@using WoWsShipBuilder.Common.Infrastructure.Utility
 
 @implements IAsyncDisposable
 
@@ -51,7 +52,7 @@
                     </MudStack>
                     @if (showModules)
                     {
-                        <ShipModulesSelectorImageRender ViewModel="@ShipModuleViewModel"/>
+                        <ShipModuleSelectorImageRender ViewModel="@ShipModuleViewModel"/>
                     }
                     @if (twoColumns)
                     {
@@ -214,7 +215,7 @@
 
         if (!string.IsNullOrWhiteSpace(BuildName))
         {
-            module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/Dialogs/BuildImageRenderDialog.razor.js");
+            module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/Dialogs/BuildImageRenderDialog.razor.js");
             await module.InvokeVoidAsync("downloadBuildImage", "image", $"{Localizer.GetGameLocalization(Ship.Index + "_FULL").Localization}_{BuildName}", BuildString[..(BuildString.LastIndexOf(';') + 1)] + BuildName);
             MudDialog.Close(BuildName);
         }

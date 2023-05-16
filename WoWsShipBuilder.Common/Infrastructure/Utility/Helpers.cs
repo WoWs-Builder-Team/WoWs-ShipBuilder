@@ -4,11 +4,10 @@ using Microsoft.Extensions.Hosting;
 using MudBlazor;
 using WoWsShipBuilder.Common.DataContainers;
 using WoWsShipBuilder.Common.Infrastructure.GameData;
-using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 
-namespace WoWsShipBuilder.Common.Infrastructure;
+namespace WoWsShipBuilder.Common.Infrastructure.Utility;
 
 public static class Helpers
 {

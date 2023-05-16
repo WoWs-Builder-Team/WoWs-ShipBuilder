@@ -1,8 +1,8 @@
 ﻿using DynamicData;
 using ReactiveUI;
+using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Common.Infrastructure.GameData;
 using WoWsShipBuilder.Core;
-using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.ViewModels.Base;

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.JSInterop;
 
-namespace WoWsShipBuilder.Common.Infrastructure;
+namespace WoWsShipBuilder.Common.Infrastructure.Utility;
 
 public class MouseEventInterop : IAsyncDisposable
 {

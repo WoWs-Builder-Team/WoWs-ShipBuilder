@@ -5,7 +5,6 @@ using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Splat;
 using WoWsShipBuilder.Common.Infrastructure.Localization;
-using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.UI.Settings;
 

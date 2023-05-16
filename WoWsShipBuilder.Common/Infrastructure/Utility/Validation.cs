@@ -2,7 +2,7 @@
 using WoWsShipBuilder.Common.Builds;
 using WoWsShipBuilder.Common.Infrastructure.Localization;
 
-namespace WoWsShipBuilder.Common.Infrastructure;
+namespace WoWsShipBuilder.Common.Infrastructure.Utility;
 
 public static class Validation
 {

@@ -1,7 +1,6 @@
 using System.Globalization;
 using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.Common.Infrastructure;
-using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;

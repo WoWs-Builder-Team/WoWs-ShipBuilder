@@ -1,6 +1,6 @@
 // ReSharper disable InconsistentNaming
 
-using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;

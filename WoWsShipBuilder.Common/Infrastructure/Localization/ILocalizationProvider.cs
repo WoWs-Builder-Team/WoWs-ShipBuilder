@@ -1,4 +1,5 @@
-﻿using WoWsShipBuilder.Common.Infrastructure.GameData;
+﻿using WoWsShipBuilder.Common.Infrastructure.DataTransfer;
+using WoWsShipBuilder.Common.Infrastructure.GameData;
 
 namespace WoWsShipBuilder.Common.Infrastructure.Localization;
 

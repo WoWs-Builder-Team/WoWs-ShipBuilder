@@ -1,4 +1,4 @@
-using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 

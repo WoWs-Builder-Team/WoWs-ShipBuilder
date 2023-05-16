@@ -1,4 +1,5 @@
-﻿@implements IAsyncDisposable
+﻿@using WoWsShipBuilder.Common.Infrastructure.DataTransfer
+@implements IAsyncDisposable
 
 @inject IJSRuntime Runtime
 @inject ILocalizer Localizer
@@ -36,7 +37,7 @@
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
-            module = await Runtime.InvokeAsync<IJSObjectReference>("import", "/Dialogs/FiringAngleDialog.razor.js");
+            module = await Runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/Dialogs/FiringAngleDialog.razor.js");
             await module.InvokeVoidAsync("drawVisualizer", GunDataContainers, IsArtillery);
         }
     }
