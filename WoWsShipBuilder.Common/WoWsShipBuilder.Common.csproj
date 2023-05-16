@@ -65,6 +65,7 @@
 
     <ItemGroup>
         <_JsFileModuleStaticWebAsset Include="Builds\Components\BuildImageRenderDialog.razor.js" />
+        <_JsFileModuleStaticWebAsset Include="Charts\DispersionPlot.razor.js" />
         <_JsFileModuleStaticWebAsset Include="FiringAngleDiagram\FiringAngleDialog.razor.js" />
         <_JsFileModuleStaticWebAsset Include="ShipStats\Components\DepthChargeDamageDistributionChart.razor.js" />
     </ItemGroup>

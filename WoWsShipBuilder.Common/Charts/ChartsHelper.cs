@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using DynamicData;
+using WoWsShipBuilder.Common.Charts.Data;
 using WoWsShipBuilder.Common.DataContainers;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 
-namespace WoWsShipBuilder.Web.Utility;
+namespace WoWsShipBuilder.Common.Charts;
 
 public static class ChartsHelper
 {
@@ -93,11 +94,12 @@ public static class ChartsHelper
         {
             validData.Add(ballisticSeries.Last());
         }
+
         IEnumerable<Point> trajectory = validData.First().Value.Coordinates.Select(x => new Point(x.X / 1000, x.Y));
         return trajectory;
     }
 
-    public static  IEnumerable<Point> CreateBallisticChartDataset(Dictionary<double, Ballistic> data, BallisticParameter ballisticParameter)
+    public static IEnumerable<Point> CreateBallisticChartDataset(Dictionary<double, Ballistic> data, BallisticParameter ballisticParameter)
     {
         IEnumerable<Point> pointsList = ballisticParameter switch
         {
@@ -111,28 +113,7 @@ public static class ChartsHelper
         return pointsList;
     }
 
-    public enum EllipsePlanes
-    {
-        RealPlane,
-        HorizontalPlane,
-        VerticalPlane,
-    }
 
-    public enum BallisticParameter
-    {
-        Penetration,
-        FlightTime,
-        ImpactVelocity,
-        ImpactAngle,
-    }
-
-    public enum ChartsTabs
-    {
-        DispersionCharts,
-        DispersionPlot,
-        BallisticCharts,
-        TrajectoryChart,
-    }
 
     public static string GetPlaneIcon(EllipsePlanes selectedPlane)
     {
@@ -141,11 +122,13 @@ public static class ChartsHelper
         {
             impactAnglePath = "<path style=\"stroke:#FF2E2E;stroke-width:1\" d=\"M 0 24 L 19 5 Z\"/>";
         }
+
         var horizontalPath = "<path style=\"stroke:#808080;stroke-width:2\" d=\"M 0 24 H 24 Z\"/>";
         if (EllipsePlanes.HorizontalPlane == selectedPlane)
         {
             horizontalPath = "<path style=\"stroke:#FF2E2E;stroke-width:2\" d=\"M 0 24 H 24 Z\"/>";
         }
+
         var verticalPath = "<path style=\"stroke:#808080;stroke-width:2\" d=\"M 0 24 V -24 Z\"/>";
         if (EllipsePlanes.VerticalPlane == selectedPlane)
         {

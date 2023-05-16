@@ -1,11 +1,5 @@
-﻿@using WoWsShipBuilder.Web.Services
-@using DynamicData
-@using WoWsShipBuilder.DataStructures
-@using WoWsShipBuilder.Web.Pages
-@using WoWsShipBuilder.Web.Utility
-@using System.Collections.Immutable
-@using WoWsShipBuilder.Common.DataContainers
-@using WoWsShipBuilder.Common.Infrastructure.Localization
+﻿@using WoWsShipBuilder.Common.DataContainers
+@using WoWsShipBuilder.Common.Charts.Data
 @implements IAsyncDisposable
 @inject IJSRuntime Runtime
 @inject ILocalizer Localizer
@@ -45,20 +39,20 @@
     [Parameter, EditorRequired]
     public double PlotScaling { get; set; }
     [Parameter, EditorRequired]
-    public ChartsHelper.EllipsePlanes EllipsePlane { get; set; }
+    public EllipsePlanes EllipsePlane { get; set; }
     [Parameter, EditorRequired]
     public FusoPositions FusoPosition { get; set; }
     [Parameter, EditorRequired]
     public bool IsVertical { get; set; }
     [Parameter, EditorRequired]
-    public ChartsHelper.ChartsTabs Tab { get; set; }
+    public ChartsTabs Tab { get; set; }
 
     private IJSObjectReference? module;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (Tab == ChartsHelper.ChartsTabs.DispersionPlot)
+        if (Tab == ChartsTabs.DispersionPlot)
         {
             await DrawDispersionPlot();
         }
@@ -108,8 +102,8 @@
     {
         double xRadius = EllipsePlane switch
         {
-            ChartsHelper.EllipsePlanes.HorizontalPlane => dispersionEllipse.ProjectedOnWaterVerticalRadius,
-            ChartsHelper.EllipsePlanes.RealPlane => dispersionEllipse.VerticalRadius,
+            EllipsePlanes.HorizontalPlane => dispersionEllipse.ProjectedOnWaterVerticalRadius,
+            EllipsePlanes.RealPlane => dispersionEllipse.VerticalRadius,
             _ => dispersionEllipse.ProjectedOnPerpendicularToWaterVerticalRadius,
         };
 
@@ -127,8 +121,8 @@
     {
         List<DispersionPlotHelper.Point> hitPoints = EllipsePlane switch
         {
-            ChartsHelper.EllipsePlanes.HorizontalPlane => dispersionEllipse.OnWaterHitPoints,
-            ChartsHelper.EllipsePlanes.RealPlane => dispersionEllipse.RealHitPoints,
+            EllipsePlanes.HorizontalPlane => dispersionEllipse.OnWaterHitPoints,
+            EllipsePlanes.RealPlane => dispersionEllipse.RealHitPoints,
             _ => dispersionEllipse.PerpendicularToWaterHitPoints,
         };
 
@@ -139,8 +133,8 @@
     {
         double xRadius = EllipsePlane switch
         {
-            ChartsHelper.EllipsePlanes.HorizontalPlane => dispersionEllipse.ProjectedOnWaterVerticalRadiusHalfHitPoints,
-            ChartsHelper.EllipsePlanes.RealPlane => dispersionEllipse.VerticalRadiusHalfHitPoints,
+            EllipsePlanes.HorizontalPlane => dispersionEllipse.ProjectedOnWaterVerticalRadiusHalfHitPoints,
+            EllipsePlanes.RealPlane => dispersionEllipse.VerticalRadiusHalfHitPoints,
             _ => dispersionEllipse.ProjectedOnPerpendicularToWaterVerticalRadiusHalfHitPoints,
         };
 
@@ -174,7 +168,7 @@
             yRadius = length;
         }
 
-        if (EllipsePlane == ChartsHelper.EllipsePlanes.VerticalPlane)
+        if (EllipsePlane == EllipsePlanes.VerticalPlane)
         {
             xRadius = height;
         }

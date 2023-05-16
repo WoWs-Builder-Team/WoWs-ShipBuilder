@@ -1,17 +1,14 @@
 ﻿@page "/charts"
-@using WoWsShipBuilder.Web.Utility
 @using MudBlazor.Services
 @using WoWsShipBuilder.Common.BuildConfiguration
 @using WoWsShipBuilder.Common.Builds
+@using WoWsShipBuilder.Common.Charts.Data
 @using WoWsShipBuilder.Common.DataContainers
-@using WoWsShipBuilder.Common.Infrastructure
 @using WoWsShipBuilder.Common.Infrastructure.Data
 @using WoWsShipBuilder.Common.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Common.Infrastructure.Utility
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.DataStructures.Ship
-@using WoWsShipBuilder.Web.Dialogs
-@using WoWsShipBuilder.Web.Services
 @using WoWsShipBuilder.DataStructures.Projectile
 
 @inject NavigationManager NavManager
@@ -24,7 +21,7 @@
 
 <PageTitle>WoWs ShipBuilder: Charts</PageTitle>
 <MudTabs Elevation="2" PanelClass="pa-6" Centered Color="Color.Primary" @ref="chartsTabs" Outlined Border KeepPanelsAlive>
-    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_DispersionCharts)).Localization" ID="ChartsHelper.ChartsTabs.DispersionCharts">
+    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_DispersionCharts)).Localization" ID="ChartsTabs.DispersionCharts">
         <MudStack Row Justify="Justify.Center" Spacing="4">
             <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="processing">
                 @if (processing)
@@ -62,7 +59,7 @@
         </div>
         <MudGrid Class="d-inline-flex" Style="flex-direction: column">
             <MudItem Class="z-20 mt-1 ml-auto mr-11" xs="12" md="1" Style="@(GetPositionStyleForSelector() + "align-self: flex-end; min-width: 220px;")">
-                <MudSelect Style="min-width: 220px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotPlane)).Localization" @bind-Value="@selectedVertDispersionPlane" Variant="Variant.Outlined" SelectedValuesChanged="@(_ => ChangeVerticalDispPlaneAsync())" T="ChartsHelper.EllipsePlanes" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
+                <MudSelect Style="min-width: 220px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotPlane)).Localization" @bind-Value="@selectedVertDispersionPlane" Variant="Variant.Outlined" SelectedValuesChanged="@(_ => ChangeVerticalDispPlaneAsync())" T="EllipsePlanes" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
                     @foreach (var item in ellipsePlanesList)
                     {
                         <MudSelectItem Value="@item">
@@ -81,7 +78,7 @@
             </MudItem>
         </MudGrid>
     </MudTabPanel>
-    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DispersionPlot)).Localization" ID="ChartsHelper.ChartsTabs.DispersionPlot">
+    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DispersionPlot)).Localization" ID="ChartsTabs.DispersionPlot">
         <MudStack>
              <MudExpansionPanels>
                  <MudExpansionPanel Dense="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
@@ -140,7 +137,7 @@
                         <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical)).Localization</MudText>
                     </MudSelectItem>
                 </MudSelect>
-                <MudSelect Style="min-width: 254px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotPlane)).Localization" @bind-Value="@selectedDispPlotPlane" Variant="Variant.Outlined" T="ChartsHelper.EllipsePlanes" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
+                <MudSelect Style="min-width: 254px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotPlane)).Localization" @bind-Value="@selectedDispPlotPlane" Variant="Variant.Outlined" T="EllipsePlanes" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
                     @foreach (var item in ellipsePlanesList)
                     {
                         <MudSelectItem Value="@item">
@@ -160,10 +157,10 @@
                     }
                 </MudSelect>
             </MudStack>
-            <DispersionPlot Ships="GetDataForDispersionPlot()" EllipsePlane="selectedDispPlotPlane" FusoPosition="selectedFusoPosition" IsVertical="verticalDispPlot" PlotScaling="dispPlotScaling" Tab="@((ChartsHelper.ChartsTabs)chartsTabs.ActivePanel.ID)"/>
+            <DispersionPlot Ships="GetDataForDispersionPlot()" EllipsePlane="selectedDispPlotPlane" FusoPosition="selectedFusoPosition" IsVertical="verticalDispPlot" PlotScaling="dispPlotScaling" Tab="@((ChartsTabs)chartsTabs.ActivePanel.ID)"/>
         </MudStack>
     </MudTabPanel>
-    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_BallisticCharts)).Localization" ID="ChartsHelper.ChartsTabs.BallisticCharts">
+    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_BallisticCharts)).Localization" ID="ChartsTabs.BallisticCharts">
         <MudStack Row Justify="Justify.Center" Spacing="4">
             <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="processing">
                 @if (processing)
@@ -209,7 +206,7 @@
             <canvas id="@ImpactAngleId"></canvas>
         </div>
     </MudTabPanel>
-    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_ShellTrajectoryChart)).Localization" ID="ChartsHelper.ChartsTabs.TrajectoryChart">
+    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_ShellTrajectoryChart)).Localization" ID="ChartsTabs.TrajectoryChart">
         <MudStack Row Justify="Justify.Center" Spacing="4">
             <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="processing">
                 @if (processing)
@@ -283,15 +280,15 @@
     private bool verticalDispPlot;
     private double dispPlotScaling = 1.0;
     private int counter;
-    private ChartsHelper.EllipsePlanes selectedVertDispersionPlane = ChartsHelper.EllipsePlanes.RealPlane;
-    private ChartsHelper.EllipsePlanes selectedDispPlotPlane = ChartsHelper.EllipsePlanes.HorizontalPlane;
+    private EllipsePlanes selectedVertDispersionPlane = EllipsePlanes.RealPlane;
+    private EllipsePlanes selectedDispPlotPlane = EllipsePlanes.HorizontalPlane;
     private DispersionPlot.FusoPositions selectedFusoPosition = DispersionPlot.FusoPositions.DontShow;
 
     private MudTabs chartsTabs = default!;
 
     private readonly Dictionary<Guid, ChartsDataWrapper> displayedShips = new();
 
-    private readonly List<ChartsHelper.EllipsePlanes> ellipsePlanesList = Enum.GetValues<ChartsHelper.EllipsePlanes>().ToList();
+    private readonly List<EllipsePlanes> ellipsePlanesList = Enum.GetValues<EllipsePlanes>().ToList();
     private readonly List<DispersionPlot.FusoPositions> fusoPositionsList = Enum.GetValues<DispersionPlot.FusoPositions>().ToList();
 
     protected override async Task OnInitializedAsync()
@@ -428,10 +425,10 @@
                     ChartsHelper.CreateHorizontalDispersionChartDataset(dispersionData, maxRange, dispersionModifier),
                     CreateVerticalDispersionChartDataset(shipToAdd, shellIndex, dispersionData, maxRange, ballisticSeries, dispersionModifier),
                     ChartsHelper.CreateTrajectoryDataset(ballisticSeries, range),
-                    ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.Penetration),
-                    ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.FlightTime),
-                    ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.ImpactVelocity),
-                    ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.ImpactAngle),
+                    ChartsHelper.CreateBallisticChartDataset(ballisticSeries, BallisticParameter.Penetration),
+                    ChartsHelper.CreateBallisticChartDataset(ballisticSeries, BallisticParameter.FlightTime),
+                    ChartsHelper.CreateBallisticChartDataset(ballisticSeries, BallisticParameter.ImpactVelocity),
+                    ChartsHelper.CreateBallisticChartDataset(ballisticSeries, BallisticParameter.ImpactAngle),
                 };
 
                 string label = GenerateLocalizedLabel(shipToAdd.ShipBuildContainer.Ship.Index, (decimal)shellCaliber, shell.ShellType, shipToAdd.ShipBuildContainer.Build);

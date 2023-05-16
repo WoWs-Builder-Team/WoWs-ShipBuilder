@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.JSInterop;
-using WoWsShipBuilder.Web.Utility;
+using WoWsShipBuilder.Common.Charts.Data;
 
-namespace WoWsShipBuilder.Web.Services;
+namespace WoWsShipBuilder.Common.Charts;
 
 public class ChartJsInterop : IAsyncDisposable
 {
@@ -39,6 +39,7 @@ public class ChartJsInterop : IAsyncDisposable
         {
             throw new InvalidOperationException("The number of chartId is not equal to the number of dataset of each NewChartDataInput");
         }
+
         await InitializeModule();
         await module.InvokeVoidAsync("BatchAddData", chartIds, newChartData);
     }
@@ -67,6 +68,7 @@ public class ChartJsInterop : IAsyncDisposable
         {
             throw new InvalidOperationException("The number of chartId is not equal to the number of dataset of each MultipleUpdatedChartDataList");
         }
+
         await InitializeModule();
         await module.InvokeVoidAsync("MultipleBatchUpdateDataNewLabels", chartIds, multipleUpdatedChartDataList);
     }
@@ -77,10 +79,10 @@ public class ChartJsInterop : IAsyncDisposable
         {
             throw new InvalidOperationException("The number of chartId is not equal to the number of dataset of each MultipleUpdatedChartDataList");
         }
+
         await InitializeModule();
         await module.InvokeVoidAsync("MultipleBatchAddOrUpdateDataNewLabels", chartIds, multipleUpdatedChartDataList);
     }
-
 
     [MemberNotNull(nameof(module))]
     private async Task InitializeModule()
@@ -106,11 +108,3 @@ public class ChartJsInterop : IAsyncDisposable
         }
     }
 }
-
-public record NewChartDataInput(string Id, string Label, List<IEnumerable<ChartsHelper.Point>> Datasets, int Index);
-
-public record UpdateChartDataInput(string Id, IEnumerable<ChartsHelper.Point> Datasets);
-
-public record UpdateChartDataLabelInput(string Id, string NewId, string NewLabel, IEnumerable<ChartsHelper.Point> Datasets);
-
-public record MultipleUpdateChartDataLabelInput(string Id, int Index, string NewId, string NewLabel, List<IEnumerable<ChartsHelper.Point>> Datasets);

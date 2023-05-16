@@ -9,6 +9,7 @@ using NLog.Layouts;
 using NLog.Loki;
 using NLog.Targets;
 using Sentry;
+using WoWsShipBuilder.Common.Charts;
 using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Common.Infrastructure.Data;
 using WoWsShipBuilder.Common.Infrastructure.DataTransfer;

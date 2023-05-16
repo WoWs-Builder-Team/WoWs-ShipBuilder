@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.Web.Services;
+﻿namespace WoWsShipBuilder.Common.Infrastructure;
 
 public class RefreshNotifierService
 {
