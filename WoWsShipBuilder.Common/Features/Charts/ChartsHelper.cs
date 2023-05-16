@@ -15,7 +15,7 @@ public static class ChartsHelper
     /// </summary>
     /// <param name="dispersion"><see cref="Dispersion"/> data of the gun.</param>
     /// <param name="maxRange">Max range of the gun.</param>
-    /// <param name="modifier">The dispersion modifier</param>
+    /// <param name="modifier">The dispersion modifier.</param>
     /// <returns>The horizontal dispersion series for the given parameter.</returns>
     public static IEnumerable<Point> CreateHorizontalDispersionChartDataset(Dispersion dispersion, double maxRange, double modifier)
     {
@@ -28,7 +28,7 @@ public static class ChartsHelper
     /// <param name="dispersion"><see cref="Dispersion"/> data of the gun.</param>
     /// <param name="maxRange">Max range of the gun.</param>
     /// <param name="impactAngles">Dictionary containing the impact angle for each range.</param>
-    /// <param name="modifier">The dispersion modifier</param>
+    /// <param name="modifier">The dispersion modifier.</param>
     /// <returns>The vertical dispersion series for the given parameter.</returns>
     public static VerticalDispersions CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange, Dictionary<double, Ballistic> impactAngles, double modifier)
     {
@@ -49,18 +49,21 @@ public static class ChartsHelper
     }
 
     /// <summary>
-    /// Create data series using a function <code>f(x)</code>.
+    /// Create data series using a function f(x).
     /// </summary>
-    /// <param name="f">The function <code>f(x)</code>.</param>
+    /// <param name="f">The function f(x).</param>
     /// <param name="x0">The start x value.</param>
     /// <param name="x1">The end x value.</param>
     /// <param name="dx">The increment in x.</param>
-    /// <returns>A <see cref="List{Point}"/> of <see cref="Point"/></returns>
+    /// <returns>A <see cref="List{Point}"/> of <see cref="Point"/>.</returns>
     private static IEnumerable<Point> CreateFunctionSeries(Func<double, double> f, double x0, double x1, double dx)
     {
         List<Point> dispSeries = new();
-        for (double x = x0; x <= x1 + dx * 0.5; x += dx)
+        for (double x = x0; x <= x1 + (dx * 0.5); x += dx)
+        {
             dispSeries.Add(new(x, f(x)));
+        }
+
         return dispSeries;
     }
 
@@ -113,24 +116,22 @@ public static class ChartsHelper
         return pointsList;
     }
 
-
-
     public static string GetPlaneIcon(EllipsePlanes selectedPlane)
     {
         var impactAnglePath = "<path style=\"stroke:#808080;stroke-width:1\" d=\"M 0 24 L 19 5 Z\"/>";
-        if (EllipsePlanes.RealPlane == selectedPlane)
+        if (selectedPlane == EllipsePlanes.RealPlane)
         {
             impactAnglePath = "<path style=\"stroke:#FF2E2E;stroke-width:1\" d=\"M 0 24 L 19 5 Z\"/>";
         }
 
         var horizontalPath = "<path style=\"stroke:#808080;stroke-width:2\" d=\"M 0 24 H 24 Z\"/>";
-        if (EllipsePlanes.HorizontalPlane == selectedPlane)
+        if (selectedPlane == EllipsePlanes.HorizontalPlane)
         {
             horizontalPath = "<path style=\"stroke:#FF2E2E;stroke-width:2\" d=\"M 0 24 H 24 Z\"/>";
         }
 
         var verticalPath = "<path style=\"stroke:#808080;stroke-width:2\" d=\"M 0 24 V -24 Z\"/>";
-        if (EllipsePlanes.VerticalPlane == selectedPlane)
+        if (selectedPlane == EllipsePlanes.VerticalPlane)
         {
             verticalPath = "<path style=\"stroke:#FF2E2E;stroke-width:2\" d=\"M 0 24 V -24 Z\"/>";
         }
@@ -138,7 +139,6 @@ public static class ChartsHelper
         return impactAnglePath + verticalPath + horizontalPath;
     }
 
-// lowercase needed for chartjs to recognize to which axis the data belongs
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [SuppressMessage("Naming Rules", "SA1300", Justification = "Lowercase needed for chartjs to recognize to which axis the data belongs")]
     public sealed record Point(double x, double y);
 }

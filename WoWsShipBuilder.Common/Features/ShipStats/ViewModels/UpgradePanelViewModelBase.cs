@@ -16,9 +16,9 @@ public class UpgradePanelViewModelBase : ViewModelBase, IBuildComponentProvider
     public UpgradePanelViewModelBase(Ship ship, Dictionary<string, Modernization> upgradeData)
     {
         List<Modernization> filteredModernizations = upgradeData.Select(entry => entry.Value)
-            .Where(m => !(m.BlacklistedShips.Contains(ship.Name)))
+            .Where(m => !m.BlacklistedShips.Contains(ship.Name))
             .Where(m => m.ShipLevel.Contains(ship.Tier))
-            .Where(m => ship.ShipNation == Nation.Common || (m.AllowedNations.Contains(ship.ShipNation)))
+            .Where(m => ship.ShipNation == Nation.Common || m.AllowedNations.Contains(ship.ShipNation))
             .Where(m => m.ShipClasses.Contains(ship.ShipClass))
             .Union(upgradeData.Select(entry => entry.Value).Where(m => m.AdditionalShips.Contains(ship.Name)))
             .ToList();

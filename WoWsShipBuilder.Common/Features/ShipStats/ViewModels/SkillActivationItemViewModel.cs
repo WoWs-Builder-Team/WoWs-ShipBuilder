@@ -4,6 +4,15 @@ namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
 public partial class SkillActivationItemViewModel : ViewModelBase
 {
+    [Observable]
+    private int activationNumbers;
+
+    [Observable]
+    private string skillName = default!;
+
+    [Observable]
+    private bool status;
+
     public SkillActivationItemViewModel(string name, int skillId, Dictionary<string, float> modifiers, bool activationStatus, int maximumActivations = 0, int activationNumbers = 1, string description = "")
     {
         SkillName = name;
@@ -14,15 +23,6 @@ public partial class SkillActivationItemViewModel : ViewModelBase
         Modifiers = modifiers;
         Description = description;
     }
-
-    [Observable]
-    private string skillName = default!;
-
-    [Observable]
-    private bool status;
-
-    [Observable]
-    private int activationNumbers;
 
     public Dictionary<string, float> Modifiers { get; }
 

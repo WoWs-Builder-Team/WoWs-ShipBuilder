@@ -38,6 +38,7 @@ namespace WoWsShipBuilder.UI.ViewModels.ShipVm
         {
             logger.LogInformation("Saving build");
             string shipName = localizer.GetGameLocalization(CurrentShipIndex).Localization;
+
             // var dialogResult = await BuildCreationInteraction.Handle(new(AppSettingsHelper.Settings, shipName, CurrentBuildName)) ?? BuildCreationResult.Canceled;
             var dialogResult = BuildCreationResult.Canceled;
             if (!dialogResult.Save)
@@ -56,7 +57,6 @@ namespace WoWsShipBuilder.UI.ViewModels.ShipVm
             AppData.Builds.Insert(0, currentBuild);
 
             AppSettingsHelper.Settings.IncludeSignalsForImageExport = dialogResult.IncludeSignals;
-            CurrentBuildName = currentBuild.BuildName;
             await CreateBuildImage(currentBuild, dialogResult.IncludeSignals, dialogResult.CopyImageToClipboard);
 
             string infoBoxContent;

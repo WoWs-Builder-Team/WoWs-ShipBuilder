@@ -17,17 +17,23 @@ namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
 public partial class ShipViewModel : ViewModelBase
 {
-    private readonly SemaphoreSlim semaphore = new(1, 1);
-
     private readonly CompositeDisposable disposables = new();
-
-    private readonly INavigationService navigationService;
 
     private readonly ILocalizer localizer;
 
     private readonly ILogger<ShipViewModel> logger;
 
-    private CancellationTokenSource tokenSource;
+    private readonly INavigationService navigationService;
+    private readonly SemaphoreSlim semaphore = new(1, 1);
+
+    [Observable]
+    private CaptainSkillSelectorViewModel? captainSkillSelectorViewModel;
+
+    [Observable]
+    private ConsumableViewModel consumableViewModel = null!;
+
+    [Observable]
+    private ShipSummary currentShip = default!;
 
     [Observable]
     private string currentShipIndex = "_default";
@@ -36,25 +42,16 @@ public partial class ShipViewModel : ViewModelBase
     private int? currentShipTier;
 
     [Observable]
-    private Ship rawShipData = null!;
-
-    [Observable]
     private Ship effectiveShipData = null!;
-
-    [Observable]
-    private ShipSummary currentShip = default!;
-
-    [Observable]
-    private ShipSummary? previousShip;
 
     [Observable]
     private List<ShipSummary>? nextShips = new();
 
     [Observable]
-    private CaptainSkillSelectorViewModel? captainSkillSelectorViewModel;
+    private ShipSummary? previousShip;
 
     [Observable]
-    private ConsumableViewModel consumableViewModel = null!;
+    private Ship rawShipData = null!;
 
     [Observable]
     private ShipModuleViewModel shipModuleViewModel = null!;
@@ -65,10 +62,10 @@ public partial class ShipViewModel : ViewModelBase
     [Observable]
     private SignalSelectorViewModel? signalSelectorViewModel;
 
+    private CancellationTokenSource tokenSource;
+
     [Observable]
     private UpgradePanelViewModelBase upgradePanelViewModel = null!;
-
-    protected string? CurrentBuildName;
 
     public ShipViewModel(INavigationService navigationService, ILocalizer localizer, ILogger<ShipViewModel> logger, ShipViewModelParams viewModelParams)
     {
@@ -82,30 +79,37 @@ public partial class ShipViewModel : ViewModelBase
         LoadShipFromIndexCommand = ReactiveCommand.CreateFromTask<string>(LoadShipFromIndexExecute);
     }
 
-    public async void ResetBuild()
-    {
-        logger.LogDebug("Resetting build");
-        await LoadNewShip(AppData.ShipSummaryList!.First(summary => summary.Index.Equals(CurrentShipIndex)));
-    }
-
     // public Interaction<BuildCreationWindowViewModel, BuildCreationResult?> BuildCreationInteraction { get; } = new();
-
     public Interaction<string, Unit> BuildCreatedInteraction { get; } = new();
 
     // Handle(true) closes this window too
     public Interaction<Unit, Unit> CloseChildrenInteraction { get; } = new();
 
     // public Interaction<StartMenuViewModelBase, Unit> OpenStartMenuInteraction { get; } = new();
-
     public ICommand LoadShipFromIndexCommand { get; }
+
+    public async void ResetBuild()
+    {
+        logger.LogDebug("Resetting build");
+        await LoadNewShip(AppData.ShipSummaryList!.First(summary => summary.Index.Equals(CurrentShipIndex)));
+    }
 
     public void BackToMenu()
     {
         navigationService.OpenStartMenu(true);
     }
 
-    // public Interaction<ShipSelectionWindowViewModel, List<ShipSummary>?> SelectNewShipInteraction { get; } = new();
+    public void InitializeData(ShipViewModelParams viewModelParams)
+    {
+        InitializeData(viewModelParams.Ship, viewModelParams.ShipSummary.PrevShipIndex, viewModelParams.ShipSummary.NextShipsIndex, viewModelParams.Build);
+    }
 
+    public Build CreateBuild(string buildName)
+    {
+        return new(buildName, CurrentShipIndex, RawShipData.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel!.GetCaptainIndex(), CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
+    }
+
+    // public Interaction<ShipSelectionWindowViewModel, List<ShipSummary>?> SelectNewShipInteraction { get; } = new();
     // public async void NewShipSelection()
     // {
     //     logger.LogDebug("Selecting new ship");
@@ -117,7 +121,6 @@ public partial class ShipViewModel : ViewModelBase
     //         await LoadNewShip(result);
     //     }
     // }
-
     private async Task LoadShipFromIndexExecute(string shipIndex)
     {
         var shipSummary = AppData.ShipSummaryList!.First(summary => summary.Index == shipIndex);
@@ -133,16 +136,6 @@ public partial class ShipViewModel : ViewModelBase
         var ship = AppData.FindShipFromSummary(summary);
 
         InitializeData(ship, summary.PrevShipIndex, summary.NextShipsIndex);
-    }
-
-    public void InitializeData(ShipViewModelParams viewModelParams)
-    {
-        InitializeData(viewModelParams.Ship, viewModelParams.ShipSummary.PrevShipIndex, viewModelParams.ShipSummary.NextShipsIndex, viewModelParams.Build);
-    }
-
-    public Build CreateBuild(string buildName)
-    {
-        return new(buildName, CurrentShipIndex, RawShipData.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel!.GetCaptainIndex(), CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
     }
 
     private void InitializeData(Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
@@ -177,7 +170,6 @@ public partial class ShipViewModel : ViewModelBase
             ConsumableViewModel.LoadBuild(build.Consumables);
         }
 
-
         CurrentShipIndex = ship.Index;
         CurrentShipTier = ship.Tier;
         CurrentShip = AppData.ShipSummaryList.First(sum => sum.Index == ship.Index);
@@ -186,10 +178,6 @@ public partial class ShipViewModel : ViewModelBase
 
         AddChangeListeners();
         UpdateStatsViewModel(true);
-        if (build != null)
-        {
-            CurrentBuildName = build.BuildName;
-        }
     }
 
     private void AddChangeListeners()
@@ -218,9 +206,8 @@ public partial class ShipViewModel : ViewModelBase
         tokenSource.Dispose();
         tokenSource = new();
         CancellationToken token = tokenSource.Token;
-        CurrentBuildName = null;
         Task.Run(
-            (Func<Task?>)(async () =>
+            async () =>
             {
                 try
                 {
@@ -238,6 +225,7 @@ public partial class ShipViewModel : ViewModelBase
                             logger.LogDebug("Updating ship stats");
                             await ShipStatsControlViewModel.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), modifiers);
                         }
+
                         var hp = ShipStatsControlViewModel!.CurrentShipStats!.SurvivabilityDataContainer.HitPoints;
                         ConsumableViewModel.UpdateConsumableData(modifiers, hp);
                         semaphore.Release();
@@ -247,7 +235,7 @@ public partial class ShipViewModel : ViewModelBase
                 {
                     // ignored
                 }
-            }),
+            },
             token);
     }
 

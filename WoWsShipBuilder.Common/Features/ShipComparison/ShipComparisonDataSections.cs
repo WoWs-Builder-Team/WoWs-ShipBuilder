@@ -24,5 +24,5 @@ public enum ShipComparisonDataSections
     Bombs,
     Sonar,
 
-    //TODO Consumables,
+    // TODO Consumables,
 }

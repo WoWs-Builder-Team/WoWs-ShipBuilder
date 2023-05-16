@@ -7,15 +7,15 @@ namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
 public class SkillItemViewModel : ViewModelBase
 {
-    private readonly CaptainSkillSelectorViewModel parent;
-
-    private bool canExecute;
-
-    private readonly ShipClass shipClass;
-
     private readonly Dictionary<int, bool> canAddCache;
 
     private readonly Dictionary<int, bool> canRemoveCache;
+
+    private readonly CaptainSkillSelectorViewModel parent;
+
+    private readonly ShipClass shipClass;
+
+    private bool canExecute;
 
     // TODO: update to new nullability state
     public SkillItemViewModel(Skill skill, CaptainSkillSelectorViewModel parent, ShipClass shipClass, Dictionary<int, bool> canAddCache, Dictionary<int, bool> canRemoveCache)
@@ -34,11 +34,11 @@ public class SkillItemViewModel : ViewModelBase
         {
             ConditionalModifiers = skill.ConditionalModifiers.Where(x => !x.Key.Contains('_') || x.Key.Contains("_" + shipClass)).ToDictionary(x => x.Key, x => x.Value);
         }
+
         this.shipClass = shipClass;
         this.parent = parent;
         CanExecuteChanged();
     }
-
 
     public Skill Skill { get; }
 

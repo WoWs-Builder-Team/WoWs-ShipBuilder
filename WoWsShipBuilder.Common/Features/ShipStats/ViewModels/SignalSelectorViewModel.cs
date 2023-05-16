@@ -12,6 +12,8 @@ public class SignalSelectorViewModel : ViewModelBase
 {
     private readonly ILogger<SignalSelectorViewModel> logger;
 
+    private int signalsNumber;
+
     public SignalSelectorViewModel()
     {
         logger = Logging.LoggerFactory.CreateLogger<SignalSelectorViewModel>();
@@ -22,8 +24,6 @@ public class SignalSelectorViewModel : ViewModelBase
 
     public List<KeyValuePair<string, SignalItemViewModel>> SignalList { get; }
 
-    private int signalsNumber;
-
     public int SignalsNumber
     {
         get => signalsNumber;
@@ -32,22 +32,18 @@ public class SignalSelectorViewModel : ViewModelBase
 
     public CustomObservableCollection<Exterior> SelectedSignals { get; } = new();
 
-    private void UpdateCanToggleSkill()
+    // TODO: update to new nullability state
+    private static List<KeyValuePair<string, SignalItemViewModel>> LoadSignalList()
     {
-        foreach (var (_, value) in SignalList)
-        {
-            value.CanExecute = CheckSignalCommandExecute(value.Signal);
-        }
-    }
+        var list = AppData.ExteriorCache[Nation.Common]
+            .Select(entry => new KeyValuePair<string, SignalItemViewModel>(entry.Key, new(entry.Value)))
+            .Where(x => x.Value.Signal.Type.Equals(ExteriorType.Flags) && x.Value.Signal.Group == 0).OrderBy(x => x.Value.Signal.SortOrder).ToList();
+        KeyValuePair<string, SignalItemViewModel> nullPair = new(string.Empty, new(new()));
 
-    private bool CheckSignalCommandExecute(object parameter)
-    {
-        if (parameter is not Exterior flag)
-        {
-            return false;
-        }
-
-        return SelectedSignals.Contains(flag) || SignalsNumber < 8;
+        // this is so the two in the bottom row are centered
+        list.Insert(12, nullPair);
+        list.Insert(13, nullPair);
+        return list;
     }
 
     public void SignalCommandExecute(Exterior flag)
@@ -62,20 +58,6 @@ public class SignalSelectorViewModel : ViewModelBase
             SelectedSignals.Add(flag);
             SignalsNumber++;
         }
-    }
-
-    // TODO: update to new nullability state
-    private static List<KeyValuePair<string, SignalItemViewModel>> LoadSignalList()
-    {
-        var list = AppData.ExteriorCache[Nation.Common]
-            .Select(entry => new KeyValuePair<string, SignalItemViewModel>(entry.Key, new(entry.Value)))
-            .Where(x => x.Value.Signal.Type.Equals(ExteriorType.Flags) && x.Value.Signal.Group == 0).OrderBy(x => x.Value.Signal.SortOrder).ToList();
-        KeyValuePair<string, SignalItemViewModel> nullPair = new(string.Empty, new(new()));
-
-        // this is so the two in the bottom row are centered
-        list.Insert(12, nullPair);
-        list.Insert(13, nullPair);
-        return list;
     }
 
     public List<(string, float)> GetModifierList()
@@ -94,6 +76,24 @@ public class SignalSelectorViewModel : ViewModelBase
         var list = SignalList.Select(x => x.Value.Signal).Where(signal => initialSignalsNames.Contains(signal.Index));
         SelectedSignals.AddRange(list);
         SignalsNumber = SelectedSignals.Count;
+    }
+
+    private void UpdateCanToggleSkill()
+    {
+        foreach (var (_, value) in SignalList)
+        {
+            value.CanExecute = CheckSignalCommandExecute(value.Signal);
+        }
+    }
+
+    private bool CheckSignalCommandExecute(object parameter)
+    {
+        if (parameter is not Exterior flag)
+        {
+            return false;
+        }
+
+        return SelectedSignals.Contains(flag) || SignalsNumber < 8;
     }
 }
 

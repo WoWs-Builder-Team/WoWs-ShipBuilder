@@ -7,7 +7,7 @@ public class SecondaryGridDataWrapper
 {
     public SecondaryGridDataWrapper(IReadOnlyCollection<SecondaryBatteryDataContainer>? secondaryBattery)
     {
-        //Secondaries
+        // Secondaries
         Caliber = secondaryBattery?.Select(x => x.GunCaliber).ToList() ?? new();
         BarrelCount = secondaryBattery?.Select(x => x.BarrelsCount).ToList() ?? new();
         BarrelsLayout = secondaryBattery?.Select(x => x.BarrelsLayout).ToList() ?? new();
@@ -18,7 +18,7 @@ public class SecondaryGridDataWrapper
         Fpm = secondaryBattery?.Select(x => x.PotentialFpm).ToList() ?? new();
         Sigma = secondaryBattery?.Select(x => x.Sigma).First();
 
-        //Secondary shells
+        // Secondary shells
         List<ShellDataContainer?>? secondaryShellData = secondaryBattery?.Select(x => x.Shell).ToList();
 
         Type = secondaryShellData?.Select(x => x?.Type).First();
@@ -54,7 +54,7 @@ public class SecondaryGridDataWrapper
 
     public decimal? Sigma { get; }
 
-    //Secondary shells
+    // Secondary shells
     public string? Type { get; }
 
     public List<decimal> Mass { get; }

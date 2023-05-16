@@ -79,9 +79,9 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
         }
 
         CaptainList = capList.Select(x => x.Value).ToList();
-        SelectedCaptain = Enumerable.First<Captain>(CaptainList);
+        SelectedCaptain = CaptainList.First();
 
-        this.WhenAnyValue<CaptainSkillSelectorViewModel, int>(x => x.AssignedPoints).Do(_ => UpdateCanAddSkill()).Subscribe();
+        this.WhenAnyValue(x => x.AssignedPoints).Do(_ => UpdateCanAddSkill()).Subscribe();
 
         CaptainTalentsList.CollectionChanged += CaptainTalentsListOnCollectionChanged;
         ConditionalModifiersList.CollectionChanged += ConditionalModifiersListOnCollectionChanged;
@@ -130,7 +130,7 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
             SkillOrderList.Clear();
             foreach (var skillNumber in currentlySelectedNumbersList)
             {
-                var skill = Enumerable.Single<SkillItemViewModel>(SkillList.Values, x => x.Skill.SkillNumber.Equals(skillNumber)).Skill;
+                var skill = SkillList.Values.Single(x => x.Skill.SkillNumber.Equals(skillNumber)).Skill;
                 SkillOrderList.Add(skill);
             }
 
@@ -153,7 +153,7 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
         set
         {
             this.RaiseAndSetIfChanged(ref showArHpSelection, value);
-            TalentOrConditionalSkillEnabled = showArHpSelection && ArHpPercentage < 100 || CaptainTalentsList.Any(talent => talent.Status) || ConditionalModifiersList.Any(skill => skill.Status);
+            TalentOrConditionalSkillEnabled = (showArHpSelection && ArHpPercentage < 100) || CaptainTalentsList.Any(talent => talent.Status) || ConditionalModifiersList.Any(skill => skill.Status);
         }
     }
 
@@ -176,7 +176,7 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
         set
         {
             this.RaiseAndSetIfChanged(ref skillActivationPopupOpen, value);
-            TalentOrConditionalSkillEnabled = showArHpSelection && ArHpPercentage < 100 || CaptainTalentsList.Any(talent => talent.Status) || ConditionalModifiersList.Any(skill => skill.Status);
+            TalentOrConditionalSkillEnabled = (showArHpSelection && ArHpPercentage < 100) || CaptainTalentsList.Any(talent => talent.Status) || ConditionalModifiersList.Any(skill => skill.Status);
         }
     }
 
@@ -226,7 +226,7 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
 
             if (skill.ConditionalModifiers is { Count: > 0 })
             {
-                var skillName = Enumerable.Single<KeyValuePair<string, SkillItemViewModel>>(SkillList!, x => x.Value.Skill.Equals(skill)).Key;
+                var skillName = SkillList!.Single(x => x.Value.Skill.Equals(skill)).Key;
                 ConditionalModifiersList.Remove(ConditionalModifiersList.Single(x => x.SkillName.Equals(skillName)));
             }
 
@@ -266,7 +266,7 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
             .Select(effect => (effect.Key, effect.Value))
             .ToList();
 
-        //filter out modifiers that are class specific
+        // filter out modifiers that are class specific
         modifiers = modifiers.Where(x => !x.Key.Contains('_') || x.Key.Contains("_" + currentClass))
             .Select(effect => (effect.Key, effect.Value))
             .ToList();
@@ -298,7 +298,7 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
                 modifiers.Add(("GMShotDelay", multiplier));
             }
 
-            //Custom handling for Improved Repair Party Readiness Skill
+            // Custom handling for Improved Repair Party Readiness Skill
             var improvedRepairPartyReadinessSkill = SkillOrderList.SingleOrDefault(skill => skill.SkillNumber is ImprovedRepairPartyReadinessSkillNumber);
             var improvedRepairPartyReadinessSkillModifier = ConditionalModifiersList.SingleOrDefault(skill => skill.SkillId is ImprovedRepairPartyReadinessSkillNumber);
             if (improvedRepairPartyReadinessSkill is not null && improvedRepairPartyReadinessSkillModifier is not null && improvedRepairPartyReadinessSkillModifier.Status)
@@ -356,7 +356,7 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
         // this check is purely for backward compatibility
         if (captainIndex != null)
         {
-            var captain = Enumerable.First<Captain>(CaptainList!, x => x.Index.Equals(captainIndex));
+            var captain = CaptainList!.First(x => x.Index.Equals(captainIndex));
             SelectedCaptain = captain;
         }
 
@@ -382,12 +382,12 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
 
     private void CaptainTalentsListOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        TalentOrConditionalSkillEnabled = showArHpSelection && ArHpPercentage < 100 || CaptainTalentsList.Any(talent => talent.Status);
+        TalentOrConditionalSkillEnabled = (showArHpSelection && ArHpPercentage < 100) || CaptainTalentsList.Any(talent => talent.Status);
     }
 
     private void ConditionalModifiersListOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        TalentOrConditionalSkillEnabled = showArHpSelection && ArHpPercentage < 100 || ConditionalModifiersList.Any(skill => skill.Status);
+        TalentOrConditionalSkillEnabled = (showArHpSelection && ArHpPercentage < 100) || ConditionalModifiersList.Any(skill => skill.Status);
     }
 
     /// <summary>
@@ -429,7 +429,7 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
 
     private SkillActivationItemViewModel CreateItemViewModelForSkill(Skill skill)
     {
-        var skillName = Enumerable.Single<KeyValuePair<string, SkillItemViewModel>>(SkillList!, x => x.Value.Skill.Equals(skill)).Key;
+        var skillName = SkillList!.Single(x => x.Value.Skill.Equals(skill)).Key;
         SkillActivationItemViewModel result;
         if (skill.SkillNumber is FuriousSkillNumber)
         {

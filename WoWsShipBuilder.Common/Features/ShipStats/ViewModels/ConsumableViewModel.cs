@@ -16,9 +16,8 @@ namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 /// </summary>
 public class ConsumableViewModel : ViewModelBase, IBuildComponentProvider
 {
-    private readonly Ship ship;
-
     private readonly ILogger<ConsumableViewModel> logger;
+    private readonly Ship ship;
 
     public ConsumableViewModel()
         : this(new(), NullLogger<ConsumableViewModel>.Instance)
@@ -42,6 +41,20 @@ public class ConsumableViewModel : ViewModelBase, IBuildComponentProvider
     /// </summary>
     public ObservableCollection<ConsumableSlotViewModel> ConsumableSlots { get; }
 
+    /// <summary>
+    /// Creates a new instance of the <see cref="ConsumableViewModel"/> and initializes its data through asynchronous methods.
+    /// </summary>
+    /// <param name="ship">The ship associated with the new viewmodel instance.</param>
+    /// <param name="disabledConsumables">A list of consumables that are currently disabled.</param>
+    /// <param name="loggerFactory">The logger factory used to create a logger for the viewmodel.</param>
+    /// <returns>A new instance of the <see cref="ConsumableViewModel"/> with initialized data.</returns>
+    public static ConsumableViewModel Create(Ship ship, IEnumerable<string> disabledConsumables, ILoggerFactory loggerFactory)
+    {
+        var vm = new ConsumableViewModel(ship, loggerFactory.CreateLogger<ConsumableViewModel>());
+        vm.UpdateSlotViewModels(disabledConsumables);
+        return vm;
+    }
+
     public void LoadBuild(IEnumerable<string> storedData)
     {
         foreach (var slotViewModel in ConsumableSlots)
@@ -57,20 +70,6 @@ public class ConsumableViewModel : ViewModelBase, IBuildComponentProvider
     public List<string> SaveBuild()
     {
         return ConsumableSlots.Select(slot => slot.SelectedConsumable.IconName).ToList();
-    }
-
-    /// <summary>
-    /// Creates a new instance of the <see cref="ConsumableViewModel"/> and initializes its data through asynchronous methods.
-    /// </summary>
-    /// <param name="ship">The ship associated with the new viewmodel instance.</param>
-    /// <param name="disabledConsumables">A list of consumables that are currently disabled.</param>
-    /// <param name="loggerFactory">The logger factory used to create a logger for the viewmodel.</param>
-    /// <returns>A new instance of the <see cref="ConsumableViewModel"/> with initialized data.</returns>
-    public static ConsumableViewModel Create(Ship ship, IEnumerable<string> disabledConsumables, ILoggerFactory loggerFactory)
-    {
-        var vm = new ConsumableViewModel(ship, loggerFactory.CreateLogger<ConsumableViewModel>());
-        vm.UpdateSlotViewModels(disabledConsumables);
-        return vm;
     }
 
     /// <summary>

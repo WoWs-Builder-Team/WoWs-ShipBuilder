@@ -7,12 +7,12 @@ namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
 public class ShipStatsControlViewModel : ViewModelBase
 {
+    private ShipDataContainer? currentShipStats;
+
     public ShipStatsControlViewModel(Ship ship)
     {
         BaseShipStats = ship;
     }
-
-    private ShipDataContainer? currentShipStats;
 
     public ShipDataContainer? CurrentShipStats
     {
