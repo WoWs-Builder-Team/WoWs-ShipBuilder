@@ -1,4 +1,5 @@
 ﻿using WoWsShipBuilder.Common.Infrastructure.Localization;
+using WoWsShipBuilder.Common.Infrastructure.Localization.Resources;
 
 namespace WoWsShipBuilder.Common.DataContainers;
 

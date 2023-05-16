@@ -1,6 +1,6 @@
+using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.DataStructures.Ship.Components;
-using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.ShipVm;
 

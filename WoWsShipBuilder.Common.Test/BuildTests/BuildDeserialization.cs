@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 using Newtonsoft.Json;
-using WoWsShipBuilder.Common.Builds;
+using WoWsShipBuilder.Common.Features.Builds;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Common.Test.BuildTests;

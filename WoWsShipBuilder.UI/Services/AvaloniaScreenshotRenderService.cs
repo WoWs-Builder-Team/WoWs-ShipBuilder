@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using Newtonsoft.Json;
 using Splat;
-using WoWsShipBuilder.Common.Builds;
+using WoWsShipBuilder.Common.Features.Builds;
 using WoWsShipBuilder.Common.Infrastructure.Localization;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.DataStructures.Ship;

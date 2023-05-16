@@ -4,7 +4,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using WoWsShipBuilder.Common.Builds;
+using WoWsShipBuilder.Common.Features.Builds;
 using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.UI.Settings;

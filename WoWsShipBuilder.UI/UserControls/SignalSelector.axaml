@@ -8,7 +8,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Name="SignalSelector"
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
-             xmlns:viewModels="clr-namespace:WoWsShipBuilder.Common.ShipStats.ViewModels;assembly=WoWsShipBuilder.Common"
+             xmlns:viewModels="clr-namespace:WoWsShipBuilder.Common.Features.ShipStats.ViewModels;assembly=WoWsShipBuilder.Common"
              x:Class="WoWsShipBuilder.UI.UserControls.SignalSelector">
 
     <Design.DataContext>

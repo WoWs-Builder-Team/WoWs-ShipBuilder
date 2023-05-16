@@ -1,0 +1,119 @@
+@page "/"
+@using System.Collections.ObjectModel
+@using System.Collections.Specialized
+@using System.Net
+@using Microsoft.AspNetCore.WebUtilities
+@using Microsoft.Extensions.Options
+@using WoWsShipBuilder.Common.Features.Builds
+@using WoWsShipBuilder.Common.Features.LinkShortening
+@using WoWsShipBuilder.Common.Infrastructure.DataTransfer
+@using WoWsShipBuilder.Common.Infrastructure.Localization.Resources
+@using WoWsShipBuilder.Common.Features.ShipSelection
+@inject NavigationManager NavManager
+@inject RefreshNotifierService NotifierService
+@inject ISnackbar Snackbar
+@inject ILocalizer Localizer
+@inject IOptions<LinkShorteningOptions> LinkShorteningOptions
+@inject SessionStateCache SessionStateCache
+@implements IDisposable
+
+<PageTitle>
+    WoWs ShipBuilder
+</PageTitle>
+
+<MudContainer>
+    <MudGrid Justify="Justify.Center">
+        <MudItem xs="12">
+            <MudText Align="Align.Center" Typo="Typo.h1" Class="main-title">
+                WoWs ShipBuilder
+            </MudText>
+            <MudText Align="Align.Center" Typo="Typo.h4">
+                Welcome to the WoWs ShipBuilder web app.
+            </MudText>
+        </MudItem>
+        <MudItem xs="12">
+            <MudStack Row>
+                <MudTextField Immediate T="string" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)).Localization" @bind-Value="buildString" />
+                <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="OnLoadBuild">
+                    @Localizer.GetAppLocalization(nameof(Translation.WebApp_LoadBuild)).Localization
+                </MudButton>
+            </MudStack>
+        </MudItem>
+        <MudItem xs="12" Class="pt-6 pb-0 ml-n4 mr-4">
+            <MudDivider DividerType="DividerType.Middle" Style="width: 100%" Light/>
+        </MudItem>
+        <MudItem xs="12">
+            <ShipSelector SelectedShips="@selectedShips" AllowCopies/>
+        </MudItem>
+        <MudItem xs="12" sm="8" Class="d-flex" Style="justify-content: space-between">
+            <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@GoToShipPage" FullWidth="true">
+                @Localizer.GetAppLocalization(nameof(Translation.WebApp_GoToShipsPage)).Localization
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code
+{
+    private readonly ObservableCollection<ShipBuildContainer> selectedShips = new();
+
+    private string buildString = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        selectedShips.CollectionChanged += SelectedShipsOnCollectionChanged;
+        NotifierService.RefreshRequested += OnRefresh;
+    }
+
+    private void SelectedShipsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        StateHasChanged();
+    }
+
+    private void OnRefresh()
+    {
+        StateHasChanged();
+    }
+
+    private void GoToShipPage()
+    {
+        string indexes = string.Join(",", selectedShips.Select(x => x.Ship.Index));
+        SessionStateCache.SetBuildTransferContainers(selectedShips.ToList());
+        NavManager.NavigateTo("/ship?shipIndexes=" + indexes);
+    }
+
+    public void Dispose()
+    {
+        selectedShips.CollectionChanged -= SelectedShipsOnCollectionChanged;
+        NotifierService.RefreshRequested -= OnRefresh;
+    }
+
+    private void OnLoadBuild()
+    {
+        if (buildString.Contains(LinkShorteningOptions.Value.UriPrefix + '/'))
+        {
+            NavManager.NavigateTo(buildString);
+        }
+        else
+        {
+            if (QueryHelpers.ParseQuery(buildString).TryGetValue("build", out var buildFromUrl))
+            {
+                buildString = buildFromUrl.ToString();
+            }
+
+            try
+            {
+                var build = Build.CreateBuildFromString(buildString);
+                NavManager.NavigateTo($"/ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}");
+                Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+                Snackbar.Add("Build loaded", Severity.Success);
+            }
+            catch (FormatException)
+            {
+                Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+                Snackbar.Add("Failed to load build from string", Severity.Error);
+            }
+        }
+    }
+}

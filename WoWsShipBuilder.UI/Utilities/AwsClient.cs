@@ -9,7 +9,6 @@ using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.Common.Infrastructure.Data;
 using WoWsShipBuilder.Common.Infrastructure.GameData;
 using WoWsShipBuilder.Common.Infrastructure.HttpClients;
-using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.DataStructures.Versioning;
 
 namespace WoWsShipBuilder.UI.Utilities;

@@ -5,11 +5,11 @@ using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using WoWsShipBuilder.Common.Builds;
+using WoWsShipBuilder.Common.Features.Builds;
+using WoWsShipBuilder.Common.Features.Settings;
 using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Common.Infrastructure.Data;
 using WoWsShipBuilder.Common.Infrastructure.GameData;
-using WoWsShipBuilder.Common.Settings;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures.Versioning;
 

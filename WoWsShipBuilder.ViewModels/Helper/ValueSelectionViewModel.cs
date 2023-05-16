@@ -3,7 +3,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows.Input;
 using ReactiveUI;
-using WoWsShipBuilder.ViewModels.Base;
+using WoWsShipBuilder.Common.Infrastructure;
 
 namespace WoWsShipBuilder.ViewModels.Helper;
 

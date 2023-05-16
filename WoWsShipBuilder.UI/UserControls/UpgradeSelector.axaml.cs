@@ -8,10 +8,9 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
-using WoWsShipBuilder.Common.ShipStats.ViewModels;
+using WoWsShipBuilder.Common.Features.ShipStats.ViewModels;
 using WoWsShipBuilder.DataStructures.Upgrade;
 using WoWsShipBuilder.UI.Converters;
-using WoWsShipBuilder.ViewModels.ShipVm;
 
 namespace WoWsShipBuilder.UI.UserControls
 {

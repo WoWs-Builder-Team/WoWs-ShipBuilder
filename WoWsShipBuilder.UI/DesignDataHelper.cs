@@ -4,15 +4,15 @@ using System.IO.Abstractions;
 using System.Linq;
 using Avalonia.Controls;
 using Microsoft.Extensions.Logging.Abstractions;
-using WoWsShipBuilder.Common.Builds;
 using WoWsShipBuilder.Common.DataContainers;
+using WoWsShipBuilder.Common.Features.Builds;
+using WoWsShipBuilder.Common.Features.ShipStats;
+using WoWsShipBuilder.Common.Features.ShipStats.ViewModels;
 using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Common.Infrastructure.Data;
 using WoWsShipBuilder.Common.Infrastructure.DataTransfer;
 using WoWsShipBuilder.Common.Infrastructure.GameData;
 using WoWsShipBuilder.Common.Infrastructure.Localization;
-using WoWsShipBuilder.Common.ShipStats;
-using WoWsShipBuilder.Common.ShipStats.ViewModels;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
@@ -24,8 +24,6 @@ using WoWsShipBuilder.DataStructures.Upgrade;
 using WoWsShipBuilder.UI.Services;
 using WoWsShipBuilder.UI.ViewModels;
 using WoWsShipBuilder.UI.ViewModels.ShipVm;
-using ServerType = WoWsShipBuilder.Common.Infrastructure.GameData.ServerType;
-using ShipUpgrade = WoWsShipBuilder.DataStructures.Ship.ShipUpgrade;
 
 namespace WoWsShipBuilder.UI;
 

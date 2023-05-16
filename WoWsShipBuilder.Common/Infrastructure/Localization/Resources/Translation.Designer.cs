@@ -7,10 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WoWsShipBuilder.Common.Infrastructure.Localization {
-    using System;
-
-
+namespace WoWsShipBuilder.Common.Infrastructure.Localization.Resources {
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>

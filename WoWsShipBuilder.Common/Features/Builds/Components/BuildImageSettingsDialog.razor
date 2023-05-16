@@ -1,0 +1,91 @@
+﻿@using WoWsShipBuilder.Common.Infrastructure.Localization.Resources
+@inject ILocalizer Localizer
+
+<MudDialog DefaultFocus="DefaultFocus.Element">
+    <DialogContent>
+        <MudText Typo="Typo.body2" Align="Align.Center" Style="font-weight: bold" Class="mb-1">@Localizer.SimpleAppLocalization(nameof(Translation.BuildImageSettingsDialog_Layout))</MudText>
+        <MudTooltip Text="@Localizer.SimpleAppLocalization(nameof(Translation.BuildImageSettingsDialog_TwoColumnsTooltip))" Arrow Delay="350">
+            <MudSwitch @bind-Checked="@TwoColumns" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildImageSettingsDialog_TwoColumns))" LabelPosition="LabelPosition.Start" Color="Color.Warning" Disabled="GetScreenSize()" @onclick="@SetLayoutLimitations"/>
+        </MudTooltip>
+        <MudDivider Light DividerType="DividerType.FullWidth" Class="my-3"/>
+        <MudText Typo="Typo.body2" Align="Align.Center" Style="font-weight: bold" Class="mb-2">@Localizer.SimpleAppLocalization(nameof(Translation.BuildImageSettingsDialog_Elements))</MudText>
+        <MudSwitch @bind-Checked="@ShowModules" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildImageSettingsDialog_Modules))" LabelPosition="LabelPosition.Start" Color="Color.Warning"/>
+        <MudSwitch @bind-Checked="@ShowCaptainSkills" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildImageSettingsDialog_CaptainSkills))" LabelPosition="LabelPosition.Start" Color="Color.Warning" Disabled="TwoColumns"/>
+        <MudSwitch @bind-Checked="@ShowUpgrades" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildImageSettingsDialog_Upgrades))" LabelPosition="LabelPosition.Start" Color="Color.Warning"/>
+        <MudSwitch @bind-Checked="@ShowConsumables" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildImageSettingsDialog_Consumables))" LabelPosition="LabelPosition.Start" Color="Color.Warning"/>
+        <MudSwitch @bind-Checked="@ShowSignals" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildImageSettingsDialog_Signals))" LabelPosition="LabelPosition.Start" Color="Color.Warning" Disabled="TwoColumns"/>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel" Variant="Variant.Text">@Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization</MudButton>
+        <MudButton OnClick="Confirm" Variant="Variant.Text">
+            <MudText Typo="Typo.button">@Localizer.GetAppLocalization(nameof(Translation.Dialog_Save)).Localization</MudText>
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code
+{
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = new();
+
+    [Parameter]
+    public Breakpoint Breakpoint { get; set; }
+
+    [Parameter, EditorRequired]
+    public bool ShowModules { get; set; }
+    [Parameter, EditorRequired]
+    public bool ShowCaptainSkills { get; set; }
+    [Parameter, EditorRequired]
+    public bool ShowUpgrades { get; set; }
+    [Parameter, EditorRequired]
+    public bool ShowConsumables { get; set; }
+    [Parameter, EditorRequired]
+    public bool ShowSignals { get; set; }
+    [Parameter, EditorRequired]
+    public bool TwoColumns { get; set; }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private void Confirm()
+    {
+        if (TwoColumns)
+        {
+            ShowCaptainSkills = true;
+            ShowSignals = true;
+        }
+        MudDialog.Close(DialogResult.Ok(new []
+        {
+            ShowModules,
+            ShowCaptainSkills,
+            ShowUpgrades,
+            ShowConsumables,
+            ShowSignals,
+            TwoColumns,
+        }));
+    }
+
+    private bool GetScreenSize()
+    {
+        switch (Breakpoint)
+        {
+            case Breakpoint.Xs:
+            case Breakpoint.Sm:
+                TwoColumns = false;
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private void SetLayoutLimitations()
+    {
+        if (!TwoColumns)
+        {
+            ShowCaptainSkills = true;
+            ShowSignals = true;
+        }
+    }
+}

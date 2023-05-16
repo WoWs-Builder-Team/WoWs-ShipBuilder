@@ -5,16 +5,14 @@ using Avalonia.VisualTree;
 using Microsoft.Extensions.Logging;
 using Splat;
 using WoWsShipBuilder.Common.DataContainers;
+using WoWsShipBuilder.Common.Features.ShipStats.ViewModels;
 using WoWsShipBuilder.Common.Infrastructure.Data;
-using WoWsShipBuilder.Common.ShipStats.ViewModels;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.ViewModels.DispersionPlot;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilder.ViewModels.ShipVm;
 using static WoWsShipBuilder.UI.ViewModels.DispersionPlot.DispersionGraphViewModel;
-using DepthChargeDataContainer = WoWsShipBuilder.Common.DataContainers.DepthChargeDataContainer;
-using ShellDataContainer = WoWsShipBuilder.Common.DataContainers.ShellDataContainer;
 
 namespace WoWsShipBuilder.UI.UserControls
 {

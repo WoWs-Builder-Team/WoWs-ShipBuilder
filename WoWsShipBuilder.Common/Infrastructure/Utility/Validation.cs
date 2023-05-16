@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
-using WoWsShipBuilder.Common.Builds;
+using WoWsShipBuilder.Common.Features.Builds;
 using WoWsShipBuilder.Common.Infrastructure.Localization;
+using WoWsShipBuilder.Common.Infrastructure.Localization.Resources;
 
 namespace WoWsShipBuilder.Common.Infrastructure.Utility;
 

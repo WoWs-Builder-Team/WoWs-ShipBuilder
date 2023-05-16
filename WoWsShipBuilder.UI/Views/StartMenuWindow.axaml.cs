@@ -9,7 +9,7 @@ using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using Squirrel;
-using WoWsShipBuilder.Common.Builds;
+using WoWsShipBuilder.Common.Features.Builds;
 using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.DataStructures;

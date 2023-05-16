@@ -6,8 +6,8 @@ using System.Reactive.Linq;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
+using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Core;
-using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
 {

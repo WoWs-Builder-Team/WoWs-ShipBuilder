@@ -1,6 +1,7 @@
 ﻿@using WoWsShipBuilder.Web.Shared
 @using System.Reflection
-@using WoWsShipBuilder.Common.ShipStats
+@using WoWsShipBuilder.Common.Features.ShipStats
+
 <Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="@assemblies">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Splat;
 using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Common.Infrastructure.Localization;
+using WoWsShipBuilder.Common.Infrastructure.Localization.Resources;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.ViewModels.Other;

@@ -2,12 +2,12 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using WoWsShipBuilder.Common.Features.Settings;
+using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Common.Infrastructure.Data;
 using WoWsShipBuilder.Common.Infrastructure.Localization;
-using WoWsShipBuilder.Common.Settings;
+using WoWsShipBuilder.Common.Infrastructure.Localization.Resources;
 using WoWsShipBuilder.Core.DataProvider.Updater;
-using WoWsShipBuilder.ViewModels;
-using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.UI;
 
@@ -25,10 +25,10 @@ public partial class SplashScreenViewModel : ViewModelBase
 
     private readonly ILogger<SplashScreenViewModel> logger;
 
-    [Observable]
+    [WoWsShipBuilder.ViewModels.Observable]
     private double progress;
 
-    [Observable]
+    [WoWsShipBuilder.ViewModels.Observable]
     private string downloadInfo = nameof(Translation.SplashScreen_Init);
 
     public SplashScreenViewModel()

@@ -7,6 +7,7 @@ using Avalonia.Data.Converters;
 using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Common.Infrastructure.Localization;
+using WoWsShipBuilder.Common.Infrastructure.Localization.Resources;
 using WoWsShipBuilder.UI.Settings;
 using AppSettingsHelper = WoWsShipBuilder.UI.Settings.AppSettingsHelper;
 

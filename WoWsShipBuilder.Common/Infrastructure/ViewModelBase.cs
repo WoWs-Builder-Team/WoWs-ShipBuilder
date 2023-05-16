@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace WoWsShipBuilder.ViewModels.Base
+namespace WoWsShipBuilder.Common.Infrastructure
 {
     public class ViewModelBase : ReactiveObject
     {

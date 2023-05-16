@@ -1,10 +1,6 @@
-﻿using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using WoWsShipBuilder.Common.Infrastructure;
+﻿using Microsoft.Extensions.Logging;
 
-namespace WoWsShipBuilder.Core.HttpClients;
+namespace WoWsShipBuilder.Common.Infrastructure.HttpClients;
 
 public class RetryHttpHandler : DelegatingHandler
 {

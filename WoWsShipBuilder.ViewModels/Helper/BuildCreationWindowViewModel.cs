@@ -3,9 +3,9 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Text.RegularExpressions;
 using ReactiveUI;
-using WoWsShipBuilder.Common.Settings;
+using WoWsShipBuilder.Common.Features.Settings;
+using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Core.Localization;
-using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.Helper;
 

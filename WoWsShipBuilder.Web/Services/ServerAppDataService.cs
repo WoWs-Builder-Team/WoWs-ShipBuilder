@@ -6,7 +6,6 @@ using WoWsShipBuilder.Common.Infrastructure.Data;
 using WoWsShipBuilder.Common.Infrastructure.GameData;
 using WoWsShipBuilder.Common.Infrastructure.HttpClients;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;

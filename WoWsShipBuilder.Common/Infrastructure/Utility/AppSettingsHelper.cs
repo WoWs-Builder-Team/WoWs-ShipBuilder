@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
-using WoWsShipBuilder.Common.Settings;
+using WoWsShipBuilder.Common.Features.Settings;
 
 namespace WoWsShipBuilder.Common.Infrastructure.Utility;
 

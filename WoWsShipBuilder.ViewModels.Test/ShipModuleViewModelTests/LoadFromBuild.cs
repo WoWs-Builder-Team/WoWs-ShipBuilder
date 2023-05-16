@@ -1,8 +1,7 @@
 ﻿using FluentAssertions;
-using WoWsShipBuilder.Common.ShipStats.ViewModels;
+using WoWsShipBuilder.Common.Features.ShipStats.ViewModels;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.ViewModels.ShipVm;
 
 namespace WoWsShipBuilder.ViewModels.Test.ShipModuleViewModelTests;
 
