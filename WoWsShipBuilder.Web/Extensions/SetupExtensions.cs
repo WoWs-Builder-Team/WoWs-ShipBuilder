@@ -9,15 +9,16 @@ using NLog.Layouts;
 using NLog.Loki;
 using NLog.Targets;
 using Sentry;
+using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Common.Infrastructure.Data;
 using WoWsShipBuilder.Common.Infrastructure.HttpClients;
 using WoWsShipBuilder.Common.Infrastructure.Localization;
+using WoWsShipBuilder.Common.LinkShortening;
 using WoWsShipBuilder.Common.Settings;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Web.Data;
-using WoWsShipBuilder.Web.LinkShortening;
 using WoWsShipBuilder.Web.Services;
 using LogLevel = NLog.LogLevel;
 

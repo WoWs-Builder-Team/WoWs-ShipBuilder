@@ -1,0 +1,101 @@
+﻿@using WoWsShipBuilder.DataStructures.Upgrade
+@using WoWsShipBuilder.Common.Infrastructure.Localization
+@using WoWsShipBuilder.Common.DataContainers
+@using WoWsShipBuilder.Common.ShipStats.ViewModels
+@inherits ReactiveComponentBase<WoWsShipBuilder.Common.ShipStats.ViewModels.UpgradePanelViewModelBase>
+@inject ILocalizer Localizer
+
+@if (ViewModel is not null)
+{
+    <MudCard Outlined="true" Class="pa-2">
+        <MudStack Row="true" Justify="Justify.Center" >
+            @foreach (List<Modernization> columnModernizations in ViewModel.AvailableModernizationList)
+            {
+                <MudTooltip Color="Color.Transparent" Placement="Placement.Right" Delay="350">
+                    <ChildContent>
+                        <MudImage Width="@GetImageSize(false)" Height="@GetImageSize(false)" Src="@GetSelectedUpgradeIcon(columnModernizations, ViewModel.SelectedModernizationList)" Style="@GetImageBreakpointStyle()"/>
+                    </ChildContent>
+                    <TooltipContent>
+                        <MudPaper Outlined="true" Style="max-width: 500px; z-index: 1600;">
+                            <MudStack Spacing="0" Class="pa-2">
+                                @{
+                                    var currentMod = GetSelectedModernization(columnModernizations, ViewModel.SelectedModernizationList);
+                                    if (currentMod is null)
+                                    {
+                                        <MudText Align="Align.Center" Style="font-size: 15px" Typo="Typo.h6">@Localizer.GetAppLocalization(nameof(Translation.TITLE_PlaceholderMod)).Localization</MudText>
+                                    }
+                                    else
+                                    {
+                                        <MudText Align="Align.Center" Typo="Typo.h6">@Localizer.GetGameLocalization("TITLE_" + currentMod.Name).Localization</MudText>
+                                        string desc = Localizer.GetGameLocalization("DESC_" + currentMod.Name).Localization;
+                                        if (!string.IsNullOrWhiteSpace(desc))
+                                        {
+                                            <MudText Align="Align.Center" Typo="Typo.body2" Style="white-space: break-spaces">@Localizer.GetGameLocalization("DESC_" + currentMod.Name).Localization</MudText>
+                                        }
+                                        <MudDivider Light="true" Class="ma-1"/>
+                                        foreach ((string modifierName, double modifierValue) in currentMod.Effect)
+                                        {
+                                            // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
+                                            string modifier = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
+                                            if (!string.IsNullOrWhiteSpace(modifier))
+                                            {
+                                                <MudText Align="Align.Start" Typo="Typo.body2" Style="white-space: break-spaces" Class="flex-grow-0 flex-shrink-1">@modifier</MudText>
+                                            }
+                                        }
+                                    }
+                                }
+                            </MudStack>
+                        </MudPaper>
+                    </TooltipContent>
+                </MudTooltip>
+            }
+        </MudStack>
+    </MudCard>
+
+}
+
+@code {
+
+    [CascadingParameter]
+    private Breakpoint Breakpoint { get; set; }
+
+    private static string GetSelectedUpgradeIcon(IEnumerable<Modernization> modernizations, IReadOnlyCollection<Modernization> selectedModernizations )
+    {
+        Modernization? selectedMod = modernizations.FirstOrDefault(modernization => selectedModernizations.Any(selected => selected.Index.Equals(modernization.Index)));
+        selectedMod ??= UpgradePanelViewModelBase.PlaceholderModernization;
+
+        string path = selectedMod.Index != null ? $"/_content/WoWsShipBuilder.Common/assets/modernization_icons/icon_modernization_{selectedMod.Name}.png" : "/_content/WoWsShipBuilder.Common/assets/modernization_icons/modernization_default3.png";
+
+        return path;
+    }
+
+    private static Modernization? GetSelectedModernization(IEnumerable<Modernization> modernizations, IReadOnlyCollection<Modernization> selectedModernizations)
+    {
+        Modernization? selectedMod = modernizations.FirstOrDefault(modernization => selectedModernizations.Any(selected => selected.Index.Equals(modernization.Index)));
+        return selectedMod;
+    }
+
+    private int GetImageSize(bool isInTooltip)
+    {
+        switch (Breakpoint)
+        {
+            case Breakpoint.Xs:
+            case Breakpoint.Sm:
+                return isInTooltip ? 40 : 36;
+            default:
+                return isInTooltip ? 60: 56;
+        }
+    }
+
+    private string GetImageBreakpointStyle()
+    {
+        switch (Breakpoint)
+        {
+            case Breakpoint.Xs:
+            case Breakpoint.Sm:
+                return "min-width: 40px; width: 40px; height: 40px; padding: 2px;";
+            default:
+                return "min-width: 60px; width: 60px; height: 60px; padding: 2px;";
+        }
+    }
+}

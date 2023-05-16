@@ -1,5 +1,6 @@
 ﻿using System.IO.Abstractions;
 using System.Reactive.Linq;
+using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Common.Infrastructure.Data;
 using WoWsShipBuilder.Common.Infrastructure.Localization;
 using WoWsShipBuilder.Common.Infrastructure.Navigation;

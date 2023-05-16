@@ -101,14 +101,14 @@ public class SignalSelectorViewModel : ViewModelBase
 
 public class SignalItemViewModel : ViewModelBase
 {
+    private bool canExecute;
+
     public SignalItemViewModel(Exterior exterior)
     {
         Signal = exterior;
     }
 
     public Exterior Signal { get; }
-
-    private bool canExecute;
 
     public bool CanExecute
     {

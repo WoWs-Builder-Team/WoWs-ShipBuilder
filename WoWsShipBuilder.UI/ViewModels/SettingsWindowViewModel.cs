@@ -7,11 +7,13 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using ReactiveUI;
 using Squirrel;
+using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Common.Infrastructure.Data;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.ViewModels.Other;
+using AppSettingsHelper = WoWsShipBuilder.UI.Settings.AppSettingsHelper;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {

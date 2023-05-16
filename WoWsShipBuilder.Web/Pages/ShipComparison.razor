@@ -8,15 +8,13 @@
 @using Microsoft.AspNetCore.Http.Extensions
 @using Microsoft.Extensions.Options
 @using Prometheus
+@using WoWsShipBuilder.Common.Builds
+@using WoWsShipBuilder.Common.Builds.Components
+@using WoWsShipBuilder.Common.Infrastructure
 @using WoWsShipBuilder.Common.Infrastructure.GameData
-@using WoWsShipBuilder.Common.Infrastructure.Localization
 @using WoWsShipBuilder.Common.Settings
-@using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.ViewModels.Helper.GridData
-@using WoWsShipBuilder.Web.Data
-@using WoWsShipBuilder.Web.Services
-@using WoWsShipBuilder.Web.Utility
 
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.MainBatteryFragment
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.HeShellFragment
@@ -284,7 +282,7 @@
                     else
                     {
                         <MudText Typo="Typo.body2" Color="Color.Primary" Style="cursor: pointer" @onclick="@(() => EditBuilds(context.Item))">
-                            @ShipComparisonViewModel.DefaultBuildName
+                            @Build.DefaultBuildName
                         </MudText>
                     }
                 </CellTemplate>

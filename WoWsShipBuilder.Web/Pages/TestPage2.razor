@@ -1,9 +1,8 @@
 ﻿@page "/test2"
-@using WoWsShipBuilder.Web.Dialogs
-@using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.DataStructures
-@using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Common.Infrastructure.Data
+@using WoWsShipBuilder.Common.Infrastructure
+@using WoWsShipBuilder.Common.Builds.Components
 
 <MudRadioGroup @bind-SelectedOption="selectedTier">
     @for (var i = 1; i <= 11; i++)

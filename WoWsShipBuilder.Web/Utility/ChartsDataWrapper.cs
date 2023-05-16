@@ -1,4 +1,4 @@
-﻿using WoWsShipBuilder.Core.Data;
+﻿using WoWsShipBuilder.Common.Infrastructure;
 
 namespace WoWsShipBuilder.Web.Utility;
 

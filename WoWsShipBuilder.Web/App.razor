@@ -1,5 +1,7 @@
 ﻿@using WoWsShipBuilder.Web.Shared
-<Router AppAssembly="@typeof(App).Assembly">
+@using System.Reflection
+@using WoWsShipBuilder.Common.ShipStats
+<Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="@assemblies">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
         <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
@@ -11,3 +13,8 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@code
+{
+    private List<Assembly> assemblies = new List<Assembly> { typeof(ShipStats).Assembly };
+}

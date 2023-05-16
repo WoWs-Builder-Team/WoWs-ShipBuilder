@@ -1,0 +1,65 @@
+﻿@using WoWsShipBuilder.DataStructures.Ship
+@using WoWsShipBuilder.Common.Infrastructure.Localization
+@inherits ReactiveComponentBase<WoWsShipBuilder.Common.ShipStats.ViewModels.ShipModuleViewModel>
+@inject ILocalizer Localizer
+
+@if (ViewModel is not null)
+{
+    <MudCard Outlined="true" Class="py-2 px-md-2">
+        <MudStack Row="true" Justify="Justify.SpaceBetween" Style="overflow-x: scroll">
+            @foreach (var columnUpgrade in ViewModel.ShipUpgrades)
+            {
+                <MudStack>
+                    @foreach (var upgrade in columnUpgrade)
+                    {
+                        <MudStack @key="upgrade.Name" AlignItems="AlignItems.Center">
+                            @if (columnUpgrade.IndexOf(upgrade) != 0)
+                            {
+                                <MudIcon Icon="@Icons.Material.Filled.ArrowDropDown"/>
+                            }
+                            <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetModuleIcon(upgrade, ViewModel.SelectedModules.Contains(upgrade))" Style="@GetImageStyle(ViewModel.SelectedModules.Contains(upgrade))"/>
+                            <MudText Style="max-width: 80px; max-height: 40px; min-height: 40px; overflow: hidden;
+                                                                                                   white-space: break-spaces;
+                                                                                                   text-overflow: ellipsis;
+                                                                                                   display: -webkit-box;
+                                                                                                   -webkit-line-clamp: 2;
+                                                                                                   -webkit-box-orient: vertical;" Align="Align.Center" Typo="Typo.body2">
+                                @Localizer.GetGameLocalization(upgrade.Name).Localization
+                            </MudText>
+                        </MudStack>
+                    }
+                </MudStack>
+            }
+        </MudStack>
+    </MudCard>
+}
+
+@code {
+
+    [CascadingParameter]
+    private Breakpoint Breakpoint { get; set; }
+
+    private static string GetModuleIcon(ShipUpgrade upgrade, bool isSelected)
+    {
+        string uriSuffix = isSelected ? "_installed" : string.Empty;
+        var path = $"/_content/WoWsShipBuilder.Common/assets/modules/icon_module_{upgrade.UcType.ToString()}{uriSuffix}.png";
+        return path;
+    }
+
+    private static string GetImageStyle(bool isSelected)
+    {
+        return isSelected ? string.Empty : "opacity: 0.4;";
+    }
+
+    private int GetImageSize()
+    {
+        switch (Breakpoint)
+        {
+            case Breakpoint.Xs:
+            case Breakpoint.Sm:
+                return 30;
+            default:
+                return 40;
+        }
+    }
+}

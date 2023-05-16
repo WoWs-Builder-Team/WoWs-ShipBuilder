@@ -5,7 +5,6 @@ using Avalonia.Controls.ApplicationLifetimes;
 using WoWsShipBuilder.Common.Builds;
 using WoWsShipBuilder.Common.Infrastructure.Navigation;
 using WoWsShipBuilder.Common.ShipStats;
-using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;

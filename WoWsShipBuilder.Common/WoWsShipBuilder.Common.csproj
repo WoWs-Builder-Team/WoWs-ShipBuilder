@@ -12,10 +12,15 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.5" />
+        <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
+        <PackageReference Include="MudBlazor" Version="6.2.3" />
+        <PackageReference Include="prometheus-net.AspNetCore" Version="8.0.0" />
+        <PackageReference Include="ReactiveUI.Blazor" Version="18.4.34" />
         <PackageReference Include="Roslyn.System.IO.Abstractions.Analyzers" Version="12.2.19">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" Version="14.6.8" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -25,12 +30,16 @@
     </ItemGroup>
 
     <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="..\WoWsShipBuilder.Data.Generator\WoWsShipBuilder.Data.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\WoWsShipBuilder.DataElements\WoWsShipBuilder.DataElements.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="wwwroot\" />
+        <Folder Include="wwwroot\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -40,18 +49,24 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Infrastructure\Localization\Resources\Translation.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Translation.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
+        <EmbeddedResource Update="Infrastructure\Localization\Resources\Translation.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Translation.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Infrastructure\Localization\Resources\Translation.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Translation.resx</DependentUpon>
-      </Compile>
+        <Compile Update="Infrastructure\Localization\Resources\Translation.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Translation.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+        <_JsFileModuleStaticWebAsset Include="Builds\Components\BuildImageRenderDialog.razor.js" />
+        <_JsFileModuleStaticWebAsset Include="FiringAngleDiagram\FiringAngleDialog.razor.js" />
+        <_JsFileModuleStaticWebAsset Include="ShipStats\Components\DepthChargeDamageDistributionChart.razor.js" />
     </ItemGroup>
 
 </Project>

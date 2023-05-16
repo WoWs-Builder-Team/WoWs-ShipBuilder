@@ -10,6 +10,8 @@ namespace WoWsShipBuilder.Common.Builds;
 
 public class Build
 {
+    public const string DefaultBuildName = "---";
+
     internal const int CurrentBuildVersion = 4;
 
     private const char ListSeparator = ',';

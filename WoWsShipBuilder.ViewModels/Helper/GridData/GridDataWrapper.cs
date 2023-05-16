@@ -2,7 +2,7 @@
 using System.IO;
 using WoWsShipBuilder.Common.Builds;
 using WoWsShipBuilder.Common.DataContainers;
-using WoWsShipBuilder.Core.Data;
+using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.DataStructures.Ship;
 using AirstrikeDataContainer = WoWsShipBuilder.Common.DataContainers.AirstrikeDataContainer;

@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using WoWsShipBuilder.Common.Infrastructure
 @using WoWsShipBuilder.Web.Utility
 @namespace WoWsShipBuilder.Web.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
@@ -14,14 +15,14 @@
 
     <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet"/>
 
-    <link href="css/app.css" rel="stylesheet"/>
-    <link href="css/fonts.css" rel="stylesheet"/>
+    <link href="_content/WoWsShipBuilder.Common/css/app.css" rel="stylesheet"/>
+    <link href="_content/WoWsShipBuilder.Common/css/fonts.css" rel="stylesheet"/>
 
     <meta content="WoWs ShipBuilder" property="og:title">
     <meta content="Detailed ships stats.
 Advanced dispersion and ballistic charts.
 Custom builds." property="og:description">
-    <meta content="/assets/app-logo.png" property="og:image">
+    <meta content="_content/WoWsShipBuilder.Common/assets/app-logo.png" property="og:image">
     <meta name="theme-color" content="#FFFFFF">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="alternate" type="application/json+oembed" href="/oembed.json" />
@@ -47,8 +48,8 @@ Custom builds." property="og:description">
 
 <script src="_framework/blazor.server.js"></script>
 <script src="_content/MudBlazor/MudBlazor.min.js"></script>
-<script src="/lib/chartJs/dist/chart.min.js"></script>
-<script src="/lib/autocolor/dist/chartjs-plugin-autocolors.min.js"></script>
-<script src="/lib/html2canvas/dist/html2canvas.min.js"></script>
+<script src="_content/WoWsShipBuilder.Common/lib/chartJs/dist/chart.min.js"></script>
+<script src="_content/WoWsShipBuilder.Common/lib/autocolor/dist/chartjs-plugin-autocolors.min.js"></script>
+<script src="_content/WoWsShipBuilder.Common/lib/html2canvas/dist/html2canvas.min.js"></script>
 </body>
 </html>

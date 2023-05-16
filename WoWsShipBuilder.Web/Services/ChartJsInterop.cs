@@ -87,7 +87,7 @@ public class ChartJsInterop : IAsyncDisposable
     {
         // module is not null after this method but apparently, Roslyn does not want to recognize that.
 #pragma warning disable CS8774
-        module ??= await runtime.InvokeAsync<IJSObjectReference>("import", "/scripts/ChartsHelper.js");
+        module ??= await runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/scripts/ChartsHelper.js");
 #pragma warning restore CS8774
     }
 

@@ -10,6 +10,7 @@ using WoWsShipBuilder.Core;
 using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.ViewModels.Helper;
+using AppSettingsHelper = WoWsShipBuilder.UI.Settings.AppSettingsHelper;
 
 namespace WoWsShipBuilder.UI.ViewModels.Dialog
 {

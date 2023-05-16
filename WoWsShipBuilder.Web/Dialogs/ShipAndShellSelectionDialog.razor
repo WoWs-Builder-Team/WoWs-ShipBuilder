@@ -4,10 +4,10 @@
 @using System.Linq
 @using WoWsShipBuilder.Common.Builds
 @using WoWsShipBuilder.Common.DataContainers
-@using WoWsShipBuilder.Core.Data
+@using WoWsShipBuilder.Common.Infrastructure
+@using WoWsShipBuilder.Common.ShipSelection
 @using WoWsShipBuilder.Core.Extensions
 @using WoWsShipBuilder.DataStructures
-@using WoWsShipBuilder.ViewModels.Other
 @implements IDisposable
 @inject ILocalizer Localizer
 
@@ -60,7 +60,7 @@
                                 </MudText>
                             }
                             <MudText Typo="Typo.caption" Class="my-1">
-                                @($"{Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {(!string.IsNullOrWhiteSpace(dataWrapper.ShipBuildContainer.Build?.BuildName) ? dataWrapper.ShipBuildContainer.Build.BuildName : ShipComparisonViewModel.DefaultBuildName)}")
+                                @($"{Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {(!string.IsNullOrWhiteSpace(dataWrapper.ShipBuildContainer.Build?.BuildName) ? dataWrapper.ShipBuildContainer.Build.BuildName : Build.DefaultBuildName)}")
                             </MudText>
                             <MudDivider Light="true"/>
                         </MudItem>

@@ -4,11 +4,11 @@ using System.Globalization;
 using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.Common.DataContainers;
+using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Common.Infrastructure.Data;
 using WoWsShipBuilder.Common.Infrastructure.GameData;
 using WoWsShipBuilder.Common.Infrastructure.Localization;
 using WoWsShipBuilder.Common.Settings;
-using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.ViewModels.Base;
@@ -19,8 +19,6 @@ namespace WoWsShipBuilder.ViewModels.Other;
 public partial class ShipComparisonViewModel : ViewModelBase
 {
     public const string DataNotAvailable = "N/A";
-
-    public const string DefaultBuildName = "---";
 
     private readonly ILocalizer localizer;
 

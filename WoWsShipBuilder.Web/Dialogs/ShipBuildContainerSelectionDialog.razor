@@ -1,8 +1,8 @@
 ﻿@using System.Collections.Specialized
 @using System.Collections.ObjectModel
-@using WoWsShipBuilder.Common.Infrastructure.Localization
-@using WoWsShipBuilder.Core.Data
-@using WoWsShipBuilder.ViewModels.Other
+@using WoWsShipBuilder.Common.Builds
+@using WoWsShipBuilder.Common.Infrastructure
+@using WoWsShipBuilder.Common.ShipSelection
 @using WoWsShipBuilder.Web.Utility
 
 @implements IDisposable
@@ -36,7 +36,7 @@
                                                 @(!ship.Ship.Name.Equals("customShip") ? Localizer.GetGameLocalization(ship.Ship.Index + "_FULL").Localization : ship.Ship.Index)
                                             </MudText>
                                             <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n2">
-                                                @(Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (!string.IsNullOrWhiteSpace(ship.Build?.BuildName) ? ship.Build.BuildName : ShipComparisonViewModel.DefaultBuildName))
+                                                @(Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (!string.IsNullOrWhiteSpace(ship.Build?.BuildName) ? ship.Build.BuildName : Build.DefaultBuildName))
                                             </MudText>
                                         </MudStack>
                                         <MudIcon Icon="@Icons.Material.Filled.Close" @onclick="@(_ => RemoveShip(ship))" Style="cursor: pointer"/>

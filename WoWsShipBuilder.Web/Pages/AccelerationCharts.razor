@@ -1,13 +1,14 @@
 @page "/acceleration-charts"
 @using MudBlazor.Services
+@using WoWsShipBuilder.Common.Builds
+@using WoWsShipBuilder.Common.Builds.Components
 @using WoWsShipBuilder.Common.DataContainers
+@using WoWsShipBuilder.Common.Infrastructure
 @using WoWsShipBuilder.Common.Infrastructure.Data
 @using WoWsShipBuilder.Common.Infrastructure.GameData
-@using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.Extensions
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.DataStructures.Ship
-@using WoWsShipBuilder.ViewModels.Other
 @using WoWsShipBuilder.Web.Dialogs
 @using WoWsShipBuilder.Web.Services
 @using WoWsShipBuilder.Web.Utility
@@ -140,7 +141,7 @@
 
         foreach (var (chartShipCounter, shipWrapper) in shipList)
         {
-            var label = Localizer.GetGameLocalization(shipWrapper.Ship.Index + "_FULL").Localization + " - " +  Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (string.IsNullOrEmpty(shipWrapper.Build?.BuildName) ? ShipComparisonViewModel.DefaultBuildName : shipWrapper.Build.BuildName);
+            var label = Localizer.GetGameLocalization(shipWrapper.Ship.Index + "_FULL").Localization + " - " +  Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (string.IsNullOrEmpty(shipWrapper.Build?.BuildName) ? Build.DefaultBuildName : shipWrapper.Build.BuildName);
 
             Hull hull;
             Engine engine;
@@ -178,7 +179,7 @@
 
         foreach (var (_, shipWrapper) in shipList)
         {
-            var label = Localizer.GetGameLocalization(shipWrapper.Ship.Index + "_FULL").Localization + " - " +  Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (string.IsNullOrEmpty(shipWrapper.Build?.BuildName) ? ShipComparisonViewModel.DefaultBuildName : shipWrapper.Build.BuildName);
+            var label = Localizer.GetGameLocalization(shipWrapper.Ship.Index + "_FULL").Localization + " - " +  Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (string.IsNullOrEmpty(shipWrapper.Build?.BuildName) ? Build.DefaultBuildName : shipWrapper.Build.BuildName);
 
             Hull hull;
             Engine engine;

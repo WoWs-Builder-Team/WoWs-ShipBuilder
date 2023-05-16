@@ -30,7 +30,6 @@ using WoWsShipBuilder.Core.DataProvider.Updater;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Services;
-using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.Updater;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Utilities;
@@ -38,6 +37,7 @@ using WoWsShipBuilder.UI.ViewModels;
 using WoWsShipBuilder.UI.ViewModels.DispersionPlot;
 using WoWsShipBuilder.UI.ViewModels.ShipVm;
 using WoWsShipBuilder.UI.Views;
+using AppSettingsHelper = WoWsShipBuilder.UI.Settings.AppSettingsHelper;
 using Localizer = WoWsShipBuilder.Common.Infrastructure.Localization.Localizer;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 

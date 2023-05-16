@@ -1,4 +1,5 @@
-﻿using WoWsShipBuilder.Web.Services;
+﻿using WoWsShipBuilder.Common.Infrastructure;
+using WoWsShipBuilder.Web.Services;
 
 namespace WoWsShipBuilder.Web.Extensions;
 

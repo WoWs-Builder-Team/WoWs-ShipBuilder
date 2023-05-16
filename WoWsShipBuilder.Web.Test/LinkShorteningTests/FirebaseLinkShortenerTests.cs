@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using RichardSzalay.MockHttp;
-using WoWsShipBuilder.Web.LinkShortening;
+using WoWsShipBuilder.Common.LinkShortening;
 
 namespace WoWsShipBuilder.Web.Test.LinkShorteningTests;
 

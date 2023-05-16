@@ -3,6 +3,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.Common.Builds;
+using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Common.Infrastructure.Data;
 using WoWsShipBuilder.Common.Infrastructure.Localization;
 using WoWsShipBuilder.Common.Infrastructure.Navigation;
@@ -12,10 +13,11 @@ using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.UI.Services;
 using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.ViewModels.Helper;
+using AppSettingsHelper = WoWsShipBuilder.UI.Settings.AppSettingsHelper;
 
 namespace WoWsShipBuilder.UI.ViewModels.ShipVm
 {
-    public class ShipWindowViewModel : ShipViewModelBase
+    public class ShipWindowViewModel : ShipViewModel
     {
         private readonly IClipboardService clipboardService;
 
