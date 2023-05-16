@@ -1,0 +1,65 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
+             xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Localization;assembly=WoWsShipBuilder.Core"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Name="SignalSelector"
+             xmlns:viewModels="clr-namespace:WoWsShipBuilder.Features.ShipStats.ViewModels;assembly=WoWsShipBuilder.Common"
+             xmlns:converters="clr-namespace:WoWsShipBuilder.Desktop.Converters"
+             xmlns:userControls="clr-namespace:WoWsShipBuilder.Desktop.UserControls"
+             xmlns:customControls1="clr-namespace:WoWsShipBuilder.Desktop.CustomControls"
+             x:Class="WoWsShipBuilder.Desktop.UserControls.SignalSelector">
+
+    <Design.DataContext>
+        <viewModels:SignalSelectorViewModel />
+    </Design.DataContext>
+
+    <UserControl.Resources>
+        <converters:ImagePathConverter x:Key="ImagePathConverter" />
+        <converters:ListContainsToBoolConverter x:Key="ListContainsToBoolConverter" />
+    </UserControl.Resources>
+
+    <DockPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
+            <TextBlock Text="{x:Static translations:Translation.SignalSelector_Flags}" FontSize="13" />
+            <TextBlock Text="{Binding SignalsNumber}" FontSize="13" />
+            <TextBlock Text="/8" FontSize="13" />
+        </StackPanel>
+        <ItemsControl DockPanel.Dock="Bottom" Items="{Binding SignalList}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <customControls:AutoGrid ColumnCount="6" RowCount="3" ColumnWidth="*" RowHeight="*"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Panel Background="Transparent" Margin="5" ToolTip.Placement="Right" ToolTip.HorizontalOffset="10" IsVisible="{Binding Key, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                        <ToolTip.Tip>
+                            <userControls:FlagToolTip DataContext="{Binding Value.Signal}"/>
+                        </ToolTip.Tip>
+                        <customControls1:NumberedButton
+                            BackgroundImage="{Binding Value.Signal, Converter={StaticResource ImagePathConverter}, ConverterParameter=Flags}"
+                            Command="{Binding $parent[UserControl].DataContext.SignalCommandExecute}" IsEnabled="{Binding Value.CanExecute}" CommandParameter="{Binding Value.Signal}">
+                            <customControls1:NumberedButton.IsChecked>
+                                <MultiBinding Mode="OneWay" Converter="{StaticResource ListContainsToBoolConverter}">
+                                    <Binding Path="$parent[UserControl].DataContext.SelectedSignals"/>
+                                    <Binding Path="Value.Signal"/>
+                                </MultiBinding>
+                            </customControls1:NumberedButton.IsChecked>
+                        </customControls1:NumberedButton>
+                    </Panel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.Styles>
+                <Style Selector="customControls1|NumberedButton:disabled">
+                    <Setter Property="Opacity" Value="0.4" />
+                </Style>
+                <Style Selector="customControls1|NumberedButton:checked">
+                    <Setter Property="Opacity" Value="1" />
+                </Style>
+            </ItemsControl.Styles>
+        </ItemsControl>
+    </DockPanel>
+</UserControl>

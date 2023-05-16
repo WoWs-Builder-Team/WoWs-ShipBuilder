@@ -1,0 +1,30 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Localization;assembly=WoWsShipBuilder.Core"
+             xmlns:viewModels="clr-namespace:WoWsShipBuilder.Features.ShipStats.ViewModels;assembly=WoWsShipBuilder.Common"
+             xmlns:userControls="clr-namespace:WoWsShipBuilder.Desktop.UserControls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="WoWsShipBuilder.Desktop.UserControls.ConsumablePanel"
+             Name="ConsumablePanel">
+    <Design.DataContext>
+        <viewModels:ConsumableViewModel />
+    </Design.DataContext>
+
+    <StackPanel Orientation="Vertical" Spacing="2">
+        <ItemsControl HorizontalAlignment="Center" Items="{Binding ConsumableSlots}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" Spacing="5"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="viewModels:ConsumableSlotViewModel">
+                    <userControls:ConsumablePanelItem />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <TextBlock HorizontalAlignment="Center" FontSize="12" Opacity="0.75" VerticalAlignment="Bottom" Text="{x:Static translations:Translation.Consumable_RightClickToggle}" />
+    </StackPanel>
+</UserControl>

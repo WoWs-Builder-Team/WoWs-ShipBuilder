@@ -33,6 +33,7 @@
 
     <ItemGroup>
       <Folder Include="Features\ShipStats\" />
+      <Folder Include="Infrastructure\GameData\" />
     </ItemGroup>
 
 </Project>

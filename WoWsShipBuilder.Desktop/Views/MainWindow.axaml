@@ -1,0 +1,155 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1700" d:DesignHeight="800"
+        x:Class="WoWsShipBuilder.Desktop.Views.MainWindow"
+        xmlns:translations="clr-namespace:WoWsShipBuilder.Infrastructure.Localization.Resources;assembly=WoWsShipBuilder.Common"
+        xmlns:utilities="clr-namespace:WoWsShipBuilder.Desktop.Utilities"
+        xmlns:desktop="clr-namespace:WoWsShipBuilder.Desktop"
+        xmlns:shipVm="clr-namespace:WoWsShipBuilder.Desktop.ViewModels.ShipVm"
+        xmlns:converters="clr-namespace:WoWsShipBuilder.Desktop.Converters"
+        xmlns:userControls="clr-namespace:WoWsShipBuilder.Desktop.UserControls"
+        Title="WoWs Ship Builder"
+        Height="850" Width="1775" CanResize="True"
+        MinHeight="850" MinWidth="1775"
+        WindowStartupLocation="CenterScreen"
+        utilities:Scaling.ContentScaling="1"
+        Design.DataContext="{x:Static desktop:DesignDataHelper.ShipWindowViewModel}"
+        x:DataType="shipVm:ShipWindowViewModel"
+        Closed="MainWindow_OnClosed">
+
+    <Window.Resources>
+        <converters:ImagePathConverter x:Key="ImagePathConverter" />
+        <converters:ClassToPathConverter x:Key="PathConverter" />
+        <converters:DecimalToRomanConverter x:Key="RomanConverter" />
+    </Window.Resources>
+
+    <LayoutTransformControl>
+        <LayoutTransformControl.LayoutTransform>
+            <!-- Will trigger a binding notification for a null value, no way to suppress that. -->
+            <ScaleTransform ScaleX="{Binding $parent[Window].(utilities:Scaling.ContentScaling), FallbackValue=1, TargetNullValue=1}" ScaleY="{Binding $parent[Window].(utilities:Scaling.ContentScaling), FallbackValue=1, TargetNullValue=1}" />
+        </LayoutTransformControl.LayoutTransform>
+
+        <Grid RowDefinitions="30, *" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <userControls:AppHeader ShowMaximizeButton="True" />
+
+            <Grid Grid.Row="1" RowDefinitions="2*,9*">
+                <!--First row-->
+                <Border Classes="BorderPanel" Grid.Row="0" Margin="10">
+                    <Grid ColumnDefinitions="*,3*,*">
+                        <Grid RowDefinitions="*,*" ColumnDefinitions="Auto" Grid.Column="0" VerticalAlignment="Center"
+                              HorizontalAlignment="Center">
+                            <Button Content="{x:Static translations:Translation.MainWindow_BackToMenu}"
+                                    Command="{Binding BackToMenu}" Grid.Row="0" HorizontalAlignment="Stretch"
+                                    Margin="0,0,0,10" />
+                            <Button Name="NewShip" Content="{x:Static translations:Translation.MainWindow_NewShipSelection}"
+                                    Command="{Binding NewShipSelection}" Grid.Row="1" HorizontalAlignment="Stretch" />
+                        </Grid>
+                        <RelativePanel Grid.Column="1">
+                            <!--PreviousShip-->
+                            <StackPanel Classes="Clickable" x:Name="PreviousShip" Orientation="Vertical" RelativePanel.LeftOf="CurrentShip"
+                                        RelativePanel.AlignBottomWith="CurrentShip"
+                                        IsVisible="{Binding PreviousShip, Converter={x:Static ObjectConverters.IsNotNull}}">
+                                <Image Source="{Binding PreviousShip.Index, FallbackValue = {Binding CurrentShipIndex}, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="50"
+                                       PointerReleased="OnClickChangeShipPrevious" />
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" IsVisible="{Binding PreviousShip, Converter={x:Static ObjectConverters.IsNotNull}}">
+                                    <Path Data="{Binding PreviousShip.ShipClass, FallbackValue = {Binding RawShipData.ShipClass}, Converter={StaticResource PathConverter}}" VerticalAlignment="Center"
+                                          Fill="{Binding PreviousShip.Category, FallbackValue = {Binding RawShipData.ShipCategory}, Converter={StaticResource PathConverter},ConverterParameter=Fill}"
+                                          Stroke="{Binding PreviousShip.Category, FallbackValue = {Binding RawShipData.ShipCategory}, Converter={StaticResource PathConverter},ConverterParameter=Stroke}"
+                                          StrokeThickness="1"/>
+                                    <TextBlock Text="{Binding PreviousShip.Tier, FallbackValue = {Binding CurrentShipTier}, Converter={StaticResource RomanConverter}}" Margin="5 0"/>
+                                    <TextBlock Text="{Binding PreviousShip.Index, FallbackValue = {Binding CurrentShipIndex}, Converter={StaticResource Localizer}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <!--Current Ship-->
+                            <StackPanel x:Name="CurrentShip" Orientation="Vertical" RelativePanel.AlignVerticalCenterWithPanel="True"
+                                        RelativePanel.AlignHorizontalCenterWithPanel="True" Margin="20,0">
+                                <Panel Height="90">
+                                    <Image Source="{Binding CurrentShipIndex, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="90" ZIndex="2"/>
+                                    <Image Source="{Binding CurrentShip, Converter={StaticResource ImagePathConverter}}" Height="90" ZIndex="1" Opacity="0.25"/>
+                                </Panel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Path Data="{Binding RawShipData.ShipClass, Converter={StaticResource PathConverter}}" VerticalAlignment="Center"
+                                          Fill="{Binding RawShipData.ShipCategory, Converter={StaticResource PathConverter},ConverterParameter=Fill}"
+                                          Stroke="{Binding RawShipData.ShipCategory, Converter={StaticResource PathConverter},ConverterParameter=Stroke}"
+                                          StrokeThickness="1"/>
+                                    <TextBlock Text="{Binding CurrentShipTier, Converter={StaticResource RomanConverter}}" Margin="5 0"/>
+                                    <TextBlock Text="{Binding CurrentShipIndex, Converter={StaticResource Localizer}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <!--Next Ships-->
+                            <ItemsControl Items="{Binding NextShips}" RelativePanel.AlignBottomWith="CurrentShip" RelativePanel.RightOf="CurrentShip"
+                                          IsVisible="{Binding !!NextShips.Count}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Classes="Clickable" Orientation="Vertical">
+                                            <Image Name="{Binding Index}" Source="{Binding Index, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}"
+                                                   Height="50" PointerReleased="OnClickChangeShipNext" />
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <Path Data="{Binding ShipClass, Converter={StaticResource PathConverter}}" VerticalAlignment="Center"
+                                                      Fill="{Binding Category, Converter={StaticResource PathConverter},ConverterParameter=Fill}"
+                                                      Stroke="{Binding Category, Converter={StaticResource PathConverter},ConverterParameter=Stroke}"
+                                                      StrokeThickness="1" Margin="10 0 5 0"/>
+                                                <TextBlock Text="{Binding Tier, Converter={StaticResource RomanConverter}}" Margin="0 0 5 0"/>
+                                                <TextBlock Text="{Binding Index, Converter={StaticResource Localizer}}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </RelativePanel>
+                        <Grid RowDefinitions="*,*" ColumnDefinitions="Auto" Grid.Column="2" VerticalAlignment="Center"
+                              HorizontalAlignment="Center">
+                            <Button Content="{x:Static translations:Translation.MainWindow_ShareBuild}"
+                                    Command="{Binding OpenSaveBuild}" Grid.Row="0" HorizontalAlignment="Stretch"
+                                    Margin="0,0,0,10" />
+                            <Button Content="{x:Static translations:Translation.MainWindow_ResetBuild}" Grid.Row="1" Command="{Binding ResetBuild}"
+                                    HorizontalAlignment="Stretch" />
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <!--SecondRow-->
+                <Grid Grid.Row="1" ColumnDefinitions="3*,Auto,5.5*" Margin="0,0,0,10">
+                    <!--Captain and flag selector-->
+                    <Grid RowDefinitions="Auto,*" Grid.Column="0" Margin="10,0,0,0" VerticalAlignment="Stretch">
+                        <Border Classes="BorderPanel" Grid.Row="0">
+                            <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+                                <TextBlock Text="{x:Static translations:Translation.MainWindow_CaptainSkills}" Margin="10,10,0,0" />
+                                <userControls:CaptainSkillSelector DataContext="{Binding CaptainSkillSelectorViewModel}" />
+                            </StackPanel>
+                        </Border>
+                        <Border Classes="BorderPanel" Grid.Row="1" Margin="0,10,0,0">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{x:Static translations:Translation.MainWindow_Signals}" Margin="10,5,0,0" />
+                                <userControls:SignalSelector DataContext="{Binding SignalSelectorViewModel}" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                    <!--Modules and consumables-->
+                    <Grid Grid.Column="1" Margin="10,0,10,0" RowDefinitions="*,Auto, Auto">
+                        <userControls:ShipModuleControl HorizontalAlignment="Stretch"
+                                                        DataContext="{Binding ShipModuleViewModel}" />
+                        <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="5" Margin="0,10,0,0">
+                            <userControls:UpgradeSelectorPanel DataContext="{Binding UpgradePanelViewModel}" HorizontalAlignment="Center" />
+                        </Border>
+                        <Border Grid.Row="2" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="5" Margin="0,10,0,0">
+                            <userControls:ConsumablePanel DataContext="{Binding ConsumableViewModel}" HorizontalAlignment="Center" />
+                        </Border>
+                    </Grid>
+                    <!--Ship Stats-->
+                    <Border Classes="BorderPanel" Grid.Column="2" Padding="5" Margin="0,0,10,0" CornerRadius="5">
+                        <userControls:ShipStatsControl DataContext="{Binding ShipStatsControlViewModel}" />
+                    </Border>
+                </Grid>
+            </Grid>
+        </Grid>
+    </LayoutTransformControl>
+
+</Window>

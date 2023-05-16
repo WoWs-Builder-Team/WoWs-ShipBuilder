@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using WoWsShipBuilder.Desktop;
+using WoWsShipBuilder.Desktop.ViewModels.Helper;
 using WoWsShipBuilder.UI;
-using WoWsShipBuilder.ViewModels.Helper;
 
 namespace WoWsShipBuilder.ReleaseTest;
 

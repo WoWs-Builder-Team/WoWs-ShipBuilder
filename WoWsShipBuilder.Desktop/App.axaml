@@ -1,0 +1,25 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:WoWsShipBuilder.Desktop"
+             xmlns:translations="clr-namespace:WoWsShipBuilder.Desktop.Translations"
+             xmlns:converters="clr-namespace:WoWsShipBuilder.Desktop.Converters"
+             x:Class="WoWsShipBuilder.Desktop.App">
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+
+    <Application.Styles>
+        <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>
+        <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseDark.xaml"/>
+        <StyleInclude Source="/Styles/ThemeOverride.axaml"/>
+        <StyleInclude Source="/Styles/FiringAngleVisualizerStyles.axaml"/>
+        <StyleInclude Source="/Styles/DefaultStyle.axaml"/>
+        <StyleInclude Source="resm:OxyPlot.Avalonia.Themes.Default.xaml?assembly=OxyPlot.Avalonia"/>
+        <StyleInclude Source="avares://AvaloniaProgressRing/Styles/ProgressRing.xaml"/>
+    </Application.Styles>
+
+    <Application.Resources>
+        <translations:LocalizeConverter x:Key="Localizer" />
+        <converters:ImagePathConverter x:Key="ImageConverter" />
+    </Application.Resources>
+</Application>

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WoWsShipBuilder.UI", "WoWsShipBuilder.UI\WoWsShipBuilder.UI.csproj", "{EEF97171-B405-488E-A45D-DCDF8DCF0761}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WoWsShipBuilder.Desktop", "WoWsShipBuilder.Desktop\WoWsShipBuilder.Desktop.csproj", "{EEF97171-B405-488E-A45D-DCDF8DCF0761}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{0F126505-29E2-4212-ABA2-877D806875FA}"
 	ProjectSection(SolutionItems) = preProject

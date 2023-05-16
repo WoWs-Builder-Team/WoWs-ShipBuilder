@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\WoWsShipBuilder.UI\WoWsShipBuilder.UI.csproj" />
+      <ProjectReference Include="..\WoWsShipBuilder.Desktop\WoWsShipBuilder.Desktop.csproj" />
     </ItemGroup>
 
 </Project>

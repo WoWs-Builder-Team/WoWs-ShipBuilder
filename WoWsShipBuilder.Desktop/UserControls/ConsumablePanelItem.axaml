@@ -1,0 +1,53 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:WoWsShipBuilder.Features.ShipStats.ViewModels;assembly=WoWsShipBuilder.Common"
+             xmlns:converters="clr-namespace:WoWsShipBuilder.Desktop.Converters"
+             xmlns:userControls="clr-namespace:WoWsShipBuilder.Desktop.UserControls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="WoWsShipBuilder.Desktop.UserControls.ConsumablePanelItem">
+    <UserControl.Resources>
+        <converters:ConsumableListSizeConverter x:Key="ListSizeConverter" />
+        <converters:BooleanToBrushConverter x:Key="BrushConverter" />
+    </UserControl.Resources>
+
+    <Design.DataContext>
+        <viewModels:ConsumableSlotViewModel />
+    </Design.DataContext>
+
+    <Border BorderBrush="{Binding ConsumableActivated, Converter={StaticResource BrushConverter}, FallbackValue=Transparent}" BorderThickness="1">
+        <Panel Width="70" Height="70" PointerReleased="ContentPanel_OnPointerReleased">
+            <Button Name="DropDownButton" Click="DropDownButton_OnClick" ToolTip.Placement="Right" ToolTip.HorizontalOffset="5"
+                    IsVisible="{Binding ConsumableData, Converter={StaticResource ListSizeConverter}, ConverterParameter=2}">
+                <Image MaxWidth="60" Source="{Binding SelectedConsumable, Converter={StaticResource ImageConverter}}" />
+                <ToolTip.Tip>
+                    <userControls:ModifierToolTip DataContext="{Binding SelectedConsumable}" />
+                </ToolTip.Tip>
+            </Button>
+            <Image ToolTip.Placement="Right" ToolTip.HorizontalOffset="5" IsEnabled="{Binding $self.IsVisible}"
+                   IsVisible="{Binding ConsumableData, Converter={StaticResource ListSizeConverter}, ConverterParameter=-2}"
+                   MaxWidth="60" Source="{Binding SelectedConsumable, Converter={StaticResource ImageConverter}}">
+                <ToolTip.Tip>
+                    <userControls:ModifierToolTip DataContext="{Binding SelectedConsumable}" />
+                </ToolTip.Tip>
+            </Image>
+            <Popup PlacementTarget="DropDownButton" PlacementAnchor="Bottom" Name="Popup" IsLightDismissEnabled="True">
+                <ListBox Name="ListBox" Width="{Binding Path=#DropDownButton.Bounds.Width}" SelectionMode="Single" Items="{Binding ConsumableData}"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectedIndex="{Binding SelectedIndex, Mode=OneWay}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding Converter={StaticResource ImageConverter}}"
+                                   PointerReleased="InputElement_OnPointerReleased"
+                                   ToolTip.Placement="Right" ToolTip.HorizontalOffset="5">
+                                <ToolTip.Tip>
+                                    <userControls:ModifierToolTip DataContext="{Binding}" />
+                                </ToolTip.Tip>
+                            </Image>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Popup>
+        </Panel>
+    </Border>
+</UserControl>
