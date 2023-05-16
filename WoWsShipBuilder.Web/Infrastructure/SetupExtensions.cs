@@ -9,7 +9,6 @@ using NLog.Layouts;
 using NLog.Loki;
 using NLog.Targets;
 using Sentry;
-using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Features.Charts;
 using WoWsShipBuilder.Features.LinkShortening;
@@ -20,11 +19,12 @@ using WoWsShipBuilder.Infrastructure.DataTransfer;
 using WoWsShipBuilder.Infrastructure.HttpClients;
 using WoWsShipBuilder.Infrastructure.Localization;
 using WoWsShipBuilder.Infrastructure.Utility;
-using WoWsShipBuilder.Web.Data;
-using WoWsShipBuilder.Web.Services;
+using WoWsShipBuilder.Web.Infrastructure.BetaAccess;
+using WoWsShipBuilder.Web.Infrastructure.Data;
+using WoWsShipBuilder.Web.Infrastructure.Metrics;
 using LogLevel = NLog.LogLevel;
 
-namespace WoWsShipBuilder.Web.Extensions;
+namespace WoWsShipBuilder.Web.Infrastructure;
 
 public static class SetupExtensions
 {

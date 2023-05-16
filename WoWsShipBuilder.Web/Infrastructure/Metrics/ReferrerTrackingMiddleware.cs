@@ -1,7 +1,6 @@
 ﻿using WoWsShipBuilder.Infrastructure;
-using WoWsShipBuilder.Web.Services;
 
-namespace WoWsShipBuilder.Web.Utility;
+namespace WoWsShipBuilder.Web.Infrastructure.Metrics;
 
 public class ReferrerTrackingMiddleware
 {

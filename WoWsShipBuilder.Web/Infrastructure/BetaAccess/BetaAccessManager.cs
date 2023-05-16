@@ -1,6 +1,6 @@
 ﻿using WoWsShipBuilder.Core.Localization;
 
-namespace WoWsShipBuilder.Web.Data;
+namespace WoWsShipBuilder.Web.Infrastructure.BetaAccess;
 
 public class BetaAccessManager : IBetaAccessManager
 {

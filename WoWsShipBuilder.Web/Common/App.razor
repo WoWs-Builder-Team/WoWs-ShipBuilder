@@ -1,6 +1,6 @@
-﻿@using WoWsShipBuilder.Web.Shared
-@using System.Reflection
+﻿@using System.Reflection
 @using WoWsShipBuilder.Features.ShipStats
+@using WoWsShipBuilder.Web.Common
 
 <Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="@assemblies">
     <Found Context="routeData">
@@ -17,5 +17,5 @@
 
 @code
 {
-    private List<Assembly> assemblies = new List<Assembly> { typeof(ShipStats).Assembly };
+    private List<Assembly> assemblies = new() { typeof(ShipStats).Assembly };
 }

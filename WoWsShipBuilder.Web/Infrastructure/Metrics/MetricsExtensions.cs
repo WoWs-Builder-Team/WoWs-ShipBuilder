@@ -1,7 +1,6 @@
 ﻿using WoWsShipBuilder.Infrastructure;
-using WoWsShipBuilder.Web.Services;
 
-namespace WoWsShipBuilder.Web.Extensions;
+namespace WoWsShipBuilder.Web.Infrastructure.Metrics;
 
 public static class MetricsExtensions
 {

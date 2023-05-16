@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components.Server.Circuits;
 using Prometheus;
 
-namespace WoWsShipBuilder.Web.Services;
+namespace WoWsShipBuilder.Web.Infrastructure.Metrics;
 
 public class MetricCircuitHandler : CircuitHandler
 {
-    private static readonly Gauge ActiveConnectionGauge = Metrics.CreateGauge("active_connections", "Currently active connections.");
+    private static readonly Gauge ActiveConnectionGauge = Prometheus.Metrics.CreateGauge("active_connections", "Currently active connections.");
 
     public override Task OnCircuitOpenedAsync(Circuit circuit, CancellationToken cancellationToken)
     {

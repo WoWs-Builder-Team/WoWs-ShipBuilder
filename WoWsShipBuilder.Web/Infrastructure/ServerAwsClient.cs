@@ -5,9 +5,8 @@ using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Data;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.HttpClients;
-using WoWsShipBuilder.Web.Data;
 
-namespace WoWsShipBuilder.Web.Services;
+namespace WoWsShipBuilder.Web.Infrastructure;
 
 public class ServerAwsClient : IAwsClient
 {

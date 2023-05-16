@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.Web.Data;
+﻿namespace WoWsShipBuilder.Web.Infrastructure;
 
 public class AdminOptions
 {

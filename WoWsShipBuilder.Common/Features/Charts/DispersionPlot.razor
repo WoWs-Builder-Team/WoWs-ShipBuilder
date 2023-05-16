@@ -82,7 +82,7 @@
 
         Dictionary<string, DrawingData> data = Ships.Where(x => x.Value.IsValid).ToDictionary(dispersionEllipse => dispersionEllipse.Key.ToString(), dispersionEllipse => SetupData(dispersionEllipse.Value));
 
-        module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/Components/DispersionPlot.razor.js");
+        module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/Features/Charts/DispersionPlot.razor.js");
         await module.InvokeVoidAsync("drawDispersionPlotBatched", data, PlotScaling, GetFusoReference(), text);
     }
 

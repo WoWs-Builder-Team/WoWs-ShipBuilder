@@ -39,7 +39,7 @@
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
-            module = await Runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/Dialogs/FiringAngleDialog.razor.js");
+            module = await Runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/Features/FiringAngleDiagram/FiringAngleDialog.razor.js");
             await module.InvokeVoidAsync("drawVisualizer", GunDataContainers, IsArtillery);
         }
     }

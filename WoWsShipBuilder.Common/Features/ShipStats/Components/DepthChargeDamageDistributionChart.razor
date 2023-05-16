@@ -21,7 +21,7 @@
         await base.OnAfterRenderAsync(firstRender);
         if (DataRecord is not null)
         {
-            module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/ShipStats/Components/DepthChargeDamageDistributionChart.razor.js");
+            module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/Features/ShipStats/Components/DepthChargeDamageDistributionChart.razor.js");
             await module.InvokeVoidAsync("drawDepthChargeDamageDistributionChart", "DepthCharges_" + ShipIndex, DataRecord);
         }
     }

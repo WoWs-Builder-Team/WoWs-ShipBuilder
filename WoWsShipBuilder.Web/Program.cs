@@ -9,9 +9,9 @@ using Splat.Microsoft.Extensions.DependencyInjection;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Infrastructure;
-using WoWsShipBuilder.Web.Extensions;
-using WoWsShipBuilder.Web.Services;
-using WoWsShipBuilder.Web.Utility;
+using WoWsShipBuilder.Web.Infrastructure;
+using WoWsShipBuilder.Web.Infrastructure.Data;
+using WoWsShipBuilder.Web.Infrastructure.Metrics;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true);

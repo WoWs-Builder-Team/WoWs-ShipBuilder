@@ -16,8 +16,7 @@ using WoWsShipBuilder.DataStructures.Versioning;
 using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Data;
 using WoWsShipBuilder.Infrastructure.GameData;
-using WoWsShipBuilder.Web.Data;
-using WoWsShipBuilder.Web.Services;
+using WoWsShipBuilder.Web.Infrastructure;
 
 namespace WoWsShipBuilder.Web.Test;
 

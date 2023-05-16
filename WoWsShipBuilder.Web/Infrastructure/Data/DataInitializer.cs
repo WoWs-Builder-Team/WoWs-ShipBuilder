@@ -1,12 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
-using WoWsShipBuilder.Core.Localization;
-using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Data;
 using WoWsShipBuilder.Infrastructure.Localization;
-using WoWsShipBuilder.Web.Data;
 
-namespace WoWsShipBuilder.Web.Services;
+namespace WoWsShipBuilder.Web.Infrastructure.Data;
 
 public class DataInitializer
 {
