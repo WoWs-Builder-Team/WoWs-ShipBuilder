@@ -46,6 +46,26 @@
         <AdditionalFiles Include="..\stylecop.json">
             <Link>stylecop.json</Link>
         </AdditionalFiles>
+        <AdditionalFiles Include="ShipComparison\GridSections\AaDefenseFragment.razor" />
+        <AdditionalFiles Include="ShipComparison\GridSections\AerialTorpedoesFragment.razor" />
+        <AdditionalFiles Include="ShipComparison\GridSections\AirStrikeFragment.razor" />
+        <AdditionalFiles Include="ShipComparison\GridSections\ApShellFragment.razor" />
+        <AdditionalFiles Include="ShipComparison\GridSections\AswFragment.razor" />
+        <AdditionalFiles Include="ShipComparison\GridSections\BombersFragment.razor" />
+        <AdditionalFiles Include="ShipComparison\GridSections\BombsFragment.razor" />
+        <AdditionalFiles Include="ShipComparison\GridSections\ConcealmentFragment.razor" />
+        <AdditionalFiles Include="ShipComparison\GridSections\HeShellFragment.razor" />
+        <AdditionalFiles Include="ShipComparison\GridSections\MainBatteryFragment.razor" />
+        <AdditionalFiles Include="ShipComparison\GridSections\ManeuverabilityFragment.razor" />
+        <AdditionalFiles Include="ShipComparison\GridSections\RocketPlanesFragment.razor" />
+        <AdditionalFiles Include="ShipComparison\GridSections\RocketsFragment.razor" />
+        <AdditionalFiles Include="ShipComparison\GridSections\SapShellFragment.razor" />
+        <AdditionalFiles Include="ShipComparison\GridSections\SecondaryBatteryFragment.razor" />
+        <AdditionalFiles Include="ShipComparison\GridSections\SecondaryBatteryShellsFragment.razor" />
+        <AdditionalFiles Include="ShipComparison\GridSections\SonarFragment.razor" />
+        <AdditionalFiles Include="ShipComparison\GridSections\SurvivabilityFragment.razor" />
+        <AdditionalFiles Include="ShipComparison\GridSections\TorpedoBombersFragment.razor" />
+        <AdditionalFiles Include="ShipComparison\GridSections\TorpedoesFragment.razor" />
     </ItemGroup>
 
     <ItemGroup>

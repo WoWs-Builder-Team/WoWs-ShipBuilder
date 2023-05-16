@@ -21,4 +21,8 @@
       <PackageReference Include="Nerdbank.GitVersioning" PrivateAssets="all" Version="3.6.128" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Dialogs\" />
+    </ItemGroup>
+
 </Project>
