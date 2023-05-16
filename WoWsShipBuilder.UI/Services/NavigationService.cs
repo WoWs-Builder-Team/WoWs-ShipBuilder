@@ -2,11 +2,11 @@
 using Autofac;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using WoWsShipBuilder.Common.Features.Builds;
-using WoWsShipBuilder.Common.Features.ShipStats;
-using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.Features.Builds;
+using WoWsShipBuilder.Features.ShipStats;
+using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.UI.ViewModels;
 using WoWsShipBuilder.UI.ViewModels.DispersionPlot;
 using WoWsShipBuilder.UI.ViewModels.ShipVm;

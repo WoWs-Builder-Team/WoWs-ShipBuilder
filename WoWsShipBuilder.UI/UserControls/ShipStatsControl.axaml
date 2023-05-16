@@ -11,7 +11,7 @@
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
              xmlns:shipVm="clr-namespace:WoWsShipBuilder.UI.ViewModels.ShipVm"
              xmlns:dataElements="clr-namespace:WoWsShipBuilder.DataElements.DataElements;assembly=WoWsShipBuilder.DataElements"
-             xmlns:dataContainers="clr-namespace:WoWsShipBuilder.Common.DataContainers;assembly=WoWsShipBuilder.Common">
+             xmlns:dataContainers="clr-namespace:WoWsShipBuilder.DataContainers;assembly=WoWsShipBuilder.Common">
 
     <Design.DataContext>
         <shipVm:ShipStatsControlPreviewViewModel />

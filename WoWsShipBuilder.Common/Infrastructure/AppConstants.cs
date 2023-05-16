@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
-using WoWsShipBuilder.Common.Infrastructure.DataTransfer;
+using WoWsShipBuilder.Infrastructure.DataTransfer;
 
-namespace WoWsShipBuilder.Common.Infrastructure;
+namespace WoWsShipBuilder.Infrastructure;
 
 public static class AppConstants
 {

@@ -2,20 +2,18 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows.Input;
-using DynamicData;
 using DynamicData.Binding;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
-using WoWsShipBuilder.Common.DataContainers;
-using WoWsShipBuilder.Common.Features.Builds;
-using WoWsShipBuilder.Common.Infrastructure;
-using WoWsShipBuilder.Common.Infrastructure.Data;
-using WoWsShipBuilder.Common.Infrastructure.Localization;
+using WoWsShipBuilder.DataContainers;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.DataStructures.Upgrade;
+using WoWsShipBuilder.Features.Builds;
+using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.Localization;
 
-namespace WoWsShipBuilder.Common.Features.ShipStats.ViewModels;
+namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
 public partial class ShipViewModel : ViewModelBase
 {
@@ -197,7 +195,7 @@ public partial class ShipViewModel : ViewModelBase
     private void AddChangeListeners()
     {
         ShipModuleViewModel.SelectedModules.ToObservableChangeSet().Do(_ => UpdateStatsViewModel()).Subscribe().DisposeWith(disposables);
-        Observable.Do<IChangeSet<Modernization>>(UpgradePanelViewModel.SelectedModernizationList.ToObservableChangeSet(), _ => UpdateStatsViewModel()).Subscribe().DisposeWith(disposables);
+        UpgradePanelViewModel.SelectedModernizationList.ToObservableChangeSet().Do(_ => UpdateStatsViewModel()).Subscribe().DisposeWith(disposables);
         SignalSelectorViewModel?.SelectedSignals.ToObservableChangeSet().Do(_ => UpdateStatsViewModel()).Subscribe().DisposeWith(disposables);
         CaptainSkillSelectorViewModel?.SkillOrderList.ToObservableChangeSet().Do(_ => UpdateStatsViewModel()).Subscribe().DisposeWith(disposables);
         ConsumableViewModel.ActivatedSlots.ToObservableChangeSet().Do(_ => UpdateStatsViewModel()).Subscribe().DisposeWith(disposables);

@@ -1,7 +1,7 @@
 ﻿using System;
 using Avalonia.Controls;
-using WoWsShipBuilder.Common.Features.ShipStats.ViewModels;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.Features.ShipStats.ViewModels;
 
 namespace WoWsShipBuilder.UI.ViewModels.ShipVm;
 

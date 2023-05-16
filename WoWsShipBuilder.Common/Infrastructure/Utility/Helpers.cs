@@ -2,12 +2,12 @@
 using DynamicData;
 using Microsoft.Extensions.Hosting;
 using MudBlazor;
-using WoWsShipBuilder.Common.DataContainers;
-using WoWsShipBuilder.Common.Infrastructure.GameData;
+using WoWsShipBuilder.DataContainers;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.Infrastructure.GameData;
 
-namespace WoWsShipBuilder.Common.Infrastructure.Utility;
+namespace WoWsShipBuilder.Infrastructure.Utility;
 
 public static class Helpers
 {

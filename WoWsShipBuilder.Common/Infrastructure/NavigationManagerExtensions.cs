@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
 
-namespace WoWsShipBuilder.Common.Infrastructure;
+namespace WoWsShipBuilder.Infrastructure;
 
 public static class NavigationManagerExtensions
 {

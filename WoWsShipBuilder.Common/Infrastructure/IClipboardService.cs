@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.Common.Infrastructure
+﻿namespace WoWsShipBuilder.Infrastructure
 {
     public interface IClipboardService
     {

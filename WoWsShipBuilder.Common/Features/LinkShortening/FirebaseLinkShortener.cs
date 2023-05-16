@@ -4,9 +4,9 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using WoWsShipBuilder.Common.Features.Builds;
+using WoWsShipBuilder.Features.Builds;
 
-namespace WoWsShipBuilder.Common.Features.LinkShortening;
+namespace WoWsShipBuilder.Features.LinkShortening;
 
 public class FirebaseLinkShortener : ILinkShortener
 {

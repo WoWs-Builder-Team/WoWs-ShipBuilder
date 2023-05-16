@@ -2,13 +2,13 @@ using System.Collections.Specialized;
 using System.Reactive.Linq;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
-using WoWsShipBuilder.Common.Infrastructure;
-using WoWsShipBuilder.Common.Infrastructure.Data;
-using WoWsShipBuilder.Common.Infrastructure.Localization.Resources;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Captain;
+using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.Localization.Resources;
 
-namespace WoWsShipBuilder.Common.Features.ShipStats.ViewModels;
+namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
 public partial class CaptainSkillSelectorViewModel : ViewModelBase
 {
@@ -20,13 +20,40 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
 
     private const int ImprovedRepairPartyReadinessSkillNumber = 44;
 
+    private readonly Dictionary<int, bool> canAddSkillCache = new();
+
+    private readonly Dictionary<int, bool> canRemoveSkillCache = new();
+
     private readonly ShipClass currentClass;
 
     private readonly ILogger<CaptainSkillSelectorViewModel> logger;
 
-    private readonly Dictionary<int, bool> canAddSkillCache = new();
+    [Observable]
+    private int arHpPercentage = 100;
 
-    private readonly Dictionary<int, bool> canRemoveSkillCache = new();
+    [Observable]
+    private int assignedPoints;
+
+    [Observable]
+    private List<Captain>? captainList;
+
+    [Observable]
+    private bool captainWithTalents;
+
+    private Captain? selectedCaptain;
+
+    private bool showArHpSelection;
+
+    [Observable]
+    private bool skillActivationButtonEnabled;
+
+    private bool skillActivationPopupOpen;
+
+    [Observable]
+    private Dictionary<string, SkillItemViewModel>? skillList;
+
+    [Observable]
+    private bool talentOrConditionalSkillEnabled;
 
     public CaptainSkillSelectorViewModel()
         : this(ShipClass.Cruiser, LoadParams(Nation.Usa))
@@ -59,18 +86,6 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
         CaptainTalentsList.CollectionChanged += CaptainTalentsListOnCollectionChanged;
         ConditionalModifiersList.CollectionChanged += ConditionalModifiersListOnCollectionChanged;
     }
-
-    private void CaptainTalentsListOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        TalentOrConditionalSkillEnabled = showArHpSelection && ArHpPercentage < 100 || CaptainTalentsList.Any(talent => talent.Status);
-    }
-
-    private void ConditionalModifiersListOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        TalentOrConditionalSkillEnabled = showArHpSelection && ArHpPercentage < 100 || ConditionalModifiersList.Any(skill => skill.Status);
-    }
-
-    private Captain? selectedCaptain;
 
     /// <summary>
     /// Gets or sets the currently selected captain and update the skills associated with it.
@@ -124,21 +139,10 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
         }
     }
 
-    [Observable]
-    private List<Captain>? captainList;
-
-    [Observable]
-    private int assignedPoints;
-
-    [Observable]
-    private Dictionary<string, SkillItemViewModel>? skillList;
-
     /// <summary>
     /// Gets the List containing the selected skill in the order they were selected.
     /// </summary>
     public CustomObservableCollection<Skill> SkillOrderList { get; } = new();
-
-    private bool showArHpSelection;
 
     /// <summary>
     /// Gets or sets a value indicating whether the hp bar slider for adrenaline rush should be shown.
@@ -153,9 +157,6 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
         }
     }
 
-    [Observable]
-    private int arHpPercentage = 100;
-
     /// <summary>
     /// Gets the dictionary containing the conditional modifiers and their activation status.
     /// </summary>
@@ -165,8 +166,6 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
     /// Gets the dictionary containing the conditional modifiers and their activation status.
     /// </summary>
     public CustomObservableCollection<SkillActivationItemViewModel> CaptainTalentsList { get; } = new();
-
-    private bool skillActivationPopupOpen;
 
     /// <summary>
     /// Gets or sets a value indicating whether the skill activation popup is visible.
@@ -180,15 +179,6 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
             TalentOrConditionalSkillEnabled = showArHpSelection && ArHpPercentage < 100 || CaptainTalentsList.Any(talent => talent.Status) || ConditionalModifiersList.Any(skill => skill.Status);
         }
     }
-
-    [Observable]
-    private bool skillActivationButtonEnabled;
-
-    [Observable]
-    private bool talentOrConditionalSkillEnabled;
-
-    [Observable]
-    private bool captainWithTalents;
 
     public bool ScreenshotMode { get; }
 
@@ -214,43 +204,6 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
             UniqueSkills = original.UniqueSkills,
             Nation = original.Nation,
         };
-    }
-
-    /// <summary>
-    /// Get a <see><cref>Dictionary{string, Skill}</cref></see> for the class indicated by <paramref name="shipClass"/> from <paramref name="captain"/>.
-    /// </summary>
-    /// <param name="shipClass"> The <see cref="ShipClass"/> for which to take the skills.</param>
-    /// <param name="captain"> The <see cref="Captain"/> from which to take the skills.</param>
-    /// <returns>A dictionary containing the skill for the class from the captain.</returns>
-    private Dictionary<string, SkillItemViewModel> ConvertSkillToViewModel(ShipClass shipClass, Captain? captain)
-    {
-        logger.LogDebug("Getting skill for class {ShipClass} from captain {CaptainName}", shipClass.ToString(), captain!.Name);
-        var skills = captain.Skills;
-
-        var filteredSkills = skills.Where(x => x.Value.LearnableOn.Contains(shipClass)).ToList();
-
-        var dictionary = filteredSkills.ToDictionary(x => x.Key, x => new SkillItemViewModel(x.Value, this, shipClass, canAddSkillCache, canRemoveSkillCache));
-        logger.LogDebug("Found {SkillCount} skills", dictionary.Count);
-        return dictionary;
-    }
-
-    /// <summary>
-    /// Helper method to trigger a reevaluation of the <see cref="SkillItemViewModel.CanExecute"/> property of the skill view models.
-    /// Also responsible for resetting the result cache after each evaluation.
-    /// </summary>
-    private void UpdateCanAddSkill()
-    {
-        if (SkillList == null)
-        {
-            return;
-        }
-
-        canAddSkillCache.Clear();
-        canRemoveSkillCache.Clear();
-        foreach (KeyValuePair<string, SkillItemViewModel> skill in SkillList)
-        {
-            skill.Value.CanExecuteChanged();
-        }
     }
 
     /// <summary>
@@ -299,118 +252,6 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
         }
 
         SkillActivationButtonEnabled = CaptainTalentsList.Count > 0 || ConditionalModifiersList.Count > 0 || ShowArHpSelection;
-    }
-
-    private SkillActivationItemViewModel CreateItemViewModelForSkill(Skill skill)
-    {
-        var skillName = Enumerable.Single<KeyValuePair<string, SkillItemViewModel>>(SkillList!, x => x.Value.Skill.Equals(skill)).Key;
-        SkillActivationItemViewModel result;
-        if (skill.SkillNumber is FuriousSkillNumber)
-        {
-            result = new(skillName, skill.SkillNumber, skill.ConditionalModifiers, false, 4);
-        }
-        else if (skill.SkillNumber is ImprovedRepairPartyReadinessSkillNumber)
-        {
-            result = new(skillName, skill.SkillNumber, skill.ConditionalModifiers, false, 99);
-        }
-        else
-        {
-            result = new(skillName, skill.SkillNumber, skill.ConditionalModifiers, false);
-        }
-
-        return result;
-    }
-
-    /// <summary>
-    /// Reorder the skills in <see cref="SkillOrderList"/> to make the skill order possible.
-    /// It works with the assumption that if the first skill of a certain tier got removed, it should be replaced by the first skill of the same tier selected by the user.
-    /// </summary>
-    private void ReorderSkillList()
-    {
-        if (SkillOrderList.Count == 0)
-        {
-            return;
-        }
-
-        logger.LogDebug("Reordering skills");
-
-        // AvaloniaList is missing one of the extension methods, so we copy the list to a normal one,
-        var groups = SkillOrderList.GroupBy(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier)
-            .Select(x => x.ToList())
-            .ToList()
-            .OrderBy(x => x.First().Tiers.First(skillPosition => skillPosition.ShipClass == currentClass).Tier)
-            .ToList();
-
-        // Tier 0 skill reordering
-        var tier0Skills = groups[0];
-
-        var tier0SkillsFirst = false;
-        foreach (var tier0Skill in tier0Skills)
-        {
-            if (SkillOrderList.IndexOf(tier0Skill) == 0)
-            {
-                tier0SkillsFirst = true;
-            }
-        }
-
-        if (!tier0SkillsFirst)
-        {
-            var firstTier0Skill = tier0Skills.First();
-            SkillOrderList.Remove(firstTier0Skill);
-            SkillOrderList.Insert(0, firstTier0Skill);
-        }
-
-        // Tier 1 skill reordering
-        if (groups.Count > 2)
-        {
-            var tier1Skills = groups[1];
-            var firstTier0SkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 0);
-            var firstHigherTierSkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier > 1);
-
-            var tier1SkillFirst = false;
-
-            foreach (var tier1Skill in tier1Skills)
-            {
-                if (SkillOrderList.IndexOf(tier1Skill) > firstTier0SkillIndex && SkillOrderList.IndexOf(tier1Skill) < firstHigherTierSkillIndex)
-                {
-                    tier1SkillFirst = true;
-                }
-            }
-
-            if (!tier1SkillFirst)
-            {
-                var skill = tier1Skills.First();
-                SkillOrderList.Remove(skill);
-                SkillOrderList.Insert(firstHigherTierSkillIndex, skill);
-            }
-        }
-
-        // Tier 2 skill reordering
-        if (groups.Count > 3)
-        {
-            var tier1Skills = groups[2];
-            var firstTier1SkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 1);
-            var firstHigherTierSkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier > 2);
-
-            var tier1SkillFirst = false;
-
-            foreach (var tier1Skill in tier1Skills)
-            {
-                if (SkillOrderList.IndexOf(tier1Skill) > firstTier1SkillIndex && SkillOrderList.IndexOf(tier1Skill) < firstHigherTierSkillIndex)
-                {
-                    tier1SkillFirst = true;
-                }
-            }
-
-            if (!tier1SkillFirst)
-            {
-                var skill = tier1Skills.First();
-                SkillOrderList.Remove(skill);
-                SkillOrderList.Insert(firstHigherTierSkillIndex, skill);
-            }
-        }
-
-        logger.LogDebug("Finished reordering skills");
     }
 
     /// <summary>
@@ -537,5 +378,164 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
         }
 
         SkillActivationButtonEnabled = CaptainTalentsList.Count > 0 || ConditionalModifiersList.Count > 0 || ShowArHpSelection;
+    }
+
+    private void CaptainTalentsListOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        TalentOrConditionalSkillEnabled = showArHpSelection && ArHpPercentage < 100 || CaptainTalentsList.Any(talent => talent.Status);
+    }
+
+    private void ConditionalModifiersListOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        TalentOrConditionalSkillEnabled = showArHpSelection && ArHpPercentage < 100 || ConditionalModifiersList.Any(skill => skill.Status);
+    }
+
+    /// <summary>
+    /// Get a <see><cref>Dictionary{string, Skill}</cref></see> for the class indicated by <paramref name="shipClass"/> from <paramref name="captain"/>.
+    /// </summary>
+    /// <param name="shipClass"> The <see cref="ShipClass"/> for which to take the skills.</param>
+    /// <param name="captain"> The <see cref="Captain"/> from which to take the skills.</param>
+    /// <returns>A dictionary containing the skill for the class from the captain.</returns>
+    private Dictionary<string, SkillItemViewModel> ConvertSkillToViewModel(ShipClass shipClass, Captain? captain)
+    {
+        logger.LogDebug("Getting skill for class {ShipClass} from captain {CaptainName}", shipClass.ToString(), captain!.Name);
+        var skills = captain.Skills;
+
+        var filteredSkills = skills.Where(x => x.Value.LearnableOn.Contains(shipClass)).ToList();
+
+        var dictionary = filteredSkills.ToDictionary(x => x.Key, x => new SkillItemViewModel(x.Value, this, shipClass, canAddSkillCache, canRemoveSkillCache));
+        logger.LogDebug("Found {SkillCount} skills", dictionary.Count);
+        return dictionary;
+    }
+
+    /// <summary>
+    /// Helper method to trigger a reevaluation of the <see cref="SkillItemViewModel.CanExecute"/> property of the skill view models.
+    /// Also responsible for resetting the result cache after each evaluation.
+    /// </summary>
+    private void UpdateCanAddSkill()
+    {
+        if (SkillList == null)
+        {
+            return;
+        }
+
+        canAddSkillCache.Clear();
+        canRemoveSkillCache.Clear();
+        foreach (KeyValuePair<string, SkillItemViewModel> skill in SkillList)
+        {
+            skill.Value.CanExecuteChanged();
+        }
+    }
+
+    private SkillActivationItemViewModel CreateItemViewModelForSkill(Skill skill)
+    {
+        var skillName = Enumerable.Single<KeyValuePair<string, SkillItemViewModel>>(SkillList!, x => x.Value.Skill.Equals(skill)).Key;
+        SkillActivationItemViewModel result;
+        if (skill.SkillNumber is FuriousSkillNumber)
+        {
+            result = new(skillName, skill.SkillNumber, skill.ConditionalModifiers, false, 4);
+        }
+        else if (skill.SkillNumber is ImprovedRepairPartyReadinessSkillNumber)
+        {
+            result = new(skillName, skill.SkillNumber, skill.ConditionalModifiers, false, 99);
+        }
+        else
+        {
+            result = new(skillName, skill.SkillNumber, skill.ConditionalModifiers, false);
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Reorder the skills in <see cref="SkillOrderList"/> to make the skill order possible.
+    /// It works with the assumption that if the first skill of a certain tier got removed, it should be replaced by the first skill of the same tier selected by the user.
+    /// </summary>
+    private void ReorderSkillList()
+    {
+        if (SkillOrderList.Count == 0)
+        {
+            return;
+        }
+
+        logger.LogDebug("Reordering skills");
+
+        // AvaloniaList is missing one of the extension methods, so we copy the list to a normal one,
+        var groups = SkillOrderList.GroupBy(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier)
+            .Select(x => x.ToList())
+            .ToList()
+            .OrderBy(x => x.First().Tiers.First(skillPosition => skillPosition.ShipClass == currentClass).Tier)
+            .ToList();
+
+        // Tier 0 skill reordering
+        var tier0Skills = groups[0];
+
+        var tier0SkillsFirst = false;
+        foreach (var tier0Skill in tier0Skills)
+        {
+            if (SkillOrderList.IndexOf(tier0Skill) == 0)
+            {
+                tier0SkillsFirst = true;
+            }
+        }
+
+        if (!tier0SkillsFirst)
+        {
+            var firstTier0Skill = tier0Skills.First();
+            SkillOrderList.Remove(firstTier0Skill);
+            SkillOrderList.Insert(0, firstTier0Skill);
+        }
+
+        // Tier 1 skill reordering
+        if (groups.Count > 2)
+        {
+            var tier1Skills = groups[1];
+            var firstTier0SkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 0);
+            var firstHigherTierSkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier > 1);
+
+            var tier1SkillFirst = false;
+
+            foreach (var tier1Skill in tier1Skills)
+            {
+                if (SkillOrderList.IndexOf(tier1Skill) > firstTier0SkillIndex && SkillOrderList.IndexOf(tier1Skill) < firstHigherTierSkillIndex)
+                {
+                    tier1SkillFirst = true;
+                }
+            }
+
+            if (!tier1SkillFirst)
+            {
+                var skill = tier1Skills.First();
+                SkillOrderList.Remove(skill);
+                SkillOrderList.Insert(firstHigherTierSkillIndex, skill);
+            }
+        }
+
+        // Tier 2 skill reordering
+        if (groups.Count > 3)
+        {
+            var tier1Skills = groups[2];
+            var firstTier1SkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 1);
+            var firstHigherTierSkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier > 2);
+
+            var tier1SkillFirst = false;
+
+            foreach (var tier1Skill in tier1Skills)
+            {
+                if (SkillOrderList.IndexOf(tier1Skill) > firstTier1SkillIndex && SkillOrderList.IndexOf(tier1Skill) < firstHigherTierSkillIndex)
+                {
+                    tier1SkillFirst = true;
+                }
+            }
+
+            if (!tier1SkillFirst)
+            {
+                var skill = tier1Skills.First();
+                SkillOrderList.Remove(skill);
+                SkillOrderList.Insert(firstHigherTierSkillIndex, skill);
+            }
+        }
+
+        logger.LogDebug("Finished reordering skills");
     }
 }

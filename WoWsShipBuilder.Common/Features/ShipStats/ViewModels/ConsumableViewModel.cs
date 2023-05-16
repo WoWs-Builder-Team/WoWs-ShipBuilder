@@ -3,11 +3,11 @@ using System.Collections.ObjectModel;
 using DynamicData;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using WoWsShipBuilder.Common.DataContainers;
-using WoWsShipBuilder.Common.Infrastructure;
+using WoWsShipBuilder.DataContainers;
 using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.Infrastructure;
 
-namespace WoWsShipBuilder.Common.Features.ShipStats.ViewModels;
+namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
 /// <summary>
 /// Represents the consumable slots of a ship.

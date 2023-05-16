@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.Common.Infrastructure.GameData;
+﻿namespace WoWsShipBuilder.Infrastructure.GameData;
 
 public enum ServerType
 {

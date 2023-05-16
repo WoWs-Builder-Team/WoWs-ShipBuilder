@@ -1,13 +1,13 @@
 ﻿using System.Globalization;
 using System.Text;
-using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.Infrastructure;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
-namespace WoWsShipBuilder.Common.DataContainers;
+namespace WoWsShipBuilder.DataContainers;
 
 public partial record MainBatteryDataContainer : DataContainerBase
 {

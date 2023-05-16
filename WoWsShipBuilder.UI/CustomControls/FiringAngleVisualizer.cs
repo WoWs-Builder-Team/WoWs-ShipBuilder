@@ -8,7 +8,7 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Media;
-using WoWsShipBuilder.Common.DataContainers;
+using WoWsShipBuilder.DataContainers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Ship.Components;
 using WoWsShipBuilder.UI.Extensions;

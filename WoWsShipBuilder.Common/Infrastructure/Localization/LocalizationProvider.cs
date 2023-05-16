@@ -1,8 +1,8 @@
-﻿using WoWsShipBuilder.Common.Infrastructure.Data;
-using WoWsShipBuilder.Common.Infrastructure.DataTransfer;
-using WoWsShipBuilder.Common.Infrastructure.GameData;
+﻿using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.DataTransfer;
+using WoWsShipBuilder.Infrastructure.GameData;
 
-namespace WoWsShipBuilder.Common.Infrastructure.Localization;
+namespace WoWsShipBuilder.Infrastructure.Localization;
 
 public class LocalizationProvider : ILocalizationProvider
 {

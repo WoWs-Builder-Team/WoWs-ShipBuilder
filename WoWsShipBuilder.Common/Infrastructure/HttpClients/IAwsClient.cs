@@ -1,8 +1,7 @@
-﻿using System.Runtime.Versioning;
-using WoWsShipBuilder.Common.Infrastructure.GameData;
-using WoWsShipBuilder.DataStructures.Versioning;
+﻿using WoWsShipBuilder.DataStructures.Versioning;
+using WoWsShipBuilder.Infrastructure.GameData;
 
-namespace WoWsShipBuilder.Common.Infrastructure.HttpClients;
+namespace WoWsShipBuilder.Infrastructure.HttpClients;
 
 public interface IAwsClient
 {

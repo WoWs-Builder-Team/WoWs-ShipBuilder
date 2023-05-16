@@ -9,15 +9,15 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
-using WoWsShipBuilder.Common.Features.Settings;
-using WoWsShipBuilder.Common.Infrastructure;
-using WoWsShipBuilder.Common.Infrastructure.Data;
-using WoWsShipBuilder.Common.Infrastructure.DataTransfer;
-using WoWsShipBuilder.Common.Infrastructure.GameData;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Localization;
+using WoWsShipBuilder.Features.Settings;
+using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.DataTransfer;
+using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.ViewModels.Helper;
 
 namespace WoWsShipBuilder.ViewModels.Other

@@ -1,15 +1,15 @@
 ﻿@page "/settings"
 @using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.Core.DataProvider
+@using WoWsShipBuilder.Features.Settings
+@using WoWsShipBuilder.Infrastructure
+@using WoWsShipBuilder.Infrastructure.Data
+@using WoWsShipBuilder.Infrastructure.DataTransfer
+@using WoWsShipBuilder.Infrastructure.Localization
+@using WoWsShipBuilder.Infrastructure.Localization.Resources
+@using WoWsShipBuilder.Infrastructure.Utility
 @using WoWsShipBuilder.Web.Data
 @using WoWsShipBuilder.Web.Services
-@using WoWsShipBuilder.Common.Infrastructure
-@using WoWsShipBuilder.Common.Infrastructure.Data
-@using WoWsShipBuilder.Common.Infrastructure.DataTransfer
-@using WoWsShipBuilder.Common.Infrastructure.Localization
-@using WoWsShipBuilder.Common.Infrastructure.Localization.Resources
-@using WoWsShipBuilder.Common.Infrastructure.Utility
-@using WoWsShipBuilder.Common.Features.Settings
 
 @implements IDisposable
 @inject ILocalizer Localizer
@@ -104,7 +104,7 @@
     private CultureDetails selectedCulture = AppConstants.DefaultCultureDetails;
 
     private bool openMainExpandersByDefault = true;
-    
+
     private bool openAmmoExpandersByDefault = true;
 
     private bool openSecondariesAndAaExpandersByDefault = true;
@@ -156,10 +156,10 @@
 
         settingsChanged = settingsChanged || openAmmoExpandersByDefault != AppSettings.WebAppSettings.OpenAllAmmoExpandersByDefault;
         AppSettings.WebAppSettings.OpenAllAmmoExpandersByDefault = openAmmoExpandersByDefault;
-        
+
         settingsChanged = settingsChanged || openMainExpandersByDefault != AppSettings.WebAppSettings.OpenAllMainExpandersByDefault;
         AppSettings.WebAppSettings.OpenAllMainExpandersByDefault = openMainExpandersByDefault;
-        
+
         settingsChanged = settingsChanged || openSecondariesAndAaExpandersByDefault != AppSettings.WebAppSettings.OpenSecondariesAndAaExpandersByDefault;
         AppSettings.WebAppSettings.OpenSecondariesAndAaExpandersByDefault = openSecondariesAndAaExpandersByDefault;
 
@@ -202,7 +202,7 @@
             {
                 Snackbar.Add($"'{Localizer.SimpleAppLocalization(betaEntry.LocalizationKey)}' {Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Duplicate))}", Severity.Warning, config => { config.CloseAfterNavigation = true; });
             }
-            
+
             await Task.Delay(100);
             await betaCodeInput.Clear();
         }

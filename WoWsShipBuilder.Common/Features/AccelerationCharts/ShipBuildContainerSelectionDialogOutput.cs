@@ -1,5 +1,5 @@
-﻿using WoWsShipBuilder.Common.Infrastructure.DataTransfer;
+﻿using WoWsShipBuilder.Infrastructure.DataTransfer;
 
-namespace WoWsShipBuilder.Common.Features.AccelerationCharts;
+namespace WoWsShipBuilder.Features.AccelerationCharts;
 
 public record ShipBuildContainerSelectionDialogOutput(List<ShipBuildContainer> ShipList, bool ShouldOpenBuildDialog);

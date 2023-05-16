@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.Common.Infrastructure;
+﻿namespace WoWsShipBuilder.Infrastructure;
 
 [AttributeUsage(AttributeTargets.Field)]
 public class ObservableAttribute : Attribute

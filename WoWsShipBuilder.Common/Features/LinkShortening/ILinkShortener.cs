@@ -1,6 +1,6 @@
-﻿using WoWsShipBuilder.Common.Features.Builds;
+﻿using WoWsShipBuilder.Features.Builds;
 
-namespace WoWsShipBuilder.Common.Features.LinkShortening;
+namespace WoWsShipBuilder.Features.LinkShortening;
 
 public interface ILinkShortener
 {

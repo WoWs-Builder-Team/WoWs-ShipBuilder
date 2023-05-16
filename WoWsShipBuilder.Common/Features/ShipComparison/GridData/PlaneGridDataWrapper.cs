@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.Common.Features.ShipComparison.GridData;
+﻿namespace WoWsShipBuilder.Features.ShipComparison.GridData;
 
 public class PlaneGridDataWrapper
 {

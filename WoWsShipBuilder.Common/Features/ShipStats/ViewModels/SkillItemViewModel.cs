@@ -1,9 +1,9 @@
 ﻿using ReactiveUI;
-using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Captain;
+using WoWsShipBuilder.Infrastructure;
 
-namespace WoWsShipBuilder.Common.Features.ShipStats.ViewModels;
+namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
 public class SkillItemViewModel : ViewModelBase
 {

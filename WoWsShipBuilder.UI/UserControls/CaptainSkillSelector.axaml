@@ -8,7 +8,7 @@
              x:Class="WoWsShipBuilder.UI.UserControls.CaptainSkillSelector"
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
              xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Localization;assembly=WoWsShipBuilder.Core"
-             xmlns:viewModels="clr-namespace:WoWsShipBuilder.Common.Features.ShipStats.ViewModels;assembly=WoWsShipBuilder.Common"
+             xmlns:viewModels="clr-namespace:WoWsShipBuilder.Features.ShipStats.ViewModels;assembly=WoWsShipBuilder.Common"
              x:Name="Control">
     <Design.DataContext>
         <viewModels:CaptainSkillSelectorViewModel />

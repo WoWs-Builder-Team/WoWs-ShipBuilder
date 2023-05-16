@@ -1,7 +1,7 @@
-﻿using WoWsShipBuilder.Common.Infrastructure.Localization;
-using WoWsShipBuilder.Common.Infrastructure.Localization.Resources;
+﻿using WoWsShipBuilder.Infrastructure.Localization;
+using WoWsShipBuilder.Infrastructure.Localization.Resources;
 
-namespace WoWsShipBuilder.Common.Features.ShipComparison;
+namespace WoWsShipBuilder.Features.ShipComparison;
 
 public static class ShipComparisonDataSectionExtensions
 {

@@ -2,10 +2,9 @@
 using System.Globalization;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
-using WoWsShipBuilder.Common.Infrastructure;
-using WoWsShipBuilder.Common.Infrastructure.Localization;
-using WoWsShipBuilder.Common.Infrastructure.Utility;
 using WoWsShipBuilder.DataElements.DataElements;
+using WoWsShipBuilder.Infrastructure.Localization;
+using WoWsShipBuilder.Infrastructure.Utility;
 using AppSettingsHelper = WoWsShipBuilder.UI.Settings.AppSettingsHelper;
 
 namespace WoWsShipBuilder.UI.Converters;

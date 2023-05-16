@@ -1,6 +1,6 @@
-﻿using WoWsShipBuilder.Common.DataContainers;
+﻿using WoWsShipBuilder.DataContainers;
 
-namespace WoWsShipBuilder.Common.Features.ShipComparison.GridData;
+namespace WoWsShipBuilder.Features.ShipComparison.GridData;
 
 public class ManeuverabilityGridDataWrapper
 {

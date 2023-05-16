@@ -1,7 +1,5 @@
 using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
-using WoWsShipBuilder.Common.Features.Builds;
-using WoWsShipBuilder.Common.Infrastructure.GameData;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Aircraft;
 using WoWsShipBuilder.DataStructures.Captain;
@@ -10,8 +8,10 @@ using WoWsShipBuilder.DataStructures.Exterior;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Upgrade;
+using WoWsShipBuilder.Features.Builds;
+using WoWsShipBuilder.Infrastructure.GameData;
 
-namespace WoWsShipBuilder.Common.Infrastructure.Data;
+namespace WoWsShipBuilder.Infrastructure.Data;
 
 /// <summary>
 /// The main storage for app data and settings at runtime.

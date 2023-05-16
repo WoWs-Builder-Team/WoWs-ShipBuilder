@@ -1,12 +1,12 @@
-using WoWsShipBuilder.Common.Infrastructure;
-using WoWsShipBuilder.Common.Infrastructure.Data;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Aircraft;
 using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.Data;
 
-namespace WoWsShipBuilder.Common.DataContainers
+namespace WoWsShipBuilder.DataContainers
 {
     public partial record CvAircraftDataContainer : DataContainerBase
     {

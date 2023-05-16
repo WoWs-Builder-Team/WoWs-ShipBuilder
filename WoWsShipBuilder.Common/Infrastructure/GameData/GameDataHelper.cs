@@ -9,7 +9,7 @@ using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Upgrade;
 
-namespace WoWsShipBuilder.Common.Infrastructure.GameData;
+namespace WoWsShipBuilder.Infrastructure.GameData;
 
 public static class GameDataHelper
 {

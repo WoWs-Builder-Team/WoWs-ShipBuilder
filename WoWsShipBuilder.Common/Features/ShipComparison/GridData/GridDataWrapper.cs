@@ -1,11 +1,11 @@
-﻿using WoWsShipBuilder.Common.DataContainers;
-using WoWsShipBuilder.Common.Features.Builds;
-using WoWsShipBuilder.Common.Infrastructure;
-using WoWsShipBuilder.Common.Infrastructure.DataTransfer;
+﻿using WoWsShipBuilder.DataContainers;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.Features.Builds;
+using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.DataTransfer;
 
-namespace WoWsShipBuilder.Common.Features.ShipComparison.GridData;
+namespace WoWsShipBuilder.Features.ShipComparison.GridData;
 
 /// <summary>
 /// Main container class for data in the ship comparison.

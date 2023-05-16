@@ -6,9 +6,9 @@ using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Media.Imaging;
 using Microsoft.Extensions.Logging;
-using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Core;
-using ConsumableDataContainer = WoWsShipBuilder.Common.DataContainers.ConsumableDataContainer;
+using WoWsShipBuilder.Infrastructure;
+using ConsumableDataContainer = WoWsShipBuilder.DataContainers.ConsumableDataContainer;
 
 namespace WoWsShipBuilder.UI.Converters
 {

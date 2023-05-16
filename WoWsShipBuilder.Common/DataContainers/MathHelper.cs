@@ -1,4 +1,4 @@
-namespace WoWsShipBuilder.Common.DataContainers
+namespace WoWsShipBuilder.DataContainers
 {
     public static class MathHelper
     {

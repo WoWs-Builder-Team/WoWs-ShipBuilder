@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 using NullLogger = Microsoft.Extensions.Logging.Abstractions.NullLogger;
 
-namespace WoWsShipBuilder.Common.Infrastructure;
+namespace WoWsShipBuilder.Infrastructure;
 
 public static class Logging
 {

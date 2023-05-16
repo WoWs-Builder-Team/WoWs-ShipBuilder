@@ -1,11 +1,11 @@
 ﻿using DynamicData;
 using ReactiveUI;
-using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Upgrade;
+using WoWsShipBuilder.Infrastructure;
 
-namespace WoWsShipBuilder.Common.Features.ShipStats.ViewModels;
+namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
 public class UpgradePanelViewModelBase : ViewModelBase, IBuildComponentProvider
 {

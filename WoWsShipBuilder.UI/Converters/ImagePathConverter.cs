@@ -12,14 +12,14 @@ using Avalonia.Platform;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Splat;
-using WoWsShipBuilder.Common.Infrastructure.Data;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Consumable;
 using WoWsShipBuilder.DataStructures.Exterior;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Upgrade;
+using WoWsShipBuilder.Infrastructure.Data;
 using WoWsShipBuilder.UI.Extensions;
-using ConsumableDataContainer = WoWsShipBuilder.Common.DataContainers.ConsumableDataContainer;
+using ConsumableDataContainer = WoWsShipBuilder.DataContainers.ConsumableDataContainer;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace WoWsShipBuilder.UI.Converters

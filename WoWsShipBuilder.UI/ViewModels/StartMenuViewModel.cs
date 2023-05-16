@@ -1,10 +1,10 @@
 ﻿using System.IO.Abstractions;
 using System.Reactive.Linq;
-using WoWsShipBuilder.Common.Infrastructure;
-using WoWsShipBuilder.Common.Infrastructure.Data;
-using WoWsShipBuilder.Common.Infrastructure.Localization;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.Localization;
 using WoWsShipBuilder.UI.Services;
 using WoWsShipBuilder.UI.ViewModels.Dialog;
 using WoWsShipBuilder.ViewModels.Helper;

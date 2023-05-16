@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace WoWsShipBuilder.Common.Infrastructure.HttpClients;
+namespace WoWsShipBuilder.Infrastructure.HttpClients;
 
 public class RetryHttpHandler : DelegatingHandler
 {

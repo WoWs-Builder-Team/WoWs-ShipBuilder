@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using WoWsShipBuilder.Common.Features.ShipStats.ViewModels;
-using WoWsShipBuilder.Common.Infrastructure.Data;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Upgrade;
+using WoWsShipBuilder.Features.ShipStats.ViewModels;
+using WoWsShipBuilder.Infrastructure.Data;
 
 namespace WoWsShipBuilder.UI.ViewModels.ShipVm
 {

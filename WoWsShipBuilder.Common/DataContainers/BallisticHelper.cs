@@ -1,7 +1,7 @@
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Projectile;
 
-namespace WoWsShipBuilder.Common.DataContainers
+namespace WoWsShipBuilder.DataContainers
 {
     public static class BallisticHelper
     {

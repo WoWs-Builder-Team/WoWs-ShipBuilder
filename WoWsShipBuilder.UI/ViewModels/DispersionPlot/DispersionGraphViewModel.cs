@@ -14,14 +14,14 @@ using OxyPlot.Legends;
 using OxyPlot.Series;
 using ReactiveUI;
 using Splat;
-using WoWsShipBuilder.Common.DataContainers;
-using WoWsShipBuilder.Common.Infrastructure;
-using WoWsShipBuilder.Common.Infrastructure.Data;
-using WoWsShipBuilder.Common.Infrastructure.Localization;
-using WoWsShipBuilder.Common.Infrastructure.Localization.Resources;
+using WoWsShipBuilder.DataContainers;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.Localization;
+using WoWsShipBuilder.Infrastructure.Localization.Resources;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.UserControls;
@@ -262,7 +262,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
             }
         }
 
-        private AvaloniaList<Dictionary<double, Common.DataContainers.Ballistic>> ShellTrajectoryCache { get; } = new();
+        private AvaloniaList<Dictionary<double, Ballistic>> ShellTrajectoryCache { get; } = new();
 
         private AvaloniaList<(FunctionSeries VertDispAtImpactAngle, LineSeries VertDispOnWater, LineSeries VertDispOnPerpendicularToWater)> VerticalDispCache { get; } = new();
 
@@ -821,7 +821,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         /// <param name="name">Name for the series.</param>
         /// <param name="impactAngles">Dictionary containing the impact angle for each range.</param>
         /// <returns>The vertical dispersion series for the given parameter.</returns>
-        private (FunctionSeries VertDispAtImpactAngle, LineSeries VertDispOnWater, LineSeries VertDispOnPerpendicularToWater) CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange, string name, Dictionary<double, Common.DataContainers.Ballistic> impactAngles)
+        private (FunctionSeries VertDispAtImpactAngle, LineSeries VertDispOnWater, LineSeries VertDispOnPerpendicularToWater) CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange, string name, Dictionary<double, Ballistic> impactAngles)
         {
             var dispSeries = new FunctionSeries(range => dispersion.CalculateDispersion(maxRange, 1, range * 1000).Vertical, 0, (maxRange * 1.5) / 1000, 0.01, name)
             {
@@ -849,7 +849,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         /// <param name="maxRange">Max range of the gun.</param>
         /// <param name="name">Name for the series.</param>
         /// <returns>A tuple with series for Penetration, flight time, impact velocity and impact angle.</returns>
-        private (LineSeries Penetration, LineSeries FlightTime, LineSeries ImpactVelocity, LineSeries ImpactAngle, LineSeries Trajectory, Dictionary<double, Common.DataContainers.Ballistic> Ballistic) CreateBallisticSeries(
+        private (LineSeries Penetration, LineSeries FlightTime, LineSeries ImpactVelocity, LineSeries ImpactAngle, LineSeries Trajectory, Dictionary<double, Ballistic> Ballistic) CreateBallisticSeries(
             ArtilleryShell shell,
             double maxRange,
             string name)

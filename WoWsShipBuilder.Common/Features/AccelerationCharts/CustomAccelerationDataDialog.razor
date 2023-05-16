@@ -1,9 +1,8 @@
 ﻿@using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.DataStructures.Ship
-@using WoWsShipBuilder.Common.Infrastructure.Localization
-@using WoWsShipBuilder.Common.Infrastructure
-@using WoWsShipBuilder.Common.Infrastructure.DataTransfer
-@using WoWsShipBuilder.Common.Infrastructure.Localization.Resources
+@using WoWsShipBuilder.Infrastructure.DataTransfer
+@using WoWsShipBuilder.Infrastructure.Localization
+@using WoWsShipBuilder.Infrastructure.Localization.Resources
 @inject ILocalizer Localizer
 
 <MudDialog>
@@ -76,11 +75,11 @@
 {
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; } = new();
-    
+
     private readonly List<ShipClass> classList = Enum.GetValues<ShipClass>().Except(new List<ShipClass> { ShipClass.Auxiliary }).ToList();
 
     private string name = string.Empty;
-    
+
     private decimal maxSpeed;
 
     private int enginePower;
@@ -88,24 +87,24 @@
     private int tonnage;
 
     private decimal forwardEngineUpTime;
-    
+
     private decimal backwardEngineUpTime;
-        
+
     private decimal forwardEngineForsag;
-        
+
     private decimal backwardEngineForsag;
-        
+
     private decimal forwardEngineForsagMaxSpeed;
-        
+
     private decimal backwardEngineForsagMaxSpeed;
 
     private ShipClass selectedClass;
-        
+
     private void Cancel()
     {
         MudDialog.Cancel();
     }
-    
+
     private void ReturnShipBuildContainer()
     {
         var ship = new Ship
@@ -162,7 +161,7 @@
 
         ship.ShipUpgradeInfo = upgradeInfo;
         ship.ShipConsumable = new();
-        
+
         var container = ShipBuildContainer.CreateNew(ship, null, null);
         MudDialog.Close(DialogResult.Ok(container));
     }

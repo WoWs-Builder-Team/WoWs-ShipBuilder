@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.Common.Features.ShipStats;
+﻿namespace WoWsShipBuilder.Features.ShipStats;
 
 /// <summary>
 /// An interface used to mark classes that can provide components of a build.

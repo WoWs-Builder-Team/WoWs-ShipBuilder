@@ -1,6 +1,6 @@
 using WoWsShipBuilder.DataStructures;
 
-namespace WoWsShipBuilder.Common.Infrastructure;
+namespace WoWsShipBuilder.Infrastructure;
 
 public static class Extensions
 {

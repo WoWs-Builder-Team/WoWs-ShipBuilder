@@ -2,16 +2,16 @@
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using WoWsShipBuilder.Common.Features.Builds;
-using WoWsShipBuilder.Common.Features.ShipStats;
-using WoWsShipBuilder.Common.Features.ShipStats.ViewModels;
-using WoWsShipBuilder.Common.Infrastructure;
-using WoWsShipBuilder.Common.Infrastructure.Data;
-using WoWsShipBuilder.Common.Infrastructure.Localization;
-using WoWsShipBuilder.Common.Infrastructure.Localization.Resources;
+using WoWsShipBuilder.Features.Builds;
+using WoWsShipBuilder.Features.ShipStats;
+using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.Localization;
+using WoWsShipBuilder.Infrastructure.Localization.Resources;
 using WoWsShipBuilder.UI.Services;
 using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.ViewModels.Helper;
+using ShipViewModel = WoWsShipBuilder.Features.ShipStats.ViewModels.ShipViewModel;
 
 namespace WoWsShipBuilder.UI.ViewModels.ShipVm
 {

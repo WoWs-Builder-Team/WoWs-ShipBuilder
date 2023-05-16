@@ -1,12 +1,11 @@
 ﻿@using WoWsShipBuilder.DataStructures
 @using System.Collections.ObjectModel
-@using WoWsShipBuilder.Common.DataContainers
-@using WoWsShipBuilder.Common.Features.ShipStats.ViewModels
-@using WoWsShipBuilder.Common.Infrastructure.Localization
-@using WoWsShipBuilder.Common.Infrastructure.Localization.Resources
-@using WoWsShipBuilder.Common.Features.ShipStats.ViewModels
+@using WoWsShipBuilder.DataContainers
+@using WoWsShipBuilder.Features.ShipStats.ViewModels
 @using WoWsShipBuilder.DataStructures.Upgrade
-@inherits ReactiveComponentBase<WoWsShipBuilder.Common.Features.ShipStats.ViewModels.UpgradePanelViewModelBase>
+@using WoWsShipBuilder.Infrastructure.Localization
+@using WoWsShipBuilder.Infrastructure.Localization.Resources
+@inherits ReactiveComponentBase<WoWsShipBuilder.Features.ShipStats.ViewModels.UpgradePanelViewModelBase>
 @inject ILocalizer Localizer
 
 @if (ViewModel is not null)

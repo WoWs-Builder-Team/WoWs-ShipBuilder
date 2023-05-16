@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.Common.Features.Settings;
+﻿namespace WoWsShipBuilder.Features.Settings;
 
 public record WebAppSettings
 {

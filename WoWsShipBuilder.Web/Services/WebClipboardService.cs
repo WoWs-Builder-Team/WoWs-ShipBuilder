@@ -1,6 +1,6 @@
 ﻿using Microsoft.JSInterop;
-using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Infrastructure;
 
 namespace WoWsShipBuilder.Web.Services;
 

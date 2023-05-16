@@ -5,15 +5,14 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using WoWsShipBuilder.Common.Features.Settings;
-using WoWsShipBuilder.Common.Infrastructure.Data;
-using WoWsShipBuilder.Common.Infrastructure.GameData;
-using WoWsShipBuilder.Common.Infrastructure.HttpClients;
-using WoWsShipBuilder.Common.Infrastructure.Localization;
-using WoWsShipBuilder.Common.Infrastructure.Localization.Resources;
 using WoWsShipBuilder.Core.DataProvider.Updater;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Versioning;
+using WoWsShipBuilder.Features.Settings;
+using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.GameData;
+using WoWsShipBuilder.Infrastructure.HttpClients;
+using WoWsShipBuilder.Infrastructure.Localization.Resources;
 using WoWsShipBuilder.UI.Utilities;
 
 namespace WoWsShipBuilder.UI.Updater

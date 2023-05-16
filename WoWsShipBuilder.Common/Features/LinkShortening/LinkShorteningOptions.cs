@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.Common.Features.LinkShortening;
+﻿namespace WoWsShipBuilder.Features.LinkShortening;
 
 public class LinkShorteningOptions
 {

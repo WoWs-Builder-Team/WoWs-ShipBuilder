@@ -1,12 +1,12 @@
 ﻿@using Microsoft.Extensions.Options
-@using WoWsShipBuilder.Common.Infrastructure
-@using WoWsShipBuilder.Common.Infrastructure.DataTransfer
+@using WoWsShipBuilder.Infrastructure
+@using WoWsShipBuilder.Infrastructure.DataTransfer
 
 @inject IDialogService DialogService
 @inject IOptions<CdnOptions> CdnOptions
 
 @code {
-   
+
     /// <summary>
     /// The base path to use for ship images, assuming an image path matches the pattern {ImageBasePath}/{ShipIndex}.png with ImageBasePath containing also the protocol (https or http).
     /// <br/>
@@ -19,10 +19,10 @@
 
     [Parameter]
     public MaxWidth MaxWidth { get; set; } = MaxWidth.Large;
-    
+
     [Parameter]
     public bool FullWidth { get; set; }
-    
+
     [Parameter]
     public bool NoHeader { get; set; }
 
@@ -38,7 +38,7 @@
             ["ImageBasePath"] = ImageBasePath ?? $"{cdnOptions.Host}{cdnOptions.ShipImagePath}",
             ["Ships"] = shipBuildContainers,
         };
-        
+
         var dialogResult = await (await DialogService.ShowAsync<BuildConfigurationDialog>("Configure builds", parameters, options)).Result;
         if (dialogResult.Data is List<ShipBuildContainer> buildContainers)
         {

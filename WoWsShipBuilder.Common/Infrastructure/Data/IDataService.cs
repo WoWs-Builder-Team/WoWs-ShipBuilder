@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.Common.Infrastructure.Data;
+﻿namespace WoWsShipBuilder.Infrastructure.Data;
 
 public interface IDataService
 {

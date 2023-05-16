@@ -2,18 +2,18 @@
 using System.Globalization;
 using DynamicData;
 using ReactiveUI;
-using WoWsShipBuilder.Common.DataContainers;
-using WoWsShipBuilder.Common.Features.Settings;
-using WoWsShipBuilder.Common.Features.ShipComparison.GridData;
-using WoWsShipBuilder.Common.Infrastructure;
-using WoWsShipBuilder.Common.Infrastructure.Data;
-using WoWsShipBuilder.Common.Infrastructure.DataTransfer;
-using WoWsShipBuilder.Common.Infrastructure.GameData;
-using WoWsShipBuilder.Common.Infrastructure.Localization;
+using WoWsShipBuilder.DataContainers;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.Features.Settings;
+using WoWsShipBuilder.Features.ShipComparison.GridData;
+using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.DataTransfer;
+using WoWsShipBuilder.Infrastructure.GameData;
+using WoWsShipBuilder.Infrastructure.Localization;
 
-namespace WoWsShipBuilder.Common.Features.ShipComparison;
+namespace WoWsShipBuilder.Features.ShipComparison;
 
 public partial class ShipComparisonViewModel : ViewModelBase
 {

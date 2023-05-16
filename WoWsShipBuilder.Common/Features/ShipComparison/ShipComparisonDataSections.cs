@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.Common.Features.ShipComparison;
+﻿namespace WoWsShipBuilder.Features.ShipComparison;
 
 public enum ShipComparisonDataSections
 {

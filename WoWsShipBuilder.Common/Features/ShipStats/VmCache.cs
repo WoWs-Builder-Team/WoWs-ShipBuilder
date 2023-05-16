@@ -1,6 +1,6 @@
-﻿using WoWsShipBuilder.Common.Features.ShipStats.ViewModels;
+﻿using WoWsShipBuilder.Features.ShipStats.ViewModels;
 
-namespace WoWsShipBuilder.Common.Features.ShipStats;
+namespace WoWsShipBuilder.Features.ShipStats;
 
 public class VmCache
 {

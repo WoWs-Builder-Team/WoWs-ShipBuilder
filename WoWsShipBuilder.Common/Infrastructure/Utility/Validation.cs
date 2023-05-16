@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
-using WoWsShipBuilder.Common.Features.Builds;
-using WoWsShipBuilder.Common.Infrastructure.Localization;
-using WoWsShipBuilder.Common.Infrastructure.Localization.Resources;
+using WoWsShipBuilder.Features.Builds;
+using WoWsShipBuilder.Infrastructure.Localization;
+using WoWsShipBuilder.Infrastructure.Localization.Resources;
 
-namespace WoWsShipBuilder.Common.Infrastructure.Utility;
+namespace WoWsShipBuilder.Infrastructure.Utility;
 
 public static class Validation
 {

@@ -1,7 +1,7 @@
-﻿using WoWsShipBuilder.Common.Features.Builds;
-using WoWsShipBuilder.DataStructures;
+﻿using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.Features.Builds;
 
-namespace WoWsShipBuilder.Common.Features.ShipStats;
+namespace WoWsShipBuilder.Features.ShipStats;
 
 public record ShipViewModelParams(Ship Ship, ShipSummary ShipSummary, Build? Build = null);

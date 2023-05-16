@@ -1,7 +1,7 @@
-﻿using WoWsShipBuilder.Common.Infrastructure.GameData;
-using WoWsShipBuilder.DataStructures.Versioning;
+﻿using WoWsShipBuilder.DataStructures.Versioning;
+using WoWsShipBuilder.Infrastructure.GameData;
 
-namespace WoWsShipBuilder.Common.Infrastructure.Data;
+namespace WoWsShipBuilder.Infrastructure.Data;
 
 public interface IAppDataService
 {

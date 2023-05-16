@@ -1,7 +1,7 @@
-﻿using WoWsShipBuilder.Common.DataContainers;
+﻿using WoWsShipBuilder.DataContainers;
 using WoWsShipBuilder.DataStructures;
 
-namespace WoWsShipBuilder.Common.Features.ShipComparison.GridData;
+namespace WoWsShipBuilder.Features.ShipComparison.GridData;
 
 public class TorpedoGridDataWrapper
 {

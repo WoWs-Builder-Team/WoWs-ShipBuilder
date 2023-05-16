@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Avalonia.Data.Converters;
-using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.Infrastructure;
 
 namespace WoWsShipBuilder.UI.Converters
 {

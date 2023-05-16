@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using ReactiveUI;
-using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.DataStructures.Ship;
-using ConsumableDataContainer = WoWsShipBuilder.Common.DataContainers.ConsumableDataContainer;
+using WoWsShipBuilder.Infrastructure;
+using ConsumableDataContainer = WoWsShipBuilder.DataContainers.ConsumableDataContainer;
 
-namespace WoWsShipBuilder.Common.Features.ShipStats.ViewModels;
+namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
 public class ConsumableSlotViewModel : ViewModelBase
 {

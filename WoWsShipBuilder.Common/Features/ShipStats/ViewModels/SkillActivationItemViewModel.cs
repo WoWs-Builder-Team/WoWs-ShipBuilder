@@ -1,6 +1,6 @@
-using WoWsShipBuilder.Common.Infrastructure;
+using WoWsShipBuilder.Infrastructure;
 
-namespace WoWsShipBuilder.Common.Features.ShipStats.ViewModels;
+namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
 public partial class SkillActivationItemViewModel : ViewModelBase
 {

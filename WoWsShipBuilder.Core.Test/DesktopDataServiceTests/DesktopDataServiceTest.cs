@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using WoWsShipBuilder.Common.Features.Settings;
-using WoWsShipBuilder.Common.Infrastructure.Data;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Features.Settings;
+using WoWsShipBuilder.Infrastructure.Data;
 
 namespace WoWsShipBuilder.Core.Test.DesktopDataServiceTests;
 

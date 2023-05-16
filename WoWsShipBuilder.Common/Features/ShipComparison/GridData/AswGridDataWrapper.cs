@@ -1,7 +1,7 @@
-﻿using WoWsShipBuilder.Common.DataContainers;
-using WoWsShipBuilder.Common.Infrastructure.Localization.Resources;
+﻿using WoWsShipBuilder.DataContainers;
+using WoWsShipBuilder.Infrastructure.Localization.Resources;
 
-namespace WoWsShipBuilder.Common.Features.ShipComparison.GridData;
+namespace WoWsShipBuilder.Features.ShipComparison.GridData;
 
 public class AswGridDataWrapper
 {

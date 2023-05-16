@@ -2,11 +2,11 @@ using System.IO.Compression;
 using System.Security.Cryptography;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using WoWsShipBuilder.Common.Infrastructure;
-using WoWsShipBuilder.Common.Infrastructure.GameData;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.GameData;
 
-namespace WoWsShipBuilder.Common.Features.Builds;
+namespace WoWsShipBuilder.Features.Builds;
 
 public class Build
 {

@@ -1,7 +1,7 @@
 ﻿using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 
-namespace WoWsShipBuilder.Common.Infrastructure.GameData;
+namespace WoWsShipBuilder.Infrastructure.GameData;
 
 public static class ShipModuleHelper
 {

@@ -1,8 +1,8 @@
-﻿using WoWsShipBuilder.Common.Features.Builds;
-using WoWsShipBuilder.DataStructures;
+﻿using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.Features.Builds;
 
-namespace WoWsShipBuilder.Common.Infrastructure
+namespace WoWsShipBuilder.Infrastructure
 {
     public interface INavigationService
     {

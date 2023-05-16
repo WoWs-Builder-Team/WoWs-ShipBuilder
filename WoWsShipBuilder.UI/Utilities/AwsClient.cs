@@ -6,10 +6,10 @@ using System.Net.Http;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using WoWsShipBuilder.Common.Infrastructure.Data;
-using WoWsShipBuilder.Common.Infrastructure.GameData;
-using WoWsShipBuilder.Common.Infrastructure.HttpClients;
 using WoWsShipBuilder.DataStructures.Versioning;
+using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.GameData;
+using WoWsShipBuilder.Infrastructure.HttpClients;
 
 namespace WoWsShipBuilder.UI.Utilities;
 

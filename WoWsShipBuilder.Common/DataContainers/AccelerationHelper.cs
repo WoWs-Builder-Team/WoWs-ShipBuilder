@@ -1,8 +1,8 @@
-﻿using WoWsShipBuilder.Common.Infrastructure.Data;
-using WoWsShipBuilder.DataStructures;
+﻿using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.Infrastructure.Data;
 
-namespace WoWsShipBuilder.Common.DataContainers;
+namespace WoWsShipBuilder.DataContainers;
 
 public static class AccelerationHelper
 {

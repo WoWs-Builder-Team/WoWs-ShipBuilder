@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
-using WoWsShipBuilder.Common.Infrastructure;
-using WoWsShipBuilder.Common.Infrastructure.Data;
-using WoWsShipBuilder.Common.Infrastructure.Localization;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.Localization;
 using WoWsShipBuilder.Web.Data;
 
 namespace WoWsShipBuilder.Web.Services;

@@ -1,3 +1,3 @@
-﻿namespace WoWsShipBuilder.Common.Features.LinkShortening;
+﻿namespace WoWsShipBuilder.Features.LinkShortening;
 
 public record ShorteningResult(bool Shortened, string Link);

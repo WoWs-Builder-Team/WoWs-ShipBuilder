@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
-using WoWsShipBuilder.Common.Features.Settings;
+using WoWsShipBuilder.Features.Settings;
 
-namespace WoWsShipBuilder.Common.Infrastructure.Utility;
+namespace WoWsShipBuilder.Infrastructure.Utility;
 
 public class AppSettingsHelper : IAsyncDisposable
 {

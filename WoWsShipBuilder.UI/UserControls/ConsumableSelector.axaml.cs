@@ -8,7 +8,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using WoWsShipBuilder.UI.Converters;
-using ConsumableDataContainer = WoWsShipBuilder.Common.DataContainers.ConsumableDataContainer;
+using ConsumableDataContainer = WoWsShipBuilder.DataContainers.ConsumableDataContainer;
 
 namespace WoWsShipBuilder.UI.UserControls
 {

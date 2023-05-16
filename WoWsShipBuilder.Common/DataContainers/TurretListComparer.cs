@@ -1,6 +1,6 @@
 ﻿using WoWsShipBuilder.DataStructures.Ship.Components;
 
-namespace WoWsShipBuilder.Common.DataContainers
+namespace WoWsShipBuilder.DataContainers
 {
     public class TurretListComparer : IComparer<IGun>
     {

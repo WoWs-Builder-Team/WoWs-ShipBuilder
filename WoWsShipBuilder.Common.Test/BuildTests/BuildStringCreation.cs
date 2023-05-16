@@ -1,8 +1,8 @@
 ﻿using System.Text.RegularExpressions;
 using FluentAssertions;
 using NUnit.Framework;
-using WoWsShipBuilder.Common.Features.Builds;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.Features.Builds;
 
 namespace WoWsShipBuilder.Core.Test.BuildTests;
 

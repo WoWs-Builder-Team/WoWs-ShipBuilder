@@ -1,7 +1,7 @@
-﻿using SecondaryBatteryDataContainer = WoWsShipBuilder.Common.DataContainers.SecondaryBatteryDataContainer;
-using ShellDataContainer = WoWsShipBuilder.Common.DataContainers.ShellDataContainer;
+﻿using SecondaryBatteryDataContainer = WoWsShipBuilder.DataContainers.SecondaryBatteryDataContainer;
+using ShellDataContainer = WoWsShipBuilder.DataContainers.ShellDataContainer;
 
-namespace WoWsShipBuilder.Common.Features.ShipComparison.GridData;
+namespace WoWsShipBuilder.Features.ShipComparison.GridData;
 
 public class SecondaryGridDataWrapper
 {

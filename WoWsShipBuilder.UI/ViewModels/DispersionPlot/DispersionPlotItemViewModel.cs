@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
-using WoWsShipBuilder.Common.DataContainers;
-using WoWsShipBuilder.Common.Infrastructure;
+using WoWsShipBuilder.DataContainers;
+using WoWsShipBuilder.Infrastructure;
 
 namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
 {

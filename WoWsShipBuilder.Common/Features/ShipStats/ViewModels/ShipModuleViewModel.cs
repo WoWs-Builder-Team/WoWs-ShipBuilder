@@ -1,11 +1,11 @@
 ﻿using DynamicData;
 using ReactiveUI;
-using WoWsShipBuilder.Common.Infrastructure;
-using WoWsShipBuilder.Common.Infrastructure.GameData;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.GameData;
 
-namespace WoWsShipBuilder.Common.Features.ShipStats.ViewModels
+namespace WoWsShipBuilder.Features.ShipStats.ViewModels
 {
     public class ShipModuleViewModel : ViewModelBase, IBuildComponentProvider
     {

@@ -1,6 +1,6 @@
-﻿using WoWsShipBuilder.Common.Infrastructure.DataTransfer;
+﻿using WoWsShipBuilder.Infrastructure.DataTransfer;
 
-namespace WoWsShipBuilder.Common.Infrastructure.Localization;
+namespace WoWsShipBuilder.Infrastructure.Localization;
 
 public static class LocalizerExtensions
 {

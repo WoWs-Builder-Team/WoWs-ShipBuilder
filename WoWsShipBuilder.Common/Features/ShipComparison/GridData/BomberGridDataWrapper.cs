@@ -1,6 +1,6 @@
-﻿using WoWsShipBuilder.Common.DataContainers;
+﻿using WoWsShipBuilder.DataContainers;
 
-namespace WoWsShipBuilder.Common.Features.ShipComparison.GridData;
+namespace WoWsShipBuilder.Features.ShipComparison.GridData;
 
 public class BomberGridDataWrapper : PlaneGridDataWrapper
 {
@@ -33,7 +33,6 @@ public class BomberGridDataWrapper : PlaneGridDataWrapper
         AreaChangePreparation = bombers?.Select(x => x.AimingPreparationRateMoving).ToList() ?? new();
         InnerEllipse = bombers?.Select(x => x.InnerBombPercentage).ToList() ?? new();
 
-        //Bombs
         List<BombDataContainer?>? bombs = bombers?.Select(x => x.Weapon as BombDataContainer).ToList();
 
         WeaponType = bombers?.Select(x => x.WeaponType).ToList() ?? new();
@@ -52,7 +51,6 @@ public class BomberGridDataWrapper : PlaneGridDataWrapper
 
     public List<int> InnerEllipse { get; }
 
-    //Bombs
     public List<string> WeaponType { get; }
 
     public List<string> WeaponBombType { get; }

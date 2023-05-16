@@ -1,9 +1,9 @@
 using Newtonsoft.Json;
-using WoWsShipBuilder.Common.Infrastructure;
-using WoWsShipBuilder.Common.Infrastructure.DataTransfer;
-using ServerType = WoWsShipBuilder.Common.Infrastructure.GameData.ServerType;
+using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.DataTransfer;
+using ServerType = WoWsShipBuilder.Infrastructure.GameData.ServerType;
 
-namespace WoWsShipBuilder.Common.Features.Settings;
+namespace WoWsShipBuilder.Features.Settings;
 
 public class AppSettings
 {

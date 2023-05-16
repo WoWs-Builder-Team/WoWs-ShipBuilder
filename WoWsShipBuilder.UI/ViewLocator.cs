@@ -1,7 +1,7 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using WoWsShipBuilder.Common.Infrastructure;
+using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.UI.ViewModels;
 
 namespace WoWsShipBuilder.UI

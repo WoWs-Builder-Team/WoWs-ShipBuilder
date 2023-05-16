@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
 using WoWsShipBuilder.DataStructures.Ship;
 
-namespace WoWsShipBuilder.Common.DataContainers
+namespace WoWsShipBuilder.DataContainers
 {
     public record ShipDataContainer(string Index)
     {

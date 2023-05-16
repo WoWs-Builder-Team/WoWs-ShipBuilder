@@ -5,34 +5,36 @@
 @using Microsoft.Extensions.Hosting
 @using Microsoft.Extensions.Options
 @using Prometheus
-@using WoWsShipBuilder.Common.Features.BuildConfiguration
-@using WoWsShipBuilder.Common.Features.Builds
-@using WoWsShipBuilder.Common.Features.Settings
-@using WoWsShipBuilder.Common.Infrastructure.DataTransfer
-@using WoWsShipBuilder.Common.Infrastructure.GameData
-@using WoWsShipBuilder.Common.Infrastructure.Utility
+@using WoWsShipBuilder.Features.BuildConfiguration
 @using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.Features.Builds
+@using WoWsShipBuilder.Features.Settings
+@using WoWsShipBuilder.Features.ShipComparison.GridData
+@using WoWsShipBuilder.Infrastructure.DataTransfer
+@using WoWsShipBuilder.Infrastructure.GameData
+@using WoWsShipBuilder.Infrastructure.Localization.Resources
+@using WoWsShipBuilder.Infrastructure.Utility
 
-@using static WoWsShipBuilder.Common.Features.ShipComparison.GridSections.MainBatteryFragment
-@using static WoWsShipBuilder.Common.Features.ShipComparison.GridSections.HeShellFragment
-@using static WoWsShipBuilder.Common.Features.ShipComparison.GridSections.ApShellFragment
-@using static WoWsShipBuilder.Common.Features.ShipComparison.GridSections.SapShellFragment
-@using static WoWsShipBuilder.Common.Features.ShipComparison.GridSections.TorpedoesFragment
-@using static WoWsShipBuilder.Common.Features.ShipComparison.GridSections.SecondaryBatteryFragment
-@using static WoWsShipBuilder.Common.Features.ShipComparison.GridSections.SecondaryBatteryShellsFragment
-@using static WoWsShipBuilder.Common.Features.ShipComparison.GridSections.AaDefenseFragment
-@using static WoWsShipBuilder.Common.Features.ShipComparison.GridSections.AswFragment
-@using static WoWsShipBuilder.Common.Features.ShipComparison.GridSections.AirStrikeFragment
-@using static WoWsShipBuilder.Common.Features.ShipComparison.GridSections.ManeuverabilityFragment
-@using static WoWsShipBuilder.Common.Features.ShipComparison.GridSections.ConcealmentFragment
-@using static WoWsShipBuilder.Common.Features.ShipComparison.GridSections.SurvivabilityFragment
-@using static WoWsShipBuilder.Common.Features.ShipComparison.GridSections.SonarFragment
-@using static WoWsShipBuilder.Common.Features.ShipComparison.GridSections.RocketPlanesFragment
-@using static WoWsShipBuilder.Common.Features.ShipComparison.GridSections.RocketsFragment
-@using static WoWsShipBuilder.Common.Features.ShipComparison.GridSections.TorpedoBombersFragment
-@using static WoWsShipBuilder.Common.Features.ShipComparison.GridSections.AerialTorpedoesFragment
-@using static WoWsShipBuilder.Common.Features.ShipComparison.GridSections.BombersFragment
-@using static WoWsShipBuilder.Common.Features.ShipComparison.GridSections.BombsFragment
+@using static WoWsShipBuilder.Features.ShipComparison.GridSections.MainBatteryFragment
+@using static WoWsShipBuilder.Features.ShipComparison.GridSections.HeShellFragment
+@using static WoWsShipBuilder.Features.ShipComparison.GridSections.ApShellFragment
+@using static WoWsShipBuilder.Features.ShipComparison.GridSections.SapShellFragment
+@using static WoWsShipBuilder.Features.ShipComparison.GridSections.TorpedoesFragment
+@using static WoWsShipBuilder.Features.ShipComparison.GridSections.SecondaryBatteryFragment
+@using static WoWsShipBuilder.Features.ShipComparison.GridSections.SecondaryBatteryShellsFragment
+@using static WoWsShipBuilder.Features.ShipComparison.GridSections.AaDefenseFragment
+@using static WoWsShipBuilder.Features.ShipComparison.GridSections.AswFragment
+@using static WoWsShipBuilder.Features.ShipComparison.GridSections.AirStrikeFragment
+@using static WoWsShipBuilder.Features.ShipComparison.GridSections.ManeuverabilityFragment
+@using static WoWsShipBuilder.Features.ShipComparison.GridSections.ConcealmentFragment
+@using static WoWsShipBuilder.Features.ShipComparison.GridSections.SurvivabilityFragment
+@using static WoWsShipBuilder.Features.ShipComparison.GridSections.SonarFragment
+@using static WoWsShipBuilder.Features.ShipComparison.GridSections.RocketPlanesFragment
+@using static WoWsShipBuilder.Features.ShipComparison.GridSections.RocketsFragment
+@using static WoWsShipBuilder.Features.ShipComparison.GridSections.TorpedoBombersFragment
+@using static WoWsShipBuilder.Features.ShipComparison.GridSections.AerialTorpedoesFragment
+@using static WoWsShipBuilder.Features.ShipComparison.GridSections.BombersFragment
+@using static WoWsShipBuilder.Features.ShipComparison.GridSections.BombsFragment
 
 @inherits ReactiveComponentBase<ShipComparisonViewModel>
 

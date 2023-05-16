@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using ReactiveUI;
-using WoWsShipBuilder.Common.Infrastructure;
-using DepthChargeDataContainer = WoWsShipBuilder.Common.DataContainers.DepthChargeDataContainer;
+using WoWsShipBuilder.Infrastructure;
+using DepthChargeDataContainer = WoWsShipBuilder.DataContainers.DepthChargeDataContainer;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {

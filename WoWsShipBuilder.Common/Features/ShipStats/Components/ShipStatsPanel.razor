@@ -1,20 +1,19 @@
 ﻿@using WoWsShipBuilder.DataElements.DataElements
 @using WoWsShipBuilder.DataStructures
-@using static WoWsShipBuilder.Common.Features.ShipStats.Components.SharedFragments
+@using static WoWsShipBuilder.Features.ShipStats.Components.SharedFragments
 @using Microsoft.Extensions.Logging.Console
 @using System.Text
 @using WoWsShipBuilder.DataStructures.Ship.Components
 @using System.ComponentModel.DataAnnotations
-@using WoWsShipBuilder.Common.DataContainers
-@using WoWsShipBuilder.Common.Features.FiringAngleDiagram
-@using WoWsShipBuilder.Common.Features.Settings
-@using WoWsShipBuilder.Common.Infrastructure
-@using WoWsShipBuilder.Common.Infrastructure.DataTransfer
-@using WoWsShipBuilder.Common.Infrastructure.GameData
-@using WoWsShipBuilder.Common.Infrastructure.Localization
-@using WoWsShipBuilder.Common.Infrastructure.Localization.Resources
-@using DepthChargeDataContainer = WoWsShipBuilder.Common.DataContainers.DepthChargeDataContainer
-@inherits ReactiveComponentBase<WoWsShipBuilder.Common.Features.ShipStats.ViewModels.ShipStatsControlViewModel>
+@using WoWsShipBuilder.DataContainers
+@using WoWsShipBuilder.Features.FiringAngleDiagram
+@using WoWsShipBuilder.Features.Settings
+@using WoWsShipBuilder.Infrastructure
+@using WoWsShipBuilder.Infrastructure.DataTransfer
+@using WoWsShipBuilder.Infrastructure.GameData
+@using WoWsShipBuilder.Infrastructure.Localization.Resources
+@using DepthChargeDataContainer = WoWsShipBuilder.DataContainers.DepthChargeDataContainer
+@inherits ReactiveComponentBase<WoWsShipBuilder.Features.ShipStats.ViewModels.ShipStatsControlViewModel>
 @inject ILocalizer Localizer
 @inject NavigationManager NavManager
 @inject AppSettings AppSettings

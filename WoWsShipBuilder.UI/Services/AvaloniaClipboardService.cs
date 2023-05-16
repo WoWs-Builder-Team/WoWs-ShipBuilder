@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Avalonia;
-using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Infrastructure;
 
 namespace WoWsShipBuilder.UI.Services
 {

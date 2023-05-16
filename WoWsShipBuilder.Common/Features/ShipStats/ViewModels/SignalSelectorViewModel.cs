@@ -1,12 +1,12 @@
 using System.Reactive.Linq;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
-using WoWsShipBuilder.Common.Infrastructure;
-using WoWsShipBuilder.Common.Infrastructure.Data;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Exterior;
+using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.Data;
 
-namespace WoWsShipBuilder.Common.Features.ShipStats.ViewModels;
+namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
 public class SignalSelectorViewModel : ViewModelBase
 {

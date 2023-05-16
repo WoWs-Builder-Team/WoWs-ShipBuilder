@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using WoWsShipBuilder.Common.Infrastructure;
-using WoWsShipBuilder.Common.Infrastructure.GameData;
+using WoWsShipBuilder.Infrastructure.GameData;
 
 namespace WoWsShipBuilder.Core.DataProvider.Updater
 {

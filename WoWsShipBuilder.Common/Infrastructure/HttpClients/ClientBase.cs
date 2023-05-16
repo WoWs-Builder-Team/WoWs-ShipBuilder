@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
-using WoWsShipBuilder.Common.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.Data;
 
 // ReSharper disable VirtualMemberNeverOverridden.Global
-namespace WoWsShipBuilder.Common.Infrastructure.HttpClients;
+namespace WoWsShipBuilder.Infrastructure.HttpClients;
 
 public abstract class ClientBase
 {

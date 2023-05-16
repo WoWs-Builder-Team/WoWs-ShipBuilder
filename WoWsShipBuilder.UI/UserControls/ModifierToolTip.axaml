@@ -7,7 +7,7 @@
              xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
              xmlns:dataElements="clr-namespace:WoWsShipBuilder.DataElements.DataElements;assembly=WoWsShipBuilder.DataElements"
              xmlns:upgrade="clr-namespace:WoWsShipBuilder.DataStructures.Upgrade;assembly=WoWsShipBuilder.DataStructures"
-             xmlns:dataContainers="clr-namespace:WoWsShipBuilder.Common.DataContainers;assembly=WoWsShipBuilder.Common"
+             xmlns:dataContainers="clr-namespace:WoWsShipBuilder.DataContainers;assembly=WoWsShipBuilder.Common"
              MaxWidth="350">
     <UserControl.Resources>
         <conv:ModifierConverter x:Key="ModifierConverter" />

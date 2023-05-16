@@ -1,6 +1,6 @@
 ﻿using WoWsShipBuilder.DataStructures;
 
-namespace WoWsShipBuilder.Common.Infrastructure.GameData;
+namespace WoWsShipBuilder.Infrastructure.GameData;
 
 public static class ClassToPathHelper
 {

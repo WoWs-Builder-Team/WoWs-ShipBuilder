@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
-using WoWsShipBuilder.Common.Features.Builds;
-using WoWsShipBuilder.Common.Features.ShipStats.ViewModels;
-using WoWsShipBuilder.Common.Infrastructure;
-using WoWsShipBuilder.Common.Infrastructure.Data;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.Features.Builds;
+using WoWsShipBuilder.Features.ShipStats.ViewModels;
+using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.Data;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.ViewModels.ShipVm;
+using CaptainSkillSelectorViewModel = WoWsShipBuilder.Features.ShipStats.ViewModels.CaptainSkillSelectorViewModel;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {

@@ -1,6 +1,6 @@
 ﻿using System.IO.Abstractions;
 using System.Threading.Tasks;
-using WoWsShipBuilder.Common.Infrastructure.HttpClients;
+using WoWsShipBuilder.Infrastructure.HttpClients;
 
 namespace WoWsShipBuilder.UI.Utilities;
 

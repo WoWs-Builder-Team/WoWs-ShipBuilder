@@ -4,8 +4,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform;
 using Microsoft.Extensions.Logging;
-using WoWsShipBuilder.Common.Infrastructure;
 using WoWsShipBuilder.Core;
+using WoWsShipBuilder.Infrastructure;
 
 namespace WoWsShipBuilder.UI.Utilities
 {

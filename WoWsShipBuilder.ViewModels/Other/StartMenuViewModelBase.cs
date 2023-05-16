@@ -4,12 +4,12 @@ using System.Reactive;
 using System.Reactive.Linq;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
-using WoWsShipBuilder.Common.Features.Builds;
-using WoWsShipBuilder.Common.Infrastructure;
-using WoWsShipBuilder.Common.Infrastructure.Data;
-using WoWsShipBuilder.Common.Infrastructure.Localization;
-using WoWsShipBuilder.Common.Infrastructure.Localization.Resources;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Features.Builds;
+using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.Localization;
+using WoWsShipBuilder.Infrastructure.Localization.Resources;
 using WoWsShipBuilder.ViewModels.Helper;
 
 namespace WoWsShipBuilder.ViewModels.Other
