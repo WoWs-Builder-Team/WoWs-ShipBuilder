@@ -1,11 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using ReactiveUI;
 using WoWsShipBuilder.Infrastructure;
 
-namespace WoWsShipBuilder.ViewModels.Helper;
+namespace WoWsShipBuilder.UI.ViewModels.Helper;
 
 public partial class ValueSelectionViewModel : ViewModelBase
 {
@@ -20,7 +22,7 @@ public partial class ValueSelectionViewModel : ViewModelBase
         ItemPlaceholderText = itemPlaceholderText;
         Items = items;
 
-        IObservable<bool> canOkExecute = this.WhenAnyValue(x => x.SelectedItem, selector: selected => selected != null);
+        IObservable<bool> canOkExecute = this.WhenAnyValue<ValueSelectionViewModel, bool, string?>(x => x.SelectedItem, selector: selected => selected != null);
         OkCommand = ReactiveCommand.CreateFromTask(Ok, canOkExecute);
     }
 

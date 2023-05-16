@@ -11,6 +11,7 @@ using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.ViewModels.Helper;
 using AppSettingsHelper = WoWsShipBuilder.UI.Settings.AppSettingsHelper;
+using BuildImportViewModelBase = WoWsShipBuilder.UI.ViewModels.Helper.BuildImportViewModelBase;
 
 namespace WoWsShipBuilder.UI.ViewModels.Dialog
 {

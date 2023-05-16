@@ -11,9 +11,9 @@ using WoWsShipBuilder.Infrastructure.Data;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.ViewModels.DispersionPlot;
 using WoWsShipBuilder.UI.Views;
-using WoWsShipBuilder.ViewModels.ShipVm;
 using static WoWsShipBuilder.UI.ViewModels.DispersionPlot.DispersionGraphViewModel;
 using DepthChargeDataContainer = WoWsShipBuilder.DataContainers.DepthChargeDataContainer;
+using FiringAngleViewModel = WoWsShipBuilder.UI.ViewModels.ShipVm.FiringAngleViewModel;
 using ShellDataContainer = WoWsShipBuilder.DataContainers.ShellDataContainer;
 
 namespace WoWsShipBuilder.UI.UserControls

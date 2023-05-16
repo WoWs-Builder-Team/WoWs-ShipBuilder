@@ -5,6 +5,7 @@ using Avalonia.ReactiveUI;
 using ReactiveUI;
 using WoWsShipBuilder.UI.ViewModels;
 using WoWsShipBuilder.ViewModels.Helper;
+using ValueSelectionViewModel = WoWsShipBuilder.UI.ViewModels.Helper.ValueSelectionViewModel;
 
 namespace WoWsShipBuilder.UI.Views
 {

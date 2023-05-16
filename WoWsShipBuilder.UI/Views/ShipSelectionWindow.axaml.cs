@@ -8,6 +8,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
 using WoWsShipBuilder.UI.ViewModels;
+using WoWsShipBuilder.UI.ViewModels.Helper;
 using WoWsShipBuilder.ViewModels.Helper;
 
 namespace WoWsShipBuilder.UI.Views

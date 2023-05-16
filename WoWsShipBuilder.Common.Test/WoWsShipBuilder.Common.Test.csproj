@@ -5,6 +5,7 @@
 
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
+        <RootNamespace>WoWsShipBuilder.Test</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -28,6 +29,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\WoWsShipBuilder.Common\WoWsShipBuilder.Common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Features\ShipStats\" />
     </ItemGroup>
 
 </Project>

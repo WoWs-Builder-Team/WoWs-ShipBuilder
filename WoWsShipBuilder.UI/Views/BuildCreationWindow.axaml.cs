@@ -7,6 +7,7 @@ using Avalonia.ReactiveUI;
 using ReactiveUI;
 using WoWsShipBuilder.UI.ViewModels;
 using WoWsShipBuilder.ViewModels.Helper;
+using BuildCreationWindowViewModel = WoWsShipBuilder.UI.ViewModels.Helper.BuildCreationWindowViewModel;
 
 namespace WoWsShipBuilder.UI.Views
 {

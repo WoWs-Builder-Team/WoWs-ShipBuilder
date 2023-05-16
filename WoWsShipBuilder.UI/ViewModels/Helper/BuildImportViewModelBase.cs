@@ -1,21 +1,20 @@
 using System;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
-using WoWsShipBuilder.Core;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Features.Builds;
 using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Data;
 
-namespace WoWsShipBuilder.ViewModels.Helper;
+namespace WoWsShipBuilder.UI.ViewModels.Helper;
 
 public partial class BuildImportViewModelBase : ViewModelBase
 {
     protected BuildImportViewModelBase()
     {
-        IObservable<bool> canImportExecute = this.WhenAnyValue(x => x.BuildString, buildStr => !string.IsNullOrWhiteSpace(buildStr));
+        IObservable<bool> canImportExecute = this.WhenAnyValue<BuildImportViewModelBase, bool, string?>(x => x.BuildString, buildStr => !string.IsNullOrWhiteSpace(buildStr));
         ImportCommand = ReactiveCommand.CreateFromTask(Import, canImportExecute);
     }
 

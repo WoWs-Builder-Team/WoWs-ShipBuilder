@@ -65,7 +65,6 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\WoWsShipBuilder.Core\WoWsShipBuilder.Core.csproj" />
-        <ProjectReference Include="..\WoWsShipBuilder.ViewModels\WoWsShipBuilder.ViewModels.csproj" />
         <ProjectReference Include="..\WoWsShipBuilder.Data.Generator\WoWsShipBuilder.Data.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
     <ItemGroup>

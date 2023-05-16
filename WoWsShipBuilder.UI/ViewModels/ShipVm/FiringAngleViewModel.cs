@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.DataStructures.Ship.Components;
 using WoWsShipBuilder.Infrastructure;
 
-namespace WoWsShipBuilder.ViewModels.ShipVm;
+namespace WoWsShipBuilder.UI.ViewModels.ShipVm;
 
 public partial class FiringAngleViewModel : ViewModelBase
 {

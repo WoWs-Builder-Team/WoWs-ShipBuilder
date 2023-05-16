@@ -14,7 +14,6 @@ using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.UserControls;
-using WoWsShipBuilder.ViewModels.Other;
 
 namespace WoWsShipBuilder.UI.Views
 {

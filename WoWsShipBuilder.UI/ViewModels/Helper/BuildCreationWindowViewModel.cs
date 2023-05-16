@@ -2,16 +2,25 @@ using System.ComponentModel.DataAnnotations;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using ReactiveUI;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Infrastructure;
 
-namespace WoWsShipBuilder.ViewModels.Helper;
+namespace WoWsShipBuilder.UI.ViewModels.Helper;
 
 public partial class BuildCreationWindowViewModel : ViewModelBase
 {
     private const string BuildNameRegex = "^[a-zA-Z0-9][a-zA-Z0-9_ -]*$";
+
+    private string? buildName;
+
+    [Observable]
+    private bool includeSignals;
+
+    [Observable]
+    private string shipName = default!;
 
     public BuildCreationWindowViewModel(AppSettings appSettings, string shipName, string? buildName)
     {
@@ -25,20 +34,12 @@ public partial class BuildCreationWindowViewModel : ViewModelBase
         SaveAndCopyImageCommand = ReactiveCommand.CreateFromTask(SaveAndCopyImage, canSaveExecute);
     }
 
-    [Observable]
-    private string shipName = default!;
-
-    private string? buildName;
-
     [RegularExpression(BuildNameRegex, ErrorMessageResourceName = "Validation_BuildName", ErrorMessageResourceType = typeof(Translation))]
     public string? BuildName
     {
         get => buildName;
         set => this.RaiseAndSetIfChanged(ref buildName, value);
     }
-
-    [Observable]
-    private bool includeSignals;
 
     public bool IsNewBuild { get; }
 
@@ -47,6 +48,11 @@ public partial class BuildCreationWindowViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> SaveAndCopyStringCommand { get; }
 
     public ReactiveCommand<Unit, Unit> SaveAndCopyImageCommand { get; }
+
+    public async void CloseBuild()
+    {
+        await CloseInteraction.Handle(new(false));
+    }
 
     private bool CanSaveBuild(string? name)
     {
@@ -61,11 +67,6 @@ public partial class BuildCreationWindowViewModel : ViewModelBase
     private async Task SaveAndCopyImage()
     {
         await CloseInteraction.Handle(new(true, BuildName, IncludeSignals, true));
-    }
-
-    public async void CloseBuild()
-    {
-        await CloseInteraction.Handle(new(false));
     }
 }
 

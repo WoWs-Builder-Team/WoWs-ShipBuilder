@@ -10,6 +10,7 @@ using WoWsShipBuilder.Infrastructure.Localization;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;
 using WoWsShipBuilder.UI.Services;
 using WoWsShipBuilder.UI.Settings;
+using WoWsShipBuilder.UI.ViewModels.Helper;
 using WoWsShipBuilder.ViewModels.Helper;
 using ShipViewModel = WoWsShipBuilder.Features.ShipStats.ViewModels.ShipViewModel;
 

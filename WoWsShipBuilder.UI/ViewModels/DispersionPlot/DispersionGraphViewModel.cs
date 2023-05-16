@@ -25,12 +25,14 @@ using WoWsShipBuilder.Infrastructure.Localization.Resources;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.UserControls;
+using WoWsShipBuilder.UI.ViewModels.Helper;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilder.ViewModels.Helper;
 using static WoWsShipBuilder.UI.CustomControls.DispersionPlot;
 using Legend = OxyPlot.Legends.Legend;
 using LinearAxis = OxyPlot.Axes.LinearAxis;
 using LineSeries = OxyPlot.Series.LineSeries;
+using ValueSelectionViewModel = WoWsShipBuilder.UI.ViewModels.Helper.ValueSelectionViewModel;
 
 namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
 {

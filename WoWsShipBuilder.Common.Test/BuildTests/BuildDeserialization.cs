@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.Features.Builds;
 
-namespace WoWsShipBuilder.Common.Test.BuildTests;
+namespace WoWsShipBuilder.Test.BuildTests;
 
 [TestFixture]
 public class BuildDeserialization

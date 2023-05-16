@@ -3,7 +3,7 @@ using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Features.ShipStats.ViewModels;
 
-namespace WoWsShipBuilder.ViewModels.Test.ShipModuleViewModelTests;
+namespace WoWsShipBuilder.Test.Features.ShipStats.ShipModuleViewModelTests;
 
 [TestFixture]
 public class LoadFromBuild

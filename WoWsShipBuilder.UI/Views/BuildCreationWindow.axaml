@@ -6,7 +6,7 @@
         x:Class="WoWsShipBuilder.UI.Views.BuildCreationWindow"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Localization;assembly=WoWsShipBuilder.Core"
-        xmlns:helper="clr-namespace:WoWsShipBuilder.ViewModels.Helper;assembly=WoWsShipBuilder.ViewModels"
+        xmlns:helper="clr-namespace:WoWsShipBuilder.UI.ViewModels.Helper"
         CanResize="False" Width="390" WindowStartupLocation="CenterOwner" SizeToContent="Height"
         Title="BuildCreationWindow">
     <Design.DataContext>

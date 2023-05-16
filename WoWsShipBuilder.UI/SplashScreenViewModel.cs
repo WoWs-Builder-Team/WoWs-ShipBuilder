@@ -25,10 +25,10 @@ public partial class SplashScreenViewModel : ViewModelBase
 
     private readonly ILogger<SplashScreenViewModel> logger;
 
-    [WoWsShipBuilder.ViewModels.Observable]
+    [Observable]
     private double progress;
 
-    [WoWsShipBuilder.ViewModels.Observable]
+    [Observable]
     private string downloadInfo = nameof(Translation.SplashScreen_Init);
 
     public SplashScreenViewModel()
