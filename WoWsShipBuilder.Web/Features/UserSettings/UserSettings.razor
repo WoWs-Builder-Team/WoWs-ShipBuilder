@@ -12,7 +12,7 @@
 @inject ILocalizer Localizer
 @inject RefreshNotifierService RefreshNotifierService
 @inject AppSettings AppSettings
-@inject AppSettingsHelper AppSettingsHelper
+@inject ISettingsAccessor SettingsAccessor
 @inject ISnackbar Snackbar
 @inject IBetaAccessManager BetaAccessManager
 
@@ -160,7 +160,7 @@
         settingsChanged = settingsChanged || openSecondariesAndAaExpandersByDefault != AppSettings.WebAppSettings.OpenSecondariesAndAaExpandersByDefault;
         AppSettings.WebAppSettings.OpenSecondariesAndAaExpandersByDefault = openSecondariesAndAaExpandersByDefault;
 
-        await AppSettingsHelper.SaveSettings(AppSettings);
+        await SettingsAccessor.SaveSettings(AppSettings);
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
         Snackbar.Add("Settings saved", Severity.Success, config => { config.CloseAfterNavigation = true; });
         if (settingsChanged)
@@ -177,7 +177,7 @@
     private async Task ResetSettingsAsync()
     {
         AppSettings.ClearSettings();
-        await AppSettingsHelper.SaveSettings(AppSettings);
+        await SettingsAccessor.SaveSettings(AppSettings);
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
         Snackbar.Add(Localizer.GetAppLocalization(nameof(Translation.WebApp_SettingsSaved)).Localization, Severity.Success, config => { config.CloseAfterNavigation = true; });
         RefreshNotifierService.NotifyRefreshRequested();
@@ -191,7 +191,7 @@
             if (!AppSettings.WebAppSettings!.BetaAccessCodes.Contains(CurrentCode))
             {
                 AppSettings.WebAppSettings!.BetaAccessCodes.Add(CurrentCode);
-                await AppSettingsHelper.SaveSettings(AppSettings);
+                await SettingsAccessor.SaveSettings(AppSettings);
                 RefreshNotifierService.NotifyRefreshRequested();
                 Snackbar.Add($"'{Localizer.SimpleAppLocalization(betaEntry.LocalizationKey)}' {Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_CodeEnabled))}", Severity.Success, config => { config.CloseAfterNavigation = true; });
             }
@@ -215,7 +215,7 @@
     {
         if (AppSettings.WebAppSettings!.BetaAccessCodes.Remove(code))
         {
-            await AppSettingsHelper.SaveSettings(AppSettings);
+            await SettingsAccessor.SaveSettings(AppSettings);
             RefreshNotifierService.NotifyRefreshRequested();
         }
     }

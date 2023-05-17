@@ -3,6 +3,7 @@
 @using Microsoft.Extensions.Hosting
 @using WoWsShipBuilder.Features.ShipStats.ViewModels
 @using WoWsShipBuilder.Features.Settings
+@using WoWsShipBuilder.Infrastructure.Data
 @using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Utility
@@ -16,7 +17,7 @@
 @inject IJSRuntime Runtime
 @inject IDialogService DialogService
 @inject AppSettings AppSettings
-@inject AppSettingsHelper AppSettingsHelper
+@inject ISettingsAccessor SettingsAccessor
 
 <MudDialog Style="max-height: 100vh;  max-width: 1000px" DefaultFocus="DefaultFocus.Element">
     <DialogContent>
@@ -307,7 +308,7 @@
             AppSettings.WebAppSettings.BuildImageLayoutSettings[3] = showUpgrades;
             AppSettings.WebAppSettings.BuildImageLayoutSettings[4] = showConsumables;
             AppSettings.WebAppSettings.BuildImageLayoutSettings[5] = showSignals;
-            await AppSettingsHelper.SaveSettings(AppSettings);
+            await SettingsAccessor.SaveSettings(AppSettings);
         }
     }
 

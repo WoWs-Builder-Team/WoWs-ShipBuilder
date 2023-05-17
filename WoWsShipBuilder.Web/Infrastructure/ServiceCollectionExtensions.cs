@@ -17,6 +17,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IBetaAccessManager, BetaAccessManager>();
 
         services.AddScoped<IClipboardService, WebClipboardService>();
+        services.AddScoped<ISettingsAccessor, WebSettingsAccessor>();
 
         services.AddTransient<DataInitializer>();
 

@@ -1,8 +1,9 @@
 @using WoWsShipBuilder.Infrastructure.Utility
 @using WoWsShipBuilder.Features.Settings
 @using WoWsShipBuilder.Infrastructure
+@using WoWsShipBuilder.Infrastructure.Data
 @inherits LayoutComponentBase
-@inject AppSettingsHelper SettingsHelper
+@inject ISettingsAccessor SettingsAccessor
 @inject AppSettings AppSettings
 @inject RefreshNotifierService RefreshNotifierService
 
@@ -31,14 +32,14 @@
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
-            var settings = await SettingsHelper.LoadSettings();
+            var settings = await SettingsAccessor.LoadSettings();
             if (settings == null)
             {
                 settings = new()
                 {
                     WebAppSettings = new(),
                 };
-                await SettingsHelper.SaveSettings(settings);
+                await SettingsAccessor.SaveSettings(settings);
             }
             settings.WebAppSettings ??= new();
             AppSettings.UpdateFromSettings(settings);

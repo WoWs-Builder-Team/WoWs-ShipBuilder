@@ -2,21 +2,22 @@
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Features.Settings;
+using WoWsShipBuilder.Infrastructure.Data;
 
-namespace WoWsShipBuilder.Infrastructure.Utility;
+namespace WoWsShipBuilder.Web.Infrastructure;
 
-public class AppSettingsHelper : IAsyncDisposable
+public class WebSettingsAccessor : IAsyncDisposable, ISettingsAccessor
 {
     private readonly IJSRuntime runtime;
 
     private IJSObjectReference? module;
 
-    public AppSettingsHelper(IJSRuntime runtime)
+    public WebSettingsAccessor(IJSRuntime runtime)
     {
         this.runtime = runtime;
     }
 
-    public async ValueTask<AppSettings?> LoadSettings()
+    public async Task<AppSettings?> LoadSettings()
     {
         await InitializeModule();
         var settingsString = await module.InvokeAsync<string?>("getAppSettings");

@@ -35,7 +35,6 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ILinkShortener, FirebaseLinkShortener>();
 
         services.AddScoped<ILocalizer, Localizer>();
-        services.AddScoped<AppSettingsHelper>();
         services.AddScoped<AppSettings>();
         services.AddScoped<RefreshNotifierService>();
         services.AddScoped<ChartJsInterop>();
