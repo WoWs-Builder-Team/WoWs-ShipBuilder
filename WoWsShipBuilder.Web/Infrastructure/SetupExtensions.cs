@@ -1,7 +1,4 @@
-﻿using System.IO.Abstractions;
-using System.Net;
-using System.Reflection;
-using Microsoft.AspNetCore.Components.Server.Circuits;
+﻿using System.Reflection;
 using Microsoft.JSInterop;
 using NLog;
 using NLog.Config;
@@ -9,55 +6,14 @@ using NLog.Layouts;
 using NLog.Loki;
 using NLog.Targets;
 using Sentry;
-using WoWsShipBuilder.Core.Services;
-using WoWsShipBuilder.Features.Charts;
 using WoWsShipBuilder.Features.LinkShortening;
-using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Infrastructure;
-using WoWsShipBuilder.Infrastructure.Data;
-using WoWsShipBuilder.Infrastructure.DataTransfer;
-using WoWsShipBuilder.Infrastructure.HttpClients;
-using WoWsShipBuilder.Infrastructure.Localization;
-using WoWsShipBuilder.Infrastructure.Utility;
-using WoWsShipBuilder.Web.Infrastructure.BetaAccess;
-using WoWsShipBuilder.Web.Infrastructure.Data;
-using WoWsShipBuilder.Web.Infrastructure.Metrics;
 using LogLevel = NLog.LogLevel;
 
 namespace WoWsShipBuilder.Web.Infrastructure;
 
 public static class SetupExtensions
 {
-    public static IServiceCollection AddShipBuilderServerServices(this IServiceCollection services)
-    {
-        services.AddSingleton<IFileSystem, FileSystem>();
-        services.AddSingleton<IDataService, DesktopDataService>();
-        services.AddSingleton<ILocalizationProvider, LocalizationProvider>();
-        services.AddSingleton<IMetricsService, MetricsService>();
-        services.AddSingleton<CircuitHandler, MetricCircuitHandler>();
-        services.AddSingleton<HttpClient>(_ => new(new HttpClientHandler
-        {
-            AutomaticDecompression = DecompressionMethods.All,
-        }));
-        services.AddSingleton<IAwsClient, ServerAwsClient>();
-        services.AddSingleton<IAppDataService, ServerAppDataService>();
-        services.AddSingleton<ILinkShortener, FirebaseLinkShortener>();
-        services.AddSingleton<IBetaAccessManager, BetaAccessManager>();
-
-        services.AddScoped<ILocalizer, Localizer>();
-        services.AddScoped<AppSettingsHelper>();
-        services.AddScoped<AppSettings>();
-        services.AddScoped<RefreshNotifierService>();
-        services.AddScoped<ChartJsInterop>();
-        services.AddScoped<MouseEventInterop>();
-        services.AddScoped<IClipboardService, WebClipboardService>();
-        services.AddScoped<SessionStateCache>();
-
-        services.AddTransient<DataInitializer>();
-
-        return services;
-    }
-
     public static void ConfigureNlog(bool lokiDisabled, bool isDebug)
     {
         var configuration = new LoggingConfiguration();

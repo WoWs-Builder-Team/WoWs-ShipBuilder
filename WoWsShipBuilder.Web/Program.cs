@@ -1,13 +1,9 @@
 using System.Globalization;
-using MudBlazor;
-using MudBlazor.Services;
 using NLog.Web;
 using Prometheus;
 using ReactiveUI;
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
-using WoWsShipBuilder.Core;
-using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Web.Infrastructure;
 using WoWsShipBuilder.Web.Infrastructure.Data;
@@ -34,8 +30,7 @@ var resolver = Locator.CurrentMutable;
 resolver.InitializeSplat();
 resolver.InitializeReactiveUI(RegistrationNamespace.Blazor);
 
-builder.Services.AddMudServices(config => { config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight; });
-builder.Services.AddShipBuilderServerServices();
+builder.Services.UseShipBuilderWeb();
 
 var app = builder.Build();
 app.Services.UseMicrosoftDependencyResolver();

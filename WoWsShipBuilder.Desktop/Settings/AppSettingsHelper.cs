@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading;
 using Microsoft.Extensions.Logging;
 using Splat;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Desktop.Extensions;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Infrastructure;

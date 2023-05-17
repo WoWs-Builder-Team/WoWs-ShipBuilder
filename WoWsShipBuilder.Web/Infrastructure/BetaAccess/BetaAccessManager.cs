@@ -1,4 +1,4 @@
-﻿using WoWsShipBuilder.Core.Localization;
+﻿using WoWsShipBuilder.Infrastructure.Localization.Resources;
 
 namespace WoWsShipBuilder.Web.Infrastructure.BetaAccess;
 

@@ -1,4 +1,7 @@
-﻿namespace WoWsShipBuilder.Infrastructure.Data;
+﻿using System.IO;
+using System.Threading.Tasks;
+
+namespace WoWsShipBuilder.Core.Services;
 
 public interface IDataService
 {
