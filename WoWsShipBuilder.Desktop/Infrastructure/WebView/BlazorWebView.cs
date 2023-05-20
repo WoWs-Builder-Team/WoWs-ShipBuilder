@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Platform;
 using DynamicData;
 using Microsoft.AspNetCore.Components.WebView.WindowsForms;
+using Microsoft.Web.WebView2.Core;
 using Color = System.Drawing.Color;
 
 namespace WoWsShipBuilder.Desktop.Infrastructure.WebView;
@@ -16,6 +17,7 @@ public class BlazorWebView : NativeControlHost
     private string? hostPage;
     private IServiceProvider serviceProvider = default!;
     private RootComponentsCollection rootComponents = new();
+    private string defaultDownloadPath = string.Empty;
 
     /// <summary>
     /// The <see cref="AvaloniaProperty" /> which backs the <see cref="ZoomFactor" /> property.
@@ -37,6 +39,12 @@ public class BlazorWebView : NativeControlHost
             nameof(RootComponents),
             x => x.RootComponents,
             (x, y) => x.RootComponents = y);
+
+    public static readonly DirectProperty<BlazorWebView, string> DefaultDownloadFolderPathProperty
+        = AvaloniaProperty.RegisterDirect<BlazorWebView, string>(
+            nameof(DefaultDownloadFolderPath),
+            x => x.DefaultDownloadFolderPath,
+            (x, y) => x.DefaultDownloadFolderPath = y);
 
     public string? HostPage
     {
@@ -132,6 +140,28 @@ public class BlazorWebView : NativeControlHost
         set => rootComponents = value;
     }
 
+    public string DefaultDownloadFolderPath
+    {
+        get
+        {
+            if (blazorWebView is not null)
+            {
+                blazorWebView.WebView.CoreWebView2.Profile.DefaultDownloadFolderPath = defaultDownloadPath;
+            }
+
+            return defaultDownloadPath;
+        }
+
+        set
+        {
+            defaultDownloadPath = value;
+            if (blazorWebView is not null)
+            {
+                blazorWebView.WebView.CoreWebView2.Profile.DefaultDownloadFolderPath = value;
+            }
+        }
+    }
+
     protected override IPlatformHandle CreateNativeControlCore(IPlatformHandle parent)
     {
         if (OperatingSystem.IsWindows())
@@ -142,6 +172,7 @@ public class BlazorWebView : NativeControlHost
                 Services = serviceProvider,
                 BackColor = Color.FromArgb(255, 40, 40, 40),
             };
+            blazorWebView.WebView.CoreWebView2InitializationCompleted += WebViewOnCoreWebView2InitializationCompleted;
             blazorWebView.WebView.DefaultBackgroundColor = Color.FromArgb(255, 40, 40, 40);
             blazorWebView.WebView.ZoomFactor = Math.Clamp(zoomFactor, 0.1, 4.0);
             blazorWebView.RootComponents.AddRange(rootComponents);
@@ -151,10 +182,26 @@ public class BlazorWebView : NativeControlHost
         return base.CreateNativeControlCore(parent);
     }
 
+    private void CoreWebView2OnIsDefaultDownloadDialogOpenChanged(object? sender, object e)
+    {
+        if (blazorWebView?.WebView.CoreWebView2.IsDefaultDownloadDialogOpen == true)
+        {
+            blazorWebView.WebView.CoreWebView2.CloseDefaultDownloadDialog();
+        }
+    }
+
+    private void WebViewOnCoreWebView2InitializationCompleted(object? sender, CoreWebView2InitializationCompletedEventArgs e)
+    {
+        // blazorWebView!.WebView.CoreWebView2.IsDefaultDownloadDialogOpenChanged += CoreWebView2OnIsDefaultDownloadDialogOpenChanged;
+        DefaultDownloadFolderPath = defaultDownloadPath;
+        blazorWebView!.WebView.CoreWebView2InitializationCompleted -= WebViewOnCoreWebView2InitializationCompleted;
+    }
+
     protected override void DestroyNativeControlCore(IPlatformHandle control)
     {
         if (OperatingSystem.IsWindows())
         {
+            // blazorWebView!.WebView.CoreWebView2.IsDefaultDownloadDialogOpenChanged -= CoreWebView2OnIsDefaultDownloadDialogOpenChanged;
             blazorWebView?.Dispose();
             blazorWebView = null;
         }

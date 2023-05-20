@@ -1,0 +1,38 @@
+﻿@using WoWsShipBuilder.Infrastructure.Localization
+@using WoWsShipBuilder.Infrastructure.Localization.Resources
+@inject ILocalizer Localizer
+
+<MudDialog>
+    <DialogContent>
+        <SettingsComponent @ref="@settingsComponent" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="@Cancel">@Localizer.GetAppLocalization(nameof(Translation.Dialog_Cancel)).Localization</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="@ResetSettingsAsync">@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Reset)).Localization</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="@SaveSettingsAsync">@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Save)).Localization</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+
+    private SettingsComponent settingsComponent = default!;
+
+    private async Task SaveSettingsAsync()
+    {
+        await settingsComponent.SaveSettingsAsync();
+        MudDialog.Close();
+    }
+
+    private async Task ResetSettingsAsync()
+    {
+        await settingsComponent.ResetSettingsAsync();
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+}

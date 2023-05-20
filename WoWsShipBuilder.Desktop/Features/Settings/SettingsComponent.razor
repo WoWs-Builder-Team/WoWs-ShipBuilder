@@ -1,0 +1,284 @@
+﻿@using WoWsShipBuilder.Infrastructure.DataTransfer
+@using WoWsShipBuilder.Infrastructure.Localization
+@using WoWsShipBuilder.Infrastructure
+@using WoWsShipBuilder.Infrastructure.Data
+@using WoWsShipBuilder.Features.Settings
+@using WoWsShipBuilder.Infrastructure.GameData
+@using WoWsShipBuilder.Infrastructure.Localization.Resources
+@using Microsoft.Extensions.DependencyInjection
+@using WoWsShipBuilder.Desktop.Features.SplashScreen
+@using DynamicData.Binding
+@using System.Reactive.Linq
+@using System.Reflection
+@using Avalonia
+@using Avalonia.Controls
+@using Avalonia.Controls.ApplicationLifetimes
+@using WoWsShipBuilder.Core.Services
+@using Dispatcher = Avalonia.Threading.Dispatcher
+
+@implements IDisposable
+@inject ILocalizer Localizer
+@inject RefreshNotifierService RefreshNotifierService
+@inject AppSettings AppSettings
+@inject ISettingsAccessor SettingsAccessor
+@inject ISnackbar Snackbar
+@inject IServiceProvider ServiceProvider
+@inject IDialogService DialogService
+
+<MudContainer>
+    <MudGrid Justify="Justify.Center">
+        <MudItem xs="12">
+            <MudCard Outlined>
+                <MudCardHeader>
+                    <CardHeaderAvatar>
+                        <MudIcon Icon="@Icons.Material.Filled.Info"/>
+                    </CardHeaderAvatar>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">@Localizer.GetAppLocalization(nameof(Translation.WebApp_ApplicationInfo)).Localization</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudGrid>
+                        <MudItem xs="8">
+                            @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Version)) @appVersion
+                            <br/>
+                            @Localizer.GetAppLocalization(nameof(Translation.WebApp_CurrentVersion)).Localization @AppData.DataVersion
+                        </MudItem>
+                        <MudItem xs="4">
+                            Need help with the app? Visit our <MudLink Color="Color.Info" Href="https://discord.gg/C8EaepZJDY">Discord Server</MudLink>!
+                        </MudItem>
+                    </MudGrid>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudSelect @bind-Value="selectedCulture" Style="max-width: 500px;" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_SelectedLanguage)).Localization">
+                @foreach (var culture in AppConstants.SupportedLanguages)
+                {
+                    <MudSelectItem Value="@culture">@culture.CultureInfo.DisplayName</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="12">
+            <MudSelect @bind-Value="@selectedServerType" Style="max-width: 500px;" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Server))">
+                <MudSelectItem Value="ServerType.Live">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypeLive))</MudSelectItem>
+                <MudSelectItem Value="ServerType.Pts">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypePts))</MudSelectItem>
+                @if (isDevMode)
+                {
+                    <MudSelectItem Value="ServerType.Dev1">@ServerType.Dev1.DisplayName()</MudSelectItem>
+                    <MudSelectItem Value="ServerType.Dev2">@ServerType.Dev2.DisplayName()</MudSelectItem>
+                    <MudSelectItem Value="ServerType.Dev3">@ServerType.Dev3.DisplayName()</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="12">
+            <MudStack>
+                <MudText Typo="Typo.h6">@Localizer.GetAppLocalization(nameof(Translation.WebApp_ExpanderSettingHeader)).Localization</MudText>
+                <MudStack>
+                    <MudSwitch @bind-Checked="@openMainExpandersByDefault" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_ExpanderSetting)).Localization" Color="Color.Info"/>
+                    <MudSwitch @bind-Checked="@openAmmoExpandersByDefault" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_AmmoExpanderSetting)).Localization" Color="Color.Info"/>
+                    <MudSwitch @bind-Checked="@openSecondariesAndAaExpandersByDefault" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_SecondariesAndAAExpanderSetting)).Localization" Color="Color.Info"/>
+                </MudStack>
+            </MudStack>
+        </MudItem>
+        <MudItem xs="12">
+            <MudStack AlignItems="AlignItems.Start">
+                <MudCheckBox @bind-Checked="@autoUpdateEnabled" LabelPosition="LabelPosition.Start" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_AutoUpdate))"/>
+            </MudStack>
+        </MudItem>
+        <MudItem xs="12">
+            <MudStack AlignItems="AlignItems.Start" Spacing="0">
+                <MudCheckBox @bind-Checked="@customBuildImagePathEnabled" LabelPosition="LabelPosition.Start" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_BuildImagePath))"/>
+                <MudTextField @bind-Value="@customBuildImagePath" FullWidth HelperText="A restart is required for this option to take effect" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_BuildImagePath))" Adornment="Adornment.End" OnAdornmentClick="OnImageFolderSelectClicked" AdornmentIcon="@Icons.Material.Filled.Folder" Disabled="@(!customBuildImagePathEnabled)"/>
+            </MudStack>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+<MudOverlay @bind-Visible="@isOverlayVisible" DarkBackground>
+    <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
+        <MudProgressCircular Color="Color.Info" Indeterminate/>
+        <MudText Typo="Typo.h5">@Localizer.SimpleAppLocalization(currentDownloadInfo)</MudText>
+    </MudStack>
+</MudOverlay>
+
+@code {
+
+    [CascadingParameter(Name = "SettingsInitialized")]
+    protected bool SettingsInitialized { get; set; }
+
+#if DEBUG
+    private bool isDevMode = true;
+#else
+    private bool isDevMode = false;
+#endif
+
+    private CultureDetails selectedCulture = AppConstants.DefaultCultureDetails;
+
+    private ServerType selectedServerType = ServerType.Live;
+
+    private bool openMainExpandersByDefault = true;
+
+    private bool openAmmoExpandersByDefault = true;
+
+    private bool openSecondariesAndAaExpandersByDefault = true;
+
+    private bool isOverlayVisible = false;
+
+    private string currentDownloadInfo = string.Empty;
+
+    private bool customBuildImagePathEnabled = false;
+
+    private string? customBuildImagePath;
+
+    private bool autoUpdateEnabled = true;
+
+    private string appVersion = "Undefined";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        RefreshNotifierService.RefreshRequested += UpdateSettingsValues;
+        UpdateSettingsValues();
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+        var rawVersion = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "Undefined";
+        appVersion = StripCommitFromVersion(rawVersion);
+    }
+
+    private static string StripCommitFromVersion(string rawVersion)
+    {
+        int commitStartIndex = rawVersion.IndexOf("+", StringComparison.Ordinal);
+        if (commitStartIndex > 0)
+        {
+            rawVersion = rawVersion[..commitStartIndex];
+        }
+
+        return rawVersion;
+    }
+
+    private void UpdateSettingsValues()
+    {
+        selectedCulture = AppSettings.SelectedLanguage;
+        selectedServerType = AppSettings.SelectedServerType;
+        openMainExpandersByDefault = AppSettings.WebAppSettings?.OpenAllMainExpandersByDefault ?? true;
+        openAmmoExpandersByDefault = AppSettings.WebAppSettings?.OpenAllAmmoExpandersByDefault ?? true;
+        openSecondariesAndAaExpandersByDefault = AppSettings.WebAppSettings?.OpenSecondariesAndAaExpandersByDefault ?? true;
+        customBuildImagePathEnabled = AppSettings.CustomImagePath is not null;
+        customBuildImagePath = AppSettings.CustomImagePath;
+        autoUpdateEnabled = AppSettings.AutoUpdateEnabled;
+
+        StateHasChanged();
+    }
+
+    public async Task SaveSettingsAsync()
+    {
+        bool settingsChanged = AppSettings.SelectedLanguage != selectedCulture;
+        AppSettings.SelectedLanguage = selectedCulture;
+
+        var serverTypeChanged = selectedServerType != AppSettings.SelectedServerType;
+        settingsChanged = settingsChanged || serverTypeChanged;
+        AppSettings.SelectedServerType = selectedServerType;
+        if (serverTypeChanged)
+        {
+            await ChangeServerType(selectedServerType);
+        }
+
+        if (AppSettings.WebAppSettings == null)
+        {
+            AppSettings.WebAppSettings = new();
+            settingsChanged = true;
+        }
+
+        settingsChanged = settingsChanged || openAmmoExpandersByDefault != AppSettings.WebAppSettings.OpenAllAmmoExpandersByDefault;
+        AppSettings.WebAppSettings.OpenAllAmmoExpandersByDefault = openAmmoExpandersByDefault;
+
+        settingsChanged = settingsChanged || openMainExpandersByDefault != AppSettings.WebAppSettings.OpenAllMainExpandersByDefault;
+        AppSettings.WebAppSettings.OpenAllMainExpandersByDefault = openMainExpandersByDefault;
+
+        settingsChanged = settingsChanged || openSecondariesAndAaExpandersByDefault != AppSettings.WebAppSettings.OpenSecondariesAndAaExpandersByDefault;
+        AppSettings.WebAppSettings.OpenSecondariesAndAaExpandersByDefault = openSecondariesAndAaExpandersByDefault;
+
+        var customBuildImagePathChanged = customBuildImagePathEnabled != AppSettings.CustomImagePath is not null || customBuildImagePath != AppSettings.CustomImagePath;
+        if (customBuildImagePathChanged)
+        {
+            settingsChanged = true;
+            AppSettings.CustomImagePath = !customBuildImagePathEnabled ? null : customBuildImagePath;
+        }
+
+        await SettingsAccessor.SaveSettings(AppSettings);
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+        Snackbar.Add("Settings saved", Severity.Success, config => { config.CloseAfterNavigation = true; });
+        if (settingsChanged)
+        {
+            RefreshNotifierService.NotifyRefreshRequested();
+        }
+    }
+
+    public async Task ResetSettingsAsync()
+    {
+        AppSettings.ClearSettings();
+        await SettingsAccessor.SaveSettings(AppSettings);
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+        Snackbar.Add(Localizer.GetAppLocalization(nameof(Translation.WebApp_SettingsSaved)).Localization, Severity.Success, config => { config.CloseAfterNavigation = true; });
+        RefreshNotifierService.NotifyRefreshRequested();
+    }
+
+    public void Dispose()
+    {
+        RefreshNotifierService.RefreshRequested -= UpdateSettingsValues;
+    }
+
+    private async Task ChangeServerType(ServerType serverType)
+    {
+        isOverlayVisible = true;
+        StateHasChanged();
+        await Task.Delay(1);
+
+        var vm = ServiceProvider.GetRequiredService<SplashScreenViewModel>();
+        var subscription = vm.WhenValueChanged(x => x.DownloadInfo).Do(OnDownloadInfoChanged).Subscribe();
+        try
+        {
+            await vm.VersionCheck(true, true);
+        }
+        catch (Exception)
+        {
+            await DialogService.ShowMessageBox(
+                Localizer.SimpleAppLocalization(nameof(Translation.DataUpdate_ErrorTitle)),
+                Localizer.SimpleAppLocalization(nameof(Translation.DataUpdate_ErrorDescription)));
+        }
+        finally
+        {
+            isOverlayVisible = false;
+            subscription.Dispose();
+            currentDownloadInfo = string.Empty;
+        }
+    }
+
+    private void OnDownloadInfoChanged(string? downloadInfo)
+    {
+        if (downloadInfo is null)
+        {
+            return;
+        }
+
+        currentDownloadInfo = downloadInfo;
+        StateHasChanged();
+    }
+
+    private async Task OnImageFolderSelectClicked(MouseEventArgs obj)
+    {
+        var dialog = new OpenFolderDialog
+        {
+            Directory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
+        };
+
+        var mainWindow = (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow;
+        var path = await Dispatcher.UIThread.InvokeAsync(async () => await dialog.ShowAsync(mainWindow!));
+        if (path is not null)
+        {
+            customBuildImagePath = path;
+        }
+    }
+
+}

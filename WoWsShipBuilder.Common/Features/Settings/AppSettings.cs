@@ -64,7 +64,7 @@ public class AppSettings
         OpenExplorerAfterImageSave = settings.OpenExplorerAfterImageSave;
         LastImageImportPath = settings.LastImageImportPath;
         IncludeSignalsForImageExport = settings.IncludeSignalsForImageExport;
-        CustomImagePath = settings.CustomDataPath;
+        CustomImagePath = settings.CustomImagePath;
         DispersionPlotSettings = settings.DispersionPlotSettings;
         WebAppSettings = settings.WebAppSettings;
     }

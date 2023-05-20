@@ -13,6 +13,7 @@
         <webView:BlazorWebView Grid.Row="1" Name="WebView"
                                       HostPage="wwwroot\\index.html"
                                       RootComponents="{DynamicResource rootComponents}"
-                                      Services="{DynamicResource services}" />
+                                      Services="{DynamicResource services}"
+                                      DefaultDownloadFolderPath="{DynamicResource downloadPath}"/>
     </Grid>
 </Window>
