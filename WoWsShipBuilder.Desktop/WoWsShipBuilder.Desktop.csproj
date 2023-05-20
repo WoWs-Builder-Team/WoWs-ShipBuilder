@@ -24,6 +24,8 @@
     </Target>
     <ItemGroup>
         <AvaloniaResource Include="Assets/**" />
+        <AvaloniaResource Include="wwwroot\assets\icons\error.png" />
+        <AvaloniaResource Include="wwwroot\assets\icons\info.png" />
         <None Remove="Assets/**" />
     </ItemGroup>
     <ItemGroup>

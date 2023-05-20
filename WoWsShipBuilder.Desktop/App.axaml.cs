@@ -49,7 +49,7 @@ namespace WoWsShipBuilder.Desktop
             }
         }
 
-        private static async Task<MessageBox.MessageBoxResult> ShowUpdateRestartDialog(Window? parent, ILocalizer localizer)
+        public static async Task<MessageBox.MessageBoxResult> ShowUpdateRestartDialog(Window? parent, ILocalizer localizer)
         {
             return await Dispatcher.UIThread.InvokeAsync(async () => await MessageBox.Show(
                 parent,
