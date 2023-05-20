@@ -6,22 +6,23 @@ using System.Runtime.Versioning;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using NLog;
 using Splat;
 using Squirrel;
+using WoWsShipBuilder.Desktop.Features.MessageBox;
+using WoWsShipBuilder.Desktop.Features.SplashScreen;
 using WoWsShipBuilder.Desktop.Infrastructure;
-using WoWsShipBuilder.Desktop.Services;
-using WoWsShipBuilder.Desktop.UserControls;
-using WoWsShipBuilder.Desktop.Utilities;
-using WoWsShipBuilder.Desktop.Views;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.Localization;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;
 
 namespace WoWsShipBuilder.Desktop
@@ -30,8 +31,8 @@ namespace WoWsShipBuilder.Desktop
     [SuppressMessage("System.IO.Abstractions", "IO0006", Justification = "This class is never tested.")]
     public class App : Application
     {
-        private readonly IServiceProvider services = default!;
         private readonly ILogger<App> logger = NullLogger<App>.Instance;
+        private readonly IServiceProvider services = default!;
 
         public App()
         {
@@ -46,6 +47,16 @@ namespace WoWsShipBuilder.Desktop
                 services = value;
                 logger = services.GetRequiredService<ILogger<App>>();
             }
+        }
+
+        private static async Task<MessageBox.MessageBoxResult> ShowUpdateRestartDialog(Window? parent, ILocalizer localizer)
+        {
+            return await Dispatcher.UIThread.InvokeAsync(async () => await MessageBox.Show(
+                parent,
+                localizer.GetAppLocalization(nameof(Translation.UpdateMessageBox_Description)).Localization,
+                localizer.GetAppLocalization(nameof(Translation.UpdateMessageBox_Title)).Localization,
+                MessageBox.MessageBoxButtons.YesNo,
+                MessageBox.MessageBoxIcon.Question));
         }
 
         public override void Initialize()
@@ -148,7 +159,7 @@ namespace WoWsShipBuilder.Desktop
 
                 logger.LogInformation("App updated to version {ReleaseVersion}", release.Version);
                 await notificationService.NotifyAppUpdateComplete();
-                var result = await UpdateHelpers.ShowUpdateRestartDialog((ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow);
+                var result = await ShowUpdateRestartDialog((ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow, Services.GetRequiredService<ILocalizer>());
                 if (result.Equals(MessageBox.MessageBoxResult.Yes))
                 {
                     logger.LogInformation("User decided to restart after update");

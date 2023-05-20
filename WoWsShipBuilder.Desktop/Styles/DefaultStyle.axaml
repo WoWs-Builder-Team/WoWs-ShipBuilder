@@ -1,14 +1,5 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
-        xmlns:customControls1="clr-namespace:WoWsShipBuilder.Desktop.CustomControls"
-        xmlns:userControls="clr-namespace:WoWsShipBuilder.Desktop.UserControls">
-    <Design.PreviewWith>
-        <Border Padding="20">
-            <TextBlock Classes="Clickable" Text="test test test"/>
-        </Border>
-    </Design.PreviewWith>
-
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style Selector="Window">
         <Setter Property="Icon" Value="/Assets/ShipBuilder_WindowIcon.ico" />
     </Style>
@@ -28,61 +19,6 @@
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="5" />
     </Style>
-    <!--Numbered Button defaults-->
-    <Style Selector="customControls1|NumberedButton">
-        <Setter Property="UnselectedBorder" Value="Gray" />
-        <Setter Property="UnselectedBorderThickness" Value="1" />
-        <Setter Property="BorderBrush" Value="Red" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Foreground" Value="White" />
-        <Setter Property="FontWeight" Value="SemiBold" />
-        <Setter Property="FontSize" Value="17" />
-    </Style>
-    <!--Expander for ship stats-->
-    <Style Selector="Expander.modules /template/ ToggleButton#PART_toggle">
-        <Setter Property="Template">
-            <ControlTemplate>
-                <Border BorderThickness="1" Background="Transparent">
-                    <Grid ColumnDefinitions="*,Auto">
-                        <ContentPresenter Grid.Column="0"
-                                          Background="Transparent"
-                                          Content="{TemplateBinding Content}"
-                                          VerticalAlignment="Center"
-                                          HorizontalContentAlignment="Left"
-                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          Padding="{TemplateBinding Padding}" />
-                        <Border Grid.Column="1" Width="20" Height="20" HorizontalAlignment="Center"
-                                VerticalAlignment="Center">
-                            <Path Fill="{DynamicResource ThemeForegroundBrush}"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  Data="M 0 2 L 4 6 L 0 10 Z" />
-                        </Border>
-                    </Grid>
-                </Border>
-            </ControlTemplate>
-        </Setter>
-    </Style>
-    <Style Selector="Expander.modules">
-        <Setter Property="VerticalAlignment" Value="Top" />
-    </Style>
-    <!--ComboBox for ship upgrades-->
-    <Style Selector="ComboBox.Upgrades /template/ ToggleButton">
-        <Setter Property="IsVisible" Value="False" />
-    </Style>
-    <Style Selector="ComboBox.Upgrades /template/ Border">
-        <Setter Property="CornerRadius" Value="5" />
-    </Style>
-    <!--ShipUpgrade selector-->
-    <Style Selector="userControls|UpgradeSelector.Upgrades Button">
-        <Setter Property="CornerRadius" Value="5" />
-    </Style>
-    <Style Selector="ListBox.ShipModules">
-        <Setter Property="Padding" Value="0" />
-    </Style>
-    <Style Selector="ListBox.ShipModules>ListBoxItem:selected>Button">
-        <Setter Property="Background" Value="Blue" />
-    </Style>
     <!--Separator-->
     <Style Selector="Separator">
         <Setter Property="Background">
@@ -96,59 +32,10 @@
         <Setter Property="Height" Value="2" />
     </Style>
 
-    <!-- Default styles for modifier tooltip popups -->
-    <Style Selector="TextBlock.ModifierBase">
-        <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
-    </Style>
-    <Style Selector="TextBlock.ModifierTitle">
-        <Setter Property="FontSize" Value="15" />
-        <Setter Property="FontWeight" Value="SemiBold" />
-        <Setter Property="TextWrapping" Value="Wrap"/>
-        <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
-    </Style>
-    <Style Selector="TextBlock.ModifierDesc">
-        <Setter Property="FontSize" Value="13" />
-        <Setter Property="FontWeight" Value="Normal" />
-        <Setter Property="TextWrapping" Value="Wrap"/>
-        <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
-    </Style>
-
-    <!-- Styles for the panels that contain the previous and next ships. -->
-    <Style Selector="StackPanel.Clickable">
-        <Setter Property="Cursor" Value="Hand"/>
-    </Style>
-
-    <Style Selector="TextBlock.Clickable">
-        <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="Foreground" Value="PaleTurquoise"/>
-        <Setter Property="TextDecorations" Value="Underline"/>
-    </Style>
-
     <!--Style for windows-->
     <Style Selector="Window">
         <Setter Property="ExtendClientAreaToDecorationsHint" Value="True"/>
-        <Setter Property="ExtendClientAreaChromeHints" Value="NoChrome"/>
+        <Setter Property="ExtendClientAreaChromeHints" Value="Default"/>
         <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="30"/>
-    </Style>
-
-    <Style Selector="DataValidationErrors">
-        <Setter Property="ErrorTemplate">
-            <DataTemplate>
-                <Canvas Width="14" Height="14" Margin="4 0 1 0"
-                        Background="Transparent">
-                    <Canvas.Styles>
-                        <Style Selector="ToolTip">
-                            <Setter Property="FontSize" Value="14"></Setter>
-                            <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}"/>
-                            <Setter Property="BorderBrush" Value="{DynamicResource ErrorBrush}"/>
-                        </Style>
-                    </Canvas.Styles>
-                    <ToolTip.Tip>
-                        <ItemsControl Items="{Binding}"/>
-                    </ToolTip.Tip>
-                    <Path Data="M14,7 A7,7 0 0,0 0,7 M0,7 A7,7 0 1,0 14,7 M7,3l0,5 M7,9l0,2" Stroke="{DynamicResource ErrorBrush}" StrokeThickness="2"/>
-                </Canvas>
-            </DataTemplate>
-        </Setter>
     </Style>
 </Styles>

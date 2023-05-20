@@ -13,12 +13,10 @@ using Sentry;
 using Splat;
 using Squirrel;
 using WoWsShipBuilder.Desktop.Extensions;
+using WoWsShipBuilder.Desktop.Infrastructure;
 using WoWsShipBuilder.Desktop.Settings;
-using WoWsShipBuilder.Desktop.Utilities;
-using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Infrastructure;
-using WoWsShipBuilder.Infrastructure.Data;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
+using WoWsShipBuilder.Infrastructure.Localization;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace WoWsShipBuilder.Desktop;
@@ -50,8 +48,8 @@ class Program
 
         // app.Services.UseMicrosoftDependencyResolver();
         var logger = app.Services.GetRequiredService<ILogger<Program>>();
+        LocalizeConverter.InitializeLocalizer(app.Services.GetRequiredService<ILocalizer>());
 
-        AppSettingsHelper.Initialize(app.Services);
         var avaloniaApp = BuildAvaloniaApp(app.Services);
 
         SentrySdk.Init(ApplicationSettings.ApplicationOptions.SentryDsn);
@@ -88,22 +86,6 @@ class Program
     private static void OnEveryRun(SemanticVersion version, IAppTools tools, bool firstRun)
     {
         tools.SetProcessAppUserModelId();
-    }
-
-    private static async Task InitializeSettings(IServiceProvider services, ILogger logger)
-    {
-        var settingsAccessor = services.GetRequiredService<ISettingsAccessor>();
-        var settings = await settingsAccessor.LoadSettings();
-        settings ??= new();
-        settings.WebAppSettings ??= new();
-
-        logger.LogDebug("Updating app settings with settings read from file...");
-        var appSettings = services.GetRequiredService<AppSettings>();
-        appSettings.UpdateFromSettings(settings);
-        AppData.IsInitialized = true;
-        Thread.CurrentThread.CurrentCulture = appSettings.SelectedLanguage.CultureInfo;
-        Thread.CurrentThread.CurrentUICulture = appSettings.SelectedLanguage.CultureInfo;
-        logger.LogDebug("Settings initialization complete");
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.

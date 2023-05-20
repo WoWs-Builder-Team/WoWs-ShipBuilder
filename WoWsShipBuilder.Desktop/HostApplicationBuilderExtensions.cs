@@ -1,14 +1,13 @@
 ﻿using System.IO.Abstractions;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Desktop.Features.SplashScreen;
 using WoWsShipBuilder.Desktop.Infrastructure;
-using WoWsShipBuilder.Desktop.Services;
+using WoWsShipBuilder.Desktop.Infrastructure.AwsClient;
 using WoWsShipBuilder.Desktop.Updater;
-using WoWsShipBuilder.Desktop.Utilities;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Data;
@@ -30,7 +29,6 @@ public static class HostApplicationBuilderExtensions
         builder.Services.AddSingleton<AwsClient>();
         builder.Services.AddSingleton<IAwsClient>(x => x.GetRequiredService<AwsClient>());
         builder.Services.AddSingleton<IDesktopAwsClient>(x => x.GetRequiredService<AwsClient>());
-        builder.Services.AddSingleton<INavigationService, NavigationService>();
         builder.Services.AddSingleton<IClipboardService, AvaloniaClipboardService>();
         builder.Services.AddSingleton<ISettingsAccessor, DesktopSettingsAccessor>();
         builder.Services.AddTransient<ILocalDataUpdater, LocalDataUpdater>();

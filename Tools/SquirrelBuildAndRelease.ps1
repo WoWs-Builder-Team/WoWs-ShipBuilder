@@ -4,7 +4,7 @@
     [string][Parameter(Mandatory=$false)]$signingPassword
 )
 
-$frameworkVersion="net7.0"
+$frameworkVersion="net7.0-windows"
 
 Write-Output "Building application"
 dotnet build -c $buildConfig
@@ -25,7 +25,7 @@ if ($signingCert) {
     Write-Output "Signing release"
     $signingParams = "--signParams=`"/a /f $signingCert /p $signingPassword /fd sha256 /tr http://timestamp.digicert.com /td sha256`""
 }
-Tools\Squirrel.exe pack --releaseDir=".\releases" --icon="WoWsShipBuilder.Desktop\Assets\ShipBuilderIcon_bg.ico" --appIcon="WoWsShipBuilder.Desktop\Assets\ShipBuilderIcon_bg.ico" --no-delta --splashImage="LoadingIcon.gif" --packId="WoWsShipBuilder" --packVersion="$version" --packDir="$publishDir" --packTitle="WoWsShipBuilder" --includePdb $signingParams
+Tools\Squirrel.exe pack --releaseDir=".\releases" --icon="WoWsShipBuilder.Desktop\Assets\ShipBuilderIcon_bg.ico" --appIcon="WoWsShipBuilder.Desktop\Assets\ShipBuilderIcon_bg.ico" --noDelta --splashImage="LoadingIcon.gif" --packId="WoWsShipBuilder" --packVersion="$version" --packDir="$publishDir" --packTitle="WoWsShipBuilder" --includePdb $signingParams
 
 
 Write-Output "Local release test completed"

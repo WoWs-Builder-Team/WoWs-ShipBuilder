@@ -23,7 +23,6 @@ public partial class ShipViewModel : ViewModelBase
 
     private readonly ILogger<ShipViewModel> logger;
 
-    private readonly INavigationService navigationService;
     private readonly SemaphoreSlim semaphore = new(1, 1);
 
     [Observable]
@@ -69,7 +68,6 @@ public partial class ShipViewModel : ViewModelBase
 
     public ShipViewModel(INavigationService navigationService, ILocalizer localizer, ILogger<ShipViewModel> logger, ShipViewModelParams viewModelParams)
     {
-        this.navigationService = navigationService;
         this.localizer = localizer;
         tokenSource = new();
         this.logger = logger;
@@ -92,11 +90,6 @@ public partial class ShipViewModel : ViewModelBase
     {
         logger.LogDebug("Resetting build");
         await LoadNewShip(AppData.ShipSummaryList!.First(summary => summary.Index.Equals(CurrentShipIndex)));
-    }
-
-    public void BackToMenu()
-    {
-        navigationService.OpenStartMenu(true);
     }
 
     public void InitializeData(ShipViewModelParams viewModelParams)

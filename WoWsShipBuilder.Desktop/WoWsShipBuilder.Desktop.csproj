@@ -2,7 +2,7 @@
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net7.0-windows</TargetFramework>
-        <ApplicationIcon>Assets\ShipBuilderIcon_bg.ico</ApplicationIcon>
+        <ApplicationIcon>Assets/ShipBuilderIcon_bg.ico</ApplicationIcon>
         <Win32Resource />
         <SignAssembly>false</SignAssembly>
         <AssemblyName>WoWsShipBuilder</AssemblyName>
@@ -22,29 +22,12 @@
     <Target Name="PostBuildVersionDump" AfterTargets="Build">
         <WriteLinesToFile File="buildInfo.txt" Lines="$(Version)" Overwrite="true" />
     </Target>
-    <!--  Target to add project release notes to nuget package for squirrel during package generation. Uncomment replacement token in nuspec too.  -->
-    <!--    <Target Name="ConfigureReleaseNotes" BeforeTargets="GenerateNuspec">-->
-    <!--        <ReadLinesFromFile File="../ReleaseNotes.md">-->
-    <!--            <Output TaskParameter="Lines" ItemName="ReleaseNoteLines" />-->
-    <!--        </ReadLinesFromFile>-->
-    <!--        <PropertyGroup>-->
-    <!--            <NuspecProperties>$(NuspecProperties);releaseNotes=@(ReleaseNoteLines, '%0a')</NuspecProperties>-->
-    <!--        </PropertyGroup>-->
-    <!--    </Target>-->
     <ItemGroup>
-        <AvaloniaResource Include="Assets\**" />
-        <None Remove="Assets\Art\logo_white_text.png" />
-        <None Remove="Assets\Art\SplashArt.png" />
-        <None Remove="Assets\discord.png" />
-        <None Remove="Assets\Error_Full.png" />
-        <None Remove="Assets\Github.png" />
-        <None Remove="Assets\Information_Full.png" />
-        <None Remove="Assets\Question_Full.png" />
+        <AvaloniaResource Include="Assets/**" />
+        <None Remove="Assets/**" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebView" Version="7.0.4" />
-        <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1661.34" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.WindowsForms" Version="7.0.59" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.WindowsForms" Version="7.0.86" />
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
         <PackageReference Include="Avalonia" Version="0.10.19" />
         <PackageReference Include="Avalonia.Desktop" Version="0.10.19" />
@@ -78,21 +61,20 @@
         </AdditionalFiles>
     </ItemGroup>
     <ItemGroup>
-        <Compile Update="Views\StartMenuWindow.axaml.cs">
-            <DependentUpon>StartingMenuWindow.axaml</DependentUpon>
-        </Compile>
-        <Compile Update="Views\SettingsWindow.axaml.cs">
-            <DependentUpon>SettingsWindow.axaml</DependentUpon>
-        </Compile>
-        <Compile Update="UserControls\UpgradeSelector.axaml.cs">
-            <DependentUpon>UpgradeSelector.axaml</DependentUpon>
-        </Compile>
         <Compile Update="Features\BlazorWebView\BlazorWindow.axaml.cs">
           <DependentUpon>BlazorWindow.axaml</DependentUpon>
           <SubType>Code</SubType>
         </Compile>
         <Compile Update="App.axaml.cs">
           <DependentUpon>App.axaml</DependentUpon>
+          <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Infrastructure\AppHeader.axaml.cs">
+          <DependentUpon>AppHeader.axaml</DependentUpon>
+          <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Features\SplashScreen\SplashScreen.axaml.cs">
+          <DependentUpon>SplashScreen.axaml</DependentUpon>
           <SubType>Code</SubType>
         </Compile>
     </ItemGroup>
@@ -104,18 +86,15 @@
         <Content Include="..\docs\Third-Party-Licenses.txt">
             <Link>Third-Party-Licenses.txt</Link>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
         </Content>
         <Content Update="version.json">
           <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-          <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+          <CopyToPublishDirectory>Never</CopyToPublishDirectory>
         </Content>
         <Content Update="App.razor">
           <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         </Content>
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Assets\nation_flags" />
-      <Folder Include="Features\Settings\" />
     </ItemGroup>
 </Project>
