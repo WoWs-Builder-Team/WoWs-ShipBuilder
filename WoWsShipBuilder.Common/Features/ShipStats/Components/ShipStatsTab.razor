@@ -1,6 +1,7 @@
 ﻿@using WoWsShipBuilder.DataStructures
 @using System.Net
 @using Microsoft.Extensions.Hosting
+@using Microsoft.Extensions.Options
 @using Prometheus
 @using WoWsShipBuilder.DataContainers
 @using WoWsShipBuilder.Features.Builds.Components
@@ -25,6 +26,7 @@
 @inject IClipboardService ClipboardService
 @inject ILinkShortener LinkShortener
 @inject SessionStateCache SessionStateCache
+@inject IOptions<CdnOptions> CdnOptions
 
 @inherits ReactiveComponentBase<ShipViewModel>
 
@@ -139,7 +141,7 @@
     [CascadingParameter(Name = "SettingsInitialized")]
     protected bool SettingsInitialized { get; set; }
 
-    private const string BaseAddress = @"https://cdn.wowssb.com/images/individual/";
+    private string BaseAddress => $"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/";
 
     private bool initialized;
 

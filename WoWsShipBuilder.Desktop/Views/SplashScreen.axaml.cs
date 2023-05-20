@@ -2,13 +2,14 @@ using System;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using Avalonia.Threading;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
-using Splat;
-using WoWsShipBuilder.Desktop.Extensions;
+using WoWsShipBuilder.Desktop.Features.BlazorWebView;
 using WoWsShipBuilder.Desktop.UserControls;
 using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;
@@ -17,15 +18,15 @@ namespace WoWsShipBuilder.Desktop.Views
 {
     public class SplashScreen : ReactiveWindow<SplashScreenViewModel>
     {
-        public SplashScreen()
+        public SplashScreen(IServiceProvider services)
         {
-            InitializeComponent();
+            InitializeComponent(services.GetRequiredService<SplashScreenViewModel>());
 #if DEBUG
             this.AttachDevTools();
 #endif
             this.WhenActivated(_ =>
             {
-                var vm = ViewModel ?? Locator.Current.GetRequiredService<SplashScreenViewModel>();
+                var vm = ViewModel ?? services.GetRequiredService<SplashScreenViewModel>();
 
                 Task.Run(async () =>
                 {
@@ -49,17 +50,26 @@ namespace WoWsShipBuilder.Desktop.Views
                     }
 
                     await minimumRuntime;
-                    var navigationService = Locator.Current.GetRequiredService<INavigationService>();
 
-                    await Dispatcher.UIThread.InvokeAsync(() => { navigationService.OpenStartMenu(true); });
+                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        var blazorWindow = new BlazorWindow();
+                        blazorWindow.Show();
+
+                        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                        {
+                            desktop.MainWindow.Close();
+                            desktop.MainWindow = blazorWindow;
+                        }
+                    });
                 });
             });
         }
 
-        private void InitializeComponent()
+        private void InitializeComponent(SplashScreenViewModel viewModel)
         {
             AvaloniaXamlLoader.Load(this);
-            ViewModel = Locator.Current.GetRequiredService<SplashScreenViewModel>();
+            ViewModel = viewModel;
         }
     }
 }

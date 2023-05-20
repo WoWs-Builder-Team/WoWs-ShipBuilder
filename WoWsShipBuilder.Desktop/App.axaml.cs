@@ -1,44 +1,28 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.IO.Abstractions;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Versioning;
+using System.Threading;
 using System.Threading.Tasks;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using NLog;
-using NLog.Config;
-using NLog.Extensions.Logging;
-using ReactiveUI;
 using Splat;
-using Splat.Autofac;
 using Squirrel;
-using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.Services;
-using WoWsShipBuilder.Desktop.Extensions;
+using WoWsShipBuilder.Desktop.Infrastructure;
 using WoWsShipBuilder.Desktop.Services;
-using WoWsShipBuilder.Desktop.Updater;
 using WoWsShipBuilder.Desktop.UserControls;
 using WoWsShipBuilder.Desktop.Utilities;
-using WoWsShipBuilder.Desktop.ViewModels;
-using WoWsShipBuilder.Desktop.ViewModels.DispersionPlot;
-using WoWsShipBuilder.Desktop.ViewModels.ShipVm;
 using WoWsShipBuilder.Desktop.Views;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Data;
-using WoWsShipBuilder.Infrastructure.HttpClients;
-using WoWsShipBuilder.Infrastructure.Localization;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;
-using AppSettingsHelper = WoWsShipBuilder.Desktop.Settings.AppSettingsHelper;
-using Localizer = WoWsShipBuilder.Infrastructure.Localization.Localizer;
-using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace WoWsShipBuilder.Desktop
 {
@@ -46,13 +30,22 @@ namespace WoWsShipBuilder.Desktop
     [SuppressMessage("System.IO.Abstractions", "IO0006", Justification = "This class is never tested.")]
     public class App : Application
     {
-        private IContainer container = null!;
-
-        private ILogger<App> logger = default!;
+        private readonly IServiceProvider services = default!;
+        private readonly ILogger<App> logger = NullLogger<App>.Instance;
 
         public App()
         {
             ModeDetector.OverrideModeDetector(new CustomModeDetector());
+        }
+
+        public IServiceProvider Services
+        {
+            get => services;
+            init
+            {
+                services = value;
+                logger = services.GetRequiredService<ILogger<App>>();
+            }
         }
 
         public override void Initialize()
@@ -64,23 +57,25 @@ namespace WoWsShipBuilder.Desktop
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                container = SetupDependencyInjection(LogManager.Configuration);
-                Logging.Initialize(container.Resolve<ILoggerFactory>());
-                AppSettingsHelper.LoadSettings();
+                // container = SetupDependencyInjection(LogManager.Configuration);
+                Logging.Initialize(Services.GetRequiredService<ILoggerFactory>());
+                InitializeSettings();
+                var settings = Services.GetRequiredService<AppSettings>();
+
+                // AppSettingsHelper.LoadSettings(Services);
                 LogManager.ReconfigExistingLoggers();
-                logger = container.Resolve<ILogger<App>>();
 
                 desktop.Exit += OnExit;
-                desktop.MainWindow = new SplashScreen();
-                logger.LogInformation("AutoUpdate Enabled: {SettingsAutoUpdateEnabled}", AppSettingsHelper.Settings.AutoUpdateEnabled);
+                desktop.MainWindow = new SplashScreen(Services);
+                logger.LogInformation("AutoUpdate Enabled: {SettingsAutoUpdateEnabled}", settings.AutoUpdateEnabled);
 
-                if (AppSettingsHelper.Settings.AutoUpdateEnabled)
+                if (settings.AutoUpdateEnabled)
                 {
                     Task.Run(async () =>
                     {
                         if (OperatingSystem.IsWindows())
                         {
-                            await UpdateCheck(container.Resolve<AppNotificationService>());
+                            await UpdateCheck(Services.GetRequiredService<AppNotificationService>());
                             logger.LogInformation("Finished updatecheck");
                         }
                         else
@@ -94,55 +89,28 @@ namespace WoWsShipBuilder.Desktop
             base.OnFrameworkInitializationCompleted();
         }
 
-        private static IContainer SetupDependencyInjection(LoggingConfiguration configuration)
+        private void InitializeSettings()
         {
-            var services = new ServiceCollection();
-            services.AddLogging(options =>
-            {
-                options.ClearProviders();
-                options.SetMinimumLevel(LogLevel.Trace);
-                options.AddNLog(configuration, new() { ParseMessageTemplates = true });
-            });
-            var builder = new ContainerBuilder();
-            builder.Populate(services);
+            var settingsAccessor = (DesktopSettingsAccessor)services.GetRequiredService<ISettingsAccessor>();
+            var settings = settingsAccessor.LoadSettingsSync();
+            settings ??= new();
+            settings.WebAppSettings ??= new();
 
-            builder.RegisterType<AppSettings>().SingleInstance();
-            builder.RegisterInstance(new FileSystem()).As<IFileSystem>().SingleInstance();
-            builder.RegisterType<DesktopDataService>().As<IDataService>().SingleInstance();
-            builder.RegisterType<DesktopAppDataService>().As<IAppDataService>().As<DesktopAppDataService>().As<IUserDataService>().SingleInstance();
-            builder.RegisterType<LocalizationProvider>().As<ILocalizationProvider>().SingleInstance();
-            builder.RegisterType<Localizer>().AsSelf().As<ILocalizer>().SingleInstance();
-            builder.RegisterType<AwsClient>().As<IAwsClient>().As<IDesktopAwsClient>().SingleInstance();
-            builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
-            builder.RegisterType<AvaloniaClipboardService>().As<IClipboardService>();
-            builder.RegisterType<LocalDataUpdater>().As<ILocalDataUpdater>();
-            builder.RegisterType<AppNotificationService>().SingleInstance();
-
-            builder.RegisterType<StartMenuViewModel>();
-            builder.RegisterType<ShipWindowViewModel>();
-            builder.RegisterType<DispersionGraphViewModel>();
-            builder.RegisterType<SplashScreenViewModel>();
-
-            var resolver = builder.UseAutofacDependencyResolver();
-            Locator.SetLocator(resolver);
-
-            PlatformRegistrationManager.SetRegistrationNamespaces(RegistrationNamespace.Avalonia);
-            resolver.InitializeSplat();
-            resolver.InitializeReactiveUI(RegistrationNamespace.Avalonia);
-            resolver.InitializeAvalonia();
-
-            var diContainer = builder.Build();
-            resolver.SetLifetimeScope(diContainer);
-
-            return diContainer;
+            logger.LogDebug("Updating app settings with settings read from file...");
+            var appSettings = services.GetRequiredService<AppSettings>();
+            appSettings.UpdateFromSettings(settings);
+            AppData.IsInitialized = true;
+            Thread.CurrentThread.CurrentCulture = appSettings.SelectedLanguage.CultureInfo;
+            Thread.CurrentThread.CurrentUICulture = appSettings.SelectedLanguage.CultureInfo;
+            logger.LogDebug("Settings initialization complete");
         }
 
         private void OnExit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
         {
-            using var scope = container.BeginLifetimeScope();
             logger.LogInformation("Closing app, saving setting and builds");
-            AppSettingsHelper.SaveSettings();
-            scope.Resolve<IUserDataService>().SaveBuilds();
+            var settingsAccessor = (DesktopSettingsAccessor)Services.GetRequiredService<ISettingsAccessor>();
+            settingsAccessor.SaveSettingsSync(Services.GetRequiredService<AppSettings>());
+            Services.GetRequiredService<IUserDataService>().SaveBuilds();
             logger.LogInformation("Exiting...");
             logger.LogInformation("------------------------------");
         }

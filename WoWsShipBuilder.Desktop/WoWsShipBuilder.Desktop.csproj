@@ -1,6 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Web">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
+        <TargetFramework>net7.0-windows</TargetFramework>
         <ApplicationIcon>Assets\ShipBuilderIcon_bg.ico</ApplicationIcon>
         <Win32Resource />
         <SignAssembly>false</SignAssembly>
@@ -41,6 +42,9 @@
         <None Remove="Assets\Question_Full.png" />
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebView" Version="7.0.4" />
+        <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1661.34" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.WindowsForms" Version="7.0.59" />
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
         <PackageReference Include="Avalonia" Version="0.10.19" />
         <PackageReference Include="Avalonia.Desktop" Version="0.10.19" />
@@ -83,6 +87,14 @@
         <Compile Update="UserControls\UpgradeSelector.axaml.cs">
             <DependentUpon>UpgradeSelector.axaml</DependentUpon>
         </Compile>
+        <Compile Update="Features\BlazorWebView\BlazorWindow.axaml.cs">
+          <DependentUpon>BlazorWindow.axaml</DependentUpon>
+          <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="App.axaml.cs">
+          <DependentUpon>App.axaml</DependentUpon>
+          <SubType>Code</SubType>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="Settings\ApplicationOptions.json" />
@@ -97,8 +109,12 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
           <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         </Content>
+        <Content Update="App.razor">
+          <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        </Content>
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Assets\nation_flags" />
+      <Folder Include="Features\Settings\" />
     </ItemGroup>
 </Project>

@@ -3,10 +3,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Threading;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Splat;
 using WoWsShipBuilder.Core.Services;
-using WoWsShipBuilder.Desktop.Extensions;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Data;
@@ -18,22 +17,30 @@ namespace WoWsShipBuilder.Desktop.Settings;
 [SuppressMessage("System.IO.Abstractions", "IO0006", Justification = "This class is never tested.")]
 public static class AppSettingsHelper
 {
-    private static readonly string SettingFile = Path.Combine(Locator.Current.GetRequiredService<IAppDataService>().DefaultAppDataDirectory, "settings.json");
+    private static IAppDataService appDataService = default!;
 
-    public static AppSettings Settings => Locator.Current.GetService<AppSettings>() ?? new();
+    private static AppSettings? settings;
 
-    public static ILocalizer LocalizerInstance => Locator.Current.GetService<ILocalizer>() ?? DesignDataHelper.DemoLocalizer;
+    private static ILocalizer? localizer;
 
-    public static string BuildImageOutputDirectory => Settings.CustomImagePath ?? Locator.Current.GetRequiredService<IDataService>().CombinePaths(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), AppConstants.ShipBuilderName);
+    private static IDataService dataService = default!;
 
-    public static void SaveSettings() => Locator.Current.GetRequiredService<IDataService>().StoreAsync(Settings, SettingFile);
+    private static string SettingFile => Path.Combine(appDataService.DefaultAppDataDirectory, "settings.json");
 
-    public static void LoadSettings()
+    public static AppSettings Settings => settings ?? new();
+
+    public static ILocalizer LocalizerInstance => localizer ?? DesignDataHelper.DemoLocalizer;
+
+    public static string BuildImageOutputDirectory => Settings.CustomImagePath ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), AppConstants.ShipBuilderName);
+
+    public static void SaveSettings() => dataService.StoreAsync(Settings, SettingFile);
+
+    public static void LoadSettings(IServiceProvider services)
     {
         if (File.Exists(SettingFile))
         {
             Logging.Logger.LogInformation("Trying to load settings from settings file...");
-            var settings = Locator.Current.GetRequiredService<IDataService>().Load<AppSettings>(SettingFile);
+            var settings = dataService.Load<AppSettings>(SettingFile);
             if (settings == null)
             {
                 Logging.Logger.LogError("Unable to parse local settings file. Creating empty settings instance");
@@ -51,6 +58,14 @@ public static class AppSettingsHelper
         AppData.IsInitialized = true;
         Logging.Logger.LogInformation("Settings initialized");
         UpdateThreadCulture(Settings.SelectedLanguage.CultureInfo);
+    }
+
+    public static void Initialize(IServiceProvider services)
+    {
+        appDataService = services.GetRequiredService<IAppDataService>();
+        settings = services.GetRequiredService<AppSettings>();
+        localizer = services.GetRequiredService<ILocalizer>();
+        dataService = services.GetRequiredService<IDataService>();
     }
 
     private static void UpdateThreadCulture(CultureInfo cultureInfo)
