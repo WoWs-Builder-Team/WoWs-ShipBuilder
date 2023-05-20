@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:infrastructure="clr-namespace:WoWsShipBuilder.Desktop.Infrastructure"
+        xmlns:webView="clr-namespace:WoWsShipBuilder.Desktop.Infrastructure.WebView"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="WoWsShipBuilder.Desktop.Features.BlazorWebView.BlazorWindow"
         WindowStartupLocation="CenterScreen"
@@ -10,7 +10,7 @@
         Title="BlazorWindow">
     <Grid RowDefinitions="30, *">
         <!-- <infrastructure:AppHeader ShowMaximizeButton="True" /> -->
-        <infrastructure:BlazorWebView Grid.Row="1" Name="WebView"
+        <webView:BlazorWebView Grid.Row="1" Name="WebView"
                                       HostPage="wwwroot\\index.html"
                                       RootComponents="{DynamicResource rootComponents}"
                                       Services="{DynamicResource services}" />

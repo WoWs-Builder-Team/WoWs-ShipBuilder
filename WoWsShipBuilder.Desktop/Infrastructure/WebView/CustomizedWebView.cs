@@ -3,7 +3,7 @@ using Microsoft.Extensions.FileProviders;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Infrastructure.Data;
 
-namespace WoWsShipBuilder.Desktop.Infrastructure;
+namespace WoWsShipBuilder.Desktop.Infrastructure.WebView;
 
 public class CustomizedWebView : Microsoft.AspNetCore.Components.WebView.WindowsForms.BlazorWebView
 {

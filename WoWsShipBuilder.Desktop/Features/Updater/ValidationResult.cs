@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WoWsShipBuilder.Desktop.Updater;
+namespace WoWsShipBuilder.Desktop.Features.Updater;
 
 public record ValidationResult(bool ValidationStatus)
 {

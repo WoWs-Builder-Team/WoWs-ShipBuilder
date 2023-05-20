@@ -14,7 +14,7 @@ using Splat;
 using Squirrel;
 using WoWsShipBuilder.Desktop.Extensions;
 using WoWsShipBuilder.Desktop.Infrastructure;
-using WoWsShipBuilder.Desktop.Settings;
+using WoWsShipBuilder.Desktop.Infrastructure.StaticConfiguration;
 using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Localization;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;

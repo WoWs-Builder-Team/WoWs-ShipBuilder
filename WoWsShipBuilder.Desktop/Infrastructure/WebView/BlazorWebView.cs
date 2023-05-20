@@ -6,7 +6,7 @@ using DynamicData;
 using Microsoft.AspNetCore.Components.WebView.WindowsForms;
 using Color = System.Drawing.Color;
 
-namespace WoWsShipBuilder.Desktop.Infrastructure;
+namespace WoWsShipBuilder.Desktop.Infrastructure.WebView;
 
 public class BlazorWebView : NativeControlHost
 {

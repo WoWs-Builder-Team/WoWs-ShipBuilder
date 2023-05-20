@@ -19,7 +19,7 @@ jobs:
         with:
           global-json-file: global.json
       - name: Create application config
-        run: 'echo "$APPCONFIG" > WoWsShipBuilder.Desktop/Settings/ApplicationOptions.json'
+        run: 'echo "$APPCONFIG" > WoWsShipBuilder.Desktop/Infrastructure/StaticConfiguration/ApplicationOptions.json'
         shell: bash
         env:
           APPCONFIG: ${{secrets.SHIPBUILDER_APPCONFIG}}

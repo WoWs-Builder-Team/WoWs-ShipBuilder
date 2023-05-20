@@ -69,17 +69,16 @@
           <DependentUpon>App.axaml</DependentUpon>
           <SubType>Code</SubType>
         </Compile>
-        <Compile Update="Infrastructure\AppHeader.axaml.cs">
-          <DependentUpon>AppHeader.axaml</DependentUpon>
-          <SubType>Code</SubType>
-        </Compile>
         <Compile Update="Features\SplashScreen\SplashScreen.axaml.cs">
           <DependentUpon>SplashScreen.axaml</DependentUpon>
           <SubType>Code</SubType>
         </Compile>
+        <Compile Update="Common\AppHeader.axaml.cs">
+          <DependentUpon>AppHeader.axaml</DependentUpon>
+          <SubType>Code</SubType>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
-        <EmbeddedResource Include="Settings\ApplicationOptions.json" />
         <Content Remove="Settings\ApplicationOptions.json" />
     </ItemGroup>
     <ItemGroup>
@@ -96,5 +95,8 @@
         <Content Update="App.razor">
           <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         </Content>
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Include="Infrastructure\StaticConfiguration\ApplicationOptions.json" />
     </ItemGroup>
 </Project>

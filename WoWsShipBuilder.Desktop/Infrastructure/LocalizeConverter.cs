@@ -5,7 +5,7 @@ using System.Text;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Microsoft.Extensions.Logging;
-using WoWsShipBuilder.Desktop.Settings;
+using WoWsShipBuilder.Desktop.Infrastructure.StaticConfiguration;
 using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.DataTransfer;
 using WoWsShipBuilder.Infrastructure.Localization;
