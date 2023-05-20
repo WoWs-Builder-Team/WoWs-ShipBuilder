@@ -12,7 +12,7 @@
     <Grid RowDefinitions="30, *">
         <userControls:AppHeader ShowMaximizeButton="True" />
         <infrastructure:BlazorWebView Grid.Row="1" Name="WebView"
-                                      HostPage="index.html"
+                                      HostPage="wwwroot\\index.html"
                                       RootComponents="{DynamicResource rootComponents}"
                                       Services="{DynamicResource services}" />
     </Grid>
