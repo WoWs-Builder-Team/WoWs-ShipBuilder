@@ -2,18 +2,16 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Desktop.Features.SplashScreen;
 using WoWsShipBuilder.Desktop.Features.Updater;
-using WoWsShipBuilder.Desktop.Infrastructure;
 using WoWsShipBuilder.Desktop.Infrastructure.AwsClient;
+using WoWsShipBuilder.Desktop.Infrastructure.Data;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Data;
 using WoWsShipBuilder.Infrastructure.HttpClients;
 
-namespace WoWsShipBuilder.Desktop;
+namespace WoWsShipBuilder.Desktop.Infrastructure;
 
 public static class HostApplicationBuilderExtensions
 {
@@ -26,9 +24,9 @@ public static class HostApplicationBuilderExtensions
         builder.Services.AddSingleton<IDataService, DesktopDataService>();
         builder.Services.AddSingleton<IAppDataService, DesktopAppDataService>();
         builder.Services.AddSingleton<IUserDataService>(x => (IUserDataService)x.GetRequiredService<IAppDataService>());
-        builder.Services.AddSingleton<AwsClient>();
-        builder.Services.AddSingleton<IAwsClient>(x => x.GetRequiredService<AwsClient>());
-        builder.Services.AddSingleton<IDesktopAwsClient>(x => x.GetRequiredService<AwsClient>());
+        builder.Services.AddSingleton<AwsClient.AwsClient>();
+        builder.Services.AddSingleton<IAwsClient>(x => x.GetRequiredService<AwsClient.AwsClient>());
+        builder.Services.AddSingleton<IDesktopAwsClient>(x => x.GetRequiredService<AwsClient.AwsClient>());
         builder.Services.AddSingleton<IClipboardService, AvaloniaClipboardService>();
         builder.Services.AddSingleton<ISettingsAccessor, DesktopSettingsAccessor>();
         builder.Services.AddTransient<ILocalDataUpdater, LocalDataUpdater>();

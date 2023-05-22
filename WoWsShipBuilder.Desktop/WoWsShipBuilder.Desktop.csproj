@@ -23,29 +23,29 @@
         <WriteLinesToFile File="buildInfo.txt" Lines="$(Version)" Overwrite="true" />
     </Target>
     <ItemGroup>
-        <AvaloniaResource Include="Assets/**" />
+        <AvaloniaResource Include="Assets\**" />
         <AvaloniaResource Include="wwwroot\assets\icons\error.png" />
         <AvaloniaResource Include="wwwroot\assets\icons\info.png" />
-        <None Remove="Assets/**" />
+        <None Remove="Assets\**" />
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Infrastructure\StaticConfiguration\ApplicationOptions.json" />
+        <Content Remove="Infrastructure\StaticConfiguration\*.json" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebView.WindowsForms" Version="7.0.86" />
-        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
         <PackageReference Include="Avalonia" Version="0.10.19" />
         <PackageReference Include="Avalonia.Desktop" Version="0.10.19" />
         <PackageReference Include="Avalonia.Diagnostics" Version="0.10.19" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.19" />
         <PackageReference Include="Clowd.Squirrel" Version="2.9.42" />
-        <PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.9.9" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="NLog.Extensions.Logging" Version="5.2.3" />
-        <PackageReference Include="OxyPlot.Avalonia" Version="2.1.0" />
         <PackageReference Include="Roslyn.System.IO.Abstractions.Analyzers" Version="12.2.19">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Sentry.NLog" Version="3.31.0" />
-        <PackageReference Include="Splat.Autofac" Version="14.6.8" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -54,7 +54,7 @@
         <PackageReference Include="Nerdbank.GitVersioning" PrivateAssets="all" Version="3.6.128" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\WoWsShipBuilder.Core\WoWsShipBuilder.Core.csproj" />
+        <ProjectReference Include="..\WoWsShipBuilder.Common\WoWsShipBuilder.Common.csproj" />
         <ProjectReference Include="..\WoWsShipBuilder.Data.Generator\WoWsShipBuilder.Data.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
     <ItemGroup>
@@ -97,8 +97,5 @@
         <Content Update="App.razor">
           <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         </Content>
-    </ItemGroup>
-    <ItemGroup>
-      <EmbeddedResource Include="Infrastructure\StaticConfiguration\ApplicationOptions.json" />
     </ItemGroup>
 </Project>

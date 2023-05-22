@@ -3,7 +3,7 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Desktop.Infrastructure.Data;
 using WoWsShipBuilder.Infrastructure.Data;
 
 // ReSharper disable VirtualMemberNeverOverridden.Global

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace WoWsShipBuilder.Core.Services;
+namespace WoWsShipBuilder.Desktop.Infrastructure.Data;
 
 [UnsupportedOSPlatform("browser")]
 public class DesktopDataService : IDataService

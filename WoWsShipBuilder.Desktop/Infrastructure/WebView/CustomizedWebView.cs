@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Desktop.Infrastructure.Data;
 using WoWsShipBuilder.Infrastructure.Data;
 
 namespace WoWsShipBuilder.Desktop.Infrastructure.WebView;

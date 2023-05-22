@@ -7,8 +7,6 @@
         <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseDark.xaml"/>
         <StyleInclude Source="/Common/Styles/ThemeOverride.axaml"/>
         <StyleInclude Source="/Common/Styles/DefaultStyle.axaml"/>
-        <StyleInclude Source="resm:OxyPlot.Avalonia.Themes.Default.xaml?assembly=OxyPlot.Avalonia"/>
-        <StyleInclude Source="avares://AvaloniaProgressRing/Styles/ProgressRing.xaml"/>
     </Application.Styles>
 
     <Application.Resources>

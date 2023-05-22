@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 
-namespace WoWsShipBuilder.Core.Services;
+namespace WoWsShipBuilder.Desktop.Infrastructure.Data;
 
 public interface IDataService
 {

@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Avalonia.Threading;
 using ReactiveUI;
-using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.Localization.Resources;
 
 namespace WoWsShipBuilder.Desktop.Infrastructure;
 

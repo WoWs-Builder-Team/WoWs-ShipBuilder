@@ -3,7 +3,7 @@ using System.IO.Abstractions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Desktop.Infrastructure.Data;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Data;
