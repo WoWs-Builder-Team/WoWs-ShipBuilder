@@ -15,7 +15,6 @@ using Squirrel;
 using WoWsShipBuilder.Desktop.Extensions;
 using WoWsShipBuilder.Desktop.Infrastructure;
 using WoWsShipBuilder.Desktop.Infrastructure.StaticConfiguration;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Localization;
 using WoWsShipBuilder.Infrastructure.Utility;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
@@ -38,7 +37,6 @@ class Program
         builder.Logging.AddNLog(LoggingSetup.CreateLoggingConfiguration(), new() { ParseMessageTemplates = true });
         builder.UseShipBuilderDesktop();
 
-        // builder.Services.UseMicrosoftDependencyResolver();
         var resolver = Locator.CurrentMutable;
         resolver.InitializeSplat();
         resolver.InitializeReactiveUI(RegistrationNamespace.Avalonia);
@@ -47,7 +45,6 @@ class Program
         using var app = builder.Build();
         await app.StartAsync();
 
-        // app.Services.UseMicrosoftDependencyResolver();
         var logger = app.Services.GetRequiredService<ILogger<Program>>();
         LocalizeConverter.InitializeLocalizer(app.Services.GetRequiredService<ILocalizer>());
 

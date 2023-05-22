@@ -1,10 +1,10 @@
-﻿namespace WoWsShipBuilder.Desktop.Test;
-
-using System.IO.Abstractions.TestingHelpers;
+﻿using System.IO.Abstractions.TestingHelpers;
 using FluentAssertions;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Desktop.Infrastructure.Data;
 using WoWsShipBuilder.Features.Settings;
+
+namespace WoWsShipBuilder.Desktop.Test;
 
 [TestFixture]
 public class DesktopDataServiceTest

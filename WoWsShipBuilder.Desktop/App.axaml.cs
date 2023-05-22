@@ -20,7 +20,6 @@ using WoWsShipBuilder.Desktop.Features.MessageBox;
 using WoWsShipBuilder.Desktop.Features.SplashScreen;
 using WoWsShipBuilder.Desktop.Infrastructure;
 using WoWsShipBuilder.Features.Settings;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Data;
 using WoWsShipBuilder.Infrastructure.Localization;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;
@@ -69,12 +68,10 @@ namespace WoWsShipBuilder.Desktop
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                // container = SetupDependencyInjection(LogManager.Configuration);
                 Logging.Initialize(Services.GetRequiredService<ILoggerFactory>());
                 InitializeSettings();
                 var settings = Services.GetRequiredService<AppSettings>();
 
-                // AppSettingsHelper.LoadSettings(Services);
                 LogManager.ReconfigExistingLoggers();
 
                 desktop.Exit += OnExit;

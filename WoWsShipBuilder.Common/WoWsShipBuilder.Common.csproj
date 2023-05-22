@@ -1,8 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
-        <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>WoWsShipBuilder</RootNamespace>
     </PropertyGroup>
@@ -40,7 +38,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Features\" />
         <Folder Include="wwwroot\" />
     </ItemGroup>
 
@@ -48,61 +45,6 @@
         <AdditionalFiles Include="..\stylecop.json">
             <Link>stylecop.json</Link>
         </AdditionalFiles>
-        <AdditionalFiles Include="Features\AccelerationCharts\AccelerationCharts.razor" />
-        <AdditionalFiles Include="Features\AccelerationCharts\CustomAccelerationDataDialog.razor" />
-        <AdditionalFiles Include="Features\AccelerationCharts\ShipBuildContainerSelectionDialog.razor" />
-        <AdditionalFiles Include="Features\BuildConfiguration\BuildConfigurationDialog.razor" />
-        <AdditionalFiles Include="Features\BuildConfiguration\BuildConfigurationDialogHelper.razor" />
-        <AdditionalFiles Include="Features\Builds\Components\BuildImageRenderDialog.razor" />
-        <AdditionalFiles Include="Features\Builds\Components\BuildImageSettingsDialog.razor" />
-        <AdditionalFiles Include="Features\Builds\Components\BuildNameDialog.razor" />
-        <AdditionalFiles Include="Features\Builds\Components\BuildStringInputDialog.razor" />
-        <AdditionalFiles Include="Features\Builds\Components\CaptainSkillSelectorImageRender.razor" />
-        <AdditionalFiles Include="Features\Builds\Components\ConsumableSelectorImageRender.razor" />
-        <AdditionalFiles Include="Features\Builds\Components\ShipModuleSelectorImageRender.razor" />
-        <AdditionalFiles Include="Features\Builds\Components\ShipUpgradeSelectorImageRender.razor" />
-        <AdditionalFiles Include="Features\Builds\Components\SignalSelectorImageRender.razor" />
-        <AdditionalFiles Include="Features\Charts\Charts.razor" />
-        <AdditionalFiles Include="Features\Charts\DispersionPlot.razor" />
-        <AdditionalFiles Include="Features\Charts\ShipAndShellSelectionDialog.razor" />
-        <AdditionalFiles Include="Features\FiringAngleDiagram\FiringAngleDialog.razor" />
-        <AdditionalFiles Include="Features\ShipComparison\GridSections\AaDefenseFragment.razor" />
-        <AdditionalFiles Include="Features\ShipComparison\GridSections\AerialTorpedoesFragment.razor" />
-        <AdditionalFiles Include="Features\ShipComparison\GridSections\AirStrikeFragment.razor" />
-        <AdditionalFiles Include="Features\ShipComparison\GridSections\ApShellFragment.razor" />
-        <AdditionalFiles Include="Features\ShipComparison\GridSections\AswFragment.razor" />
-        <AdditionalFiles Include="Features\ShipComparison\GridSections\BombersFragment.razor" />
-        <AdditionalFiles Include="Features\ShipComparison\GridSections\BombsFragment.razor" />
-        <AdditionalFiles Include="Features\ShipComparison\GridSections\ConcealmentFragment.razor" />
-        <AdditionalFiles Include="Features\ShipComparison\GridSections\HeShellFragment.razor" />
-        <AdditionalFiles Include="Features\ShipComparison\GridSections\MainBatteryFragment.razor" />
-        <AdditionalFiles Include="Features\ShipComparison\GridSections\ManeuverabilityFragment.razor" />
-        <AdditionalFiles Include="Features\ShipComparison\GridSections\RocketPlanesFragment.razor" />
-        <AdditionalFiles Include="Features\ShipComparison\GridSections\RocketsFragment.razor" />
-        <AdditionalFiles Include="Features\ShipComparison\GridSections\SapShellFragment.razor" />
-        <AdditionalFiles Include="Features\ShipComparison\GridSections\SecondaryBatteryFragment.razor" />
-        <AdditionalFiles Include="Features\ShipComparison\GridSections\SecondaryBatteryShellsFragment.razor" />
-        <AdditionalFiles Include="Features\ShipComparison\GridSections\SonarFragment.razor" />
-        <AdditionalFiles Include="Features\ShipComparison\GridSections\SurvivabilityFragment.razor" />
-        <AdditionalFiles Include="Features\ShipComparison\GridSections\TorpedoBombersFragment.razor" />
-        <AdditionalFiles Include="Features\ShipComparison\GridSections\TorpedoesFragment.razor" />
-        <AdditionalFiles Include="Features\ShipComparison\HideComparisonColumnsDialog.razor" />
-        <AdditionalFiles Include="Features\ShipComparison\ShipComparison.razor" />
-        <AdditionalFiles Include="Features\ShipSelection\ShipSelectionDialog.razor" />
-        <AdditionalFiles Include="Features\ShipSelection\ShipSelector.razor" />
-        <AdditionalFiles Include="Features\ShipStats\Components\CaptainSkillSelector.razor" />
-        <AdditionalFiles Include="Features\ShipStats\Components\CaptainTalentsAndConditionalSkillDialog.razor" />
-        <AdditionalFiles Include="Features\ShipStats\Components\ConsumableSelector.razor" />
-        <AdditionalFiles Include="Features\ShipStats\Components\DepthChargeDamageDistributionChart.razor" />
-        <AdditionalFiles Include="Features\ShipStats\Components\MultilineString.razor" />
-        <AdditionalFiles Include="Features\ShipStats\Components\SharedFragments.razor" />
-        <AdditionalFiles Include="Features\ShipStats\Components\ShipModuleSelector.razor" />
-        <AdditionalFiles Include="Features\ShipStats\Components\ShipStatsPanel.razor" />
-        <AdditionalFiles Include="Features\ShipStats\Components\ShipStatsTab.razor" />
-        <AdditionalFiles Include="Features\ShipStats\Components\ShipUpgradeSelector.razor" />
-        <AdditionalFiles Include="Features\ShipStats\Components\SignalSelector.razor" />
-        <AdditionalFiles Include="Features\ShipStats\ShipStats.razor" />
-        <AdditionalFiles Include="Features\StartPage\Index.razor" />
     </ItemGroup>
 
     <ItemGroup>
@@ -118,69 +60,6 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>Translation.resx</DependentUpon>
         </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-        <_JsFileModuleStaticWebAsset Include="Features\Builds\Components\BuildImageRenderDialog.razor.js" />
-        <_JsFileModuleStaticWebAsset Include="Features\Charts\DispersionPlot.razor.js" />
-        <_JsFileModuleStaticWebAsset Include="Features\FiringAngleDiagram\FiringAngleDialog.razor.js" />
-        <_JsFileModuleStaticWebAsset Include="Features\ShipStats\Components\DepthChargeDamageDistributionChart.razor.js" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="Builds\Components\BuildImageRenderDialog.razor" />
-      <_ContentIncludedByDefault Remove="Builds\Components\BuildImageSettingsDialog.razor" />
-      <_ContentIncludedByDefault Remove="Builds\Components\BuildNameDialog.razor" />
-      <_ContentIncludedByDefault Remove="Builds\Components\BuildStringInputDialog.razor" />
-      <_ContentIncludedByDefault Remove="Builds\Components\CaptainSkillSelectorImageRender.razor" />
-      <_ContentIncludedByDefault Remove="Builds\Components\ConsumableSelectorImageRender.razor" />
-      <_ContentIncludedByDefault Remove="Builds\Components\ShipModuleSelectorImageRender.razor" />
-      <_ContentIncludedByDefault Remove="Builds\Components\ShipUpgradeSelectorImageRender.razor" />
-      <_ContentIncludedByDefault Remove="Builds\Components\SignalSelectorImageRender.razor" />
-      <_ContentIncludedByDefault Remove="BuildConfiguration\BuildConfigurationDialog.razor" />
-      <_ContentIncludedByDefault Remove="BuildConfiguration\BuildConfigurationDialogHelper.razor" />
-      <_ContentIncludedByDefault Remove="AccelerationCharts\AccelerationCharts.razor" />
-      <_ContentIncludedByDefault Remove="AccelerationCharts\CustomAccelerationDataDialog.razor" />
-      <_ContentIncludedByDefault Remove="AccelerationCharts\ShipBuildContainerSelectionDialog.razor" />
-      <_ContentIncludedByDefault Remove="FiringAngleDiagram\FiringAngleDialog.razor" />
-      <_ContentIncludedByDefault Remove="ShipComparison\GridSections\AaDefenseFragment.razor" />
-      <_ContentIncludedByDefault Remove="ShipComparison\GridSections\AerialTorpedoesFragment.razor" />
-      <_ContentIncludedByDefault Remove="ShipComparison\GridSections\AirStrikeFragment.razor" />
-      <_ContentIncludedByDefault Remove="ShipComparison\GridSections\ApShellFragment.razor" />
-      <_ContentIncludedByDefault Remove="ShipComparison\GridSections\AswFragment.razor" />
-      <_ContentIncludedByDefault Remove="ShipComparison\GridSections\BombersFragment.razor" />
-      <_ContentIncludedByDefault Remove="ShipComparison\GridSections\BombsFragment.razor" />
-      <_ContentIncludedByDefault Remove="ShipComparison\GridSections\ConcealmentFragment.razor" />
-      <_ContentIncludedByDefault Remove="ShipComparison\GridSections\HeShellFragment.razor" />
-      <_ContentIncludedByDefault Remove="ShipComparison\GridSections\MainBatteryFragment.razor" />
-      <_ContentIncludedByDefault Remove="ShipComparison\GridSections\ManeuverabilityFragment.razor" />
-      <_ContentIncludedByDefault Remove="ShipComparison\GridSections\RocketPlanesFragment.razor" />
-      <_ContentIncludedByDefault Remove="ShipComparison\GridSections\RocketsFragment.razor" />
-      <_ContentIncludedByDefault Remove="ShipComparison\GridSections\SapShellFragment.razor" />
-      <_ContentIncludedByDefault Remove="ShipComparison\GridSections\SecondaryBatteryFragment.razor" />
-      <_ContentIncludedByDefault Remove="ShipComparison\GridSections\SecondaryBatteryShellsFragment.razor" />
-      <_ContentIncludedByDefault Remove="ShipComparison\GridSections\SonarFragment.razor" />
-      <_ContentIncludedByDefault Remove="ShipComparison\GridSections\SurvivabilityFragment.razor" />
-      <_ContentIncludedByDefault Remove="ShipComparison\GridSections\TorpedoBombersFragment.razor" />
-      <_ContentIncludedByDefault Remove="ShipComparison\GridSections\TorpedoesFragment.razor" />
-      <_ContentIncludedByDefault Remove="ShipComparison\HideComparisonColumnsDialog.razor" />
-      <_ContentIncludedByDefault Remove="ShipComparison\ShipComparison.razor" />
-      <_ContentIncludedByDefault Remove="ShipComparison\_Imports.razor" />
-      <_ContentIncludedByDefault Remove="ShipSelection\ShipSelectionDialog.razor" />
-      <_ContentIncludedByDefault Remove="ShipSelection\ShipSelector.razor" />
-      <_ContentIncludedByDefault Remove="ShipStats\Components\CaptainSkillSelector.razor" />
-      <_ContentIncludedByDefault Remove="ShipStats\Components\CaptainTalentsAndConditionalSkillDialog.razor" />
-      <_ContentIncludedByDefault Remove="ShipStats\Components\ConsumableSelector.razor" />
-      <_ContentIncludedByDefault Remove="ShipStats\Components\DepthChargeDamageDistributionChart.razor" />
-      <_ContentIncludedByDefault Remove="ShipStats\Components\MultilineString.razor" />
-      <_ContentIncludedByDefault Remove="ShipStats\Components\SharedFragments.razor" />
-      <_ContentIncludedByDefault Remove="ShipStats\Components\ShipModuleSelector.razor" />
-      <_ContentIncludedByDefault Remove="ShipStats\Components\ShipStatsPanel.razor" />
-      <_ContentIncludedByDefault Remove="ShipStats\Components\ShipStatsTab.razor" />
-      <_ContentIncludedByDefault Remove="ShipStats\Components\ShipUpgradeSelector.razor" />
-      <_ContentIncludedByDefault Remove="ShipStats\Components\SignalSelector.razor" />
-      <_ContentIncludedByDefault Remove="ShipStats\ShipStats.razor" />
-      <_ContentIncludedByDefault Remove="StartPage\Index.razor" />
     </ItemGroup>
 
 </Project>

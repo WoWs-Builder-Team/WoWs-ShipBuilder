@@ -1,10 +1,4 @@
-﻿@using WoWsShipBuilder.Features.Settings
-@using WoWsShipBuilder.Infrastructure
-@using WoWsShipBuilder.Infrastructure.Data
-@inherits LayoutComponentBase
-@inject ISettingsAccessor SettingsAccessor
-@inject AppSettings AppSettings
-@inject RefreshNotifierService RefreshNotifierService
+﻿@inherits LayoutComponentBase
 
 <MudThemeProvider Theme="@theme" IsDarkMode="true"/>
 <MudDialogProvider/>
@@ -21,7 +15,7 @@
 
 @code
 {
-    private bool settingsInitialized = true;
+    private readonly bool settingsInitialized = true;
 
     private readonly MudTheme theme = new()
     {
