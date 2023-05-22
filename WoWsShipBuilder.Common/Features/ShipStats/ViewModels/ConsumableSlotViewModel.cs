@@ -2,12 +2,11 @@
 using Microsoft.Extensions.Logging.Abstractions;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.Infrastructure;
 using ConsumableDataContainer = WoWsShipBuilder.DataContainers.ConsumableDataContainer;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
-public class ConsumableSlotViewModel : ViewModelBase
+public class ConsumableSlotViewModel : ReactiveObject
 {
     private readonly Action<int, bool>? activationChangeHandler;
     private readonly List<ShipConsumable> shipConsumables;

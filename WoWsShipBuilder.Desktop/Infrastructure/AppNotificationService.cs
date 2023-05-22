@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Avalonia.Threading;
 using ReactiveUI;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;
 
 namespace WoWsShipBuilder.Desktop.Infrastructure;
@@ -9,9 +8,9 @@ namespace WoWsShipBuilder.Desktop.Infrastructure;
 /// <summary>
 /// A service that contains information about application updates and their state.
 /// Can also be used for other application information that should be available globally in the app.
-/// This service is an implementation of <see cref="ViewModelBase"/> and allows views to bind to its properties, supporting property-changed events.
+/// This service is an implementation of <see cref="ReactiveObject"/> and allows views to bind to its properties, supporting property-changed events.
 /// </summary>
-public class AppNotificationService : ViewModelBase
+public class AppNotificationService : ReactiveObject
 {
     private string appUpdateMessage = nameof(Translation.Placeholder);
 

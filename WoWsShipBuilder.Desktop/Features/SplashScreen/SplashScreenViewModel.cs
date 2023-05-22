@@ -2,16 +2,17 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using ReactiveUI;
 using WoWsShipBuilder.Desktop.Features.Updater;
 using WoWsShipBuilder.Features.Settings;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Data;
 using WoWsShipBuilder.Infrastructure.Localization;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Desktop.Features.SplashScreen;
 
-public partial class SplashScreenViewModel : ViewModelBase
+public partial class SplashScreenViewModel : ReactiveObject
 {
     private const int TaskNumber = 4;
 

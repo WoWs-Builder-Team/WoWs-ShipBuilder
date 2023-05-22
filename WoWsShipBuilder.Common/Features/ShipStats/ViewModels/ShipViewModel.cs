@@ -9,17 +9,14 @@ using WoWsShipBuilder.DataContainers;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Features.Builds;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Data;
-using WoWsShipBuilder.Infrastructure.Localization;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
-public partial class ShipViewModel : ViewModelBase
+public partial class ShipViewModel : ReactiveObject
 {
     private readonly CompositeDisposable disposables = new();
-
-    private readonly ILocalizer localizer;
 
     private readonly ILogger<ShipViewModel> logger;
 
@@ -66,9 +63,8 @@ public partial class ShipViewModel : ViewModelBase
     [Observable]
     private UpgradePanelViewModelBase upgradePanelViewModel = null!;
 
-    public ShipViewModel(INavigationService navigationService, ILocalizer localizer, ILogger<ShipViewModel> logger, ShipViewModelParams viewModelParams)
+    public ShipViewModel(ILogger<ShipViewModel> logger, ShipViewModelParams viewModelParams)
     {
-        this.localizer = localizer;
         tokenSource = new();
         this.logger = logger;
         PreviousShip = viewModelParams.ShipSummary.PrevShipIndex is null ? null : AppData.ShipSummaryList!.First(sum => sum.Index == viewModelParams.ShipSummary.PrevShipIndex);
@@ -77,13 +73,11 @@ public partial class ShipViewModel : ViewModelBase
         LoadShipFromIndexCommand = ReactiveCommand.CreateFromTask<string>(LoadShipFromIndexExecute);
     }
 
-    // public Interaction<BuildCreationWindowViewModel, BuildCreationResult?> BuildCreationInteraction { get; } = new();
     public Interaction<string, Unit> BuildCreatedInteraction { get; } = new();
 
     // Handle(true) closes this window too
     public Interaction<Unit, Unit> CloseChildrenInteraction { get; } = new();
 
-    // public Interaction<StartMenuViewModelBase, Unit> OpenStartMenuInteraction { get; } = new();
     public ICommand LoadShipFromIndexCommand { get; }
 
     public async void ResetBuild()
@@ -102,18 +96,6 @@ public partial class ShipViewModel : ViewModelBase
         return new(buildName, CurrentShipIndex, RawShipData.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel!.GetCaptainIndex(), CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
     }
 
-    // public Interaction<ShipSelectionWindowViewModel, List<ShipSummary>?> SelectNewShipInteraction { get; } = new();
-    // public async void NewShipSelection()
-    // {
-    //     logger.LogDebug("Selecting new ship");
-    //
-    //     var result = (await SelectNewShipInteraction.Handle(new(false, ShipSelectionWindowViewModel.LoadParams(localizer))))?.FirstOrDefault();
-    //     if (result != null)
-    //     {
-    //         logger.LogDebug("New ship selected: {Index}", result.Index);
-    //         await LoadNewShip(result);
-    //     }
-    // }
     private async Task LoadShipFromIndexExecute(string shipIndex)
     {
         var shipSummary = AppData.ShipSummaryList!.First(summary => summary.Index == shipIndex);

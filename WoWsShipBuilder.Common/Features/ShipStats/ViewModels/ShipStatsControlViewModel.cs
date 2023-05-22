@@ -1,11 +1,10 @@
 using ReactiveUI;
 using WoWsShipBuilder.DataContainers;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.Infrastructure;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
-public class ShipStatsControlViewModel : ViewModelBase
+public class ShipStatsControlViewModel : ReactiveObject
 {
     private ShipDataContainer? currentShipStats;
 

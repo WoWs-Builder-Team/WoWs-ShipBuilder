@@ -13,6 +13,7 @@
 @using WoWsShipBuilder.Infrastructure.Data
 @using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
+@using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
 @using ShipViewModel = WoWsShipBuilder.Features.ShipStats.ViewModels.ShipViewModel
 
@@ -355,7 +356,7 @@
         var ship = AppData.FindShipFromSummary(shipSummary);
         var vmParams = new ShipViewModelParams(ship, shipSummary, build);
 
-        ShipViewModel vm = new(null!, localizer, Logging.LoggerFactory.CreateLogger<ShipViewModel>(), vmParams);
+        ShipViewModel vm = new(Logging.LoggerFactory.CreateLogger<ShipViewModel>(), vmParams);
         vm.InitializeData(vmParams);
 
         // workaround to keep method signature compatible even though InitializeData is no longer async

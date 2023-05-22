@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Infrastructure.HttpClients;
 

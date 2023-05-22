@@ -4,10 +4,11 @@ using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.GameData;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels
 {
-    public class ShipModuleViewModel : ViewModelBase, IBuildComponentProvider
+    public class ShipModuleViewModel : ReactiveObject, IBuildComponentProvider
     {
         #region Static Fields and Constants
 

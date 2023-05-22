@@ -7,9 +7,9 @@ using WoWsShipBuilder.Features.LinkShortening;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Infrastructure.DataTransfer;
 using WoWsShipBuilder.Infrastructure.Localization;
-using WoWsShipBuilder.Infrastructure.Utility;
+using WoWsShipBuilder.Infrastructure.Metrics;
 
-namespace WoWsShipBuilder.Infrastructure;
+namespace WoWsShipBuilder.Infrastructure.Utility;
 
 public static class ServiceCollectionExtensions
 {

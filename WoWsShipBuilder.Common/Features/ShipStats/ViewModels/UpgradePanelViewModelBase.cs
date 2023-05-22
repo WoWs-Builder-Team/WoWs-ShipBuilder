@@ -3,11 +3,11 @@ using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Upgrade;
-using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
-public class UpgradePanelViewModelBase : ViewModelBase, IBuildComponentProvider
+public class UpgradePanelViewModelBase : ReactiveObject, IBuildComponentProvider
 {
     public static readonly Modernization PlaceholderModernization = new() { Index = null!, Name = "PlaceholderMod" };
 

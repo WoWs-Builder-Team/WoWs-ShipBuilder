@@ -12,6 +12,7 @@ using ReactiveUI;
 using WoWsShipBuilder.Desktop.Features.BlazorWebView;
 using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Desktop.Features.SplashScreen
 {

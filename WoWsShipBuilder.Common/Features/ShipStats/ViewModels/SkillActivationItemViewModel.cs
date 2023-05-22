@@ -1,8 +1,9 @@
-using WoWsShipBuilder.Infrastructure;
+using ReactiveUI;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
-public partial class SkillActivationItemViewModel : ViewModelBase
+public partial class SkillActivationItemViewModel : ReactiveObject
 {
     [Observable]
     private int activationNumbers;

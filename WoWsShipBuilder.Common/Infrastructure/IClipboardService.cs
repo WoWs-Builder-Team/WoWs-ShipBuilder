@@ -1,11 +1,10 @@
-﻿namespace WoWsShipBuilder.Infrastructure
+﻿namespace WoWsShipBuilder.Infrastructure;
+
+public interface IClipboardService
 {
-    public interface IClipboardService
-    {
-        Task<string> GetTextAsync();
+    Task<string> GetTextAsync();
 
-        Task SetTextAsync(string text);
+    Task SetTextAsync(string text);
 
-        Task ClearAsync();
-    }
+    Task ClearAsync();
 }

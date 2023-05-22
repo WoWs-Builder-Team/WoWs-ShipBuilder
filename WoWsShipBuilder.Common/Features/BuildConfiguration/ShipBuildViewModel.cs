@@ -1,10 +1,11 @@
-﻿using WoWsShipBuilder.DataContainers;
+﻿using ReactiveUI;
+using WoWsShipBuilder.DataContainers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Features.Builds;
 using WoWsShipBuilder.Features.ShipStats.ViewModels;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Data;
 using WoWsShipBuilder.Infrastructure.DataTransfer;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.BuildConfiguration;
 
@@ -13,7 +14,7 @@ namespace WoWsShipBuilder.Features.BuildConfiguration;
 /// Based on the structure of the main ship viewmodel, this viewmodel is a simplified version that does not contain a viewmodel to automatically calculate ship stats.
 /// Instead, it allows to manually calculate ship stats based on current modifications.
 /// </summary>
-public partial class ShipBuildViewModel : ViewModelBase
+public partial class ShipBuildViewModel : ReactiveObject
 {
     [Observable]
     private string buildName = string.Empty;

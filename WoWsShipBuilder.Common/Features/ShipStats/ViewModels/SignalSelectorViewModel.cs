@@ -3,12 +3,12 @@ using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Exterior;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
-public class SignalSelectorViewModel : ViewModelBase
+public class SignalSelectorViewModel : ReactiveObject
 {
     private readonly ILogger<SignalSelectorViewModel> logger;
 
@@ -97,7 +97,7 @@ public class SignalSelectorViewModel : ViewModelBase
     }
 }
 
-public class SignalItemViewModel : ViewModelBase
+public class SignalItemViewModel : ReactiveObject
 {
     private bool canExecute;
 

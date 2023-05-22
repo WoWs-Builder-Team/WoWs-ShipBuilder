@@ -1,6 +1,6 @@
 ﻿using Prometheus;
 
-namespace WoWsShipBuilder.Infrastructure;
+namespace WoWsShipBuilder.Infrastructure.Metrics;
 
 public interface IMetricsService
 {

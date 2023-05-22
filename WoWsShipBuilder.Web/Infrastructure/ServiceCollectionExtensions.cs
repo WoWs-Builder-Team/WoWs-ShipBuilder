@@ -1,4 +1,6 @@
-﻿namespace WoWsShipBuilder.Web.Infrastructure;
+﻿using WoWsShipBuilder.Infrastructure.Utility;
+
+namespace WoWsShipBuilder.Web.Infrastructure;
 
 using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Data;

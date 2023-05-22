@@ -4,13 +4,13 @@ using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Captain;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Data;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
-public partial class CaptainSkillSelectorViewModel : ViewModelBase
+public partial class CaptainSkillSelectorViewModel : ReactiveObject
 {
     private const int ArSkillNumber = 23;
 

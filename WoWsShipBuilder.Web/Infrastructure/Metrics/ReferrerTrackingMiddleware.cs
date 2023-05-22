@@ -1,4 +1,5 @@
 ﻿using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.Metrics;
 
 namespace WoWsShipBuilder.Web.Infrastructure.Metrics;
 

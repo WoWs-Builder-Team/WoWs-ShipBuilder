@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace WoWsShipBuilder.Infrastructure;
+namespace WoWsShipBuilder.Infrastructure.Utility;
 
 public class CustomObservableCollection<T> : ObservableCollection<T>
 {

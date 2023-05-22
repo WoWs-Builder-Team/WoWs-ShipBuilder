@@ -3,9 +3,10 @@ using System.Collections.ObjectModel;
 using DynamicData;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using ReactiveUI;
 using WoWsShipBuilder.DataContainers;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
@@ -14,7 +15,7 @@ namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 /// Data for each slot is stored in an individual <see cref="ConsumableSlotViewModel"/>
 /// while this viewmodel is responsible to store these individual instances and provide methods to easily interact with consumable-related data.
 /// </summary>
-public class ConsumableViewModel : ViewModelBase, IBuildComponentProvider
+public class ConsumableViewModel : ReactiveObject, IBuildComponentProvider
 {
     private readonly ILogger<ConsumableViewModel> logger;
     private readonly Ship ship;

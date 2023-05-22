@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.GameData;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.Builds;
 

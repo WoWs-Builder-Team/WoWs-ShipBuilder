@@ -1,11 +1,10 @@
 ﻿using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Captain;
-using WoWsShipBuilder.Infrastructure;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
-public class SkillItemViewModel : ViewModelBase
+public class SkillItemViewModel : ReactiveObject
 {
     private readonly Dictionary<int, bool> canAddCache;
 

@@ -12,10 +12,11 @@ using WoWsShipBuilder.Infrastructure.Data;
 using WoWsShipBuilder.Infrastructure.DataTransfer;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Localization;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.ShipComparison;
 
-public partial class ShipComparisonViewModel : ViewModelBase
+public partial class ShipComparisonViewModel : ReactiveObject
 {
     public const string DataNotAvailable = "N/A";
 
