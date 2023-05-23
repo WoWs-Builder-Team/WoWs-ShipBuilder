@@ -4,12 +4,10 @@
 @using System.Net
 @using Microsoft.AspNetCore.WebUtilities
 @using Microsoft.Extensions.Options
-@using WoWsShipBuilder.Features.ShipSelection
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.LinkShortening
-@using WoWsShipBuilder.Infrastructure
+@using WoWsShipBuilder.Infrastructure.Data
 @using WoWsShipBuilder.Infrastructure.DataTransfer
-@using WoWsShipBuilder.Infrastructure.Localization
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @inject NavigationManager NavManager
 @inject RefreshNotifierService NotifierService
@@ -25,17 +23,24 @@
 
 <MudContainer>
     <MudGrid Justify="Justify.Center">
-        <MudItem xs="12">
-            <MudText Align="Align.Center" Typo="Typo.h1" Class="main-title">
-                WoWs ShipBuilder
-            </MudText>
-            <MudText Align="Align.Center" Typo="Typo.h4">
-                Welcome to the WoWs ShipBuilder web app.
-            </MudText>
-        </MudItem>
+        @if (AppData.WebMode)
+        {
+            <MudItem xs="12">
+                <MudText Align="Align.Center" Typo="Typo.h1" Class="main-title">
+                    WoWs ShipBuilder
+                </MudText>
+                <MudText Align="Align.Center" Typo="Typo.h4">
+                    Welcome to the WoWs ShipBuilder web app.
+                </MudText>
+            </MudItem>
+        }
+        else
+        {
+            <MudItem xs="12" Class="py-2" />
+        }
         <MudItem xs="12">
             <MudStack Row>
-                <MudTextField Immediate T="string" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)).Localization" @bind-Value="buildString" />
+                <MudTextField Immediate T="string" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)).Localization" @bind-Value="buildString"/>
                 <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="OnLoadBuild">
                     @Localizer.GetAppLocalization(nameof(Translation.WebApp_LoadBuild)).Localization
                 </MudButton>

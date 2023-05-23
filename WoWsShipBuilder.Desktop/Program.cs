@@ -15,6 +15,7 @@ using Squirrel;
 using WoWsShipBuilder.Desktop.Extensions;
 using WoWsShipBuilder.Desktop.Infrastructure;
 using WoWsShipBuilder.Desktop.Infrastructure.StaticConfiguration;
+using WoWsShipBuilder.Infrastructure.Data;
 using WoWsShipBuilder.Infrastructure.Localization;
 using WoWsShipBuilder.Infrastructure.Utility;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
@@ -43,6 +44,7 @@ class Program
         resolver.InitializeAvalonia();
 
         using var app = builder.Build();
+        AppData.WebMode = false;
         await app.StartAsync();
 
         var logger = app.Services.GetRequiredService<ILogger<Program>>();

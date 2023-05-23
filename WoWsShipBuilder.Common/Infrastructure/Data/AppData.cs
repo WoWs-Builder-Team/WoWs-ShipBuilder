@@ -19,6 +19,8 @@ namespace WoWsShipBuilder.Infrastructure.Data;
 /// </summary>
 public static class AppData
 {
+    public static bool WebMode { get; set; } = true;
+
     /// <summary>
     /// Gets or sets a value indicating whether application settings have been initialized.
     /// </summary>
