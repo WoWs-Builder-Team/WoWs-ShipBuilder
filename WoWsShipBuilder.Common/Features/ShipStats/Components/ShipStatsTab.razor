@@ -12,6 +12,7 @@
 @using WoWsShipBuilder.Infrastructure
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.DataTransfer
+@using WoWsShipBuilder.Infrastructure.GameData
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
@@ -28,6 +29,7 @@
 @inject ILinkShortener LinkShortener
 @inject SessionStateCache SessionStateCache
 @inject IOptions<CdnOptions> CdnOptions
+@inject IOptions<ShipBuilderOptions> ShipBuilderOptions
 
 @inherits ReactiveComponentBase<ShipViewModel>
 
@@ -312,7 +314,22 @@
             BuildName = shareResult.BuildName;
             var build = ViewModel!.CreateBuild(shareResult.BuildName);
             var buildString = build.CreateShortStringFromBuild();
-            var buildUrl = $"{NavManager.BaseUri}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}";
+            string urlBase;
+            if (NavManager.BaseUri.Contains("0.0.0.0"))
+            {
+                urlBase = AppSettings.SelectedServerType switch
+                {
+                    ServerType.Live => $"{ShipBuilderOptions.Value.LiveServerUrl}/",
+                    ServerType.Pts => $"{ShipBuilderOptions.Value.PtsServerUrl}/",
+                    _ => $"{ShipBuilderOptions.Value.LiveServerUrl}/",
+                };
+            }
+            else
+            {
+                urlBase = NavManager.BaseUri;
+            }
+
+            var buildUrl = $"{urlBase}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}";
             await ClipboardService.SetTextAsync(shareResult.CreateShortLink ? (await LinkShortener.CreateShortLink(buildUrl)).Link : buildUrl);
         }
 

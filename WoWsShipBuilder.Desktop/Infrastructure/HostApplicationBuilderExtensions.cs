@@ -7,7 +7,6 @@ using WoWsShipBuilder.Desktop.Features.Updater;
 using WoWsShipBuilder.Desktop.Infrastructure.AwsClient;
 using WoWsShipBuilder.Desktop.Infrastructure.Data;
 using WoWsShipBuilder.Features.Settings;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.DataTransfer;
 using WoWsShipBuilder.Infrastructure.HttpClients;
@@ -20,6 +19,7 @@ public static class HostApplicationBuilderExtensions
     public static HostApplicationBuilder UseShipBuilderDesktop(this HostApplicationBuilder builder)
     {
         builder.Services.Configure<CdnOptions>(builder.Configuration.GetSection(CdnOptions.SectionName));
+        builder.Services.Configure<ShipBuilderOptions>(builder.Configuration.GetSection(ShipBuilderOptions.SectionName));
 
         builder.Services.UseShipBuilder();
         builder.Services.AddSingleton<IFileSystem, FileSystem>();

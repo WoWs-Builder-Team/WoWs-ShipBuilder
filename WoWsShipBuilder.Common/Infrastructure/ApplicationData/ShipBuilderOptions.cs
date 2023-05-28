@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.Web.Infrastructure;
+﻿namespace WoWsShipBuilder.Infrastructure.ApplicationData;
 
 public class ShipBuilderOptions
 {
