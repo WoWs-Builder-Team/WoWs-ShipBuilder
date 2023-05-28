@@ -1,7 +1,7 @@
 ﻿using WoWsShipBuilder.Infrastructure.Localization;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;
 
-namespace WoWsShipBuilder.DataContainers;
+namespace WoWsShipBuilder.Infrastructure.Utility;
 
 public enum ReturnFilter
 {

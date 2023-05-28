@@ -4,7 +4,7 @@ using WoWsShipBuilder.Infrastructure.ApplicationData;
 
 namespace WoWsShipBuilder.DataContainers;
 
-public static class AccelerationHelper
+public static class AccelerationCalculator
 {
     private const string CaraccioloId = "PISB107";
     private const double Dt = 0.01;
@@ -351,16 +351,16 @@ public static class AccelerationHelper
     }
 
     /// <summary>
-    /// Record to hold the data calculated by <see cref="AccelerationHelper"/>.
+    /// Record to hold the data calculated by <see cref="AccelerationCalculator"/>.
     /// </summary>
     /// <param name="Speed">The speed at the time of the Time parameter.</param>
     /// <param name="Time">The current time.</param>
     public sealed record AccelerationPoints(double Speed, double Time);
 
     /// <summary>
-    /// Wrapper holder for the data calculated by <see cref="AccelerationHelper"/>.
+    /// Wrapper holder for the data calculated by <see cref="AccelerationCalculator"/>.
     /// </summary>
-    /// <param name="TimeForGear">List of times needed to reach the gear given in input to <see cref="AccelerationHelper.CalculateAcceleration"/>.</param>
+    /// <param name="TimeForGear">List of times needed to reach the gear given in input to <see cref="AccelerationCalculator.CalculateAcceleration"/>.</param>
     /// <param name="AccelerationPointsList">List of the points calculated.</param>
     public sealed record AccelerationData(List<double> TimeForGear, List<AccelerationPoints> AccelerationPointsList);
 

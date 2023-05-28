@@ -47,28 +47,28 @@
     </MudButton>
     <MudDivider Vertical FlexItem Light/>
     <MudSelect Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" T="int" Value="@firstGear" Label="Initial Gear" ValueChanged="@(value => UpdateThrottle(0, value))">
-        <MudSelectItem Value="AccelerationHelper.FullReverse"> <MudText Color="Color.Secondary">-1</MudText></MudSelectItem>
-        <MudSelectItem Value="AccelerationHelper.Zero"><MudText Color="Color.Secondary">0</MudText></MudSelectItem>
-        <MudSelectItem Value="AccelerationHelper.OneQuarter"><MudText Color="Color.Secondary">1/4</MudText></MudSelectItem>
-        <MudSelectItem Value="AccelerationHelper.Half"><MudText Color="Color.Secondary">2/4</MudText></MudSelectItem>
-        <MudSelectItem Value="AccelerationHelper.ThreeQuarter"><MudText Color="Color.Secondary">3/4</MudText></MudSelectItem>
-        <MudSelectItem Value="AccelerationHelper.FullAhead"><MudText Color="Color.Secondary">4/4</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationCalculator.FullReverse"> <MudText Color="Color.Secondary">-1</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationCalculator.Zero"><MudText Color="Color.Secondary">0</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationCalculator.OneQuarter"><MudText Color="Color.Secondary">1/4</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationCalculator.Half"><MudText Color="Color.Secondary">2/4</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationCalculator.ThreeQuarter"><MudText Color="Color.Secondary">3/4</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationCalculator.FullAhead"><MudText Color="Color.Secondary">4/4</MudText></MudSelectItem>
     </MudSelect>
     <MudSelect Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" T="int" Value="@secondGear" Label="Middle Gear" ValueChanged="@(value => UpdateThrottle(1, value))">
-       <MudSelectItem Value="AccelerationHelper.FullReverse"> <MudText Color="Color.Secondary">-1</MudText></MudSelectItem>
-       <MudSelectItem Value="AccelerationHelper.Zero"><MudText Color="Color.Secondary">0</MudText></MudSelectItem>
-       <MudSelectItem Value="AccelerationHelper.OneQuarter"><MudText Color="Color.Secondary">1/4</MudText></MudSelectItem>
-       <MudSelectItem Value="AccelerationHelper.Half"><MudText Color="Color.Secondary">2/4</MudText></MudSelectItem>
-       <MudSelectItem Value="AccelerationHelper.ThreeQuarter"><MudText Color="Color.Secondary">3/4</MudText></MudSelectItem>
-       <MudSelectItem Value="AccelerationHelper.FullAhead"><MudText Color="Color.Secondary">4/4</MudText></MudSelectItem>
+       <MudSelectItem Value="AccelerationCalculator.FullReverse"> <MudText Color="Color.Secondary">-1</MudText></MudSelectItem>
+       <MudSelectItem Value="AccelerationCalculator.Zero"><MudText Color="Color.Secondary">0</MudText></MudSelectItem>
+       <MudSelectItem Value="AccelerationCalculator.OneQuarter"><MudText Color="Color.Secondary">1/4</MudText></MudSelectItem>
+       <MudSelectItem Value="AccelerationCalculator.Half"><MudText Color="Color.Secondary">2/4</MudText></MudSelectItem>
+       <MudSelectItem Value="AccelerationCalculator.ThreeQuarter"><MudText Color="Color.Secondary">3/4</MudText></MudSelectItem>
+       <MudSelectItem Value="AccelerationCalculator.FullAhead"><MudText Color="Color.Secondary">4/4</MudText></MudSelectItem>
     </MudSelect>
     <MudSelect Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" T="int" Value="@thirdGear" Label="Final Gear" ValueChanged="@(value => UpdateThrottle(2, value))">
-        <MudSelectItem Value="AccelerationHelper.FullReverse"> <MudText Color="Color.Secondary">-1</MudText></MudSelectItem>
-        <MudSelectItem Value="AccelerationHelper.Zero"><MudText Color="Color.Secondary">0</MudText></MudSelectItem>
-        <MudSelectItem Value="AccelerationHelper.OneQuarter"><MudText Color="Color.Secondary">1/4</MudText></MudSelectItem>
-        <MudSelectItem Value="AccelerationHelper.Half"><MudText Color="Color.Secondary">2/4</MudText></MudSelectItem>
-        <MudSelectItem Value="AccelerationHelper.ThreeQuarter"><MudText Color="Color.Secondary">3/4</MudText></MudSelectItem>
-        <MudSelectItem Value="AccelerationHelper.FullAhead"><MudText Color="Color.Secondary">4/4</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationCalculator.FullReverse"> <MudText Color="Color.Secondary">-1</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationCalculator.Zero"><MudText Color="Color.Secondary">0</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationCalculator.OneQuarter"><MudText Color="Color.Secondary">1/4</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationCalculator.Half"><MudText Color="Color.Secondary">2/4</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationCalculator.ThreeQuarter"><MudText Color="Color.Secondary">3/4</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationCalculator.FullAhead"><MudText Color="Color.Secondary">4/4</MudText></MudSelectItem>
     </MudSelect>
 </MudStack>
 
@@ -88,13 +88,13 @@
 
     private readonly Dictionary<int, ShipBuildContainer> shipBuildCache = new();
 
-    private readonly List<int> throttleList = new() { AccelerationHelper.Zero, AccelerationHelper.FullAhead, AccelerationHelper.FullReverse };
+    private readonly List<int> throttleList = new() { AccelerationCalculator.Zero, AccelerationCalculator.FullAhead, AccelerationCalculator.FullReverse };
 
-    private int firstGear = AccelerationHelper.Zero;
+    private int firstGear = AccelerationCalculator.Zero;
 
-    private int secondGear = AccelerationHelper.FullAhead;
+    private int secondGear = AccelerationCalculator.FullAhead;
 
-    private int thirdGear = AccelerationHelper.FullReverse;
+    private int thirdGear = AccelerationCalculator.FullReverse;
 
     private int counter;
 
@@ -240,16 +240,16 @@
         var engineBackwardForsageMaxSpeedModifier = modifiers.Where(x => x.modifierName.Equals("engineBackwardForsageMaxSpeed")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
         var engineForwardForsagePowerModifier = modifiers.Where(x => x.modifierName.Equals("engineForwardForsagePower")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
         var engineBackwardForsagePowerModifier = modifiers.Where(x => x.modifierName.Equals("engineBackwardForsagePower")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
-        var accelerationModifiers = new AccelerationHelper.AccelerationModifiers(speedMultiplier, engineForwardUpTimeModifiers, engineBackwardUpTimeModifiers, engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier);
+        var accelerationModifiers = new AccelerationCalculator.AccelerationModifiers(speedMultiplier, engineForwardUpTimeModifiers, engineBackwardUpTimeModifiers, engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier);
 
         //speed boost overrides
         var speedBoostEngineForwardForsageMaxSpeedOverride = modifiers.FindModifiers("speedBoost_forwardEngineForsagMaxSpeed", true).FirstOrDefault(0);
         var speedBoostEngineBackwardEngineForsagOverride = modifiers.FindModifiers("speedBoost_backwardEngineForsagMaxSpeed", true).FirstOrDefault(0);
         var speedBoostForwardEngineForsagOverride = modifiers.FindModifiers("speedBoost_forwardEngineForsag", true).FirstOrDefault(0);
         var speedBoostBackwardEngineForsag = modifiers.FindModifiers("speedBoost_backwardEngineForsag", true).FirstOrDefault(0);
-        var speedBoostAccelerationModifiers = new AccelerationHelper.SpeedBoostAccelerationModifiers(speedBoostEngineForwardForsageMaxSpeedOverride, speedBoostEngineBackwardEngineForsagOverride, speedBoostForwardEngineForsagOverride, speedBoostBackwardEngineForsag);
+        var speedBoostAccelerationModifiers = new AccelerationCalculator.SpeedBoostAccelerationModifiers(speedBoostEngineForwardForsageMaxSpeedOverride, speedBoostEngineBackwardEngineForsagOverride, speedBoostForwardEngineForsagOverride, speedBoostBackwardEngineForsag);
 
-        var accelerationPointsList = AccelerationHelper.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, throttles, accelerationModifiers , speedBoostAccelerationModifiers).AccelerationPointsList;
+        var accelerationPointsList = AccelerationCalculator.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, throttles, accelerationModifiers , speedBoostAccelerationModifiers).AccelerationPointsList;
         return accelerationPointsList.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList();
     }
 
