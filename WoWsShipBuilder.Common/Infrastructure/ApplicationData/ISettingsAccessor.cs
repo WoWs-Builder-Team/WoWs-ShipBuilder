@@ -1,6 +1,6 @@
 ﻿using WoWsShipBuilder.Features.Settings;
 
-namespace WoWsShipBuilder.Infrastructure.Data;
+namespace WoWsShipBuilder.Infrastructure.ApplicationData;
 
 public interface ISettingsAccessor
 {

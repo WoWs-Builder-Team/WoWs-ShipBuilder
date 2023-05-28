@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.Infrastructure.Data;
+﻿namespace WoWsShipBuilder.Infrastructure.ApplicationData;
 
 public interface IUserDataService
 {

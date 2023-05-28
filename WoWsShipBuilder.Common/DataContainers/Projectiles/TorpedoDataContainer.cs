@@ -2,7 +2,9 @@ using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.Infrastructure;
-using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
+using WoWsShipBuilder.Infrastructure.GameData;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.DataContainers;
 

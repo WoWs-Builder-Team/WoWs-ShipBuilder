@@ -8,8 +8,9 @@ using WoWsShipBuilder.DataStructures.Module;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Upgrade;
+using WoWsShipBuilder.Infrastructure.Utility;
 
-namespace WoWsShipBuilder.Infrastructure.Data;
+namespace WoWsShipBuilder.Infrastructure.ApplicationData;
 
 public static class DataCacheHelper
 {

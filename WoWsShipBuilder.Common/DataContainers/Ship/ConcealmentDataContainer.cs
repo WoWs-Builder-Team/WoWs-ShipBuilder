@@ -3,6 +3,7 @@ using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.DataContainers
 {

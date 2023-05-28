@@ -5,7 +5,7 @@ using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Versioning;
 using WoWsShipBuilder.Infrastructure;
-using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.HttpClients;
 using WoWsShipBuilder.Infrastructure.Utility;

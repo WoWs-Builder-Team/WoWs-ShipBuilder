@@ -1,4 +1,4 @@
-﻿using WoWsShipBuilder.Infrastructure.Data;
+﻿using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.DataTransfer;
 using WoWsShipBuilder.Infrastructure.GameData;
 

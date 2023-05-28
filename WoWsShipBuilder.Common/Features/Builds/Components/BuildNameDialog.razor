@@ -6,7 +6,7 @@
 <MudDialog>
     <DialogContent>
         <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
-            <MudTextField @bind-Value="BuildName" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_BuildName))" Immediate Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Validation="@(new Func<string, string?>(Validation.ValidateBuildName))"/>
+            <MudTextField @bind-Value="BuildName" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_BuildName))" Immediate Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))"/>
         </MudFocusTrap>
     </DialogContent>
     <DialogActions>

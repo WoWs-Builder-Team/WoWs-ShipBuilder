@@ -1,13 +1,11 @@
 ﻿@page "/ship"
 
 @using DynamicData
-@using WoWsShipBuilder.Features.ShipSelection
+@using WoWsShipBuilder.DataContainers
 @using WoWsShipBuilder.Features.ShipStats.Components
 @using WoWsShipBuilder.Features.Builds
-@using WoWsShipBuilder.Infrastructure
-@using WoWsShipBuilder.Infrastructure.Data
+@using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.DataTransfer
-@using WoWsShipBuilder.Infrastructure.Localization
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Utility
 
@@ -226,11 +224,11 @@
                     modifiers.AddRange(viewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
                     modifiers.AddRange(viewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
 
-                    buildContainers.Add(container with { Modifiers = modifiers, ShipDataContainer = calculateShipDataContainer ? Helpers.GetShipDataContainerFromBuild(container.Ship, container.Build.Modules, container.Ship.ShipUpgradeInfo.ShipUpgrades, modifiers) : container.ShipDataContainer });
+                    buildContainers.Add(container with { Modifiers = modifiers, ShipDataContainer = calculateShipDataContainer ? DataContainerUtility.GetShipDataContainerFromBuild(container.Ship, container.Build.Modules, container.Ship.ShipUpgradeInfo.ShipUpgrades, modifiers) : container.ShipDataContainer });
                 }
                 else
                 {
-                    buildContainers.Add(calculateShipDataContainer ? container with { ShipDataContainer = Helpers.GetStockShipDataContainer(container.Ship) } : container);
+                    buildContainers.Add(calculateShipDataContainer ? container with { ShipDataContainer = DataContainerUtility.GetStockShipDataContainer(container.Ship) } : container);
                 }
             }
 

@@ -9,7 +9,7 @@ using WoWsShipBuilder.DataContainers;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Features.Builds;
-using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;

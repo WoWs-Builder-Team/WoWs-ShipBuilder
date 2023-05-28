@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.DataTransfer;
 using WoWsShipBuilder.Infrastructure.Utility;
 using ServerType = WoWsShipBuilder.Infrastructure.GameData.ServerType;

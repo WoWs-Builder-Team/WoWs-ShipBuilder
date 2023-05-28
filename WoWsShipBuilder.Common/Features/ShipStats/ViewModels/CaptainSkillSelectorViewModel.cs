@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Captain;
-using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;
 using WoWsShipBuilder.Infrastructure.Utility;
 

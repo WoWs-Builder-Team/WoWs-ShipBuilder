@@ -9,7 +9,7 @@ using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Versioning;
 using WoWsShipBuilder.Desktop.Infrastructure.AwsClient;
 using WoWsShipBuilder.Features.Settings;
-using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.HttpClients;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;

@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using ReactiveUI;
 using WoWsShipBuilder.Desktop.Features.Updater;
 using WoWsShipBuilder.Features.Settings;
-using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Localization;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;
 using WoWsShipBuilder.Infrastructure.Utility;

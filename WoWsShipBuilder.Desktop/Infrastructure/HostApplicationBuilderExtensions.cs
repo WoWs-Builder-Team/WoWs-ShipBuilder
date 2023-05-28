@@ -8,7 +8,8 @@ using WoWsShipBuilder.Desktop.Infrastructure.AwsClient;
 using WoWsShipBuilder.Desktop.Infrastructure.Data;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Infrastructure;
-using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
+using WoWsShipBuilder.Infrastructure.DataTransfer;
 using WoWsShipBuilder.Infrastructure.HttpClients;
 using WoWsShipBuilder.Infrastructure.Utility;
 

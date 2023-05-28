@@ -8,6 +8,7 @@ using NLog.Targets;
 using Sentry;
 using WoWsShipBuilder.Features.LinkShortening;
 using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Utility;
 using LogLevel = NLog.LogLevel;
 

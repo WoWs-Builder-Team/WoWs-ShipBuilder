@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Avalonia;
 using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.DataTransfer;
 
 namespace WoWsShipBuilder.Desktop.Infrastructure
 {

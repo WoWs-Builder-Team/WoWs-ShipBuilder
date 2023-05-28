@@ -6,7 +6,9 @@
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.LinkShortening
 @using WoWsShipBuilder.Features.ShipStats.Components
+@using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.DataTransfer
+@using WoWsShipBuilder.Infrastructure.GameData
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
@@ -196,7 +198,7 @@
                                 </MudStack>
                             </MudItem>
                             <MudItem xs="12" md="6">
-                                <MudTextField @bind-Value="ViewModel.BuildName" Immediate Validation="@(new Func<string, string?>(Validation.ValidateBuildName))" DebounceInterval="100" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-auto mb-0"/>
+                                <MudTextField @bind-Value="ViewModel.BuildName" Immediate Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))" DebounceInterval="100" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-auto mb-0"/>
                             </MudItem>
                         }
                         else
@@ -328,7 +330,7 @@
 
         inputBuildStringCache = buildStr;
 
-        var validationResult = await Validation.ValidateBuildString(buildStr, SelectedContainer.Ship.Index, Localizer, LinkShorteningOptions.Value.UriPrefix);
+        var validationResult = await BuildValidation.ValidateBuildString(buildStr, SelectedContainer.Ship.Index, Localizer, LinkShorteningOptions.Value.UriPrefix);
 
         buildString = validationResult.ValidatedBuildString;
 

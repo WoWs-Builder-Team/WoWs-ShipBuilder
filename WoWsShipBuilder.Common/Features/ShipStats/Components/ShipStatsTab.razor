@@ -10,7 +10,7 @@
 @using WoWsShipBuilder.Features.LinkShortening
 @using WoWsShipBuilder.Features.Settings
 @using WoWsShipBuilder.Infrastructure
-@using WoWsShipBuilder.Infrastructure.Data
+@using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
@@ -57,7 +57,7 @@
             <MudPaper Outlined="true" Class="py-2 px-15">
                 <MudGrid Justify="Justify.Center">
                     <MudItem xs="12" md="2" Class="align-self-center d-flex justify-center">
-                        <MudTextField @bind-Value="BuildName" Label="@($"{Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_Build))}:")" Immediate DebounceInterval="100" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Variant="Variant.Outlined" Margin="Margin.Dense" Validation="@(new Func<string, string?>(Validation.ValidateBuildName))"/>
+                        <MudTextField @bind-Value="BuildName" Label="@($"{Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_Build))}:")" Immediate DebounceInterval="100" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Variant="Variant.Outlined" Margin="Margin.Dense" Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))"/>
                     </MudItem>
                     <MudItem xs="12" md="8" Class="@(GetShipAlign() + " d-flex justify-center")">
                         @if (ViewModel.PreviousShip is not null)
@@ -344,7 +344,7 @@
         ShipDataContainer? shipDataContainer = null;
         if (calculateShipDataContainer)
         {
-            shipDataContainer = build is null ? Helpers.GetStockShipDataContainer(ship) : Helpers.GetShipDataContainerFromBuild(ship, build.Modules, ship.ShipUpgradeInfo.ShipUpgrades, modifiers);
+            shipDataContainer = build is null ? DataContainerUtility.GetStockShipDataContainer(ship) : DataContainerUtility.GetShipDataContainerFromBuild(ship, build.Modules, ship.ShipUpgradeInfo.ShipUpgrades, modifiers);
         }
 
         return new(ship, build, containerId, activeConsumables, false, shipDataContainer, modifiers);

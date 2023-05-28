@@ -10,6 +10,7 @@
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.Settings
 @using WoWsShipBuilder.Features.ShipComparison.GridData
+@using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.GameData
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
@@ -71,7 +72,7 @@
             {
                 int tier = i;
                 bool isSelected = ViewModel.SelectedTiers.Contains(tier);
-                <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ToggleTierSelection(tier))">
+                <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" OnClick="@(() => ToggleTierSelection(tier))">
                     @tier.ToTierString()
                 </MudButton>
             }
@@ -91,7 +92,7 @@
             @foreach (var shipClass in ViewModel!.AvailableClasses)
             {
                 bool isSelected = ViewModel.SelectedClasses.Contains(shipClass);
-                <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ToggleClassSelection(shipClass))">
+                <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" OnClick="@(() => ToggleClassSelection(shipClass))">
                     @Localizer.GetAppLocalization(shipClass.ShipClassToString()).Localization
                 </MudButton>
             }
@@ -111,7 +112,7 @@
             @foreach (var nation in ViewModel!.AvailableNations)
             {
                 bool isSelected = ViewModel.SelectedNations.Contains(nation);
-                <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ToggleNationSelection(nation))">
+                <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" OnClick="@(() => ToggleNationSelection(nation))">
                     @Localizer.GetAppLocalization(nation.ShipNationToString()).Localization
                 </MudButton>
             }
@@ -131,7 +132,7 @@
             @foreach (var category in ViewModel!.AvailableShipCategories)
             {
                 bool isSelected = ViewModel.SelectedCategories.Contains(category);
-                <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ToggleCategorySelection(category))">
+                <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" OnClick="@(() => ToggleCategorySelection(category))">
                     @Localizer.GetAppLocalization(category.ShipCategoryToString()).Localization
                 </MudButton>
             }
@@ -158,13 +159,13 @@
                 </MudPaper>
             }
             <MudStack Row>
-                <MudButton FullWidth="true" DisableElevation="true" Size="Size.Small" Variant="Helpers.GetVariantFromBool(ViewModel.ShowPinnedShipsOnly, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(ViewModel.ShowPinnedShipsOnly, Color.Primary, Color.Secondary)" OnClick="ToggleShowPinnedShipOnly">
+                <MudButton FullWidth="true" DisableElevation="true" Size="Size.Small" Variant="GetVariantFromBool(ViewModel.ShowPinnedShipsOnly)" Color="GetColorFromBool(ViewModel.ShowPinnedShipsOnly)" OnClick="ToggleShowPinnedShipOnly">
                     @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_DisplayOnlyPinnedShips))
                 </MudButton>
-                <MudButton FullWidth="true" DisableElevation="true" Size="Size.Small" Variant="Helpers.GetVariantFromBool(ViewModel.UseUpgradedModules, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(ViewModel.UseUpgradedModules, Color.Primary, Color.Secondary)" OnClick="ToggleUpgradedModules">
+                <MudButton FullWidth="true" DisableElevation="true" Size="Size.Small" Variant="GetVariantFromBool(ViewModel.UseUpgradedModules)" Color="GetColorFromBool(ViewModel.UseUpgradedModules)" OnClick="ToggleUpgradedModules">
                     @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_UseUpgradedModules))
                 </MudButton>
-                <MudButton FullWidth="true" DisableElevation="true" Size="Size.Small" Variant="Helpers.GetVariantFromBool(ViewModel.HideShipsWithoutSelectedSection, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(ViewModel.HideShipsWithoutSelectedSection, Color.Primary, Color.Secondary)" OnClick="ToggleHideShipsWithoutSelectedSection" Disabled="ViewModel.ShowPinnedShipsOnly">
+                <MudButton FullWidth="true" DisableElevation="true" Size="Size.Small" Variant="GetVariantFromBool(ViewModel.HideShipsWithoutSelectedSection)" Color="GetColorFromBool(ViewModel.HideShipsWithoutSelectedSection)" OnClick="ToggleHideShipsWithoutSelectedSection" Disabled="ViewModel.ShowPinnedShipsOnly">
                     @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_HideIfNoSection))
                 </MudButton>
             </MudStack>
@@ -202,7 +203,7 @@
                     @foreach (var dataSection in ViewModel.DataSections)
                     {
                         bool isSelected = ViewModel.SelectedDataSection.Equals(dataSection);
-                        <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => SelectDataSection(dataSection))">
+                        <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" OnClick="@(() => SelectDataSection(dataSection))">
                             @dataSection.Localize(Localizer)
                         </MudButton>
                     }
@@ -434,6 +435,16 @@
     {
         base.OnAfterRender(firstRender);
         hiddenColumns = dataGrid.RenderedColumns.Where(x => x.Hideable is true).ToDictionary(x => x.FieldId, x => hiddenColumns.TryGetValue(x.FieldId, out bool hidden) && hidden);
+    }
+
+    private static Variant GetVariantFromBool(bool active)
+    {
+        return active ? Variant.Filled : Variant.Outlined;
+    }
+
+    private static Color GetColorFromBool(bool active)
+    {
+        return active ? Color.Primary : Color.Secondary;
     }
 
     private async Task EditBuilds(GridDataWrapper? wrapper = null)

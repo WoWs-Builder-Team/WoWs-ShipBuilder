@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.WebUtilities;
-using WoWsShipBuilder.Features.Builds;
+﻿using System.Net;
+using Microsoft.AspNetCore.WebUtilities;
 using WoWsShipBuilder.Infrastructure.Localization;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;
 
-namespace WoWsShipBuilder.Infrastructure.Utility;
+namespace WoWsShipBuilder.Features.Builds;
 
-public static class Validation
+public static class BuildValidation
 {
     public static async Task<BuildStringValidationResult> ValidateBuildString(string buildStr, string selectedShipIndex, ILocalizer localizer, string shortUrlUriPrefix)
     {
@@ -17,7 +17,7 @@ public static class Validation
 
         if (buildStr.Contains(shortUrlUriPrefix.Last().Equals('/') ? shortUrlUriPrefix : shortUrlUriPrefix + '/'))
         {
-            string? longUrl = await Helpers.RetrieveLongUrlFromShortLink(buildStr);
+            string? longUrl = await RetrieveLongUrlFromShortLink(buildStr);
 
             if (longUrl is not null && QueryHelpers.ParseQuery(longUrl).TryGetValue("build", out var buildStrFromUrl))
             {
@@ -63,6 +63,30 @@ public static class Validation
         invalidChars.Add(';');
         List<char> invalidCharsInBuildName = invalidChars.FindAll(buildName.Contains);
         return invalidCharsInBuildName.Any() ? $"Invalid characters {string.Join(' ', invalidCharsInBuildName)}" : null;
+    }
+
+    private static async Task<string?> RetrieveLongUrlFromShortLink(string shortUrl)
+    {
+        // this allows you to set the settings so that we can get the redirect url
+        using HttpClient client = new(new HttpClientHandler
+        {
+            AllowAutoRedirect = false,
+        });
+        using var response = await client.GetAsync(shortUrl);
+        using var content = response.Content;
+
+        // Read the response to see if we have the redirected url
+        string? redirectedUrl = null;
+        if (response.StatusCode == HttpStatusCode.Found)
+        {
+            var headers = response.Headers;
+            if (headers.Location is not null)
+            {
+                redirectedUrl = headers.Location.AbsoluteUri;
+            }
+        }
+
+        return redirectedUrl;
     }
 
     public sealed record BuildStringValidationResult(string? ValidationMessage, string ValidatedBuildString);

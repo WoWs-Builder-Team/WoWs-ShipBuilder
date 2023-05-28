@@ -1,6 +1,6 @@
 ﻿using WoWsShipBuilder.DataStructures;
 
-namespace WoWsShipBuilder.Infrastructure;
+namespace WoWsShipBuilder.Infrastructure.GameData;
 
 public static class EnumToStringExtensions
 {

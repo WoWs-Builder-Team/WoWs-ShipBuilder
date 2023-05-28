@@ -1,6 +1,6 @@
 ﻿using WoWsShipBuilder.Infrastructure.GameData;
 
-namespace WoWsShipBuilder.Infrastructure.Utility;
+namespace WoWsShipBuilder.Infrastructure.ApplicationData;
 
 public class CdnOptions
 {

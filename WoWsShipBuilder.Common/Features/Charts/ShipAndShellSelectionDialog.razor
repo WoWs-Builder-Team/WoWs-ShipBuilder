@@ -1,8 +1,10 @@
 ﻿@using System.Collections.ObjectModel
 @using System.Collections.Specialized
 @using System.Linq
+@using DynamicData
 @using WoWsShipBuilder.DataContainers
 @using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.Charts.Data
 @using WoWsShipBuilder.Infrastructure.DataTransfer
@@ -229,10 +231,10 @@
             if (wrapper.ShipBuildContainer.Build is null)
             {
                 var shipConfiguration = Helpers.GetStockShipConfiguration(ship);
-                Helpers.UpgradeModuleInShipConfiguration(shipConfiguration, commonHull);
-                Helpers.UpgradeModuleInShipConfiguration(shipConfiguration, commonArtillery);
+                UpgradeModuleInShipConfiguration(shipConfiguration, commonHull);
+                UpgradeModuleInShipConfiguration(shipConfiguration, commonArtillery);
                 var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, wrapper.ShipBuildContainer.Modifiers ?? new());
-                Build build = new(string.Empty, ship.Index, ship.ShipNation, shipConfiguration.Select(x => x.Name.NameToIndex()).ToList(), new(), Helpers.GetStockConsumableNames(ship), "PCW001", new(), new());
+                Build build = new(string.Empty, ship.Index, ship.ShipNation, shipConfiguration.Select(x => x.Name.NameToIndex()).ToList(), new(), GetStockConsumableNames(ship), "PCW001", new(), new());
                 var container = wrapper.ShipBuildContainer with { ShipDataContainer = dataContainer, Build = build };
                 var newWrapper = wrapper with { ShipBuildContainer = container };
                 newWrappers.Add(newWrapper);
@@ -241,8 +243,8 @@
             {
                 var build = wrapper.ShipBuildContainer.Build;
                 var shipConfiguration = Helpers.GetShipConfigurationFromBuild(build.Modules, ship.ShipUpgradeInfo.ShipUpgrades);
-                Helpers.UpgradeModuleInShipConfiguration(shipConfiguration, commonHull);
-                Helpers.UpgradeModuleInShipConfiguration(shipConfiguration, commonArtillery);
+                UpgradeModuleInShipConfiguration(shipConfiguration, commonHull);
+                UpgradeModuleInShipConfiguration(shipConfiguration, commonArtillery);
                 var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, wrapper.ShipBuildContainer.Modifiers ?? new());
                 Build newBuild = new(build.BuildName, ship.Index, ship.ShipNation, shipConfiguration.Select(x => x.Name.NameToIndex()).ToList(), build.Upgrades.ToList(), build.Consumables.ToList(), build.Captain, build.Skills.ToList(), build.Signals.ToList());
                 var container = wrapper.ShipBuildContainer with { ShipDataContainer = dataContainer, Build = newBuild };
@@ -310,6 +312,28 @@
         if (!disabledShells[id].Any())
         {
             disabledShells.Remove(id);
+        }
+    }
+
+    private static List<string> GetStockConsumableNames(Ship ship)
+    {
+        return ship.ShipConsumable.GroupBy(consumable => consumable.Slot)
+            .Where(consumables => consumables.Any())
+            .Select(x => x.First().ConsumableName)
+            .ToList();
+    }
+
+    private static void UpgradeModuleInShipConfiguration(List<ShipUpgrade> shipUpgrades, ShipUpgrade shipUpgrade)
+    {
+        ShipUpgrade? oldItem = shipUpgrades.FirstOrDefault(module => module.UcType == shipUpgrade.UcType);
+        if (oldItem != null)
+        {
+            // SelectedModules.Remove(oldItem);
+            shipUpgrades.Replace(oldItem, shipUpgrade);
+        }
+        else
+        {
+            shipUpgrades.Add(shipUpgrade);
         }
     }
 

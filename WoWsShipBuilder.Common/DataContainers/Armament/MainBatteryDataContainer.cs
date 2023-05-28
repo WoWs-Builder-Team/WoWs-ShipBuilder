@@ -5,6 +5,8 @@ using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.GameData;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace WoWsShipBuilder.DataContainers;

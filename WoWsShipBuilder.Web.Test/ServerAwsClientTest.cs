@@ -13,7 +13,7 @@ using NUnit.Framework;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Versioning;
 using WoWsShipBuilder.Infrastructure;
-using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
 using WoWsShipBuilder.Web.Infrastructure;

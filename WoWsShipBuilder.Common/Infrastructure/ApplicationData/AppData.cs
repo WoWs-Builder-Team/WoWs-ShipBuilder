@@ -12,7 +12,7 @@ using WoWsShipBuilder.Features.Builds;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
 
-namespace WoWsShipBuilder.Infrastructure.Data;
+namespace WoWsShipBuilder.Infrastructure.ApplicationData;
 
 /// <summary>
 /// The main storage for app data and settings at runtime.

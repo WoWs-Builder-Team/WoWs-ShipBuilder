@@ -2,7 +2,7 @@
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Features.Settings;
-using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
 
 namespace WoWsShipBuilder.Web.Infrastructure;
 

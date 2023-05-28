@@ -5,6 +5,7 @@ using ReactiveUI;
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
 using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Utility;
 using WoWsShipBuilder.Web.Infrastructure;
 using WoWsShipBuilder.Web.Infrastructure.Data;

@@ -9,7 +9,7 @@ using WoWsShipBuilder.DataStructures.Versioning;
 using WoWsShipBuilder.Features.Builds;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Infrastructure;
-using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
 

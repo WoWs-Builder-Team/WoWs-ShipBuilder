@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Exterior;
-using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;

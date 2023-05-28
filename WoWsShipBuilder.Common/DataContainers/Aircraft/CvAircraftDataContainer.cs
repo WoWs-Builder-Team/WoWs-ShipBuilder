@@ -4,7 +4,9 @@ using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Aircraft;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure;
-using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
+using WoWsShipBuilder.Infrastructure.GameData;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.DataContainers
 {

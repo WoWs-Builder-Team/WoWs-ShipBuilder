@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.WebView.WindowsForms;
 using Microsoft.Extensions.DependencyInjection;
 using WoWsShipBuilder.Desktop.Infrastructure.Data;
 using WoWsShipBuilder.Features.Settings;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Desktop.Features.BlazorWebView;

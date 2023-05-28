@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Desktop.Infrastructure.Data;
-using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
 
 // ReSharper disable VirtualMemberNeverOverridden.Global
 namespace WoWsShipBuilder.Desktop.Infrastructure.AwsClient;

@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.Desktop.Infrastructure.Data;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Infrastructure;
-using WoWsShipBuilder.Infrastructure.Data;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
 
 namespace WoWsShipBuilder.Desktop.Infrastructure;
 

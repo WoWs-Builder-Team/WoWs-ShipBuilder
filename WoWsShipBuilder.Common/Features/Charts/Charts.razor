@@ -7,8 +7,9 @@
 @using WoWsShipBuilder.DataStructures.Projectile
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.Charts.Data
-@using WoWsShipBuilder.Infrastructure.Data
+@using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.DataTransfer
+@using WoWsShipBuilder.Infrastructure.GameData
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
@@ -319,7 +320,7 @@
             await SetupChartsAsync();
             if (shipIndexesFromUrl.Any())
             {
-                var buildContainers = SessionStateCache.GetAndResetBuildTransferContainers() ?? (shipIndexesFromUrl.Any() ? shipIndexesFromUrl.Select(x =>  ShipBuildContainer.CreateNew(AppData.ShipDictionary[x], null, null) with { ShipDataContainer = Helpers.GetStockShipDataContainer(AppData.ShipDictionary[x]) }) : null);
+                var buildContainers = SessionStateCache.GetAndResetBuildTransferContainers() ?? (shipIndexesFromUrl.Any() ? shipIndexesFromUrl.Select(x =>  ShipBuildContainer.CreateNew(AppData.ShipDictionary[x], null, null) with { ShipDataContainer = DataContainerUtility.GetStockShipDataContainer(AppData.ShipDictionary[x]) }) : null);
                 if (buildContainers is not null)
                 {
                     List<ChartsDataWrapper> shipsToAdd = new();
