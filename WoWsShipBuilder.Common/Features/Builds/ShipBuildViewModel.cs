@@ -1,13 +1,12 @@
 ﻿using ReactiveUI;
 using WoWsShipBuilder.DataContainers;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.Features.Builds;
 using WoWsShipBuilder.Features.ShipStats.ViewModels;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.DataTransfer;
 using WoWsShipBuilder.Infrastructure.Utility;
 
-namespace WoWsShipBuilder.Features.BuildConfiguration;
+namespace WoWsShipBuilder.Features.Builds;
 
 /// <summary>
 /// ViewModel for the build configuration dialog.
