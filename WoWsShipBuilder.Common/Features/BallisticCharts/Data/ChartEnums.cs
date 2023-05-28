@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.Features.Charts.Data;
+﻿namespace WoWsShipBuilder.Features.BallisticCharts.Data;
 
 public enum EllipsePlanes
 {

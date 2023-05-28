@@ -1,5 +1,5 @@
 ﻿@using WoWsShipBuilder.DataContainers
-@using WoWsShipBuilder.Features.Charts.Data
+@using WoWsShipBuilder.Features.BallisticCharts.Data
 @using WoWsShipBuilder.Infrastructure.Localization
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @implements IAsyncDisposable
@@ -82,7 +82,7 @@
 
         Dictionary<string, DrawingData> data = Ships.Where(x => x.Value.IsValid).ToDictionary(dispersionEllipse => dispersionEllipse.Key.ToString(), dispersionEllipse => SetupData(dispersionEllipse.Value));
 
-        module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/Features/Charts/DispersionPlot.razor.js");
+        module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/Features/BallisticCharts/DispersionPlot.razor.js");
         await module.InvokeVoidAsync("drawDispersionPlotBatched", data, PlotScaling, GetFusoReference(), text);
     }
 

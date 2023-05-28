@@ -66,8 +66,4 @@
       <_JsFileModuleStaticWebAsset Include="Features\Builds\Components\BuildImageRenderDialog.razor.js" />
     </ItemGroup>
 
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="Features\BuildImageRendering\_Imports.razor" />
-    </ItemGroup>
-
 </Project>

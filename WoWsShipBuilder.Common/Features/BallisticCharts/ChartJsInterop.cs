@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.JSInterop;
-using WoWsShipBuilder.Features.Charts.Data;
+using WoWsShipBuilder.Features.BallisticCharts.Data;
 
-namespace WoWsShipBuilder.Features.Charts;
+namespace WoWsShipBuilder.Features.BallisticCharts;
 
 public class ChartJsInterop : IAsyncDisposable
 {

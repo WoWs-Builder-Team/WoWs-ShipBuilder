@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using DynamicData;
-using WoWsShipBuilder.DataContainers;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.Features.Charts.Data;
+using WoWsShipBuilder.Features.BallisticCharts.Data;
 
-namespace WoWsShipBuilder.Features.Charts;
+namespace WoWsShipBuilder.Features.BallisticCharts;
 
 public static class ChartsHelper
 {

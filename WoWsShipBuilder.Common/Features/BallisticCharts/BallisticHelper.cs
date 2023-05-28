@@ -2,7 +2,7 @@ using WoWsShipBuilder.DataContainers;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Projectile;
 
-namespace WoWsShipBuilder.Features.Charts;
+namespace WoWsShipBuilder.Features.BallisticCharts;
 
 public static class BallisticHelper
 {

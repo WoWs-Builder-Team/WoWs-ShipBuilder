@@ -2,7 +2,7 @@ using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.DataStructures.Ship;
 
-namespace WoWsShipBuilder.Features.Charts;
+namespace WoWsShipBuilder.Features.BallisticCharts;
 
 public static class DispersionPlotHelper
 {
