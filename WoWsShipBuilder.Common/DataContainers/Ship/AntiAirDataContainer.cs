@@ -13,14 +13,6 @@ public record AntiAirDataContainer
 
     private const decimal FlakDamageMultiplier = 1 / (AntiAirAura.DamageInterval / 2);
 
-    private string expanderKey = default!;
-
-    public bool IsExpanderOpen
-    {
-        get => ShipDataContainer.ExpanderStateMapper[expanderKey];
-        set => ShipDataContainer.ExpanderStateMapper[expanderKey] = value;
-    }
-
     public AuraDataDataContainer? LongRangeAura { get; set; }
 
     public AuraDataDataContainer? MediumRangeAura { get; set; }
@@ -50,14 +42,7 @@ public record AntiAirDataContainer
         IEnumerable<float> constantDamageBonusModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
         constantDamageBonus = constantDamageBonusModifiers.Aggregate(constantDamageBonus, (current, arModifier) => current * (1 + ((decimal)arModifier / 100)));
 
-        var aaUI = new AntiAirDataContainer
-        {
-            expanderKey = $"{ship.Index}_AA",
-        };
-        if (!ShipDataContainer.ExpanderStateMapper.ContainsKey(aaUI.expanderKey))
-        {
-            ShipDataContainer.ExpanderStateMapper[aaUI.expanderKey] = true;
-        }
+        var aaUI = new AntiAirDataContainer();
 
         // Long Range Aura
         AntiAirAura? longRange = null;

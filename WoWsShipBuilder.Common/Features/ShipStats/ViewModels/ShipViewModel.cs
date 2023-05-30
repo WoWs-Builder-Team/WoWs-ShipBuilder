@@ -5,7 +5,6 @@ using System.Windows.Input;
 using DynamicData.Binding;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
-using WoWsShipBuilder.DataContainers;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Features.Builds;
@@ -117,8 +116,6 @@ public partial class ShipViewModel : ReactiveObject
     {
         logger.LogInformation("Loading data for ship {Index}", ship.Index);
         logger.LogDebug("Build is null: {BuildIsNull}", build is null);
-
-        ShipDataContainer.ExpanderStateMapper.Clear();
 
         // Ship stats model
         RawShipData = ship;

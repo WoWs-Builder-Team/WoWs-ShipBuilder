@@ -9,14 +9,6 @@ namespace WoWsShipBuilder.DataContainers;
 
 public partial record DepthChargesLauncherDataContainer : DataContainerBase
 {
-    private string expanderKey = default!;
-
-    public bool IsExpanderOpen
-    {
-        get => ShipDataContainer.ExpanderStateMapper[expanderKey];
-        set => ShipDataContainer.ExpanderStateMapper[expanderKey] = value;
-    }
-
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
     public decimal Reload { get; set; }
 
@@ -55,11 +47,6 @@ public partial record DepthChargesLauncherDataContainer : DataContainerBase
         };
 
         depthChargesLauncherDataContainer.UpdateDataElements();
-        depthChargesLauncherDataContainer.expanderKey = $"{ship.Index}_DC";
-        if (!ShipDataContainer.ExpanderStateMapper.ContainsKey(depthChargesLauncherDataContainer.expanderKey))
-        {
-            ShipDataContainer.ExpanderStateMapper[depthChargesLauncherDataContainer.expanderKey] = true;
-        }
 
         return depthChargesLauncherDataContainer;
     }
