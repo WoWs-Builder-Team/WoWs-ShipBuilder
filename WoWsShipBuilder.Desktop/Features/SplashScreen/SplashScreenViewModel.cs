@@ -27,7 +27,7 @@ public partial class SplashScreenViewModel : ReactiveObject
     private readonly ILogger<SplashScreenViewModel> logger;
 
     [Observable]
-    private double progress;
+    private int progress;
 
     [Observable]
     private string downloadInfo = nameof(Translation.SplashScreen_Init);

@@ -1,7 +1,5 @@
-using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Windows.Input;
 using DynamicData.Binding;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
@@ -66,23 +64,14 @@ public partial class ShipViewModel : ReactiveObject
     {
         tokenSource = new();
         this.logger = logger;
-        PreviousShip = viewModelParams.ShipSummary.PrevShipIndex is null ? null : AppData.ShipSummaryList!.First(sum => sum.Index == viewModelParams.ShipSummary.PrevShipIndex);
+        PreviousShip = viewModelParams.ShipSummary.PrevShipIndex is null ? null : AppData.ShipSummaryList.First(sum => sum.Index == viewModelParams.ShipSummary.PrevShipIndex);
         CurrentShip = viewModelParams.ShipSummary;
-
-        LoadShipFromIndexCommand = ReactiveCommand.CreateFromTask<string>(LoadShipFromIndexExecute);
     }
 
-    public Interaction<string, Unit> BuildCreatedInteraction { get; } = new();
-
-    // Handle(true) closes this window too
-    public Interaction<Unit, Unit> CloseChildrenInteraction { get; } = new();
-
-    public ICommand LoadShipFromIndexCommand { get; }
-
-    public async void ResetBuild()
+    public void ResetBuild()
     {
         logger.LogDebug("Resetting build");
-        await LoadNewShip(AppData.ShipSummaryList!.First(summary => summary.Index.Equals(CurrentShipIndex)));
+        LoadNewShip(AppData.ShipSummaryList.First(summary => summary.Index.Equals(CurrentShipIndex)));
     }
 
     public void InitializeData(ShipViewModelParams viewModelParams)
@@ -95,20 +84,10 @@ public partial class ShipViewModel : ReactiveObject
         return new(buildName, CurrentShipIndex, RawShipData.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel!.GetCaptainIndex(), CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
     }
 
-    private async Task LoadShipFromIndexExecute(string shipIndex)
+    private void LoadNewShip(ShipSummary summary)
     {
-        var shipSummary = AppData.ShipSummaryList!.First(summary => summary.Index == shipIndex);
-        await LoadNewShip(shipSummary);
-    }
-
-    private async Task LoadNewShip(ShipSummary summary)
-    {
-        // only close child windows
-        await CloseChildrenInteraction.Handle(Unit.Default);
-
         disposables.Clear();
         var ship = AppData.FindShipFromSummary(summary);
-
         InitializeData(ship, summary.PrevShipIndex, summary.NextShipsIndex);
     }
 
