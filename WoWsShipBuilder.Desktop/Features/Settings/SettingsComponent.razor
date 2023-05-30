@@ -84,6 +84,11 @@
         </MudItem>
         <MudItem xs="12">
             <MudStack AlignItems="AlignItems.Start">
+                <MudCheckBox @bind-Checked="@storeBuildOnShare" LabelPosition="LabelPosition.Start" Label="Store Build on share"/>
+            </MudStack>
+        </MudItem>
+        <MudItem xs="12">
+            <MudStack AlignItems="AlignItems.Start">
                 <MudCheckBox @bind-Checked="@autoUpdateEnabled" LabelPosition="LabelPosition.Start" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_AutoUpdate))"/>
             </MudStack>
         </MudItem>
@@ -134,6 +139,8 @@
 
     private bool autoUpdateEnabled = true;
 
+    private bool storeBuildOnShare = true;
+
     private string appVersion = "Undefined";
 
     protected override void OnInitialized()
@@ -167,6 +174,7 @@
         customBuildImagePathEnabled = AppSettings.CustomImagePath is not null;
         customBuildImagePath = AppSettings.CustomImagePath;
         autoUpdateEnabled = AppSettings.AutoUpdateEnabled;
+        storeBuildOnShare = AppSettings.StoreBuildOnShare;
 
         StateHasChanged();
     }
@@ -205,6 +213,12 @@
             settingsChanged = true;
             AppSettings.CustomImagePath = !customBuildImagePathEnabled ? null : customBuildImagePath;
         }
+
+        settingsChanged = settingsChanged || autoUpdateEnabled != AppSettings.AutoUpdateEnabled;
+        AppSettings.AutoUpdateEnabled = autoUpdateEnabled;
+
+        settingsChanged = settingsChanged || storeBuildOnShare != AppSettings.StoreBuildOnShare;
+        AppSettings.StoreBuildOnShare = storeBuildOnShare;
 
         await SettingsAccessor.SaveSettings(AppSettings);
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;

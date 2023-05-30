@@ -12,6 +12,7 @@
 @inject ILocalizer Localizer
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
+@inject IUserDataService UserDataService
 
 <MudGrid Justify="Justify.Center" Spacing="2">
     <MudItem xs="6" md="3">
@@ -111,6 +112,24 @@
                 </MudList>
             </MudPaper>
         </MudItem>
+        @if (EnableRecentBuildList)
+        {
+            <MudItem xs="12" md="4">
+                <div style="height: 56px;" class="mt-4 mb-2 d-flex justify-center align-center">
+                    <MudText Align="Align.Center" Typo="Typo.h5">Recent Builds</MudText>
+                </div>
+                <MudPaper Outlined Style="height: 300px; max-height: 300px; overflow: auto">
+                    <MudList @ref="buildList" Clickable>
+                        @foreach (var build in recentBuilds)
+                        {
+                            <MudListItem @key="build.Hash" Value="build" OnClick="@(() => AddRecentBuild(build))">
+                                <MudText Align="Align.Center">@build.BuildName - @Localizer.SimpleGameLocalization(build.ShipIndex)</MudText>
+                            </MudListItem>
+                        }
+                    </MudList>
+                </MudPaper>
+            </MudItem>
+        }
     }
 </MudGrid>
 
@@ -129,11 +148,18 @@
     [Parameter]
     public bool AllowCopies { get; set; }
 
+    [Parameter]
+    public bool EnableRecentBuildList { get; set; }
+
     private SortedDictionary<string, ShipSummary> totalShipNameDictionary = new();
 
     private MudList mudList = default!;
 
+    private MudList buildList = default!;
+
     private List<KeyValuePair<string, ShipSummary>> filteredSummaryList = new();
+
+    private IEnumerable<Build> recentBuilds = new List<Build>();
 
     private string inputText = string.Empty;
 
@@ -214,6 +240,17 @@
         filteredSummaryList = totalShipNameDictionary.ToList().OrderBy(x => x.Key).ToList();
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && EnableRecentBuildList)
+        {
+            recentBuilds = await UserDataService.LoadBuildsAsync();
+            StateHasChanged();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
     private void ApplyFilter()
     {
         string searchText = InputText;
@@ -257,6 +294,7 @@
         SelectedShips.Remove(container);
 #pragma warning disable BL0005
         mudList.SelectedValue = null;
+        buildList.SelectedValue = null;
 #pragma warning restore BL0005
     }
 
@@ -281,11 +319,34 @@
         }
     }
 
+    private void AddRecentBuild(Build build)
+    {
+        if (!AllowCopies && SelectedShips.Any(x => x.Ship.Index.Equals(build.ShipIndex))) return;
+
+        if (MultiSelect)
+        {
+            SelectedShips.Add(ShipBuildContainer.CreateNew(AppData.ShipDictionary[build.ShipIndex], build, null));
+        }
+        else if (!MultiSelect && SelectedShips.Count == 0)
+        {
+            SelectedShips.Add(ShipBuildContainer.CreateNew(AppData.ShipDictionary[build.ShipIndex], build, null));
+        }
+
+        if (AllowCopies)
+        {
+#pragma warning disable BL0005
+            mudList.SelectedValue = null;
+            buildList.SelectedValue = null;
+#pragma warning restore BL0005
+        }
+    }
+
     private void RemoveAllShips()
     {
         SelectedShips.Clear();
 #pragma warning disable BL0005
         mudList.SelectedValue = null;
+        buildList.SelectedValue = null;
 #pragma warning restore BL0005
     }
 

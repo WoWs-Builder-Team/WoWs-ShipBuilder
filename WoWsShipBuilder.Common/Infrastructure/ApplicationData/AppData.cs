@@ -66,11 +66,6 @@ public static class AppData
     /// </summary>
     public static List<ShipSummary> ShipSummaryList { get; set; } = new();
 
-    /// <summary>
-    /// Gets or sets the list of the last used builds.
-    /// </summary>
-    public static List<Build> Builds { get; set; } = new();
-
 #if DEBUG
     public static bool IsDebug => true;
 #else

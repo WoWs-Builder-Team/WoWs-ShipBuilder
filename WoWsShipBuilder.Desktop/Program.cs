@@ -17,7 +17,6 @@ using WoWsShipBuilder.Desktop.Infrastructure;
 using WoWsShipBuilder.Desktop.Infrastructure.StaticConfiguration;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Localization;
-using WoWsShipBuilder.Infrastructure.Utility;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace WoWsShipBuilder.Desktop;

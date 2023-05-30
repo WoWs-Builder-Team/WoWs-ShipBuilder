@@ -30,6 +30,7 @@
 @inject SessionStateCache SessionStateCache
 @inject IOptions<CdnOptions> CdnOptions
 @inject IOptions<ShipBuilderOptions> ShipBuilderOptions
+@inject IUserDataService UserDataService
 
 @inherits ReactiveComponentBase<ShipViewModel>
 
@@ -94,9 +95,17 @@
                         }
                     </MudItem>
                     <MudItem xs="12" md="2" Class="align-self-center d-flex justify-center">
-                        <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Share" OnClick="@OnShareBuildClicked">
-                            @Localizer.GetAppLocalization(Translation.MainWindow_ShareBuild).Localization
-                        </MudButton>
+                        <MudStack>
+                            <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Share" OnClick="@OnShareBuildClicked">
+                                @Localizer.GetAppLocalization(nameof(Translation.MainWindow_ShareBuild)).Localization
+                            </MudButton>
+                            @if (!AppData.WebMode)
+                            {
+                                <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Save" Disabled="@string.IsNullOrEmpty(BuildName)" OnClick="@OnBuildSaveClicked">
+                                    @Localizer.SimpleAppLocalization(nameof(Translation.Dialog_Save))
+                                </MudButton>
+                            }
+                        </MudStack>
                     </MudItem>
                 </MudGrid>
             </MudPaper>
@@ -331,11 +340,20 @@
 
             var buildUrl = $"{urlBase}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}";
             await ClipboardService.SetTextAsync(shareResult.CreateShortLink ? (await LinkShortener.CreateShortLink(buildUrl)).Link : buildUrl);
+            if (AppSettings.StoreBuildOnShare)
+            {
+                await UserDataService.AddRecentBuildAsync(build);
+            }
         }
 
         if (result is { Canceled: false, Data: string name })
         {
             BuildName = name;
+            if (AppSettings.StoreBuildOnShare)
+            {
+                var build = ViewModel!.CreateBuild(BuildName);
+                await UserDataService.AddRecentBuildAsync(build);
+            }
         }
     }
 
@@ -379,4 +397,11 @@
         // workaround to keep method signature compatible even though InitializeData is no longer async
         return Task.FromResult(vm);
     }
+
+    private async Task OnBuildSaveClicked()
+    {
+        var build = ViewModel!.CreateBuild(BuildName);
+        await UserDataService.AddRecentBuildAsync(build);
+    }
+
 }

@@ -21,7 +21,13 @@ public class WebSettingsAccessor : IAsyncDisposable, ISettingsAccessor
     {
         await InitializeModule();
         var settingsString = await module.InvokeAsync<string?>("getAppSettings");
-        return settingsString == null ? null : JsonConvert.DeserializeObject<AppSettings>(settingsString);
+        var result = settingsString == null ? null : JsonConvert.DeserializeObject<AppSettings>(settingsString);
+        if (result is not null)
+        {
+            result.StoreBuildOnShare = false;
+        }
+
+        return result;
     }
 
     public async Task SaveSettings(AppSettings appSettings)
@@ -49,6 +55,7 @@ public class WebSettingsAccessor : IAsyncDisposable, ISettingsAccessor
             }
             catch (JSDisconnectedException)
             {
+                // Ignored
             }
         }
     }

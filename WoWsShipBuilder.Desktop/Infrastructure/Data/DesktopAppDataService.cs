@@ -6,16 +6,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.DataStructures.Versioning;
-using WoWsShipBuilder.Features.Builds;
 using WoWsShipBuilder.Features.Settings;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Desktop.Infrastructure.Data;
 
-public class DesktopAppDataService : IAppDataService, IUserDataService
+public class DesktopAppDataService : IAppDataService
 {
     private readonly AppSettings appSettings;
 
@@ -91,28 +89,6 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
     {
         string fileName = dataService.CombinePaths(GetDataPath(serverType), "Localization", $"{language}.json");
         return fileSystem.File.Exists(fileName) ? await DeserializeFile<Dictionary<string, string>>(fileName) : null;
-    }
-
-    /// <summary>
-    /// Save string compressed <see cref="Build"/> to the disk.
-    /// </summary>
-    public void SaveBuilds()
-    {
-        var path = dataService.CombinePaths(DefaultAppDataDirectory, "builds.json");
-        var builds = AppData.Builds.Select(build => build.CreateStringFromBuild()).ToList();
-        dataService.Store(builds, path);
-    }
-
-    public void LoadBuilds()
-    {
-        string path = dataService.CombinePaths(DefaultAppDataDirectory, "builds.json");
-        if (fileSystem.File.Exists(path))
-        {
-            var rawBuildList = dataService.Load<List<string>>(path);
-            AppData.Builds = rawBuildList?
-                .Select(str => Build.CreateBuildFromString(str))
-                .ToList() ?? new List<Build>();
-        }
     }
 
     public async Task LoadLocalFilesAsync(ServerType serverType)

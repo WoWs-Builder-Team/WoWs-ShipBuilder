@@ -10,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using WoWsShipBuilder.Desktop.Features.BlazorWebView;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;
 using WoWsShipBuilder.Infrastructure.Utility;
 

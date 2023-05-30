@@ -1,8 +1,6 @@
 using Newtonsoft.Json;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.DataTransfer;
-using WoWsShipBuilder.Infrastructure.Utility;
 using ServerType = WoWsShipBuilder.Infrastructure.GameData.ServerType;
 
 namespace WoWsShipBuilder.Features.Settings;
@@ -34,6 +32,8 @@ public class AppSettings
     public bool IncludeSignalsForImageExport { get; set; }
 
     public string? CustomImagePath { get; set; }
+
+    public bool StoreBuildOnShare { get; set; } = true;
 
     public DispersionPlotSettings DispersionPlotSettings { get; set; } = new();
 

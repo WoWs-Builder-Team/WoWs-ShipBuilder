@@ -1,11 +1,12 @@
-﻿namespace WoWsShipBuilder.Infrastructure.ApplicationData;
+﻿using WoWsShipBuilder.Features.Builds;
+
+namespace WoWsShipBuilder.Infrastructure.ApplicationData;
 
 public interface IUserDataService
 {
-    /// <summary>
-    /// Save string compressed <see cref="Build"/> to the disk.
-    /// </summary>
-    void SaveBuilds();
+    Task SaveBuildsAsync(IEnumerable<Build> builds);
 
-    void LoadBuilds();
+    Task<IEnumerable<Build>> LoadBuildsAsync();
+
+    Task AddRecentBuildAsync(Build build);
 }

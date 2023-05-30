@@ -1,6 +1,5 @@
 @using WoWsShipBuilder.Infrastructure.Utility
 @using WoWsShipBuilder.Features.Settings
-@using WoWsShipBuilder.Infrastructure
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @inherits LayoutComponentBase
 @inject ISettingsAccessor SettingsAccessor
@@ -38,6 +37,7 @@
                 settings = new()
                 {
                     WebAppSettings = new(),
+                    StoreBuildOnShare = false,
                 };
                 await SettingsAccessor.SaveSettings(settings);
             }

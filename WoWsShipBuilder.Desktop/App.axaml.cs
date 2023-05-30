@@ -119,7 +119,6 @@ namespace WoWsShipBuilder.Desktop
             logger.LogInformation("Closing app, saving setting and builds");
             var settingsAccessor = (DesktopSettingsAccessor)Services.GetRequiredService<ISettingsAccessor>();
             settingsAccessor.SaveSettingsSync(Services.GetRequiredService<AppSettings>());
-            Services.GetRequiredService<IUserDataService>().SaveBuilds();
             logger.LogInformation("Exiting...");
             logger.LogInformation("------------------------------");
         }

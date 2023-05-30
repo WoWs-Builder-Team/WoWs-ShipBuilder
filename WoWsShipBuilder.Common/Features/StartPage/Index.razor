@@ -51,7 +51,7 @@
             <MudDivider DividerType="DividerType.Middle" Style="width: 100%" Light/>
         </MudItem>
         <MudItem xs="12">
-            <ShipSelector SelectedShips="@selectedShips" AllowCopies/>
+            <ShipSelector SelectedShips="@selectedShips" AllowCopies EnableRecentBuildList="@(!AppData.WebMode)" />
         </MudItem>
         <MudItem xs="12" sm="8" Class="d-flex" Style="justify-content: space-between">
             <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@GoToShipPage" FullWidth="true">
