@@ -8,7 +8,7 @@
         WindowStartupLocation="CenterScreen"
         Background="#ff282828"
         MinHeight="850"
-        Title="BlazorWindow">
+        Title="WoWs ShipBuilder">
     <Grid RowDefinitions="30, *">
         <!-- <infrastructure:AppHeader ShowMaximizeButton="True" /> -->
         <webView:BlazorWebView Grid.Row="1" Name="WebView"

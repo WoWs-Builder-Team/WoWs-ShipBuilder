@@ -6,7 +6,7 @@
         x:Class="WoWsShipBuilder.Desktop.Features.SplashScreen.SplashScreen"
         xmlns:translations="clr-namespace:WoWsShipBuilder.Infrastructure.Localization.Resources;assembly=WoWsShipBuilder.Common"
         xmlns:splashScreen="clr-namespace:WoWsShipBuilder.Desktop.Features.SplashScreen"
-        Title="SplashScreenWindow"
+        Title="WoWs ShipBuilder"
         Name="SplashScreenWindow"
         Height="566" Width="800" CanResize="False"
         SystemDecorations="None"

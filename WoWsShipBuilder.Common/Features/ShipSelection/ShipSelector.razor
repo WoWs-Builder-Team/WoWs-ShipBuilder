@@ -82,7 +82,7 @@
                     {
                         <MudListItem>
                             <MudText Color="Color.Primary" Align="Align.Center">
-                                @Localizer.GetAppLocalization(Translation.ShipAndShellsSelectionDialog_NoShipSelected).Localization
+                                @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellsSelectionDialog_NoShipSelected)).Localization
                             </MudText>
                         </MudListItem>
                     }
@@ -91,7 +91,7 @@
                         foreach (var shipContainer in SelectedShips)
                         {
                             <MudListItem key="@shipContainer.Id">
-                                <MudStack Style="align-items: stretch" Class="mt-n2">
+                                <MudStack Style="align-items: stretch" Spacing="1">
                                     <MudStack Row Justify="Justify.SpaceBetween">
                                         <MudText>
                                             @Localizer.GetGameLocalization(shipContainer.Ship.Index + "_FULL").Localization
@@ -100,13 +100,13 @@
                                     </MudStack>
                                     <MudStack Row AlignItems="AlignItems.Baseline">
                                         <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1" @onclick="@(_ => AddBuild(shipContainer))">
-                                            @(Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (!string.IsNullOrWhiteSpace(shipContainer.Build?.BuildName) ? shipContainer.Build.BuildName : Build.DefaultBuildName))
+                                            @(Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_Build)).Localization + ": " + (!string.IsNullOrWhiteSpace(shipContainer.Build?.BuildName) ? shipContainer.Build.BuildName : Build.DefaultBuildName))
                                         </MudText>
                                         <MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.Edit" @onclick="@(_ => AddBuild(shipContainer))" Style="cursor: pointer; alignment-baseline: hanging; font-size: small" ViewBox="0 -3 24 24"/>
                                     </MudStack>
                                 </MudStack>
-                                <MudDivider Class="mt-1"/>
                             </MudListItem>
+                            <MudDivider />
                         }
                     }
                 </MudList>
@@ -115,16 +115,26 @@
         @if (EnableRecentBuildList)
         {
             <MudItem xs="12" md="4">
-                <div style="height: 56px;" class="mt-4 mb-2 d-flex justify-center align-center">
-                    <MudText Align="Align.Center" Typo="Typo.h5">Recent Builds</MudText>
-                </div>
+                <MudPaper Class="mt-4 mb-2 d-flex justify-center align-center " Height="56px" Outlined>
+                    <MudText Align="Align.Center" Typo="Typo.h5" Class="prevent-select">Recent Builds</MudText>
+                </MudPaper>
                 <MudPaper Outlined Style="height: 300px; max-height: 300px; overflow: auto">
                     <MudList @ref="buildList" Clickable>
+                        @if (!recentBuilds.Any())
+                        {
+                            <MudListItem Disabled>
+                                <MudText Align="Align.Center" Class="prevent-select">No recent builds</MudText>
+                            </MudListItem>
+                        }
                         @foreach (var build in recentBuilds)
                         {
                             <MudListItem @key="build.Hash" Value="build" OnClick="@(() => AddRecentBuild(build))" Icon="@Icons.Material.Filled.KeyboardArrowLeft">
-                                <MudText Align="Align.Center">@build.BuildName - @Localizer.SimpleGameLocalization(build.ShipIndex)</MudText>
+                                <MudStack Style="align-items: stretch" Class="my-n1" Spacing="1">
+                                    <MudText>@Localizer.SimpleGameLocalization(build.ShipIndex)</MudText>
+                                    <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2">@(Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_Build)) + ": " + build.BuildName)</MudText>
+                                </MudStack>
                             </MudListItem>
+                            <MudDivider/>
                         }
                     </MudList>
                 </MudPaper>
