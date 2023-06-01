@@ -42,7 +42,9 @@ public static class HostApplicationBuilderExtensions
 
         builder.Services.AddTransient<SplashScreenViewModel>();
         builder.Services.AddWindowsFormsBlazorWebView();
+#if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();
+#endif
 
         return builder;
     }

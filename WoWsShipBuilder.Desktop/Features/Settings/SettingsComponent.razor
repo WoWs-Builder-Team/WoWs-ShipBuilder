@@ -24,6 +24,7 @@
 @inject ISnackbar Snackbar
 @inject IServiceProvider ServiceProvider
 @inject IDialogService DialogService
+@inject ILocalizationProvider LocalizationProvider
 
 <MudContainer>
     <MudGrid Justify="Justify.Center">
@@ -53,7 +54,7 @@
         </MudItem>
 
         <MudItem xs="12">
-            <MudSelect @bind-Value="selectedCulture" Style="max-width: 500px;" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_SelectedLanguage)).Localization">
+            <MudSelect @bind-Value="selectedCulture" Style="max-width: 500px;" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_SelectedLanguage)).Localization" HelperText="We recommend restarting the app after changing the language.">
                 @foreach (var culture in AppConstants.SupportedLanguages)
                 {
                     <MudSelectItem Value="@culture">@culture.CultureInfo.DisplayName</MudSelectItem>
@@ -221,6 +222,8 @@
         AppSettings.StoreBuildOnShare = storeBuildOnShare;
 
         await SettingsAccessor.SaveSettings(AppSettings);
+
+        await LocalizationProvider.RefreshDataAsync(AppSettings.SelectedServerType, AppSettings.SelectedLanguage);
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
         Snackbar.Add("Settings saved", Severity.Success, config => { config.CloseAfterNavigation = true; });
         if (settingsChanged)

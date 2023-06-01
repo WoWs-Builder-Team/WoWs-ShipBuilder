@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.Desktop.Infrastructure.Data;
 using WoWsShipBuilder.Features.Settings;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 
 namespace WoWsShipBuilder.Desktop.Infrastructure;
@@ -53,6 +52,7 @@ public class DesktopSettingsAccessor : ISettingsAccessor
     public async Task SaveSettings(AppSettings appSettings)
     {
         await dataService.StoreAsync(appSettings, settingsFile);
+        UpdateThreadCulture(appSettings.SelectedLanguage.CultureInfo);
     }
 
     public void SaveSettingsSync(AppSettings appSettings)

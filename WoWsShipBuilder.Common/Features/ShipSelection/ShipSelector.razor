@@ -122,7 +122,7 @@
                     <MudList @ref="buildList" Clickable>
                         @foreach (var build in recentBuilds)
                         {
-                            <MudListItem @key="build.Hash" Value="build" OnClick="@(() => AddRecentBuild(build))">
+                            <MudListItem @key="build.Hash" Value="build" OnClick="@(() => AddRecentBuild(build))" Icon="@Icons.Material.Filled.KeyboardArrowLeft">
                                 <MudText Align="Align.Center">@build.BuildName - @Localizer.SimpleGameLocalization(build.ShipIndex)</MudText>
                             </MudListItem>
                         }
