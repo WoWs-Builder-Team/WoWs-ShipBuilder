@@ -9,7 +9,7 @@
             <MudStack Row>
                 @foreach (var (section, columns) in switchesLayout)
                 {
-                    <MudPaper Outlined Elevation="0" Square="true" @key="@(section.AsString())">
+                    <MudPaper Outlined Elevation="0" @key="@(section.AsString())">
                         <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
                             <MudText Typo="Typo.body2" Align="Align.Center" Style="font-weight: bold">
                                 @(section.Localize(Localizer).ToUpper())

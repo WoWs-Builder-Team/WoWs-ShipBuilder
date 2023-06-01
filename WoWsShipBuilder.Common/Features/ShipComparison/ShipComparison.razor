@@ -55,7 +55,7 @@
 
 @if (ViewModel is not null)
 {
-    <MudPaper Outlined Elevation="0" Square Class="pl-3 pb-3">
+    <MudPaper Outlined Elevation="0" Class="pl-3 pb-3">
         <MudStack Row="true" Class="mt-2">
             <MudText GutterBottom="true" Style="font-size: medium">
                 @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_TierFilter))
@@ -198,7 +198,7 @@
                     @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_ViewAcceleration))
                 </MudButton>
             </MudStack>
-            <MudPaper Outlined="true" Square="true" Class="pa-3 mb-3" Style="width: 100%">
+            <MudPaper Outlined Class="pa-3 mb-3" Style="width: 100%">
                 <MudButtonGroup OverrideStyles="false" Class="gap-3" Style="flex-wrap: wrap" Size="Size.Small">
                     @foreach (var dataSection in ViewModel.DataSections)
                     {

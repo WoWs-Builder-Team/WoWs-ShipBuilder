@@ -218,3 +218,7 @@ a.kofi-button:active {
 .rounded-4 {
     border-radius: 4px;
 }
+
+div.mud-expand-panel {
+    border-radius: var(--mud-default-borderradius) !important;
+}
