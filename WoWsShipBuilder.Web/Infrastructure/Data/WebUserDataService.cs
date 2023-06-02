@@ -56,6 +56,14 @@ public class WebUserDataService : IUserDataService, IAsyncDisposable
         await SaveBuildsAsync(recentBuilds);
     }
 
+    public async Task RemoveRecentBuildAsync(Build build)
+    {
+        recentBuilds ??= (await LoadBuildsAsync()).ToList();
+        recentBuilds.Remove(build);
+
+        await SaveBuildsAsync(recentBuilds);
+    }
+
     public async ValueTask DisposeAsync()
     {
         if (module is not null)

@@ -65,4 +65,12 @@ public class DesktopUserDataService : IUserDataService
 
         await SaveBuildsAsync(recentBuilds);
     }
+
+    public async Task RemoveRecentBuildAsync(Build build)
+    {
+        recentBuilds ??= (await LoadBuildsAsync()).ToList();
+        recentBuilds.Remove(build);
+
+        await SaveBuildsAsync(recentBuilds);
+    }
 }

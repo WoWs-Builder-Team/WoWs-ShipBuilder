@@ -130,7 +130,13 @@
                         {
                             <MudListItem @key="build.Hash" Value="build" OnClick="@(() => AddRecentBuild(build))" Icon="@Icons.Material.Filled.KeyboardArrowLeft">
                                 <MudStack Style="align-items: stretch" Class="my-n1" Spacing="1">
-                                    <MudText>@Localizer.SimpleGameLocalization(build.ShipIndex)</MudText>
+                                    <MudStack Row Justify="Justify.SpaceBetween">
+                                        <MudText>@Localizer.SimpleGameLocalization(build.ShipIndex)</MudText>
+                                        @* TODO: Localize *@
+                                        <MudTooltip Text="Remove from recent builds">
+                                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" OnClick="@(() => RemoveRecentBuild(build))"/>
+                                        </MudTooltip>
+                                    </MudStack>
                                     <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2">@(Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_Build)) + ": " + build.BuildName)</MudText>
                                 </MudStack>
                             </MudListItem>
@@ -381,5 +387,10 @@
         {
             SelectedShips.Replace(SelectedShips.Single(x => x.Id.Equals(ship.Id)), ship with { Build = build });
         }
+    }
+
+    private async Task RemoveRecentBuild(Build build)
+    {
+        await UserDataService.RemoveRecentBuildAsync(build);
     }
 }
