@@ -1,13 +1,9 @@
-﻿@using WoWsShipBuilder.Infrastructure.Localization
-@using WoWsShipBuilder.Infrastructure.Localization.Resources
-@using WoWsShipBuilder.Infrastructure.Utility
+﻿@using WoWsShipBuilder.Infrastructure.Localization.Resources
 @inject ILocalizer Localizer
 
-<MudDialog>
+<MudDialog DefaultFocus="DefaultFocus.FirstChild">
     <DialogContent>
-        <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
-            <MudTextField @bind-Value="BuildName" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_BuildName))" Immediate Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))"/>
-        </MudFocusTrap>
+        <MudTextField @onkeydown="@OnKeyDown" @bind-Value="BuildName" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_BuildName))" Immediate Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))"/>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="@Cancel">
@@ -35,5 +31,13 @@
     private void OnConfirm()
     {
         MudDialog.Close(BuildName);
+    }
+
+    private void OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Code is "Enter" or "NumpadEnter" && !string.IsNullOrWhiteSpace(BuildName) && BuildValidation.ValidateBuildName(BuildName) is null)
+        {
+            OnConfirm();
+        }
     }
 }
