@@ -97,31 +97,35 @@
         NotifierService.RefreshRequested -= OnRefresh;
     }
 
-    private void OnLoadBuild()
+    private async Task OnLoadBuild()
     {
-        if (buildString.Contains(LinkShorteningOptions.Value.UriPrefix + '/'))
+        if (!string.IsNullOrEmpty(LinkShorteningOptions.Value.UriPrefix) && buildString.Contains(LinkShorteningOptions.Value.UriPrefix + '/'))
         {
-            NavManager.NavigateTo(buildString);
+            if (AppData.WebMode)
+            {
+                NavManager.NavigateTo(buildString);
+                return;
+            }
+            var fullUrl = await BuildValidation.RetrieveLongUrlFromShortLink(buildString) ?? string.Empty;
+            buildString = fullUrl;
         }
-        else
-        {
-            if (QueryHelpers.ParseQuery(buildString).TryGetValue("build", out var buildFromUrl))
-            {
-                buildString = buildFromUrl.ToString();
-            }
 
-            try
-            {
-                var build = Build.CreateBuildFromString(buildString);
-                NavManager.NavigateTo($"/ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}");
-                Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
-                Snackbar.Add("Build loaded", Severity.Success);
-            }
-            catch (FormatException)
-            {
-                Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
-                Snackbar.Add("Failed to load build from string", Severity.Error);
-            }
+        if (QueryHelpers.ParseQuery(buildString).TryGetValue("build", out var buildFromUrl))
+        {
+            buildString = buildFromUrl.ToString();
+        }
+
+        try
+        {
+            var build = Build.CreateBuildFromString(buildString);
+            NavManager.NavigateTo($"/ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}");
+            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+            Snackbar.Add("Build loaded", Severity.Success);
+        }
+        catch (FormatException)
+        {
+            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+            Snackbar.Add("Failed to load build from string", Severity.Error);
         }
     }
 }

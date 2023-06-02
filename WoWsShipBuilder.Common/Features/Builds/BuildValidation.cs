@@ -65,7 +65,7 @@ public static class BuildValidation
         return invalidCharsInBuildName.Any() ? $"Invalid characters {string.Join(' ', invalidCharsInBuildName)}" : null;
     }
 
-    private static async Task<string?> RetrieveLongUrlFromShortLink(string shortUrl)
+    public static async Task<string?> RetrieveLongUrlFromShortLink(string shortUrl)
     {
         // this allows you to set the settings so that we can get the redirect url
         using HttpClient client = new(new HttpClientHandler

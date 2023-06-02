@@ -165,7 +165,7 @@
 
     private MudList mudList = default!;
 
-    private MudList buildList = default!;
+    private MudList? buildList;
 
     private List<KeyValuePair<string, ShipSummary>> filteredSummaryList = new();
 
@@ -304,7 +304,10 @@
         SelectedShips.Remove(container);
 #pragma warning disable BL0005
         mudList.SelectedValue = null;
-        buildList.SelectedValue = null;
+        if (buildList != null)
+        {
+            buildList.SelectedValue = null;
+        }
 #pragma warning restore BL0005
     }
 
@@ -346,7 +349,10 @@
         {
 #pragma warning disable BL0005
             mudList.SelectedValue = null;
-            buildList.SelectedValue = null;
+            if (buildList != null)
+            {
+                buildList.SelectedValue = null;
+            }
 #pragma warning restore BL0005
         }
     }
@@ -356,7 +362,10 @@
         SelectedShips.Clear();
 #pragma warning disable BL0005
         mudList.SelectedValue = null;
-        buildList.SelectedValue = null;
+        if (buildList != null)
+        {
+            buildList.SelectedValue = null;
+        }
 #pragma warning restore BL0005
     }
 
