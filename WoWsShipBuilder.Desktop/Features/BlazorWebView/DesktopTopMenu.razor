@@ -9,6 +9,7 @@
 @using WoWsShipBuilder.Desktop.Features.Settings
 @using WoWsShipBuilder.Desktop.Infrastructure
 @using WoWsShipBuilder.Infrastructure
+@using Size = MudBlazor.Size
 
 @implements IDisposable
 @inject ILocalizer Localizer
@@ -39,15 +40,16 @@
             <MudImage Src="/assets/icons/error.png" Width="50" Height="50" Style="margin-right: 10px;"/>
         </MudTooltip>
     }
-    <div class=btn-container>
+    <div class="btn-container">
         <a title="Donate" class="kofi-button" style="background-color:#505050;" href="https://ko-fi.com/L4L3DT7EM" target="_blank">
             <span class="kofitext">
                 <img src="https://storage.ko-fi.com/cdn/cup-border.png" alt="Ko-fi donations" class="kofiimg"/>Donate
             </span>
         </a>
     </div>
-    <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Settings" Color="Color.Inherit" OnClick="OpenSettings">@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Settings))</MudButton>
-    <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder#wows-shipbuilder" Target="_blank"/>
+    <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Inherit" OnClick="OpenSettings" Target="_blank" Size="Size.Medium" Title="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Settings))"/>
+    <MudIconButton Icon="@Icons.Custom.Brands.Discord" Color="Color.Inherit" Link="https://discord.gg/C8EaepZJDY" Target="_blank" Size="Size.Large" Title="Discord server"/>
+    <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder#wows-shipbuilder" Target="_blank" Title="Github repository"/>
 </MudAppBar>
 
 @code
