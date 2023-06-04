@@ -463,7 +463,7 @@
     <value>Vízbetörés általi másodpercenkénti sebzés</value>
   </data>
   <data name="ShipStats_FloodDuration" xml:space="preserve">
-      <value>Vízbetörés időtartalma</value>
+      <value>Égési idő</value>
   </data>
   <data name="ShipStats_FloodProbability" xml:space="preserve">
     <value>Vízbetörés valószínűsége</value>
@@ -541,10 +541,10 @@
     <value>Felderítési távolság, lángolva, levegőből</value>
   </data>
   <data name="ShipStats_ConcealmentBySea" xml:space="preserve">
-      <value>Felderítési távolság, vizen</value>
+      <value>Felderítési távolság, levegőből</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
-    <value>Felderítési távolság, lángolva, vizen</value>
+    <value>Felderítési távolság, lángolva, levegőből</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
     <value>Felderítési távolság, füstből lövés után</value>
@@ -556,7 +556,7 @@
       <value>Teljes tűz általi sebzés</value>
   </data>
   <data name="ShipStats_FloodAmount" xml:space="preserve">
-      <value>Max. összesen</value>
+      <value>Max. tűzesetek száma</value>
   </data>
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
     <value>Torpedóvédelem</value>
@@ -748,7 +748,7 @@
     <value>Hiba a felépítés betöltése közben</value>
   </data>
   <data name="ShipStats_JatoDuration" xml:space="preserve">
-      <value>Időtartam</value>
+      <value>Égési idő</value>
   </data>
   <data name="ShipStats_JatoSpeedMultiplier" xml:space="preserve">
       <value>Sebességnövelés</value>
@@ -760,7 +760,7 @@
     <value>Gyorstüzelő mód</value>
   </data>
   <data name="ShipStats_Duration" xml:space="preserve">
-    <value>Időtartam</value>
+    <value>Égési idő</value>
   </data>
   <data name="ShipStats_ReloadAfterBurst" xml:space="preserve">
     <value>Gyorstüzelő mód újratöltés</value>
@@ -1355,7 +1355,7 @@ Bővebb információ a logfájlokban található.</value>
       <value>Becsapódás</value>
   </data>
   <data name="ShipStats_SplashRadius" xml:space="preserve">
-      <value>Becsapódás hatósugara</value>
+      <value>Robbanás hatósugara</value>
   </data>
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Sebzés</value>
