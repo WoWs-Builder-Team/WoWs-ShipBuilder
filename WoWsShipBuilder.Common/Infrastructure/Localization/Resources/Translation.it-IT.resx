@@ -541,7 +541,7 @@
     <value>Quando in fiamme</value>
   </data>
   <data name="ShipStats_ConcealmentBySea" xml:space="preserve">
-      <value>Occultamento dal mare</value>
+      <value>Occultamento dall'aria</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
     <value>Quando in fiamme</value>
@@ -556,7 +556,7 @@
       <value>Danno totale per incendio</value>
   </data>
   <data name="ShipStats_FloodAmount" xml:space="preserve">
-      <value>Allagamenti massimi</value>
+      <value>Incendi massimi</value>
   </data>
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
     <value>Protezione siluro</value>
@@ -745,7 +745,7 @@
     <value>Errore durante il caricamento della build</value>
   </data>
   <data name="ShipStats_JatoDuration" xml:space="preserve">
-      <value>Durata della spinta</value>
+      <value>Durata</value>
   </data>
   <data name="ShipStats_JatoSpeedMultiplier" xml:space="preserve">
       <value>Moltiplicatore della velocità di spinta</value>
@@ -958,7 +958,7 @@
       <value>Raggio di esplosione</value>
   </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-      <value>Penetrazione dell'esplosione</value>
+      <value>Penetrazione</value>
   </data>
   <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
       <value>Motore</value>
@@ -1207,10 +1207,10 @@
       <value>Gruppo d'attacco</value>
   </data>
   <data name="ShipStats_Max" xml:space="preserve">
-      <value>Max</value>
+      <value>Portata massima</value>
   </data>
   <data name="ShipStats_Min" xml:space="preserve">
-      <value>Min</value>
+      <value>Portata minima</value>
   </data>
   <data name="ShipStats_AttackTimings" xml:space="preserve">
       <value>Tempi d'attacco</value>
@@ -1225,7 +1225,7 @@
       <value>Spinta iniziale</value>
   </data>
   <data name="ShipStats_SpeedBoost" xml:space="preserve">
-      <value>Velocità spinta</value>
+      <value>Moltiplicatore della velocità di spinta</value>
   </data>
   <data name="ModifierConverter_MaxEngagementDuration" xml:space="preserve">
       <value>Durata massima dell'ingaggio</value>
@@ -1321,7 +1321,7 @@
       <value>Esplosione</value>
   </data>
   <data name="ShipStats_SplashRadius" xml:space="preserve">
-      <value>Raggio</value>
+      <value>Raggio di esplosione</value>
   </data>
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Danno</value>
