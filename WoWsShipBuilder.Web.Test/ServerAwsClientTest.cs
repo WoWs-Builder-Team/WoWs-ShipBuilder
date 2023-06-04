@@ -10,11 +10,13 @@ using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Versioning;
-using WoWsShipBuilder.Web.Data;
-using WoWsShipBuilder.Web.Services;
+using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
+using WoWsShipBuilder.Infrastructure.GameData;
+using WoWsShipBuilder.Infrastructure.Utility;
+using WoWsShipBuilder.Web.Infrastructure;
 
 namespace WoWsShipBuilder.Web.Test;
 

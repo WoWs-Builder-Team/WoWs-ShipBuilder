@@ -1,0 +1,325 @@
+﻿@using System.Globalization
+@using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.Features.ShipComparison.GridData
+@using WoWsShipBuilder.Infrastructure.Localization
+@using WoWsShipBuilder.Infrastructure.Localization.Resources
+@code {
+
+    // Parameter needs to be named __builder, otherwise compilation will fail.
+    // ReSharper disable once InconsistentNaming UnusedParameter.Local
+    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer, double range, Dictionary<Guid, DispersionContainer> dispersionCache)> MainBatteryDataFragment = element => __builder =>
+    {
+        string dataSectionString = ShipComparisonDataSections.MainBattery.AsString();
+
+        var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
+        nfi.NumberGroupSeparator = "'";
+
+        var columnTitleCaliber = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Caliber))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
+        var columnTitleBarrels = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Barrels))}";
+        var columnTitleMaxRange = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_MaxRange))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
+        var columnTitleHorizontalDispersion = $"{element.localizer.SimpleAppLocalization(nameof(Translation.DispersionGraphWindow_Horizontal))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Dispersion))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
+        var columnTitleVerticalDispersion = $"{element.localizer.SimpleAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Dispersion))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
+        var columnTitleTurnTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TurnTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleTraverseSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TraverseSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_DegreePerSecond)})";
+        var columnTitleReload = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ReloadTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleRof = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RoF))} ({element.localizer.SimpleAppLocalization(Translation.Unit_ShotsPerMinute)})";
+        var columnTitleHeDpm = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_HE))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Dpm)}";
+        var columnTitleApDpm = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_AP))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Dpm)}";
+        var columnTitleSapDpm = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_SAP))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Dpm)}";
+        var columnTitleHeSalvo = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_HE))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Salvo)}";
+        var columnTitleApSalvo = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_AP))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Salvo)}";
+        var columnTitleSapSalvo = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_SAP))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Salvo)}";
+        var columnTitleFpm = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Fpm))} ({element.localizer.SimpleAppLocalization(Translation.Unit_FPM)})";
+        var columnTitleSigma = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Sigma))}";
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCaliber}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCaliber)" SortBy="@(x => x.MainBattery?.GunCaliber ?? 0)" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
+           <CellTemplate>
+               @if (context.Item.MainBattery?.GunCaliber is not null)
+               {
+                   <MudText Typo="Typo.body2">
+                       @context.Item.MainBattery.GunCaliber
+                   </MudText>
+               }
+               else
+               {
+                   <MudText Typo="Typo.body2" Color="Color.Primary">
+                       @ShipComparisonViewModel.DataNotAvailable
+                   </MudText>
+               }
+           </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBarrels}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBarrels)" SortBy="@(x => x.MainBattery?.BarrelsCount ?? 0)" T="GridDataWrapper" Title="@columnTitleBarrels" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.MainBattery?.BarrelsCount is not null && context.Item.MainBattery?.BarrelsLayout is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @($"{context.Item.MainBattery.BarrelsCount} ({context.Item.MainBattery.BarrelsLayout})")
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxRange}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxRange)" SortBy="@(x => x.MainBattery?.Range ?? 0)" T="GridDataWrapper" Title="@columnTitleMaxRange" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.MainBattery?.Range is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.MainBattery.Range
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleHorizontalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHorizontalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Horizontal : 0)" T="GridDataWrapper" Title="@columnTitleHorizontalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (element.dispersionCache.TryGetValue(context.Item.Id, out var value))
+                {
+                    <MudText Typo="Typo.body2">
+                        @Math.Round(value.Horizontal, 2)
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleVerticalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleVerticalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Vertical : 0)" T="GridDataWrapper" Title="@columnTitleVerticalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (element.dispersionCache.TryGetValue(context.Item.Id, out var value))
+                {
+                    <MudText Typo="Typo.body2">
+                        @Math.Round(value.Vertical, 2)
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTurnTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTurnTime)" SortBy="@(x => x.MainBattery?.TurnTime ?? 0)" T="GridDataWrapper" Title="@columnTitleTurnTime" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.MainBattery?.TurnTime is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.MainBattery.TurnTime
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTraverseSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTraverseSpeed)" SortBy="@(x => x.MainBattery?.TraverseSpeed ?? 0)" T="GridDataWrapper" Title="@columnTitleTraverseSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.MainBattery?.TraverseSpeed is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.MainBattery.TraverseSpeed
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReload}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleReload)" SortBy="@(x => x.MainBattery?.Reload ?? 0)" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.MainBattery?.Reload is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.MainBattery.Reload
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRof}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRof)" SortBy="@(x => x.MainBattery?.RoF ?? 0)" T="GridDataWrapper" Title="@columnTitleRof" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.MainBattery?.RoF is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.MainBattery.RoF
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleHeDpm}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHeDpm)" T="GridDataWrapper" Title="@columnTitleHeDpm" SortBy="@(x => int.Parse(x.MainBattery?.TheoreticalHeDpm ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (!string.IsNullOrEmpty(context.Item.MainBattery?.TheoreticalHeDpm))
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.MainBattery.TheoreticalHeDpm
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleApDpm}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleApDpm)" T="GridDataWrapper" Title="@columnTitleApDpm" SortBy="@(x => int.Parse(x.MainBattery?.TheoreticalApDpm ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (!string.IsNullOrEmpty(context.Item.MainBattery?.TheoreticalApDpm))
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.MainBattery.TheoreticalApDpm
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSapDpm}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSapDpm)" T="GridDataWrapper" Title="@columnTitleSapDpm" SortBy="@(x => int.Parse(x.MainBattery?.TheoreticalSapDpm ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (!string.IsNullOrEmpty(context.Item.MainBattery?.TheoreticalSapDpm))
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.MainBattery.TheoreticalSapDpm
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleHeSalvo}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHeSalvo)" T="GridDataWrapper" Title="@columnTitleHeSalvo" SortBy="@(x => int.Parse(x.MainBattery?.HeSalvo ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (!string.IsNullOrEmpty(context.Item.MainBattery?.HeSalvo))
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.MainBattery.HeSalvo
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleApSalvo}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleApSalvo)" T="GridDataWrapper" Title="@columnTitleApSalvo" SortBy="@(x => int.Parse(x.MainBattery?.ApSalvo ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (!string.IsNullOrEmpty(context.Item.MainBattery?.ApSalvo))
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.MainBattery.ApSalvo
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSapSalvo}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSapSalvo)" T="GridDataWrapper" Title="@columnTitleSapSalvo" SortBy="@(x => int.Parse(x.MainBattery?.SapSalvo ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (!string.IsNullOrEmpty(context.Item.MainBattery?.SapSalvo))
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.MainBattery.SapSalvo
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFpm}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFpm)" SortBy="@(x => x.MainBattery?.PotentialFpm ?? 0)" T="GridDataWrapper" Title="@columnTitleFpm" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.MainBattery?.PotentialFpm is not null && context.Item.MainBattery.PotentialFpm != 0)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.MainBattery.PotentialFpm
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSigma}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSigma)" SortBy="@(x => x.MainBattery?.Sigma ?? 0)" T="GridDataWrapper" Title="@columnTitleSigma" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.MainBattery?.Sigma is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.MainBattery.Sigma
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+    };
+}

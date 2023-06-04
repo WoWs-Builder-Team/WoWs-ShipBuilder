@@ -10,7 +10,7 @@ Tools/*.log
 
 *.user
 
-WoWsShipBuilder.UI/Settings/*_ApplicationOptions.json
+WoWsShipBuilder.Desktop/Infrastructure/StaticConfiguration/*_ApplicationOptions.json
 buildInfo.txt
 
 */wwwroot/lib/

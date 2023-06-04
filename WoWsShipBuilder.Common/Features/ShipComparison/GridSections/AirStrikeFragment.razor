@@ -1,0 +1,283 @@
+﻿@using WoWsShipBuilder.Infrastructure.Localization
+@using WoWsShipBuilder.Infrastructure.Localization.Resources
+@using WoWsShipBuilder.Features.ShipComparison.GridData
+@code {
+
+    // Parameter needs to be named __builder, otherwise compilation will fail.
+    // ReSharper disable once InconsistentNaming UnusedParameter.Local
+    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer)> AirStrikeDataFragment = element => __builder =>
+    {
+        string dataSectionString = ShipComparisonDataSections.AirStrike.AsString();
+
+        var columnTitlePlaneHp = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_PlaneHp))}";
+        var columnTitleDropRange = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_DropRange))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
+        var columnTitleDropLenght = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MaximumFlightDistance))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
+        var columnTitlePlanesInSquadron = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_PlanesInSquadron))}";
+        var columnTitleBombsPerPlane = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_BombsPerPlane))}";
+        var columnTitleCharges = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Charges))}";
+        var columnTitleReload = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ReloadTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleBombType = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_BombType))}";
+        var columnTitleDamage = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Damage))}";
+        var columnTitleFireChance = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FireChance))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+        var columnTitleSplashRadius = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SplashRadius))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
+        var columnTitleSplashDamage = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Splash))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Damage)}";
+        var columnTitlePenetration = $"{element.localizer.SimpleAppLocalization(Translation.ShipStats_Penetration)} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
+        var columnTitleBlastRadius = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Blast))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ExplosionRadius))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
+        var columnTitleBlastPenetration = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Blast))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Penetration))}";
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlaneHp}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlaneHp)" SortBy="@(x => x.AirStrike?.PlaneHp ?? 0)" T="GridDataWrapper" Title="@columnTitlePlaneHp" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrike?.PlaneHp is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrike.PlaneHp
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDropRange}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDropRange)" SortBy="@(x => x.AirStrike?.MaximumDistance ?? 0)" T="GridDataWrapper" Title="@columnTitleDropRange" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrike?.MaximumDistance is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrike.MaximumDistance
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDropLenght}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDropLenght)" SortBy="@(x => x.AirStrike?.MaximumFlightDistance ?? 0)" T="GridDataWrapper" Title="@columnTitleDropLenght" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrike?.MaximumFlightDistance is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrike.MaximumFlightDistance
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlanesInSquadron}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlanesInSquadron)" SortBy="@(x => x.AirStrike?.NumberDuringAttack ?? 0)" T="GridDataWrapper" Title="@columnTitlePlanesInSquadron" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrike?.NumberDuringAttack is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrike.NumberDuringAttack
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBombsPerPlane}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBombsPerPlane)" SortBy="@(x => x.AirStrike?.BombsPerPlane ?? 0)" T="GridDataWrapper" Title="@columnTitleBombsPerPlane" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrike?.BombsPerPlane is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrike.BombsPerPlane
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCharges}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCharges)" SortBy="@(x => x.AirStrike?.NumberOfUses ?? 0)" T="GridDataWrapper" Title="@columnTitleCharges" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrike?.NumberOfUses is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrike.NumberOfUses
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReload}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleReload)" SortBy="@(x => x.AirStrike?.ReloadTime ?? 0)" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrike?.ReloadTime is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrike.ReloadTime
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBombType}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBombType)" SortBy="@(x => !string.IsNullOrEmpty(x.AirStrikeWeapon?.BombType) ? element.localizer.GetAppLocalization(x.AirStrikeWeapon.BombType).Localization : string.Empty)" T="GridDataWrapper" Title="@columnTitleBombType" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (!string.IsNullOrEmpty(context.Item.AirStrikeWeapon?.BombType))
+                {
+                    <MudText Typo="Typo.body2">
+                        @element.localizer.GetAppLocalization(context.Item.AirStrikeWeapon.BombType).Localization
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDamage)" SortBy="@(x => x.AirStrikeWeapon?.Damage ?? 0)" T="GridDataWrapper" Title="@columnTitleDamage" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrikeWeapon?.Damage is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrikeWeapon.Damage
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFireChance}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireChance)" SortBy="@(x => x.AirStrikeWeapon?.FireChance ?? 0)" T="GridDataWrapper" Title="@columnTitleFireChance" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrikeWeapon?.FireChance is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrikeWeapon.FireChance
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashRadius}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSplashRadius)" SortBy="@(x => x.AirStrikeWeapon?.SplashRadius ?? 0)" T="GridDataWrapper" Title="@columnTitleSplashRadius" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrikeWeapon?.SplashRadius is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrikeWeapon.SplashRadius
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSplashDamage)" SortBy="@(x => x.AirStrikeWeapon?.SplashDmg ?? 0)" T="GridDataWrapper" Title="@columnTitleSplashDamage" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrikeWeapon?.SplashDmg is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrikeWeapon.SplashDmg
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePenetration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePenetration)" SortBy="@(x => x.AirStrikeWeapon?.Penetration ?? 0)" T="GridDataWrapper" Title="@columnTitlePenetration" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrikeWeapon?.Penetration is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrikeWeapon.Penetration
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastRadius}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBlastRadius)" SortBy="@(x => x.AirStrikeWeapon?.ExplosionRadius ?? 0)" T="GridDataWrapper" Title="@columnTitleBlastRadius" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrikeWeapon?.ExplosionRadius is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrikeWeapon.ExplosionRadius
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastPenetration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBlastPenetration)" SortBy="@(x => x.AirStrikeWeapon?.SplashCoeff ?? 0)" T="GridDataWrapper" Title="@columnTitleBlastPenetration" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrikeWeapon?.SplashCoeff is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrikeWeapon.SplashCoeff
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+    };
+}

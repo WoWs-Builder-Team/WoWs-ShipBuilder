@@ -1,0 +1,182 @@
+﻿@using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.DataStructures.Ship
+@using WoWsShipBuilder.Infrastructure.DataTransfer
+@using WoWsShipBuilder.Infrastructure.Localization
+@using WoWsShipBuilder.Infrastructure.Localization.Resources
+@inject ILocalizer Localizer
+
+<MudDialog>
+    <TitleContent>
+        <MudItem Class="d-flex align-center">
+            <MudIcon Icon="@Icons.Material.Filled.HelpOutline" Color="Color.Info" Size="Size.Large"/>
+            <MudText Typo="Typo.h6" Class="mx-auto">
+                @Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_CustomDataTitle)).Localization
+            </MudText>
+        </MudItem>
+    </TitleContent>
+    <DialogContent>
+        <MudStack>
+            <MudText>You can set custom values to be plotted in the chart. A name is required. <strong>ADVANCED USERS ONLY.</strong></MudText>
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudTextField @bind-Value="@name" Label="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Name)).Localization" Variant="Variant.Outlined" Immediate/>
+                </MudItem>
+                <MudItem xs="6">
+                   <MudSelect T="ShipClass" Variant="Variant.Outlined" @bind-Value="@selectedClass" Label="Ship Class" AnchorOrigin="Origin.BottomCenter">
+                       @foreach (ShipClass item in classList)
+                       {
+                           <MudSelectItem Value="@item">
+                               <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(item.ToString()).Localization</MudText>
+                           </MudSelectItem>
+                       }
+                   </MudSelect>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudTextField @bind-Value="@maxSpeed" Label="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_MaxSpeed)).Localization" Variant="Variant.Outlined" InputType="InputType.Number"/>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudTextField @bind-Value="@enginePower" Label="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_EnginePower)).Localization" Variant="Variant.Outlined" InputType="InputType.Number"/>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudTextField @bind-Value="@tonnage" Label="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Tonnage)).Localization" Variant="Variant.Outlined" InputType="InputType.Number"/>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudTextField @bind-Value="@forwardEngineUpTime" Label="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ForwardEngineUpTime)).Localization" Variant="Variant.Outlined" InputType="InputType.Number"/>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudTextField @bind-Value="@backwardEngineUpTime" Label="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_BackwardEngineUpTime)).Localization" Variant="Variant.Outlined" InputType="InputType.Number"/>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudTextField @bind-Value="@forwardEngineForsag" Label="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ForwardEngineForsag)).Localization" Variant="Variant.Outlined" InputType="InputType.Number"/>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudTextField @bind-Value="@backwardEngineForsag" Label="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_BackwardEngineForsag)).Localization" Variant="Variant.Outlined" InputType="InputType.Number"/>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudTextField @bind-Value="@forwardEngineForsagMaxSpeed" Label="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ForwardEngineForsagMaxSpeed)).Localization" Variant="Variant.Outlined" InputType="InputType.Number"/>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudTextField @bind-Value="@backwardEngineForsagMaxSpeed" Label="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_BackwardEngineForsagMaxSpeed)).Localization" Variant="Variant.Outlined" InputType="InputType.Number"/>
+                </MudItem>
+            </MudGrid>
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Primary">
+            @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
+        </MudButton>
+        <MudButton Disabled="!ValidateCustomParameters()" OnClick="ReturnShipBuildContainer" Variant="Variant.Filled" Color="Color.Primary">
+            @Localizer.GetAppLocalization(nameof(Translation.Ok)).Localization
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code
+{
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = new();
+
+    private readonly List<ShipClass> classList = Enum.GetValues<ShipClass>().Except(new List<ShipClass> { ShipClass.Auxiliary }).ToList();
+
+    private string name = string.Empty;
+
+    private decimal maxSpeed;
+
+    private int enginePower;
+
+    private int tonnage;
+
+    private decimal forwardEngineUpTime;
+
+    private decimal backwardEngineUpTime;
+
+    private decimal forwardEngineForsag;
+
+    private decimal backwardEngineForsag;
+
+    private decimal forwardEngineForsagMaxSpeed;
+
+    private decimal backwardEngineForsagMaxSpeed;
+
+    private ShipClass selectedClass;
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private void ReturnShipBuildContainer()
+    {
+        var ship = new Ship
+        {
+            ShipClass = selectedClass,
+            Name = "customShip",
+            Index = name,
+            ShipNation = Nation.Common,
+            Tier = 10,
+        };
+
+        var hull = new Hull
+        {
+            MaxSpeed = maxSpeed,
+            EnginePower = enginePower,
+            Tonnage = tonnage,
+            AntiAir = new(),
+        };
+        ship.Hulls = new() {{"Custom hull", hull}};
+
+        var engine = new Engine
+        {
+            ForwardEngineUpTime = forwardEngineUpTime,
+            BackwardEngineUpTime = backwardEngineUpTime,
+            ForwardEngineForsag = forwardEngineForsag,
+            BackwardEngineForsag = backwardEngineForsag,
+            ForwardEngineForsagMaxSpeed = forwardEngineForsagMaxSpeed,
+            BackwardEngineForsagMaxSpeed = backwardEngineForsagMaxSpeed,
+        };
+
+        ship.Engines = new() {{"Custom engine", engine}};
+
+        var upgradeInfo = new UpgradeInfo()
+        {
+            ShipUpgrades = new(),
+        };
+
+        var engineUpgrade = new ShipUpgrade
+        {
+            Name = "Custom engine",
+            Components = new() { { ComponentType.Engine, new[] {"Custom engine"} } },
+            UcType = ComponentType.Engine,
+        };
+
+        var hullUpgrade = new ShipUpgrade
+        {
+            Name = "Custom hull",
+            Components = new() { { ComponentType.Hull, new[] {"Custom hull"} } },
+            UcType = ComponentType.Hull,
+        };
+
+        upgradeInfo.ShipUpgrades.Add(engineUpgrade);
+        upgradeInfo.ShipUpgrades.Add(hullUpgrade);
+
+        ship.ShipUpgradeInfo = upgradeInfo;
+        ship.ShipConsumable = new();
+
+        var container = ShipBuildContainer.CreateNew(ship, null, null);
+        MudDialog.Close(DialogResult.Ok(container));
+    }
+
+    private bool ValidateCustomParameters()
+    {
+        return !string.IsNullOrWhiteSpace(name) &&
+               maxSpeed > 0 &&
+               enginePower > 0 &&
+               tonnage > 0 &&
+               forwardEngineUpTime > 0 &&
+               backwardEngineUpTime > 0 &&
+               forwardEngineForsag > 0 &&
+               backwardEngineForsag > 0 &&
+               forwardEngineForsagMaxSpeed > 0 &&
+               backwardEngineForsagMaxSpeed > 0;
+    }
+}

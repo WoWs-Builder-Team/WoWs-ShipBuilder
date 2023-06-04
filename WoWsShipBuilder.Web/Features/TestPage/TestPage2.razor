@@ -1,0 +1,75 @@
+﻿@page "/test2"
+@using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.Features.Builds.Components
+@using WoWsShipBuilder.Infrastructure.ApplicationData
+@using WoWsShipBuilder.Infrastructure.DataTransfer
+
+<MudRadioGroup @bind-SelectedOption="selectedTier">
+    @for (var i = 1; i <= 11; i++)
+    {
+        int tier = i;
+        <MudRadio Option="@tier">Tier @tier</MudRadio>
+    }
+</MudRadioGroup>
+
+<MudRadioGroup @bind-SelectedOption="selectedClass">
+    @foreach(var shipClass in Enum.GetValues<ShipClass>().Except(new [] { ShipClass.Auxiliary }))
+    {
+        <MudRadio Option="@shipClass">@shipClass</MudRadio>
+    }
+</MudRadioGroup>
+
+<MudButton OnClick="@Callback">Show build configuration dialog</MudButton>
+<BuildConfigurationDialogHelper @ref="buildConfigurationHelper" MaxWidth="MaxWidth.Large" FullWidth NoHeader />
+
+@code {
+
+    private List<ShipBuildContainer> ships = new();
+
+    private int selectedTier = 10;
+
+    private int lastTier = 10;
+
+    private ShipClass selectedClass = ShipClass.Cruiser;
+
+    private ShipClass lastClass = ShipClass.Cruiser;
+
+    private BuildConfigurationDialogHelper buildConfigurationHelper = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        UpdateShipList();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (lastTier != selectedTier || lastClass != selectedClass)
+        {
+            lastTier = selectedTier;
+            lastClass = selectedClass;
+            UpdateShipList();
+        }
+    }
+
+    private void UpdateShipList()
+    {
+        var shipList = AppData.ShipSummaryList
+            .Where(s => s.Tier == selectedTier && s.ShipClass == selectedClass)
+            .Take(25)
+            .Select(AppData.FindShipFromSummary);
+        ships = shipList.Select(s => ShipBuildContainer.CreateNew(s, null, null)).ToList();
+        StateHasChanged();
+    }
+
+    private async Task Callback()
+    {
+        var result = await buildConfigurationHelper.ShowDialogAsync(ships);
+        if (result is not null)
+        {
+            ships = result.ToList();
+        }
+    }
+
+}

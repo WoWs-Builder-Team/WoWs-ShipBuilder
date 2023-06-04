@@ -1,0 +1,429 @@
+﻿@using WoWsShipBuilder.DataStructures
+@using System.Net
+@using Microsoft.Extensions.Hosting
+@using Microsoft.Extensions.Options
+@using Prometheus
+@using WoWsShipBuilder.DataContainers
+@using WoWsShipBuilder.Features.Builds.Components
+@using WoWsShipBuilder.Features.ShipStats.ViewModels
+@using WoWsShipBuilder.Features.Builds
+@using WoWsShipBuilder.Features.LinkShortening
+@using WoWsShipBuilder.Features.Settings
+@using WoWsShipBuilder.Infrastructure
+@using WoWsShipBuilder.Infrastructure.ApplicationData
+@using WoWsShipBuilder.Infrastructure.DataTransfer
+@using WoWsShipBuilder.Infrastructure.GameData
+@using WoWsShipBuilder.Infrastructure.Localization.Resources
+@using WoWsShipBuilder.Infrastructure.Metrics
+@using WoWsShipBuilder.Infrastructure.Utility
+@using ShipViewModel = WoWsShipBuilder.Features.ShipStats.ViewModels.ShipViewModel
+
+@inject IHostEnvironment Environment
+@inject ILocalizer Localizer
+@inject IMetricsService MetricsService
+@inject AppSettings AppSettings
+@inject MouseEventInterop MouseEventInterop
+@inject IDialogService DialogService
+@inject NavigationManager NavManager
+@inject IClipboardService ClipboardService
+@inject ILinkShortener LinkShortener
+@inject SessionStateCache SessionStateCache
+@inject IOptions<CdnOptions> CdnOptions
+@inject IOptions<ShipBuilderOptions> ShipBuilderOptions
+@inject IUserDataService UserDataService
+
+@inherits ReactiveComponentBase<ShipViewModel>
+
+@if (!(initialized && SettingsInitialized))
+{
+    <MudGrid>
+        <MudItem xs="12">
+            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="166px"/>
+        </MudItem>
+        <MudItem xs="12" md="6" lg="4" xl="3">
+            <MudStack>
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="250px"/>
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100px"/>
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="450px"/>
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="450px"/>
+            </MudStack>
+        </MudItem>
+        <MudItem xs="12" md="6" lg="8" xl="9">
+            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
+        </MudItem>
+    </MudGrid>
+}
+@if (ViewModel is not null)
+{
+    <MudGrid>
+        <MudItem xs="12">
+            <MudPaper Outlined="true" Class="py-2 px-15">
+                <MudGrid Justify="Justify.Center">
+                    <MudItem xs="12" md="2" Class="align-self-center d-flex justify-center">
+                        <MudTextField @bind-Value="BuildName" Label="@($"{Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_Build))}:")" Immediate DebounceInterval="100" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Variant="Variant.Outlined" Margin="Margin.Dense" Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))"/>
+                    </MudItem>
+                    <MudItem xs="12" md="8" Class="@(GetShipAlign() + " d-flex justify-center")">
+                        @if (ViewModel.PreviousShip is not null)
+                        {
+                            <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, CurrentTabId, ViewModel.PreviousShip))" AlignItems="AlignItems.Center" id="@(CurrentTabId + "_" + ViewModel.PreviousShip.Index)">
+                                <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.PreviousShip.Index + ".png")"/>
+                                <MudStack Row="true" Justify="Justify.Center" Spacing="1">
+                                    <MudIcon ViewBox="-1 0 24 10" Icon="@Helpers.GetIconFromClass(ViewModel.PreviousShip.ShipClass, ViewModel.PreviousShip.Category)"/>
+                                    <MudText Align="Align.Center">@GetShipTier(ViewModel.PreviousShip.Tier) @Localizer.GetGameLocalization(ViewModel.PreviousShip.Index + "_FULL").Localization</MudText>
+                                </MudStack>
+                            </MudStack>
+                        }
+                        <MudStack Class="px-2" AlignItems="AlignItems.Center">
+                            <MudImage Width="@GetImageWidth(true)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.CurrentShipIndex + ".png")" Style="@GetBackgroundFlag(ViewModel.CurrentShip.Nation, ViewModel.CurrentShipIndex)"/>
+                            <MudStack Row="true" Justify="Justify.Center" Spacing="1">
+                                <MudIcon ViewBox="-1 0 24 10" Icon="@Helpers.GetIconFromClass(ViewModel.CurrentShip.ShipClass, ViewModel.CurrentShip.Category)"/>
+                                <MudText Align="Align.Center">@GetShipTier(ViewModel.CurrentShip.Tier) @Localizer.GetGameLocalization(ViewModel.CurrentShipIndex + "_FULL").Localization</MudText>
+                            </MudStack>
+                        </MudStack>
+                        @if (ViewModel.NextShips is not null)
+                        {
+                            foreach (var ship in ViewModel.NextShips)
+                            {
+                                <MudStack key="@(CurrentTabId + "_" + ship.Index)" Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, CurrentTabId, ship))" AlignItems="AlignItems.Center" id="@(CurrentTabId + "_" + ship.Index)">
+                                    <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ship.Index + ".png")"/>
+                                    <MudStack Row="true" Justify="Justify.Center" Spacing="1">
+                                        <MudIcon ViewBox="-1 0 24 10" Icon="@Helpers.GetIconFromClass(ship.ShipClass, ship.Category)"/>
+                                        <MudText Align="Align.Center">@GetShipTier(ship.Tier) @Localizer.GetGameLocalization(ship.Index + "_FULL").Localization</MudText>
+                                    </MudStack>
+                                </MudStack>
+                            }
+                        }
+                    </MudItem>
+                    <MudItem xs="12" md="2" Class="align-self-center d-flex justify-center">
+                        <MudStack>
+                            <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Share" OnClick="@OnShareBuildClicked">
+                                @Localizer.GetAppLocalization(nameof(Translation.MainWindow_ShareBuild)).Localization
+                            </MudButton>
+                            @if (!AppData.WebMode)
+                            {
+                                <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Save" OnClick="@OnBuildSaveClicked">
+                                    @Localizer.SimpleAppLocalization(nameof(Translation.Dialog_Save))
+                                </MudButton>
+                            }
+                        </MudStack>
+                    </MudItem>
+                </MudGrid>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" md="6" lg="4" xl="3">
+            <MudStack>
+                <ShipModuleSelector ViewModel="@ViewModel.ShipModuleViewModel"/>
+                <ShipUpgradeSelector ViewModel="@ViewModel.UpgradePanelViewModel"/>
+                <ConsumableSelector ViewModel="@ViewModel.ConsumableViewModel"/>
+                <CaptainSkillSelector ViewModel="@ViewModel.CaptainSkillSelectorViewModel" ShipClass="@ViewModel.CurrentShip.ShipClass"/>
+                <SignalSelector ViewModel="@ViewModel.SignalSelectorViewModel"/>
+            </MudStack>
+        </MudItem>
+        <MudItem xs="12" md="6" lg="8" xl="9">
+            @if (ViewModel?.ShipStatsControlViewModel?.CurrentShipStats is not null)
+            {
+                <ShipStatsPanel ViewModel="@ViewModel.ShipStatsControlViewModel" StoreBuildsForTransfer="@StoreBuildsForTransfer"/>
+            }
+        </MudItem>
+    </MudGrid>
+}
+
+@code {
+
+    [Parameter]
+    [EditorRequired]
+    public string ShipIndex { get; set; } = default!;
+
+    [Parameter]
+    [EditorRequired]
+    public Guid CurrentTabId { get; set; }
+
+    [Parameter]
+    public Func<Guid?, string, bool>? OnShipChanged { get; set; }
+
+    [Parameter]
+    public Build? Build { get; set; }
+
+    [Parameter, EditorRequired]
+    public VmCache Cache { get; set; } = default!;
+
+    [CascadingParameter]
+    private Breakpoint Breakpoint { get; set; }
+
+    [CascadingParameter(Name = "SettingsInitialized")]
+    protected bool SettingsInitialized { get; set; }
+
+    private string BaseAddress => $"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/";
+
+    private bool initialized;
+
+    private bool shipChanged;
+
+    private string BuildName
+    {
+        get => Cache[CurrentTabId]?.BuildName ?? string.Empty;
+        set => Cache[CurrentTabId] = Cache[CurrentTabId]! with { BuildName = value };
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        MetricsService.ShipPageCount.Inc();
+        initialized = false;
+
+        var cacheEntry = Cache.GetOrDefault(CurrentTabId);
+        if (cacheEntry is not null)
+        {
+            ViewModel = cacheEntry.ViewModel;
+            shipChanged = true;
+        }
+        else
+        {
+            Cache[CurrentTabId] = new(null!);
+            ViewModel = await LoadShipViewModel(ShipIndex);
+            Cache[CurrentTabId] = Cache[CurrentTabId]! with { ViewModel = ViewModel };
+        }
+
+        initialized = true;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (!firstRender && shipChanged && ViewModel is not null)
+        {
+            shipChanged = false;
+            var elementIds = new List<string>();
+            if (ViewModel.PreviousShip is not null)
+            {
+                elementIds.Add(CurrentTabId + "_" + ViewModel.PreviousShip.Index);
+            }
+
+            if (ViewModel.NextShips is not null)
+            {
+                elementIds.AddRange(ViewModel.NextShips.Select(ship => CurrentTabId + "_" + ship.Index));
+            }
+
+            if (elementIds.Any())
+            {
+                await MouseEventInterop.PreventMiddleClickDefaultBatched(elementIds);
+            }
+        }
+    }
+
+    private async Task<ShipViewModel> LoadShipViewModel(string shipIndex)
+    {
+        MetricsService.ShipCount.WithLabels(shipIndex, Localizer.GetGameLocalization(shipIndex + "_FULL", AppConstants.DefaultCultureDetails).Localization).Inc();
+        using (MetricsService.ShipViewModelInitDuration.NewTimer())
+        {
+            var vm = await CreateViewModel(shipIndex, Build, Localizer);
+            BuildName = Build?.BuildName ?? string.Empty;
+            Build = null;
+            shipChanged = true;
+            return vm;
+        }
+    }
+
+    private string GetBackgroundFlag(Nation shipNation, string shipIndex)
+    {
+        // "'background-image: url("/assets/nation_flags/flag_" + ViewModel.CurrentShip.Nation + ".png\")
+        string imgName = shipIndex;
+        if (!File.Exists(Path.Combine(Environment.ContentRootPath, "wwwroot", "assets", "nation_flags", $"flag_{shipIndex}.png")))
+        {
+            imgName = shipNation.ToString();
+        }
+        return $"background-image: url(\"/_content/WoWsShipBuilder.Common/assets/nation_flags/flag_{imgName}.png\"); background-size: cover";
+    }
+
+    private int GetImageWidth(bool isCurrentShip)
+    {
+        switch (Breakpoint)
+        {
+            case Breakpoint.Xs:
+            case Breakpoint.Sm:
+                return isCurrentShip ? 100 : 70;
+            default:
+                return isCurrentShip ? 150 : 105;
+        }
+    }
+
+    private string GetShipAlign()
+    {
+        return Breakpoint is Breakpoint.Xs or Breakpoint.Sm ? "align-start" : "align-end";
+    }
+
+    private string GetShipTier(int tier)
+    {
+        string t = tier switch
+        {
+            1 => "I",
+            2 => "II",
+            3 => "III",
+            4 => "IV",
+            5 => "V",
+            6 => "VI",
+            7 => "VII",
+            8 => "VIII",
+            9 => "IX",
+            10 => "X",
+            11 => "XI",
+            _ => "NaN",
+        };
+        return t;
+    }
+
+    private async Task UpdateToShip(MouseEventArgs args, Guid currentTabId, ShipSummary? updateToShipSummary)
+    {
+        if (updateToShipSummary is not null)
+        {
+            if (args.Button == 1)
+            {
+                OnShipChanged?.Invoke(null, updateToShipSummary.Index);
+                return;
+            }
+            if (OnShipChanged?.Invoke(currentTabId, updateToShipSummary.Index) ?? false)
+            {
+                ShipIndex = updateToShipSummary.Index;
+                BuildName = string.Empty;
+                ViewModel = await LoadShipViewModel(ShipIndex);
+                Cache[CurrentTabId] = Cache[CurrentTabId]! with { ViewModel = ViewModel };
+                await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
+                StateHasChanged();
+            }
+        }
+    }
+
+    private async Task OnShareBuildClicked()
+    {
+        DialogOptions options = new()
+        {
+            NoHeader = true,
+            CloseOnEscapeKey = true,
+        };
+
+        var parameters = new DialogParameters
+        {
+            ["Ship"] = ViewModel!.CurrentShip,
+            ["BuildName"] = BuildName.Contains(';') ? string.Empty : BuildName,
+            ["BuildString"] = ViewModel!.CreateBuild(BuildName.Contains(';') ? string.Empty : BuildName).CreateShortStringFromBuild(),
+            ["ShipModuleViewModel"] = ViewModel!.ShipModuleViewModel,
+            ["CaptainSkillSelectorViewModel"] = ViewModel!.CaptainSkillSelectorViewModel,
+            ["UpgradePanelViewModel"] = ViewModel!.UpgradePanelViewModel,
+            ["ConsumableViewModel"] = ViewModel!.ConsumableViewModel,
+            ["SignalSelectorViewModel"] = ViewModel!.SignalSelectorViewModel,
+            ["ShortLinkDisabled"] = !LinkShortener.IsAvailable,
+            ["Breakpoint"] = Breakpoint,
+        };
+
+        var dialog = await DialogService.ShowAsync<BuildImageRenderDialog>(string.Empty , parameters, options);
+        var result = await dialog.Result;
+
+        if (result is { Canceled: false, Data: BuildShareResult shareResult })
+        {
+            BuildName = shareResult.BuildName;
+            var build = ViewModel!.CreateBuild(shareResult.BuildName);
+            var buildString = build.CreateShortStringFromBuild();
+            string urlBase;
+            if (NavManager.BaseUri.Contains("0.0.0.0"))
+            {
+                urlBase = AppSettings.SelectedServerType switch
+                {
+                    ServerType.Live => $"{ShipBuilderOptions.Value.LiveServerUrl}/",
+                    ServerType.Pts => $"{ShipBuilderOptions.Value.PtsServerUrl}/",
+                    _ => $"{ShipBuilderOptions.Value.LiveServerUrl}/",
+                };
+            }
+            else
+            {
+                urlBase = NavManager.BaseUri;
+            }
+
+            var buildUrl = $"{urlBase}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}";
+            await ClipboardService.SetTextAsync(shareResult.CreateShortLink ? (await LinkShortener.CreateShortLink(buildUrl)).Link : buildUrl);
+            if (AppSettings.StoreBuildOnShare)
+            {
+                await UserDataService.AddRecentBuildAsync(build);
+            }
+        }
+
+        if (result is { Canceled: false, Data: string name })
+        {
+            BuildName = name;
+            if (AppSettings.StoreBuildOnShare)
+            {
+                var build = ViewModel!.CreateBuild(BuildName);
+                await UserDataService.AddRecentBuildAsync(build);
+            }
+        }
+    }
+
+    private void StoreBuildsForTransfer(bool calculateShipDataContainer)
+    {
+        SessionStateCache.SetBuildTransferContainers(GetBuildContainer(CurrentTabId, Cache[CurrentTabId]!, calculateShipDataContainer));
+    }
+
+    public static ShipBuildContainer GetBuildContainer(Guid containerId, VmCacheEntry cacheEntry, bool calculateShipDataContainer)
+    {
+        List<(string, float)> modifiers = cacheEntry.ViewModel.UpgradePanelViewModel.GetModifierList();
+        modifiers.AddRange(cacheEntry.ViewModel.ConsumableViewModel.GetModifiersList());
+        modifiers.AddRange(cacheEntry.ViewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
+        modifiers.AddRange(cacheEntry.ViewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
+
+        bool isCustomBuild = !string.IsNullOrWhiteSpace(cacheEntry.BuildName) || cacheEntry.ViewModel.ShipModuleViewModel.SelectedModules.Any(m => !string.IsNullOrEmpty(m.Prev)) ||
+                             cacheEntry.ViewModel.UpgradePanelViewModel.SelectedModernizationList.Any() || cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.Any() ||
+                             (cacheEntry.ViewModel.CaptainSkillSelectorViewModel?.SkillOrderList.Any() ?? false) || (cacheEntry.ViewModel.SignalSelectorViewModel?.SelectedSignals.Any() ?? false);
+
+        var ship = AppData.FindShipFromSummary(cacheEntry.ViewModel.CurrentShip);
+        var build = isCustomBuild ? cacheEntry.ViewModel.CreateBuild(cacheEntry.BuildName) : null;
+        var activeConsumables = cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.Any() ? cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots : null;
+        ShipDataContainer? shipDataContainer = null;
+        if (calculateShipDataContainer)
+        {
+            shipDataContainer = build is null ? DataContainerUtility.GetStockShipDataContainer(ship) : DataContainerUtility.GetShipDataContainerFromBuild(ship, build.Modules, ship.ShipUpgradeInfo.ShipUpgrades, modifiers);
+        }
+
+        return new(ship, build, containerId, activeConsumables, false, shipDataContainer, modifiers);
+    }
+
+    public static Task<ShipViewModel> CreateViewModel(string shipIndex, Build? build, ILocalizer localizer)
+    {
+        var shipSummary = AppData.ShipSummaryList.Single(x => x.Index.Equals(shipIndex));
+        var ship = AppData.FindShipFromSummary(shipSummary);
+        var vmParams = new ShipViewModelParams(ship, shipSummary, build);
+
+        ShipViewModel vm = new(Logging.LoggerFactory.CreateLogger<ShipViewModel>(), vmParams);
+        vm.InitializeData(vmParams);
+
+        // workaround to keep method signature compatible even though InitializeData is no longer async
+        return Task.FromResult(vm);
+    }
+
+    private async Task OnBuildSaveClicked()
+    {
+        if (string.IsNullOrEmpty(BuildName))
+        {
+            DialogOptions options = new()
+            {
+                NoHeader = true,
+                CloseOnEscapeKey = true,
+            };
+            DialogParameters parameters = new()
+            {
+                ["BuildName"] = BuildName,
+            };
+            var result = await (await DialogService.ShowAsync<BuildNameDialog>(string.Empty, parameters, options)).Result;
+            if (!result.Canceled && result.Data is string buildName)
+            {
+                BuildName = buildName;
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        var build = ViewModel!.CreateBuild(BuildName);
+        await UserDataService.AddRecentBuildAsync(build);
+    }
+
+}

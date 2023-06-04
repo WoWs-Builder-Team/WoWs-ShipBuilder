@@ -1,3 +1,0 @@
-# noinspection EditorConfigKeyCorrectness
-[*.cs]
-dotnet_diagnostic.SA1201.severity = none # Disable ordering inspection from stylecop.

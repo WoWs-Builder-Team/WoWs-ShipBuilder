@@ -19,7 +19,7 @@ jobs:
         with:
           global-json-file: global.json
       - name: Create application config
-        run: 'echo "$APPCONFIG" > WoWsShipBuilder.UI/Settings/ApplicationOptions.json'
+        run: 'echo "$APPCONFIG" > WoWsShipBuilder.Desktop/Infrastructure/StaticConfiguration/ApplicationOptions.json'
         shell: bash
         env:
           APPCONFIG: ${{secrets.SHIPBUILDER_APPCONFIG}}
@@ -32,9 +32,9 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: buildInfo
-          path: WoWsShipBuilder.UI\buildInfo.txt
+          path: WoWsShipBuilder.Desktop\buildInfo.txt
       - name: Store current application version as environment variable
-        run: echo ("CURRENT_TAG=v" + (Get-Content -Path .\WoWsShipBuilder.UI\buildInfo.txt -First 1)) >> $env:GITHUB_ENV
+        run: echo ("CURRENT_TAG=v" + (Get-Content -Path .\WoWsShipBuilder.Desktop\buildInfo.txt -First 1)) >> $env:GITHUB_ENV
 
       - name: Test application
         run: dotnet test --no-build -c Release --verbosity normal
