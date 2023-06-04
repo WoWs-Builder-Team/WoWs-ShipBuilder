@@ -660,9 +660,6 @@
   <data name="ShipStats_BurstMode" xml:space="preserve">
     <value>주포 점사 모드</value>
   </data>
-  <data name="ShipStats_Duration" xml:space="preserve">
-    <value>지속 시간</value>
-  </data>
   <data name="ShipStats_ReloadAfterBurst" xml:space="preserve">
     <value>점사 후 장전</value>
   </data>
