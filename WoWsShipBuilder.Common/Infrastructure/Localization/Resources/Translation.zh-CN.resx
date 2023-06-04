@@ -529,10 +529,10 @@
       <value>每次火灾的最大伤害</value>
   </data>
   <data name="ShipStats_FloodAmount" xml:space="preserve">
-      <value>最大集结</value>
+      <value>最大同时数量</value>
   </data>
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
-    <value>鱼雷保护</value>
+    <value>鱼雷防护</value>
   </data>
   <data name="ShipStats_FloodTotalDamage" xml:space="preserve">
       <value>最大水灾每次最大伤害</value>
@@ -883,7 +883,7 @@
     <value>水平（水面）</value>
   </data>
   <data name="RealPlane" xml:space="preserve">
-    <value>着弹角度</value>
+    <value>弹着角度</value>
   </data>
   <data name="VerticalPlane" xml:space="preserve">
     <value>垂直</value>
@@ -1156,7 +1156,7 @@
       <value>初期增益</value>
   </data>
   <data name="ShipStats_SpeedBoost" xml:space="preserve">
-      <value>速度增益</value>
+      <value>加速</value>
   </data>
   <data name="ModifierConverter_MaxEngagementDuration" xml:space="preserve">
       <value>最大交战时间</value>
@@ -1177,7 +1177,7 @@
       <value>保护</value>
   </data>
   <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
-      <value>最大同时数</value>
+      <value>最大同时数量</value>
   </data>
   <data name="ShipStats_FromSubs" xml:space="preserve">
       <value>从潜艇出击</value>
@@ -1197,11 +1197,8 @@
   <data name="ShipStats_TheoreticalHeDpm" xml:space="preserve">
       <value>高爆弹</value>
   </data>
-  <data name="ShipStats_TheoreticalApDpm" xml:space="preserve">
-      <value>穿甲弹</value>
-  </data>
   <data name="ShipStats_TheoreticalSapDpm" xml:space="preserve">
-      <value>榴弹炮弹" (liú dàn pào dàn)</value>
+      <value>半穿甲弹</value>
   </data>
   <data name="ShipStats_TheoreticalTrueHeDpm" xml:space="preserve">
       <value>高爆弹</value>
@@ -1434,9 +1431,6 @@
   <data name="ShipStats_HeSalvo" xml:space="preserve">
       <value>高爆弹</value>
   </data>
-  <data name="ShipStats_ApSalvo" xml:space="preserve">
-      <value>穿甲弹</value>
-  </data>
   <data name="ShipStats_SapSalvo" xml:space="preserve">
       <value>半穿甲弹</value>
   </data>
@@ -1453,10 +1447,10 @@
       <value>在表面上</value>
   </data>
   <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth" xml:space="preserve">
-      <value>潜深极限</value>
+      <value>最大深度</value>
   </data>
   <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope" xml:space="preserve">
-      <value>水面望远镜深度</value>
+      <value>潜望镜深度</value>
   </data>
   <data name="ShipStats_Fighter" xml:space="preserve">
       <value>火箭</value>
@@ -1600,7 +1594,7 @@
       <value>断开距离</value>
   </data>
   <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
-      <value>船长技能</value>
+      <value>舰长技能</value>
   </data>
   <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
       <value>信号旗</value>
