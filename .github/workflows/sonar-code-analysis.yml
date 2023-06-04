@@ -2,7 +2,7 @@
 on:
   push:
     branches:
-      - development
+      - 'development'
     paths-ignore:
       - 'deployment/**/*.*'
   pull_request:
@@ -12,6 +12,7 @@ on:
 jobs:
   build:
     name: Build and analyze
+    if: !startsWith(github.head_ref, 'l10n_development')
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3

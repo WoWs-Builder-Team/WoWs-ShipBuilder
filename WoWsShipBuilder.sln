@@ -25,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub Workflows", "GitHub 
 		.github\workflows\deployment.yml = .github\workflows\deployment.yml
 		.github\workflows\dotnet-build.yml = .github\workflows\dotnet-build.yml
 		.github\workflows\dotnet-dev-build.yml = .github\workflows\dotnet-dev-build.yml
-		.github\workflows\main-pr-check.yml = .github\workflows\main-pr-check.yml
+		.github\workflows\desktop-release-check.yml = .github\workflows\desktop-release-check.yml
 		.github\workflows\sonar-code-analysis.yml = .github\workflows\sonar-code-analysis.yml
 		.github\workflows\web-docker-build.yml = .github\workflows\web-docker-build.yml
 	EndProjectSection

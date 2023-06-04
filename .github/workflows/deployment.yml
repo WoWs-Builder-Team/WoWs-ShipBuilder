@@ -3,7 +3,7 @@ name: Build and create release
 on:
   push:
     branches:
-      - main
+      - release/desktop
 
 jobs:
   build-and-release:
@@ -54,7 +54,6 @@ jobs:
           artifacts: releases/*
           bodyFile: ReleaseNotes.md
           tag: ${{ env.CURRENT_TAG }}
-          commit: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
   sentry-notify:
