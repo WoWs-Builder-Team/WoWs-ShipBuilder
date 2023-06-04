@@ -1324,7 +1324,7 @@
       <value>Schadensbereich</value>
   </data>
   <data name="ShipStats_SplashRadius" xml:space="preserve">
-      <value>Radius</value>
+      <value>Explosionsradius</value>
   </data>
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Schaden</value>
