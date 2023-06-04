@@ -51,6 +51,6 @@ jobs:
         shell: pwsh
         run: |
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"WoWs-Builder-Team_WoWs-ShipBuilder" /o:"wows-builder-team" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.dotcover.reportsPaths="dotCover.Output.html"
-          dotnet build -c Release
-          dotnet dotcover test --dcReportType=HTML -c Release
+          dotnet build dirs.proj -c Release
+          dotnet dotcover test dirs.proj --dcReportType=HTML -c Release
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"

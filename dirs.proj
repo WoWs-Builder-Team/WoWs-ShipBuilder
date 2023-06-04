@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.Build.Traversal">
+    <PropertyGroup>
+        <TraversalSkipUnsupportedProjects>true</TraversalSkipUnsupportedProjects>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="WoWsShipBuilder.Common\*.csproj" />
+        <ProjectReference Include="WoWsShipBuilder.Common.Test\*.csproj" />
+        <ProjectReference Include="WoWsShipBuilder.Data.Generator\*.csproj" />
+        <ProjectReference Include="WoWsShipBuilder.Data.Generator.Test\*.csproj" />
+        <ProjectReference Include="WoWsShipBuilder.DataElements\*.csproj" />
+        <ProjectReference Include="WoWsShipBuilder.Desktop\*.csproj" />
+        <ProjectReference Include="WoWsShipBuilder.Desktop.Test\*.csproj" />
+        <ProjectReference Include="WoWsShipBuilder.Web\*.csproj" />
+        <ProjectReference Include="WoWsShipBuilder.Web.Test\*.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="WoWsShipBuilder.ReleaseTest\*.csproj" Condition="'$(ReleaseTest)' == 'true'" />
+    </ItemGroup>
+    <ItemGroup Condition="$([MSBuild]::IsOsPlatform('WINDOWS')) == false">
+        <ProjectReference Remove="WoWsShipBuilder.Desktop\*.csproj" />
+        <ProjectReference Remove="WoWsShipBuilder.Desktop.Test\*.csproj" />
+    </ItemGroup>
+</Project>

@@ -24,9 +24,9 @@ jobs:
         env:
           APPCONFIG: ${{secrets.SHIPBUILDER_APPCONFIG}}
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore dirs.proj
       - name: Build application
-        run: dotnet build --no-restore -c Release
+        run: dotnet build dirs.proj --no-restore -c Release
 
       - name: Store current application version
         uses: actions/upload-artifact@v3
@@ -37,7 +37,7 @@ jobs:
         run: echo ("CURRENT_TAG=v" + (Get-Content -Path .\WoWsShipBuilder.Desktop\buildInfo.txt -First 1)) >> $env:GITHUB_ENV
 
       - name: Test application
-        run: dotnet test --no-build -c Release --verbosity normal
+        run: dotnet test dirs.proj --no-build -c Release --verbosity normal
       - name: Extract certificate
         run: |
           $certB64 = '${{ secrets.WOWSSB_CERT }}'
