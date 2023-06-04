@@ -1207,10 +1207,10 @@
       <value>Gruppo d'attacco</value>
   </data>
   <data name="ShipStats_Max" xml:space="preserve">
-      <value>Max</value>
+      <value>Portata massima</value>
   </data>
   <data name="ShipStats_Min" xml:space="preserve">
-      <value>Min</value>
+      <value>Portata minima</value>
   </data>
   <data name="ShipStats_AttackTimings" xml:space="preserve">
       <value>Tempi d'attacco</value>
