@@ -556,7 +556,7 @@
       <value>Макс. урон на пожар</value>
   </data>
   <data name="ShipStats_FloodAmount" xml:space="preserve">
-      <value>Макс. затопов</value>
+      <value>Макс. пожаров</value>
   </data>
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
     <value>ПТЗ</value>
@@ -622,7 +622,7 @@
       <value>Макс. на палубе</value>
   </data>
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
-    <value>Макс. скорость</value>
+    <value>Максимальная скорость</value>
   </data>
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>Мин. Скорость</value>
@@ -961,7 +961,7 @@
       <value>Радиус</value>
   </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-      <value>Пробитие</value>
+      <value>Бронепробитие</value>
   </data>
   <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
       <value>Двигатель</value>
@@ -1249,7 +1249,7 @@
       <value>Защита</value>
   </data>
   <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
-      <value>Макс одновременно</value>
+      <value>Макс. пожаров</value>
   </data>
   <data name="ShipStats_FromSubs" xml:space="preserve">
       <value>С подлодок</value>
