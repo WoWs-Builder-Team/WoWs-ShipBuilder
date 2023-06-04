@@ -745,7 +745,7 @@
     <value>Konfigürasyon yüklenirken hata oluştu</value>
   </data>
   <data name="ShipStats_JatoDuration" xml:space="preserve">
-      <value>Süresi</value>
+      <value>Süre</value>
   </data>
   <data name="ShipStats_JatoSpeedMultiplier" xml:space="preserve">
       <value>İtki Desteği</value>
@@ -922,7 +922,7 @@
     <value>Çarpma Açısı</value>
   </data>
   <data name="VerticalPlane" xml:space="preserve">
-    <value>Dikey</value>
+    <value>Yatay</value>
   </data>
   <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
     <value>Fuso Referansı</value>
@@ -985,7 +985,7 @@
     <value>Grafik Oryantasyonu</value>
   </data>
   <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
-    <value>Dikey</value>
+    <value>Yatay</value>
   </data>
   <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
     <value>Mermi Yolu</value>
@@ -1015,7 +1015,7 @@
     <value>Hayır</value>
   </data>
   <data name="Dialog_Ok" xml:space="preserve">
-    <value>Ok</value>
+    <value>Tamam</value>
   </data>
   <data name="Dialog_SaveExit" xml:space="preserve">
     <value>Kaydet &amp; Çık</value>
@@ -1310,9 +1310,6 @@
   </data>
   <data name="ShipStats_Splash" xml:space="preserve">
       <value>Sıçrama</value>
-  </data>
-  <data name="ShipStats_SplashRadius" xml:space="preserve">
-      <value>Yarıçap</value>
   </data>
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Hasar</value>
