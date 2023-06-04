@@ -592,9 +592,6 @@
   <data name="ShipStats_BurstMode" xml:space="preserve">
     <value>Mode de rafale d'artillerie</value>
   </data>
-  <data name="ShipStats_Duration" xml:space="preserve">
-    <value>Durée</value>
-  </data>
   <data name="ShipStats_ReloadAfterBurst" xml:space="preserve">
     <value>Rechargement après rafale</value>
   </data>
