@@ -526,7 +526,7 @@
     <value>Ardiendo desde el aire</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
-    <value>Ardiendo por mar</value>
+    <value>Ardiendo desde el aire</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
     <value>Al disparar desde el humo</value>
@@ -698,9 +698,6 @@
   </data>
   <data name="ShipStats_BurstMode" xml:space="preserve">
     <value>Modo de rafaa de artillería</value>
-  </data>
-  <data name="ShipStats_Duration" xml:space="preserve">
-    <value>Duración</value>
   </data>
   <data name="ShipStats_ReloadAfterBurst" xml:space="preserve">
     <value>Recargar tras la ráfaga</value>
