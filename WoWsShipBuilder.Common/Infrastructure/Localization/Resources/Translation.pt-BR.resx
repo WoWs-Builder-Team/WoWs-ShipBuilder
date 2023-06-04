@@ -604,7 +604,7 @@
     <value>Skip bomb</value>
   </data>
   <data name="Torpedo" xml:space="preserve">
-    <value>Torpedo</value>
+    <value>Torpedos</value>
   </data>
   <data name="ShipStats_AmmoPerAttack" xml:space="preserve">
     <value>Armas por avião</value>
@@ -632,6 +632,9 @@
   </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>Em um esquadrão</value>
+  </data>
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
+      <value>HP por avião</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>Tempo de restauração</value>
@@ -1816,5 +1819,191 @@ Você pode usar o botão de Mudar builds para gerenciar as builds de navios. Voc
   </data>
   <data name="NavigationHome" xml:space="preserve">
       <value>Página Inicial</value>
+  </data>
+  <data name="ShipComparison_Image" xml:space="preserve">
+      <value>Imagem</value>
+  </data>
+  <data name="ShipComparison_NoMatchingShipsFound" xml:space="preserve">
+      <value>Nenhum navio correspondente encontrado</value>
+  </data>
+  <data name="ShipComparison_ActiveColumns" xml:space="preserve">
+      <value>Colunas ativas</value>
+  </data>
+  <data name="ShipComparison_Section" xml:space="preserve">
+      <value>Seção</value>
+  </data>
+  <data name="ShipComparison_Filters" xml:space="preserve">
+      <value>Filtros</value>
+  </data>
+  <data name="ShipComparison_All" xml:space="preserve">
+      <value>Tudo</value>
+  </data>
+  <data name="ShipComparison_None" xml:space="preserve">
+      <value>Nenhum</value>
+  </data>
+  <data name="ShipComparison_ResetAll" xml:space="preserve">
+      <value>Redefinir tudo</value>
+  </data>
+  <data name="ShipComparison_Duplicate" xml:space="preserve">
+      <value>Duplicar</value>
+  </data>
+  <data name="ShipComparison_RemoveBuilds" xml:space="preserve">
+      <value>Remover builds</value>
+  </data>
+  <data name="ShipComparison_ViewStats" xml:space="preserve">
+      <value>Ver estatísticas</value>
+  </data>
+  <data name="ShipComparison_ViewBallistic" xml:space="preserve">
+      <value>Ver balística</value>
+  </data>
+  <data name="ShipComparison_ViewAcceleration" xml:space="preserve">
+      <value>Ver aceleração</value>
+  </data>
+  <data name="ShipComparison_DisplayOnlyPinnedShips" xml:space="preserve">
+      <value>Exibir somente navios fixados</value>
+  </data>
+  <data name="ShipComparison_UseUpgradedModules" xml:space="preserve">
+      <value>Usar módulos atualizados se não houver build</value>
+  </data>
+  <data name="ShipComparison_HideIfNoSection" xml:space="preserve">
+      <value>Ocultar navios sem a seção selecionada</value>
+  </data>
+  <data name="ShipComparison_SelectAll" xml:space="preserve">
+      <value>Selecionar tudo</value>
+  </data>
+  <data name="ShipComparison_UnselectAll" xml:space="preserve">
+      <value>Desmarcar tudo</value>
+  </data>
+  <data name="ShipComparison_PinAll" xml:space="preserve">
+      <value>Fixar tudo</value>
+  </data>
+  <data name="ShipComparison_UnpinAll" xml:space="preserve">
+      <value>Desafixar tudo</value>
+  </data>
+  <data name="ShipStats_ShowInShipComparison" xml:space="preserve">
+      <value>Mostrar tudo na comparação de navios</value>
+  </data>
+  <data name="ShipComparison_General" xml:space="preserve">
+      <value>Geral</value>
+  </data>
+  <data name="ShipComparison_SecondaryBatteryShells" xml:space="preserve">
+      <value>Munição da Bateria Secundária</value>
+  </data>
+  <data name="ShipComparison_Asw" xml:space="preserve">
+      <value>ASW</value>
+  </data>
+  <data name="ShipComparison_RocketPlanes" xml:space="preserve">
+      <value>Aviões de Foguete</value>
+  </data>
+  <data name="ShipComparison_AerialTorpedoes" xml:space="preserve">
+      <value>Torpedos Aéreos</value>
+  </data>
+  <data name="ShipComparison_Bombers" xml:space="preserve">
+      <value>Bombardeiros</value>
+  </data>
+  <data name="ShipComparison_Bombs" xml:space="preserve">
+      <value>Bombas</value>
+  </data>
+  <data name="ShipComparison_Caliber" xml:space="preserve">
+      <value>Calibre</value>
+  </data>
+  <data name="ShipComparison_Barrels" xml:space="preserve">
+      <value>Barris</value>
+  </data>
+  <data name="ShipComparison_MaxRange" xml:space="preserve">
+      <value>Alcance Máximo</value>
+  </data>
+  <data name="ShipStats_Dpm" xml:space="preserve">
+      <value>DPM</value>
+  </data>
+  <data name="ShipStats_Salvo" xml:space="preserve">
+      <value>Salva</value>
+  </data>
+  <data name="ShipComparison_Fpm" xml:space="preserve">
+      <value>FPM</value>
+  </data>
+  <data name="ShipComparison_1st" xml:space="preserve">
+      <value>1º</value>
+  </data>
+  <data name="ShipComparison_2nd" xml:space="preserve">
+      <value>2º</value>
+  </data>
+  <data name="ShipComparison_Amount" xml:space="preserve">
+      <value>Quantidade</value>
+  </data>
+  <data name="ShipComparison_OnFire" xml:space="preserve">
+      <value>Em chamas</value>
+  </data>
+  <data name="ShipComparison_SmokeFiring" xml:space="preserve">
+      <value>Atirando em Fumaça</value>
+  </data>
+  <data name="ShipComparison_FullReverseTime" xml:space="preserve">
+      <value>Tempo para Ré Total</value>
+  </data>
+  <data name="ShipComparison_Charges" xml:space="preserve">
+      <value>Cargas</value>
+  </data>
+  <data name="ShipComparison_DropRange" xml:space="preserve">
+      <value>Alcance do drop</value>
+  </data>
+  <data name="ShipComparison_PlanesInSquadron" xml:space="preserve">
+      <value>Aviões no esquadrão</value>
+  </data>
+  <data name="ShipComparison_SplashRadius" xml:space="preserve">
+      <value>Raio de dano</value>
+  </data>
+  <data name="ShipComparison_InitialSpeed" xml:space="preserve">
+      <value>Velocidade inicial</value>
+  </data>
+  <data name="ShipComparison_PlaneHp" xml:space="preserve">
+      <value>HP do avião</value>
+  </data>
+  <data name="ShipComparison_Spread" xml:space="preserve">
+      <value>Dispersão</value>
+  </data>
+  <data name="ShipComparison_SwitchTime" xml:space="preserve">
+      <value>Tempo de troca</value>
+  </data>
+  <data name="ShipComparison_Plane" xml:space="preserve">
+      <value>Avião</value>
+  </data>
+  <data name="ShipComparison_Planes" xml:space="preserve">
+      <value>Aviões</value>
+  </data>
+  <data name="ShipComparison_OnDeck" xml:space="preserve">
+      <value>No Convés</value>
+  </data>
+  <data name="ShipComparison_EngineBoostDuration" xml:space="preserve">
+      <value>Duração do Impulso de Motor</value>
+  </data>
+  <data name="ShipComparison_Invulnerability" xml:space="preserve">
+      <value>Invulnerabilidade</value>
+  </data>
+  <data name="ShipComparison_ViewDistance" xml:space="preserve">
+      <value>Distância de Visão</value>
+  </data>
+  <data name="ShipComparison_AreaChange" xml:space="preserve">
+      <value>Mudança de Área</value>
+  </data>
+  <data name="ShipComparison_PerPlane" xml:space="preserve">
+      <value>Por Avião</value>
+  </data>
+  <data name="ShipComparison_TorpsPerPlane" xml:space="preserve">
+      <value>Torpedos por avião</value>
+  </data>
+  <data name="ShipStats_MaxReverseSpeed" xml:space="preserve">
+      <value>Velocidade máxima de ré</value>
+  </data>
+  <data name="ShipComparison_TypeName" xml:space="preserve">
+      <value>Digite o nome...</value>
+  </data>
+  <data name="ShipComparison_SearchAndPin" xml:space="preserve">
+      <value>Pesquisar &amp; Fixar navio</value>
+  </data>
+  <data name="ShipComparison_DispersionAt" xml:space="preserve">
+      <value>Dispersão em</value>
+  </data>
+  <data name="ShipComparison_FiringRange" xml:space="preserve">
+      <value>Alcance de disparo</value>
   </data>
 </root>
