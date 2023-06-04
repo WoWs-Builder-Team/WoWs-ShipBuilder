@@ -43,7 +43,7 @@ jobs:
       - name: Setup dotCover
         run: dotnet tool install --global JetBrains.dotCover.GlobalTool
       - name: Restore packages
-        run: dotnet restore
+        run: dotnet restore dirs.proj
       - name: Build and run scanner
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
