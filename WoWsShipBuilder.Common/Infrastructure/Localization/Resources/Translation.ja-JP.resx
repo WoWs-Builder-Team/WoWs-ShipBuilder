@@ -463,7 +463,7 @@
     <value>1浸水あたりのDPS</value>
   </data>
   <data name="ShipStats_FloodDuration" xml:space="preserve">
-      <value>浸水時間</value>
+      <value>時間</value>
   </data>
   <data name="ShipStats_FloodProbability" xml:space="preserve">
     <value>浸水率</value>
