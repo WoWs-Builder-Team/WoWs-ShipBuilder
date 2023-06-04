@@ -510,9 +510,6 @@
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
-  <data name="ShipStats_Duration" xml:space="preserve">
-    <value>Czas trwania</value>
-  </data>
   <data name="DownloadWindow_Downloading" xml:space="preserve">
     <value>Pobieranie danych...</value>
   </data>
