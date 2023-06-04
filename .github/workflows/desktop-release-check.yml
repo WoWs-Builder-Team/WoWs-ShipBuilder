@@ -19,6 +19,6 @@ jobs:
         with:
           global-json-file: global.json
       - name: Build application
-        run: dotnet build dirs.proj -c ReleaseTest
+        run: dotnet build dirs.proj -c Release -p:ReleaseTest=true
       - name: Test application
-        run: dotnet test dirs.proj --no-build -c ReleaseTest --verbosity normal
+        run: dotnet test dirs.proj --no-build -c Release -p:ReleaseTest=true --verbosity normal
