@@ -699,9 +699,6 @@
   <data name="ShipStats_BurstMode" xml:space="preserve">
     <value>Hoofdgeschut burstvuur</value>
   </data>
-  <data name="ShipStats_Duration" xml:space="preserve">
-    <value>Duur</value>
-  </data>
   <data name="ShipStats_ReloadAfterBurst" xml:space="preserve">
     <value>Herlaadtijd na burst</value>
   </data>
