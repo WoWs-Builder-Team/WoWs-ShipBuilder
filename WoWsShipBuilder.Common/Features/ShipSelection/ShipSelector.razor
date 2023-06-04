@@ -80,8 +80,8 @@
                 <MudList Style="max-height: 300px;" Dense>
                     @if (!SelectedShips.Any())
                     {
-                        <MudListItem>
-                            <MudText Color="Color.Primary" Align="Align.Center">
+                        <MudListItem Disabled>
+                            <MudText Class="prevent-select" Align="Align.Center">
                                 @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellsSelectionDialog_NoShipSelected)).Localization
                             </MudText>
                         </MudListItem>
@@ -91,12 +91,14 @@
                         foreach (var shipContainer in SelectedShips)
                         {
                             <MudListItem key="@shipContainer.Id">
-                                <MudStack Style="align-items: stretch" Spacing="1">
+                                <MudStack Style="align-items: stretch" Spacing="1" Class="my-n1">
                                     <MudStack Row Justify="Justify.SpaceBetween">
                                         <MudText>
                                             @Localizer.GetGameLocalization(shipContainer.Ship.Index + "_FULL").Localization
                                         </MudText>
-                                        <MudIcon Icon="@Icons.Material.Filled.Close" @onclick="@(_ => RemoveShip(shipContainer))" Style="cursor: pointer"/>
+                                        <MudTooltip Text="Remove" Delay="300">
+                                            <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" OnClick="@(() => RemoveShip(shipContainer))"/>
+                                        </MudTooltip>
                                     </MudStack>
                                     <MudStack Row AlignItems="AlignItems.Baseline">
                                         <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1" @onclick="@(_ => AddBuild(shipContainer))">
@@ -112,14 +114,14 @@
                 </MudList>
             </MudPaper>
         </MudItem>
-        @if (EnableRecentBuildList)
+        if (EnableRecentBuildList)
         {
             <MudItem xs="12" md="4">
                 <MudPaper Class="mt-4 mb-2 d-flex justify-center align-center " Height="56px" Outlined>
                     <MudText Align="Align.Center" Typo="Typo.h5" Class="prevent-select">Recent Builds</MudText>
                 </MudPaper>
                 <MudPaper Outlined Style="height: 300px; max-height: 300px; overflow: auto">
-                    <MudList @ref="buildList" Clickable>
+                    <MudList @ref="buildList" Clickable Dense>
                         @if (!recentBuilds.Any())
                         {
                             <MudListItem Disabled>
@@ -133,11 +135,11 @@
                                     <MudStack Row Justify="Justify.SpaceBetween">
                                         <MudText>@Localizer.SimpleGameLocalization(build.ShipIndex)</MudText>
                                         @* TODO: Localize *@
-                                        <MudTooltip Text="Remove from recent builds">
+                                        <MudTooltip Text="Delete from recent builds" Delay="300">
                                             <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" OnClick="@(() => RemoveRecentBuild(build))"/>
                                         </MudTooltip>
                                     </MudStack>
-                                    <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2">@(Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_Build)) + ": " + build.BuildName)</MudText>
+                                    <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1">@(Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_Build)) + ": " + build.BuildName)</MudText>
                                 </MudStack>
                             </MudListItem>
                             <MudDivider/>
