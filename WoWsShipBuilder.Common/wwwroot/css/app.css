@@ -228,3 +228,7 @@ div.mud-expand-panel {
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */
 }
+
+.file-upload-full-height div.mud-input-control-input-container {
+    height: 100%;
+}

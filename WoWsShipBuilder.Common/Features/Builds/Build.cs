@@ -3,7 +3,6 @@ using System.Security.Cryptography;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using WoWsShipBuilder.DataStructures;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
 
@@ -94,6 +93,10 @@ public class Build
                 using var reader = new StreamReader(gzip, System.Text.Encoding.UTF8);
                 string buildJson = reader.ReadToEnd();
                 build = JsonConvert.DeserializeObject<Build>(buildJson) ?? throw new InvalidOperationException("Failed to deserialize build object from string");
+            }
+            else if (buildString.StartsWith('{') && buildString.EndsWith('}'))
+            {
+                build = JsonConvert.DeserializeObject<Build>(buildString)!;
             }
             else
             {
