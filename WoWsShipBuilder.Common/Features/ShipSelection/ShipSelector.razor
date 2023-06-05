@@ -13,6 +13,7 @@
 @using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
+
 @implements IAsyncDisposable
 @inject ILocalizer Localizer
 @inject ISnackbar Snackbar
@@ -302,6 +303,10 @@
         if (firstRender && EnableRecentBuildList)
         {
             recentBuilds = await UserDataService.LoadBuildsAsync();
+            foreach (var build in recentBuilds)
+            {
+                build.UpgradeBuild();
+            }
             StateHasChanged();
         }
 
@@ -379,7 +384,7 @@
         }
     }
 
-    public void AddRecentBuild(Build build)
+    private void AddRecentBuild(Build build)
     {
         if (!AllowCopies && SelectedShips.Any(x => x.Ship.Index.Equals(build.ShipIndex))) return;
 
@@ -459,10 +464,10 @@
         try
         {
             var build = buildString.StartsWith('{') ? JsonConvert.DeserializeObject<Build>(buildString)! : Build.CreateBuildFromString(buildString);
+            build.UpgradeBuild();
             AddRecentBuild(build);
             buildString = string.Empty;
             StateHasChanged();
-    // NavManager.NavigateTo($"/ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}");
             Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
             Snackbar.Add("Build loaded", Severity.Success);
         }

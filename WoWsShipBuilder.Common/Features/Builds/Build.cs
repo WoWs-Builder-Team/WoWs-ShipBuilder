@@ -112,6 +112,8 @@ public class Build
         }
     }
 
+    public static Build UpgradeBuild(Build oldBuild) => UpgradeBuild(oldBuild, Logging.Logger);
+
     internal static Build CreateFromShortString(string shortBuildString)
     {
         string[] parts = shortBuildString.Split(";");
