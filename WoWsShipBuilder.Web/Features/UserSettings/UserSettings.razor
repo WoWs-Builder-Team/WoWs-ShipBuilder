@@ -6,14 +6,19 @@
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Utility
 @using WoWsShipBuilder.Web.Infrastructure.BetaAccess
+@using WoWsShipBuilder.Features.Builds
+@using Newtonsoft.Json
 
 @implements IDisposable
+@implements IAsyncDisposable
 @inject ILocalizer Localizer
 @inject RefreshNotifierService RefreshNotifierService
 @inject AppSettings AppSettings
 @inject ISettingsAccessor SettingsAccessor
 @inject ISnackbar Snackbar
 @inject IBetaAccessManager BetaAccessManager
+@inject IUserDataService UserDataService
+@inject IJSRuntime Runtime
 
 <PageTitle>@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Settings)).Localization</PageTitle>
 
@@ -53,6 +58,24 @@
             </MudStack>
         </MudItem>
         <MudItem xs="12">
+            <MudStack Row>
+                <MudText Typo="Typo.h6">@($"Saved builds ({savedBuilds.Count}/1000)")</MudText>
+                <MudButton Class="rounded-4" Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Download" OnClick="@(async () => await ExportSavedBuilds())">
+                    @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Export))
+                </MudButton>
+                <MudFileUpload T="IBrowserFile" FilesChanged="@(async file => await ImportSavedBuilds(file))" Style="margin-top: 0;" Class="file-upload-full-height" Accept=".json" MaximumFileCount="1">
+                    <ButtonTemplate>
+                        <MudButton HtmlTag="label" Class="rounded-4" Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Upload" Style="height: 100%;" for="@context">
+                            @Localizer.SimpleAppLocalization(nameof(Translation.BuildImport_Import))
+                        </MudButton>
+                    </ButtonTemplate>
+                </MudFileUpload>
+                <MudButton Class="rounded-4" Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Delete" OnClick="@(async () => await DeleteAllSavedBuilds())">
+                    @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_DeleteAll))
+                </MudButton>
+            </MudStack>
+        </MudItem>
+        <MudItem xs="12">
             <MudText Typo="Typo.h6">@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Heading))</MudText>
             <MudStack Row AlignItems="AlignItems.End">
                 <MudTextField @ref="betaCodeInput" T="string" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Code))" OnKeyDown="@CodeOnKeyDown" Immediate @bind-Value="@CurrentCode"></MudTextField>
@@ -60,7 +83,7 @@
                     @Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_AddCode))
                 </MudButton>
             </MudStack>
-            @if (SettingsInitialized && AppSettings.WebAppSettings!.BetaAccessCodes.Any())
+            @if (SettingsInitialized && AppSettings.WebAppSettings is not null && AppSettings.WebAppSettings.BetaAccessCodes.Any())
             {
                 <MudTable Items="@AppSettings.WebAppSettings.BetaAccessCodes">
                     <HeaderContent>
@@ -109,6 +132,10 @@
 
     private string currentCode = string.Empty;
 
+    private IJSObjectReference? module;
+
+    private List<Build> savedBuilds = new();
+
     private MudTextField<string> betaCodeInput = default!;
 
     private string CurrentCode
@@ -127,6 +154,17 @@
         RefreshNotifierService.RefreshRequested += UpdateSettingsValues;
         UpdateSettingsValues();
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            savedBuilds = (await UserDataService.LoadBuildsAsync()).ToList();
+            StateHasChanged();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     private void UpdateSettingsValues()
@@ -171,6 +209,20 @@
     public void Dispose()
     {
         RefreshNotifierService.RefreshRequested -= UpdateSettingsValues;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (module is not null)
+        {
+            try
+            {
+                await module.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+            }
+        }
     }
 
     private async Task ResetSettingsAsync()
@@ -227,4 +279,41 @@
         }
     }
 
+    private async Task ExportSavedBuilds()
+    {
+        module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/scripts/userSettings.js");
+        await module.InvokeVoidAsync("downloadObjectAsJson", savedBuilds, "builds");
+    }
+
+    private async Task ImportSavedBuilds(IBrowserFile? file)
+    {
+        if (file is not null && file.ContentType.Equals("application/json"))
+        {
+            using StreamReader reader = new(file.OpenReadStream());
+            var buildsString = await reader.ReadToEndAsync();
+            var buildList = JsonConvert.DeserializeObject<IEnumerable<Build>>(buildsString);
+            if (buildList is not null)
+            {
+                await UserDataService.ImportBuildsAsync(buildList.Reverse());
+                savedBuilds = (await UserDataService.LoadBuildsAsync()).ToList();
+                StateHasChanged();
+            }
+            else
+            {
+                Snackbar.Add("No build to import found.", Severity.Error);
+            }
+        }
+        else
+        {
+            Snackbar.Add("Invalid file. Must be a .json file.", Severity.Error);
+        }
+    }
+
+    private async Task DeleteAllSavedBuilds()
+    {
+        await UserDataService.RemoveSavedBuildsAsync(savedBuilds);
+        savedBuilds = (await UserDataService.LoadBuildsAsync()).ToList();
+        Snackbar.Add("All saved builds deleted.", Severity.Info);
+        StateHasChanged();
+    }
 }

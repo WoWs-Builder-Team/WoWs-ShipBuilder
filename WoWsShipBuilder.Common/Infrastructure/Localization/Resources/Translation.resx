@@ -2006,4 +2006,13 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipComparison_FiringRange" xml:space="preserve">
       <value>Firing Range</value>
   </data>
+  <data name="ShipSelectionWindow_SearchShipOrBuild" xml:space="preserve">
+      <value>Search ship or build</value>
+  </data>
+  <data name="SettingsWindow_Export" xml:space="preserve">
+      <value>Export</value>
+  </data>
+  <data name="SettingsWindow_DeleteAll" xml:space="preserve">
+      <value>Delete all</value>
+  </data>
 </root>

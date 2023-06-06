@@ -104,7 +104,6 @@
     @if (!LargerList)
     {
         <MudItem xs="12" md="4">
-            <MudButton StartIcon="@Icons.Material.Outlined.Cancel" Color="Color.Primary" DisableElevation="true" FullWidth Style="height: 14.6%; outline: inherit" Class="mt-4 mb-2" Variant="Variant.Filled" OnClick="RemoveAllShips">Clear all</MudButton>
             <MudPaper Outlined="true" Style="height: 300px; max-height: 300px; overflow: auto">
                 <MudList Style="max-height: 300px;" Dense>
                     @if (!SelectedShips.Any())
@@ -146,32 +145,31 @@
         if (EnableRecentBuildList)
         {
             <MudItem xs="12" md="4">
-                <MudPaper Class="mt-4 mb-2 d-flex justify-center align-center " Height="56px" Outlined>
-                    <MudText Align="Align.Center" Typo="Typo.h5" Class="prevent-select">Recent Builds</MudText>
-                </MudPaper>
                 <MudPaper Outlined Style="height: 300px; max-height: 300px; overflow: auto">
                     <MudList @ref="buildList" Clickable Dense>
-                        @if (!recentBuilds.Any())
+                        @if (!filteredBuildsList.Any())
                         {
                             <MudListItem Disabled>
-                                <MudText Align="Align.Center" Class="prevent-select">No recent builds</MudText>
+                                <MudText Align="Align.Center" Class="prevent-select">No saved builds</MudText>
                             </MudListItem>
                         }
-                        @foreach (var build in recentBuilds)
+                        else
                         {
-                            <MudListItem @key="build.Hash" Value="build" OnClick="@(() => AddRecentBuild(build))" Icon="@Icons.Material.Filled.KeyboardArrowLeft">
-                                <MudStack Style="align-items: stretch" Class="my-n1" Spacing="1">
-                                    <MudStack Row Justify="Justify.SpaceBetween">
-                                        <MudText>@Localizer.SimpleGameLocalization(build.ShipIndex)</MudText>
-                                        @* TODO: Localize *@
-                                        <MudTooltip Text="Delete from recent builds" Delay="300">
-                                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" OnClick="@(() => RemoveRecentBuild(build))"/>
-                                        </MudTooltip>
+                            <MudVirtualize IsEnabled="true" Items="filteredBuildsList" Context="build">
+                                <MudListItem @key="build.Hash" Value="build" OnClick="@(() => AddRecentBuild(build))" Icon="@Icons.Material.Filled.KeyboardArrowLeft">
+                                    <MudStack Style="align-items: stretch" Class="my-n1" Spacing="1">
+                                        <MudStack Row Justify="Justify.SpaceBetween">
+                                            <MudText>@Localizer.SimpleGameLocalization(build.ShipIndex + "_FULL")</MudText>
+                                            @* TODO: Localize *@
+                                            <MudTooltip Text="Delete from saved builds" Delay="300">
+                                                <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" OnClick="@(() => RemoveSavedBuild(build))"/>
+                                            </MudTooltip>
+                                        </MudStack>
+                                        <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1">@(Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_Build)) + ": " + build.BuildName)</MudText>
                                     </MudStack>
-                                    <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1">@(Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_Build)) + ": " + build.BuildName)</MudText>
-                                </MudStack>
-                            </MudListItem>
-                            <MudDivider/>
+                                </MudListItem>
+                                <MudDivider/>
+                            </MudVirtualize>
                         }
                     </MudList>
                 </MudPaper>
@@ -209,7 +207,9 @@
 
     private List<KeyValuePair<string, ShipSummary>> filteredSummaryList = new();
 
-    private IEnumerable<Build> recentBuilds = new List<Build>();
+    private IEnumerable<Build> savedBuilds = new List<Build>();
+
+    private List<Build> filteredBuildsList = new();
 
     private string inputText = string.Empty;
 
@@ -296,36 +296,52 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        await base.OnAfterRenderAsync(firstRender);
         if (firstRender && EnableBuildImport)
         {
             module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/scripts/buildImageDecoder.js");
         }
         if (firstRender && EnableRecentBuildList)
         {
-            recentBuilds = await UserDataService.LoadBuildsAsync();
-            foreach (var build in recentBuilds)
-            {
-                build.UpgradeBuild();
-            }
+            savedBuilds = await UserDataService.LoadBuildsAsync();
+            filteredBuildsList = savedBuilds.Select(x => x.UpgradeBuild()).ToList();
             StateHasChanged();
         }
-
-        await base.OnAfterRenderAsync(firstRender);
     }
 
     private void ApplyFilter()
     {
         string searchText = InputText;
-        var items = totalShipNameDictionary.Where(pair => SummaryFilter(pair, searchText)).ToList();
-        items = items.OrderBy(x => x.Key).ToList();
+        var ships = totalShipNameDictionary.Where(pair => SummaryFilter(pair, searchText)).ToList();
+        ships = ships.OrderBy(x => x.Key).ToList();
         filteredSummaryList.Clear();
-        filteredSummaryList.AddRange(items);
+        filteredSummaryList.AddRange(ships);
+        var builds = savedBuilds.Where(build => SummaryFilter(build, searchText)).ToList();
+        filteredBuildsList.Clear();
+        filteredBuildsList.AddRange(builds);
         StateHasChanged();
     }
 
-    private bool SummaryFilter(KeyValuePair<string, ShipSummary> valuePair, string textSearch)
+    private bool SummaryFilter(object value, string textSearch)
     {
-        var shipSummary = valuePair.Value;
+        ShipSummary shipSummary = default!;
+        string shipName = string.Empty;
+        string? buildName = null;
+
+        if (value is KeyValuePair<string, ShipSummary> pair)
+        {
+            shipSummary = pair.Value;
+            shipName = pair.Key;
+        }
+
+        if (value is Build build)
+        {
+            var keyValuePair = totalShipNameDictionary.First(x => x.Value.Index.Equals(build.ShipIndex));
+            shipSummary = keyValuePair.Value;
+            shipName = keyValuePair.Key;
+            buildName = build.BuildName;
+        }
+
         bool result = !(!string.IsNullOrWhiteSpace(SelectedTier) && shipSummary.Tier != tierList.IndexOf(SelectedTier!) + 1);
 
         if (result && SelectedClass != null && shipSummary.ShipClass != SelectedClass)
@@ -345,7 +361,12 @@
 
         if (result && !string.IsNullOrWhiteSpace(textSearch))
         {
-            result = CultureInfo.CurrentCulture.CompareInfo.IndexOf(valuePair.Key, textSearch, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1;
+            result = CultureInfo.CurrentCulture.CompareInfo.IndexOf(shipName, textSearch, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1;
+
+            if (!result && !string.IsNullOrWhiteSpace(buildName))
+            {
+                result = CultureInfo.CurrentCulture.CompareInfo.IndexOf(buildName, textSearch, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1;
+            }
         }
 
         return result;
@@ -435,9 +456,10 @@
         }
     }
 
-    private async Task RemoveRecentBuild(Build build)
+    private async Task RemoveSavedBuild(Build build)
     {
-        await UserDataService.RemoveRecentBuildAsync(build);
+        await UserDataService.RemoveSavedBuildAsync(build);
+        ApplyFilter();
     }
 
     private async Task FileSelected(IBrowserFile file)

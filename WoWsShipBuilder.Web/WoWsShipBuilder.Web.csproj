@@ -20,4 +20,8 @@
       <PackageReference Include="Nerdbank.GitVersioning" PrivateAssets="all" Version="3.6.132" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Include="wwwroot\scripts\userSettings.js" />
+    </ItemGroup>
+
 </Project>
