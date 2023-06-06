@@ -232,3 +232,9 @@ div.mud-expand-panel {
 .file-upload-full-height div.mud-input-control-input-container {
     height: 100%;
 }
+
+.tab-panel-build-config-dialog {
+    max-height: calc(95vh - 150px);
+    overflow-y: scroll;
+    padding: 12px;
+}
