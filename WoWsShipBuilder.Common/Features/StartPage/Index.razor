@@ -1,20 +1,13 @@
 @page "/"
 @using System.Collections.ObjectModel
 @using System.Collections.Specialized
-@using System.Net
-@using Microsoft.AspNetCore.WebUtilities
-@using Microsoft.Extensions.Options
-@using WoWsShipBuilder.Features.Builds
-@using WoWsShipBuilder.Features.LinkShortening
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Utility
 @inject NavigationManager NavManager
 @inject RefreshNotifierService NotifierService
-@inject ISnackbar Snackbar
 @inject ILocalizer Localizer
-@inject IOptions<LinkShorteningOptions> LinkShorteningOptions
 @inject SessionStateCache SessionStateCache
 @implements IDisposable
 
@@ -40,18 +33,7 @@
             <MudItem xs="12" Class="py-2" />
         }
         <MudItem xs="12">
-            <MudStack Row>
-                <MudTextField Immediate T="string" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)).Localization" @bind-Value="buildString"/>
-                <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="OnLoadBuild">
-                    @Localizer.GetAppLocalization(nameof(Translation.WebApp_LoadBuild)).Localization
-                </MudButton>
-            </MudStack>
-        </MudItem>
-        <MudItem xs="12" Class="pt-6 pb-0 ml-n4 mr-4">
-            <MudDivider DividerType="DividerType.Middle" Style="width: 100%" Light/>
-        </MudItem>
-        <MudItem xs="12">
-            <ShipSelector SelectedShips="@selectedShips" AllowCopies EnableRecentBuildList="@(!AppData.WebMode)" />
+            <ShipSelector SelectedShips="@selectedShips" AllowCopies EnableBuildImport EnableRecentBuildList="@(!AppData.WebMode)" />
         </MudItem>
         <MudItem xs="12" sm="8" Class="d-flex" Style="justify-content: space-between">
             <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@GoToShipPage" FullWidth="true">
@@ -64,8 +46,6 @@
 @code
 {
     private readonly ObservableCollection<ShipBuildContainer> selectedShips = new();
-
-    private string buildString = string.Empty;
 
     protected override void OnInitialized()
     {
@@ -95,37 +75,5 @@
     {
         selectedShips.CollectionChanged -= SelectedShipsOnCollectionChanged;
         NotifierService.RefreshRequested -= OnRefresh;
-    }
-
-    private async Task OnLoadBuild()
-    {
-        if (!string.IsNullOrEmpty(LinkShorteningOptions.Value.UriPrefix) && buildString.Contains(LinkShorteningOptions.Value.UriPrefix + '/'))
-        {
-            if (AppData.WebMode)
-            {
-                NavManager.NavigateTo(buildString);
-                return;
-            }
-            var fullUrl = await BuildValidation.RetrieveLongUrlFromShortLink(buildString) ?? string.Empty;
-            buildString = fullUrl;
-        }
-
-        if (QueryHelpers.ParseQuery(buildString).TryGetValue("build", out var buildFromUrl))
-        {
-            buildString = buildFromUrl.ToString();
-        }
-
-        try
-        {
-            var build = Build.CreateBuildFromString(buildString);
-            NavManager.NavigateTo($"/ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}");
-            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
-            Snackbar.Add("Build loaded", Severity.Success);
-        }
-        catch (FormatException)
-        {
-            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
-            Snackbar.Add("Failed to load build from string", Severity.Error);
-        }
     }
 }

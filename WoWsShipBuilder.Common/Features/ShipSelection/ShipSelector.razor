@@ -3,18 +3,47 @@
 @using System.Collections.ObjectModel
 @using System.Net
 @using DynamicData
+@using Microsoft.AspNetCore.WebUtilities
+@using Microsoft.Extensions.Options
+@using Newtonsoft.Json
 @using WoWsShipBuilder.Features.Builds.Components
 @using WoWsShipBuilder.Features.Builds
+@using WoWsShipBuilder.Features.LinkShortening
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
+
+@implements IAsyncDisposable
 @inject ILocalizer Localizer
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
 @inject IUserDataService UserDataService
+@inject IOptions<LinkShorteningOptions> LinkShorteningOptions
+@inject IJSRuntime Runtime
 
 <MudGrid Justify="Justify.Center" Spacing="2">
+    @if (EnableBuildImport)
+    {
+        <MudItem xs="12">
+            <MudStack Row>
+                <MudTextField Immediate T="string" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)).Localization" @bind-Value="buildString"/>
+                <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="OnLoadBuild">
+                    @Localizer.GetAppLocalization(nameof(Translation.WebApp_LoadBuild)).Localization
+                </MudButton>
+                <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Style="margin-top: 0;" Class="file-upload-full-height" Accept=".png">
+                    <ButtonTemplate>
+                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Image" Style="height: 100%;" for="@context">Import from image</MudButton>
+                    </ButtonTemplate>
+                </MudFileUpload>
+            </MudStack>
+        </MudItem>
+
+        <MudItem xs="12" Class="pt-2 pb-0 ml-n4 mr-4">
+            <MudDivider DividerType="DividerType.Middle" Style="width: 100%" Light/>
+        </MudItem>
+    }
+
     <MudItem xs="6" md="3">
         <MudSelect T="string" Variant="Variant.Outlined" @bind-Value="@SelectedTier" Placeholder="@(Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_TierFilter)).Localization + "...")" Clearable="true" AnchorOrigin="Origin.BottomCenter">
             @foreach (var item in tierList)
@@ -75,7 +104,7 @@
     @if (!LargerList)
     {
         <MudItem xs="12" md="4">
-            <MudButton StartIcon="@Icons.Material.Outlined.Cancel" Color="Color.Primary" DisableElevation="true" FullWidth Style="height: 14.6%; outline: inherit" Class="mt-4 mb-2" Variant="Variant.Filled" OnClick="RemoveAllShips" >Clear all</MudButton>
+            <MudButton StartIcon="@Icons.Material.Outlined.Cancel" Color="Color.Primary" DisableElevation="true" FullWidth Style="height: 14.6%; outline: inherit" Class="mt-4 mb-2" Variant="Variant.Filled" OnClick="RemoveAllShips">Clear all</MudButton>
             <MudPaper Outlined="true" Style="height: 300px; max-height: 300px; overflow: auto">
                 <MudList Style="max-height: 300px;" Dense>
                     @if (!SelectedShips.Any())
@@ -108,7 +137,7 @@
                                     </MudStack>
                                 </MudStack>
                             </MudListItem>
-                            <MudDivider />
+                            <MudDivider/>
                         }
                     }
                 </MudList>
@@ -169,6 +198,9 @@
     [Parameter]
     public bool EnableRecentBuildList { get; set; }
 
+    [Parameter]
+    public bool EnableBuildImport { get; set; }
+
     private SortedDictionary<string, ShipSummary> totalShipNameDictionary = new();
 
     private MudList mudList = default!;
@@ -190,6 +222,10 @@
             ApplyFilter();
         }
     }
+
+    private string buildString = string.Empty;
+
+    private IJSObjectReference? module;
 
     #region Selects
 
@@ -260,9 +296,17 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (firstRender && EnableBuildImport)
+        {
+            module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/scripts/buildImageDecoder.js");
+        }
         if (firstRender && EnableRecentBuildList)
         {
             recentBuilds = await UserDataService.LoadBuildsAsync();
+            foreach (var build in recentBuilds)
+            {
+                build.UpgradeBuild();
+            }
             StateHasChanged();
         }
 
@@ -394,5 +438,57 @@
     private async Task RemoveRecentBuild(Build build)
     {
         await UserDataService.RemoveRecentBuildAsync(build);
+    }
+
+    private async Task FileSelected(IBrowserFile file)
+    {
+        var result = await module!.InvokeAsync<string>("findUploadAndDecode");
+        buildString = result;
+        await OnLoadBuild();
+        buildString = string.Empty;
+    }
+
+    private async Task OnLoadBuild()
+    {
+        if (!string.IsNullOrEmpty(LinkShorteningOptions.Value.UriPrefix) && buildString.Contains(LinkShorteningOptions.Value.UriPrefix + '/'))
+        {
+            var fullUrl = await BuildValidation.RetrieveLongUrlFromShortLink(buildString) ?? string.Empty;
+            buildString = fullUrl;
+        }
+
+        if (QueryHelpers.ParseQuery(buildString).TryGetValue("build", out var buildFromUrl))
+        {
+            buildString = buildFromUrl.ToString();
+        }
+
+        try
+        {
+            var build = buildString.StartsWith('{') ? JsonConvert.DeserializeObject<Build>(buildString)! : Build.CreateBuildFromString(buildString);
+            build.UpgradeBuild();
+            AddRecentBuild(build);
+            buildString = string.Empty;
+            StateHasChanged();
+            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+            Snackbar.Add("Build loaded", Severity.Success);
+        }
+        catch (Exception)
+        {
+            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+            Snackbar.Add("Failed to load build from string", Severity.Error);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (module is not null)
+        {
+            try
+            {
+                await module.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+            }
+        }
     }
 }

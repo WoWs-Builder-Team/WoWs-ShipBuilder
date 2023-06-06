@@ -228,3 +228,13 @@ div.mud-expand-panel {
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */
 }
+
+.file-upload-full-height div.mud-input-control-input-container {
+    height: 100%;
+}
+
+.tab-panel-build-config-dialog {
+    max-height: calc(95vh - 150px);
+    overflow-y: scroll;
+    padding: 12px;
+}
