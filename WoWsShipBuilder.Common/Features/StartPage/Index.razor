@@ -23,9 +23,6 @@
                 <MudText Align="Align.Center" Typo="Typo.h1" Class="main-title">
                     WoWs ShipBuilder
                 </MudText>
-                <MudText Align="Align.Center" Typo="Typo.h4">
-                    Welcome to the WoWs ShipBuilder web app.
-                </MudText>
             </MudItem>
         }
         else
@@ -33,9 +30,9 @@
             <MudItem xs="12" Class="py-2" />
         }
         <MudItem xs="12">
-            <ShipSelector SelectedShips="@selectedShips" AllowCopies EnableBuildImport EnableRecentBuildList/>
+            <ShipSelector SelectedShips="@selectedShips" AllowCopies EnableBuildImport EnableSavedBuildList/>
         </MudItem>
-        <MudItem xs="12" sm="8" Class="d-flex" Style="justify-content: space-between">
+        <MudItem xs="12" Class="mt-n2">
             <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@GoToShipPage" FullWidth="true">
                 @Localizer.GetAppLocalization(nameof(Translation.WebApp_GoToShipsPage)).Localization
             </MudButton>

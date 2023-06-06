@@ -87,8 +87,10 @@
             }
         </MudSelect>
     </MudItem>
+    <MudItem xs="12" Class="mt-n4 mb-n2">
+        <MudTextField AutoFocus T="string" FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Placeholder="@(Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShipOrBuild)).Localization + "...")" @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
+    </MudItem>
     <MudItem xs="12" md="@(LargerList ? 6 : 4)">
-        <MudTextField AutoFocus T="string" Variant="Variant.Outlined" Placeholder="@Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShip)).Localization" @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
         <MudPaper Style="max-height: 300px; min-height: 300px; overflow:auto" Outlined="true">
             <MudList @ref="mudList" Clickable="true" SelectedValueChanged="AddShip">
                 <MudVirtualize IsEnabled="true" Items="@filteredSummaryList" Context="pair">
@@ -142,7 +144,7 @@
                 </MudList>
             </MudPaper>
         </MudItem>
-        if (EnableRecentBuildList)
+        if (EnableSavedBuildList)
         {
             <MudItem xs="12" md="4">
                 <MudPaper Outlined Style="height: 300px; max-height: 300px; overflow: auto">
@@ -156,7 +158,7 @@
                         else
                         {
                             <MudVirtualize IsEnabled="true" Items="filteredBuildsList" Context="build">
-                                <MudListItem @key="build.Hash" Value="build" OnClick="@(() => AddRecentBuild(build))" Icon="@Icons.Material.Filled.KeyboardArrowLeft">
+                                <MudListItem @key="build.Hash" Value="build" OnClick="@(() => AddSavedBuild(build))" Icon="@Icons.Material.Filled.KeyboardArrowLeft">
                                     <MudStack Style="align-items: stretch" Class="my-n1" Spacing="1">
                                         <MudStack Row Justify="Justify.SpaceBetween">
                                             <MudText>@Localizer.SimpleGameLocalization(build.ShipIndex + "_FULL")</MudText>
@@ -194,7 +196,7 @@
     public bool AllowCopies { get; set; }
 
     [Parameter]
-    public bool EnableRecentBuildList { get; set; }
+    public bool EnableSavedBuildList { get; set; }
 
     [Parameter]
     public bool EnableBuildImport { get; set; }
@@ -301,10 +303,11 @@
         {
             module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/scripts/buildImageDecoder.js");
         }
-        if (firstRender && EnableRecentBuildList)
+        if (firstRender && EnableSavedBuildList)
         {
             savedBuilds = await UserDataService.LoadBuildsAsync();
-            filteredBuildsList = savedBuilds.Select(x => x.UpgradeBuild()).ToList();
+            filteredBuildsList = savedBuilds.ToList();
+            filteredBuildsList.ForEach(x => x.UpgradeBuild());
             StateHasChanged();
         }
     }
@@ -405,7 +408,7 @@
         }
     }
 
-    private void AddRecentBuild(Build build)
+    private void AddSavedBuild(Build build)
     {
         if (!AllowCopies && SelectedShips.Any(x => x.Ship.Index.Equals(build.ShipIndex))) return;
 
@@ -462,12 +465,19 @@
         ApplyFilter();
     }
 
-    private async Task FileSelected(IBrowserFile file)
+    private async Task FileSelected(IBrowserFile? file)
     {
-        var result = await module!.InvokeAsync<string>("findUploadAndDecode");
-        buildString = result;
-        await OnLoadBuild();
-        buildString = string.Empty;
+        if (file is not null && file.ContentType.Equals("image/png"))
+        {
+            var result = await module!.InvokeAsync<string>("findUploadAndDecode");
+            buildString = result;
+            await OnLoadBuild();
+            buildString = string.Empty;
+        }
+        else
+        {
+            Snackbar.Add("Invalid file. Only .png files allowed.", Severity.Error);
+        }
     }
 
     private async Task OnLoadBuild()
@@ -487,7 +497,7 @@
         {
             var build = buildString.StartsWith('{') ? JsonConvert.DeserializeObject<Build>(buildString)! : Build.CreateBuildFromString(buildString);
             build.UpgradeBuild();
-            AddRecentBuild(build);
+            AddSavedBuild(build);
             buildString = string.Empty;
             StateHasChanged();
             Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
