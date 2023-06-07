@@ -194,8 +194,8 @@
                                 </MudStack>
                             </MudItem>
                             <MudItem xs="12" md="6">
-                                <MudStack Row="true" Class="mt-n1 mb-0" Justify="Justify.Center">
-                                    <MudTextField @bind-Value="inputBuildString" Immediate DebounceInterval="100" Validation="@(new Func<string, Task<string?>>(ValidateBuildString))" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Alternative" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink))" Variant="Variant.Outlined"/>
+                                <MudStack Row="true" Justify="Justify.Center" Style="margin-top: -14px">
+                                    <MudTextField @bind-Value="inputBuildString" Immediate DebounceInterval="150" Validation="@(new Func<string, Task<string?>>(ValidateBuildString))" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Alternative" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink))" Variant="Variant.Outlined"/>
                                     <MudButton Disabled="@(string.IsNullOrWhiteSpace(buildString))" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Style="margin-top: 6px" OnClick="async () => await ImportBuild(SelectedContainer.Ship)">
                                         @Localizer.GetAppLocalization(Translation.BuildImport_Import).Localization
                                     </MudButton>
@@ -207,7 +207,7 @@
                                 </MudStack>
                             </MudItem>
                             <MudItem xs="12" md="6">
-                                <MudTextField @bind-Value="ViewModel.BuildName" Immediate Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))" DebounceInterval="100" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-auto mb-0"/>
+                                <MudTextField @bind-Value="ViewModel.BuildName" Immediate Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))" DebounceInterval="150" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-n2 mb-0"/>
                             </MudItem>
                         }
                         else
@@ -329,11 +329,18 @@
         }
     }
 
-    private async Task FileSelected(IBrowserFile file)
+    private async Task FileSelected(IBrowserFile? file)
     {
-        var result = await module!.InvokeAsync<string>("findUploadAndDecode");
-        buildString = result;
-        await ImportBuild(SelectedContainer.Ship);
+        if (file is not null && file.ContentType.Equals("image/png"))
+        {
+            var result = await module!.InvokeAsync<string>("findUploadAndDecode");
+            buildString = result;
+            await ImportBuild(SelectedContainer.Ship);
+        }
+        else
+        {
+            Snackbar.Add("Invalid file. Only .png files allowed.", Severity.Error);
+        }
     }
 
     private void Cancel()

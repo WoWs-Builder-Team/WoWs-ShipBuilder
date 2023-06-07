@@ -234,7 +234,7 @@ div.mud-expand-panel {
 }
 
 .tab-panel-build-config-dialog {
-    max-height: calc(95vh - 150px);
+    max-height: calc(93vh - 78px);
     overflow-y: scroll;
     padding: 12px;
 }
