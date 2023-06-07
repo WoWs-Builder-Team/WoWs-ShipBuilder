@@ -306,6 +306,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Load.
+        /// </summary>
+        public static string BuildConfigurationDialog_Load {
+            get {
+                return ResourceManager.GetString("BuildConfigurationDialog_Load", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Build saved.
         /// </summary>
         public static string BuildCreationWindow_BuildSaved {

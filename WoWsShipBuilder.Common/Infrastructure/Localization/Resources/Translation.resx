@@ -2015,4 +2015,7 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="SettingsWindow_DeleteAll" xml:space="preserve">
       <value>Delete all</value>
   </data>
+  <data name="BuildConfigurationDialog_Load" xml:space="preserve">
+      <value>Load</value>
+  </data>
 </root>
