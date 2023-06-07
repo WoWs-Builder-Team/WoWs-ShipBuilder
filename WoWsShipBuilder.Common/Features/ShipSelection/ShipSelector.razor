@@ -9,6 +9,7 @@
 @using WoWsShipBuilder.Features.Builds.Components
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.LinkShortening
+@using WoWsShipBuilder.Features.Settings
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization
@@ -21,6 +22,7 @@
 @inject IUserDataService UserDataService
 @inject IOptions<LinkShorteningOptions> LinkShorteningOptions
 @inject IJSRuntime Runtime
+@inject AppSettings AppSettings
 
 <MudGrid Justify="Justify.Center" Spacing="2">
     @if (EnableBuildImport)
@@ -364,11 +366,11 @@
 
         if (result && !string.IsNullOrWhiteSpace(textSearch))
         {
-            result = CultureInfo.CurrentCulture.CompareInfo.IndexOf(shipName, textSearch, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1;
+            result = AppSettings.SelectedLanguage.CultureInfo.CompareInfo.IndexOf(shipName, textSearch, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1;
 
             if (!result && !string.IsNullOrWhiteSpace(buildName))
             {
-                result = CultureInfo.CurrentCulture.CompareInfo.IndexOf(buildName, textSearch, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1;
+                result = AppSettings.SelectedLanguage.CultureInfo.CompareInfo.IndexOf(buildName, textSearch, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1;
             }
         }
 
@@ -476,7 +478,7 @@
         }
         else
         {
-            Snackbar.Add("Invalid file. Only .png files allowed.", Severity.Error);
+            Snackbar.Add(Localizer.SimpleAppLocalization(nameof(Translation.ShipSelector_InvalidPngFileError)), Severity.Error);
         }
     }
 

@@ -23,7 +23,7 @@
 @inject IOptions<LinkShorteningOptions> LinkShorteningOptions
 @inject IJSRuntime Runtime
 
-<MudDialog Style="max-height: 100vh;">
+<MudDialog Style="max-height: 95vh;">
     <DialogContent>
         <MudBreakpointProvider>
             <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
@@ -339,7 +339,7 @@
         }
         else
         {
-            Snackbar.Add("Invalid file. Only .png files allowed.", Severity.Error);
+            Snackbar.Add(Localizer.SimpleAppLocalization(nameof(Translation.ShipSelector_InvalidPngFileError)), Severity.Error);
         }
     }
 

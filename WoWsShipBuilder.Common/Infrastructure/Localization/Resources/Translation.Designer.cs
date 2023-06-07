@@ -1899,6 +1899,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid file. Only .json files allowed..
+        /// </summary>
+        public static string SettingsWindow_InvalidJsonFileError {
+            get {
+                return ResourceManager.GetString("SettingsWindow_InvalidJsonFileError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string SettingsWindow_Language {
@@ -2651,6 +2660,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string ShipSelectionWindow_TypeFilter {
             get {
                 return ResourceManager.GetString("ShipSelectionWindow_TypeFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid file. Only .png files allowed..
+        /// </summary>
+        public static string ShipSelector_InvalidPngFileError {
+            get {
+                return ResourceManager.GetString("ShipSelector_InvalidPngFileError", resourceCulture);
             }
         }
         

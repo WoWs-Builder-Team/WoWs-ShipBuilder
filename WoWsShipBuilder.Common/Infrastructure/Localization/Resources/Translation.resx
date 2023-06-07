@@ -2018,4 +2018,10 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="BuildConfigurationDialog_Load" xml:space="preserve">
       <value>Load</value>
   </data>
+  <data name="SettingsWindow_InvalidJsonFileError" xml:space="preserve">
+      <value>Invalid file. Only .json files allowed.</value>
+  </data>
+  <data name="ShipSelector_InvalidPngFileError" xml:space="preserve">
+      <value>Invalid file. Only .png files allowed.</value>
+  </data>
 </root>

@@ -305,7 +305,7 @@
         }
         else
         {
-            Snackbar.Add("Invalid file. Only .json files allowed.", Severity.Error);
+            Snackbar.Add(Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_InvalidJsonFileError)), Severity.Error);
         }
     }
 
