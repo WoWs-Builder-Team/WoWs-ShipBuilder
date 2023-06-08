@@ -99,12 +99,9 @@
                             <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Share" OnClick="@OnShareBuildClicked">
                                 @Localizer.GetAppLocalization(nameof(Translation.MainWindow_ShareBuild)).Localization
                             </MudButton>
-                            @if (!AppData.WebMode)
-                            {
-                                <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Save" OnClick="@OnBuildSaveClicked">
-                                    @Localizer.SimpleAppLocalization(nameof(Translation.Dialog_Save))
-                                </MudButton>
-                            }
+                            <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Save" OnClick="@OnBuildSaveClicked">
+                                @Localizer.SimpleAppLocalization(nameof(Translation.Dialog_Save))
+                            </MudButton>
                         </MudStack>
                     </MudItem>
                 </MudGrid>
@@ -342,7 +339,7 @@
             await ClipboardService.SetTextAsync(shareResult.CreateShortLink ? (await LinkShortener.CreateShortLink(buildUrl)).Link : buildUrl);
             if (AppSettings.StoreBuildOnShare)
             {
-                await UserDataService.AddRecentBuildAsync(build);
+                await UserDataService.SaveBuildAsync(build);
             }
         }
 
@@ -352,7 +349,7 @@
             if (AppSettings.StoreBuildOnShare)
             {
                 var build = ViewModel!.CreateBuild(BuildName);
-                await UserDataService.AddRecentBuildAsync(build);
+                await UserDataService.SaveBuildAsync(build);
             }
         }
     }
@@ -423,7 +420,7 @@
         }
 
         var build = ViewModel!.CreateBuild(BuildName);
-        await UserDataService.AddRecentBuildAsync(build);
+        await UserDataService.SaveBuildAsync(build);
     }
 
 }
