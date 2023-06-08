@@ -287,7 +287,8 @@
     private async Task ExportSavedBuilds()
     {
         module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/scripts/userSettings.js");
-        await module.InvokeVoidAsync("downloadObjectAsJson", savedBuilds, "builds");
+        var buildStrings = savedBuilds.Select(x => x.CreateShortStringFromBuild()).ToList();
+        await module.InvokeVoidAsync("downloadObjectAsJson", buildStrings, "builds");
     }
 
     private async Task ImportSavedBuilds(IBrowserFile? file)
@@ -296,10 +297,10 @@
         {
             using StreamReader reader = new(file.OpenReadStream());
             var buildsString = await reader.ReadToEndAsync();
-            var buildList = JsonConvert.DeserializeObject<IEnumerable<Build>>(buildsString);
+            var buildList = JsonConvert.DeserializeObject<IEnumerable<string>>(buildsString);
             if (buildList is not null)
             {
-                await UserDataService.ImportBuildsAsync(buildList.Reverse());
+                await UserDataService.ImportBuildsAsync(buildList.Select(x => Build.CreateBuildFromString(x)).Reverse());
                 savedBuilds = (await UserDataService.LoadBuildsAsync()).ToList();
                 StateHasChanged();
             }

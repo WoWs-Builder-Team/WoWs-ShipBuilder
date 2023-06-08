@@ -31,7 +31,7 @@ public class WebUserDataService : IUserDataService, IAsyncDisposable
     public async Task SaveBuildsAsync(IEnumerable<Build> builds)
     {
         await InitializeModule();
-        var buildStrings = builds.Select(x => x.CreateStringFromBuild());
+        var buildStrings = builds.Select(x => x.CreateShortStringFromBuild());
         await module.InvokeVoidAsync("saveData", BuildFileName, JsonSerializer.Serialize(buildStrings));
     }
 
