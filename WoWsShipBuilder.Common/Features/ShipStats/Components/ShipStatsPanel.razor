@@ -20,7 +20,7 @@
 @inject AppSettings AppSettings
 @inject IDialogService DialogService
 
-@if (ViewModel is not null)
+@if (ViewModel?.CurrentShipStats is not null)
 {
     <MudPaper Outlined="true" Class="pa-2">
     <MudGrid>

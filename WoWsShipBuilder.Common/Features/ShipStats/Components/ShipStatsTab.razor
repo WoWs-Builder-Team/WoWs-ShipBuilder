@@ -117,10 +117,7 @@ else if (ViewModel is not null)
             </MudStack>
         </MudItem>
         <MudItem xs="12" md="6" lg="8" xl="9">
-            @if (ViewModel?.ShipStatsControlViewModel?.CurrentShipStats is not null)
-            {
-                <ShipStatsPanel ViewModel="@ViewModel.ShipStatsControlViewModel" StoreBuildsForTransfer="@StoreBuildsForTransfer"/>
-            }
+            <ShipStatsPanel ViewModel="@ViewModel.ShipStatsControlViewModel" StoreBuildsForTransfer="@StoreBuildsForTransfer"/>
         </MudItem>
     </MudGrid>
 }
@@ -165,7 +162,6 @@ else if (ViewModel is not null)
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        MetricsService.ShipPageCount.Inc();
         initialized = false;
 
         var cacheEntry = Cache.GetOrDefault(CurrentTabId);
@@ -173,20 +169,28 @@ else if (ViewModel is not null)
         {
             ViewModel = cacheEntry.ViewModel;
             shipChanged = true;
+            initialized = true;
         }
-        else
-        {
-            Cache[CurrentTabId] = new(null!);
-            ViewModel = await LoadShipViewModel(ShipIndex);
-            Cache[CurrentTabId] = Cache[CurrentTabId]! with { ViewModel = ViewModel };
-        }
-
-        initialized = true;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            MetricsService.ShipPageCount.Inc();
+        }
+
+        if (ViewModel is null)
+        {
+            Cache[CurrentTabId] = new(null!);
+            ViewModel = await LoadShipViewModel(ShipIndex);
+            Cache[CurrentTabId] = Cache[CurrentTabId]! with { ViewModel = ViewModel };
+            initialized = true;
+            StateHasChanged();
+            return;
+        }
+
         if (!firstRender && shipChanged && ViewModel is not null)
         {
             shipChanged = false;
