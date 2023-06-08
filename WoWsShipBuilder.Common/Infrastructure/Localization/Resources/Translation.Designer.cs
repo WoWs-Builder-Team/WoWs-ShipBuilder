@@ -1944,6 +1944,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Builds are saved in your browser local storage. Operations such as clearing the browser cache will very likely delete all the data stored in the local storage. We highly recommend you to export your builds periodically or at least before performing such operations..
+        /// </summary>
+        public static string SettingsWindow_LocalStorageWarning {
+            get {
+                return ResourceManager.GetString("SettingsWindow_LocalStorageWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open explorer when saving a build image.
         /// </summary>
         public static string SettingsWindow_OpenExplorerAfterImageSave {
