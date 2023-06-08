@@ -29,7 +29,7 @@
                         <MudText Typo="@Typo.body1">WoWs-ShipBuilder for the PTS client of the game.</MudText>
                     </TooltipContent>
                     <ChildContent>
-                        <NavLink class="d-flex me-4" href="@ShipBuilderOptions.PtsServerUrl" target="_blank">
+                        <NavLink class="d-flex me-4" href="@(ShipBuilderOptions.PtsServerUrl + "?ref=wowssb")" target="_blank">
                             <MudIcon Icon="@shipBuilderIcon" Size="@Size.Large"/>
                             <MudText Class="align-self-center">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypePts))</MudText>
                         </NavLink>
@@ -42,7 +42,7 @@
                         <MudText Typo="@Typo.body1">WoWs-ShipBuilder for the Live client of the game.</MudText>
                     </TooltipContent>
                     <ChildContent>
-                        <NavLink class="d-flex me-4" href="@ShipBuilderOptions.LiveServerUrl" target="_blank">
+                        <NavLink class="d-flex me-4" href="@(ShipBuilderOptions.LiveServerUrl + "?ref=wowssb")" target="_blank">
                             <MudIcon Icon="@shipBuilderIcon" Size="@Size.Large"/>
                             <MudText Class="align-self-center">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypeLive))</MudText>
                         </NavLink>
@@ -55,7 +55,7 @@
                         <MudText Typo="@Typo.body1">WoWs-ShipBuilder for the PTS client of the game.</MudText>
                     </TooltipContent>
                     <ChildContent>
-                        <NavLink class="d-flex me-4" href="https://pts.wowssb.com/" target="_blank">
+                        <NavLink class="d-flex me-4" href="@(ShipBuilderOptions.PtsServerUrl + "?ref=wowssb")" target="_blank">
                             <MudIcon Icon="@shipBuilderIcon" Size="@Size.Large"/>
                             <MudText Class="align-self-center">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypePts))</MudText>
                         </NavLink>
@@ -66,7 +66,7 @@
                         <MudText Typo="@Typo.body1">WoWs-ShipBuilder for the Live client of the game.</MudText>
                     </TooltipContent>
                     <ChildContent>
-                        <NavLink class="d-flex me-4" href="https://app.wowssb.com/" target="_blank">
+                        <NavLink class="d-flex me-4" href="@(ShipBuilderOptions.LiveServerUrl + "?ref=wowssb")" target="_blank">
                             <MudIcon Icon="@shipBuilderIcon" Size="@Size.Large"/>
                             <MudText Class="align-self-center">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypeLive))</MudText>
                         </NavLink>
@@ -150,14 +150,14 @@
             @switch (CdnOptions.Value.Server)
             {
                 case ServerType.Live:
-                    <MudNavLink Href="@ShipBuilderOptions.PtsServerUrl" Target="_blank" Icon="@shipBuilderIcon">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypePts))</MudNavLink>
+                    <MudNavLink Href="@(ShipBuilderOptions.PtsServerUrl + "?ref=wowssb")" Target="_blank" Icon="@shipBuilderIcon">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypePts))</MudNavLink>
                     break;
                 case ServerType.Pts:
-                    <MudNavLink Href="@ShipBuilderOptions.LiveServerUrl" Target="_blank" Icon="@shipBuilderIcon">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypeLive))</MudNavLink>
+                    <MudNavLink Href="@(ShipBuilderOptions.LiveServerUrl + "?ref=wowssb")" Target="_blank" Icon="@shipBuilderIcon">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypeLive))</MudNavLink>
                     break;
                 default:
-                    <MudNavLink Href="@ShipBuilderOptions.PtsServerUrl" Target="_blank" Icon="@shipBuilderIcon">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypePts))</MudNavLink>
-                    <MudNavLink Href="@ShipBuilderOptions.LiveServerUrl" Target="_blank" Icon="@shipBuilderIcon">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypeLive))</MudNavLink>
+                    <MudNavLink Href="@(ShipBuilderOptions.PtsServerUrl + "?ref=wowssb")" Target="_blank" Icon="@shipBuilderIcon">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypePts))</MudNavLink>
+                    <MudNavLink Href="@(ShipBuilderOptions.LiveServerUrl + "?ref=wowssb")" Target="_blank" Icon="@shipBuilderIcon">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypeLive))</MudNavLink>
                     break;
             }
             <MudDivider Class="my-4"/>

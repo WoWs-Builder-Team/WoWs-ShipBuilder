@@ -47,7 +47,7 @@
 @inject IOptions<CdnOptions> CdnOptions
 @inject NavigationManager NavManager
 @inject IJSRuntime JsRuntime
-@inject IMetricsService MetricsService
+@inject MetricsService MetricsService
 @inject SessionStateCache SessionStateCache
 @inject IDialogService DialogService
 
@@ -360,7 +360,6 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        MetricsService.ComparisonPageCount.Inc();
 
         ViewModel = new(Localizer, AppSettings);
 
@@ -434,6 +433,11 @@
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
+        if (firstRender)
+        {
+            MetricsService.PageAccessCount.WithLabels("comparison").Inc();
+        }
+
         hiddenColumns = dataGrid.RenderedColumns.Where(x => x.Hideable is true).ToDictionary(x => x.FieldId, x => hiddenColumns.TryGetValue(x.FieldId, out bool hidden) && hidden);
     }
 

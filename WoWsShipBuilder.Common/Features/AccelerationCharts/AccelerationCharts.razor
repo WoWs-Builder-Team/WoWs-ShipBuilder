@@ -17,7 +17,7 @@
 @inject ILocalizer Localizer
 @inject IDialogService DialogService
 @inject ChartJsInterop ChartJsInterop
-@inject IMetricsService MetricsService
+@inject MetricsService MetricsService
 @inject IBreakpointService BreakpointService
 @inject NavigationManager NavManager
 @inject SessionStateCache SessionStateCache
@@ -98,18 +98,12 @@
 
     private int counter;
 
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        MetricsService.AccelerationPageCount.Inc();
-    }
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-
         if (firstRender)
         {
+            MetricsService.PageAccessCount.WithLabels("acceleration_charts").Inc();
             Breakpoint = await BreakpointService.GetBreakpoint();
             await SetupChartAsync();
 

@@ -18,7 +18,7 @@
 @inject ILocalizer Localizer
 @inject IDialogService DialogService
 @inject ChartJsInterop ChartJsInterop
-@inject IMetricsService MetricsService
+@inject MetricsService MetricsService
 @inject IBreakpointService BreakpointService
 @inject SessionStateCache SessionStateCache
 
@@ -297,7 +297,6 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        MetricsService.BallisticPageCount.Inc();
 
         if (NavManager.TryGetQueryString("shellIndex", out string shellIndex))
         {
@@ -315,6 +314,7 @@
 
         if (firstRender)
         {
+            MetricsService.PageAccessCount.WithLabels("ballistic_charts").Inc();
             SetProcessing(true);
             Breakpoint = await BreakpointService.GetBreakpoint();
             await SetupChartsAsync();

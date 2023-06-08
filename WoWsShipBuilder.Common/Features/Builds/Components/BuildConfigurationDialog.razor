@@ -17,7 +17,7 @@
 @implements IAsyncDisposable
 
 @inject ILocalizer Localizer
-@inject IMetricsService MetricsService
+@inject MetricsService MetricsService
 @inject IHostEnvironment Environment
 @inject ISnackbar Snackbar
 @inject IOptions<LinkShorteningOptions> LinkShorteningOptions
@@ -275,7 +275,7 @@
 
     private ShipBuildViewModel LoadShipViewModel(ShipBuildContainer shipBuildContainer)
     {
-        MetricsService.ShipCount.WithLabels(shipBuildContainer.Ship.Index, Localizer.GetGameLocalization(shipBuildContainer.Ship.Index + "_FULL", AppConstants.DefaultCultureDetails).Localization).Inc();
+        MetricsService.ShipViewCount.WithLabels(shipBuildContainer.Ship.Index, Localizer.GetGameLocalization(shipBuildContainer.Ship.Index + "_FULL", AppConstants.DefaultCultureDetails).Localization).Inc();
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
             var vm = ShipBuildViewModel.Create(shipBuildContainer);

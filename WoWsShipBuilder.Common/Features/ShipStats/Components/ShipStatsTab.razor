@@ -17,10 +17,11 @@
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
 @using ShipViewModel = WoWsShipBuilder.Features.ShipStats.ViewModels.ShipViewModel
+@using System.Diagnostics
 
 @inject IHostEnvironment Environment
 @inject ILocalizer Localizer
-@inject IMetricsService MetricsService
+@inject MetricsService MetricsService
 @inject AppSettings AppSettings
 @inject MouseEventInterop MouseEventInterop
 @inject IDialogService DialogService
@@ -178,7 +179,7 @@ else if (ViewModel is not null)
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
-            MetricsService.ShipPageCount.Inc();
+            MetricsService.PageAccessCount.WithLabels("shipstats").Inc();
         }
 
         if (ViewModel is null)
@@ -214,7 +215,7 @@ else if (ViewModel is not null)
 
     private async Task<ShipViewModel> LoadShipViewModel(string shipIndex)
     {
-        MetricsService.ShipCount.WithLabels(shipIndex, Localizer.GetGameLocalization(shipIndex + "_FULL", AppConstants.DefaultCultureDetails).Localization).Inc();
+        MetricsService.ShipViewCount.WithLabels(shipIndex, Localizer.GetGameLocalization(shipIndex + "_FULL", AppConstants.DefaultCultureDetails).Localization).Inc();
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
             var vm = await CreateViewModel(shipIndex, Build, Localizer);

@@ -4,6 +4,7 @@
 @using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
+@using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
 @using WoWsShipBuilder.Web.Infrastructure.BetaAccess
 @using WoWsShipBuilder.Features.Builds
@@ -19,6 +20,7 @@
 @inject IBetaAccessManager BetaAccessManager
 @inject IUserDataService UserDataService
 @inject IJSRuntime Runtime
+@inject MetricsService MetricsService
 
 <PageTitle>@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Settings)).Localization</PageTitle>
 
@@ -172,6 +174,7 @@
     {
         if (firstRender)
         {
+            MetricsService.PageAccessCount.WithLabels("settings").Inc();
             savedBuilds = (await UserDataService.LoadBuildsAsync()).ToList();
             StateHasChanged();
         }
