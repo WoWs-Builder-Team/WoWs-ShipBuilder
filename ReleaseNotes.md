@@ -1,15 +1,24 @@
-# Update 1.6.3
+# Update 2.0-alpha
 
-## Additions
+## Download and Install
 
+Download [**WoWsShipBuilderSetup.exe**](https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder/releases/latest/download/WoWsShipBuilderSetup.exe) and execute it to install the application.
 
-## Changes
+---
 
-## Bugfixes
-- Various consumable modifiers are formatted with wrong units or values
+## Release Notes
 
-## Known Issues
+<details>
+<summary>Click to show release notes</summary>
+
+### Additions
+
+### Changes
+- Desktop is now sharing UI with Web
+
+### Bugfixes
+
+### Known Issues
 - Hull A only consumables are still displayed as available when selecting hull B on some ships.
-___
-To download the program for the first time, you need to download only the Setup.exe file. The other files are used by
-the application for automatic updates.
+
+</details>
