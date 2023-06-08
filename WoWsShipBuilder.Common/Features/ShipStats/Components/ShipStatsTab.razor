@@ -34,7 +34,7 @@
 
 @inherits ReactiveComponentBase<ShipViewModel>
 
-@if (!(initialized && SettingsInitialized))
+@if (!initialized || !SettingsInitialized)
 {
     <MudGrid>
         <MudItem xs="12">
@@ -53,7 +53,7 @@
         </MudItem>
     </MudGrid>
 }
-@if (ViewModel is not null)
+else if (ViewModel is not null)
 {
     <MudGrid>
         <MudItem xs="12">
