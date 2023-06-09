@@ -133,10 +133,13 @@
                                         </MudTooltip>
                                     </MudStack>
                                     <MudStack Row AlignItems="AlignItems.Baseline">
-                                        <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1" @onclick="@(_ => AddBuild(shipContainer))">
+                                        <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1" @onclick="@(async _ => await AddBuild(shipContainer))">
                                             @(Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_Build)).Localization + ": " + (!string.IsNullOrWhiteSpace(shipContainer.Build?.BuildName) ? shipContainer.Build.BuildName : Build.DefaultBuildName))
                                         </MudText>
-                                        <MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.Edit" @onclick="@(_ => AddBuild(shipContainer))" Style="cursor: pointer; alignment-baseline: hanging; font-size: small" ViewBox="0 -3 24 24"/>
+                                        @if (!DisableSelectedShipBuildEditing)
+                                        {
+                                            <MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.Edit" @onclick="@(async _ => await AddBuild(shipContainer))" Style="cursor: pointer; alignment-baseline: hanging; font-size: small" ViewBox="0 -3 24 24"/>
+                                        }
                                     </MudStack>
                                 </MudStack>
                             </MudListItem>
@@ -167,7 +170,7 @@
                                         <MudText>@Localizer.SimpleGameLocalization(build.ShipIndex + "_FULL")</MudText>
                                         @* TODO: Localize *@
                                         <MudTooltip Text="Delete from saved builds" Delay="300">
-                                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" OnClick="@(() => RemoveSavedBuild(build))"/>
+                                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" OnClick="@(async () => await RemoveSavedBuild(build))"/>
                                         </MudTooltip>
                                     </MudStack>
                                     <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1">@(Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_Build)) + ": " + build.BuildName)</MudText>
@@ -202,6 +205,9 @@
 
     [Parameter]
     public bool EnableBuildImport { get; set; }
+
+    [Parameter]
+    public bool DisableSelectedShipBuildEditing { get; set; }
 
     private SortedDictionary<string, ShipSummary> totalShipNameDictionary = new();
 
@@ -449,6 +455,11 @@
 
     private async Task AddBuild(ShipBuildContainer ship)
     {
+        if (DisableSelectedShipBuildEditing)
+        {
+            return;
+        }
+
         var parameters = new DialogParameters
         {
             ["SelectedShipIndex"] = ship.Ship.Index,

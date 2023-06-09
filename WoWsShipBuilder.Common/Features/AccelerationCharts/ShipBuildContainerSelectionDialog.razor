@@ -9,7 +9,7 @@
 
 <MudDialog ContentStyle="max-height: calc(90vh - 100px); overflow-y: scroll; padding: 12px;">
     <DialogContent>
-        <ShipSelector SelectedShips="@selectedShips" MultiSelect AllowCopies EnableBuildImport EnableSavedBuildList />
+        <ShipSelector SelectedShips="@selectedShips" MultiSelect AllowCopies EnableBuildImport EnableSavedBuildList DisableSelectedShipBuildEditing/>
     </DialogContent>
     <DialogActions>
         <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@Cancel">
