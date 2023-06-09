@@ -1,7 +1,6 @@
 @page "/"
 @using System.Collections.ObjectModel
 @using System.Collections.Specialized
-@using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Utility
@@ -17,18 +16,7 @@
 
 <MudContainer>
     <MudGrid Justify="Justify.Center">
-        @if (AppData.WebMode)
-        {
-            <MudItem xs="12">
-                <MudText Align="Align.Center" Typo="Typo.h1" Class="main-title">
-                    WoWs ShipBuilder
-                </MudText>
-            </MudItem>
-        }
-        else
-        {
-            <MudItem xs="12" Class="py-2" />
-        }
+        <MudItem xs="12" Class="py-2" />
         <MudItem xs="12">
             <ShipSelector SelectedShips="@selectedShips" AllowCopies EnableBuildImport EnableSavedBuildList/>
         </MudItem>

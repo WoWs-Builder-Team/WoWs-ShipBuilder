@@ -108,8 +108,8 @@
     @if (!HideSelectedShipList)
     {
         <MudItem xs="12" md="4">
-            <MudPaper Outlined="true" Style="height: 300px; max-height: 300px; overflow: auto">
-                <MudList Style="max-height: 300px;" Dense>
+            <MudPaper Outlined="true" Style="min-height: 300px; max-height: 300px; overflow: auto">
+                <MudList Dense>
                     @if (!SelectedShips.Any())
                     {
                         <MudListItem Disabled>
@@ -150,7 +150,7 @@
     @if (EnableSavedBuildList)
     {
         <MudItem xs="12" md="@(HideSelectedShipList ? 6 : 4)">
-            <MudPaper Outlined Style="height: 300px; max-height: 300px; overflow: auto">
+            <MudPaper Outlined Style="min-height: 300px; max-height: 300px; overflow: auto">
                 <MudList @ref="buildList" Clickable Dense>
                     @if (!filteredBuildsList.Any())
                     {
