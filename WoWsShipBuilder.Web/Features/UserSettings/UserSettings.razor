@@ -296,6 +296,7 @@
         module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/scripts/userSettings.js");
         var buildStrings = savedBuilds.Select(x => x.CreateShortStringFromBuild()).ToList();
         await module.InvokeVoidAsync("downloadObjectAsJson", buildStrings, "builds");
+        MetricsService.SavedBuildOperations.WithLabels("export").Inc();
     }
 
     private async Task ImportSavedBuilds(IBrowserFile? file)
@@ -309,6 +310,7 @@
             {
                 await UserDataService.ImportBuildsAsync(buildList.Select(x => Build.CreateBuildFromString(x)).Reverse());
                 savedBuilds = (await UserDataService.LoadBuildsAsync()).ToList();
+                MetricsService.SavedBuildOperations.WithLabels("import").Inc();
                 StateHasChanged();
             }
             else
@@ -327,6 +329,7 @@
         await UserDataService.RemoveSavedBuildsAsync(savedBuilds);
         savedBuilds = (await UserDataService.LoadBuildsAsync()).ToList();
         Snackbar.Add("All saved builds deleted.", Severity.Info);
+        MetricsService.SavedBuildOperations.WithLabels("delete").Inc();
         StateHasChanged();
     }
 }

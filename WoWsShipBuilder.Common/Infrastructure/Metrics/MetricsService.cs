@@ -22,4 +22,14 @@ public class MetricsService
     {
         LabelNames = new[] { "referrer", "path" },
     });
+
+    public Counter SavedBuildOperations { get; } = Prometheus.Metrics.CreateCounter("saved_build_operations_total", "Number of saved build operations", new CounterConfiguration
+    {
+        LabelNames = new[] { "operation" },
+    });
+
+    public Counter BuildImports { get; } = Prometheus.Metrics.CreateCounter("build_imports_total", "Number of build imports", new CounterConfiguration
+    {
+        LabelNames = new[] { "source", "type" },
+    });
 }
