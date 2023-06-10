@@ -81,6 +81,11 @@
             </MudText>
         </MudItem>
         <MudItem xs="12">
+            <MudStack AlignItems="AlignItems.Start">
+                <MudCheckBox @bind-Checked="@storeBuildOnShare" LabelPosition="LabelPosition.Start" Color="Color.Info" Label="Save build on share"/>
+            </MudStack>
+        </MudItem>
+        <MudItem xs="12">
             <MudText Typo="Typo.h6">@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Heading))</MudText>
             <MudStack Row AlignItems="AlignItems.End">
                 <MudTextField @ref="betaCodeInput" T="string" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Code))" OnKeyDown="@CodeOnKeyDown" Immediate="true" @bind-Value="@CurrentCode"></MudTextField>
@@ -143,6 +148,8 @@
 
     private MudTextField<string> betaCodeInput = default!;
 
+    private bool storeBuildOnShare = true;
+
     private string CurrentCode
     {
         get => currentCode;
@@ -178,6 +185,7 @@
         openMainExpandersByDefault = AppSettings.WebAppSettings?.OpenAllMainExpandersByDefault ?? true;
         openAmmoExpandersByDefault = AppSettings.WebAppSettings?.OpenAllAmmoExpandersByDefault ?? true;
         openSecondariesAndAaExpandersByDefault = AppSettings.WebAppSettings?.OpenSecondariesAndAaExpandersByDefault ?? true;
+        storeBuildOnShare = AppSettings.StoreBuildOnShare;
 
         StateHasChanged();
     }
@@ -201,6 +209,8 @@
 
         settingsChanged = settingsChanged || openSecondariesAndAaExpandersByDefault != AppSettings.WebAppSettings.OpenSecondariesAndAaExpandersByDefault;
         AppSettings.WebAppSettings.OpenSecondariesAndAaExpandersByDefault = openSecondariesAndAaExpandersByDefault;
+
+        AppSettings.StoreBuildOnShare = storeBuildOnShare;
 
         await SettingsAccessor.SaveSettings(AppSettings);
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
