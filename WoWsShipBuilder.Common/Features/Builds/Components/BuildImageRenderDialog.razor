@@ -7,6 +7,7 @@
 @using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.GameData
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
+@using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
 @using CaptainSkillSelectorViewModel = WoWsShipBuilder.Features.ShipStats.ViewModels.CaptainSkillSelectorViewModel
 
@@ -19,6 +20,7 @@
 @inject IDialogService DialogService
 @inject AppSettings AppSettings
 @inject ISettingsAccessor SettingsAccessor
+@inject MetricsService MetricsService
 
 <MudDialog Style="max-height: 100vh;  max-width: 1000px" DefaultFocus="DefaultFocus.Element">
     <DialogContent>
@@ -219,6 +221,7 @@
 
         if (!string.IsNullOrWhiteSpace(BuildName))
         {
+            MetricsService.SharedBuilds.WithLabels("image").Inc();
             module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/Features/Builds/Components/BuildImageRenderDialog.razor.js");
             await module.InvokeVoidAsync("downloadBuildImage", "image", $"{Localizer.GetGameLocalization(Ship.Index + "_FULL").Localization}_{BuildName}", BuildString[..(BuildString.LastIndexOf(';') + 1)] + BuildName);
             MudDialog.Close(BuildName);
@@ -234,6 +237,7 @@
 
         if (!string.IsNullOrWhiteSpace(BuildName))
         {
+            MetricsService.SharedBuilds.WithLabels("url-long").Inc();
             MudDialog.Close(new BuildShareResult(BuildName));
         }
     }
@@ -247,6 +251,7 @@
 
         if (!string.IsNullOrWhiteSpace(BuildName))
         {
+            MetricsService.SharedBuilds.WithLabels("url-short").Inc();
             MudDialog.Close(new BuildShareResult(BuildName, true));
         }
     }

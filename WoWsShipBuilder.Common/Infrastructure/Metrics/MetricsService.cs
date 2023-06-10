@@ -32,4 +32,9 @@ public class MetricsService
     {
         LabelNames = new[] { "source", "type" },
     });
+
+    public Counter SharedBuilds { get; } = Prometheus.Metrics.CreateCounter("shared_builds_total", "Number of shared builds", new CounterConfiguration
+    {
+        LabelNames = new[] { "type" },
+    });
 }
