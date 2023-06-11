@@ -301,29 +301,23 @@
 
     private async Task SaveDialogSettings()
     {
-        if (AppSettings.WebAppSettings is not null)
-        {
-            AppSettings.WebAppSettings.BuildImageLayoutSettings[0] = twoColumns;
-            AppSettings.WebAppSettings.BuildImageLayoutSettings[1] = showModules;
-            AppSettings.WebAppSettings.BuildImageLayoutSettings[2] = showCaptainSkills;
-            AppSettings.WebAppSettings.BuildImageLayoutSettings[3] = showUpgrades;
-            AppSettings.WebAppSettings.BuildImageLayoutSettings[4] = showConsumables;
-            AppSettings.WebAppSettings.BuildImageLayoutSettings[5] = showSignals;
-            await SettingsAccessor.SaveSettings(AppSettings);
-        }
+        AppSettings.BuildImageLayoutSettings[0] = twoColumns;
+        AppSettings.BuildImageLayoutSettings[1] = showModules;
+        AppSettings.BuildImageLayoutSettings[2] = showCaptainSkills;
+        AppSettings.BuildImageLayoutSettings[3] = showUpgrades;
+        AppSettings.BuildImageLayoutSettings[4] = showConsumables;
+        AppSettings.BuildImageLayoutSettings[5] = showSignals;
+        await SettingsAccessor.SaveSettings(AppSettings);
     }
 
     private void LoadDialogSettings()
     {
-        if (AppSettings.WebAppSettings is not null)
-        {
-            twoColumns = AppSettings.WebAppSettings.BuildImageLayoutSettings[0];
-            showModules = AppSettings.WebAppSettings.BuildImageLayoutSettings[1];
-            showCaptainSkills = AppSettings.WebAppSettings.BuildImageLayoutSettings[2];
-            showUpgrades = AppSettings.WebAppSettings.BuildImageLayoutSettings[3];
-            showConsumables = AppSettings.WebAppSettings.BuildImageLayoutSettings[4];
-            showSignals = AppSettings.WebAppSettings.BuildImageLayoutSettings[5];
-        }
+        twoColumns = AppSettings.BuildImageLayoutSettings[0];
+        showModules = AppSettings.BuildImageLayoutSettings[1];
+        showCaptainSkills = AppSettings.BuildImageLayoutSettings[2];
+        showUpgrades = AppSettings.BuildImageLayoutSettings[3];
+        showConsumables = AppSettings.BuildImageLayoutSettings[4];
+        showSignals = AppSettings.BuildImageLayoutSettings[5];
     }
 
     public async ValueTask DisposeAsync()

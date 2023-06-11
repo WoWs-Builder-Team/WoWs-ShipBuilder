@@ -93,9 +93,9 @@
                     @Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_AddCode))
                 </MudButton>
             </MudStack>
-            @if (SettingsInitialized && AppSettings.WebAppSettings is not null && AppSettings.WebAppSettings.BetaAccessCodes.Any())
+            @if (SettingsInitialized && AppSettings is not null && AppSettings.BetaAccessCodes.Any())
             {
-                <MudTable Items="@AppSettings.WebAppSettings.BetaAccessCodes">
+                <MudTable Items="@AppSettings.BetaAccessCodes">
                     <HeaderContent>
                         <MudTh>@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Code))</MudTh>
                         <MudTh>@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Feature))</MudTh>
@@ -182,9 +182,9 @@
     private void UpdateSettingsValues()
     {
         selectedCulture = AppSettings.SelectedLanguage;
-        openMainExpandersByDefault = AppSettings.WebAppSettings?.OpenAllMainExpandersByDefault ?? true;
-        openAmmoExpandersByDefault = AppSettings.WebAppSettings?.OpenAllAmmoExpandersByDefault ?? true;
-        openSecondariesAndAaExpandersByDefault = AppSettings.WebAppSettings?.OpenSecondariesAndAaExpandersByDefault ?? true;
+        openMainExpandersByDefault = AppSettings.OpenAllMainExpandersByDefault;
+        openAmmoExpandersByDefault = AppSettings.OpenAllAmmoExpandersByDefault;
+        openSecondariesAndAaExpandersByDefault = AppSettings.OpenSecondariesAndAaExpandersByDefault;
         storeBuildOnShare = AppSettings.StoreBuildOnShare;
 
         StateHasChanged();
@@ -195,20 +195,14 @@
         bool settingsChanged = AppSettings.SelectedLanguage != selectedCulture;
         AppSettings.SelectedLanguage = selectedCulture;
 
-        if (AppSettings.WebAppSettings == null)
-        {
-            AppSettings.WebAppSettings = new();
-            settingsChanged = true;
-        }
+        settingsChanged = settingsChanged || openAmmoExpandersByDefault != AppSettings.OpenAllAmmoExpandersByDefault;
+        AppSettings.OpenAllAmmoExpandersByDefault = openAmmoExpandersByDefault;
 
-        settingsChanged = settingsChanged || openAmmoExpandersByDefault != AppSettings.WebAppSettings.OpenAllAmmoExpandersByDefault;
-        AppSettings.WebAppSettings.OpenAllAmmoExpandersByDefault = openAmmoExpandersByDefault;
+        settingsChanged = settingsChanged || openMainExpandersByDefault != AppSettings.OpenAllMainExpandersByDefault;
+        AppSettings.OpenAllMainExpandersByDefault = openMainExpandersByDefault;
 
-        settingsChanged = settingsChanged || openMainExpandersByDefault != AppSettings.WebAppSettings.OpenAllMainExpandersByDefault;
-        AppSettings.WebAppSettings.OpenAllMainExpandersByDefault = openMainExpandersByDefault;
-
-        settingsChanged = settingsChanged || openSecondariesAndAaExpandersByDefault != AppSettings.WebAppSettings.OpenSecondariesAndAaExpandersByDefault;
-        AppSettings.WebAppSettings.OpenSecondariesAndAaExpandersByDefault = openSecondariesAndAaExpandersByDefault;
+        settingsChanged = settingsChanged || openSecondariesAndAaExpandersByDefault != AppSettings.OpenSecondariesAndAaExpandersByDefault;
+        AppSettings.OpenSecondariesAndAaExpandersByDefault = openSecondariesAndAaExpandersByDefault;
 
         AppSettings.StoreBuildOnShare = storeBuildOnShare;
 
@@ -254,9 +248,9 @@
         var betaEntry = BetaAccessManager.FindBetaByCode(CurrentCode);
         if (betaEntry is not null)
         {
-            if (!AppSettings.WebAppSettings!.BetaAccessCodes.Contains(CurrentCode))
+            if (!AppSettings.BetaAccessCodes.Contains(CurrentCode))
             {
-                AppSettings.WebAppSettings!.BetaAccessCodes.Add(CurrentCode);
+                AppSettings.BetaAccessCodes.Add(CurrentCode);
                 await SettingsAccessor.SaveSettings(AppSettings);
                 RefreshNotifierService.NotifyRefreshRequested();
                 Snackbar.Add($"'{Localizer.SimpleAppLocalization(betaEntry.LocalizationKey)}' {Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_CodeEnabled))}", Severity.Success, config => { config.CloseAfterNavigation = true; });
@@ -279,7 +273,7 @@
 
     private async Task RemoveCode(string code)
     {
-        if (AppSettings.WebAppSettings!.BetaAccessCodes.Remove(code))
+        if (AppSettings.BetaAccessCodes.Remove(code))
         {
             await SettingsAccessor.SaveSettings(AppSettings);
             RefreshNotifierService.NotifyRefreshRequested();

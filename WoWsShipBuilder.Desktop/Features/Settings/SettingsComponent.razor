@@ -169,9 +169,9 @@
     {
         selectedCulture = AppSettings.SelectedLanguage;
         selectedServerType = AppSettings.SelectedServerType;
-        openMainExpandersByDefault = AppSettings.WebAppSettings?.OpenAllMainExpandersByDefault ?? true;
-        openAmmoExpandersByDefault = AppSettings.WebAppSettings?.OpenAllAmmoExpandersByDefault ?? true;
-        openSecondariesAndAaExpandersByDefault = AppSettings.WebAppSettings?.OpenSecondariesAndAaExpandersByDefault ?? true;
+        openMainExpandersByDefault = AppSettings.OpenAllMainExpandersByDefault;
+        openAmmoExpandersByDefault = AppSettings.OpenAllAmmoExpandersByDefault;
+        openSecondariesAndAaExpandersByDefault = AppSettings.OpenSecondariesAndAaExpandersByDefault;
         customBuildImagePathEnabled = AppSettings.CustomImagePath is not null;
         customBuildImagePath = AppSettings.CustomImagePath;
         autoUpdateEnabled = AppSettings.AutoUpdateEnabled;
@@ -193,20 +193,14 @@
             await ChangeServerType(selectedServerType);
         }
 
-        if (AppSettings.WebAppSettings == null)
-        {
-            AppSettings.WebAppSettings = new();
-            settingsChanged = true;
-        }
+        settingsChanged = settingsChanged || openAmmoExpandersByDefault != AppSettings.OpenAllAmmoExpandersByDefault;
+        AppSettings.OpenAllAmmoExpandersByDefault = openAmmoExpandersByDefault;
 
-        settingsChanged = settingsChanged || openAmmoExpandersByDefault != AppSettings.WebAppSettings.OpenAllAmmoExpandersByDefault;
-        AppSettings.WebAppSettings.OpenAllAmmoExpandersByDefault = openAmmoExpandersByDefault;
+        settingsChanged = settingsChanged || openMainExpandersByDefault != AppSettings.OpenAllMainExpandersByDefault;
+        AppSettings.OpenAllMainExpandersByDefault = openMainExpandersByDefault;
 
-        settingsChanged = settingsChanged || openMainExpandersByDefault != AppSettings.WebAppSettings.OpenAllMainExpandersByDefault;
-        AppSettings.WebAppSettings.OpenAllMainExpandersByDefault = openMainExpandersByDefault;
-
-        settingsChanged = settingsChanged || openSecondariesAndAaExpandersByDefault != AppSettings.WebAppSettings.OpenSecondariesAndAaExpandersByDefault;
-        AppSettings.WebAppSettings.OpenSecondariesAndAaExpandersByDefault = openSecondariesAndAaExpandersByDefault;
+        settingsChanged = settingsChanged || openSecondariesAndAaExpandersByDefault != AppSettings.OpenSecondariesAndAaExpandersByDefault;
+        AppSettings.OpenSecondariesAndAaExpandersByDefault = openSecondariesAndAaExpandersByDefault;
 
         var customBuildImagePathChanged = customBuildImagePathEnabled != AppSettings.CustomImagePath is not null || customBuildImagePath != AppSettings.CustomImagePath;
         if (customBuildImagePathChanged)
