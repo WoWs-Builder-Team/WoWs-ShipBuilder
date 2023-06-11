@@ -12,17 +12,17 @@ on:
 jobs:
   build:
     name: Build and analyze
-    if: startsWith(github.head_ref, 'l10n_development') != 'true'
+    if: contains(github.head_ref, 'l10n_development') != 'true'
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Set up JDK 11
+      - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           distribution: 'corretto'
-          java-version: 11
+          java-version: 17
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
@@ -40,8 +40,6 @@ jobs:
         run: |
           New-Item -Path ./.sonar/scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
-      - name: Setup dotCover
-        run: dotnet tool install --global JetBrains.dotCover.GlobalTool
       - name: Restore packages
         run: dotnet restore dirs.proj
       - name: Build and run scanner
@@ -50,7 +48,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: pwsh
         run: |
-          ./.sonar/scanner/dotnet-sonarscanner begin /k:"WoWs-Builder-Team_WoWs-ShipBuilder" /o:"wows-builder-team" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.dotcover.reportsPaths="dotCover.Output.html"
-          dotnet build dirs.proj -c Release
-          dotnet dotcover test dirs.proj --dcReportType=HTML -c Release
+          ./.sonar/scanner/dotnet-sonarscanner begin /k:"WoWs-Builder-Team_WoWs-ShipBuilder" /o:"wows-builder-team" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="TestResults/*/*.xml"
+          dotnet build dirs.proj -c Release --no-restore
+          dotnet test dirs.proj -c Release --no-build --collect:"XPlat Code Coverage;Format=opencover" --results-directory TestResults
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
