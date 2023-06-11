@@ -17,6 +17,8 @@
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.Utility
 @using Dispatcher = Avalonia.Threading.Dispatcher
+@using System.IO.Abstractions
+@using System.Net
 @using System.IO
 
 @implements IDisposable
@@ -29,7 +31,7 @@
 @inject IDialogService DialogService
 @inject ILocalizationProvider LocalizationProvider
 @inject IUserDataService UserDataService
-@inject IJSRuntime Runtime
+@inject IFileSystem FileSystem
 
 <MudContainer>
     <MudGrid Justify="Justify.Center">
@@ -176,8 +178,6 @@
     private string appVersion = "Undefined";
 
     private List<Build> savedBuilds = new();
-
-    private IJSObjectReference? module;
 
     protected override void OnInitialized()
     {
@@ -345,8 +345,11 @@
         if (path is not null)
         {
             var buildStrings = savedBuilds.Select(x => x.CreateShortStringFromBuild()).ToList();
-            var json = JsonConvert.SerializeObject(buildStrings);
-            await File.WriteAllTextAsync($"{path}/builds.json", json);
+            await using (var stream = FileSystem.File.CreateText($"{path}/builds.json"))
+            {
+                var serializer = new JsonSerializer();
+                serializer.Serialize(stream, buildStrings);
+            }
             Snackbar.Add("Builds successfully exported.", Severity.Success);
             RefreshNotifierService.NotifyRefreshRequested();
         }
