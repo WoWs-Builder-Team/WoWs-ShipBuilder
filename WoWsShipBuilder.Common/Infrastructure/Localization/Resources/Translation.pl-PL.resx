@@ -541,7 +541,7 @@
     <value>Ukryj</value>
   </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-      <value>Penetracja</value>
+    <value>Penetracja</value>
   </data>
   <data name="Dialog_Save" xml:space="preserve">
     <value>Zapisz</value>
@@ -589,27 +589,27 @@
     <value>strzały/min</value>
   </data>
   <data name="ShipStats_HP" xml:space="preserve">
-      <value>PW</value>
+    <value>PW</value>
   </data>
   <data name="ShipStats_SplashDmg" xml:space="preserve">
-      <value>Uszkodzenia</value>
+    <value>Uszkodzenia</value>
   </data>
   <data name="ShipStats_AirCarrier" xml:space="preserve">
-      <value>Lotniskowiec</value>
+    <value>Lotniskowiec</value>
   </data>
   <data name="ShipStats_Submarine" xml:space="preserve">
-      <value>Okręt podwodny</value>
+    <value>Okręt podwodny</value>
   </data>
   <data name="ShipStats_Cruiser" xml:space="preserve">
-      <value>Krążownik</value>
+    <value>Krążownik</value>
   </data>
   <data name="ShipStats_Battleship" xml:space="preserve">
-      <value>Pancernik</value>
+    <value>Pancernik</value>
   </data>
   <data name="ShipStats_Destroyer" xml:space="preserve">
-      <value>Niszczyciel</value>
+    <value>Niszczyciel</value>
   </data>
   <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
-      <value>Sygnały</value>
+    <value>Sygnały</value>
   </data>
 </root>
