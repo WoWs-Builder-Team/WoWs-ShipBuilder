@@ -179,6 +179,8 @@
     private async Task OpenAddDialogAsync()
     {
         Logger.LogTrace("Add ship dialog opened");
+        MetricsService.ShipStatsActions.WithLabels("add-ship").Inc();
+
         var options = new DialogOptions
         {
             MaxWidth = MaxWidth.Large,
@@ -244,18 +246,21 @@
 
     private async Task OpenBallisticCharts()
     {
+        MetricsService.ShipStatsActions.WithLabels("open-ballistic").Inc();
         var shipIndexes = await StoreBuildsForTransfer(false);
         NavManager.NavigateTo($"/charts?shipIndex={string.Join(",", shipIndexes)}");
     }
 
     private async Task OpenAccelerationCharts()
     {
+        MetricsService.ShipStatsActions.WithLabels("open-acceleration").Inc();
         var shipIndexes = await StoreBuildsForTransfer(false);
         NavManager.NavigateTo($"/acceleration-charts?shipIndexes={string.Join(",", shipIndexes)}");
     }
 
     private async Task OpenShipComparison()
     {
+        MetricsService.ShipStatsActions.WithLabels("open-comparison").Inc();
         await StoreBuildsForTransfer(true);
         NavManager.NavigateTo("/comparison");
     }

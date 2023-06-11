@@ -37,4 +37,9 @@ public class MetricsService
     {
         LabelNames = new[] { "type" },
     });
+
+    public Counter ShipStatsActions { get; } = Prometheus.Metrics.CreateCounter("ship_stats_header_actions_total", "Number of usage of the actions of the shipstats page (inline links, buttons)", new CounterConfiguration
+    {
+        LabelNames = new[] { "action" },
+    });
 }
