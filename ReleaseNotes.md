@@ -1,4 +1,4 @@
-# Update 2.0-alpha
+# Update 2.0
 
 ## Download and Install
 
@@ -12,9 +12,12 @@ Download [**WoWsShipBuilderSetup.exe**](https://github.com/WoWs-Builder-Team/WoW
 <summary>Click to show release notes</summary>
 
 ### Additions
+- Acceleration Charts support for Desktop
+- Support for builds in charts for Desktop
 
 ### Changes
 - Desktop is now sharing UI with Web
+- various other improvements and fixes
 
 ### Bugfixes
 
