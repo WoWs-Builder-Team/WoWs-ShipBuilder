@@ -12,9 +12,12 @@
 @using Avalonia
 @using Avalonia.Controls
 @using Avalonia.Controls.ApplicationLifetimes
+@using Newtonsoft.Json
+@using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.Utility
 @using Dispatcher = Avalonia.Threading.Dispatcher
+@using System.IO
 
 @implements IDisposable
 @inject ILocalizer Localizer
@@ -25,6 +28,8 @@
 @inject IServiceProvider ServiceProvider
 @inject IDialogService DialogService
 @inject ILocalizationProvider LocalizationProvider
+@inject IUserDataService UserDataService
+@inject IJSRuntime Runtime
 
 <MudContainer>
     <MudGrid Justify="Justify.Center">
@@ -61,6 +66,7 @@
                 }
             </MudSelect>
         </MudItem>
+
         <MudItem xs="12">
             <MudSelect @bind-Value="@selectedServerType" Style="max-width: 500px;" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Server))">
                 <MudSelectItem Value="ServerType.Live">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypeLive))</MudSelectItem>
@@ -73,6 +79,28 @@
                 }
             </MudSelect>
         </MudItem>
+
+        <MudItem xs="12">
+            <MudStack Row Class="mb-1" AlignItems="AlignItems.Center">
+                <MudText Typo="Typo.h6">
+                    @($"Saved builds ({savedBuilds.Count})")
+                </MudText>
+                <MudButton Class="rounded-4" Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Download" OnClick="@(async () => await ExportSavedBuilds())">
+                    @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Export))
+                </MudButton>
+                <MudFileUpload T="IBrowserFile" FilesChanged="@(async file => await ImportSavedBuilds(file))" Style="margin-top: 0;" Class="file-upload-full-height" Accept=".json" MaximumFileCount="1">
+                    <ButtonTemplate>
+                        <MudButton HtmlTag="label" Class="rounded-4" Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Upload" Style="height: 100%;" for="@context">
+                            @Localizer.SimpleAppLocalization(nameof(Translation.BuildImport_Import))
+                        </MudButton>
+                    </ButtonTemplate>
+                </MudFileUpload>
+                <MudButton Class="rounded-4" Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Delete" OnClick="@(async () => await DeleteAllSavedBuilds())">
+                    @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_DeleteAll))
+                </MudButton>
+            </MudStack>
+        </MudItem>
+
         <MudItem xs="12">
             <MudStack>
                 <MudText Typo="Typo.h6">@Localizer.GetAppLocalization(nameof(Translation.WebApp_ExpanderSettingHeader)).Localization</MudText>
@@ -83,19 +111,22 @@
                 </MudStack>
             </MudStack>
         </MudItem>
+
         <MudItem xs="12">
             <MudStack AlignItems="AlignItems.Start">
-                <MudCheckBox @bind-Checked="@storeBuildOnShare" LabelPosition="LabelPosition.Start" Label="Save build on share"/>
+                <MudCheckBox @bind-Checked="@storeBuildOnShare" LabelPosition="LabelPosition.Start" Label="Save build on share" Color="Color.Info"/>
             </MudStack>
         </MudItem>
+
         <MudItem xs="12">
             <MudStack AlignItems="AlignItems.Start">
-                <MudCheckBox @bind-Checked="@autoUpdateEnabled" LabelPosition="LabelPosition.Start" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_AutoUpdate))"/>
+                <MudCheckBox @bind-Checked="@autoUpdateEnabled" LabelPosition="LabelPosition.Start" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_AutoUpdate))" Color="Color.Info"/>
             </MudStack>
         </MudItem>
+
         <MudItem xs="12">
             <MudStack AlignItems="AlignItems.Start" Spacing="0">
-                <MudCheckBox @bind-Checked="@customBuildImagePathEnabled" LabelPosition="LabelPosition.Start" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_BuildImagePath))"/>
+                <MudCheckBox @bind-Checked="@customBuildImagePathEnabled" LabelPosition="LabelPosition.Start" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_BuildImagePath))" Color="Color.Info"/>
                 <MudTextField @bind-Value="@customBuildImagePath" FullWidth HelperText="A restart is required for this option to take effect" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_BuildImagePath))" Adornment="Adornment.End" OnAdornmentClick="OnImageFolderSelectClicked" AdornmentIcon="@Icons.Material.Filled.Folder" Disabled="@(!customBuildImagePathEnabled)"/>
             </MudStack>
         </MudItem>
@@ -144,6 +175,10 @@
 
     private string appVersion = "Undefined";
 
+    private List<Build> savedBuilds = new();
+
+    private IJSObjectReference? module;
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -152,6 +187,17 @@
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
         var rawVersion = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "Undefined";
         appVersion = StripCommitFromVersion(rawVersion);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            savedBuilds = (await UserDataService.LoadBuildsAsync()).ToList();
+            StateHasChanged();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     private static string StripCommitFromVersion(string rawVersion)
@@ -291,5 +337,51 @@
             customBuildImagePath = path;
         }
     }
+    private async Task ExportSavedBuilds()
+    {
+        var dialog = new OpenFolderDialog();
+        var mainWindow = (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow;
+        var path = await Dispatcher.UIThread.InvokeAsync(async () => await dialog.ShowAsync(mainWindow!));
+        if (path is not null)
+        {
+            var buildStrings = savedBuilds.Select(x => x.CreateShortStringFromBuild()).ToList();
+            var json = JsonConvert.SerializeObject(buildStrings);
+            await File.WriteAllTextAsync($"{path}/builds.json", json);
+            Snackbar.Add("Builds successfully exported.", Severity.Success);
+            RefreshNotifierService.NotifyRefreshRequested();
+        }
+    }
 
+    private async Task ImportSavedBuilds(IBrowserFile? file)
+    {
+        if (file is not null && file.ContentType.Equals("application/json"))
+        {
+            using StreamReader reader = new(file.OpenReadStream());
+            var buildsString = await reader.ReadToEndAsync();
+            var buildList = JsonConvert.DeserializeObject<IEnumerable<string>>(buildsString);
+            if (buildList is not null)
+            {
+                await UserDataService.ImportBuildsAsync(buildList.Select(x => Build.CreateBuildFromString(x)).Reverse());
+                savedBuilds = (await UserDataService.LoadBuildsAsync()).ToList();
+                Snackbar.Add("Builds successfully imported.", Severity.Success);
+                RefreshNotifierService.NotifyRefreshRequested();
+            }
+            else
+            {
+                Snackbar.Add("No build to import found.", Severity.Error);
+            }
+        }
+        else
+        {
+            Snackbar.Add(Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_InvalidJsonFileError)), Severity.Error);
+        }
+    }
+
+    private async Task DeleteAllSavedBuilds()
+    {
+        await UserDataService.RemoveSavedBuildsAsync(savedBuilds);
+        savedBuilds = (await UserDataService.LoadBuildsAsync()).ToList();
+        Snackbar.Add("All saved builds deleted.", Severity.Info);
+        RefreshNotifierService.NotifyRefreshRequested();
+    }
 }

@@ -14,6 +14,7 @@
 @using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
+@using WoWsShipBuilder.Infrastructure.Utility
 
 @implements IAsyncDisposable
 @inject ILocalizer Localizer
@@ -23,6 +24,7 @@
 @inject IOptions<LinkShorteningOptions> LinkShorteningOptions
 @inject IJSRuntime Runtime
 @inject AppSettings AppSettings
+@inject RefreshNotifierService NotifierService
 
 <MudGrid Justify="Justify.Center" Spacing="2">
     @if (EnableBuildImport)
@@ -300,6 +302,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
+        NotifierService.RefreshRequested += OnRefresh;
         totalShipNameDictionary = new(AppData.ShipSummaryList.ToDictionary(ship => Localizer.GetGameLocalization($"{ship.Index}_FULL").Localization, ship => ship));
         filteredSummaryList = totalShipNameDictionary.ToList().OrderBy(x => x.Key).ToList();
     }
@@ -523,8 +526,14 @@
         }
     }
 
+    private void OnRefresh()
+    {
+        ApplyFilter();
+    }
+
     public async ValueTask DisposeAsync()
     {
+        NotifierService.RefreshRequested -= OnRefresh;
         if (module is not null)
         {
             try
