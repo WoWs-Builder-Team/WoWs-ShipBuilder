@@ -100,7 +100,7 @@ public static class ModifierProcessor
                               str.Contains("regenerationHPSpeed", StringComparison.InvariantCultureIgnoreCase) ||
                               (str.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase) && !returnFilter.Equals(ReturnFilter.All)):
             {
-                value = modifier > 1 ? $"+{modifier}" : $"+{Math.Round(modifier * 100, 1)} %";
+                value = modifier > 1 ? $"+{modifier}" : $"+{Math.Round(modifier * 100, 2)} %";
                 if (str.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase))
                 {
                     value += $"/{localizer.GetAppLocalization(nameof(Translation.Unit_S)).Localization}";
@@ -137,6 +137,20 @@ public static class ModifierProcessor
 
             case { } str when str.Contains("fightersNum", StringComparison.InvariantCultureIgnoreCase):
                 value = $"{modifier}";
+                break;
+
+            case { } str when str.Contains("hydrophoneWaveRadius", StringComparison.InvariantCultureIgnoreCase):
+                value = $"{modifier / 1000} {localizer.SimpleAppLocalization(nameof(Translation.Unit_KM))}";
+                break;
+
+            // Venezia UU
+            case { } str when str.Contains("smokeGeneratorAdditionalConsumables", StringComparison.InvariantCultureIgnoreCase):
+                value = $"+{modifier}";
+                break;
+
+            // Halland UU
+            case { } str when str.Contains("boostCoeffForsage", StringComparison.InvariantCultureIgnoreCase) || str.Contains("regeneratedHPPartCoef", StringComparison.InvariantCultureIgnoreCase):
+                value = $"+{modifier * 100} %";
                 break;
 
             // this is the modifier
@@ -177,10 +191,6 @@ public static class ModifierProcessor
                 break;
             }
 
-            case { } str when str.Contains("hydrophoneWaveRadius", StringComparison.InvariantCultureIgnoreCase):
-                value = $"{modifier / 1000} {localizer.SimpleAppLocalization(nameof(Translation.Unit_KM))}";
-                break;
-
             default:
                 // If Modifier is higher than 1000, we can assume it's in meter, so we convert it to Km for display purposes
                 value = modifier > 1000 ? $"+{modifier / 1000} {localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization}" : $"+{(int)modifier}";
@@ -192,7 +202,7 @@ public static class ModifierProcessor
 
     private static string GetUiModifierDescription(string localizerKey, ILocalizer localizer)
     {
-        string prefix = "PARAMS_MODIFIER_";
+        const string prefix = "PARAMS_MODIFIER_";
 
         if (localizerKey.Contains("regenerationHPSpeedUnits", StringComparison.InvariantCultureIgnoreCase))
         {

@@ -3,7 +3,6 @@ using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures.Aircraft;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Utility;
 
@@ -176,6 +175,8 @@ public partial record ConsumableDataContainer : DataContainerBase
 
                 var regenerationSpeedModifiers = modifiers.FindModifiers("regenerationHPSpeed", true);
                 var regenerationSpeed = regenerationSpeedModifiers.Aggregate(consumableModifiers["regenerationHPSpeed"], (current, modifier) => current * modifier);
+                var regenerationEfficiencyModifiers = modifiers.FindModifiers("regeneratedHPPartCoef", true);
+                regenerationSpeed = regenerationEfficiencyModifiers.Aggregate(regenerationSpeed, (current, modifier) => current * (1 + modifier));
                 consumableModifiers["regenerationHPSpeed"] = regenerationSpeed;
 
                 var hpPerHeal = (float)Math.Round(workTime * (regenerationSpeed * shipHp));
@@ -214,6 +215,12 @@ public partial record ConsumableDataContainer : DataContainerBase
                 var smokeLifeTimeModifiers = modifiers.FindModifiers("smokeGeneratorLifeTime");
                 var lifeTime = smokeLifeTimeModifiers.Aggregate(consumableModifiers["lifeTime"], (current, modifier) => current * modifier);
                 consumableModifiers["lifeTime"] = lifeTime;
+
+                var smokeUsesModifiers = modifiers.FindModifiers("smokeGeneratorAdditionalConsumables");
+                uses = smokeUsesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
+
+                var smokeCooldownModifiers = modifiers.FindModifiers("smokeGeneratorReloadCoeff");
+                cooldown = smokeCooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
             }
             else if (name.Contains("PCY015", StringComparison.InvariantCultureIgnoreCase))
             {
@@ -234,7 +241,7 @@ public partial record ConsumableDataContainer : DataContainerBase
                 var cooldownModifiers = modifiers.FindModifiers("fighterReloadCoeff");
                 cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
 
-                var plane = AppData.FindAircraft(consumable.PlaneName.Substring(0, consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)));
+                var plane = AppData.FindAircraft(consumable.PlaneName[..consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)]);
                 consumableModifiers.Add("cruisingSpeed", plane.Speed);
                 consumableModifiers.Add("maxViewDistance", (float)plane.SpottingOnShips);
                 consumableModifiers.Add("concealment", (float)plane.ConcealmentFromShips);
