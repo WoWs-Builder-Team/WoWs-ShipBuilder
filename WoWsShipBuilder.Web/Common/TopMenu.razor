@@ -94,10 +94,16 @@
                 </span>
             </a>
         </div>
-        <NavLink href="/settings" class="main-nav-link d-flex" ActiveClass="nav-link-active">
-            <MudIcon Icon="@Icons.Material.Filled.Settings" Color="Color.Inherit" Style="font-size: xx-large"/>
-            @* <MudText Typo="Typo.inherit" Color="Color.Inherit" Style="font-weight: inherit;" Class="align-self-center">@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Settings))</MudText> *@
-        </NavLink>
+        <MudTooltip>
+            <TooltipContent>
+                <MudText Typo="Typo.body1">@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Settings))</MudText>
+            </TooltipContent>
+            <ChildContent>
+                <NavLink href="/settings" class="main-nav-link d-flex" ActiveClass="nav-link-active">
+                    <MudIcon Icon="@Icons.Material.Filled.Settings" Color="Color.Inherit" Style="font-size: xx-large"/>
+                </NavLink>
+            </ChildContent>
+        </MudTooltip>
         <MudTooltip>
             <TooltipContent>
                 <MudText Typo="Typo.body1">Download ShipBuilder Desktop App</MudText>
