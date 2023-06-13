@@ -68,6 +68,7 @@ public partial record ConsumableDataContainer : DataContainerBase
         int uses = consumable.NumConsumables;
         float cooldown = consumable.ReloadTime;
         float workTime = consumable.WorkTime;
+        float prepTime = consumable.PreparationTime;
         if (isCvPlanes && !consumableModifiers.ContainsKey("error"))
         {
             workTime = modifiers.FindModifiers("planeConsumablesWorkTime").Aggregate(workTime, (current, modifier) => current * modifier);
@@ -262,6 +263,11 @@ public partial record ConsumableDataContainer : DataContainerBase
                 var hydrophoneUpdateFrequency = hydrophoneUpdateFrequencyModifiers.Aggregate(consumableModifiers["hydrophoneUpdateFrequency"], (current, modifier) => current * modifier);
                 consumableModifiers["hydrophoneUpdateFrequency"] = hydrophoneUpdateFrequency;
             }
+            else if (name.Contains("PCY048", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var subsRadarPrepTimeModifiers = modifiers.FindModifiers("ConsumableReloadTime");
+                prepTime = subsRadarPrepTimeModifiers.Aggregate(prepTime, (current, modifier) => current * modifier);
+            }
         }
         else if (usingFallback)
         {
@@ -276,7 +282,7 @@ public partial record ConsumableDataContainer : DataContainerBase
             Slot = slot,
             Desc = "",
             Cooldown = Math.Round((decimal)cooldown, 1),
-            PreparationTime = Math.Round((decimal)consumable.PreparationTime, 1),
+            PreparationTime = Math.Round((decimal)prepTime, 1),
             WorkTime = Math.Round((decimal)workTime, 1),
             Modifiers = consumableModifiers,
         };
