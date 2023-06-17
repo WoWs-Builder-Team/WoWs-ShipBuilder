@@ -3,7 +3,6 @@ using System.Security.Cryptography;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using WoWsShipBuilder.DataStructures;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
 
@@ -95,6 +94,10 @@ public class Build
                 string buildJson = reader.ReadToEnd();
                 build = JsonConvert.DeserializeObject<Build>(buildJson) ?? throw new InvalidOperationException("Failed to deserialize build object from string");
             }
+            else if (buildString.StartsWith('{') && buildString.EndsWith('}'))
+            {
+                build = JsonConvert.DeserializeObject<Build>(buildString)!;
+            }
             else
             {
                 build = CreateFromShortString(buildString);
@@ -108,6 +111,8 @@ public class Build
             throw new FormatException("Invalid build string format", e);
         }
     }
+
+    public static Build UpgradeBuild(Build oldBuild) => UpgradeBuild(oldBuild, Logging.Logger);
 
     internal static Build CreateFromShortString(string shortBuildString)
     {

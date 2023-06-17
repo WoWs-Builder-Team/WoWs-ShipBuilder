@@ -14,14 +14,14 @@
 
 @if (ViewModel is not null)
 {
-    <MudPaper Outlined="true" Class="pa-3">
+    <MudPaper Outlined="true" Class="pt-2 pb-6 px-3">
         <MudGrid Class="align-center" Justify="Justify.Center">
-            <MudItem xs="12">
+            <MudItem xs="12" Class="mb-n4">
                 <MudText Typo="Typo.body2" Align="Align.Center">
                     @Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_Points)).Localization @ViewModel.AssignedPoints/21
                 </MudText>
             </MudItem>
-            <MudItem xs="7">
+            <MudItem xs="7" Class="mb-n2">
                 <MudSelect Margin="Margin.Dense" T="Captain" Variant="Variant.Outlined" Dense="true" Strict="true" @bind-Value="@ViewModel.SelectedCaptain">
                     @foreach (var captain in ViewModel.CaptainList!)
                     {
@@ -33,7 +33,7 @@
                     }
                 </MudSelect>
             </MudItem>
-            <MudItem xs="5" Style="text-align: center">
+            <MudItem xs="5" Style="text-align: center" Class="mb-n2">
                 <MudButton Disabled="@(!ViewModel.SkillActivationButtonEnabled)" Variant="Variant.Filled" Color="Color.Primary" Style="@GetSkillOrTalentsEnabledIndicator()" OnClick="@OpenSkillDialog">
                     <MudText Typo="Typo.body2">
                         @Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_SkillTalent)).Localization
@@ -42,7 +42,7 @@
             </MudItem>
             @foreach ((string skillName, var skill) in ViewModel.SkillList!)
             {
-                <MudItem @key="skill.Skill.SkillNumber" Class="d-flex justify-center" xs="2" Style="@(GetOrder(skill.Skill.Tiers.Single(x => x.ShipClass == ShipClass)) + GetSubFix())">
+                <MudItem @key="skill.Skill.SkillNumber" Class="d-flex justify-center mb-n3" xs="2" Style="@(GetOrder(skill.Skill.Tiers.Single(x => x.ShipClass == ShipClass)) + GetSubFix())">
                     <MudTooltip Placement="Placement.Right" Color="Color.Transparent" Delay="350">
                         <ChildContent>
                             <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" BadgeClass="skill-special-icon" Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">

@@ -45,6 +45,7 @@
         <AdditionalFiles Include="..\stylecop.json">
             <Link>stylecop.json</Link>
         </AdditionalFiles>
+        <Content Update="libman.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
     </ItemGroup>
 
     <ItemGroup>
@@ -60,10 +61,6 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>Translation.resx</DependentUpon>
         </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-      <_JsFileModuleStaticWebAsset Include="Features\Builds\Components\BuildImageRenderDialog.razor.js" />
     </ItemGroup>
 
 </Project>

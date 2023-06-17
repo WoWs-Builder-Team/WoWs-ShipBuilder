@@ -733,7 +733,7 @@
     <value>입사 각도</value>
   </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-      <value>관통</value>
+    <value>관통</value>
   </data>
   <data name="Dialog_Save" xml:space="preserve">
     <value>저장</value>
@@ -778,30 +778,30 @@
     <value>m</value>
   </data>
   <data name="ShipAndShellSelectionDialogWeb_SelectShipsAndShells" xml:space="preserve">
-      <value>함선 및 포탄 선택</value>
+    <value>함선 및 포탄 선택</value>
   </data>
   <data name="ShipStats_HP" xml:space="preserve">
-      <value>체력</value>
+    <value>체력</value>
   </data>
   <data name="ShipStats_SplashDmg" xml:space="preserve">
-      <value>피해</value>
+    <value>피해</value>
   </data>
   <data name="ShipStats_AirCarrier" xml:space="preserve">
-      <value>항공모함</value>
+    <value>항공모함</value>
   </data>
   <data name="ShipStats_Submarine" xml:space="preserve">
-      <value>잠수함</value>
+    <value>잠수함</value>
   </data>
   <data name="ShipStats_Cruiser" xml:space="preserve">
-      <value>순양함</value>
+    <value>순양함</value>
   </data>
   <data name="ShipStats_Battleship" xml:space="preserve">
-      <value>전함</value>
+    <value>전함</value>
   </data>
   <data name="ShipStats_Destroyer" xml:space="preserve">
-      <value>구축함</value>
+    <value>구축함</value>
   </data>
   <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
-      <value>신호기</value>
+    <value>신호기</value>
   </data>
 </root>

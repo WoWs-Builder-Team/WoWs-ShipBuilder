@@ -18,3 +18,5 @@ deployment/local/.env
 appsettings.local.json
 /.sonarqube/
 /.sonar/
+
+TestResults/

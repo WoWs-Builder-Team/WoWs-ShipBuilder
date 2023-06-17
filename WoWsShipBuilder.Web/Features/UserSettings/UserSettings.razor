@@ -6,14 +6,19 @@
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Utility
 @using WoWsShipBuilder.Web.Infrastructure.BetaAccess
+@using WoWsShipBuilder.Features.Builds
+@using Newtonsoft.Json
 
 @implements IDisposable
+@implements IAsyncDisposable
 @inject ILocalizer Localizer
 @inject RefreshNotifierService RefreshNotifierService
 @inject AppSettings AppSettings
 @inject ISettingsAccessor SettingsAccessor
 @inject ISnackbar Snackbar
 @inject IBetaAccessManager BetaAccessManager
+@inject IUserDataService UserDataService
+@inject IJSRuntime Runtime
 
 <PageTitle>@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Settings)).Localization</PageTitle>
 
@@ -53,16 +58,44 @@
             </MudStack>
         </MudItem>
         <MudItem xs="12">
+            <MudStack Row Class="mb-1" AlignItems="AlignItems.Center">
+                <MudText Typo="Typo.h6">
+                    @($"Saved builds ({savedBuilds.Count}/1000)")
+                </MudText>
+                <MudButton Class="rounded-4" Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Download" OnClick="@(async () => await ExportSavedBuilds())">
+                    @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Export))
+                </MudButton>
+                <MudFileUpload T="IBrowserFile" FilesChanged="@(async file => await ImportSavedBuilds(file))" Style="margin-top: 0;" Class="file-upload-full-height" Accept=".json" MaximumFileCount="1">
+                    <ButtonTemplate>
+                        <MudButton HtmlTag="label" Class="rounded-4" Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Upload" Style="height: 100%;" for="@context">
+                            @Localizer.SimpleAppLocalization(nameof(Translation.BuildImport_Import))
+                        </MudButton>
+                    </ButtonTemplate>
+                </MudFileUpload>
+                <MudButton Class="rounded-4" Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Delete" OnClick="@(async () => await DeleteAllSavedBuilds())">
+                    @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_DeleteAll))
+                </MudButton>
+            </MudStack>
+            <MudText Typo="Typo.caption">
+                @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_LocalStorageWarning))
+            </MudText>
+        </MudItem>
+        <MudItem xs="12">
+            <MudStack AlignItems="AlignItems.Start">
+                <MudCheckBox @bind-Checked="@storeBuildOnShare" LabelPosition="LabelPosition.Start" Color="Color.Info" Label="Save build on share"/>
+            </MudStack>
+        </MudItem>
+        <MudItem xs="12">
             <MudText Typo="Typo.h6">@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Heading))</MudText>
             <MudStack Row AlignItems="AlignItems.End">
-                <MudTextField @ref="betaCodeInput" T="string" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Code))" OnKeyDown="@CodeOnKeyDown" Immediate @bind-Value="@CurrentCode"></MudTextField>
+                <MudTextField @ref="betaCodeInput" T="string" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Code))" OnKeyDown="@CodeOnKeyDown" Immediate="true" @bind-Value="@CurrentCode"></MudTextField>
                 <MudButton Class="rounded-4" Disabled="@betaCodeSubmitDisabled" Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Add" OnClick="@AddBetaCode">
                     @Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_AddCode))
                 </MudButton>
             </MudStack>
-            @if (SettingsInitialized && AppSettings.WebAppSettings!.BetaAccessCodes.Any())
+            @if (SettingsInitialized && AppSettings is not null && AppSettings.BetaAccessCodes.Any())
             {
-                <MudTable Items="@AppSettings.WebAppSettings.BetaAccessCodes">
+                <MudTable Items="@AppSettings.BetaAccessCodes">
                     <HeaderContent>
                         <MudTh>@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Code))</MudTh>
                         <MudTh>@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Feature))</MudTh>
@@ -109,7 +142,13 @@
 
     private string currentCode = string.Empty;
 
+    private IJSObjectReference? module;
+
+    private List<Build> savedBuilds = new();
+
     private MudTextField<string> betaCodeInput = default!;
+
+    private bool storeBuildOnShare = true;
 
     private string CurrentCode
     {
@@ -129,12 +168,24 @@
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            savedBuilds = (await UserDataService.LoadBuildsAsync()).ToList();
+            StateHasChanged();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
     private void UpdateSettingsValues()
     {
         selectedCulture = AppSettings.SelectedLanguage;
-        openMainExpandersByDefault = AppSettings.WebAppSettings?.OpenAllMainExpandersByDefault ?? true;
-        openAmmoExpandersByDefault = AppSettings.WebAppSettings?.OpenAllAmmoExpandersByDefault ?? true;
-        openSecondariesAndAaExpandersByDefault = AppSettings.WebAppSettings?.OpenSecondariesAndAaExpandersByDefault ?? true;
+        openMainExpandersByDefault = AppSettings.OpenAllMainExpandersByDefault;
+        openAmmoExpandersByDefault = AppSettings.OpenAllAmmoExpandersByDefault;
+        openSecondariesAndAaExpandersByDefault = AppSettings.OpenSecondariesAndAaExpandersByDefault;
+        storeBuildOnShare = AppSettings.StoreBuildOnShare;
 
         StateHasChanged();
     }
@@ -144,20 +195,16 @@
         bool settingsChanged = AppSettings.SelectedLanguage != selectedCulture;
         AppSettings.SelectedLanguage = selectedCulture;
 
-        if (AppSettings.WebAppSettings == null)
-        {
-            AppSettings.WebAppSettings = new();
-            settingsChanged = true;
-        }
+        settingsChanged = settingsChanged || openAmmoExpandersByDefault != AppSettings.OpenAllAmmoExpandersByDefault;
+        AppSettings.OpenAllAmmoExpandersByDefault = openAmmoExpandersByDefault;
 
-        settingsChanged = settingsChanged || openAmmoExpandersByDefault != AppSettings.WebAppSettings.OpenAllAmmoExpandersByDefault;
-        AppSettings.WebAppSettings.OpenAllAmmoExpandersByDefault = openAmmoExpandersByDefault;
+        settingsChanged = settingsChanged || openMainExpandersByDefault != AppSettings.OpenAllMainExpandersByDefault;
+        AppSettings.OpenAllMainExpandersByDefault = openMainExpandersByDefault;
 
-        settingsChanged = settingsChanged || openMainExpandersByDefault != AppSettings.WebAppSettings.OpenAllMainExpandersByDefault;
-        AppSettings.WebAppSettings.OpenAllMainExpandersByDefault = openMainExpandersByDefault;
+        settingsChanged = settingsChanged || openSecondariesAndAaExpandersByDefault != AppSettings.OpenSecondariesAndAaExpandersByDefault;
+        AppSettings.OpenSecondariesAndAaExpandersByDefault = openSecondariesAndAaExpandersByDefault;
 
-        settingsChanged = settingsChanged || openSecondariesAndAaExpandersByDefault != AppSettings.WebAppSettings.OpenSecondariesAndAaExpandersByDefault;
-        AppSettings.WebAppSettings.OpenSecondariesAndAaExpandersByDefault = openSecondariesAndAaExpandersByDefault;
+        AppSettings.StoreBuildOnShare = storeBuildOnShare;
 
         await SettingsAccessor.SaveSettings(AppSettings);
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
@@ -171,6 +218,20 @@
     public void Dispose()
     {
         RefreshNotifierService.RefreshRequested -= UpdateSettingsValues;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (module is not null)
+        {
+            try
+            {
+                await module.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+            }
+        }
     }
 
     private async Task ResetSettingsAsync()
@@ -187,9 +248,9 @@
         var betaEntry = BetaAccessManager.FindBetaByCode(CurrentCode);
         if (betaEntry is not null)
         {
-            if (!AppSettings.WebAppSettings!.BetaAccessCodes.Contains(CurrentCode))
+            if (!AppSettings.BetaAccessCodes.Contains(CurrentCode))
             {
-                AppSettings.WebAppSettings!.BetaAccessCodes.Add(CurrentCode);
+                AppSettings.BetaAccessCodes.Add(CurrentCode);
                 await SettingsAccessor.SaveSettings(AppSettings);
                 RefreshNotifierService.NotifyRefreshRequested();
                 Snackbar.Add($"'{Localizer.SimpleAppLocalization(betaEntry.LocalizationKey)}' {Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_CodeEnabled))}", Severity.Success, config => { config.CloseAfterNavigation = true; });
@@ -212,7 +273,7 @@
 
     private async Task RemoveCode(string code)
     {
-        if (AppSettings.WebAppSettings!.BetaAccessCodes.Remove(code))
+        if (AppSettings.BetaAccessCodes.Remove(code))
         {
             await SettingsAccessor.SaveSettings(AppSettings);
             RefreshNotifierService.NotifyRefreshRequested();
@@ -227,4 +288,42 @@
         }
     }
 
+    private async Task ExportSavedBuilds()
+    {
+        module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/scripts/userSettings.js");
+        var buildStrings = savedBuilds.Select(x => x.CreateShortStringFromBuild()).ToList();
+        await module.InvokeVoidAsync("downloadObjectAsJson", buildStrings, "builds");
+    }
+
+    private async Task ImportSavedBuilds(IBrowserFile? file)
+    {
+        if (file is not null && file.ContentType.Equals("application/json"))
+        {
+            using StreamReader reader = new(file.OpenReadStream());
+            var buildsString = await reader.ReadToEndAsync();
+            var buildList = JsonConvert.DeserializeObject<IEnumerable<string>>(buildsString);
+            if (buildList is not null)
+            {
+                await UserDataService.ImportBuildsAsync(buildList.Select(x => Build.CreateBuildFromString(x)).Reverse());
+                savedBuilds = (await UserDataService.LoadBuildsAsync()).ToList();
+                StateHasChanged();
+            }
+            else
+            {
+                Snackbar.Add("No build to import found.", Severity.Error);
+            }
+        }
+        else
+        {
+            Snackbar.Add(Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_InvalidJsonFileError)), Severity.Error);
+        }
+    }
+
+    private async Task DeleteAllSavedBuilds()
+    {
+        await UserDataService.RemoveSavedBuildsAsync(savedBuilds);
+        savedBuilds = (await UserDataService.LoadBuildsAsync()).ToList();
+        Snackbar.Add("All saved builds deleted.", Severity.Info);
+        StateHasChanged();
+    }
 }

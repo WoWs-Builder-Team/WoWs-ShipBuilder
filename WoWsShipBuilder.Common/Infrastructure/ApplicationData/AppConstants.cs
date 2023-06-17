@@ -20,16 +20,18 @@ public static class AppConstants
             SupportedLanguages = new List<CultureDetails>
             {
                 DefaultCultureDetails,
+                new(new("zh-CN"), "zh"),
+                new(new("zh-TW"), "zh_tw"),
                 new(new("nl-NL"), "nl"),
                 new(new("fr-FR"), "fr"),
                 new(new("de-DE"), "de"),
+                new(new("hu-HU"), "en"),
                 new(new("it-IT"), "it"),
                 new(new("ja-JP"), "ja"),
                 new(new("pt-BR"), "pt_br"),
                 new(new("ru-RU"), "ru"),
                 new(new("es-ES"), "es"),
                 new(new("tr-TR"), "tr"),
-                new(new("hu-HU"), "en"),
             };
         }
         catch (Exception)

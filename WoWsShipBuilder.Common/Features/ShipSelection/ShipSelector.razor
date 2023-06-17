@@ -3,18 +3,51 @@
 @using System.Collections.ObjectModel
 @using System.Net
 @using DynamicData
+@using Microsoft.AspNetCore.WebUtilities
+@using Microsoft.Extensions.Options
+@using Newtonsoft.Json
 @using WoWsShipBuilder.Features.Builds.Components
 @using WoWsShipBuilder.Features.Builds
+@using WoWsShipBuilder.Features.LinkShortening
+@using WoWsShipBuilder.Features.Settings
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
+@using WoWsShipBuilder.Infrastructure.Utility
+
+@implements IAsyncDisposable
 @inject ILocalizer Localizer
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
 @inject IUserDataService UserDataService
+@inject IOptions<LinkShorteningOptions> LinkShorteningOptions
+@inject IJSRuntime Runtime
+@inject AppSettings AppSettings
+@inject RefreshNotifierService NotifierService
 
 <MudGrid Justify="Justify.Center" Spacing="2">
+    @if (EnableBuildImport)
+    {
+        <MudItem xs="12">
+            <MudStack Row>
+                <MudTextField Immediate T="string" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)).Localization" @bind-Value="buildString"/>
+                <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="OnLoadBuild">
+                    @Localizer.GetAppLocalization(nameof(Translation.WebApp_LoadBuild)).Localization
+                </MudButton>
+                <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Style="margin-top: 0;" Class="file-upload-full-height" Accept=".png">
+                    <ButtonTemplate>
+                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Image" Style="height: 100%;" for="@context">Import from image</MudButton>
+                    </ButtonTemplate>
+                </MudFileUpload>
+            </MudStack>
+        </MudItem>
+
+        <MudItem xs="12" Class="pt-2 pb-0 ml-n4 mr-4">
+            <MudDivider DividerType="DividerType.Middle" Style="width: 100%" Light/>
+        </MudItem>
+    }
+
     <MudItem xs="6" md="3">
         <MudSelect T="string" Variant="Variant.Outlined" @bind-Value="@SelectedTier" Placeholder="@(Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_TierFilter)).Localization + "...")" Clearable="true" AnchorOrigin="Origin.BottomCenter">
             @foreach (var item in tierList)
@@ -58,8 +91,10 @@
             }
         </MudSelect>
     </MudItem>
-    <MudItem xs="12" md="@(LargerList ? 6 : 4)">
-        <MudTextField AutoFocus T="string" Variant="Variant.Outlined" Placeholder="@Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShip)).Localization" @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
+    <MudItem xs="12" Class="mt-n4 mb-n2">
+        <MudTextField AutoFocus T="string" FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Placeholder="@(Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShipOrBuild)).Localization + "...")" @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
+    </MudItem>
+    <MudItem xs="12" md="@(HideSelectedShipList ? 6 : 4)">
         <MudPaper Style="max-height: 300px; min-height: 300px; overflow:auto" Outlined="true">
             <MudList @ref="mudList" Clickable="true" SelectedValueChanged="AddShip">
                 <MudVirtualize IsEnabled="true" Items="@filteredSummaryList" Context="pair">
@@ -72,12 +107,11 @@
             </MudList>
         </MudPaper>
     </MudItem>
-    @if (!LargerList)
+    @if (!HideSelectedShipList)
     {
         <MudItem xs="12" md="4">
-            <MudButton StartIcon="@Icons.Material.Outlined.Cancel" Color="Color.Primary" DisableElevation="true" FullWidth Style="height: 14.6%; outline: inherit" Class="mt-4 mb-2" Variant="Variant.Filled" OnClick="RemoveAllShips" >Clear all</MudButton>
-            <MudPaper Outlined="true" Style="height: 300px; max-height: 300px; overflow: auto">
-                <MudList Style="max-height: 300px;" Dense>
+            <MudPaper Outlined="true" Style="min-height: 300px; max-height: 300px; overflow: auto">
+                <MudList Dense>
                     @if (!SelectedShips.Any())
                     {
                         <MudListItem Disabled>
@@ -101,53 +135,55 @@
                                         </MudTooltip>
                                     </MudStack>
                                     <MudStack Row AlignItems="AlignItems.Baseline">
-                                        <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1" @onclick="@(_ => AddBuild(shipContainer))">
+                                        <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1" @onclick="@(async _ => await AddBuild(shipContainer))">
                                             @(Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_Build)).Localization + ": " + (!string.IsNullOrWhiteSpace(shipContainer.Build?.BuildName) ? shipContainer.Build.BuildName : Build.DefaultBuildName))
                                         </MudText>
-                                        <MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.Edit" @onclick="@(_ => AddBuild(shipContainer))" Style="cursor: pointer; alignment-baseline: hanging; font-size: small" ViewBox="0 -3 24 24"/>
+                                        @if (!DisableSelectedShipBuildEditing)
+                                        {
+                                            <MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.Edit" @onclick="@(async _ => await AddBuild(shipContainer))" Style="cursor: pointer; alignment-baseline: hanging; font-size: small" ViewBox="0 -3 24 24"/>
+                                        }
                                     </MudStack>
                                 </MudStack>
                             </MudListItem>
-                            <MudDivider />
+                            <MudDivider/>
                         }
                     }
                 </MudList>
             </MudPaper>
         </MudItem>
-        if (EnableRecentBuildList)
-        {
-            <MudItem xs="12" md="4">
-                <MudPaper Class="mt-4 mb-2 d-flex justify-center align-center " Height="56px" Outlined>
-                    <MudText Align="Align.Center" Typo="Typo.h5" Class="prevent-select">Recent Builds</MudText>
-                </MudPaper>
-                <MudPaper Outlined Style="height: 300px; max-height: 300px; overflow: auto">
-                    <MudList @ref="buildList" Clickable Dense>
-                        @if (!recentBuilds.Any())
-                        {
-                            <MudListItem Disabled>
-                                <MudText Align="Align.Center" Class="prevent-select">No recent builds</MudText>
-                            </MudListItem>
-                        }
-                        @foreach (var build in recentBuilds)
-                        {
-                            <MudListItem @key="build.Hash" Value="build" OnClick="@(() => AddRecentBuild(build))" Icon="@Icons.Material.Filled.KeyboardArrowLeft">
+    }
+    @if (EnableSavedBuildList)
+    {
+        <MudItem xs="12" md="@(HideSelectedShipList ? 6 : 4)">
+            <MudPaper Outlined Style="min-height: 300px; max-height: 300px; overflow: auto">
+                <MudList @ref="buildList" Clickable Dense>
+                    @if (!filteredBuildsList.Any())
+                    {
+                        <MudListItem Disabled>
+                            <MudText Align="Align.Center" Class="prevent-select">No saved builds</MudText>
+                        </MudListItem>
+                    }
+                    else
+                    {
+                        <MudVirtualize IsEnabled="true" Items="filteredBuildsList" Context="build">
+                            <MudListItem @key="build.Hash" Value="build" OnClick="@(() => AddSavedBuild(build))" Icon="@(HideSelectedShipList ? Icons.Material.Filled.KeyboardArrowRight : Icons.Material.Filled.KeyboardArrowLeft)">
                                 <MudStack Style="align-items: stretch" Class="my-n1" Spacing="1">
                                     <MudStack Row Justify="Justify.SpaceBetween">
-                                        <MudText>@Localizer.SimpleGameLocalization(build.ShipIndex)</MudText>
+                                        <MudText>@Localizer.SimpleGameLocalization(build.ShipIndex + "_FULL")</MudText>
                                         @* TODO: Localize *@
-                                        <MudTooltip Text="Delete from recent builds" Delay="300">
-                                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" OnClick="@(() => RemoveRecentBuild(build))"/>
+                                        <MudTooltip Text="Delete from saved builds" Delay="300">
+                                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" OnClick="@(async () => await RemoveSavedBuild(build))"/>
                                         </MudTooltip>
                                     </MudStack>
                                     <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1">@(Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_Build)) + ": " + build.BuildName)</MudText>
                                 </MudStack>
                             </MudListItem>
                             <MudDivider/>
-                        }
-                    </MudList>
-                </MudPaper>
-            </MudItem>
-        }
+                        </MudVirtualize>
+                    }
+                </MudList>
+            </MudPaper>
+        </MudItem>
     }
 </MudGrid>
 
@@ -161,13 +197,19 @@
     public bool MultiSelect { get; set; } = true;
 
     [Parameter]
-    public bool LargerList { get; set; }
+    public bool HideSelectedShipList { get; set; }
 
     [Parameter]
     public bool AllowCopies { get; set; }
 
     [Parameter]
-    public bool EnableRecentBuildList { get; set; }
+    public bool EnableSavedBuildList { get; set; }
+
+    [Parameter]
+    public bool EnableBuildImport { get; set; }
+
+    [Parameter]
+    public bool DisableSelectedShipBuildEditing { get; set; }
 
     private SortedDictionary<string, ShipSummary> totalShipNameDictionary = new();
 
@@ -177,7 +219,9 @@
 
     private List<KeyValuePair<string, ShipSummary>> filteredSummaryList = new();
 
-    private IEnumerable<Build> recentBuilds = new List<Build>();
+    private IEnumerable<Build> savedBuilds = new List<Build>();
+
+    private List<Build> filteredBuildsList = new();
 
     private string inputText = string.Empty;
 
@@ -190,6 +234,10 @@
             ApplyFilter();
         }
     }
+
+    private string buildString = string.Empty;
+
+    private IJSObjectReference? module;
 
     #region Selects
 
@@ -254,34 +302,60 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
+        NotifierService.RefreshRequested += OnRefresh;
         totalShipNameDictionary = new(AppData.ShipSummaryList.ToDictionary(ship => Localizer.GetGameLocalization($"{ship.Index}_FULL").Localization, ship => ship));
         filteredSummaryList = totalShipNameDictionary.ToList().OrderBy(x => x.Key).ToList();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender && EnableRecentBuildList)
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender && EnableBuildImport)
         {
-            recentBuilds = await UserDataService.LoadBuildsAsync();
+            module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/scripts/buildImageDecoder.js");
+        }
+        if (firstRender && EnableSavedBuildList)
+        {
+            savedBuilds = await UserDataService.LoadBuildsAsync();
+            filteredBuildsList = savedBuilds.ToList();
+            filteredBuildsList.ForEach(x => x.UpgradeBuild());
             StateHasChanged();
         }
-
-        await base.OnAfterRenderAsync(firstRender);
     }
 
     private void ApplyFilter()
     {
         string searchText = InputText;
-        var items = totalShipNameDictionary.Where(pair => SummaryFilter(pair, searchText)).ToList();
-        items = items.OrderBy(x => x.Key).ToList();
+        var ships = totalShipNameDictionary.Where(pair => SummaryFilter(pair, searchText)).ToList();
+        ships = ships.OrderBy(x => x.Key).ToList();
         filteredSummaryList.Clear();
-        filteredSummaryList.AddRange(items);
+        filteredSummaryList.AddRange(ships);
+        var builds = savedBuilds.Where(build => SummaryFilter(build, searchText)).ToList();
+        filteredBuildsList.Clear();
+        filteredBuildsList.AddRange(builds);
         StateHasChanged();
     }
 
-    private bool SummaryFilter(KeyValuePair<string, ShipSummary> valuePair, string textSearch)
+    private bool SummaryFilter(object value, string textSearch)
     {
-        var shipSummary = valuePair.Value;
+        ShipSummary shipSummary = default!;
+        string shipName = string.Empty;
+        string? buildName = null;
+
+        if (value is KeyValuePair<string, ShipSummary> pair)
+        {
+            shipSummary = pair.Value;
+            shipName = pair.Key;
+        }
+
+        if (value is Build build)
+        {
+            var keyValuePair = totalShipNameDictionary.First(x => x.Value.Index.Equals(build.ShipIndex));
+            shipSummary = keyValuePair.Value;
+            shipName = keyValuePair.Key;
+            buildName = build.BuildName;
+        }
+
         bool result = !(!string.IsNullOrWhiteSpace(SelectedTier) && shipSummary.Tier != tierList.IndexOf(SelectedTier!) + 1);
 
         if (result && SelectedClass != null && shipSummary.ShipClass != SelectedClass)
@@ -301,7 +375,12 @@
 
         if (result && !string.IsNullOrWhiteSpace(textSearch))
         {
-            result = CultureInfo.CurrentCulture.CompareInfo.IndexOf(valuePair.Key, textSearch, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1;
+            result = AppSettings.SelectedLanguage.CultureInfo.CompareInfo.IndexOf(shipName, textSearch, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1;
+
+            if (!result && !string.IsNullOrWhiteSpace(buildName))
+            {
+                result = AppSettings.SelectedLanguage.CultureInfo.CompareInfo.IndexOf(buildName, textSearch, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1;
+            }
         }
 
         return result;
@@ -340,7 +419,7 @@
         }
     }
 
-    private void AddRecentBuild(Build build)
+    private void AddSavedBuild(Build build)
     {
         if (!AllowCopies && SelectedShips.Any(x => x.Ship.Index.Equals(build.ShipIndex))) return;
 
@@ -379,6 +458,11 @@
 
     private async Task AddBuild(ShipBuildContainer ship)
     {
+        if (DisableSelectedShipBuildEditing)
+        {
+            return;
+        }
+
         var parameters = new DialogParameters
         {
             ["SelectedShipIndex"] = ship.Ship.Index,
@@ -391,8 +475,74 @@
         }
     }
 
-    private async Task RemoveRecentBuild(Build build)
+    private async Task RemoveSavedBuild(Build build)
     {
-        await UserDataService.RemoveRecentBuildAsync(build);
+        await UserDataService.RemoveSavedBuildAsync(build);
+        ApplyFilter();
+    }
+
+    private async Task FileSelected(IBrowserFile? file)
+    {
+        if (file is not null && file.ContentType.Equals("image/png"))
+        {
+            var result = await module!.InvokeAsync<string>("findUploadAndDecode");
+            buildString = result;
+            await OnLoadBuild();
+            buildString = string.Empty;
+        }
+        else
+        {
+            Snackbar.Add(Localizer.SimpleAppLocalization(nameof(Translation.ShipSelector_InvalidPngFileError)), Severity.Error);
+        }
+    }
+
+    private async Task OnLoadBuild()
+    {
+        if (!string.IsNullOrEmpty(LinkShorteningOptions.Value.UriPrefix) && buildString.Contains(LinkShorteningOptions.Value.UriPrefix + '/'))
+        {
+            var fullUrl = await BuildValidation.RetrieveLongUrlFromShortLink(buildString) ?? string.Empty;
+            buildString = fullUrl;
+        }
+
+        if (QueryHelpers.ParseQuery(buildString).TryGetValue("build", out var buildFromUrl))
+        {
+            buildString = buildFromUrl.ToString();
+        }
+
+        try
+        {
+            var build = buildString.StartsWith('{') ? JsonConvert.DeserializeObject<Build>(buildString)! : Build.CreateBuildFromString(buildString);
+            build.UpgradeBuild();
+            AddSavedBuild(build);
+            buildString = string.Empty;
+            StateHasChanged();
+            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+            Snackbar.Add("Build loaded", Severity.Success);
+        }
+        catch (Exception)
+        {
+            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+            Snackbar.Add("Failed to load build from string", Severity.Error);
+        }
+    }
+
+    private void OnRefresh()
+    {
+        ApplyFilter();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        NotifierService.RefreshRequested -= OnRefresh;
+        if (module is not null)
+        {
+            try
+            {
+                await module.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+            }
+        }
     }
 }

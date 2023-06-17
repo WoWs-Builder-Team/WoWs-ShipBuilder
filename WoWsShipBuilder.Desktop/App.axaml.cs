@@ -103,7 +103,6 @@ namespace WoWsShipBuilder.Desktop
             var settingsAccessor = (DesktopSettingsAccessor)services.GetRequiredService<ISettingsAccessor>();
             var settings = settingsAccessor.LoadSettingsSync();
             settings ??= new();
-            settings.WebAppSettings ??= new();
 
             logger.LogDebug("Updating app settings with settings read from file...");
             var appSettings = services.GetRequiredService<AppSettings>();

@@ -3,9 +3,9 @@ name: Build and run tests.
 on:
   push:
     branches-ignore:
-      - main
-      - development
-      - l10n_development
+      - 'release/**'
+      - 'development'
+      - 'l10n_development'
     paths-ignore:
       - '**/*.md'
       - '.github/*.png'
@@ -27,13 +27,13 @@ jobs:
         with:
           global-json-file: global.json
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore dirs.proj
       - name: Build application in Debug mode
-        run: dotnet build --no-restore -c DebugLinux -p:TreatWarningsAsErrors=true
+        run: dotnet build dirs.proj --no-restore -c Debug -p:TreatWarningsAsErrors=true
       - name: Build application in Release mode
-        run: dotnet build --no-restore -c ReleaseLinux -p:TreatWarningsAsErrors=true
+        run: dotnet build dirs.proj --no-restore -c Release -p:TreatWarningsAsErrors=true
       - name: Test application in Release mode
-        run: dotnet test --no-build -c ReleaseLinux --verbosity normal
+        run: dotnet test dirs.proj --no-build -c Release --verbosity normal
 
   build-and-test-windows:
     runs-on: windows-latest
@@ -48,10 +48,10 @@ jobs:
         with:
           global-json-file: global.json
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore dirs.proj
       - name: Build application in Debug mode
-        run: dotnet build --no-restore -c Debug -p:TreatWarningsAsErrors=true
+        run: dotnet build dirs.proj --no-restore -c Debug -p:TreatWarningsAsErrors=true
       - name: Build application in Release mode
-        run: dotnet build --no-restore -c Release -p:TreatWarningsAsErrors=true
+        run: dotnet build dirs.proj --no-restore -c Release -p:TreatWarningsAsErrors=true
       - name: Test application in Release mode
-        run: dotnet test --no-build -c Release --verbosity normal
+        run: dotnet test dirs.proj --no-build -c Release --verbosity normal

@@ -17,7 +17,7 @@
             <MudIcon Icon="@shipBuilderIcon" Size="Size.Large"/>
             <MudText Typo="Typo.h5">WoWs&#x2011;ShipBuilder</MudText>
         </NavLink>
-        <NavLink href="/charts" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationCharts))</NavLink>
+        <NavLink href="/charts" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_BallisticCharts))</NavLink>
         <NavLink href="/acceleration-charts" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationAccelerationCharts))</NavLink>
         <NavLink href="/comparison" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationComparison))</NavLink>
         <MudDivider DividerType="DividerType.Middle" FlexItem Vertical/>
@@ -87,18 +87,39 @@
             </ChildContent>
         </MudTooltip>
         <MudSpacer/>
-        <div class=btn-container>
+        <div class="btn-container">
             <a title="Donate" class="kofi-button" style="background-color:#505050;" href="https://ko-fi.com/L4L3DT7EM" target="_blank">
                 <span class="kofitext">
                     <img src="https://storage.ko-fi.com/cdn/cup-border.png" alt="Ko-fi donations" class="kofiimg"/>Donate
                 </span>
             </a>
         </div>
-        <NavLink href="/settings" class="main-nav-link d-flex" ActiveClass="nav-link-active">
-            <MudIcon Icon="@Icons.Material.Filled.Settings" Color="Color.Inherit" Size="Size.Medium"/>
-            <MudText Typo="Typo.inherit" Color="Color.Inherit" Style="font-weight: inherit;" Class="align-self-center">@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Settings))</MudText>
-        </NavLink>
-        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder#wows-shipbuilder" Target="_blank"/>
+        <MudTooltip>
+            <TooltipContent>
+                <MudText Typo="Typo.body1">@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Settings))</MudText>
+            </TooltipContent>
+            <ChildContent>
+                <NavLink href="/settings" class="main-nav-link d-flex" ActiveClass="nav-link-active">
+                    <MudIcon Icon="@Icons.Material.Filled.Settings" Color="Color.Inherit" Style="font-size: xx-large"/>
+                </NavLink>
+            </ChildContent>
+        </MudTooltip>
+        <MudTooltip>
+            <TooltipContent>
+                <MudText Typo="Typo.body1">Download ShipBuilder Desktop App</MudText>
+            </TooltipContent>
+            <ChildContent>
+                <MudIconButton Icon="@Icons.Material.Filled.InstallDesktop" Color="Color.Inherit" Link="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder/releases/latest" Target="_blank" Size="Size.Large" Style="margin-top: 1px"/>
+            </ChildContent>
+        </MudTooltip>
+        <MudTooltip>
+            <TooltipContent>
+                <MudText Typo="Typo.body1">GiHub Repository</MudText>
+            </TooltipContent>
+            <ChildContent>
+                <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder#wows-shipbuilder" Target="_blank"/>
+            </ChildContent>
+        </MudTooltip>
     </MudHidden>
     <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" OnClick="@ToggleDrawer"/>
@@ -116,8 +137,8 @@
         </MudDrawerHeader>
         <MudNavMenu Bordered Color="Color.Info">
             <MudNavLink Icon="@shipBuilderIcon" Match="NavLinkMatch.All" Href="/">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationHome))</MudNavLink>
-            <MudNavLink Icon="@Icons.Material.Filled.SsidChart" Href="/acceleration-charts" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationAccelerationCharts))</MudNavLink>
-            <MudNavLink Icon="@Icons.Material.Filled.SsidChart" Href="/comparison" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationComparison))</MudNavLink>
+            <MudNavLink Icon="@Icons.Material.Filled.Speed" Href="/acceleration-charts" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationAccelerationCharts))</MudNavLink>
+            <MudNavLink Icon="@Icons.Material.Filled.FormatListBulleted" Href="/comparison" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationComparison))</MudNavLink>
             <MudNavLink Icon="@Icons.Material.Filled.SsidChart" Href="/charts">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationCharts))</MudNavLink>
             <MudNavLink Icon="@kofiIcon" Href="https://ko-fi.com/L4L3DT7EM" Target="_blank">Donate</MudNavLink>
             @* <MudNavLink Icon="@Icons.Filled.Science" Href="/test">Test page</MudNavLink> *@

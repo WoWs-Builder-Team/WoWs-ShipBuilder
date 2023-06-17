@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Create a report to help us improve the app
 title: "[Bug]"
 labels: bug
 assignees: ''
@@ -23,9 +23,11 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Program version. You can find it in the Info tab of the setting window**
+**(Desktop only) Program version. You can find it at the top of the settings window.**
 
-**Data version. You can find it in the Info tab of the setting window**
+**Data version. You can find it at the top of the settings window.**
+
+**Server type (Live or PTS)**
 
 **Additional context**
 Add any other context about the problem here.

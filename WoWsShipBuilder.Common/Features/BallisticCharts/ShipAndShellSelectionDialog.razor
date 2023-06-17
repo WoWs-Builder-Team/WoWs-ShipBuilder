@@ -13,7 +13,7 @@
 @implements IDisposable
 @inject ILocalizer Localizer
 
-<MudDialog Style="overflow: auto; max-height: calc(95vh - 100px)">
+<MudDialog>
     <TitleContent>
         <MudItem Class="d-flex align-center">
             <MudIcon Icon="@Icons.Material.Filled.HelpOutline" Color="Color.Info" Size="Size.Large"/>
@@ -23,10 +23,10 @@
         </MudItem>
     </TitleContent>
     <DialogContent>
-        <MudContainer Class="d-flex" Style="min-height: 600px; max-height: 600px; overflow-y: auto">
+        <MudContainer Class="d-flex" Style="min-height: 600px; max-height: 600px; overflow-y: auto; padding-top: 12px; padding-bottom: 12px;">
             <MudGrid Justify="Justify.Center">
                 <MudItem xs="12" md="8" Class="d-flex" Style="overflow-y: auto">
-                    <ShipSelector SelectedShips="@selectedShips" LargerList AllowCopies/>
+                    <ShipSelector SelectedShips="@selectedShips" AllowCopies EnableBuildImport EnableSavedBuildList HideSelectedShipList/>
                 </MudItem>
                 <MudItem xs="12" md="4" Style="min-height: 600px; max-height: 600px; overflow-y: auto;">
                     @if (dataWrappers.Count == 0)

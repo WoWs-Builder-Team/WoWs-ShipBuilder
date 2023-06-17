@@ -2,7 +2,6 @@ using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.DataContainers;
@@ -67,7 +66,12 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
 
         decimal maxSpeedModifier = modifiers.FindModifiers("speedCoef", true).Aggregate(1m, (current, modifier) => current * (decimal)modifier);
         maxSpeedModifier = modifiers.FindModifiers("shipSpeedCoeff", true).Aggregate(maxSpeedModifier, (current, modifier) => current * (decimal)modifier);
-        maxSpeedModifier = modifiers.FindModifiers("boostCoeff").Aggregate(maxSpeedModifier, (current, modifier) => current + (decimal)modifier); // Speed boost is additive
+
+        var speedBoostModifier = modifiers.FindModifiers("speedBoost_boostCoeff", true).Sum(); // Speed boost is additive
+        if (speedBoostModifier != 0)
+        {
+            maxSpeedModifier *= (decimal)(1 + speedBoostModifier + modifiers.FindModifiers("boostCoeffForsage").Sum()); // needed for Halland UU
+        }
 
         decimal maxDiveSpeedModifier = modifiers.FindModifiers("maxBuoyancySpeedCoeff", true).Aggregate(1m, (current, modifier) => current * (decimal)modifier);
 
