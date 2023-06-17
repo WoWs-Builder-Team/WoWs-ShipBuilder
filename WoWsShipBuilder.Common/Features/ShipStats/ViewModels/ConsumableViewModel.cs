@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using DynamicData;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -110,14 +109,13 @@ public class ConsumableViewModel : ReactiveObject, IBuildComponentProvider
     private void UpdateSlotViewModels(IEnumerable<string> disabledConsumables)
     {
         var rawSlots = ship.ShipConsumable.GroupBy(consumable => consumable.Slot)
-            .AsParallel()
             .Select(group => group.Where(c => !disabledConsumables.Contains(c.ConsumableName)))
-            .Where(consumables => consumables.Any());
-        var slots = new ConcurrentBag<ConsumableSlotViewModel>();
-        rawSlots.AsParallel().ForAll(consumables => slots.Add(ConsumableSlotViewModel.Create(consumables, Logging.LoggerFactory, ConsumableActivationChanged)));
+            .Where(consumables => consumables.Any())
+            .Select(consumables => ConsumableSlotViewModel.Create(consumables, Logging.LoggerFactory, ConsumableActivationChanged))
+            .OrderBy(vm => vm.Slot);
 
         ConsumableSlots.Clear();
-        ConsumableSlots.AddRange(slots.OrderBy(vm => vm.Slot));
+        ConsumableSlots.AddRange(rawSlots);
     }
 
     private void ConsumableActivationChanged(int slot, bool activationState)

@@ -2,6 +2,7 @@
 using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
+using DynamicData;
 using WoWsShipBuilder.Features.Builds;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 
@@ -15,7 +16,7 @@ public class DesktopUserDataService : IUserDataService
 
     private readonly IFileSystem fileSystem;
 
-    private List<Build>? recentBuilds;
+    private List<Build>? savedBuilds;
 
     public DesktopUserDataService(IDataService dataService, IAppDataService appDataService, IFileSystem fileSystem)
     {
@@ -33,9 +34,9 @@ public class DesktopUserDataService : IUserDataService
 
     public async Task<IEnumerable<Build>> LoadBuildsAsync()
     {
-        if (recentBuilds is not null)
+        if (savedBuilds is not null)
         {
-            return recentBuilds;
+            return savedBuilds;
         }
 
         string path = dataService.CombinePaths(appDataService.DefaultAppDataDirectory, "builds.json");
@@ -44,33 +45,36 @@ public class DesktopUserDataService : IUserDataService
             var rawBuildList = await dataService.LoadAsync<List<string>>(path);
             var builds = rawBuildList?
                 .Select(str => Build.CreateBuildFromString(str))
-                .Take(10)
                 .ToList() ?? Enumerable.Empty<Build>();
-            recentBuilds = builds.DistinctBy(x => x.Hash).ToList();
-            return recentBuilds;
+            savedBuilds = builds.DistinctBy(x => x.Hash).ToList();
+            return savedBuilds;
         }
 
         return Enumerable.Empty<Build>();
     }
 
-    public async Task AddRecentBuildAsync(Build build)
+    public async Task ImportBuildsAsync(IEnumerable<Build> builds)
     {
-        recentBuilds ??= (await LoadBuildsAsync()).ToList();
-        recentBuilds.RemoveAll(x => x.Equals(build));
-        recentBuilds.Insert(0, build);
-        if (recentBuilds.Count > 10)
+        savedBuilds ??= (await LoadBuildsAsync()).ToList();
+
+        foreach (var build in builds)
         {
-            recentBuilds = recentBuilds.Take(10).ToList();
+            savedBuilds.RemoveAll(x => x.Equals(build));
+            savedBuilds.Insert(0, build);
         }
 
-        await SaveBuildsAsync(recentBuilds);
+        await SaveBuildsAsync(savedBuilds);
     }
 
-    public async Task RemoveRecentBuildAsync(Build build)
-    {
-        recentBuilds ??= (await LoadBuildsAsync()).ToList();
-        recentBuilds.Remove(build);
+    public async Task SaveBuildAsync(Build build) => await ImportBuildsAsync(new List<Build> { build });
 
-        await SaveBuildsAsync(recentBuilds);
+    public async Task RemoveSavedBuildAsync(Build build) => await RemoveSavedBuildsAsync(new List<Build> { build });
+
+    public async Task RemoveSavedBuildsAsync(IEnumerable<Build> builds)
+    {
+        savedBuilds ??= (await LoadBuildsAsync()).ToList();
+        savedBuilds.RemoveMany(builds);
+
+        await SaveBuildsAsync(savedBuilds);
     }
 }

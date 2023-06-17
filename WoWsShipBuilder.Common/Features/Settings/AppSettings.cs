@@ -37,7 +37,15 @@ public class AppSettings
 
     public DispersionPlotSettings DispersionPlotSettings { get; set; } = new();
 
-    public WebAppSettings? WebAppSettings { get; set; }
+    public bool OpenAllMainExpandersByDefault { get; set; } = true;
+
+    public bool OpenAllAmmoExpandersByDefault { get; set; } = true;
+
+    public bool OpenSecondariesAndAaExpandersByDefault { get; set; } = true;
+
+    public List<string> BetaAccessCodes { get; set; } = new();
+
+    public bool[] BuildImageLayoutSettings { get; set; } = { true, false, true, true, true, true };
 
     public void ClearSettings()
     {
@@ -52,7 +60,11 @@ public class AppSettings
         IncludeSignalsForImageExport = default;
         CustomImagePath = default;
         DispersionPlotSettings = new();
-        WebAppSettings = null;
+        OpenAllMainExpandersByDefault = true;
+        OpenAllAmmoExpandersByDefault = true;
+        OpenSecondariesAndAaExpandersByDefault = true;
+        BetaAccessCodes = new();
+        BuildImageLayoutSettings = new[] { true, false, true, true, true, true };
     }
 
     public void UpdateFromSettings(AppSettings settings)
@@ -68,6 +80,10 @@ public class AppSettings
         IncludeSignalsForImageExport = settings.IncludeSignalsForImageExport;
         CustomImagePath = settings.CustomImagePath;
         DispersionPlotSettings = settings.DispersionPlotSettings;
-        WebAppSettings = settings.WebAppSettings;
+        OpenAllMainExpandersByDefault = settings.OpenAllMainExpandersByDefault;
+        OpenAllAmmoExpandersByDefault = settings.OpenAllAmmoExpandersByDefault;
+        OpenSecondariesAndAaExpandersByDefault = settings.OpenSecondariesAndAaExpandersByDefault;
+        BetaAccessCodes = settings.BetaAccessCodes;
+        BuildImageLayoutSettings = settings.BuildImageLayoutSettings;
     }
 }

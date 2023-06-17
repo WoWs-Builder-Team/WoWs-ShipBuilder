@@ -34,7 +34,7 @@
 
 @inherits ReactiveComponentBase<ShipViewModel>
 
-@if (!(initialized && SettingsInitialized))
+@if (!initialized || !SettingsInitialized)
 {
     <MudGrid>
         <MudItem xs="12">
@@ -53,7 +53,7 @@
         </MudItem>
     </MudGrid>
 }
-@if (ViewModel is not null)
+else if (ViewModel is not null)
 {
     <MudGrid>
         <MudItem xs="12">
@@ -99,12 +99,9 @@
                             <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Share" OnClick="@OnShareBuildClicked">
                                 @Localizer.GetAppLocalization(nameof(Translation.MainWindow_ShareBuild)).Localization
                             </MudButton>
-                            @if (!AppData.WebMode)
-                            {
-                                <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Save" OnClick="@OnBuildSaveClicked">
-                                    @Localizer.SimpleAppLocalization(nameof(Translation.Dialog_Save))
-                                </MudButton>
-                            }
+                            <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Save" OnClick="@OnBuildSaveClicked">
+                                @Localizer.SimpleAppLocalization(nameof(Translation.Dialog_Save))
+                            </MudButton>
                         </MudStack>
                     </MudItem>
                 </MudGrid>
@@ -120,10 +117,7 @@
             </MudStack>
         </MudItem>
         <MudItem xs="12" md="6" lg="8" xl="9">
-            @if (ViewModel?.ShipStatsControlViewModel?.CurrentShipStats is not null)
-            {
-                <ShipStatsPanel ViewModel="@ViewModel.ShipStatsControlViewModel" StoreBuildsForTransfer="@StoreBuildsForTransfer"/>
-            }
+            <ShipStatsPanel ViewModel="@ViewModel.ShipStatsControlViewModel" StoreBuildsForTransfer="@StoreBuildsForTransfer"/>
         </MudItem>
     </MudGrid>
 }
@@ -168,7 +162,6 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        MetricsService.ShipPageCount.Inc();
         initialized = false;
 
         var cacheEntry = Cache.GetOrDefault(CurrentTabId);
@@ -176,20 +169,28 @@
         {
             ViewModel = cacheEntry.ViewModel;
             shipChanged = true;
+            initialized = true;
         }
-        else
-        {
-            Cache[CurrentTabId] = new(null!);
-            ViewModel = await LoadShipViewModel(ShipIndex);
-            Cache[CurrentTabId] = Cache[CurrentTabId]! with { ViewModel = ViewModel };
-        }
-
-        initialized = true;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            MetricsService.ShipPageCount.Inc();
+        }
+
+        if (ViewModel is null)
+        {
+            Cache[CurrentTabId] = new(null!);
+            ViewModel = await LoadShipViewModel(ShipIndex);
+            Cache[CurrentTabId] = Cache[CurrentTabId]! with { ViewModel = ViewModel };
+            initialized = true;
+            StateHasChanged();
+            return;
+        }
+
         if (!firstRender && shipChanged && ViewModel is not null)
         {
             shipChanged = false;
@@ -342,7 +343,7 @@
             await ClipboardService.SetTextAsync(shareResult.CreateShortLink ? (await LinkShortener.CreateShortLink(buildUrl)).Link : buildUrl);
             if (AppSettings.StoreBuildOnShare)
             {
-                await UserDataService.AddRecentBuildAsync(build);
+                await UserDataService.SaveBuildAsync(build);
             }
         }
 
@@ -352,7 +353,7 @@
             if (AppSettings.StoreBuildOnShare)
             {
                 var build = ViewModel!.CreateBuild(BuildName);
-                await UserDataService.AddRecentBuildAsync(build);
+                await UserDataService.SaveBuildAsync(build);
             }
         }
     }
@@ -423,7 +424,7 @@
         }
 
         var build = ViewModel!.CreateBuild(BuildName);
-        await UserDataService.AddRecentBuildAsync(build);
+        await UserDataService.SaveBuildAsync(build);
     }
 
 }

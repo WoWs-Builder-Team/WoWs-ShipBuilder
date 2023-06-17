@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
+using DynamicData;
 using Microsoft.JSInterop;
+using MudBlazor;
 using WoWsShipBuilder.Features.Builds;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 
@@ -14,54 +16,86 @@ public class WebUserDataService : IUserDataService, IAsyncDisposable
 
     private readonly IJSRuntime runtime;
 
+    private readonly ISnackbar snackbar;
+
     private IJSObjectReference? module;
 
-    private List<Build>? recentBuilds;
+    private List<Build>? savedBuilds;
 
-    public WebUserDataService(IJSRuntime runtime)
+    public WebUserDataService(IJSRuntime runtime, ISnackbar snackbar)
     {
+        this.snackbar = snackbar;
         this.runtime = runtime;
     }
 
     public async Task SaveBuildsAsync(IEnumerable<Build> builds)
     {
         await InitializeModule();
-        var buildStrings = builds.Select(x => x.CreateStringFromBuild());
+        var buildStrings = builds.Select(x => x.CreateShortStringFromBuild());
         await module.InvokeVoidAsync("saveData", BuildFileName, JsonSerializer.Serialize(buildStrings));
     }
 
     public async Task<IEnumerable<Build>> LoadBuildsAsync()
     {
-        if (recentBuilds is not null)
+        if (savedBuilds is not null)
         {
-            return recentBuilds;
+            return savedBuilds;
         }
 
         await InitializeModule();
         var buildStrings = await module.InvokeAsync<string?>("loadData", BuildFileName);
         var result = buildStrings is null ? Enumerable.Empty<string>() : JsonSerializer.Deserialize<IEnumerable<string>>(buildStrings);
-        recentBuilds = result!.Select(x => Build.CreateBuildFromString(x)).ToList();
-        return recentBuilds;
+        savedBuilds = result!.Select(x => Build.CreateBuildFromString(x)).ToList();
+        return savedBuilds;
     }
 
-    public async Task AddRecentBuildAsync(Build build)
+    public async Task ImportBuildsAsync(IEnumerable<Build> builds)
     {
-        recentBuilds ??= (await LoadBuildsAsync()).ToList();
-        recentBuilds.Insert(0, build);
-        if (recentBuilds.Count > 10)
+        savedBuilds ??= (await LoadBuildsAsync()).ToList();
+
+        foreach (var build in builds)
         {
-            recentBuilds = recentBuilds.Take(10).ToList();
+            savedBuilds.RemoveAll(x => x.Equals(build));
+            savedBuilds.Insert(0, build);
         }
 
-        await SaveBuildsAsync(recentBuilds);
+        // actual local storage limit is around 3700 builds but we limit it to 1000 for performance reasons
+        switch (savedBuilds.Count)
+        {
+            case < 1000:
+            {
+                snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+                snackbar.Add("Builds successfully saved.", Severity.Success);
+                break;
+            }
+            case 1000:
+            {
+                snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+                snackbar.Add("Builds storage limit reached. Next addition will replace the oldest saved build.", Severity.Warning);
+                break;
+            }
+            case > 1000:
+            {
+                snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+                snackbar.Add("Builds storage is full. The oldest saved build has been replaced.", Severity.Error);
+                savedBuilds = savedBuilds.Take(1000).ToList();
+                break;
+            }
+        }
+
+        await SaveBuildsAsync(savedBuilds);
     }
 
-    public async Task RemoveRecentBuildAsync(Build build)
-    {
-        recentBuilds ??= (await LoadBuildsAsync()).ToList();
-        recentBuilds.Remove(build);
+    public async Task SaveBuildAsync(Build build) => await ImportBuildsAsync(new List<Build> { build });
 
-        await SaveBuildsAsync(recentBuilds);
+    public async Task RemoveSavedBuildAsync(Build build) => await RemoveSavedBuildsAsync(new List<Build> { build });
+
+    public async Task RemoveSavedBuildsAsync(IEnumerable<Build> builds)
+    {
+        savedBuilds ??= (await LoadBuildsAsync()).ToList();
+        savedBuilds.RemoveMany(builds);
+
+        await SaveBuildsAsync(savedBuilds);
     }
 
     public async ValueTask DisposeAsync()

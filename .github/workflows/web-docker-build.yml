@@ -4,8 +4,7 @@ on:
   push:
     branches:
       - 'development'
-      - 'main'
-      - 'release/web/v*'
+      - 'release/web'
     paths-ignore:
       - 'deployment/**/*.*'
   workflow_dispatch:

@@ -1,53 +1,15 @@
 ﻿@using System.Collections.Specialized
 @using System.Collections.ObjectModel
-@using WoWsShipBuilder.Features.Builds
+@using DynamicData
 @using WoWsShipBuilder.Infrastructure.DataTransfer
-@using WoWsShipBuilder.Infrastructure.Localization
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 
 @implements IDisposable
 @inject ILocalizer Localizer
 
-<MudDialog ContentStyle="max-height: calc(90vh - 100px); overflow-y: scroll; padding: 8px 16px;">
+<MudDialog ContentStyle="max-height: calc(90vh - 100px); overflow-y: scroll; padding: 12px;">
     <DialogContent>
-        <MudGrid Justify="Justify.SpaceAround">
-            <MudItem xs="8">
-                <ShipSelector AllowCopies LargerList SelectedShips="@selectedShips"/>
-            </MudItem>
-            <MudItem xs="3">
-                <MudPaper Outlined Style="margin-top: 6px">
-                    <MudList Style="height: 47.3vh; overflow-y: scroll;" Dense>
-                        @if (!ShipList!.Any())
-                        {
-                            <MudListItem>
-                                <MudText Color="Color.Primary" Align="Align.Center">
-                                    @Localizer.GetAppLocalization(Translation.ShipAndShellsSelectionDialog_NoShipSelected).Localization
-                                </MudText>
-                            </MudListItem>
-                        }
-                        else
-                        {
-                            foreach (var ship in ShipList!)
-                            {
-                                <MudListItem>
-                                    <MudStack Row Style="align-items: center" Justify="Justify.SpaceBetween">
-                                        <MudStack>
-                                            <MudText>
-                                                @(!ship.Ship.Name.Equals("customShip") ? Localizer.GetGameLocalization(ship.Ship.Index + "_FULL").Localization : ship.Ship.Index)
-                                            </MudText>
-                                            <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n2">
-                                                @(Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (!string.IsNullOrWhiteSpace(ship.Build?.BuildName) ? ship.Build.BuildName : Build.DefaultBuildName))
-                                            </MudText>
-                                        </MudStack>
-                                        <MudIcon Icon="@Icons.Material.Filled.Close" @onclick="@(_ => RemoveShip(ship))" Style="cursor: pointer"/>
-                                    </MudStack>
-                                </MudListItem>
-                            }
-                        }
-                    </MudList>
-                </MudPaper>
-            </MudItem>
-        </MudGrid>
+        <ShipSelector SelectedShips="@selectedShips" MultiSelect AllowCopies EnableBuildImport EnableSavedBuildList DisableSelectedShipBuildEditing/>
     </DialogContent>
     <DialogActions>
         <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@Cancel">
@@ -102,6 +64,7 @@
     {
         base.OnInitialized();
         ShipList ??= new();
+        selectedShips.AddRange(ShipList);
         selectedShips.CollectionChanged += SelectedShipsOnCollectionChanged;
     }
 
@@ -119,21 +82,22 @@
 
     private void SelectedShipsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        if (e.NewItems![0] is ShipBuildContainer container)
+        if (e.NewItems?[0] is ShipBuildContainer newContainer)
         {
-            ShipList!.Add(container);
+            ShipList!.Add(newContainer);
         }
+
+        if (e.OldItems?[0] is ShipBuildContainer oldContainer)
+        {
+            ShipList!.Remove(oldContainer);
+        }
+
         StateHasChanged();
     }
 
     public void Dispose()
     {
         selectedShips.CollectionChanged -= SelectedShipsOnCollectionChanged;
-    }
-
-    private void RemoveShip(ShipBuildContainer shipBuildContainer)
-    {
-        ShipList!.Remove(shipBuildContainer);
     }
 
 }

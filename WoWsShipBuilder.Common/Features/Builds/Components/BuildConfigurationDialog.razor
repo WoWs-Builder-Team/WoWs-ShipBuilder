@@ -14,20 +14,22 @@
 @using WoWsShipBuilder.Infrastructure.Utility
 
 @inherits ReactiveComponentBase<ShipBuildViewModel>
+@implements IAsyncDisposable
 
 @inject ILocalizer Localizer
 @inject IMetricsService MetricsService
 @inject IHostEnvironment Environment
 @inject ISnackbar Snackbar
 @inject IOptions<LinkShorteningOptions> LinkShorteningOptions
+@inject IJSRuntime Runtime
 
-<MudDialog Style="overflow-y: auto; max-height: 102vh;">
+<MudDialog Style="max-height: 95vh;">
     <DialogContent>
         <MudBreakpointProvider>
             <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
                 <MudGrid>
                     <MudItem xs="12" Class="d-flex align-center" Style="justify-content: center;">
-                        <MudStack AlignItems="AlignItems.End" Row="true" Justify="Justify.SpaceEvenly" Class="mt-1 mb-n1">
+                        <MudStack AlignItems="AlignItems.End" Row="true" Justify="Justify.SpaceEvenly" Class="mt-1 mb-n4">
                             @if (!SelectedContainer.Ship.Name.Equals("customShip"))
                             {
                                 <MudImage Src="@($"{ImageBasePath}/{SelectedContainer.Ship.Index}.png")" Height="45"/>
@@ -46,7 +48,7 @@
                         </MudStack>
                     </MudItem>
                     <MudItem xs="2">
-                        <MudList @bind-SelectedValue="selectedListValue" Dense Clickable Style="max-height: 80vh; overflow-y: scroll;" Class="">
+                        <MudList @bind-SelectedValue="selectedListValue" Dense Clickable Style="max-height: min(80vh, 850px); overflow-y: scroll;" Class="">
                             @for (var i = 0; i < Ships.Count; i++)
                             {
                                 int index = i;
@@ -56,21 +58,21 @@
                                         @Localizer.GetGameLocalization(Ships[index].Ship.Index + "_FULL").Localization
                                     </MudText>
                                     <MudText Typo="Typo.body2" Class="ml-2">
-                                        @(Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (buildNameDictionary.ContainsKey(shipData.Id) ? buildNameDictionary[shipData.Id] : !string.IsNullOrEmpty(shipData.Build?.BuildName) ? shipData.Build.BuildName : Build.DefaultBuildName))
+                                        @(Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (buildNameDictionary.TryGetValue(shipData.Id, out string? value) ? value : !string.IsNullOrEmpty(shipData.Build?.BuildName) ? shipData.Build.BuildName : Build.DefaultBuildName))
                                     </MudText>
                                 </MudListItem>
                             }
                         </MudList>
                     </MudItem>
                     <MudItem xs="10">
-                        <MudTabs Position="Position.Left" HideSlider ActivePanelIndexChanged="@OnActivePanelChanged" Class="tab-header-limited-height" @ref="desktopTabs">
+                        <MudTabs PanelClass="tab-panel-build-config-dialog" Position="Position.Left" HideSlider ActivePanelIndexChanged="@OnActivePanelChanged" Class="tab-header-limited-height" @ref="desktopTabs">
                             @tabContent
                         </MudTabs>
                     </MudItem>
                 </MudGrid>
             </MudHidden>
             <MudHidden Breakpoint="Breakpoint.MdAndUp">
-                <MudTabs  Position="Position.Top" HideSlider ActivePanelIndexChanged="@OnActivePanelChanged">
+                <MudTabs Position="Position.Top" HideSlider ActivePanelIndexChanged="@OnActivePanelChanged">
                     @tabContent
                 </MudTabs>
             </MudHidden>
@@ -115,6 +117,8 @@
     [Parameter]
     public bool SpecialAbilityDisabled { get; set; }
 
+    private IJSObjectReference? module;
+
     private int selectedTab;
 
     private ShipBuildContainer SelectedContainer => Ships[selectedTab];
@@ -148,7 +152,7 @@
                     <MudGrid Class="align-content-space-between">
                         @if (ViewModel is not null)
                         {
-                            <MudHidden Breakpoint="Breakpoint.MdAndUp"> // Header with ship name and nation is only rendered within the tabs on mobile
+                            <MudHidden Breakpoint="Breakpoint.MdAndUp"> @* Header with ship name and nation is only rendered within the tabs on mobile *@
                                 <MudItem xs="12" Class="d-flex align-center" Style="justify-content: center;">
                                     <MudStack AlignItems="AlignItems.End" Row="true" Justify="Justify.SpaceEvenly" Class="mt-1 mb-n1">
                                         <MudImage Src="@($"{ImageBasePath}/{SelectedContainer.Ship.Index}.png")" Height="45"/>
@@ -177,7 +181,7 @@
                                             <ConsumableSelector ViewModel="@ViewModel.ConsumableViewModel"/>
                                         </div>
                                     }
-                                    @if (!SpecialAbilityDisabled && (shipData.Ship.SpecialAbility is not null || shipData.Ship.MainBatteryModuleList.Any(module => module.Value.BurstModeAbility is not null)))
+                                    @if (!SpecialAbilityDisabled && (shipData.Ship.SpecialAbility is not null || shipData.Ship.MainBatteryModuleList.Any(x => x.Value.BurstModeAbility is not null)))
                                     {
                                         <MudSwitch T="bool" @bind-Checked="ViewModel.SpecialAbilityActive" Color="Color.Info" Label="Activate special ability"/>
                                     }
@@ -190,15 +194,20 @@
                                 </MudStack>
                             </MudItem>
                             <MudItem xs="12" md="6">
-                                <MudStack Row="true" Class="mt-n1 mb-0">
-                                    <MudTextField @bind-Value="inputBuildString" Immediate DebounceInterval="100" Validation="@(new Func<string, Task<string?>>(ValidateBuildString))" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Alternative" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink))" Variant="Variant.Outlined"/>
+                                <MudStack Row="true" Justify="Justify.Center" Style="margin-top: -14px">
+                                    <MudTextField @bind-Value="inputBuildString" Immediate DebounceInterval="150" Validation="@(new Func<string, Task<string?>>(ValidateBuildString))" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Alternative" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink))" Variant="Variant.Outlined"/>
                                     <MudButton Disabled="@(string.IsNullOrWhiteSpace(buildString))" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Style="margin-top: 6px" OnClick="async () => await ImportBuild(SelectedContainer.Ship)">
-                                        @Localizer.GetAppLocalization(Translation.BuildImport_Import).Localization
+                                        @Localizer.GetAppLocalization(Translation.BuildConfigurationDialog_Load).Localization
                                     </MudButton>
+                                    <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Class="file-upload-full-height" Accept=".png">
+                                        <ButtonTemplate>
+                                            <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Image" Style="height: 100%;" for="@context">Import</MudButton>
+                                        </ButtonTemplate>
+                                    </MudFileUpload>
                                 </MudStack>
                             </MudItem>
                             <MudItem xs="12" md="6">
-                                <MudTextField @bind-Value="ViewModel.BuildName" Immediate Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))" DebounceInterval="100" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-auto mb-0"/>
+                                <MudTextField @bind-Value="ViewModel.BuildName" Immediate Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))" DebounceInterval="150" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-n2 mb-0"/>
                             </MudItem>
                         }
                         else
@@ -233,6 +242,15 @@
             }
         });
         StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/scripts/buildImageDecoder.js");
+        }
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     /// <summary>
@@ -292,7 +310,13 @@
     {
         try
         {
-            ViewModel = LoadShipViewModel(ShipBuildContainer.CreateNew(ship, Build.CreateBuildFromString(buildString), null));
+            var build = Build.CreateBuildFromString(buildString);
+            if (build.ShipIndex != ship.Index)
+            {
+                throw new FormatException();
+            }
+
+            ViewModel = LoadShipViewModel(ShipBuildContainer.CreateNew(ship, build, null));
             inputBuildString = string.Empty;
             buildString = string.Empty;
             vmCache[SelectedContainer.Id] = ViewModel;
@@ -302,6 +326,20 @@
         catch (FormatException)
         {
             Snackbar.Add("Failed to import build", Severity.Error);
+        }
+    }
+
+    private async Task FileSelected(IBrowserFile? file)
+    {
+        if (file is not null && file.ContentType.Equals("image/png"))
+        {
+            var result = await module!.InvokeAsync<string>("findUploadAndDecode");
+            buildString = result;
+            await ImportBuild(SelectedContainer.Ship);
+        }
+        else
+        {
+            Snackbar.Add(Localizer.SimpleAppLocalization(nameof(Translation.ShipSelector_InvalidPngFileError)), Severity.Error);
         }
     }
 
@@ -340,5 +378,19 @@
         await Task.Delay(1);
 
         return inputBuildStringValidationResultCache = validationResult.ValidationMessage;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (module is not null)
+        {
+            try
+            {
+                await module.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+            }
+        }
     }
 }

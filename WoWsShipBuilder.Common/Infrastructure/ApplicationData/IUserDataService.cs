@@ -8,7 +8,11 @@ public interface IUserDataService
 
     Task<IEnumerable<Build>> LoadBuildsAsync();
 
-    Task AddRecentBuildAsync(Build build);
+    Task SaveBuildAsync(Build build);
 
-    Task RemoveRecentBuildAsync(Build build);
+    Task ImportBuildsAsync(IEnumerable<Build> builds);
+
+    Task RemoveSavedBuildAsync(Build build);
+
+    Task RemoveSavedBuildsAsync(IEnumerable<Build> builds);
 }

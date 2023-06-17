@@ -7,15 +7,15 @@
 
 @if (ViewModel is not null)
 {
-    <MudPaper Outlined="true" Class="pa-3" Style="display: flex">
+    <MudPaper Outlined="true" Class="pt-2 pb-6 px-3" Style="display: flex">
         <MudGrid Justify="Justify.Center">
-            <MudItem xs="12">
+            <MudItem xs="12" Class="mb-n3">
                 <MudText Typo="Typo.body2" Align="Align.Center">@(Localizer.GetAppLocalization(nameof(Translation.MainWindow_Signals)).Localization + ": " + ViewModel.SignalsNumber + "/8")</MudText>
             </MudItem>
             @foreach (var (_, signal) in ViewModel.SignalList.Where(x => !string.IsNullOrEmpty(x.Key)))
             {
 
-                <MudItem xs="2" Class="d-flex justify-center" Style="@GetOrder(signal.Signal.SortOrder)">
+                <MudItem xs="2" Class="d-flex justify-center mb-n3" Style="@GetOrder(signal.Signal.SortOrder)">
                     <MudTooltip Placement="Placement.Right" Color="Color.Transparent" Delay="350">
                         <ChildContent>
                             <MudButton Class="pa-2" Variant="Variant.Outlined" Color="@(GetColorFromState(signal))" OnClick="@(() => OnSignalClick(signal))" Style="@(GetImageBreakpointStyle() + GetImageStyle(signal))">
