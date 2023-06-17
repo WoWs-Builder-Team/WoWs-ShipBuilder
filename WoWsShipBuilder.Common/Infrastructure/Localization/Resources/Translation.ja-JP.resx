@@ -633,6 +633,9 @@
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
     <value>中隊の機数</value>
   </data>
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
+    <value>1機あたりのHP</value>
+  </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>復旧時間</value>
   </data>
@@ -968,6 +971,12 @@
   </data>
   <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
     <value>操舵装置</value>
+  </data>
+  <data name="ShipStats_BlastExplanation" xml:space="preserve">
+    <value>"モジュールの爆風耐性" + "兵装の爆風貫通力" &gt; 0 の場合
+     モジュールは機能停止する可能性があります
+"モジュールの爆風耐性" + "兵装の爆風貫通力" &lt;= 0 の場合
+     モジュールは機能停止しません</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
     <value>再起動が必要です</value>
@@ -1615,6 +1624,12 @@
   <data name="WebApp_GoToShipsPage" xml:space="preserve">
     <value>艦艇ページに移動</value>
   </data>
+  <data name="ShipStats_ShowInBallisticCharts" xml:space="preserve">
+    <value>弾道チャートに全て表示</value>
+  </data>
+  <data name="ShipStats_ShowInAccelerationCharts" xml:space="preserve">
+    <value>加速チャートに表示</value>
+  </data>
   <data name="Validation_InvalidBuild" xml:space="preserve">
     <value>無効なビルド</value>
   </data>
@@ -1714,6 +1729,9 @@
   <data name="Unit_DegreePerSecond2" xml:space="preserve">
     <value>°/s²</value>
   </data>
+  <data name="BuildImageSettingsDialog_Modules" xml:space="preserve">
+    <value>モジュール</value>
+  </data>
   <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
     <value>艦長スキル</value>
   </data>
@@ -1722,5 +1740,50 @@
   </data>
   <data name="BuildImageSettingsDialog_Consumables" xml:space="preserve">
     <value>消耗品</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Upgrades" xml:space="preserve">
+    <value>アップグレード</value>
+  </data>
+  <data name="BuildImageSettingsDialog_TwoColumns" xml:space="preserve">
+    <value>2列</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Layout" xml:space="preserve">
+    <value>レイアウト</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Elements" xml:space="preserve">
+    <value>要素</value>
+  </data>
+  <data name="BuildNameDialog_BuildName" xml:space="preserve">
+    <value>ビルドの名前</value>
+  </data>
+  <data name="BuildNameDialog_EnterBuildName" xml:space="preserve">
+    <value>ビルド名を入力</value>
+  </data>
+  <data name="BuildImageRenderDialog_SaveImage" xml:space="preserve">
+    <value>画像保存</value>
+  </data>
+  <data name="BuildImageRenderDialog_GetUrl" xml:space="preserve">
+    <value>URL を取得</value>
+  </data>
+  <data name="ServerTypeLive" xml:space="preserve">
+    <value>ライブ</value>
+  </data>
+  <data name="NavigationCharts" xml:space="preserve">
+    <value>散布界と弾道のグラフ</value>
+  </data>
+  <data name="NavigationAccelerationCharts" xml:space="preserve">
+    <value>加速チャート</value>
+  </data>
+  <data name="NavigationComparison" xml:space="preserve">
+    <value>艦艇の比較</value>
+  </data>
+  <data name="NavigationHome" xml:space="preserve">
+    <value>スタートページ</value>
+  </data>
+  <data name="ShipComparison_PlaneHp" xml:space="preserve">
+    <value>航空機HP</value>
+  </data>
+  <data name="ShipComparison_SwitchTime" xml:space="preserve">
+    <value>切り替え時間</value>
   </data>
 </root>
