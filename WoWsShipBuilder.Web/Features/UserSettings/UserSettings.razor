@@ -256,6 +256,7 @@
                 AppSettings.BetaAccessCodes.Add(CurrentCode);
                 await SettingsAccessor.SaveSettings(AppSettings);
                 RefreshNotifierService.NotifyRefreshRequested();
+                MetricsService.BetaCodeActivation.WithLabels(CurrentCode).Inc();
                 Snackbar.Add($"'{Localizer.SimpleAppLocalization(betaEntry.LocalizationKey)}' {Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_CodeEnabled))}", Severity.Success, config => { config.CloseAfterNavigation = true; });
             }
             else

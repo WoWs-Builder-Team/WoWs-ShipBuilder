@@ -23,7 +23,7 @@
 @inject SessionStateCache SessionStateCache
 
 <PageTitle>WoWs ShipBuilder: Charts</PageTitle>
-<MudTabs Elevation="2" PanelClass="pa-6" Centered Color="Color.Primary" @ref="chartsTabs" Outlined Border KeepPanelsAlive>
+<MudTabs Elevation="2" PanelClass="pa-6" Centered Color="Color.Primary" @ref="chartsTabs" Outlined Border KeepPanelsAlive ActivePanelIndexChanged="@ActivePanelChanged">
     <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_DispersionCharts)).Localization" ID="ChartsTabs.DispersionCharts">
         <MudStack Row Justify="Justify.Center" Spacing="4">
             <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="processing">
@@ -315,6 +315,8 @@
         if (firstRender)
         {
             MetricsService.PageAccessCount.WithLabels("ballistic_charts").Inc();
+            var panelId = chartsTabs.ActivePanel.ID.ToString() ?? "unknown";
+            MetricsService.ChartsTabUsage.WithLabels(panelId).Inc();
             SetProcessing(true);
             Breakpoint = await BreakpointService.GetBreakpoint();
             await SetupChartsAsync();
@@ -633,6 +635,7 @@
     private async Task EditBuildAsync()
     {
         SetProcessing(true);
+        MetricsService.BuildConfigurationDialogUsage.WithLabels("ballistic-charts").Inc();
         var result = await buildConfigurationHelper.ShowDialogAsync(displayedShips.Values.Select(x => x.ShipBuildContainer).ToList());
         if (result is not null)
         {
@@ -748,5 +751,11 @@
     private static string GenerateJsShipId(Guid id, string shellIndex)
     {
         return $"{id};{shellIndex}";
+    }
+
+    private void ActivePanelChanged(int index)
+    {
+        var panelId = chartsTabs.ActivePanel.ID.ToString() ?? "unknown";
+        MetricsService.ChartsTabUsage.WithLabels(panelId).Inc();
     }
 }
