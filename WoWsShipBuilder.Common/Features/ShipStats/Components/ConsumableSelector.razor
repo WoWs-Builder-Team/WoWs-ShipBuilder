@@ -3,10 +3,13 @@
 @using WoWsShipBuilder.DataContainers
 @using WoWsShipBuilder.Features.ShipStats.ViewModels
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
+@using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
 @using ConsumableDataContainer = WoWsShipBuilder.DataContainers.ConsumableDataContainer
 @inherits ReactiveComponentBase<ConsumableViewModel>
 @inject ILocalizer Localizer
+@inject MetricsService MetricsService
+@inject ILogger<ConsumableSelector> Logger
 
 @if (ViewModel is not null)
 {
@@ -131,7 +134,12 @@
     {
         if (args.Button == 2)
         {
+            Logger.LogDebug("Toggling activation status of consumable slot {Slot}", viewModel.Slot);
             viewModel.ConsumableActivated = !viewModel.ConsumableActivated;
+            if (viewModel.ConsumableActivated)
+            {
+                MetricsService.ConsumableActivations.Inc();
+            }
         }
     }
 

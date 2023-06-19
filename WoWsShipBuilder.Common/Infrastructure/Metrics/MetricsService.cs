@@ -79,4 +79,6 @@ public class MetricsService
     });
 
     public Counter CaptainSkillPopupUsage { get; } = Prometheus.Metrics.CreateCounter("captain_skill_popup_usage_total", "Number of times a user opens the captain skill popup");
+
+    public Counter ConsumableActivations { get; } = Prometheus.Metrics.CreateCounter("consumable_activations_total", "Number of times a user activates a consumable");
 }
