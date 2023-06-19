@@ -216,6 +216,7 @@ else if (ViewModel is not null)
     private async Task<ShipViewModel> LoadShipViewModel(string shipIndex)
     {
         MetricsService.ShipViewCount.WithLabels(shipIndex, Localizer.GetGameLocalization(shipIndex + "_FULL", AppConstants.DefaultCultureDetails).Localization).Inc();
+        using (MetricsService.ShipViewModelInitDurationAverage.NewTimer())
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
             var vm = await CreateViewModel(shipIndex, Build, Localizer);

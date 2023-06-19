@@ -31,6 +31,11 @@ public class MetricsService
         Buckets = DefaultDurationBuckets,
     });
 
+    public Summary ShipViewModelInitDurationAverage { get; } = Prometheus.Metrics.CreateSummary("ship_vm_init_duration_average60s", "Average init-time of the ship VM in seconds over the last minute", new SummaryConfiguration
+    {
+        MaxAge = TimeSpan.FromMinutes(1),
+    });
+
     public Counter RefCount { get; } = Prometheus.Metrics.CreateCounter("ship_page_refs_total", "Number of refs for ship page requests", new CounterConfiguration
     {
         LabelNames = new[] { "referrer", "path" },

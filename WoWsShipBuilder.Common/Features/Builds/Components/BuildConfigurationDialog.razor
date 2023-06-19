@@ -276,6 +276,7 @@
     private ShipBuildViewModel LoadShipViewModel(ShipBuildContainer shipBuildContainer)
     {
         MetricsService.ShipViewCount.WithLabels(shipBuildContainer.Ship.Index, Localizer.GetGameLocalization(shipBuildContainer.Ship.Index + "_FULL", AppConstants.DefaultCultureDetails).Localization).Inc();
+        using (MetricsService.ShipViewModelInitDurationAverage.NewTimer())
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
             var vm = ShipBuildViewModel.Create(shipBuildContainer);
