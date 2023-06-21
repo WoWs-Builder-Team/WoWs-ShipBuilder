@@ -28,10 +28,10 @@ public static class BallisticHelper
     /// <param name="mass">Mass of the shell.</param>
     /// <param name="krupp">Krupp of the shell.</param>
     /// <returns>The penetration value.</returns>
-    private static double CalculatePen(double velocity, double diameter, double mass, double krupp)
+    public static double CalculatePen(double velocity, double diameter, double mass, double krupp)
     {
-        // Raw Penetration(mm) = 0.00046905491615181766 * V(m / s) ^ 1.4822064892953855 * D(m) ^ -0.6521 * M(kg) ^ 0.5506 * K / 2400
-        return 0.00046905491615181766 * Math.Pow(velocity, 1.4822064892953855) * Math.Pow(diameter, -0.6521) * Math.Pow(mass, 0.5506) * (krupp / 2400);
+        // rawPenetration[mm] = bulletKrupp * (bulletMass[kg] * bulletSpeed[m/s] * bulletSpeed[m/s]) ^ 0.69 * bulletDiameter[m] ^ (-1.07) * 0.0000001
+        return krupp * Math.Pow(mass * Math.Pow(velocity, 2), 0.69) * Math.Pow(diameter, -1.07) * 0.0000001;
     }
 
     /// <summary>
