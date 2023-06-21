@@ -7,7 +7,6 @@ using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Features.ShipComparison.GridData;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.DataTransfer;
 using WoWsShipBuilder.Infrastructure.GameData;

@@ -8,7 +8,6 @@ using WoWsShipBuilder.DataStructures.Exterior;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Upgrade;
-using WoWsShipBuilder.Features.Builds;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
 

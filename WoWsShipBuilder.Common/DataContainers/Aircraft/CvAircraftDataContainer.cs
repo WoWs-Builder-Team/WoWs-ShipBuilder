@@ -3,7 +3,6 @@ using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Aircraft;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
