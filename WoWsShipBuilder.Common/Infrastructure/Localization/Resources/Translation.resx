@@ -2035,4 +2035,17 @@ You can use the Change builds button to manage the builds of single ships. You c
         Represents how sturdy the projectile is.
         The higher the value the higher the penetration is.</value>
   </data>
+  <data name="ShipStats_ApPenetrationFormula" xml:space="preserve">
+      <value>K = projectile's krupp
+        M = projectile's mass [kg]
+        S = projectile's impact speed [m/s]
+        C = projectile's caliber [m]
+
+        Penetration [mm] = K * (M * S^2)^0.69 * C^(-1.07) * 0.0000001
+
+      Reverse engineered by TTaro_</value>
+  </data>
+  <data name="ShipStats_PenetrationAp" xml:space="preserve">
+      <value>Penetration</value>
+  </data>
 </root>

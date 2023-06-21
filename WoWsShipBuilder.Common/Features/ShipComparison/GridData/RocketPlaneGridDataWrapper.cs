@@ -1,4 +1,5 @@
 ﻿using WoWsShipBuilder.DataContainers;
+using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Features.ShipComparison.GridData;
 
@@ -39,7 +40,7 @@ public class RocketPlaneGridDataWrapper : PlaneGridDataWrapper
         WeaponDamage = rockets?.Select(x => x?.Damage ?? 0).ToList() ?? new();
         WeaponSplashRadius = rockets?.Select(x => x?.SplashRadius ?? 0).ToList() ?? new();
         WeaponSplashDamage = rockets?.Select(x => x?.SplashDmg ?? 0).ToList() ?? new();
-        WeaponPenetration = rockets?.Select(x => x?.Penetration ?? 0).ToList() ?? new();
+        WeaponPenetration = rockets?.Select(x => (x?.RocketType == $"ArmamentType_{RocketType.AP}" ? x.PenetrationAp : x?.Penetration) ?? 0).ToList() ?? new();
         WeaponFireChance = rockets?.Select(x => x?.FireChance ?? 0).ToList() ?? new();
         WeaponFuseTimer = rockets?.Select(x => x?.FuseTimer ?? 0).ToList() ?? new();
         WeaponArmingThreshold = rockets?.Select(x => x?.ArmingThreshold ?? 0).ToList() ?? new();

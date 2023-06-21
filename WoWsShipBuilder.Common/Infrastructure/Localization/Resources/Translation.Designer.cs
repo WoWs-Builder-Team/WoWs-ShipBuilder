@@ -2817,6 +2817,22 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to K = projectile&apos;s krupp
+        ///        M = projectile&apos;s mass [kg]
+        ///        S = projectile&apos;s impact speed [m/s]
+        ///        C = projectile&apos;s caliber [m]
+        ///
+        ///        Penetration [mm] = K * (M * S^2)^0.69 * C^(-1.07) * 0.0000001
+        ///
+        ///      Reverse engineered by TTaro_.
+        /// </summary>
+        public static string ShipStats_ApPenetrationFormula {
+            get {
+                return ResourceManager.GetString("ShipStats_ApPenetrationFormula", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AP.
         /// </summary>
         public static string ShipStats_ApSalvo {
@@ -4177,6 +4193,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string ShipStats_Penetration {
             get {
                 return ResourceManager.GetString("ShipStats_Penetration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Penetration.
+        /// </summary>
+        public static string ShipStats_PenetrationAp {
+            get {
+                return ResourceManager.GetString("ShipStats_PenetrationAp", resourceCulture);
             }
         }
         

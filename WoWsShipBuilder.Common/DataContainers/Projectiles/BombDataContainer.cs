@@ -15,6 +15,9 @@ public partial record BombDataContainer : ProjectileDataContainer
     [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true)]
     public string Name { get; set; } = default!;
 
+    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MM")]
+    public int Caliber { get; set; }
+
     [DataElementType(DataElementTypes.KeyValue)]
     public decimal Damage { get; set; }
 
@@ -29,6 +32,9 @@ public partial record BombDataContainer : ProjectileDataContainer
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MM")]
     public int Penetration { get; set; }
+
+    [DataElementType(DataElementTypes.Tooltip, TooltipKey = "ApPenetrationFormula", UnitKey = "MM")]
+    public int PenetrationAp { get; set; }
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
     public decimal FuseTimer { get; set; }
@@ -61,7 +67,8 @@ public partial record BombDataContainer : ProjectileDataContainer
         decimal fuseTimer = 0;
         var showBlastPenetration = true;
         decimal fireChance = 0;
-        int penetration;
+        int penetrationHe = 0;
+        int penetrationAp = 0;
 
         if (bomb.BombType.Equals(DataStructures.BombType.AP))
         {
@@ -71,7 +78,7 @@ public partial record BombDataContainer : ProjectileDataContainer
             armingThreshold = (int)bomb.ArmingThreshold;
             fuseTimer = (decimal)bomb.FuseTimer;
             showBlastPenetration = false;
-            penetration = (int)Math.Round(Math.Round(BallisticHelper.CalculatePen(bomb.MuzzleVelocity, bomb.Caliber, bomb.Mass, bomb.Krupp), 1), MidpointRounding.AwayFromZero); // this double Math.Round is needed for Shokaku bombs to round 282.469 to 283 instead of 282
+            penetrationAp = (int)Math.Round(Math.Round(BallisticHelper.CalculatePen(bomb.MuzzleVelocity, bomb.Caliber, bomb.Mass, bomb.Krupp), 1), MidpointRounding.AwayFromZero); // this double Math.Round is needed for Shokaku bombs to round 282.469 to 283 instead of 282
         }
         else
         {
@@ -81,7 +88,7 @@ public partial record BombDataContainer : ProjectileDataContainer
             fireChance = (decimal)fireChanceModifiers.Aggregate(bomb.FireChance, (current, modifier) => current + modifier);
             var fireChanceModifiersBombs = modifiers.FindModifiers("burnChanceFactorBig");
             fireChance = fireChanceModifiersBombs.Aggregate(fireChance, (current, modifier) => current + (decimal)modifier);
-            penetration = (int)Math.Truncate(bomb.Penetration);
+            penetrationHe = (int)Math.Truncate(bomb.Penetration);
         }
 
         var bombDataContainer = new BombDataContainer
@@ -89,7 +96,8 @@ public partial record BombDataContainer : ProjectileDataContainer
             Name = bomb.Name,
             BombType = $"ArmamentType_{bomb.BombType.BombTypeToString()}",
             Damage = Math.Round(bombDamage, 2),
-            Penetration = penetration,
+            Penetration = penetrationHe,
+            PenetrationAp = penetrationAp,
             FuseTimer = fuseTimer,
             ArmingThreshold = armingThreshold,
             RicochetAngles = ricochetAngle,
