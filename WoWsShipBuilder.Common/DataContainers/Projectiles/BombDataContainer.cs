@@ -1,5 +1,6 @@
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures.Projectile;
+using WoWsShipBuilder.Features.BallisticCharts;
 using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
@@ -58,8 +59,9 @@ public partial record BombDataContainer : ProjectileDataContainer
         decimal fuseTimer = 0;
         var showBlastPenetration = true;
         decimal fireChance = 0;
+        int penetration;
 
-        if (bomb.BombType.Equals(WoWsShipBuilder.DataStructures.BombType.AP))
+        if (bomb.BombType.Equals(DataStructures.BombType.AP))
         {
             List<float> bombDamageModifiers = modifiers.FindModifiers("bombApAlphaDamageMultiplier").ToList();
             bombDamage = (decimal)bombDamageModifiers.Aggregate(bomb.Damage, (current, modifier) => current * modifier);
@@ -67,6 +69,7 @@ public partial record BombDataContainer : ProjectileDataContainer
             armingThreshold = (int)bomb.ArmingThreshold;
             fuseTimer = (decimal)bomb.FuseTimer;
             showBlastPenetration = false;
+            penetration = (int)Math.Round(Math.Round(BallisticHelper.CalculatePen(bomb.MuzzleVelocity, bomb.Caliber, bomb.Mass, bomb.Krupp), 1), MidpointRounding.AwayFromZero); // this double Math.Round is needed for Shokaku bombs to round 282.469 to 283 instead of 282
         }
         else
         {
@@ -76,6 +79,7 @@ public partial record BombDataContainer : ProjectileDataContainer
             fireChance = (decimal)fireChanceModifiers.Aggregate(bomb.FireChance, (current, modifier) => current + modifier);
             var fireChanceModifiersBombs = modifiers.FindModifiers("burnChanceFactorBig");
             fireChance = fireChanceModifiersBombs.Aggregate(fireChance, (current, modifier) => current + (decimal)modifier);
+            penetration = (int)Math.Truncate(bomb.Penetration);
         }
 
         var bombDataContainer = new BombDataContainer
@@ -83,7 +87,7 @@ public partial record BombDataContainer : ProjectileDataContainer
             Name = bomb.Name,
             BombType = $"ArmamentType_{bomb.BombType.BombTypeToString()}",
             Damage = Math.Round(bombDamage, 2),
-            Penetration = (int)Math.Truncate(bomb.Penetration),
+            Penetration = penetration,
             FuseTimer = fuseTimer,
             ArmingThreshold = armingThreshold,
             RicochetAngles = ricochetAngle,

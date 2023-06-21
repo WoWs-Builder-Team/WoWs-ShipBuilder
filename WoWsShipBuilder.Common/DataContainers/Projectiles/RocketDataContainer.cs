@@ -1,5 +1,6 @@
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures.Projectile;
+using WoWsShipBuilder.Features.BallisticCharts;
 using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
@@ -58,6 +59,7 @@ namespace WoWsShipBuilder.DataContainers
             decimal fuseTimer = 0;
             var armingThreshold = 0;
             decimal fireChance = 0;
+            int penetration;
             if (rocket.RocketType.Equals(DataStructures.RocketType.AP))
             {
                 List<float> rocketDamageModifiers = modifiers.FindModifiers("rocketApAlphaDamageMultiplier").ToList();
@@ -66,6 +68,7 @@ namespace WoWsShipBuilder.DataContainers
                 fuseTimer = (decimal)rocket.FuseTimer;
                 armingThreshold = (int)rocket.ArmingThreshold;
                 showBlastPenetration = false;
+                penetration = (int)Math.Round(BallisticHelper.CalculatePen(rocket.MuzzleVelocity, rocket.Caliber, rocket.Mass, rocket.Krupp));
             }
             else
             {
@@ -73,6 +76,7 @@ namespace WoWsShipBuilder.DataContainers
                 fireChance = (decimal)fireChanceModifiers.Aggregate(rocket.FireChance, (current, modifier) => current + modifier);
                 var fireChanceModifiersRockets = modifiers.FindModifiers("burnChanceFactorSmall");
                 fireChance = fireChanceModifiersRockets.Aggregate(fireChance, (current, modifier) => current + (decimal)modifier);
+                penetration = (int)Math.Truncate(rocket.Penetration);
             }
 
             var rocketDataContainer = new RocketDataContainer
@@ -80,7 +84,7 @@ namespace WoWsShipBuilder.DataContainers
                 Name = rocket.Name,
                 RocketType = $"ArmamentType_{rocket.RocketType.RocketTypeToString()}",
                 Damage = Math.Round(rocketDamage, 2),
-                Penetration = (int)Math.Truncate(rocket.Penetration),
+                Penetration = penetration,
                 FuseTimer = fuseTimer,
                 ArmingThreshold = armingThreshold,
                 RicochetAngles = ricochetAngle,
