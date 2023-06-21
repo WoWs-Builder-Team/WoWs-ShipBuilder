@@ -2027,4 +2027,7 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="SettingsWindow_LocalStorageWarning" xml:space="preserve">
       <value>Builds are saved in your browser local storage. Operations such as clearing the browser cache will very likely delete all the data stored in the local storage. We highly recommend you to export your builds periodically or at least before performing such operations.</value>
   </data>
+  <data name="ShipStats_Krupp" xml:space="preserve">
+      <value>Krupp</value>
+  </data>
 </root>

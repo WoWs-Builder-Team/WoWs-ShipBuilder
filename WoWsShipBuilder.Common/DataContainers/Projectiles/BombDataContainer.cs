@@ -1,7 +1,6 @@
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.Features.BallisticCharts;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
@@ -24,6 +23,9 @@ public partial record BombDataContainer : ProjectileDataContainer
 
     [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "Splash", TooltipKey = "SplashExplanation")]
     public decimal SplashDmg { get; set; }
+
+    [DataElementType(DataElementTypes.KeyValue)]
+    public decimal Krupp { get; set; }
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MM")]
     public int Penetration { get; set; }
@@ -97,6 +99,7 @@ public partial record BombDataContainer : ProjectileDataContainer
             ShowBlastPenetration = showBlastPenetration,
             SplashRadius = Math.Round((decimal)bomb.DepthSplashRadius, 1),
             SplashDmg = Math.Round(bombDamage * (decimal)bomb.SplashDamageCoefficient),
+            Krupp = (decimal)bomb.Krupp,
         };
 
         bombDataContainer.UpdateDataElements();

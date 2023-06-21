@@ -3810,6 +3810,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Krupp.
+        /// </summary>
+        public static string ShipStats_Krupp {
+            get {
+                return ResourceManager.GetString("ShipStats_Krupp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loaders.
         /// </summary>
         public static string ShipStats_Loaders {

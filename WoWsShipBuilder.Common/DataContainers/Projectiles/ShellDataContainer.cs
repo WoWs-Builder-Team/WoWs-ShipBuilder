@@ -4,7 +4,6 @@ using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Projectile;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
@@ -42,6 +41,9 @@ public partial record ShellDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.KeyValue)]
     public decimal AirDrag { get; set; }
 
+    [DataElementType(DataElementTypes.KeyValue)]
+    public decimal Krupp { get; set; }
+
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MM")]
     public int Penetration { get; set; }
 
@@ -69,8 +71,6 @@ public partial record ShellDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "Blast", TooltipKey = "BlastExplanation")]
     [DataElementFiltering(true, "ShouldDisplayBlastPenetration")]
     public decimal SplashCoeff { get; set; }
-
-    public decimal Krupp { get; set; }
 
     public decimal MinRicochetAngle { get; set; }
 
