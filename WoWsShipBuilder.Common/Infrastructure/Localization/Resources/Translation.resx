@@ -2031,6 +2031,8 @@ You can use the Change builds button to manage the builds of single ships. You c
       <value>Krupp</value>
   </data>
   <data name="ShipStats_KruppExplanation" xml:space="preserve">
-      <value>It's a constant used to tweak projectile's penetration. Represents how sturdy the projectile is. The higher the value the higher the penetration is.</value>
+      <value>It's a constant used to tweak projectile's penetration.
+        Represents how sturdy the projectile is.
+        The higher the value the higher the penetration is.</value>
   </data>
 </root>

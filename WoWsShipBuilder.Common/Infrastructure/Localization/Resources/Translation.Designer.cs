@@ -3819,7 +3819,9 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to It&apos;s a constant used to tweak projectile&apos;s penetration. Represents how sturdy the projectile is. The higher the value the higher the penetration is..
+        ///   Looks up a localized string similar to It&apos;s a constant used to tweak projectile&apos;s penetration.
+        ///        Represents how sturdy the projectile is.
+        ///        The higher the value the higher the penetration is..
         /// </summary>
         public static string ShipStats_KruppExplanation {
             get {

@@ -44,7 +44,9 @@
                     </ChildContent>
                     <TooltipContent>
                         <MudPaper Outlined="true" Class="pa-2">
-                            <MudText Style="max-width: 500px" Typo="Typo.body2">@group.localizer.GetAppLocalization(element.Tooltip).Localization</MudText>
+                            <MudText Style="max-width: 500px" Typo="Typo.body2">
+                                <MultilineString InputString="@group.localizer.GetAppLocalization(element.Tooltip).Localization"/>
+                            </MudText>
                         </MudPaper>
                     </TooltipContent>
                 </MudTooltip>
