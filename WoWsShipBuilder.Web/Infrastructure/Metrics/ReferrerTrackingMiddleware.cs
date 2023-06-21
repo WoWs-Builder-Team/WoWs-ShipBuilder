@@ -1,5 +1,4 @@
-﻿using WoWsShipBuilder.Infrastructure;
-using WoWsShipBuilder.Infrastructure.Metrics;
+﻿using WoWsShipBuilder.Infrastructure.Metrics;
 
 namespace WoWsShipBuilder.Web.Infrastructure.Metrics;
 
@@ -9,9 +8,9 @@ public class ReferrerTrackingMiddleware
 
     private readonly RequestDelegate next;
 
-    private readonly IMetricsService metricsService;
+    private readonly MetricsService metricsService;
 
-    public ReferrerTrackingMiddleware(RequestDelegate next, IMetricsService metricsService)
+    public ReferrerTrackingMiddleware(RequestDelegate next, MetricsService metricsService)
     {
         this.next = next;
         this.metricsService = metricsService;
@@ -19,8 +18,7 @@ public class ReferrerTrackingMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-        context.Request.Query.TryGetValue(ReferrerQueryParamName, out var refValue);
-        if (!string.IsNullOrWhiteSpace(refValue))
+        if (context.Request.Query.TryGetValue(ReferrerQueryParamName, out var refValue) && !string.IsNullOrWhiteSpace(refValue))
         {
             metricsService.RefCount.WithLabels(refValue!, context.Request.Path).Inc();
         }

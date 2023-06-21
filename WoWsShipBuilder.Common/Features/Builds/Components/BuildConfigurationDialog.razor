@@ -17,7 +17,7 @@
 @implements IAsyncDisposable
 
 @inject ILocalizer Localizer
-@inject IMetricsService MetricsService
+@inject MetricsService MetricsService
 @inject IHostEnvironment Environment
 @inject ISnackbar Snackbar
 @inject IOptions<LinkShorteningOptions> LinkShorteningOptions
@@ -196,7 +196,7 @@
                             <MudItem xs="12" md="6">
                                 <MudStack Row="true" Justify="Justify.Center" Style="margin-top: -14px">
                                     <MudTextField @bind-Value="inputBuildString" Immediate DebounceInterval="150" Validation="@(new Func<string, Task<string?>>(ValidateBuildString))" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Alternative" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink))" Variant="Variant.Outlined"/>
-                                    <MudButton Disabled="@(string.IsNullOrWhiteSpace(buildString))" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Style="margin-top: 6px" OnClick="async () => await ImportBuild(SelectedContainer.Ship)">
+                                    <MudButton Disabled="@(string.IsNullOrWhiteSpace(buildString))" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Style="margin-top: 6px" OnClick="@ImportBuildFromString">
                                         @Localizer.GetAppLocalization(Translation.BuildConfigurationDialog_Load).Localization
                                     </MudButton>
                                     <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Class="file-upload-full-height" Accept=".png">
@@ -275,7 +275,8 @@
 
     private ShipBuildViewModel LoadShipViewModel(ShipBuildContainer shipBuildContainer)
     {
-        MetricsService.ShipCount.WithLabels(shipBuildContainer.Ship.Index, Localizer.GetGameLocalization(shipBuildContainer.Ship.Index + "_FULL", AppConstants.DefaultCultureDetails).Localization).Inc();
+        MetricsService.ShipViewCount.WithLabels(shipBuildContainer.Ship.Index, Localizer.GetGameLocalization(shipBuildContainer.Ship.Index + "_FULL", AppConstants.DefaultCultureDetails).Localization).Inc();
+        using (MetricsService.ShipViewModelInitDurationAverage.NewTimer())
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
             var vm = ShipBuildViewModel.Create(shipBuildContainer);
@@ -304,6 +305,12 @@
         ViewModel = vm;
         vmCache[SelectedContainer.Id] = vm;
         await Task.Delay(1); // needed for the captain skill selector to rerender properly
+    }
+
+    private async Task ImportBuildFromString()
+    {
+        MetricsService.BuildImports.WithLabels("build-config-dialog", "string").Inc();
+        await ImportBuild(SelectedContainer.Ship);
     }
 
     private async Task ImportBuild(Ship ship)
@@ -335,6 +342,7 @@
         {
             var result = await module!.InvokeAsync<string>("findUploadAndDecode");
             buildString = result;
+            MetricsService.BuildImports.WithLabels("build-config-dialog", "image").Inc();
             await ImportBuild(SelectedContainer.Ship);
         }
         else

@@ -14,6 +14,7 @@
 @using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
+@using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
 
 @implements IAsyncDisposable
@@ -24,6 +25,7 @@
 @inject IOptions<LinkShorteningOptions> LinkShorteningOptions
 @inject IJSRuntime Runtime
 @inject AppSettings AppSettings
+@inject MetricsService MetricsService
 @inject RefreshNotifierService NotifierService
 
 <MudGrid Justify="Justify.Center" Spacing="2">
@@ -32,7 +34,7 @@
         <MudItem xs="12">
             <MudStack Row>
                 <MudTextField Immediate T="string" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)).Localization" @bind-Value="buildString"/>
-                <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="OnLoadBuild">
+                <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="ImportFromString">
                     @Localizer.GetAppLocalization(nameof(Translation.WebApp_LoadBuild)).Localization
                 </MudButton>
                 <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Style="margin-top: 0;" Class="file-upload-full-height" Accept=".png">
@@ -425,10 +427,12 @@
 
         if (MultiSelect)
         {
+            MetricsService.BuildImports.WithLabels("ship-selector", "saved-builds").Inc();
             SelectedShips.Add(ShipBuildContainer.CreateNew(AppData.ShipDictionary[build.ShipIndex], build, null));
         }
         else if (!MultiSelect && SelectedShips.Count == 0)
         {
+            MetricsService.BuildImports.WithLabels("ship-selector", "saved-builds").Inc();
             SelectedShips.Add(ShipBuildContainer.CreateNew(AppData.ShipDictionary[build.ShipIndex], build, null));
         }
 
@@ -481,13 +485,20 @@
         ApplyFilter();
     }
 
+    private async Task ImportFromString()
+    {
+        MetricsService.BuildImports.WithLabels("ship-selector", "string").Inc();
+        await LoadBuild();
+    }
+
     private async Task FileSelected(IBrowserFile? file)
     {
         if (file is not null && file.ContentType.Equals("image/png"))
         {
             var result = await module!.InvokeAsync<string>("findUploadAndDecode");
             buildString = result;
-            await OnLoadBuild();
+            MetricsService.BuildImports.WithLabels("ship-selector", "image").Inc();
+            await LoadBuild();
             buildString = string.Empty;
         }
         else
@@ -496,7 +507,7 @@
         }
     }
 
-    private async Task OnLoadBuild()
+    private async Task LoadBuild()
     {
         if (!string.IsNullOrEmpty(LinkShorteningOptions.Value.UriPrefix) && buildString.Contains(LinkShorteningOptions.Value.UriPrefix + '/'))
         {
