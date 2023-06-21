@@ -41,7 +41,7 @@ public partial record ShellDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.KeyValue)]
     public decimal AirDrag { get; set; }
 
-    [DataElementType(DataElementTypes.KeyValue)]
+    [DataElementType(DataElementTypes.Tooltip, TooltipKey = "KruppExplanation")]
     public decimal Krupp { get; set; }
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MM")]

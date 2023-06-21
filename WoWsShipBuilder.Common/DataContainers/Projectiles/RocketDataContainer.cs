@@ -24,7 +24,7 @@ namespace WoWsShipBuilder.DataContainers
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "Splash", TooltipKey = "SplashExplanation")]
         public decimal SplashDmg { get; set; }
 
-        [DataElementType(DataElementTypes.KeyValue)]
+        [DataElementType(DataElementTypes.Tooltip, TooltipKey = "KruppExplanation")]
         public decimal Krupp { get; set; }
 
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MM")]
