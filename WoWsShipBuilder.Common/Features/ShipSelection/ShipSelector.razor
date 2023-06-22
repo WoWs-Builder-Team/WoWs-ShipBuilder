@@ -523,8 +523,7 @@
         try
         {
             var build = buildString.StartsWith('{') ? JsonConvert.DeserializeObject<Build>(buildString)! : Build.CreateBuildFromString(buildString);
-            build.UpgradeBuild();
-            AddSavedBuild(build);
+            AddSavedBuild(Build.UpgradeBuild(build));
             buildString = string.Empty;
             StateHasChanged();
             Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;

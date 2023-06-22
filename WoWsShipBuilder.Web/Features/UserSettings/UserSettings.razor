@@ -167,7 +167,7 @@
         base.OnInitialized();
         RefreshNotifierService.RefreshRequested += UpdateSettingsValues;
         UpdateSettingsValues();
-        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomEnd;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -210,7 +210,7 @@
         AppSettings.StoreBuildOnShare = storeBuildOnShare;
 
         await SettingsAccessor.SaveSettings(AppSettings);
-        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+
         Snackbar.Add("Settings saved", Severity.Success, config => { config.CloseAfterNavigation = true; });
         if (settingsChanged)
         {
@@ -241,7 +241,7 @@
     {
         AppSettings.ClearSettings();
         await SettingsAccessor.SaveSettings(AppSettings);
-        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomEnd;
         Snackbar.Add(Localizer.GetAppLocalization(nameof(Translation.WebApp_SettingsSaved)).Localization, Severity.Success, config => { config.CloseAfterNavigation = true; });
         RefreshNotifierService.NotifyRefreshRequested();
     }
@@ -305,18 +305,56 @@
         if (file is not null && file.ContentType.Equals("application/json"))
         {
             using StreamReader reader = new(file.OpenReadStream());
-            var buildsString = await reader.ReadToEndAsync();
-            var buildList = JsonConvert.DeserializeObject<IEnumerable<string>>(buildsString);
+            string buildsString = await reader.ReadToEndAsync();
+            IEnumerable<string>? buildList;
+            try
+            {
+                buildList = JsonConvert.DeserializeObject<IEnumerable<string>>(buildsString);
+            }
+            catch (JsonReaderException)
+            {
+                Snackbar.Add("Corrupted JSON file.", Severity.Error);
+                return;
+            }
+
             if (buildList is not null)
             {
-                await UserDataService.ImportBuildsAsync(buildList.Select(x => Build.CreateBuildFromString(x)).Reverse());
+                var builds = new List<Build>();
+                var counter = 0;
+                foreach (string buildString in buildList)
+                {
+                    try
+                    {
+                        var build = Build.CreateBuildFromString(buildString);
+                        if (AppData.ShipDictionary.ContainsKey(build.ShipIndex))
+                        {
+                            builds.Add(build);
+                        }
+                        else
+                        {
+                            counter++;
+                        }
+                    }
+                    catch (FormatException)
+                    {
+                        counter++;
+                    }
+                }
+
+                builds.Reverse();
+                await UserDataService.ImportBuildsAsync(builds);
                 savedBuilds = (await UserDataService.LoadBuildsAsync()).ToList();
                 MetricsService.SavedBuildOperations.WithLabels("import").Inc();
+                if (counter > 0)
+                {
+                    Snackbar.Add($"{counter} builds could not be imported.", Severity.Warning);
+                }
+
                 StateHasChanged();
             }
             else
             {
-                Snackbar.Add("No build to import found.", Severity.Error);
+                Snackbar.Add("No builds to import found.", Severity.Error);
             }
         }
         else

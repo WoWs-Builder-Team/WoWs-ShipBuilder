@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
 using DynamicData;
+using Newtonsoft.Json;
 using WoWsShipBuilder.Features.Builds;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 
@@ -42,12 +44,39 @@ public class DesktopUserDataService : IUserDataService
         string path = dataService.CombinePaths(appDataService.DefaultAppDataDirectory, "builds.json");
         if (fileSystem.File.Exists(path))
         {
-            var rawBuildList = await dataService.LoadAsync<List<string>>(path);
-            var builds = rawBuildList?
-                .Select(str => Build.CreateBuildFromString(str))
-                .ToList() ?? Enumerable.Empty<Build>();
-            savedBuilds = builds.DistinctBy(x => x.Hash).ToList();
-            return savedBuilds;
+            List<string>? buildList = null;
+            try
+            {
+                buildList = await dataService.LoadAsync<List<string>>(path);
+            }
+            catch (JsonReaderException)
+            {
+                // silently fails
+            }
+
+            if (buildList is not null)
+            {
+                var builds = new List<Build>();
+                foreach (string buildString in buildList)
+                {
+                    try
+                    {
+                        var build = Build.CreateBuildFromString(buildString);
+                        if (AppData.ShipDictionary.ContainsKey(build.ShipIndex))
+                        {
+                            builds.Add(build);
+                        }
+                    }
+                    catch (FormatException)
+                    {
+                        // silently fails
+                    }
+                }
+
+                savedBuilds = builds.DistinctBy(x => x.Hash).ToList();
+            }
+
+            return savedBuilds ?? Enumerable.Empty<Build>();
         }
 
         return Enumerable.Empty<Build>();
@@ -57,7 +86,7 @@ public class DesktopUserDataService : IUserDataService
     {
         savedBuilds ??= (await LoadBuildsAsync()).ToList();
 
-        foreach (var build in builds)
+        foreach (var build in builds.Where(x => AppData.ShipDictionary.ContainsKey(x.ShipIndex)))
         {
             savedBuilds.RemoveAll(x => x.Equals(build));
             savedBuilds.Insert(0, build);
