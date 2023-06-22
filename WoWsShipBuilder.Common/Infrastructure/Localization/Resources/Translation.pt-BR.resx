@@ -2027,6 +2027,24 @@ Você pode usar o botão de Mudar builds para gerenciar as builds de navios. Voc
   <data name="SettingsWindow_LocalStorageWarning" xml:space="preserve">
       <value>Builds são salvas no armazenamento local do seu navegador. Operações como limpar o cache do navegador provavelmente irão apagar todos os dados armazenados no armazenamento local. É altamente recomendável exportar suas builds periodicamente ou pelo menos antes de realizar essas operações.</value>
   </data>
+  <data name="ShipStats_Krupp" xml:space="preserve">
+      <value>Krupp</value>
+  </data>
+  <data name="ShipStats_KruppExplanation" xml:space="preserve">
+      <value>É uma constante usada para ajustar a penetração do projétil.
+        Representa o quão resistente o projétil é.
+        Quanto maior é o valor, maior é a penetração.</value>
+  </data>
+  <data name="ShipStats_ApPenetrationFormula" xml:space="preserve">
+      <value>K = krupp do projétil
+        M = massa do projétil [kg]
+        S = velocidade de impacto do projétil [m/s]
+        C = calibre do projétil [m]
+
+        Penetração [mm] = K * (M * S^2)^0,69 * C^(-1,07) * 0,0000001
+
+      Engenharia reversa feita por TTaro_</value>
+  </data>
   <data name="ShipStats_PenetrationAp" xml:space="preserve">
       <value>Penetração</value>
   </data>
