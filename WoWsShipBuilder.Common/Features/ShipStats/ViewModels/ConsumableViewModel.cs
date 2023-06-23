@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using ReactiveUI;
 using WoWsShipBuilder.DataContainers;
+using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.Utility;
 
@@ -78,9 +79,10 @@ public class ConsumableViewModel : ReactiveObject, IBuildComponentProvider
     /// </summary>
     /// <param name="modifiers">The list of modifiers applied to the current ship.</param>
     /// <param name="shipHp">The HP of the ship after modifiers have been applied.</param>
-    public void UpdateConsumableData(List<(string, float)> modifiers, int shipHp)
+    /// <param name="shipClass">The class of the ship.</param>
+    public void UpdateConsumableData(List<(string, float)> modifiers, int shipHp, ShipClass shipClass)
     {
-        Parallel.ForEach(ConsumableSlots, consumableSlot => consumableSlot.UpdateDataContainers(modifiers, shipHp));
+        Parallel.ForEach(ConsumableSlots, consumableSlot => consumableSlot.UpdateDataContainers(modifiers, shipHp, shipClass));
     }
 
     public IEnumerable<(string, float)> GetModifiersList()
