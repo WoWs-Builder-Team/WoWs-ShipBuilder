@@ -113,7 +113,7 @@ public class ConsumableViewModel : ReactiveObject, IBuildComponentProvider
         var rawSlots = ship.ShipConsumable.GroupBy(consumable => consumable.Slot)
             .Select(group => group.Where(c => !disabledConsumables.Contains(c.ConsumableName)))
             .Where(consumables => consumables.Any())
-            .Select(consumables => ConsumableSlotViewModel.Create(consumables, Logging.LoggerFactory, ConsumableActivationChanged))
+            .Select(consumables => ConsumableSlotViewModel.Create(consumables, Logging.LoggerFactory, ship.ShipClass, ConsumableActivationChanged))
             .OrderBy(vm => vm.Slot);
 
         ConsumableSlots.Clear();

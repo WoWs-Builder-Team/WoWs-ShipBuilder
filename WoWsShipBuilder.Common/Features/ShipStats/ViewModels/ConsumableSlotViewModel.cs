@@ -68,10 +68,10 @@ public class ConsumableSlotViewModel : ReactiveObject
 
     public ConsumableDataContainer SelectedConsumable => ConsumableData[SelectedIndex];
 
-    public static ConsumableSlotViewModel Create(IEnumerable<ShipConsumable> shipConsumables, ILoggerFactory loggerFactory, Action<int, bool>? activationChangeHandler = null)
+    public static ConsumableSlotViewModel Create(IEnumerable<ShipConsumable> shipConsumables, ILoggerFactory loggerFactory, ShipClass shipClass, Action<int, bool>? activationChangeHandler = null)
     {
         var vm = new ConsumableSlotViewModel(shipConsumables, activationChangeHandler, loggerFactory.CreateLogger<ConsumableSlotViewModel>());
-        vm.UpdateDataContainers(new(), 0, ShipClass.Auxiliary);
+        vm.UpdateDataContainers(new(), 0, shipClass);
         return vm;
     }
 
