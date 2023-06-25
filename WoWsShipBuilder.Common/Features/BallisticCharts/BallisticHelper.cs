@@ -31,6 +31,7 @@ public static class BallisticHelper
     public static double CalculatePen(double velocity, double diameter, double mass, double krupp)
     {
         // rawPenetration[mm] = bulletKrupp * (bulletMass[kg] * bulletSpeed[m/s] * bulletSpeed[m/s]) ^ 0.69 * bulletDiameter[m] ^ (-1.07) * 0.0000001
+        // reverse engineered by TTaro_
         return krupp * Math.Pow(mass * Math.Pow(velocity, 2), 0.69) * Math.Pow(diameter, -1.07) * 0.0000001;
     }
 
