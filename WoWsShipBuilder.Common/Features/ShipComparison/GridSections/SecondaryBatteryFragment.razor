@@ -13,14 +13,20 @@
         var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
         nfi.NumberGroupSeparator = "'";
 
-        var columnTitleCaliber = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Caliber))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
-        var columnTitleBarrels = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Barrels))}";
-        var columnTitleMaxRange = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_MaxRange))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
-        var columnTitleReload = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ReloadTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
-        var columnTitleRof = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RoF))} ({element.localizer.SimpleAppLocalization(Translation.Unit_ShotsPerMinute)})";
-        var columnTitleDpm = $"{element.localizer.SimpleAppLocalization(Translation.ShipStats_Dpm)}";
-        var columnTitleFpm = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Fpm))} ({element.localizer.SimpleAppLocalization(Translation.Unit_FPM)})";
-        var columnTitleSigma = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Sigma))}";
+        var unitMm = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_MM))}";
+        var unitKm = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_KM))}";
+        var unitS = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_S))}";
+        var unitShotsPerMinute = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_ShotsPerMinute))}";
+        var unitFpm = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_FPM))}";
+
+        var columnTitleCaliber = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Caliber));
+        var columnTitleBarrels = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Barrels));
+        var columnTitleMaxRange = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_MaxRange));
+        var columnTitleReload = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ReloadTime));
+        var columnTitleRof = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RoF));
+        var columnTitleDpm = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Dpm));
+        var columnTitleFpm = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Fpm));
+        var columnTitleSigma = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Sigma));
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCaliber}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCaliber)" SortBy="@(x => x.Secondary.Caliber)" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
@@ -31,7 +37,7 @@
                     {
                         decimal item = items[i];
                         <MudText Typo="Typo.body2">
-                            @item
+                            @(item + unitMm)
                         </MudText>
                         if (i < items.Count - 1)
                         {
@@ -80,7 +86,7 @@
                 @if (context.Item.Secondary.Range is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.Secondary.Range
+                        @(context.Item.Secondary.Range + unitKm)
                     </MudText>
                 }
                 else
@@ -101,7 +107,7 @@
                     {
                         decimal item = items[i];
                         <MudText Typo="Typo.body2">
-                            @item
+                            @(item + unitS)
                         </MudText>
                         if (i < items.Count - 1)
                         {
@@ -127,7 +133,7 @@
                     {
                         decimal item = items[i];
                         <MudText Typo="Typo.body2">
-                            @item
+                            @(item + unitShotsPerMinute)
                         </MudText>
                         if (i < items.Count - 1)
                         {
@@ -179,7 +185,7 @@
                     {
                         decimal item = items[i];
                         <MudText Typo="Typo.body2">
-                            @item
+                            @(item + unitFpm)
                         </MudText>
                         if (i < items.Count - 1)
                         {

@@ -8,21 +8,21 @@
     {
         string dataSectionString = ShipComparisonDataSections.Concealment.AsString();
 
-        var columnTitleFromShipBase = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ConcealmentFromShips))}: {element.localizer.SimpleAppLocalization(Translation.ShipStats_ConcealmentBySea)} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
-        var columnTitleFromShipOnFire = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ConcealmentFromShips))}: {element.localizer.SimpleAppLocalization(Translation.ShipComparison_OnFire)} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
-        var columnTitleFromShipSmokeFiring = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ConcealmentFromShips))}: {element.localizer.SimpleAppLocalization(Translation.ShipComparison_SmokeFiring)} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
-        var columnTitleFromPlanesBase = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ConcealmentFromPlanes))}: {element.localizer.SimpleAppLocalization(Translation.ShipStats_ConcealmentBySea)} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
-        var columnTitleFromPlanesOnFire = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ConcealmentFromPlanes))}: {element.localizer.SimpleAppLocalization(Translation.ShipComparison_OnFire)} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
-        var columnTitleFromSubs = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FromSubs))}: {element.localizer.SimpleAppLocalization(Translation.ShipStats_ConcealmentBySubPeriscope)} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
+        var unitKm = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_KM))}";
 
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFromShipBase}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromShipBase)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Concealment.ConcealmentBySea)" Title="@columnTitleFromShipBase" HeaderClass="column-text-center" CellClass="column-text-center"/>
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFromShipOnFire}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromShipOnFire)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Concealment.ConcealmentBySeaFire)" Title="@columnTitleFromShipOnFire" HeaderClass="column-text-center" CellClass="column-text-center"/>
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFromShipSmokeFiring}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromShipSmokeFiring)" SortBy="@(x => x.Concealment.ConcealmentBySeaFiringSmoke)" T="GridDataWrapper" Title="@columnTitleFromShipSmokeFiring" HeaderClass="column-text-center" CellClass="column-text-center">
+        var columnTitleFromShipBase = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ConcealmentFromShips))}: {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ConcealmentBySea))}";
+        var columnTitleFromShipOnFire = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ConcealmentFromShips))}: {element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_OnFire))}";
+        var columnTitleFromShipSmokeFiring = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ConcealmentFromShips))}: {element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SmokeFiring))}";
+        var columnTitleFromPlanesBase = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ConcealmentFromPlanes))}: {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ConcealmentBySea))}";
+        var columnTitleFromPlanesOnFire = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ConcealmentFromPlanes))}: {element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_OnFire))}";
+        var columnTitleFromSubs = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FromSubs))}: {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ConcealmentBySubPeriscope))}";
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFromShipBase}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromShipBase)" T="GridDataWrapper" SortBy="@(x => x.Concealment.ConcealmentBySea)" Title="@columnTitleFromShipBase" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.Concealment.ConcealmentBySeaFiringSmoke != 0)
+                @if (context.Item.Concealment.ConcealmentBySea != 0)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.Concealment.ConcealmentBySeaFiringSmoke
+                        @(context.Item.Concealment.ConcealmentBySea + unitKm)
                     </MudText>
                 }
                 else
@@ -33,8 +33,90 @@
                 }
             </CellTemplate>
         </TemplateColumn>
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFromPlanesBase}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromPlanesBase)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Concealment.ConcealmentByAir)" Title="@columnTitleFromPlanesBase" HeaderClass="column-text-center" CellClass="column-text-center"/>
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFromPlanesOnFire}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromPlanesOnFire)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Concealment.ConcealmentByAirFire)" Title="@columnTitleFromPlanesOnFire" HeaderClass="column-text-center" CellClass="column-text-center"/>
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFromSubs}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromSubs)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Concealment.ConcealmentBySubPeriscope)" Title="@columnTitleFromSubs" HeaderClass="column-text-center" CellClass="column-text-center"/>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFromShipOnFire}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromShipOnFire)" T="GridDataWrapper" SortBy="@(x => x.Concealment.ConcealmentBySeaFire)" Title="@columnTitleFromShipOnFire" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.Concealment.ConcealmentBySeaFire != 0)
+                {
+                    <MudText Typo="Typo.body2">
+                        @(context.Item.Concealment.ConcealmentBySeaFire + unitKm)
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFromShipSmokeFiring}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromShipSmokeFiring)" SortBy="@(x => x.Concealment.ConcealmentBySeaFiringSmoke)" T="GridDataWrapper" Title="@columnTitleFromShipSmokeFiring" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.Concealment.ConcealmentBySeaFiringSmoke != 0)
+                {
+                    <MudText Typo="Typo.body2">
+                        @(context.Item.Concealment.ConcealmentBySeaFiringSmoke + unitKm)
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFromPlanesBase}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromPlanesBase)" T="GridDataWrapper" SortBy="@(x => x.Concealment.ConcealmentByAir)" Title="@columnTitleFromPlanesBase" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.Concealment.ConcealmentByAir != 0)
+                {
+                    <MudText Typo="Typo.body2">
+                        @(context.Item.Concealment.ConcealmentByAir + unitKm)
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFromPlanesOnFire}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromPlanesOnFire)" T="GridDataWrapper" SortBy="@(x => x.Concealment.ConcealmentByAirFire)" Title="@columnTitleFromPlanesOnFire" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.Concealment.ConcealmentByAirFire != 0)
+                {
+                    <MudText Typo="Typo.body2">
+                        @(context.Item.Concealment.ConcealmentByAirFire + unitKm)
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFromSubs}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromSubs)" T="GridDataWrapper" SortBy="@(x => x.Concealment.ConcealmentBySubPeriscope)" Title="@columnTitleFromSubs" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.Concealment.ConcealmentBySubPeriscope != 0)
+                {
+                    <MudText Typo="Typo.body2">
+                        @(context.Item.Concealment.ConcealmentBySubPeriscope + unitKm)
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
     };
 }
