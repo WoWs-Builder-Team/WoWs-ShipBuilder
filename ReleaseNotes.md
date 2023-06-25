@@ -14,6 +14,7 @@ Download [**WoWsShipBuilderSetup.exe**](https://github.com/WoWs-Builder-Team/WoW
 ### Additions
 - Penetration values for AP bombs and rockets
 - Display Krupp for AP projectiles
+- Add checks to prevent corrupted builds to be loaded 
 
 ### Changes
 - Update penetration formula with the one reverse engineered by TTaro_
