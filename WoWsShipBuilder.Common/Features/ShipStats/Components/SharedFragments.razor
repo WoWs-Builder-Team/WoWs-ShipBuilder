@@ -1,6 +1,4 @@
 ﻿@using WoWsShipBuilder.DataElements.DataElements
-@using WoWsShipBuilder.Infrastructure.Localization
-@using WoWsShipBuilder.Infrastructure.Utility
 
 @code {
 
@@ -34,19 +32,21 @@
                 </div>
                 break;
             case TooltipDataElement element:
-                <MudTooltip Inline="false" Placement="Placement.Right" Color="Color.Transparent" RootStyle="width: 100%">
+                <MudTooltip Inline="false" Placement="Placement.Right" Color="Color.Transparent" RootStyle="width: 100%" Delay="300">
                     <ChildContent>
                         <div class="d-flex justify-space-between">
                             <MudText Class="flex-grow-0 flex-shrink-1" Typo="Typo.body2">
-                                    @group.localizer.GetAppLocalization(element.Key).Localization
-                                    <MudIcon ViewBox="0 -14 36 36" Icon="@Icons.Material.Outlined.Info" Size="Size.Small" Class="mt-n2"/>
-                                </MudText>
+                                @group.localizer.GetAppLocalization(element.Key).Localization
+                                <MudIcon ViewBox="0 -14 36 36" Icon="@Icons.Material.Outlined.Info" Size="Size.Small" Class="mt-n2"/>
+                            </MudText>
                             <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@(element.Value + " " + group.localizer.GetAppLocalization(element.Unit).Localization)</MudText>
                         </div>
                     </ChildContent>
                     <TooltipContent>
                         <MudPaper Outlined="true" Class="pa-2">
-                            <MudText Style="max-width: 500px" Typo="Typo.body2">@group.localizer.GetAppLocalization(element.Tooltip).Localization</MudText>
+                            <MudText Style="max-width: 500px" Typo="Typo.body2">
+                                <MultilineString InputString="@group.localizer.GetAppLocalization(element.Tooltip).Localization"/>
+                            </MudText>
                         </MudPaper>
                     </TooltipContent>
                 </MudTooltip>

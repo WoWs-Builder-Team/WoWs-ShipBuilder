@@ -1,10 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Text.Json;
 using DynamicData;
 using Microsoft.JSInterop;
 using MudBlazor;
+using Newtonsoft.Json;
 using WoWsShipBuilder.Features.Builds;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace WoWsShipBuilder.Web.Infrastructure.Data;
 
@@ -44,9 +45,51 @@ public class WebUserDataService : IUserDataService, IAsyncDisposable
 
         await InitializeModule();
         var buildStrings = await module.InvokeAsync<string?>("loadData", BuildFileName);
-        var result = buildStrings is null ? Enumerable.Empty<string>() : JsonSerializer.Deserialize<IEnumerable<string>>(buildStrings);
-        savedBuilds = result!.Select(x => Build.CreateBuildFromString(x)).ToList();
-        return savedBuilds;
+        if (buildStrings is not null)
+        {
+            IEnumerable<string>? buildList = null;
+            try
+            {
+                buildList =  JsonSerializer.Deserialize<IEnumerable<string>>(buildStrings);
+            }
+            catch (JsonException)
+            {
+                // silently fails
+            }
+
+            if (buildList is not null)
+            {
+                var builds = new List<Build>();
+                var counter = 0;
+                foreach (string buildString in buildList)
+                {
+                    try
+                    {
+                        var build = Build.CreateBuildFromString(buildString);
+                        if (AppData.ShipDictionary.ContainsKey(build.ShipIndex))
+                        {
+                            builds.Add(build);
+                        }
+                        else
+                        {
+                            counter++;
+                        }
+                    }
+                    catch (FormatException)
+                    {
+                        counter++;
+                    }
+                }
+                if (counter > 0)
+                {
+                    snackbar.Add($"{counter} builds could not be loaded.", Severity.Warning);
+                }
+
+                savedBuilds = builds.DistinctBy(x => x.Hash).ToList();
+            }
+        }
+
+        return savedBuilds ?? new List<Build>();
     }
 
     public async Task ImportBuildsAsync(IEnumerable<Build> builds)
@@ -59,24 +102,23 @@ public class WebUserDataService : IUserDataService, IAsyncDisposable
             savedBuilds.Insert(0, build);
         }
 
+        snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomEnd;
+
         // actual local storage limit is around 3700 builds but we limit it to 1000 for performance reasons
         switch (savedBuilds.Count)
         {
             case < 1000:
             {
-                snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
-                snackbar.Add("Builds successfully saved.", Severity.Success);
+                snackbar.Add("Builds have been saved.", Severity.Success);
                 break;
             }
             case 1000:
             {
-                snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
                 snackbar.Add("Builds storage limit reached. Next addition will replace the oldest saved build.", Severity.Warning);
                 break;
             }
             case > 1000:
             {
-                snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
                 snackbar.Add("Builds storage is full. The oldest saved build has been replaced.", Severity.Error);
                 savedBuilds = savedBuilds.Take(1000).ToList();
                 break;

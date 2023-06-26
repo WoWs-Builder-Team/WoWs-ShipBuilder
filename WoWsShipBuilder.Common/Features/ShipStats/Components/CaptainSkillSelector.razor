@@ -7,10 +7,12 @@
 @using WoWsShipBuilder.Features.ShipStats.ViewModels
 @using WoWsShipBuilder.DataStructures.Captain
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
+@using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
 @inherits ReactiveComponentBase<WoWsShipBuilder.Features.ShipStats.ViewModels.CaptainSkillSelectorViewModel>
 @inject ILocalizer Localizer
 @inject IDialogService DialogService
+@inject MetricsService MetricsService
 
 @if (ViewModel is not null)
 {
@@ -250,6 +252,7 @@
             ["ViewModel"] = ViewModel,
         };
 
+        MetricsService.CaptainSkillPopupUsage.Inc();
         var dialog = await DialogService.ShowAsync<CaptainTalentsAndConditionalSkillDialog>("CaptainTalentsAndConditionalSkillDialog", parameters, options);
         // this is needed to wait for the dialog to close to change the SkillActivationPopupOpen, to get the values to update
         await dialog.Result;

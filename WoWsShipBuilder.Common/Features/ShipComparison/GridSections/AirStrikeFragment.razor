@@ -1,5 +1,4 @@
-﻿@using WoWsShipBuilder.Infrastructure.Localization
-@using WoWsShipBuilder.Infrastructure.Localization.Resources
+﻿@using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Features.ShipComparison.GridData
 @code {
 
@@ -9,20 +8,26 @@
     {
         string dataSectionString = ShipComparisonDataSections.AirStrike.AsString();
 
-        var columnTitlePlaneHp = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_PlaneHp))}";
-        var columnTitleDropRange = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_DropRange))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
-        var columnTitleDropLenght = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MaximumFlightDistance))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
-        var columnTitlePlanesInSquadron = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_PlanesInSquadron))}";
-        var columnTitleBombsPerPlane = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_BombsPerPlane))}";
-        var columnTitleCharges = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Charges))}";
-        var columnTitleReload = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ReloadTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
-        var columnTitleBombType = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_BombType))}";
-        var columnTitleDamage = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Damage))}";
-        var columnTitleFireChance = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FireChance))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
-        var columnTitleSplashRadius = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SplashRadius))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
-        var columnTitleSplashDamage = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Splash))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Damage)}";
-        var columnTitlePenetration = $"{element.localizer.SimpleAppLocalization(Translation.ShipStats_Penetration)} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
-        var columnTitleBlastRadius = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Blast))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ExplosionRadius))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
+        var unitKm = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_KM))}";
+        var unitPerCent = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_PerCent))}";
+        var unitMm = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_MM))}";
+        var unitM = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_M))}";
+        var unitS = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_S))}";
+
+        var columnTitlePlaneHp = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_PlaneHp));
+        var columnTitleDropRange = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_DropRange));
+        var columnTitleDropLenght = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MaximumFlightDistance));
+        var columnTitlePlanesInSquadron = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_PlanesInSquadron));
+        var columnTitleBombsPerPlane = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_BombsPerPlane));
+        var columnTitleCharges = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Charges));
+        var columnTitleReload = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ReloadTime));
+        var columnTitleBombType = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_BombType));
+        var columnTitleDamage = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Damage));
+        var columnTitleFireChance = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FireChance));
+        var columnTitleSplashRadius = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SplashRadius));
+        var columnTitleSplashDamage = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Splash))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Damage))}";
+        var columnTitlePenetration = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Penetration));
+        var columnTitleBlastRadius = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Blast))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ExplosionRadius))}";
         var columnTitleBlastPenetration = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Blast))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Penetration))}";
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlaneHp}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlaneHp)" SortBy="@(x => x.AirStrike?.PlaneHp ?? 0)" T="GridDataWrapper" Title="@columnTitlePlaneHp" HeaderClass="column-text-center" CellClass="column-text-center">
@@ -47,7 +52,7 @@
                 @if (context.Item.AirStrike?.MaximumDistance is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AirStrike.MaximumDistance
+                        @(context.Item.AirStrike.MaximumDistance + unitKm)
                     </MudText>
                 }
                 else
@@ -64,7 +69,7 @@
                 @if (context.Item.AirStrike?.MaximumFlightDistance is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AirStrike.MaximumFlightDistance
+                        @(context.Item.AirStrike.MaximumFlightDistance + unitKm)
                     </MudText>
                 }
                 else
@@ -132,7 +137,7 @@
                 @if (context.Item.AirStrike?.ReloadTime is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AirStrike.ReloadTime
+                        @(context.Item.AirStrike.ReloadTime + unitS)
                     </MudText>
                 }
                 else
@@ -183,7 +188,7 @@
                 @if (context.Item.AirStrikeWeapon?.FireChance is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AirStrikeWeapon.FireChance
+                        @(context.Item.AirStrikeWeapon.FireChance + unitPerCent)
                     </MudText>
                 }
                 else
@@ -200,7 +205,7 @@
                 @if (context.Item.AirStrikeWeapon?.SplashRadius is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AirStrikeWeapon.SplashRadius
+                        @(context.Item.AirStrikeWeapon.SplashRadius + unitM)
                     </MudText>
                 }
                 else
@@ -234,7 +239,7 @@
                 @if (context.Item.AirStrikeWeapon?.Penetration is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AirStrikeWeapon.Penetration
+                        @(context.Item.AirStrikeWeapon.Penetration + unitMm)
                     </MudText>
                 }
                 else
@@ -251,7 +256,7 @@
                 @if (context.Item.AirStrikeWeapon?.ExplosionRadius is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AirStrikeWeapon.ExplosionRadius
+                        @(context.Item.AirStrikeWeapon.ExplosionRadius + unitM)
                     </MudText>
                 }
                 else

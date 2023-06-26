@@ -2,7 +2,6 @@
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.Features.ShipComparison.GridData
 @using WoWsShipBuilder.Infrastructure.GameData
-@using WoWsShipBuilder.Infrastructure.Localization
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @code {
 
@@ -15,25 +14,33 @@
         var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
         nfi.NumberGroupSeparator = "'";
 
-        var columnTitleAmount = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Amount))}";
-        var columnTitleLoaders = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Loaders))}";
-        var columnTitleTurnTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TurnTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
-        var columnTitleTraverseSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TraverseSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_DegreePerSecond)})";
-        var columnTitleReload = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ReloadTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
-        var columnTitleSpread = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Spread))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Degree)})";
-        var columnTitleSwitchTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SwitchTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
-        var columnTitleType = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Type))}";
-        var columnTitleDamage = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Damage))}";
-        var columnTitleSalvoDamage = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FullSalvoDamage))}";
-        var columnTitleMaxRange = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_MaxRange))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
-        var columnTitleSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Speed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Knots)})";
-        var columnTitleDetectionRange = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Detectability))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
-        var columnTitleArmingDistance = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ArmingDistance))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
-        var columnTitleReactionTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ReactionTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
-        var columnTitleFloodChance = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FloodingChance))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
-        var columnTitleBlastRadius = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Blast))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ExplosionRadius))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
+        var unitKm = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_KM))}";
+        var unitPerCent = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_PerCent))}";
+        var unitKnots = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_Knots))}";
+        var unitM = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_M))}";
+        var unitS = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_S))}";
+        var unitDegreePerSecond = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_DegreePerSecond))}";
+        var unitDegree = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_Degree))}";
+
+        var columnTitleAmount = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Amount));
+        var columnTitleLoaders = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Loaders));
+        var columnTitleTurnTime = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TurnTime));
+        var columnTitleTraverseSpeed = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TraverseSpeed));
+        var columnTitleReload = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ReloadTime));
+        var columnTitleSpread = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Spread));
+        var columnTitleSwitchTime = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SwitchTime));
+        var columnTitleType = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Type));
+        var columnTitleDamage = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Damage));
+        var columnTitleSalvoDamage = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FullSalvoDamage));
+        var columnTitleMaxRange = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_MaxRange));
+        var columnTitleSpeed = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Speed));
+        var columnTitleDetectionRange = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Detectability));
+        var columnTitleArmingDistance = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ArmingDistance));
+        var columnTitleReactionTime = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ReactionTime));
+        var columnTitleFloodChance = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FloodingChance));
+        var columnTitleBlastRadius = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Blast))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ExplosionRadius))}";
         var columnTitleBlastPenetration = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Blast))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Penetration))}";
-        var columnTitleCanHit = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_CanHitClasses))}";
+        var columnTitleCanHit = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_CanHitClasses));
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAmount}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAmount)" T="GridDataWrapper" Title="@columnTitleAmount" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.TorpedoLauncher?.TorpCount ?? 0)">
             <CellTemplate>
@@ -97,7 +104,7 @@
                 @if (context.Item.TorpedoLauncher?.TurnTime is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.TorpedoLauncher.TurnTime
+                        @(context.Item.TorpedoLauncher.TurnTime + unitS)
                     </MudText>
                 }
                 else
@@ -114,7 +121,7 @@
                 @if (context.Item.TorpedoLauncher?.TraverseSpeed is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.TorpedoLauncher.TraverseSpeed
+                        @(context.Item.TorpedoLauncher.TraverseSpeed + unitDegreePerSecond)
                     </MudText>
                 }
                 else
@@ -131,7 +138,7 @@
                 @if (context.Item.TorpedoLauncher?.Reload is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.TorpedoLauncher.Reload
+                        @(context.Item.TorpedoLauncher.Reload + unitS)
                     </MudText>
                 }
                 else
@@ -148,7 +155,7 @@
                 @if (!string.IsNullOrEmpty(context.Item.TorpedoLauncher?.TorpedoArea))
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.TorpedoLauncher.TorpedoArea
+                        @(context.Item.TorpedoLauncher.TorpedoArea + unitDegree)
                     </MudText>
                 }
                 else
@@ -165,7 +172,7 @@
                 @if (context.Item.TorpedoLauncher?.TimeToSwitch is not null && context.Item.Torpedo.Type.Count > 1)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.TorpedoLauncher.TimeToSwitch
+                        @(context.Item.TorpedoLauncher.TimeToSwitch + unitS)
                     </MudText>
                 }
                 else
@@ -266,7 +273,7 @@
                     {
                         decimal torp = torps[i];
                         <MudText Typo="Typo.body2">
-                            @torp
+                            @(torp + unitKm)
                         </MudText>
                         if (i < torps.Count - 1)
                         {
@@ -292,7 +299,7 @@
                     {
                         decimal torp = torps[i];
                         <MudText Typo="Typo.body2">
-                            @torp
+                            @(torp + unitKnots)
                         </MudText>
                         if (i < torps.Count - 1)
                         {
@@ -318,7 +325,7 @@
                     {
                         decimal torp = torps[i];
                         <MudText Typo="Typo.body2">
-                            @torp
+                            @(torp + unitKm)
                         </MudText>
                         if (i < torps.Count - 1)
                         {
@@ -344,7 +351,7 @@
                     {
                         decimal torp = torps[i];
                         <MudText Typo="Typo.body2">
-                            @torp
+                            @(torp + unitM)
                         </MudText>
                         if (i < torps.Count - 1)
                         {
@@ -370,7 +377,7 @@
                     {
                         decimal torp = torps[i];
                         <MudText Typo="Typo.body2">
-                            @torp
+                            @(torp + unitS)
                         </MudText>
                         if (i < torps.Count - 1)
                         {
@@ -396,7 +403,7 @@
                     {
                         decimal torp = torps[i];
                         <MudText Typo="Typo.body2">
-                            @torp
+                            @(torp + unitPerCent)
                         </MudText>
                         if (i < torps.Count - 1)
                         {
@@ -422,7 +429,7 @@
                     {
                         decimal torp = torps[i];
                         <MudText Typo="Typo.body2">
-                            @torp
+                            @(torp + unitM)
                         </MudText>
                         if (i < torps.Count - 1)
                         {

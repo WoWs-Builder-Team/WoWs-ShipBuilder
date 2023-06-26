@@ -3,7 +3,6 @@ using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Aircraft;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
@@ -300,7 +299,7 @@ namespace WoWsShipBuilder.DataContainers
             List<ConsumableDataContainer> consumables = new();
             foreach (var consumable in plane.AircraftConsumable)
             {
-                var consumableDataContainer = ConsumableDataContainer.FromTypeAndVariant(consumable, modifiers, true, finalPlaneHp, 0);
+                var consumableDataContainer = ConsumableDataContainer.FromTypeAndVariant(consumable, modifiers, true, finalPlaneHp, 0, ShipClass.AirCarrier);
                 consumables.Add(consumableDataContainer);
             }
 

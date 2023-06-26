@@ -1,5 +1,4 @@
-﻿@using WoWsShipBuilder.Infrastructure.Localization
-@using WoWsShipBuilder.Infrastructure.Localization.Resources
+﻿@using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Features.ShipComparison.GridData
 @code {
 
@@ -9,31 +8,36 @@
     {
         string dataSectionString = ShipComparisonDataSections.RocketPlanes.AsString();
 
-        var columnTitleType = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Type))}";
-        var columnTitlePlanesInSquadron = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_PlanesInSquadron))}";
+        var unitS = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_S))}";
+        var unitKnots = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_Knots))}";
+        var unitPerCent = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_PerCent))}";
+        var unitKm = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_KM))}";
+
+        var columnTitleType = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Type));
+        var columnTitlePlanesInSquadron = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_PlanesInSquadron));
         var columnTitlePlanesPerAttack = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Planes))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_NumberDuringAttack))}";
         var columnTitlePlanesOnDeck = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Planes))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_OnDeck))}";
-        var columnTitleRestorationTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RestorationTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
-        var columnTitleCruisingSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_CruisingSpeed))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Speed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Knots)})";
-        var columnTitleMaxSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MaxSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Knots)})";
-        var columnTitleMinSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MinSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Knots)})";
-        var columnTitleEngineBoost = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_EngineBoostDuration))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
-        var columnTitleInitialBoostDuration = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_InitialBoost))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Duration))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
-        var columnTitleInitialBoostSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_InitialBoost))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Amount))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
-        var columnTitlePlaneHp = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_PlaneHp))}";
+        var columnTitleRestorationTime = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RestorationTime));
+        var columnTitleCruisingSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_CruisingSpeed))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Speed))}";
+        var columnTitleMaxSpeed = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MaxSpeed));
+        var columnTitleMinSpeed = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MinSpeed));
+        var columnTitleEngineBoost = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_EngineBoostDuration));
+        var columnTitleInitialBoostDuration = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_InitialBoost))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Duration))}";
+        var columnTitleInitialBoostSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_InitialBoost))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Amount))}";
+        var columnTitlePlaneHp = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_PlaneHp));
         var columnTitleSquadronHp = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_SquadronHp))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_HP))}";
         var columnTitleAttackGroupHp = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AttackGroupHp))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_HP))}";
-        var columnTitleDamageTakenWhileAttacking = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_DamageTakenDuringAttack))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+        var columnTitleDamageTakenWhileAttacking = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_DamageTakenDuringAttack));
         var columnTitleRocketsPerPlane = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Fighter))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_PerPlane))}";
-        var columnTitlePreparationTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_PreparationTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
-        var columnTitleAimingTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AimingTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
-        var columnTitleFullyAimedTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TimeToFullyAimed))} {element.localizer.SimpleAppLocalization(nameof(Translation.AccelerationChart_Time))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
-        var columnTitleInvulnerabilityTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Invulnerability))} {element.localizer.SimpleAppLocalization(nameof(Translation.AccelerationChart_Time))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
-        var columnTitleAttackCooldown = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AttackCd))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
-        var columnTitleConcealment = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Concealment))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
-        var columnTitleViewRange = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_ViewDistance))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
-        var columnTitleAreaChangeWhileAiming = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_AreaChange))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AimingRateMoving))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
-        var columnTitleAreaChangeDuringPreparation = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_AreaChange))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AimingPreparationRateMoving))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+        var columnTitlePreparationTime = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_PreparationTime));
+        var columnTitleAimingTime = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AimingTime));
+        var columnTitleFullyAimedTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TimeToFullyAimed))} {element.localizer.SimpleAppLocalization(nameof(Translation.AccelerationChart_Time))}";
+        var columnTitleInvulnerabilityTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Invulnerability))} {element.localizer.SimpleAppLocalization(nameof(Translation.AccelerationChart_Time))}";
+        var columnTitleAttackCooldown = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AttackCd));
+        var columnTitleConcealment = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Concealment));
+        var columnTitleViewRange = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_ViewDistance));
+        var columnTitleAreaChangeWhileAiming = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_AreaChange))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AimingRateMoving))}";
+        var columnTitleAreaChangeDuringPreparation = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_AreaChange))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AimingPreparationRateMoving))}";
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleType}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleType)" T="GridDataWrapper" Title="@columnTitleType" SortBy="@(x=> !x.RocketPlanes.Type.Any() ? string.Empty : element.localizer.GetAppLocalization($"ShipStats_{x.RocketPlanes.Type.First()}").Localization)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
@@ -148,7 +152,7 @@
                     {
                         decimal item = items[i];
                         <MudText Typo="Typo.body2">
-                            @item
+                            @(item + unitS)
                         </MudText>
                         if (i < items.Count - 1)
                         {
@@ -174,7 +178,7 @@
                     {
                         decimal item = items[i];
                         <MudText Typo="Typo.body2">
-                            @item
+                            @(item + unitKnots)
                         </MudText>
                         if (i < items.Count - 1)
                         {
@@ -200,7 +204,7 @@
                     {
                         decimal item = items[i];
                         <MudText Typo="Typo.body2">
-                            @item
+                            @(item + unitKnots)
                         </MudText>
                         if (i < items.Count - 1)
                         {
@@ -226,7 +230,7 @@
                     {
                         decimal item = items[i];
                         <MudText Typo="Typo.body2">
-                            @item
+                            @(item + unitKnots)
                         </MudText>
                         if (i < items.Count - 1)
                         {
@@ -252,7 +256,7 @@
                     {
                         decimal item = items[i];
                         <MudText Typo="Typo.body2">
-                            @item
+                            @(item + unitS)
                         </MudText>
                         if (i < items.Count - 1)
                         {
@@ -278,7 +282,7 @@
                     {
                         decimal item = items[i];
                         <MudText Typo="Typo.body2">
-                            @item
+                            @(item + unitS)
                         </MudText>
                         if (i < items.Count - 1)
                         {
@@ -304,7 +308,7 @@
                     {
                         decimal item = items[i];
                         <MudText Typo="Typo.body2">
-                            @item
+                            @(item + unitPerCent)
                         </MudText>
                         if (i < items.Count - 1)
                         {
@@ -408,7 +412,7 @@
                     {
                         int item = items[i];
                         <MudText Typo="Typo.body2">
-                            @item
+                            @(item + unitPerCent)
                         </MudText>
                         if (i < items.Count - 1)
                         {
@@ -460,7 +464,7 @@
                     {
                         decimal item = items[i];
                         <MudText Typo="Typo.body2">
-                            @item
+                            @(item + unitS)
                         </MudText>
                         if (i < items.Count - 1)
                         {
@@ -486,7 +490,7 @@
                     {
                         decimal item = items[i];
                         <MudText Typo="Typo.body2">
-                            @item
+                            @(item + unitS)
                         </MudText>
                         if (i < items.Count - 1)
                         {
@@ -512,7 +516,7 @@
                     {
                         decimal item = items[i];
                         <MudText Typo="Typo.body2">
-                            @item
+                            @(item + unitS)
                         </MudText>
                         if (i < items.Count - 1)
                         {
@@ -538,7 +542,7 @@
                     {
                         decimal item = items[i];
                         <MudText Typo="Typo.body2">
-                            @item
+                            @(item + unitS)
                         </MudText>
                         if (i < items.Count - 1)
                         {
@@ -564,7 +568,7 @@
                     {
                         decimal item = items[i];
                         <MudText Typo="Typo.body2">
-                            @item
+                            @(item + unitS)
                         </MudText>
                         if (i < items.Count - 1)
                         {
@@ -590,7 +594,7 @@
                     {
                         decimal item = items[i];
                         <MudText Typo="Typo.body2">
-                            @item
+                            @(item + unitKm)
                         </MudText>
                         if (i < items.Count - 1)
                         {
@@ -616,7 +620,7 @@
                     {
                         decimal item = items[i];
                         <MudText Typo="Typo.body2">
-                            @item
+                            @(item + unitKm)
                         </MudText>
                         if (i < items.Count - 1)
                         {
@@ -642,7 +646,7 @@
                     {
                         string item = items[i];
                         <MudText Typo="Typo.body2">
-                            @item
+                            @(item + unitPerCent)
                         </MudText>
                         if (i < items.Count - 1)
                         {
@@ -668,7 +672,7 @@
                     {
                         string item = items[i];
                         <MudText Typo="Typo.body2">
-                            @item
+                            @(item + unitPerCent)
                         </MudText>
                         if (i < items.Count - 1)
                         {

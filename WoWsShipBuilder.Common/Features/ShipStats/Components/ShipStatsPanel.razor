@@ -12,6 +12,7 @@
 @using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.GameData
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
+@using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
 @using DepthChargeDataContainer = WoWsShipBuilder.DataContainers.DepthChargeDataContainer
 @inherits ReactiveComponentBase<WoWsShipBuilder.Features.ShipStats.ViewModels.ShipStatsControlViewModel>
@@ -19,6 +20,7 @@
 @inject NavigationManager NavManager
 @inject AppSettings AppSettings
 @inject IDialogService DialogService
+@inject MetricsService MetricsService
 
 @if (ViewModel?.CurrentShipStats is not null)
 {
@@ -526,6 +528,8 @@
 
     private void OpenAngleDialog(IEnumerable<IGun> guns, bool isArtillery)
     {
+        var label = isArtillery ? "open-turret-diagram" : "open-torpedo-diagram";
+        MetricsService.ShipStatsActions.WithLabels(label).Inc();
         var records = guns
             .OrderBy(gun => gun, new TurretListComparer())
             .Select(gun =>
@@ -549,6 +553,11 @@
 
     private void SetDepthChargeDamageDistributionChartVisibility()
     {
+        if (!showDepthChargeDamageDistributionChart)
+        {
+            MetricsService.ShipStatsActions.WithLabels("show-dc-chart").Inc();
+        }
+
         showDepthChargeDamageDistributionChart = !showDepthChargeDamageDistributionChart;
     }
 
@@ -559,12 +568,14 @@
 
     private void SendBuildToBallisticCharts(string shellName, bool calculateShipDataContainer)
     {
+        MetricsService.ShipStatsActions.WithLabels("open-ballistic-inline").Inc();
         StoreBuildsForTransfer(calculateShipDataContainer);
         NavManager.NavigateTo($"/charts?shipIndex={ViewModel!.CurrentShipStats!.Index}&shellIndex={shellName}");
     }
 
     private void SendBuildToAccelerationCharts(bool calculateShipDataContainer)
     {
+        MetricsService.ShipStatsActions.WithLabels("open-acceleration-inline").Inc();
         StoreBuildsForTransfer(calculateShipDataContainer);
         NavManager.NavigateTo($"/acceleration-charts?shipIndexes={ViewModel!.CurrentShipStats!.Index}");
     }

@@ -177,8 +177,7 @@ public partial class ShipViewModel : ReactiveObject
                             await ShipStatsControlViewModel.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), modifiers);
                         }
 
-                        var hp = ShipStatsControlViewModel!.CurrentShipStats!.SurvivabilityDataContainer.HitPoints;
-                        ConsumableViewModel.UpdateConsumableData(modifiers, hp);
+                        ConsumableViewModel.UpdateConsumableData(modifiers, ShipStatsControlViewModel!.CurrentShipStats!.SurvivabilityDataContainer.HitPoints, RawShipData.ShipClass);
                         semaphore.Release();
                     }
                 }

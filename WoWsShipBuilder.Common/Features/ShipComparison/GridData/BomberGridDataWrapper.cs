@@ -1,4 +1,5 @@
 ﻿using WoWsShipBuilder.DataContainers;
+using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Features.ShipComparison.GridData;
 
@@ -40,7 +41,7 @@ public class BomberGridDataWrapper : PlaneGridDataWrapper
         WeaponDamage = bombs?.Select(x => x?.Damage ?? 0).ToList() ?? new();
         WeaponSplashRadius = bombs?.Select(x => x?.SplashRadius ?? 0).ToList() ?? new();
         WeaponSplashDamage = bombs?.Select(x => x?.SplashDmg ?? 0).ToList() ?? new();
-        WeaponPenetration = bombs?.Select(x => x?.Penetration ?? 0).ToList() ?? new();
+        WeaponPenetration = bombs?.Select(x => (x?.BombType == $"ArmamentType_{BombType.AP}" ? x.PenetrationAp : x?.Penetration) ?? 0).ToList() ?? new();
         WeaponFireChance = bombs?.Select(x => x?.FireChance ?? 0).ToList() ?? new();
         WeaponBlastRadius = bombs?.Select(x => x?.ExplosionRadius ?? 0).ToList() ?? new();
         WeaponBlastPenetration = bombs?.Select(x => x?.SplashCoeff ?? 0).ToList() ?? new();

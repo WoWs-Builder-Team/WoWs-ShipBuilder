@@ -1,6 +1,5 @@
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Utility;
 
 // ReSharper disable InconsistentNaming

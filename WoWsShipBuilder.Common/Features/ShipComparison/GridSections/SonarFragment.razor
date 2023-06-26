@@ -1,5 +1,4 @@
-﻿@using WoWsShipBuilder.Infrastructure.Localization
-@using WoWsShipBuilder.Infrastructure.Localization.Resources
+﻿@using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Features.ShipComparison.GridData
 @code {
 
@@ -9,21 +8,27 @@
     {
         string dataSectionString = ShipComparisonDataSections.Sonar.AsString();
 
-        var columnTitleReload = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ReloadTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
-        var columnTitleTraverseSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TraverseSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_DegreePerSecond)})";
-        var columnTitleTurnTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TurnTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
-        var columnTitleMaxRange = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_MaxRange))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
-        var columnTitleWidth = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_PingWidth))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
-        var columnTitleSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_PingSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MPS)})";
-        var columnTitleFirstPingDuration = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_1st))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_PingDuration))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
-        var columnTitleSecondPingDuration = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_2nd))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_PingDuration))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var unitDegreePerSecond = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_DegreePerSecond))}";
+        var unitMps = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_MPS))}";
+        var unitM = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_M))}";
+        var unitKm = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_KM))}";
+        var unitS = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_S))}";
+
+        var columnTitleReload = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ReloadTime));
+        var columnTitleTraverseSpeed = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TraverseSpeed));
+        var columnTitleTurnTime = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TurnTime));
+        var columnTitleMaxRange = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_MaxRange));
+        var columnTitleWidth = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_PingWidth));
+        var columnTitleSpeed = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_PingSpeed));
+        var columnTitleFirstPingDuration = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_1st))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_PingDuration))}";
+        var columnTitleSecondPingDuration = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_2nd))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_PingDuration))}";
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReload}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleReload)" T="GridDataWrapper" Title="@columnTitleReload" SortBy="@(x => x.Sonar?.Reload ?? 0)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Sonar?.Reload is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.Sonar.Reload
+                        @(context.Item.Sonar.Reload + unitS)
                     </MudText>
                 }
                 else
@@ -40,7 +45,7 @@
                 @if (context.Item.Sonar?.TraverseSpeed is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.Sonar.TraverseSpeed
+                        @(context.Item.Sonar.TraverseSpeed + unitDegreePerSecond)
                     </MudText>
                 }
                 else
@@ -57,7 +62,7 @@
                 @if (context.Item.Sonar?.TurnTime is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.Sonar.TurnTime
+                        @(context.Item.Sonar.TurnTime + unitS)
                     </MudText>
                 }
                 else
@@ -74,7 +79,7 @@
                 @if (context.Item.Sonar?.Range is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.Sonar.Range
+                        @(context.Item.Sonar.Range + unitKm)
                     </MudText>
                 }
                 else
@@ -91,7 +96,7 @@
                 @if (context.Item.Sonar?.PingWidth is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.Sonar.PingWidth
+                        @(context.Item.Sonar.PingWidth + unitM)
                     </MudText>
                 }
                 else
@@ -108,7 +113,7 @@
                 @if (context.Item.Sonar?.PingSpeed is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.Sonar.PingSpeed
+                        @(context.Item.Sonar.PingSpeed + unitMps)
                     </MudText>
                 }
                 else
@@ -125,7 +130,7 @@
                 @if (context.Item.Sonar?.FirstPingDuration is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.Sonar.FirstPingDuration
+                        @(context.Item.Sonar.FirstPingDuration + unitS)
                     </MudText>
                 }
                 else
@@ -142,7 +147,7 @@
                 @if (context.Item.Sonar?.SecondPingDuration is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.Sonar.SecondPingDuration
+                        @(context.Item.Sonar.SecondPingDuration + unitS)
                     </MudText>
                 }
                 else

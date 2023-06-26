@@ -4,6 +4,7 @@
 @using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
+@using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
 @using WoWsShipBuilder.Web.Infrastructure.BetaAccess
 @using WoWsShipBuilder.Features.Builds
@@ -19,6 +20,7 @@
 @inject IBetaAccessManager BetaAccessManager
 @inject IUserDataService UserDataService
 @inject IJSRuntime Runtime
+@inject MetricsService MetricsService
 
 <PageTitle>@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Settings)).Localization</PageTitle>
 
@@ -165,13 +167,14 @@
         base.OnInitialized();
         RefreshNotifierService.RefreshRequested += UpdateSettingsValues;
         UpdateSettingsValues();
-        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomEnd;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            MetricsService.PageAccessCount.WithLabels("settings").Inc();
             savedBuilds = (await UserDataService.LoadBuildsAsync()).ToList();
             StateHasChanged();
         }
@@ -207,7 +210,7 @@
         AppSettings.StoreBuildOnShare = storeBuildOnShare;
 
         await SettingsAccessor.SaveSettings(AppSettings);
-        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+
         Snackbar.Add("Settings saved", Severity.Success, config => { config.CloseAfterNavigation = true; });
         if (settingsChanged)
         {
@@ -238,7 +241,7 @@
     {
         AppSettings.ClearSettings();
         await SettingsAccessor.SaveSettings(AppSettings);
-        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomEnd;
         Snackbar.Add(Localizer.GetAppLocalization(nameof(Translation.WebApp_SettingsSaved)).Localization, Severity.Success, config => { config.CloseAfterNavigation = true; });
         RefreshNotifierService.NotifyRefreshRequested();
     }
@@ -253,6 +256,7 @@
                 AppSettings.BetaAccessCodes.Add(CurrentCode);
                 await SettingsAccessor.SaveSettings(AppSettings);
                 RefreshNotifierService.NotifyRefreshRequested();
+                MetricsService.BetaCodeActivation.WithLabels(CurrentCode).Inc();
                 Snackbar.Add($"'{Localizer.SimpleAppLocalization(betaEntry.LocalizationKey)}' {Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_CodeEnabled))}", Severity.Success, config => { config.CloseAfterNavigation = true; });
             }
             else
@@ -293,6 +297,7 @@
         module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/scripts/userSettings.js");
         var buildStrings = savedBuilds.Select(x => x.CreateShortStringFromBuild()).ToList();
         await module.InvokeVoidAsync("downloadObjectAsJson", buildStrings, "builds");
+        MetricsService.SavedBuildOperations.WithLabels("export").Inc();
     }
 
     private async Task ImportSavedBuilds(IBrowserFile? file)
@@ -300,17 +305,56 @@
         if (file is not null && file.ContentType.Equals("application/json"))
         {
             using StreamReader reader = new(file.OpenReadStream());
-            var buildsString = await reader.ReadToEndAsync();
-            var buildList = JsonConvert.DeserializeObject<IEnumerable<string>>(buildsString);
+            string buildsString = await reader.ReadToEndAsync();
+            IEnumerable<string>? buildList;
+            try
+            {
+                buildList = JsonConvert.DeserializeObject<IEnumerable<string>>(buildsString);
+            }
+            catch (JsonReaderException)
+            {
+                Snackbar.Add("Corrupted JSON file.", Severity.Error);
+                return;
+            }
+
             if (buildList is not null)
             {
-                await UserDataService.ImportBuildsAsync(buildList.Select(x => Build.CreateBuildFromString(x)).Reverse());
+                var builds = new List<Build>();
+                var counter = 0;
+                foreach (string buildString in buildList)
+                {
+                    try
+                    {
+                        var build = Build.CreateBuildFromString(buildString);
+                        if (AppData.ShipDictionary.ContainsKey(build.ShipIndex))
+                        {
+                            builds.Add(build);
+                        }
+                        else
+                        {
+                            counter++;
+                        }
+                    }
+                    catch (FormatException)
+                    {
+                        counter++;
+                    }
+                }
+
+                builds.Reverse();
+                await UserDataService.ImportBuildsAsync(builds);
                 savedBuilds = (await UserDataService.LoadBuildsAsync()).ToList();
+                MetricsService.SavedBuildOperations.WithLabels("import").Inc();
+                if (counter > 0)
+                {
+                    Snackbar.Add($"{counter} builds could not be imported.", Severity.Warning);
+                }
+
                 StateHasChanged();
             }
             else
             {
-                Snackbar.Add("No build to import found.", Severity.Error);
+                Snackbar.Add("No builds to import found.", Severity.Error);
             }
         }
         else
@@ -324,6 +368,7 @@
         await UserDataService.RemoveSavedBuildsAsync(savedBuilds);
         savedBuilds = (await UserDataService.LoadBuildsAsync()).ToList();
         Snackbar.Add("All saved builds deleted.", Severity.Info);
+        MetricsService.SavedBuildOperations.WithLabels("delete").Inc();
         StateHasChanged();
     }
 }

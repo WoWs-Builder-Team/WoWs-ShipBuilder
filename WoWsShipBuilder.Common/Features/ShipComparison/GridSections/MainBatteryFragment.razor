@@ -1,7 +1,6 @@
 ﻿@using System.Globalization
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.Features.ShipComparison.GridData
-@using WoWsShipBuilder.Infrastructure.Localization
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @code {
 
@@ -14,30 +13,38 @@
         var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
         nfi.NumberGroupSeparator = "'";
 
-        var columnTitleCaliber = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Caliber))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
-        var columnTitleBarrels = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Barrels))}";
-        var columnTitleMaxRange = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_MaxRange))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
-        var columnTitleHorizontalDispersion = $"{element.localizer.SimpleAppLocalization(nameof(Translation.DispersionGraphWindow_Horizontal))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Dispersion))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
-        var columnTitleVerticalDispersion = $"{element.localizer.SimpleAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Dispersion))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
-        var columnTitleTurnTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TurnTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
-        var columnTitleTraverseSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TraverseSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_DegreePerSecond)})";
-        var columnTitleReload = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ReloadTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
-        var columnTitleRof = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RoF))} ({element.localizer.SimpleAppLocalization(Translation.Unit_ShotsPerMinute)})";
-        var columnTitleHeDpm = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_HE))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Dpm)}";
-        var columnTitleApDpm = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_AP))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Dpm)}";
-        var columnTitleSapDpm = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_SAP))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Dpm)}";
-        var columnTitleHeSalvo = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_HE))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Salvo)}";
-        var columnTitleApSalvo = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_AP))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Salvo)}";
-        var columnTitleSapSalvo = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_SAP))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Salvo)}";
-        var columnTitleFpm = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Fpm))} ({element.localizer.SimpleAppLocalization(Translation.Unit_FPM)})";
-        var columnTitleSigma = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Sigma))}";
+        var unitMm = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_MM))}";
+        var unitKm = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_KM))}";
+        var unitM = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_M))}";
+        var unitS = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_S))}";
+        var unitDegreePerSecond = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_DegreePerSecond))}";
+        var unitShotsPerMinute = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_ShotsPerMinute))}";
+        var unitFpm = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_FPM))}";
+
+        var columnTitleCaliber = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Caliber));
+        var columnTitleBarrels = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Barrels));
+        var columnTitleMaxRange = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_MaxRange));
+        var columnTitleHorizontalDispersion = $"{element.localizer.SimpleAppLocalization(nameof(Translation.DispersionGraphWindow_Horizontal))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Dispersion))}";
+        var columnTitleVerticalDispersion = $"{element.localizer.SimpleAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Dispersion))}";
+        var columnTitleTurnTime = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TurnTime));
+        var columnTitleTraverseSpeed = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TraverseSpeed));
+        var columnTitleReload = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ReloadTime));
+        var columnTitleRof = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RoF));
+        var columnTitleHeDpm = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_HE))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Dpm))}";
+        var columnTitleApDpm = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_AP))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Dpm))}";
+        var columnTitleSapDpm = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_SAP))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Dpm))}";
+        var columnTitleHeSalvo = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_HE))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Salvo))}";
+        var columnTitleApSalvo = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_AP))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Salvo))}";
+        var columnTitleSapSalvo = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_SAP))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Salvo))}";
+        var columnTitleFpm = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Fpm));
+        var columnTitleSigma = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Sigma));
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCaliber}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCaliber)" SortBy="@(x => x.MainBattery?.GunCaliber ?? 0)" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
            <CellTemplate>
                @if (context.Item.MainBattery?.GunCaliber is not null)
                {
                    <MudText Typo="Typo.body2">
-                       @context.Item.MainBattery.GunCaliber
+                       @(context.Item.MainBattery.GunCaliber + unitMm)
                    </MudText>
                }
                else
@@ -71,7 +78,7 @@
                 @if (context.Item.MainBattery?.Range is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBattery.Range
+                        @(context.Item.MainBattery.Range + unitKm)
                     </MudText>
                 }
                 else
@@ -88,7 +95,7 @@
                 @if (element.dispersionCache.TryGetValue(context.Item.Id, out var value))
                 {
                     <MudText Typo="Typo.body2">
-                        @Math.Round(value.Horizontal, 2)
+                        @(Math.Round(value.Horizontal, 2) + unitM)
                     </MudText>
                 }
                 else
@@ -105,7 +112,7 @@
                 @if (element.dispersionCache.TryGetValue(context.Item.Id, out var value))
                 {
                     <MudText Typo="Typo.body2">
-                        @Math.Round(value.Vertical, 2)
+                        @(Math.Round(value.Vertical, 2) + unitM)
                     </MudText>
                 }
                 else
@@ -122,7 +129,7 @@
                 @if (context.Item.MainBattery?.TurnTime is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBattery.TurnTime
+                        @(context.Item.MainBattery.TurnTime + unitS)
                     </MudText>
                 }
                 else
@@ -139,7 +146,7 @@
                 @if (context.Item.MainBattery?.TraverseSpeed is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBattery.TraverseSpeed
+                        @(context.Item.MainBattery.TraverseSpeed + unitDegreePerSecond)
                     </MudText>
                 }
                 else
@@ -156,7 +163,7 @@
                 @if (context.Item.MainBattery?.Reload is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBattery.Reload
+                        @(context.Item.MainBattery.Reload + unitS)
                     </MudText>
                 }
                 else
@@ -173,7 +180,7 @@
                 @if (context.Item.MainBattery?.RoF is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBattery.RoF
+                        @(context.Item.MainBattery.RoF + unitShotsPerMinute)
                     </MudText>
                 }
                 else
@@ -293,7 +300,7 @@
                 @if (context.Item.MainBattery?.PotentialFpm is not null && context.Item.MainBattery.PotentialFpm != 0)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBattery.PotentialFpm
+                        @(context.Item.MainBattery.PotentialFpm + unitFpm)
                     </MudText>
                 }
                 else

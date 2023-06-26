@@ -18,7 +18,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddMudServices(config => { config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight; });
         services.AddSingleton<ILocalizationProvider, LocalizationProvider>();
-        services.AddSingleton<IMetricsService, MetricsService>();
+        services.AddSingleton<MetricsService>();
         if (OperatingSystem.IsBrowser())
         {
             services.AddSingleton<HttpClient>();
