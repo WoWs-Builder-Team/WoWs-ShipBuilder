@@ -1,6 +1,6 @@
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures.Projectile;
-using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Features.BallisticCharts;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
@@ -15,6 +15,9 @@ public partial record BombDataContainer : ProjectileDataContainer
     [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true)]
     public string Name { get; set; } = default!;
 
+    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MM")]
+    public int Caliber { get; set; }
+
     [DataElementType(DataElementTypes.KeyValue)]
     public decimal Damage { get; set; }
 
@@ -24,8 +27,14 @@ public partial record BombDataContainer : ProjectileDataContainer
     [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "Splash", TooltipKey = "SplashExplanation")]
     public decimal SplashDmg { get; set; }
 
+    [DataElementType(DataElementTypes.Tooltip, TooltipKey = "KruppExplanation")]
+    public decimal Krupp { get; set; }
+
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MM")]
     public int Penetration { get; set; }
+
+    [DataElementType(DataElementTypes.Tooltip, TooltipKey = "ApPenetrationFormula", UnitKey = "MM")]
+    public int PenetrationAp { get; set; }
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
     public decimal FuseTimer { get; set; }
@@ -58,8 +67,10 @@ public partial record BombDataContainer : ProjectileDataContainer
         decimal fuseTimer = 0;
         var showBlastPenetration = true;
         decimal fireChance = 0;
+        int penetrationHe = 0;
+        int penetrationAp = 0;
 
-        if (bomb.BombType.Equals(WoWsShipBuilder.DataStructures.BombType.AP))
+        if (bomb.BombType.Equals(DataStructures.BombType.AP))
         {
             List<float> bombDamageModifiers = modifiers.FindModifiers("bombApAlphaDamageMultiplier").ToList();
             bombDamage = (decimal)bombDamageModifiers.Aggregate(bomb.Damage, (current, modifier) => current * modifier);
@@ -67,6 +78,7 @@ public partial record BombDataContainer : ProjectileDataContainer
             armingThreshold = (int)bomb.ArmingThreshold;
             fuseTimer = (decimal)bomb.FuseTimer;
             showBlastPenetration = false;
+            penetrationAp = (int)Math.Round(Math.Round(BallisticHelper.CalculatePen(bomb.MuzzleVelocity, bomb.Caliber, bomb.Mass, bomb.Krupp), 1), MidpointRounding.AwayFromZero); // this double Math.Round is needed for Shokaku bombs to round 282.469 to 283 instead of 282
         }
         else
         {
@@ -76,6 +88,7 @@ public partial record BombDataContainer : ProjectileDataContainer
             fireChance = (decimal)fireChanceModifiers.Aggregate(bomb.FireChance, (current, modifier) => current + modifier);
             var fireChanceModifiersBombs = modifiers.FindModifiers("burnChanceFactorBig");
             fireChance = fireChanceModifiersBombs.Aggregate(fireChance, (current, modifier) => current + (decimal)modifier);
+            penetrationHe = (int)Math.Truncate(bomb.Penetration);
         }
 
         var bombDataContainer = new BombDataContainer
@@ -83,7 +96,8 @@ public partial record BombDataContainer : ProjectileDataContainer
             Name = bomb.Name,
             BombType = $"ArmamentType_{bomb.BombType.BombTypeToString()}",
             Damage = Math.Round(bombDamage, 2),
-            Penetration = (int)Math.Truncate(bomb.Penetration),
+            Penetration = penetrationHe,
+            PenetrationAp = penetrationAp,
             FuseTimer = fuseTimer,
             ArmingThreshold = armingThreshold,
             RicochetAngles = ricochetAngle,
@@ -93,6 +107,7 @@ public partial record BombDataContainer : ProjectileDataContainer
             ShowBlastPenetration = showBlastPenetration,
             SplashRadius = Math.Round((decimal)bomb.DepthSplashRadius, 1),
             SplashDmg = Math.Round(bombDamage * (decimal)bomb.SplashDamageCoefficient),
+            Krupp = (decimal)bomb.Krupp,
         };
 
         bombDataContainer.UpdateDataElements();

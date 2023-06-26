@@ -1,5 +1,4 @@
-﻿@using WoWsShipBuilder.Infrastructure.Localization
-@using WoWsShipBuilder.Infrastructure.Localization.Resources
+﻿@using WoWsShipBuilder.Infrastructure.Localization.Resources
 @inject ILocalizer Localizer
 
 <MudDialog Style="max-height: 95vh" DefaultFocus="DefaultFocus.Element">
@@ -16,7 +15,7 @@
                             </MudText>
                             @foreach (var column in columns)
                             {
-                                <MudSwitch @bind-Checked="@(switchesLayout[section][column.Key])" Label="@column.Key" LabelPosition="LabelPosition.End" Size="Size.Medium" Color="Color.Warning" @key="@($"{section}_{column}")" Style="width: 100%;" Class="ml-1"/>
+                                <MudSwitch @bind-Checked="@(switchesLayout[section][column.Key])" Label="@column.Key" LabelPosition="LabelPosition.End" Size="Size.Medium" Color="Color.Info" @key="@($"{section}_{column}")" Style="width: 100%;" Class="ml-1"/>
                             }
                         </MudStack>
                     </MudPaper>
@@ -25,8 +24,8 @@
         </div>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel" Variant="Variant.Text">@Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization</MudButton>
-        <MudButton OnClick="Confirm" Variant="Variant.Text">@Localizer.GetAppLocalization(nameof(Translation.Dialog_Save)).Localization</MudButton>
+        <MudButton OnClick="Cancel" Color="Color.Primary" Variant="Variant.Filled">@Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization</MudButton>
+        <MudButton OnClick="Confirm" Color="Color.Info" Variant="Variant.Filled">@Localizer.GetAppLocalization(nameof(Translation.Dialog_Save)).Localization</MudButton>
     </DialogActions>
 </MudDialog>
 

@@ -1,9 +1,11 @@
 using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
+using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Aircraft;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
+using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.DataContainers;
@@ -32,17 +34,17 @@ public partial record ConsumableDataContainer : DataContainerBase
 
     public Dictionary<string, float> Modifiers { get; set; } = null!;
 
-    public static ConsumableDataContainer FromTypeAndVariant(ShipConsumable consumable, List<(string name, float value)> modifiers, bool isCvPlanes, int planesHp, int shipHp)
+    public static ConsumableDataContainer FromTypeAndVariant(ShipConsumable consumable, List<(string name, float value)> modifiers, bool isCvPlanes, int planesHp, int shipHp, ShipClass shipClass)
     {
-        return FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, isCvPlanes, planesHp, shipHp);
+        return FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, isCvPlanes, planesHp, shipHp, shipClass);
     }
 
-    public static ConsumableDataContainer FromTypeAndVariant(AircraftConsumable consumable, List<(string name, float value)> modifiers, bool isCvPlanes, int planesHp, int shipHp)
+    public static ConsumableDataContainer FromTypeAndVariant(AircraftConsumable consumable, List<(string name, float value)> modifiers, bool isCvPlanes, int planesHp, int shipHp, ShipClass shipClass)
     {
-        return FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, isCvPlanes, planesHp, shipHp);
+        return FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, isCvPlanes, planesHp, shipHp, shipClass);
     }
 
-    private static ConsumableDataContainer FromTypeAndVariant(string name, string variant, int slot, List<(string name, float value)> modifiers, bool isCvPlanes, int planesHp, int shipHp)
+    private static ConsumableDataContainer FromTypeAndVariant(string name, string variant, int slot, List<(string name, float value)> modifiers, bool isCvPlanes, int planesHp, int shipHp, ShipClass shipClass)
     {
         var consumableIdentifier = $"{name} {variant}";
         var usingFallback = false;
@@ -138,7 +140,7 @@ public partial record ConsumableDataContainer : DataContainerBase
             var talentUsesModifiers = modifiers.FindModifiers("numConsumables", true);
             uses = talentUsesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
 
-            var allCooldownModifiers = modifiers.FindModifiers("ConsumableReloadTime");
+            var allCooldownModifiers = modifiers.FindModifiers($"ConsumableReloadTime_{shipClass.ShipClassToString()}");
             cooldown = allCooldownModifiers.Aggregate(cooldown, (current, modifier) => (current * modifier));
 
             var allWorkModifiers = modifiers.FindModifiers("ConsumablesWorkTime");

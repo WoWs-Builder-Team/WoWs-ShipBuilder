@@ -1,0 +1,27 @@
+name: Web Docker Release Check
+
+on:
+  pull_request:
+    branches:
+      - 'release/web'
+
+jobs:
+  buildApp:
+    runs-on: ubuntu-latest
+    name: Verify image build
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: dotnet/nbgv@master
+        with:
+          setAllVars: true
+          path: WoWsShipBuilder.Web
+      - name: Build container image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: false
+          tags: ghcr.io/wows-builder-team/wowssb:${{ env.NBGV_NuGetPackageVersion }}
+          file: WoWsShipBuilder.Web/Dockerfile

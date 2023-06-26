@@ -47,7 +47,7 @@
 @inject IOptions<CdnOptions> CdnOptions
 @inject NavigationManager NavManager
 @inject IJSRuntime JsRuntime
-@inject IMetricsService MetricsService
+@inject MetricsService MetricsService
 @inject SessionStateCache SessionStateCache
 @inject IDialogService DialogService
 
@@ -360,7 +360,6 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        MetricsService.ComparisonPageCount.Inc();
 
         ViewModel = new(Localizer, AppSettings);
 
@@ -434,6 +433,11 @@
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
+        if (firstRender)
+        {
+            MetricsService.PageAccessCount.WithLabels("comparison").Inc();
+        }
+
         hiddenColumns = dataGrid.RenderedColumns.Where(x => x.Hideable is true).ToDictionary(x => x.FieldId, x => hiddenColumns.TryGetValue(x.FieldId, out bool hidden) && hidden);
     }
 
@@ -463,6 +467,8 @@
         {
             shipBuildContainers.AddRange(ViewModel!.SelectedShipList.Values.Select(x => x.ShipBuildContainer).OrderBy(x => LocalizeShipName(x.Ship.Index)));
         }
+
+        MetricsService.BuildConfigurationDialogUsage.WithLabels("comparison").Inc();
         IEnumerable<ShipBuildContainer>? results = await buildConfigurationHelper.ShowDialogAsync(shipBuildContainers);
         isDialogOpen = false;
 
@@ -500,12 +506,18 @@
     private async Task ToggleHideShipsWithoutSelectedSection()
     {
         ViewModel!.ToggleHideShipsWithoutSelectedSection();
+        if (ViewModel.HideShipsWithoutSelectedSection)
+        {
+            MetricsService.ShipComparisonActions.WithLabels("hide-ships-without-section").Inc();
+        }
+
         await UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
     private async Task AddPinnedShip(GridDataWrapper wrapper)
     {
+        MetricsService.ShipComparisonActions.WithLabels("toggle-pin").Inc();
         await ViewModel!.AddPinnedShip(wrapper);
         await dataGrid.ReloadServerData();
     }
@@ -526,6 +538,11 @@
     private async Task ToggleShowPinnedShipOnly()
     {
         ViewModel!.ToggleShowPinnedShipOnly();
+        if (ViewModel.ShowPinnedShipsOnly)
+        {
+            MetricsService.ShipComparisonActions.WithLabels("show-pinned-ships-only").Inc();
+        }
+
         await UpdateUrl();
         await dataGrid.ReloadServerData();
     }
@@ -533,6 +550,11 @@
     private async Task ToggleUpgradedModules()
     {
         ViewModel!.ToggleUpgradedModules();
+        if (ViewModel.UseUpgradedModules)
+        {
+            MetricsService.ShipComparisonActions.WithLabels("use-upgraded-modules").Inc();
+        }
+
         await UpdateUrl();
         await dataGrid.ReloadServerData();
     }
@@ -641,6 +663,7 @@
 
     private async Task OpenHideColumnsDialog()
     {
+        MetricsService.ShipComparisonActions.WithLabels("hide-columns").Inc();
         isDialogOpen = true;
         DialogOptions options = new()
         {
@@ -701,6 +724,7 @@
                 }
             }
 
+            MetricsService.ComparisonShipCount.Observe(data.Count);
             return Task.FromResult<GridData<GridDataWrapper>>(new() { TotalItems = data.Count, Items = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToList() });
         }
     }
@@ -731,16 +755,19 @@
 
     private void OpenShipStats()
     {
+        MetricsService.ShipComparisonActions.WithLabels("open-ship-stats").Inc();
         SetupAndOpenNewTab("ship?shipIndexes=" + string.Join(",", ViewModel!.SelectedShipList.Select(x => x.Value.Ship.Index)));
     }
 
     private void OpenBallisticCharts()
     {
+        MetricsService.ShipComparisonActions.WithLabels("open-ballistic-charts").Inc();
         SetupAndOpenNewTab("charts?shipIndex=" + string.Join(",", ViewModel!.SelectedShipList.Select(x => x.Value.Ship.Index)));
     }
 
     private void OpenAccelerationCharts()
     {
+        MetricsService.ShipComparisonActions.WithLabels("open-acceleration-charts").Inc();
         SetupAndOpenNewTab("acceleration-charts?shipIndexes=" + string.Join(",", ViewModel!.SelectedShipList.Select(x => x.Value.Ship.Index)));
     }
 

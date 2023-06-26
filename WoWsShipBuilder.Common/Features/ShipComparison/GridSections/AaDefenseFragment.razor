@@ -1,5 +1,4 @@
-﻿@using WoWsShipBuilder.Infrastructure.Localization
-@using WoWsShipBuilder.Infrastructure.Localization.Resources
+﻿@using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Features.ShipComparison.GridData
 @code {
 
@@ -9,24 +8,27 @@
     {
         string dataSectionString = ShipComparisonDataSections.AntiAir.AsString();
 
-        var columnTitleLongAura = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_LongAura))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
-        var columnTitleLongAuraDps = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_LongAura))} {element.localizer.SimpleAppLocalization(Translation.Unit_DPS)}";
-        var columnTitleLongAuraHitChance = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_LongAura))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_HitChance)} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+        var unitKm = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_KM))}";
+        var unitPerCent = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_PerCent))}";
+
+        var columnTitleLongAura = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_LongAura));
+        var columnTitleLongAuraDps = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_LongAura))} {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_DPS))}";
+        var columnTitleLongAuraHitChance = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_LongAura))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_HitChance))}";
         var columnTitleFlaks = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Flak))}";
         var columnTitleFlaksDamage = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FlakDamage))}";
-        var columnTitleMediumAura = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MediumAura))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
-        var columnTitleMediumAuraDps = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MediumAura))} {element.localizer.SimpleAppLocalization(Translation.Unit_DPS)}";
-        var columnTitleMediumAuraHitChance = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MediumAura))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_HitChance)} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
-        var columnTitleShortAura = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ShortAura))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
-        var columnTitleShortAuraDps = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ShortAura))} {element.localizer.SimpleAppLocalization(Translation.Unit_DPS)}";
-        var columnTitleShortAuraHitChance = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ShortAura))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_HitChance)} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+        var columnTitleMediumAura = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MediumAura));
+        var columnTitleMediumAuraDps = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MediumAura))} {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_DPS))}";
+        var columnTitleMediumAuraHitChance = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MediumAura))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_HitChance))}";
+        var columnTitleShortAura = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ShortAura));
+        var columnTitleShortAuraDps = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ShortAura))} {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_DPS))}";
+        var columnTitleShortAuraHitChance = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ShortAura))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_HitChance))}";
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleLongAura}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleLongAura)" SortBy="@(x => x.AntiAirArmament?.LongRangeAura?.Range ?? 0)" T="GridDataWrapper" Title="@columnTitleLongAura" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AntiAirArmament?.LongRangeAura?.Range is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AntiAirArmament?.LongRangeAura?.Range
+                        @(context.Item.AntiAirArmament?.LongRangeAura?.Range + unitKm)
                     </MudText>
                 }
                 else
@@ -60,7 +62,7 @@
                 @if (context.Item.AntiAirArmament?.LongRangeAura?.HitChance is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AntiAirArmament?.LongRangeAura?.HitChance
+                        @(context.Item.AntiAirArmament?.LongRangeAura?.HitChance + unitPerCent)
                     </MudText>
                 }
                 else
@@ -111,7 +113,7 @@
                 @if (context.Item.AntiAirArmament?.MediumRangeAura?.Range is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AntiAirArmament?.MediumRangeAura?.Range
+                        @(context.Item.AntiAirArmament?.MediumRangeAura?.Range + unitKm)
                     </MudText>
                 }
                 else
@@ -145,7 +147,7 @@
                 @if (context.Item.AntiAirArmament?.MediumRangeAura?.HitChance is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AntiAirArmament?.MediumRangeAura?.HitChance
+                        @(context.Item.AntiAirArmament?.MediumRangeAura?.HitChance + unitPerCent)
                     </MudText>
                 }
                 else
@@ -162,7 +164,7 @@
                 @if (context.Item.AntiAirArmament?.ShortRangeAura?.Range is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AntiAirArmament?.ShortRangeAura?.Range
+                        @(context.Item.AntiAirArmament?.ShortRangeAura?.Range + unitKm)
                     </MudText>
                 }
                 else
@@ -196,7 +198,7 @@
                 @if (context.Item.AntiAirArmament?.ShortRangeAura?.HitChance is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.AntiAirArmament?.ShortRangeAura?.HitChance
+                        @(context.Item.AntiAirArmament?.ShortRangeAura?.HitChance + unitPerCent)
                     </MudText>
                 }
                 else

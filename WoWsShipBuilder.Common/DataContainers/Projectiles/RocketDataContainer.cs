@@ -1,6 +1,6 @@
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures.Projectile;
-using WoWsShipBuilder.Infrastructure;
+using WoWsShipBuilder.Features.BallisticCharts;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
@@ -24,8 +24,14 @@ namespace WoWsShipBuilder.DataContainers
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "Splash", TooltipKey = "SplashExplanation")]
         public decimal SplashDmg { get; set; }
 
+        [DataElementType(DataElementTypes.Tooltip, TooltipKey = "KruppExplanation")]
+        public decimal Krupp { get; set; }
+
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MM")]
         public int Penetration { get; set; }
+
+        [DataElementType(DataElementTypes.Tooltip, TooltipKey = "ApPenetrationFormula", UnitKey = "MM")]
+        public int PenetrationAp { get; set; }
 
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
         public decimal FuseTimer { get; set; }
@@ -58,6 +64,8 @@ namespace WoWsShipBuilder.DataContainers
             decimal fuseTimer = 0;
             var armingThreshold = 0;
             decimal fireChance = 0;
+            int penetrationHe = 0;
+            int penetrationAp = 0;
             if (rocket.RocketType.Equals(DataStructures.RocketType.AP))
             {
                 List<float> rocketDamageModifiers = modifiers.FindModifiers("rocketApAlphaDamageMultiplier").ToList();
@@ -66,6 +74,7 @@ namespace WoWsShipBuilder.DataContainers
                 fuseTimer = (decimal)rocket.FuseTimer;
                 armingThreshold = (int)rocket.ArmingThreshold;
                 showBlastPenetration = false;
+                penetrationAp = (int)Math.Round(BallisticHelper.CalculatePen(rocket.MuzzleVelocity, rocket.Caliber, rocket.Mass, rocket.Krupp));
             }
             else
             {
@@ -73,6 +82,7 @@ namespace WoWsShipBuilder.DataContainers
                 fireChance = (decimal)fireChanceModifiers.Aggregate(rocket.FireChance, (current, modifier) => current + modifier);
                 var fireChanceModifiersRockets = modifiers.FindModifiers("burnChanceFactorSmall");
                 fireChance = fireChanceModifiersRockets.Aggregate(fireChance, (current, modifier) => current + (decimal)modifier);
+                penetrationHe = (int)Math.Truncate(rocket.Penetration);
             }
 
             var rocketDataContainer = new RocketDataContainer
@@ -80,7 +90,8 @@ namespace WoWsShipBuilder.DataContainers
                 Name = rocket.Name,
                 RocketType = $"ArmamentType_{rocket.RocketType.RocketTypeToString()}",
                 Damage = Math.Round(rocketDamage, 2),
-                Penetration = (int)Math.Truncate(rocket.Penetration),
+                Penetration = penetrationHe,
+                PenetrationAp = penetrationAp,
                 FuseTimer = fuseTimer,
                 ArmingThreshold = armingThreshold,
                 RicochetAngles = ricochetAngle,
@@ -90,6 +101,7 @@ namespace WoWsShipBuilder.DataContainers
                 ShowBlastPenetration = showBlastPenetration,
                 SplashRadius = Math.Round((decimal)rocket.DepthSplashRadius, 1),
                 SplashDmg = Math.Round(rocketDamage * (decimal)rocket.SplashDamageCoefficient),
+                Krupp = (decimal)rocket.Krupp,
             };
 
             rocketDataContainer.UpdateDataElements();

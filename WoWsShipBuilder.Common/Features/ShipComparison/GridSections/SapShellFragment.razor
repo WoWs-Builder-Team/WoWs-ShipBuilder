@@ -1,5 +1,4 @@
-﻿@using WoWsShipBuilder.Infrastructure.Localization
-@using WoWsShipBuilder.Infrastructure.Localization.Resources
+﻿@using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Features.ShipComparison.GridData
 @code {
 
@@ -9,23 +8,29 @@
     {
         string dataSectionString = ShipComparisonDataSections.Sap.AsString();
 
-        var columnTitleCaliber = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Caliber))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
-        var columnTitleMass = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Mass))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KG)})";
-        var columnTitleDamage = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Damage))}";
-        var columnTitleSplashRadius = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SplashRadius))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
-        var columnTitleSplashDamage = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Splash))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Damage)}";
-        var columnTitlePenetration = $"{element.localizer.SimpleAppLocalization(Translation.ShipStats_Penetration)} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
-        var columnTitleInitialSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_InitialSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MPS)})";
-        var columnTitleAirDrag = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AirDrag))}";
-        var columnTitleOvermatch = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Overmatch))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
-        var columnTitleRicochetAngles = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RicochetAngles))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Degree)})";
+        var unitKg = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_KG))}";
+        var unitMps = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_MPS))}";
+        var unitMm = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_MM))}";
+        var unitM = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_M))}";
+        var unitDegree = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_Degree))}";
+
+        var columnTitleCaliber = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Caliber));
+        var columnTitleMass = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Mass));
+        var columnTitleDamage = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Damage));
+        var columnTitleSplashRadius = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SplashRadius));
+        var columnTitleSplashDamage = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Splash))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Damage))}";
+        var columnTitleInitialSpeed = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_InitialSpeed));
+        var columnTitleAirDrag = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AirDrag));
+        var columnTitlePenetration = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Penetration));
+        var columnTitleOvermatch = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Overmatch));
+        var columnTitleRicochetAngles = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RicochetAngles));
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCaliber}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCaliber)" SortBy="@(x => x.MainBattery?.GunCaliber ?? 0)" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.MainBattery is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBattery.GunCaliber
+                        @(context.Item.MainBattery.GunCaliber + unitMm)
                     </MudText>
                 }
                 else
@@ -42,7 +47,7 @@
                 @if (context.Item.SapShell?.Mass is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SapShell.Mass
+                        @(context.Item.SapShell.Mass + unitKg)
                     </MudText>
                 }
                 else
@@ -76,7 +81,7 @@
                 @if (context.Item.SapShell?.SplashRadius is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SapShell.SplashRadius
+                        @(context.Item.SapShell.SplashRadius + unitM)
                     </MudText>
                 }
                 else
@@ -110,7 +115,7 @@
                 @if (context.Item.SapShell?.Penetration is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SapShell.Penetration
+                        @(context.Item.SapShell.Penetration + unitMm)
                     </MudText>
                 }
                 else
@@ -127,7 +132,7 @@
                 @if (context.Item.SapShell?.ShellVelocity is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SapShell.ShellVelocity
+                        @(context.Item.SapShell.ShellVelocity + unitMps)
                     </MudText>
                 }
                 else
@@ -161,7 +166,7 @@
                 @if (context.Item.SapShell?.Overmatch is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SapShell.Overmatch
+                        @(context.Item.SapShell.Overmatch + unitMm)
                     </MudText>
                 }
                 else
@@ -178,7 +183,7 @@
                 @if (!string.IsNullOrEmpty(context.Item.SapShell?.RicochetAngles))
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.SapShell.RicochetAngles
+                        @(context.Item.SapShell.RicochetAngles + unitDegree)
                     </MudText>
                 }
                 else
