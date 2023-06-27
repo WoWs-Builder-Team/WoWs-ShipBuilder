@@ -4,7 +4,7 @@ namespace WoWsShipBuilder.Infrastructure.Metrics;
 
 public class MetricsService
 {
-    private static readonly double[] DefaultDurationBuckets = { .0025, .005, .01, .025, .05, .075, .1, .25, .5, .75, 1, 2.5, 5 };
+    private static readonly double[] DefaultDurationBuckets = { .00125, .0025, .005, .01, .025, .05, .075, .1, .25, .5, .75, 1, 2.5, 5 };
 
     public Counter PageAccessCount { get; } = Prometheus.Metrics.CreateCounter("page_access_total", "Number of page accesses", new CounterConfiguration
     {
