@@ -306,7 +306,7 @@
     {
         base.OnInitialized();
         NotifierService.RefreshRequested += OnRefresh;
-        shipNameList = AppData.ShipSummaryList.Select(ship => new KeyValuePair<string, ShipSummary>(Localizer.GetGameLocalization($"{ship.Index}_FULL").Localization, ship)).ToImmutableList();
+        shipNameList = AppData.ShipSummaryMapper.Values.Select(ship => new KeyValuePair<string, ShipSummary>(Localizer.GetGameLocalization($"{ship.Index}_FULL").Localization, ship)).ToImmutableList();
         filteredSummaryList = shipNameList.OrderBy(x => x.Key).ToList();
     }
 
@@ -355,7 +355,7 @@
 
         if (value is Build build)
         {
-            shipSummary = AppData.ShipSummaryList.First(x => x.Index == build.ShipIndex);
+            shipSummary = AppData.ShipSummaryMapper[build.ShipIndex];
             shipName = Localizer.SimpleGameLocalization($"{build.ShipIndex}_FULL");
             buildName = build.BuildName;
         }
