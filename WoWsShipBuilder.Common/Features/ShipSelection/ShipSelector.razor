@@ -16,6 +16,7 @@
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
+@using System.Collections.Immutable
 
 @implements IAsyncDisposable
 @inject ILocalizer Localizer
@@ -213,7 +214,7 @@
     [Parameter]
     public bool DisableSelectedShipBuildEditing { get; set; }
 
-    private SortedDictionary<string, ShipSummary> totalShipNameDictionary = new();
+    private ImmutableList<KeyValuePair<string, ShipSummary>> shipNameList = ImmutableList<KeyValuePair<string, ShipSummary>>.Empty;
 
     private MudList mudList = default!;
 
@@ -305,8 +306,8 @@
     {
         base.OnInitialized();
         NotifierService.RefreshRequested += OnRefresh;
-        totalShipNameDictionary = new(AppData.ShipSummaryList.ToDictionary(ship => Localizer.GetGameLocalization($"{ship.Index}_FULL").Localization, ship => ship));
-        filteredSummaryList = totalShipNameDictionary.ToList().OrderBy(x => x.Key).ToList();
+        shipNameList = AppData.ShipSummaryList.Select(ship => new KeyValuePair<string, ShipSummary>(Localizer.GetGameLocalization($"{ship.Index}_FULL").Localization, ship)).ToImmutableList();
+        filteredSummaryList = shipNameList.OrderBy(x => x.Key).ToList();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -328,8 +329,10 @@
     private void ApplyFilter()
     {
         string searchText = InputText;
-        var ships = totalShipNameDictionary.Where(pair => SummaryFilter(pair, searchText)).ToList();
-        ships = ships.OrderBy(x => x.Key).ToList();
+        var ships = shipNameList
+            .Where(pair => SummaryFilter(pair, searchText))
+            .OrderBy(x => x.Key)
+            .ToList();
         filteredSummaryList.Clear();
         filteredSummaryList.AddRange(ships);
         var builds = savedBuilds.Where(build => SummaryFilter(build, searchText)).ToList();
@@ -352,9 +355,8 @@
 
         if (value is Build build)
         {
-            var keyValuePair = totalShipNameDictionary.First(x => x.Value.Index.Equals(build.ShipIndex));
-            shipSummary = keyValuePair.Value;
-            shipName = keyValuePair.Key;
+            shipSummary = AppData.ShipSummaryList.First(x => x.Index == build.ShipIndex);
+            shipName = Localizer.SimpleGameLocalization($"{build.ShipIndex}_FULL");
             buildName = build.BuildName;
         }
 
