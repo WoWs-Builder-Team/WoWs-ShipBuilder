@@ -177,10 +177,6 @@ else if (ViewModel is not null)
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (firstRender)
-        {
-            MetricsService.PageAccessCount.WithLabels("shipstats").Inc();
-        }
 
         if (ViewModel is null)
         {

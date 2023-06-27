@@ -120,6 +120,11 @@
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
+        if (firstRender)
+        {
+            MetricsService.PageAccessCount.WithLabels("shipstats").Inc();
+        }
+
         if (!updateTab) return;
         Logger.LogDebug("Tab update requested");
         mudTabs.ActivatePanel(selectedTabId, true);
