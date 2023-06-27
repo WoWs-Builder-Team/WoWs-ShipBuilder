@@ -2,7 +2,8 @@
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @inject ILocalizer Localizer
 
-<MudDialog>
+@* MudDialog max height is 'calc(100vh - var(--mud-appbar-height))' so we multiply the app bar height by 2 to ensure proper clearance for the dialog actions *@
+<MudDialog ContentStyle="overflow-y: scroll; max-height: calc(100vh - (2 * var(--mud-appbar-height)));">
     <DialogContent>
         <SettingsComponent @ref="@settingsComponent" />
     </DialogContent>
