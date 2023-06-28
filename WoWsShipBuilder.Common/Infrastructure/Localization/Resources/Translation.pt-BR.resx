@@ -1353,9 +1353,6 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
   <data name="Placeholder" xml:space="preserve">
       <value>---</value>
   </data>
-  <data name="ShipStats_Splash" xml:space="preserve">
-      <value>Choque</value>
-  </data>
   <data name="ShipStats_SplashRadius" xml:space="preserve">
       <value>Raio</value>
   </data>
