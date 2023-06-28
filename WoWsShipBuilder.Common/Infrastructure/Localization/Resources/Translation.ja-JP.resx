@@ -1329,9 +1329,6 @@
   <data name="Placeholder" xml:space="preserve">
       <value>---</value>
   </data>
-  <data name="ShipStats_Splash" xml:space="preserve">
-      <value>爆風</value>
-  </data>
   <data name="ShipStats_SplashRadius" xml:space="preserve">
       <value>半径</value>
   </data>
