@@ -539,12 +539,12 @@ public partial class ShipComparisonViewModel : ReactiveObject
             ? ShipModuleHelper.GroupAndSortUpgrades(ship.ShipUpgradeInfo.ShipUpgrades)
                 .OrderBy(entry => entry.Key)
                 .Select(entry => entry.Value)
-                .Select(module => module.Last())
+                .Select(module => module[^1])
                 .ToList()
             : ShipModuleHelper.GroupAndSortUpgrades(ship.ShipUpgradeInfo.ShipUpgrades)
                 .OrderBy(entry => entry.Key)
                 .Select(entry => entry.Value)
-                .Select(module => module.First())
+                .Select(module => module[0])
                 .ToList();
         return shipConfiguration;
     }
