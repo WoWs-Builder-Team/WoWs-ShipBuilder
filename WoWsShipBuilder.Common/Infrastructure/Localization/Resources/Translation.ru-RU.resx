@@ -1320,9 +1320,6 @@
   <data name="Placeholder" xml:space="preserve">
       <value>---</value>
   </data>
-  <data name="ShipStats_Splash" xml:space="preserve">
-      <value>Сплеш</value>
-  </data>
   <data name="ShipStats_SplashRadius" xml:space="preserve">
       <value>Радиус</value>
   </data>
