@@ -1353,9 +1353,6 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="Placeholder" xml:space="preserve">
       <value>---</value>
   </data>
-  <data name="ShipStats_Splash" xml:space="preserve">
-      <value>Schadensbereich</value>
-  </data>
   <data name="ShipStats_SplashRadius" xml:space="preserve">
       <value>Explosionsradius</value>
   </data>
