@@ -222,13 +222,13 @@
             <div style="width: 25%">
                 <MudSpacer/>
             </div>
-            <MudButton OnClick="@(async () => await OpenHideColumnsDialog())" DisableElevation="true" Variant="Variant.Text" StartIcon="@Icons.Material.Outlined.Settings" Size="Size.Small" Color="Color.Secondary" Class="mt-n2">
+            <MudButton OnClick="@(async () => await OpenHideColumnsDialog())" DisableElevation="true" Variant="Variant.Text" StartIcon="@Icons.Material.Outlined.Settings" Size="Size.Small" Color="Color.Secondary" Style="margin-top: -2px">
                 @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_ActiveColumns))
             </MudButton>
             <div style="width: 5%">
                 <MudSpacer/>
             </div>
-            <MudDataGridPager T="GridDataWrapper" PageSizeOptions="GridPagination" Class="mt-n3 mr-n1"/>
+            <MudDataGridPager T="GridDataWrapper" PageSizeOptions="GridPagination" Class="mr-n1" Style="margin-top: -3px"/>
         </ToolBarContent>
 
         <Columns>
