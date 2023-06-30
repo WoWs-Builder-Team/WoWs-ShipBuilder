@@ -480,7 +480,7 @@
             <!--T11 abilities-->
             @if (ViewModel.CurrentShipStats?.SpecialAbilityDataContainer is not null)
             {
-                <MudExpansionPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_SpecialAbility)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
+                <MudExpansionPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_SpecialAbility)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0 my-4">
                     <MudStack Spacing="1" Class="expander-content-padding">
 
                         @if (ViewModel.CurrentShipStats.SpecialAbilityDataContainer.IsBurstMode)
