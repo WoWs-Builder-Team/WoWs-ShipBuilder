@@ -485,12 +485,12 @@
 
                         @if (ViewModel.CurrentShipStats.SpecialAbilityDataContainer.IsBurstMode)
                         {
-                            <MudText Typo="Typo.body2">@Localizer.GetAppLocalization(ViewModel.CurrentShipStats.SpecialAbilityDataContainer.Name).Localization</MudText>
+                            <MudText Typo="Typo.body2">@Localizer.GetAppLocalization(ViewModel.CurrentShipStats.SpecialAbilityDataContainer.Name).Localization.ToUpperInvariant()</MudText>
                         }
                         else
                         {
-                            <MudText Typo="Typo.body2">@Localizer.GetGameLocalization(ViewModel.CurrentShipStats.SpecialAbilityDataContainer.Name).Localization</MudText>
-                            <MudText Typo="Typo.body2">@Localizer.GetGameLocalization(ViewModel.CurrentShipStats.SpecialAbilityDataContainer.Description).Localization</MudText>
+                            <MudText Typo="Typo.body2">@Localizer.GetGameLocalization(ViewModel.CurrentShipStats.SpecialAbilityDataContainer.Name).Localization.ToUpperInvariant()</MudText>
+                            <MudText Typo="Typo.body2">@FixSpecialAbilityDescription(Localizer.GetGameLocalization(ViewModel.CurrentShipStats.SpecialAbilityDataContainer.Description).Localization)</MudText>
                         }
                         <MudDivider Light="true" Class="ma-1"/>
                         @foreach (var data in ViewModel.CurrentShipStats.SpecialAbilityDataContainer.DataElements)
@@ -499,7 +499,7 @@
                         }
                         @foreach (var modifier in ViewModel.CurrentShipStats.SpecialAbilityDataContainer.Modifiers ?? new())
                         {
-                            <div class="ml-3 d-flex justify-space-between">
+                            <div class="d-flex justify-space-between">
                                 <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@ModifierProcessor.GetUiModifierString(modifier.Key, modifier.Value, ReturnFilter.Description, Localizer)</MudText>
                                 <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@ModifierProcessor.GetUiModifierString(modifier.Key, modifier.Value, ReturnFilter.Value, Localizer)</MudText>
                             </div>
@@ -583,5 +583,16 @@
         MetricsService.ShipStatsActions.WithLabels("open-acceleration-inline").Inc();
         StoreBuildsForTransfer(calculateShipDataContainer);
         NavManager.NavigateTo($"/acceleration-charts?shipIndexes={ViewModel!.CurrentShipStats!.Index}");
+    }
+
+    private static string FixSpecialAbilityDescription(string description)
+    {
+        if (description.Contains("press [CMD_ACTIVATE"))
+        {
+            description = description.TrimEnd('.');
+            return description[..(description.LastIndexOf('.') + 1)];
+        }
+
+        return description;
     }
 }
