@@ -10,6 +10,7 @@
 @inject ILocalizer Localizer
 @inject IOptions<CdnOptions> CdnOptions
 @inject IOptions<ShipBuilderOptions> ShipBuilderOptionsContainer
+@inject IJSRuntime Runtime
 
 <MudAppBar Fixed>
     <MudHidden Breakpoint="Breakpoint.SmAndDown">
@@ -20,6 +21,9 @@
         <NavLink href="/charts" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_BallisticCharts))</NavLink>
         <NavLink href="/acceleration-charts" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationAccelerationCharts))</NavLink>
         <NavLink href="/comparison" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationComparison))</NavLink>
+        <AuthorizeView Roles="@AppConstants.AdminRoleName">
+            <NavLink href="/admin" ActiveClass="nav-link-active">Admin Page</NavLink>
+        </AuthorizeView>
         <MudDivider DividerType="DividerType.Middle" FlexItem Vertical/>
         @switch (CdnOptions.Value.Server)
         {
@@ -120,6 +124,33 @@
                 <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder#wows-shipbuilder" Target="_blank"/>
             </ChildContent>
         </MudTooltip>
+        <AuthorizeView>
+            <Authorized>
+                <MudTooltip>
+                    <TooltipContent>
+                        <MudText Typo="Typo.body1">Logout</MudText>
+                    </TooltipContent>
+                    <ChildContent>
+                        <MudIconButton Icon="@Icons.Material.Filled.Logout" Href="/api/auth/logout" Target="_self" Size="Size.Large"/>
+                    </ChildContent>
+                </MudTooltip>
+            </Authorized>
+            <NotAuthorized>
+                <MudTooltip>
+                    <TooltipContent>
+                        <MudText Typo="Typo.body1">Login</MudText>
+                    </TooltipContent>
+                    <ChildContent>
+                        <MudMenu Size="Size.Large" Icon="@Icons.Material.Filled.Login" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
+                            <MudMenuItem Href="/api/auth/login/eu" ForceLoad Target="_self">EU</MudMenuItem>
+                            <MudMenuItem Href="/api/auth/login/com" ForceLoad Target="_self">NA</MudMenuItem>
+                            <MudMenuItem Href="/api/auth/login/asia" ForceLoad Target="_self">SEA</MudMenuItem>
+                        </MudMenu>
+                    </ChildContent>
+                </MudTooltip>
+            </NotAuthorized>
+        </AuthorizeView>
+
     </MudHidden>
     <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" OnClick="@ToggleDrawer"/>

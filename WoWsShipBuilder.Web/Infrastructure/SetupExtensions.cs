@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.JSInterop;
 using NLog;
 using NLog.Config;
@@ -69,5 +70,17 @@ public static class SetupExtensions
         builder.Services.Configure<LinkShorteningOptions>(builder.Configuration.GetSection(LinkShorteningOptions.SectionName));
         builder.Services.Configure<ShipBuilderOptions>(builder.Configuration.GetSection(ShipBuilderOptions.SectionName));
         return builder;
+    }
+
+    public static IServiceCollection AddCookieAuth(this IServiceCollection services)
+    {
+        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+        {
+            options.LoginPath = "/api/auth/login";
+            options.LogoutPath = "/api/auth/logout";
+            options.ExpireTimeSpan = TimeSpan.FromDays(7);
+            options.SlidingExpiration = true;
+        });
+        return services;
     }
 }
