@@ -230,11 +230,12 @@
     {
         bool settingsChanged = AppSettings.SelectedLanguage != selectedCulture;
         AppSettings.SelectedLanguage = selectedCulture;
+        var languageChanged = settingsChanged;
 
         var serverTypeChanged = selectedServerType != AppSettings.SelectedServerType;
         settingsChanged = settingsChanged || serverTypeChanged;
         AppSettings.SelectedServerType = selectedServerType;
-        if (serverTypeChanged)
+        if (serverTypeChanged || languageChanged)
         {
             await ChangeServerType(selectedServerType);
         }

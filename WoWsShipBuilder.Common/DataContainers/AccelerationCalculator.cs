@@ -56,13 +56,13 @@ public static class AccelerationCalculator
         SpeedBoostAccelerationModifiers speedBoostModifiers)
     {
         // check that only valid values are contained in throttleList
-        if (initialThrottleList.Any(throttle => throttle is > 4 or < -1))
+        if (initialThrottleList.Exists(throttle => throttle is > 4 or < -1))
         {
             throw new InvalidOperationException("Throttles must be between -1 and 4. Use the constant of AccelerationHelper for safety.");
         }
 
         var throttleList = new List<int>();
-        foreach (int element in initialThrottleList.Where(element => throttleList.Count == 0 || throttleList.Last() != element))
+        foreach (int element in initialThrottleList.Where(element => throttleList.Count == 0 || throttleList[^1] != element))
         {
             throttleList.Add(element);
         }
@@ -106,7 +106,7 @@ public static class AccelerationCalculator
 
         // calculate initial stats
         // throttle goes from -1 to 4, depending on the gear.
-        int oldThrottle = throttleList.First();
+        int oldThrottle = throttleList[0];
 
         // initial speed is equal to the speed limit
         double speed = GetSpeedLimit(oldThrottle, maxForwardSpeed, maxReverseSpeed);
@@ -116,7 +116,7 @@ public static class AccelerationCalculator
 
         result.Add(new(speed, time));
 
-        if (throttleList.Any(x => x != oldThrottle))
+        if (throttleList.Exists(x => x != oldThrottle))
         {
             foreach (var throttle in throttleList.Skip(1))
             {
@@ -287,7 +287,7 @@ public static class AccelerationCalculator
         double forsageBackwardsMaxSpeed,
         double forsageBackwards)
     {
-        bool shouldContinue = true;
+        var shouldContinue = true;
         var acc = 0;
         if (speedLimit > speed)
         {
@@ -328,12 +328,7 @@ public static class AccelerationCalculator
         speed += Dt * acceleration;
 
         // the last part of the following two comparison is done with previousSpeed in the nga code, but seems to work better with speed.
-        if (speedLimit < speed && acc == 1 && power * speed > 0)
-        {
-            speed = speedLimit;
-            shouldContinue = false;
-        }
-        else if (speedLimit > speed && acc == -1 && power * speed > 0)
+        if ((speedLimit < speed && acc == 1 && power * speed > 0) || (speedLimit > speed && acc == -1 && power * speed > 0))
         {
             speed = speedLimit;
             shouldContinue = false;

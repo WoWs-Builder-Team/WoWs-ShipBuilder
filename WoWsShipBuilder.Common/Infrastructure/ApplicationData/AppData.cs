@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Collections.Immutable;
 using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Aircraft;
@@ -63,7 +64,7 @@ public static class AppData
     /// <summary>
     /// Gets or sets the list of <see cref="ShipSummary">ship summaries</see> that are currently available.
     /// </summary>
-    public static List<ShipSummary> ShipSummaryList { get; set; } = new();
+    public static ImmutableDictionary<string, ShipSummary> ShipSummaryMapper { get; set; } = ImmutableDictionary<string, ShipSummary>.Empty;
 
 #if DEBUG
     public static bool IsDebug => true;
@@ -73,7 +74,7 @@ public static class AppData
 
     public static void ResetCaches()
     {
-        ShipSummaryList.Clear();
+        ShipSummaryMapper = ImmutableDictionary<string, ShipSummary>.Empty;
         ConsumableList.Clear();
         ModernizationCache.Clear();
         ProjectileCache.Clear();

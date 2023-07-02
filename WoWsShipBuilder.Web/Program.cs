@@ -4,7 +4,6 @@ using Prometheus;
 using ReactiveUI;
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Utility;
 using WoWsShipBuilder.Web.Infrastructure;
@@ -14,7 +13,10 @@ using WoWsShipBuilder.Web.Infrastructure.Metrics;
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true);
 
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(options =>
+{
+    options.RootDirectory = "/Features/Host";
+});
 builder.Services.AddServerSideBlazor(options =>
 {
     options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(10);
@@ -71,7 +73,7 @@ await dataInitializer.InitializeData();
 
 try
 {
-    app.Run();
+    await app.RunAsync();
 }
 finally
 {

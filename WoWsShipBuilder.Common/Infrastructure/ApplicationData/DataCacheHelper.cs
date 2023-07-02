@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Immutable;
+using Newtonsoft.Json;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Aircraft;
 using WoWsShipBuilder.DataStructures.Captain;
@@ -85,7 +86,7 @@ public static class DataCacheHelper
             case "summary":
                 if (jsonObject is List<ShipSummary> shipSummaries)
                 {
-                    AppData.ShipSummaryList = shipSummaries;
+                    AppData.ShipSummaryMapper = shipSummaries.ToImmutableDictionary(x => x.Index);
                 }
 
                 break;
