@@ -2,6 +2,7 @@
 using System.IO.Abstractions;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Threading;
 using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.Desktop.Infrastructure.Data;
 using WoWsShipBuilder.Features.Settings;
@@ -52,7 +53,7 @@ public class DesktopSettingsAccessor : ISettingsAccessor
     public async Task SaveSettings(AppSettings appSettings)
     {
         await dataService.StoreAsync(appSettings, settingsFile);
-        UpdateThreadCulture(appSettings.SelectedLanguage.CultureInfo);
+        await UpdateUiThreadCultureAsync(appSettings.SelectedLanguage.CultureInfo);
     }
 
     public void SaveSettingsSync(AppSettings appSettings)
@@ -60,9 +61,12 @@ public class DesktopSettingsAccessor : ISettingsAccessor
         dataService.Store(appSettings, settingsFile);
     }
 
-    private static void UpdateThreadCulture(CultureInfo cultureInfo)
+    private static async Task UpdateUiThreadCultureAsync(CultureInfo cultureInfo)
     {
-        Thread.CurrentThread.CurrentCulture = cultureInfo;
-        Thread.CurrentThread.CurrentUICulture = cultureInfo;
+        await Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            Thread.CurrentThread.CurrentCulture = cultureInfo;
+            Thread.CurrentThread.CurrentUICulture = cultureInfo;
+        });
     }
 }

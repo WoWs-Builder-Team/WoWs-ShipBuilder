@@ -46,7 +46,7 @@ namespace WoWsShipBuilder.DataContainers
         [JsonIgnore]
         public Dictionary<string, float> Modifiers { get; set; } = null!;
 
-        public bool IsBurstMode { get; set; } = false;
+        public bool IsBurstMode { get; set; }
 
         public static SpecialAbilityDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
         {
@@ -59,7 +59,7 @@ namespace WoWsShipBuilder.DataContainers
                 specialDataContainer = new()
                 {
                     Name = $"DOCK_RAGE_MODE_TITLE_{specialAbility.Name}",
-                    Description = $"RAGE_MODE_TRIGGER_DESCRIPTION_{specialAbility.ActivatorName}",
+                    Description = $"RAGE_MODE_DESCRIPTION_{specialAbility.ActivatorName}",
                     Duration = Math.Round((decimal)specialAbility.Duration, 1),
                     TargetAreaRadius = Math.Round((decimal)(specialAbility.ActivatorRadius / 1000), 1),
                     ProgressPerAction = (decimal)specialAbility.ProgressPerAction,
@@ -73,23 +73,23 @@ namespace WoWsShipBuilder.DataContainers
             }
             else
             {
-                var artilleryConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Artillery);
+                var artilleryConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.Artillery);
                 if (artilleryConfiguration == null)
                 {
                     return null;
                 }
 
-                string[]? artilleryOptions = artilleryConfiguration.Components[ComponentType.Artillery];
-                string[]? supportedModules = artilleryConfiguration.Components[ComponentType.Artillery];
+                string[] artilleryOptions = artilleryConfiguration.Components[ComponentType.Artillery];
+                string[] supportedModules = artilleryConfiguration.Components[ComponentType.Artillery];
 
                 TurretModule? mainBattery;
                 if (artilleryOptions.Length == 1)
                 {
-                    mainBattery = ship.MainBatteryModuleList[supportedModules.First()];
+                    mainBattery = ship.MainBatteryModuleList[supportedModules[0]];
                 }
                 else
                 {
-                    string? hullArtilleryName = shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Artillery].First(artilleryName => supportedModules.Contains(artilleryName));
+                    string hullArtilleryName = shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Artillery].First(artilleryName => supportedModules.Contains(artilleryName));
                     mainBattery = ship.MainBatteryModuleList[hullArtilleryName];
                 }
 

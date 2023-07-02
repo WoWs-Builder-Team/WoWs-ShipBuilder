@@ -4737,7 +4737,7 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Splash.
+        ///   Looks up a localized string similar to Splash vs Subs.
         /// </summary>
         public static string ShipStats_Splash {
             get {

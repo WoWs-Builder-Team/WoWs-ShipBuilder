@@ -64,14 +64,14 @@ public partial class ShipViewModel : ReactiveObject
     {
         tokenSource = new();
         this.logger = logger;
-        PreviousShip = viewModelParams.ShipSummary.PrevShipIndex is null ? null : AppData.ShipSummaryList.First(sum => sum.Index == viewModelParams.ShipSummary.PrevShipIndex);
+        PreviousShip = viewModelParams.ShipSummary.PrevShipIndex is null ? null : AppData.ShipSummaryMapper[viewModelParams.ShipSummary.PrevShipIndex];
         CurrentShip = viewModelParams.ShipSummary;
     }
 
     public void ResetBuild()
     {
         logger.LogDebug("Resetting build");
-        LoadNewShip(AppData.ShipSummaryList.First(summary => summary.Index.Equals(CurrentShipIndex)));
+        LoadNewShip(AppData.ShipSummaryMapper[CurrentShipIndex]);
     }
 
     public void InitializeData(ShipViewModelParams viewModelParams)
@@ -123,9 +123,9 @@ public partial class ShipViewModel : ReactiveObject
 
         CurrentShipIndex = ship.Index;
         CurrentShipTier = ship.Tier;
-        CurrentShip = AppData.ShipSummaryList.First(sum => sum.Index == ship.Index);
-        PreviousShip = previousIndex is null ? null : AppData.ShipSummaryList.First(sum => sum.Index == previousIndex);
-        NextShips = nextShipsIndexes?.Select(index => AppData.ShipSummaryList.First(sum => sum.Index == index)).ToList();
+        CurrentShip = AppData.ShipSummaryMapper[ship.Index];
+        PreviousShip = previousIndex is null ? null : AppData.ShipSummaryMapper[previousIndex];
+        NextShips = nextShipsIndexes?.Select(index => AppData.ShipSummaryMapper[index]).ToList();
 
         AddChangeListeners();
         UpdateStatsViewModel(true);

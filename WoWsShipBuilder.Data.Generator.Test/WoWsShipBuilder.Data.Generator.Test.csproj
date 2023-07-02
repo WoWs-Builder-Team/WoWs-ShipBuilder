@@ -22,13 +22,4 @@
       <ProjectReference Include="..\WoWsShipBuilder.DataElements\WoWsShipBuilder.DataElements.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="TestStructures\DataElements.cs">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Compile>
-    </ItemGroup>
-
 </Project>

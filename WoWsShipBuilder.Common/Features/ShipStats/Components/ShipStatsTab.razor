@@ -177,10 +177,6 @@ else if (ViewModel is not null)
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (firstRender)
-        {
-            MetricsService.PageAccessCount.WithLabels("shipstats").Inc();
-        }
 
         if (ViewModel is null)
         {
@@ -390,7 +386,7 @@ else if (ViewModel is not null)
 
     public static Task<ShipViewModel> CreateViewModel(string shipIndex, Build? build, ILocalizer localizer)
     {
-        var shipSummary = AppData.ShipSummaryList.Single(x => x.Index.Equals(shipIndex));
+        var shipSummary = AppData.ShipSummaryMapper[shipIndex];
         var ship = AppData.FindShipFromSummary(shipSummary);
         var vmParams = new ShipViewModelParams(ship, shipSummary, build);
 

@@ -55,7 +55,7 @@
 
     private void UpdateShipList()
     {
-        var shipList = AppData.ShipSummaryList
+        var shipList = AppData.ShipSummaryMapper.Values
             .Where(s => s.Tier == selectedTier && s.ShipClass == selectedClass)
             .Take(25)
             .Select(AppData.FindShipFromSummary);
