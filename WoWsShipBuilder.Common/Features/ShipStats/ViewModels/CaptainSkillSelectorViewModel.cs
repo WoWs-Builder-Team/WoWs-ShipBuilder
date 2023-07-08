@@ -60,10 +60,9 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     {
     }
 
-    public CaptainSkillSelectorViewModel(ShipClass shipClass, (Captain defaultCaptain, Dictionary<string, Captain>? captainList) vmParams, bool screenshotMode = false)
+    public CaptainSkillSelectorViewModel(ShipClass shipClass, (Captain defaultCaptain, Dictionary<string, Captain>? captainList) vmParams)
     {
         logger = Logging.LoggerFactory.CreateLogger<CaptainSkillSelectorViewModel>();
-        ScreenshotMode = screenshotMode;
         currentClass = shipClass;
 
         var defaultCaptain = vmParams.defaultCaptain;
@@ -79,7 +78,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         }
 
         CaptainList = capList.Select(x => x.Value).ToList();
-        SelectedCaptain = CaptainList.First();
+        SelectedCaptain = CaptainList[0];
 
         this.WhenAnyValue(x => x.AssignedPoints).Do(_ => UpdateCanAddSkill()).Subscribe();
 
@@ -179,8 +178,6 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
             TalentOrConditionalSkillEnabled = (showArHpSelection && ArHpPercentage < 100) || CaptainTalentsList.Any(talent => talent.Status) || ConditionalModifiersList.Any(skill => skill.Status);
         }
     }
-
-    public bool ScreenshotMode { get; }
 
     public static (Captain, Dictionary<string, Captain>?) LoadParams(Nation nation)
     {
@@ -283,30 +280,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
 
         if (ConditionalModifiersList.Count > 0)
         {
-            var conditionalModifiers = ConditionalModifiersList.Where(skill => skill.Status && skill.SkillId != FuriousSkillNumber)
-                .SelectMany(skill => skill.Modifiers)
-                .Select(x => (x.Key, x.Value));
-
-            modifiers.AddRange(conditionalModifiers);
-
-            // Custom handling for Furious skill. Needs to take into account the number of fires
-            var furiousSkill = SkillOrderList.SingleOrDefault(skill => skill.SkillNumber is FuriousSkillNumber);
-            var furiousSkillModifier = ConditionalModifiersList.SingleOrDefault(skill => skill.SkillId is FuriousSkillNumber);
-            if (furiousSkill is not null && furiousSkillModifier is not null && furiousSkillModifier.Status)
-            {
-                var multiplier = (float)Math.Round(1 - (furiousSkillModifier.ActivationNumbers * (1 - furiousSkill.ConditionalModifiers["GMShotDelay"])), 2);
-                modifiers.Add(("GMShotDelay", multiplier));
-            }
-
-            // Custom handling for Improved Repair Party Readiness Skill
-            var improvedRepairPartyReadinessSkill = SkillOrderList.SingleOrDefault(skill => skill.SkillNumber is ImprovedRepairPartyReadinessSkillNumber);
-            var improvedRepairPartyReadinessSkillModifier = ConditionalModifiersList.SingleOrDefault(skill => skill.SkillId is ImprovedRepairPartyReadinessSkillNumber);
-            if (improvedRepairPartyReadinessSkill is not null && improvedRepairPartyReadinessSkillModifier is not null && improvedRepairPartyReadinessSkillModifier.Status)
-            {
-                float skillFactor = improvedRepairPartyReadinessSkill.ConditionalModifiers["regenCrewReloadCoeff"];
-                double multiplier = Math.Pow(skillFactor, improvedRepairPartyReadinessSkillModifier.ActivationNumbers);
-                modifiers.Add(("regenCrewReloadCoeff", Convert.ToSingle(multiplier)));
-            }
+            modifiers.AddRange(CollectConditionalModifiers());
         }
 
         var arSkill = SkillOrderList.SingleOrDefault(skill => skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs);
@@ -317,20 +291,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
 
         if (CaptainTalentsList.Count > 0)
         {
-            var talentModifiers = CaptainTalentsList.Where(talent => talent.Status && talent.MaximumActivations <= 1 && !talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus")))
-                .SelectMany(skill => skill.Modifiers)
-                .Select(x => (x.Key, x.Value));
-            modifiers.AddRange(talentModifiers);
-
-            var talentMultipleActivationModifiers = CaptainTalentsList.Where(talent => talent.Status && talent.MaximumActivations > 1 && !talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus")))
-                .SelectMany(talent => talent.Modifiers.Select(modifier => (modifier.Key, Value: Math.Pow(modifier.Value, talent.ActivationNumbers))))
-                .Select(x => (x.Key, (float)x.Value));
-            modifiers.AddRange(talentMultipleActivationModifiers);
-
-            var talentFireChanceModifier = CaptainTalentsList.Where(talent => talent.Status && talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus")))
-                .SelectMany(talent => talent.Modifiers.Select(modifier => (modifier.Key, Value: Math.Round(modifier.Value * talent.ActivationNumbers, 2))))
-                .Select(x => (x.Key, (float)x.Value));
-            modifiers.AddRange(talentFireChanceModifier);
+            modifiers.AddRange(CollectTalentModifiers());
         }
 
         return modifiers;
@@ -378,6 +339,58 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         }
 
         SkillActivationButtonEnabled = CaptainTalentsList.Count > 0 || ConditionalModifiersList.Count > 0 || ShowArHpSelection;
+    }
+
+    private IEnumerable<(string, float)> CollectConditionalModifiers()
+    {
+        var modifiers = new List<(string, float)>();
+        var conditionalModifiers = ConditionalModifiersList.Where(skill => skill.Status && skill.SkillId != FuriousSkillNumber)
+            .SelectMany(skill => skill.Modifiers)
+            .Select(x => (x.Key, x.Value));
+
+        modifiers.AddRange(conditionalModifiers);
+
+        // Custom handling for Furious skill. Needs to take into account the number of fires
+        var furiousSkill = SkillOrderList.SingleOrDefault(skill => skill.SkillNumber is FuriousSkillNumber);
+        var furiousSkillModifier = ConditionalModifiersList.SingleOrDefault(skill => skill.SkillId is FuriousSkillNumber);
+        if (furiousSkill is not null && furiousSkillModifier is not null && furiousSkillModifier.Status)
+        {
+            var multiplier = (float)Math.Round(1 - (furiousSkillModifier.ActivationNumbers * (1 - furiousSkill.ConditionalModifiers["GMShotDelay"])), 2);
+            modifiers.Add(("GMShotDelay", multiplier));
+        }
+
+        // Custom handling for Improved Repair Party Readiness Skill
+        var improvedRepairPartyReadinessSkill = SkillOrderList.SingleOrDefault(skill => skill.SkillNumber is ImprovedRepairPartyReadinessSkillNumber);
+        var improvedRepairPartyReadinessSkillModifier = ConditionalModifiersList.SingleOrDefault(skill => skill.SkillId is ImprovedRepairPartyReadinessSkillNumber);
+        if (improvedRepairPartyReadinessSkill is not null && improvedRepairPartyReadinessSkillModifier is not null && improvedRepairPartyReadinessSkillModifier.Status)
+        {
+            float skillFactor = improvedRepairPartyReadinessSkill.ConditionalModifiers["regenCrewReloadCoeff"];
+            double multiplier = Math.Pow(skillFactor, improvedRepairPartyReadinessSkillModifier.ActivationNumbers);
+            modifiers.Add(("regenCrewReloadCoeff", Convert.ToSingle(multiplier)));
+        }
+
+        return modifiers;
+    }
+
+    private IEnumerable<(string, float)> CollectTalentModifiers()
+    {
+        var modifiers = new List<(string, float)>();
+        var talentModifiers = CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: <= 1 } && !talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus")))
+            .SelectMany(skill => skill.Modifiers)
+            .Select(x => (x.Key, x.Value));
+        modifiers.AddRange(talentModifiers);
+
+        var talentMultipleActivationModifiers = CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: > 1 } && !talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus")))
+            .SelectMany(talent => talent.Modifiers.Select(modifier => (modifier.Key, Value: Math.Pow(modifier.Value, talent.ActivationNumbers))))
+            .Select(x => (x.Key, (float)x.Value));
+        modifiers.AddRange(talentMultipleActivationModifiers);
+
+        var talentFireChanceModifier = CaptainTalentsList.Where(talent => talent.Status && talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus")))
+            .SelectMany(talent => talent.Modifiers.Select(modifier => (modifier.Key, Value: Math.Round(modifier.Value * talent.ActivationNumbers, 2))))
+            .Select(x => (x.Key, (float)x.Value));
+        modifiers.AddRange(talentFireChanceModifier);
+
+        return modifiers;
     }
 
     private void CaptainTalentsListOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -460,16 +473,32 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
 
         logger.LogDebug("Reordering skills");
 
-        // AvaloniaList is missing one of the extension methods, so we copy the list to a normal one,
         var groups = SkillOrderList.GroupBy(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier)
             .Select(x => x.ToList())
             .ToList()
-            .OrderBy(x => x.First().Tiers.First(skillPosition => skillPosition.ShipClass == currentClass).Tier)
+            .OrderBy(x => x[0].Tiers.First(skillPosition => skillPosition.ShipClass == currentClass).Tier)
             .ToList();
 
         // Tier 0 skill reordering
-        var tier0Skills = groups[0];
+        ReorderTier0Skills(groups[0]);
 
+        // Tier 1 skill reordering
+        if (groups.Count > 2)
+        {
+            ReorderTierSkills(groups[1], 1);
+        }
+
+        // Tier 2 skill reordering
+        if (groups.Count > 3)
+        {
+            ReorderTierSkills(groups[2], 2);
+        }
+
+        logger.LogDebug("Finished reordering skills");
+    }
+
+    private void ReorderTier0Skills(List<Skill> tier0Skills)
+    {
         var tier0SkillsFirst = false;
         foreach (var tier0Skill in tier0Skills)
         {
@@ -481,61 +510,32 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
 
         if (!tier0SkillsFirst)
         {
-            var firstTier0Skill = tier0Skills.First();
+            var firstTier0Skill = tier0Skills[0];
             SkillOrderList.Remove(firstTier0Skill);
             SkillOrderList.Insert(0, firstTier0Skill);
         }
+    }
 
-        // Tier 1 skill reordering
-        if (groups.Count > 2)
+    private void ReorderTierSkills(List<Skill> tierSkills, int skillTier)
+    {
+        var firstPrevTierSkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == skillTier - 1);
+        var firstHigherTierSkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier > skillTier);
+
+        var currentTierSkillFirst = false;
+
+        foreach (var skill in tierSkills)
         {
-            var tier1Skills = groups[1];
-            var firstTier0SkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 0);
-            var firstHigherTierSkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier > 1);
-
-            var tier1SkillFirst = false;
-
-            foreach (var tier1Skill in tier1Skills)
+            if (SkillOrderList.IndexOf(skill) > firstPrevTierSkillIndex && SkillOrderList.IndexOf(skill) < firstHigherTierSkillIndex)
             {
-                if (SkillOrderList.IndexOf(tier1Skill) > firstTier0SkillIndex && SkillOrderList.IndexOf(tier1Skill) < firstHigherTierSkillIndex)
-                {
-                    tier1SkillFirst = true;
-                }
-            }
-
-            if (!tier1SkillFirst)
-            {
-                var skill = tier1Skills.First();
-                SkillOrderList.Remove(skill);
-                SkillOrderList.Insert(firstHigherTierSkillIndex, skill);
+                currentTierSkillFirst = true;
             }
         }
 
-        // Tier 2 skill reordering
-        if (groups.Count > 3)
+        if (!currentTierSkillFirst)
         {
-            var tier1Skills = groups[2];
-            var firstTier1SkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 1);
-            var firstHigherTierSkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier > 2);
-
-            var tier1SkillFirst = false;
-
-            foreach (var tier1Skill in tier1Skills)
-            {
-                if (SkillOrderList.IndexOf(tier1Skill) > firstTier1SkillIndex && SkillOrderList.IndexOf(tier1Skill) < firstHigherTierSkillIndex)
-                {
-                    tier1SkillFirst = true;
-                }
-            }
-
-            if (!tier1SkillFirst)
-            {
-                var skill = tier1Skills.First();
-                SkillOrderList.Remove(skill);
-                SkillOrderList.Insert(firstHigherTierSkillIndex, skill);
-            }
+            var skill = tierSkills[0];
+            SkillOrderList.Remove(skill);
+            SkillOrderList.Insert(firstHigherTierSkillIndex, skill);
         }
-
-        logger.LogDebug("Finished reordering skills");
     }
 }
