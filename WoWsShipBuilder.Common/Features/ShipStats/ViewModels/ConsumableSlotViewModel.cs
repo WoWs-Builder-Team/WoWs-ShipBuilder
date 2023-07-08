@@ -77,7 +77,7 @@ public class ConsumableSlotViewModel : ReactiveObject
 
     public void UpdateDataContainers(List<(string, float)> modifiers, int shipHp, ShipClass shipClass)
     {
-        var dataContainers = shipConsumables.Select(c => ConsumableDataContainer.FromTypeAndVariant(c, modifiers, false, 0, shipHp, shipClass));
+        var dataContainers = shipConsumables.Select(c => ConsumableDataContainer.FromTypeAndVariant(c, modifiers, false, shipHp, shipClass));
         ConsumableData = dataContainers.ToList();
     }
 }
