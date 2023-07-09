@@ -35,7 +35,7 @@ public class ChartJsInterop : IAsyncDisposable
 
     public async Task BatchAddDataAsync(List<string> chartIds, List<NewChartDataInput> newChartData)
     {
-        if (newChartData.Any(x => x.Datasets.Count != chartIds.Count))
+        if (newChartData.Exists(x => x.Datasets.Count != chartIds.Count))
         {
             throw new InvalidOperationException("The number of chartId is not equal to the number of dataset of each NewChartDataInput");
         }
@@ -64,7 +64,7 @@ public class ChartJsInterop : IAsyncDisposable
 
     public async Task MultipleBatchUpdateDataNewLabels(List<string> chartIds, List<MultipleUpdateChartDataLabelInput> multipleUpdatedChartDataList)
     {
-        if (multipleUpdatedChartDataList.Any(x => x.Datasets.Count != chartIds.Count))
+        if (multipleUpdatedChartDataList.Exists(x => x.Datasets.Count != chartIds.Count))
         {
             throw new InvalidOperationException("The number of chartId is not equal to the number of dataset of each MultipleUpdatedChartDataList");
         }
@@ -75,7 +75,7 @@ public class ChartJsInterop : IAsyncDisposable
 
     public async Task MultipleBatchAddOrUpdateDataNewLabels(List<string> chartIds, List<MultipleUpdateChartDataLabelInput> multipleUpdatedChartDataList)
     {
-        if (multipleUpdatedChartDataList.Any(x => x.Datasets.Count != chartIds.Count))
+        if (multipleUpdatedChartDataList.Exists(x => x.Datasets.Count != chartIds.Count))
         {
             throw new InvalidOperationException("The number of chartId is not equal to the number of dataset of each MultipleUpdatedChartDataList");
         }

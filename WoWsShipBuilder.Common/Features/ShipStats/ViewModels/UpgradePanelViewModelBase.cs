@@ -35,7 +35,7 @@ public class UpgradePanelViewModelBase : ReactiveObject, IBuildComponentProvider
         }
 
         AvailableModernizationList = groupedList;
-        SelectedModernizationList = new(AvailableModernizationList.Select(list => list.First()).Where(m => !string.IsNullOrEmpty(m.Index)));
+        SelectedModernizationList = new(AvailableModernizationList.Select(list => list[0]).Where(m => !string.IsNullOrEmpty(m.Index)));
 
         OnModernizationSelected = (modernization, modernizationList) =>
         {
@@ -85,7 +85,7 @@ public class UpgradePanelViewModelBase : ReactiveObject, IBuildComponentProvider
             selection.AddRange(modernizations.Where(modernization => storedData.Contains(modernization.Index)));
         }
 
-        var removeList = SelectedModernizationList.Where(selected => selection.Any(newSelected => newSelected.Slot == selected.Slot)).ToList();
+        var removeList = SelectedModernizationList.Where(selected => selection.Exists(newSelected => newSelected.Slot == selected.Slot)).ToList();
         SelectedModernizationList.RemoveMany(removeList);
         SelectedModernizationList.AddRange(selection);
         this.RaisePropertyChanged(nameof(SelectedModernizationList));

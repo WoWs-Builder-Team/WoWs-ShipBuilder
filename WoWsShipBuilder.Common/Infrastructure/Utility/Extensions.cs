@@ -77,5 +77,5 @@ public static class Extensions
         return true;
     }
 
-    public static string NameToIndex(this string name) => name.Split('_').First();
+    public static string NameToIndex(this string name) => name.Split('_')[0];
 }

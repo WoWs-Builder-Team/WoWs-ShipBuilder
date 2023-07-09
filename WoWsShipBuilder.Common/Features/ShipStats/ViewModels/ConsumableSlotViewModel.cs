@@ -29,7 +29,7 @@ public class ConsumableSlotViewModel : ReactiveObject
         this.activationChangeHandler = activationChangeHandler;
         this.logger = logger;
         this.shipConsumables = new(shipConsumables);
-        Slot = this.shipConsumables.First().Slot;
+        Slot = this.shipConsumables[0].Slot;
     }
 
     public int Slot { get; }

@@ -34,7 +34,7 @@ public class CustomObservableCollection<T> : ObservableCollection<T>
             }
         }
 
-        Add(itemList.Last());
+        Add(itemList[^1]);
     }
 
     public void RemoveRange(IEnumerable<T> items)
@@ -53,7 +53,7 @@ public class CustomObservableCollection<T> : ObservableCollection<T>
             }
         }
 
-        Remove(itemList.Last());
+        Remove(itemList[^1]);
     }
 
     public int FindIndex(Predicate<T> match)
