@@ -5,6 +5,7 @@
 @using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.LinkShortening
+@using WoWsShipBuilder.Features.RecommendedBuilds
 @using WoWsShipBuilder.Features.ShipStats.Components
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.DataTransfer
@@ -22,10 +23,11 @@
 @inject ISnackbar Snackbar
 @inject IOptions<LinkShorteningOptions> LinkShorteningOptions
 @inject IJSRuntime Runtime
+@inject IDialogService DialogService
 
 <MudDialog Style="max-height: 95vh;">
     <DialogContent>
-        <MudBreakpointProvider>
+        <MudBreakpointProvider @ref="breakpointProvider">
             <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
                 <MudGrid>
                     <MudItem xs="12" Class="d-flex align-center" Style="justify-content: center;">
@@ -119,6 +121,8 @@
 
     private IJSObjectReference? module;
 
+    private MudBreakpointProvider breakpointProvider = default!;
+
     private int selectedTab;
 
     private ShipBuildContainer SelectedContainer => Ships[selectedTab];
@@ -194,20 +198,27 @@
                                 </MudStack>
                             </MudItem>
                             <MudItem xs="12" md="6">
-                                <MudStack Row="true" Justify="Justify.Center" Style="margin-top: -14px">
-                                    <MudTextField @bind-Value="inputBuildString" Immediate DebounceInterval="150" Validation="@(new Func<string, Task<string?>>(ValidateBuildString))" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Alternative" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink))" Variant="Variant.Outlined"/>
-                                    <MudButton Disabled="@(string.IsNullOrWhiteSpace(buildString))" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Style="margin-top: 6px" OnClick="@ImportBuildFromString">
-                                        @Localizer.GetAppLocalization(Translation.BuildConfigurationDialog_Load).Localization
+                                <MudStack Justify="Justify.Center" Style="@(breakpointProvider.Breakpoint is Breakpoint.Xs or Breakpoint.Sm ? "margin-top: -6px" : "margin-top: -62px")" Spacing="2">
+                                    <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Recommend" OnClick="@(async () => await ShowRecommendedBuildsDialog())">
+                                        @Localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RecommendedBuilds))
                                     </MudButton>
-                                    <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Class="file-upload-full-height" Accept=".png">
-                                        <ButtonTemplate>
-                                            <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Image" Style="height: 100%;" for="@context">Import</MudButton>
-                                        </ButtonTemplate>
-                                    </MudFileUpload>
+                                    <MudStack Row="true" Justify="Justify.Center">
+                                        <MudTextField @bind-Value="inputBuildString" Margin="Margin.Dense" Immediate DebounceInterval="150" Validation="@(new Func<string, Task<string?>>(ValidateBuildString))" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Alternative" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink))" Variant="Variant.Outlined"/>
+                                        <MudButton Disabled="@(string.IsNullOrWhiteSpace(buildString))" Variant="Variant.Filled" Color="Color.Primary" Style="height: 39px; margin-top: 4px; padding-bottom: -3px" OnClick="@ImportBuildFromString">
+                                            @Localizer.GetAppLocalization(Translation.BuildConfigurationDialog_Load).Localization
+                                        </MudButton>
+                                        <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Class="file-upload-full-height" Accept=".png">
+                                            <ButtonTemplate>
+                                                <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Image" Style="height: 100%; margin-top: -2px" for="@context">
+                                                    @Localizer.SimpleAppLocalization(nameof(Translation.BuildImport_Import))
+                                                </MudButton>
+                                            </ButtonTemplate>
+                                        </MudFileUpload>
+                                    </MudStack>
                                 </MudStack>
                             </MudItem>
                             <MudItem xs="12" md="6">
-                                <MudTextField @bind-Value="ViewModel.BuildName" Immediate Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))" DebounceInterval="150" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-n2 mb-0"/>
+                                <MudTextField @bind-Value="ViewModel.BuildName" Margin="Margin.Dense" Immediate Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))" DebounceInterval="150" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-n2 mb-0"/>
                             </MudItem>
                         }
                         else
@@ -313,22 +324,25 @@
         await ImportBuild(SelectedContainer.Ship);
     }
 
-    private async Task ImportBuild(Ship ship)
+    private async Task ImportBuild(Ship ship, string? buildStr = null)
     {
+        if (string.IsNullOrEmpty(buildStr))
+        {
+            buildStr = buildString;
+        }
+
         try
         {
-            var build = Build.CreateBuildFromString(buildString);
+            var build = Build.CreateBuildFromString(buildStr);
             if (build.ShipIndex != ship.Index)
             {
                 throw new FormatException();
             }
 
-            ViewModel = LoadShipViewModel(ShipBuildContainer.CreateNew(ship, build, null));
+            await ImportBuild(ship, build);
+
             inputBuildString = string.Empty;
             buildString = string.Empty;
-            vmCache[SelectedContainer.Id] = ViewModel;
-            Snackbar.Add("Build successfully imported", Severity.Success);
-            await Task.Delay(1); // needed for the captain skill selector to rerender properly
         }
         catch (FormatException)
         {
@@ -336,14 +350,21 @@
         }
     }
 
+    private async Task ImportBuild(Ship ship, Build build)
+    {
+        ViewModel = LoadShipViewModel(ShipBuildContainer.CreateNew(ship, build, null));
+        vmCache[SelectedContainer.Id] = ViewModel;
+        Snackbar.Add("Build successfully imported", Severity.Success);
+        await Task.Delay(1); // needed for the captain skill selector to rerender properly
+    }
+
     private async Task FileSelected(IBrowserFile? file)
     {
         if (file is not null && file.ContentType.Equals("image/png"))
         {
             var result = await module!.InvokeAsync<string>("findUploadAndDecode");
-            buildString = result;
             MetricsService.BuildImports.WithLabels("build-config-dialog", "image").Inc();
-            await ImportBuild(SelectedContainer.Ship);
+            await ImportBuild(SelectedContainer.Ship, result);
         }
         else
         {
@@ -386,6 +407,25 @@
         await Task.Delay(1);
 
         return inputBuildStringValidationResultCache = validationResult.ValidationMessage;
+    }
+
+    private async Task ShowRecommendedBuildsDialog()
+    {
+        DialogOptions options = new()
+        {
+            NoHeader = true,
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Large,
+        };
+        DialogParameters parameters = new()
+        {
+            ["SelectedShip"] = SelectedContainer.Ship,
+        };
+        var result = await (await DialogService.ShowAsync<RecommendedBuildsDialog>(string.Empty, parameters, options)).Result;
+        if (!result.Canceled && result.Data is Build build)
+        {
+            await ImportBuild(SelectedContainer.Ship, build);
+        }
     }
 
     public async ValueTask DisposeAsync()

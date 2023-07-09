@@ -63,4 +63,9 @@
         </Compile>
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Features\RecommendedBuilds\RecommendedBuilds.razor" />
+      <_ContentIncludedByDefault Remove="Features\Builds\RecommendedBuilds\RecommendedBuilds.razor" />
+    </ItemGroup>
+
 </Project>

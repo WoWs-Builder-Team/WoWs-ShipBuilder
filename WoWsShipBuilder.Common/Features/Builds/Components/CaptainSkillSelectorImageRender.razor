@@ -11,7 +11,7 @@
 @if (ViewModel is not null)
 {
     <MudPaper Outlined="true" Class="pa-3">
-        <MudGrid Class="align-center" Justify="Justify.Center">
+        <MudGrid Class="align-center" Justify="Justify.Center" Spacing="1">
             <MudItem xs="12">
                 <MudText Typo="Typo.body2" Align="Align.Center">
                     @Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_Points)).Localization @ViewModel.AssignedPoints/21

@@ -18,6 +18,7 @@
 @using WoWsShipBuilder.Infrastructure.Utility
 @using ShipViewModel = WoWsShipBuilder.Features.ShipStats.ViewModels.ShipViewModel
 @using System.Diagnostics
+@using WoWsShipBuilder.Features.RecommendedBuilds
 
 @inject IHostEnvironment Environment
 @inject ILocalizer Localizer
@@ -61,7 +62,12 @@ else if (ViewModel is not null)
             <MudPaper Outlined="true" Class="py-2 px-15">
                 <MudGrid Justify="Justify.Center">
                     <MudItem xs="12" md="2" Class="align-self-center d-flex justify-center">
-                        <MudTextField @bind-Value="BuildName" Label="@($"{Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_Build))}:")" Immediate DebounceInterval="100" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Variant="Variant.Outlined" Margin="Margin.Dense" Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))"/>
+                        <MudStack Style="width: 100%">
+                            <MudTextField @bind-Value="BuildName" Label="@($"{Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_Build))}:")" Immediate DebounceInterval="100" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Variant="Variant.Outlined" Margin="Margin.Dense" Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))"/>
+                            <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Recommend" OnClick="@(async () => await ShowRecommendedBuildsDialog())">
+                                @Localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RecommendedBuilds))
+                            </MudButton>
+                        </MudStack>
                     </MudItem>
                     <MudItem xs="12" md="8" Class="@(GetShipAlign() + " d-flex justify-center")">
                         @if (ViewModel.PreviousShip is not null)
@@ -96,7 +102,7 @@ else if (ViewModel is not null)
                         }
                     </MudItem>
                     <MudItem xs="12" md="2" Class="align-self-center d-flex justify-center">
-                        <MudStack>
+                        <MudStack Style="width: 100%">
                             <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Share" OnClick="@OnShareBuildClicked">
                                 @Localizer.GetAppLocalization(nameof(Translation.MainWindow_ShareBuild)).Localization
                             </MudButton>
@@ -123,7 +129,8 @@ else if (ViewModel is not null)
     </MudGrid>
 }
 
-@code {
+@code
+{
 
     [Parameter]
     [EditorRequired]
@@ -215,7 +222,7 @@ else if (ViewModel is not null)
         using (MetricsService.ShipViewModelInitDurationAverage.NewTimer())
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
-            var vm = await CreateViewModel(shipIndex, Build, Localizer);
+            var vm = await CreateViewModel(shipIndex, Build);
             BuildName = Build?.BuildName ?? string.Empty;
             Build = null;
             shipChanged = true;
@@ -231,6 +238,7 @@ else if (ViewModel is not null)
         {
             imgName = shipNation.ToString();
         }
+
         return $"background-image: url(\"/_content/WoWsShipBuilder.Common/assets/nation_flags/flag_{imgName}.png\"); background-size: cover";
     }
 
@@ -384,7 +392,7 @@ else if (ViewModel is not null)
         return new(ship, build, containerId, activeConsumables, false, shipDataContainer, modifiers);
     }
 
-    public static Task<ShipViewModel> CreateViewModel(string shipIndex, Build? build, ILocalizer localizer)
+    public static Task<ShipViewModel> CreateViewModel(string shipIndex, Build? build)
     {
         var shipSummary = AppData.ShipSummaryMapper[shipIndex];
         var ship = AppData.FindShipFromSummary(shipSummary);
@@ -425,4 +433,26 @@ else if (ViewModel is not null)
         await UserDataService.SaveBuildAsync(build);
     }
 
+    private async Task ShowRecommendedBuildsDialog()
+    {
+        DialogOptions options = new()
+        {
+            NoHeader = true,
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Large,
+        };
+        DialogParameters parameters = new()
+        {
+            ["SelectedShip"] = AppData.ShipDictionary[ViewModel!.CurrentShipIndex],
+        };
+        var result = await (await DialogService.ShowAsync<RecommendedBuildsDialog>(string.Empty, parameters, options)).Result;
+        if (!result.Canceled && result.Data is Build build)
+        {
+            Build = build;
+            ViewModel = await LoadShipViewModel(ShipIndex);
+            Cache[CurrentTabId] = Cache[CurrentTabId]! with { ViewModel = ViewModel };
+            StateHasChanged();
+        }
+    }
+}
 }

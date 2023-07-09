@@ -27,6 +27,7 @@
         <NavLink href="/charts" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_BallisticCharts))</NavLink>
         <NavLink href="/acceleration-charts" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationAccelerationCharts))</NavLink>
         <NavLink href="/comparison" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationComparison))</NavLink>
+        <NavLink href="/recommended-builds" class="main-nav-link" ActiveClass="nav-link-active">Recommended Builds</NavLink>
         <AuthorizeView Roles="@AppConstants.AdminRoleName">
             <NavLink href="/admin" ActiveClass="nav-link-active">Admin Page</NavLink>
         </AuthorizeView>

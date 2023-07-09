@@ -2048,6 +2048,12 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipStats_PenetrationAp" xml:space="preserve">
       <value>Penetration</value>
   </data>
+  <data name="RecommendedBuilds_SelectBuild" xml:space="preserve">
+      <value>Select build</value>
+  </data>
+  <data name="ShipStats_RecommendedBuilds" xml:space="preserve">
+      <value>Recommended builds</value>
+  </data>
   <data name="BETA_UserAuth" xml:space="preserve">
       <value>User login</value>
   </data>

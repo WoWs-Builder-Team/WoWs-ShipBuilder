@@ -1674,6 +1674,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select build.
+        /// </summary>
+        public static string RecommendedBuilds_SelectBuild {
+            get {
+                return ResourceManager.GetString("RecommendedBuilds_SelectBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rocket.
         /// </summary>
         public static string Rocket {
@@ -4337,6 +4346,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string ShipStats_ReactionTime {
             get {
                 return ResourceManager.GetString("ShipStats_ReactionTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recommended builds.
+        /// </summary>
+        public static string ShipStats_RecommendedBuilds {
+            get {
+                return ResourceManager.GetString("ShipStats_RecommendedBuilds", resourceCulture);
             }
         }
         

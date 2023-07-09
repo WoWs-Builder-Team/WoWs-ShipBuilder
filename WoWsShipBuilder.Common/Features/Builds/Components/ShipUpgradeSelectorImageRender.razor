@@ -8,7 +8,7 @@
 
 @if (ViewModel is not null)
 {
-    <MudCard Outlined="true" Class="pa-2">
+    <MudCard Outlined="true" Class="pa-2" Style="flex: content">
         <MudStack Row="true" Justify="Justify.Center">
             @foreach (List<Modernization> columnModernizations in ViewModel.AvailableModernizationList)
             {
