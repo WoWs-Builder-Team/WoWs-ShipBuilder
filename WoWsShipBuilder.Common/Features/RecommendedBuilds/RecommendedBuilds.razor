@@ -1,0 +1,385 @@
+﻿@page "/recommended-builds"
+@using WoWsShipBuilder.Features.Builds
+@using WoWsShipBuilder.Features.Builds.Components
+@using WoWsShipBuilder.Features.Settings
+@using System.Globalization
+@using System.Text
+@using Microsoft.Extensions.Hosting
+@using Microsoft.Extensions.Options
+@using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.DataStructures.Ship
+@using WoWsShipBuilder.Features.ShipStats.Components
+@using WoWsShipBuilder.Infrastructure.ApplicationData
+@using WoWsShipBuilder.Infrastructure.GameData
+@using WoWsShipBuilder.Infrastructure.Utility
+@using WoWsShipBuilder.Features.ShipStats.ViewModels
+@using WoWsShipBuilder.Infrastructure.DataTransfer
+@using WoWsShipBuilder.Infrastructure.Localization.Resources
+
+@inject ILocalizer Localizer
+@inject AppSettings AppSettings
+@inject IOptions<CdnOptions> CdnOptions
+@inject IHostEnvironment Environment
+@inject NavigationManager NavManager
+@inject SessionStateCache SessionStateCache
+
+<MudBreakpointProvider @ref="breakpointProvider">
+    <MudContainer Fixed>
+        <MudGrid Justify="Justify.Center" Spacing="2">
+            <MudItem xs="12" md="2">
+                <MudTextField Style="max-height: 52px" AutoFocus T="string" FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Placeholder="Search ship..." @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
+                <MudPaper Outlined Style="@(IsSmallScreen() ? "min-height: 300px; max-height: 300px; overflow: auto" : "height: 84vh; overflow: auto")">
+                    <MudList Clickable Dense>
+                        <MudVirtualize IsEnabled="true" Items="filteredRecommendedBuildsList" Context="pair">
+                            <MudListItem @key="pair.Key" Value="pair.Value" OnClick="@(async _ => await SelectShip(pair.Key))">
+                                <MudStack Style="align-items: stretch" Class="my-n1" Spacing="1">
+                                    <MudText>
+                                        @Localizer.SimpleGameLocalization(pair.Key + "_FULL")
+                                    </MudText>
+                                    <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1">
+                                        @(pair.Value.Count + " builds")
+                                    </MudText>
+                                </MudStack>
+                            </MudListItem>
+                            <MudDivider/>
+                        </MudVirtualize>
+                    </MudList>
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="12" md="8">
+                <MudTabs Elevation="2" Position="Position.Top" HideSlider Centered Color="Color.Primary" Outlined Border="true" @ref="mudTabs" Style="margin-top: 17px" PanelClass="pt-2" ActivePanelIndexChanged="@(index => LoadShipViewModels(selectedShipRecommendedBuilds[index]))">
+                    @if (!selectedShipRecommendedBuilds.Any())
+                    {
+                        <MudTabPanel Text="Disclaimer" Tag="@("Disclaimer")" ID="@("Disclaimer")" @key="@("Disclaimer")" Style="min-width: 100%;">
+                            <div style="display: flex; width: 100%; min-height: 100%; max-height: 100%; border-color: #696969; border-style: solid; border-width: thin; padding: 8px 8px 8px 8px">
+                                <MudText Style="@(IsSmallScreen() ? string.Empty : "font-size: large; " + "white-space: break-spaces; max-width: 100%; display: table-caption; max-height: 100%; height: 100%; overflow-y: scroll;")" Typo="Typo.body2">
+                                    <MultilineString InputString="@disclaimer"/>
+                                </MudText>
+                            </div>
+                        </MudTabPanel>
+                    }
+                    @foreach (var recommendedBuild in selectedShipRecommendedBuilds)
+                    {
+                        <MudTabPanel Style="@GetStyle(recommendedBuild.Id)" Text="@recommendedBuild.Build.BuildName" Tag="@recommendedBuild.Id" ID="recommendedBuild.Id" @key="recommendedBuild.Id">
+                            <MudStack Spacing="2">
+                                <MudStack Row AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+                                    <div style="align-self: start; width: 112px;">
+                                        <MudImage Height="67" ObjectFit="ObjectFit.ScaleDown" Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{recommendedBuild.Build.ShipIndex}.png")" Style="position: absolute; z-index: 10"/>
+                                        <MudImage Height="67" Width="112" ObjectFit="ObjectFit.Cover" Src="@GetBackgroundFlag(selectedShip.ShipNation, recommendedBuild.Build.ShipIndex)" Style="position: absolute; z-index: 9"/>
+                                    </div>
+                                    <MudStack Row Class="align-center">
+                                        @if (IsSmallScreen())
+                                        {
+                                            <MudStack Class="align-center">
+                                                <MudText Typo="Typo.body2" Style="font-size: large; font-weight: bold; align-self: center;" Align="Align.Center">
+                                                    @selectedShip.Tier.ToTierString()
+                                                </MudText>
+                                                <MudIcon Icon="@Helpers.GetIconFromClass(selectedShip.ShipClass, selectedShip.ShipCategory)" Size="Size.Medium" ViewBox="-1 -1 24 10"/>
+                                            </MudStack>
+                                        }
+                                        else
+                                        {
+                                            <MudIcon Icon="@Helpers.GetIconFromClass(selectedShip.ShipClass, selectedShip.ShipCategory)" Size="Size.Large" ViewBox="-1 -1 24 10"/>
+                                            <MudText Typo="Typo.body2" Style="font-size: x-large; font-weight: bold; align-self: center;" Align="Align.Center">
+                                                @selectedShip.Tier.ToTierString()
+                                            </MudText>
+                                        }
+                                        <MudText Typo="Typo.body2" Style="@(IsSmallScreen() ? "font-size: large;" : "font-size: x-large;" + "font-weight: bold;")">
+                                            @Localizer.GetGameLocalization(recommendedBuild.Build.ShipIndex + "_FULL").Localization
+                                        </MudText>
+                                    </MudStack>
+                                    <MudButton Style="height: 60px; width: 114px" DisableElevation EndIcon="@(IsSmallScreen() ? Icons.Material.Filled.KeyboardArrowDown : Icons.Material.Filled.ArrowForwardIos)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => SelectBuild(recommendedBuild))">
+                                        @Localizer.SimpleAppLocalization(nameof(Translation.RecommendedBuilds_SelectBuild))
+                                    </MudButton>
+                                </MudStack>
+                                @if (IsSmallScreen())
+                                {
+                                    <ShipModuleSelectorImageRender ViewModel="@shipModuleViewModel"/>
+                                    <CaptainSkillSelectorImageRender ViewModel="@captainSkillSelectorViewModel" ShipClass="@selectedShip.ShipClass"/>
+                                    <ShipUpgradeSelectorImageRender ViewModel="@upgradePanelViewModel"/>
+                                    <ConsumableSelectorImageRender ViewModel="@consumableViewModel"/>
+                                    <SignalSelectorImageRender ViewModel="@signalSelectorViewModel"/>
+                                    <div style="display: flex; width: 100%; min-height: 100%; max-height: 100%; border-color: #696969; border-style: solid; border-width: thin; padding: 8px 8px 8px 8px">
+                                        <MudText Style="word-break: break-all; max-width: 100%; display: table-caption; max-height: 100%; height: 100%;" Typo="Typo.body2">
+                                            <MultilineString InputString="@recommendedBuild.Notes"/>
+                                        </MudText>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <MudStack Row Spacing="2">
+                                        <div style="height: 36vh; display: flex; width: 50%">
+                                            <CaptainSkillSelectorImageRender ViewModel="@captainSkillSelectorViewModel" ShipClass="@selectedShip.ShipClass"/>
+                                        </div>
+                                        <div style="height: 36vh; display: flex; width: 50%">
+                                            <SignalSelectorImageRender ViewModel="@signalSelectorViewModel"/>
+                                        </div>
+                                    </MudStack>
+                                    <MudStack Row Spacing="2" Style="height: 8.3vh">
+                                        <div style="display: flex; width: 50%">
+                                            <ShipUpgradeSelectorImageRender ViewModel="@upgradePanelViewModel"/>
+                                        </div>
+                                        <div style="display: flex; width: 50%">
+                                            <ConsumableSelectorImageRender ViewModel="@consumableViewModel"/>
+                                        </div>
+                                    </MudStack>
+                                    <MudStack Row Spacing="2" Style="max-height: 30.95vh">
+                                        <div style="width: 50%">
+                                            <ShipModuleSelectorImageRender ViewModel="@shipModuleViewModel"/>
+                                        </div>
+                                        <div style="display: flex; width: 50%; min-height: 100%; max-height: 100%; border-color: #696969; border-style: solid; border-width: thin; padding: 8px 8px 8px 8px">
+                                            <MudText Style="white-space: break-spaces; max-width: 100%; display: table-caption; max-height: 100%; height: 100%; overflow-y: scroll" Typo="Typo.body2">
+                                                <MultilineString InputString="@recommendedBuild.Notes"/>
+                                            </MudText>
+                                        </div>
+                                    </MudStack>
+                                }
+                            </MudStack>
+                        </MudTabPanel>
+                    }
+                </MudTabs>
+            </MudItem>
+            <MudItem xs="12" md="2">
+                <MudButton Disabled="@(!selectedBuilds.Any())" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@GoToShipPage" FullWidth="true" Style="margin-top: 16px; margin-bottom: 8px; height: 52px">
+                    @Localizer.GetAppLocalization(nameof(Translation.WebApp_GoToShipsPage)).Localization
+                </MudButton>
+                <MudPaper Outlined Style="@(IsSmallScreen() ? "min-height: 300px; max-height: 300px; overflow: auto" : "height: 84vh; overflow: auto")">
+                    <MudList Dense>
+                        <MudVirtualize IsEnabled="true" Items="selectedBuilds" Context="build">
+                            <MudListItem @key="build.Id" Value="build.Build">
+                                <MudStack Style="align-items: stretch" Class="my-n1" Spacing="1">
+                                    <MudText>
+                                        @Localizer.SimpleGameLocalization(build.Build.ShipIndex + "_FULL")
+                                    </MudText>
+                                    <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1">
+                                        @(Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_Build)).Localization + ": " + (!string.IsNullOrWhiteSpace(build.Build.BuildName) ? build.Build.BuildName : Build.DefaultBuildName))
+                                    </MudText>
+                                </MudStack>
+                            </MudListItem>
+                            <MudDivider/>
+                        </MudVirtualize>
+                    </MudList>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+</MudBreakpointProvider>
+
+@code
+{
+    private MudTabs mudTabs = default!;
+
+    private MudBreakpointProvider breakpointProvider = default!;
+
+    private readonly Dictionary<string, List<RecommendedBuild>> recommendedBuilds = new();
+
+    private readonly Dictionary<string, List<RecommendedBuild>> filteredRecommendedBuildsList = new();
+
+    private List<RecommendedBuild> selectedShipRecommendedBuilds = new();
+
+    private readonly List<RecommendedBuild> selectedBuilds = new();
+
+    private Ship selectedShip = default!;
+
+    private Guid currentActiveTabId;
+
+    private string disclaimer = string.Empty;
+
+    private string inputText = string.Empty;
+
+    private string InputText
+    {
+        get => inputText;
+        set
+        {
+            inputText = value;
+            ApplyFilter();
+        }
+    }
+
+    private ShipModuleViewModel shipModuleViewModel = default!;
+    private SignalSelectorViewModel signalSelectorViewModel = default!;
+    private CaptainSkillSelectorViewModel captainSkillSelectorViewModel = default!;
+    private UpgradePanelViewModelBase upgradePanelViewModel = default!;
+    private ConsumableViewModel consumableViewModel = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        InitializeRecommendedBuildsList();
+        RecommendedBuild testBuild1 = new(Guid.Parse("142cb6c0-4a0e-4029-a8ff-4a8af26bc55d"), Build.CreateBuildFromString("PBSD105;PBUA403,PBUH405,PBUT404,PBUS404,PBUE403;PCM020;PBW102;21,39;PCY009,PCY014;PCEF019,PCEF009;4;test1"), "Scam build !!!");
+        RecommendedBuild testBuild2 = new(Guid.Parse("1e24a86b-d9f2-44f1-acf8-876da95a5b5b"), Build.CreateBuildFromString("PGSC506;PGUA603,PGUH605,PGUT605,PGUS605,PGUE603;PCM012;PCW001;13,6;PCY009,PCY016,PCY012,PCY010;PCEF019;4;test2"), "Scam scam scam");
+        RecommendedBuild testBuild3 = new(Guid.Parse("90f9938a-c2eb-45ba-89f3-22fbcd569587"), Build.CreateBuildFromString("PBSD105;PBUA403,PBUH405,PBUT404,PBUS404,PBUE403;PCM069,PCM039,PCM037;PBW100;21,39,6,13;PCY009,PCY014;PCEF019,PCEF009,PCEF017,PCEF008;4;test3"), string.Empty);
+        RecommendedBuild testBuild4 = new(Guid.Parse("fd2c876d-6e2b-4316-8399-e4575c60be7d"), Build.CreateBuildFromString("PJSD708;PJUA781,PJUH782,PJUT781,PJUS781,PJUE781;;PCW001;19,28;PCY009,PCY014,PCY015;;4;test4"), "123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 ");
+        AddRecommendedBuilds(recommendedBuilds, new List<RecommendedBuild> { testBuild1, testBuild2, testBuild3, testBuild4 });
+        ApplyFilter();
+
+        NavManager.TryGetQueryString("build", out string buildIdFromUrl);
+        if (!string.IsNullOrEmpty(buildIdFromUrl))
+        {
+            var recommendedBuild = recommendedBuilds.SelectMany(x => x.Value).First(x => x.Id.ToString().Equals(buildIdFromUrl));
+            await SelectShip(recommendedBuild.Build.ShipIndex, recommendedBuild);
+        }
+
+        StringBuilder disclaimerBuilder = new();
+        disclaimerBuilder.AppendLine("The numbers on the skills indicate the recommended pick order. We strongly recommend that you strictly stick to the pick order of at least the first 5 skills.");
+        disclaimerBuilder.AppendLine(string.Empty);
+        disclaimerBuilder.AppendLine("Skills recommended by WG’s in-game system are indicated by the yellow triangle in the bottom left of the skill icon and are most of the time not optimal.");
+        disclaimerBuilder.AppendLine(string.Empty);
+        disclaimerBuilder.AppendLine("These builds are intended for randoms. Competitive builds might differ greatly and will likely depend on what your FC wants you to have on your ships.");
+        disclaimerBuilder.AppendLine(string.Empty);
+        disclaimerBuilder.AppendLine("If you have builds of your own you would like to discuss or add, please contact us on Discord: Yurra#3315, Yuzorah#5774, Seraphice#7504");
+        disclaimerBuilder.AppendLine(string.Empty);
+        disclaimerBuilder.AppendLine("Document by Yurra, Yuzorah, Seraphice, REEEdamel");
+        disclaimerBuilder.AppendLine("Contributors: USS_Juneau, Gitaristing, Trackpad, xSolitude, LeAzur, p0int, Angelstone");
+        disclaimer = disclaimerBuilder.ToString();
+    }
+
+    private void InitializeRecommendedBuildsList()
+    {
+        foreach (var shipIndex in AppData.ShipDictionary.Keys)
+        {
+            recommendedBuilds.Add(shipIndex, new());
+        }
+    }
+
+    private void ApplyFilter()
+    {
+        var builds = recommendedBuilds
+            .Where(x => ShipFilter(x.Key, InputText))
+            .OrderBy(x => Localizer.SimpleGameLocalization($"{x.Key}_FULL"));
+        filteredRecommendedBuildsList.Clear();
+        AddRecommendedBuilds(filteredRecommendedBuildsList, builds);
+        StateHasChanged();
+    }
+
+    private bool ShipFilter(string shipIndex, string textSearch)
+    {
+        bool result = string.IsNullOrWhiteSpace(textSearch);
+        if (!result)
+        {
+            result = AppSettings.SelectedLanguage.CultureInfo.CompareInfo.IndexOf(Localizer.SimpleGameLocalization($"{shipIndex}_FULL"), textSearch, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1;
+        }
+
+        return result;
+    }
+
+    private static void AddRecommendedBuilds(IDictionary<string, List<RecommendedBuild>> dict, IEnumerable<KeyValuePair<string, List<RecommendedBuild>>> builds)
+    {
+        foreach (var build in builds)
+        {
+            if (dict.TryGetValue(build.Key, out List<RecommendedBuild>? value))
+            {
+                value.AddRange(build.Value);
+            }
+            else
+            {
+                dict.Add(build.Key, build.Value );
+            }
+        }
+    }
+
+    private static void AddRecommendedBuilds(IDictionary<string, List<RecommendedBuild>> dict, IEnumerable<RecommendedBuild> builds)
+    {
+        foreach (var build in builds)
+        {
+            if (dict.TryGetValue(build.Build.ShipIndex, out List<RecommendedBuild>? value))
+            {
+                value.Add(build);
+            }
+            else
+            {
+                dict.Add(build.Build.ShipIndex, new() { build });
+            }
+        }
+    }
+
+    private async Task SelectShip(string shipIndex, RecommendedBuild? build = null)
+    {
+        selectedShip = AppData.ShipDictionary[shipIndex];
+        selectedShipRecommendedBuilds = recommendedBuilds[shipIndex];
+        if (selectedShipRecommendedBuilds.Any())
+        {
+            var recommendedBuild = build ?? selectedShipRecommendedBuilds[0];
+            LoadShipViewModels(recommendedBuild);
+            await Task.Delay(1); //required to finish loading the new tabs before selecting the ID
+            mudTabs.ActivatePanel(recommendedBuild.Id, true);
+        }
+        else
+        {
+            await Task.Delay(1);
+            mudTabs.ActivatePanel("Disclaimer", true);
+            UpdateUrl(null);
+            currentActiveTabId = default!;
+        }
+    }
+
+    private void SelectBuild(RecommendedBuild recommendedBuild)
+    {
+        selectedBuilds.Add(recommendedBuild);
+    }
+
+    private string GetBackgroundFlag(Nation shipNation, string shipIndex)
+    {
+        string imgName = shipIndex;
+        if (!File.Exists(Path.Combine(Environment.ContentRootPath, "wwwroot", "assets", "nation_flags", $"flag_{shipIndex}.png")))
+        {
+            imgName = shipNation.ToString();
+        }
+
+        return $"/_content/WoWsShipBuilder.Common/assets/nation_flags/flag_{imgName}.png";
+    }
+
+    private void LoadShipViewModels(RecommendedBuild recommendedBuild)
+    {
+        if (!recommendedBuild.Id.Equals(currentActiveTabId))
+        {
+            InitializeViewModels();
+
+            signalSelectorViewModel.LoadBuild(recommendedBuild.Build.Signals);
+            captainSkillSelectorViewModel.LoadBuild(recommendedBuild.Build.Skills, recommendedBuild.Build.Captain);
+            shipModuleViewModel.LoadBuild(recommendedBuild.Build.Modules);
+            upgradePanelViewModel.LoadBuild(recommendedBuild.Build.Upgrades);
+            consumableViewModel.LoadBuild(recommendedBuild.Build.Consumables);
+
+            currentActiveTabId = recommendedBuild.Id;
+
+            UpdateUrl(recommendedBuild.Id);
+        }
+    }
+
+    private void InitializeViewModels()
+    {
+        signalSelectorViewModel = new();
+        captainSkillSelectorViewModel = new(selectedShip.ShipClass, CaptainSkillSelectorViewModel.LoadParams(selectedShip.ShipNation));
+        shipModuleViewModel = new(selectedShip.ShipUpgradeInfo);
+        upgradePanelViewModel = new(selectedShip, AppData.ModernizationCache);
+        consumableViewModel = ConsumableViewModel.Create(selectedShip, new List<string>(), Logging.LoggerFactory);
+    }
+
+    private bool IsSmallScreen()
+    {
+        return breakpointProvider.Breakpoint is Breakpoint.Xs or Breakpoint.Sm;
+    }
+
+    private void GoToShipPage()
+    {
+        string indexes = string.Join(",", selectedBuilds.Select(x => x.Build.ShipIndex));
+        SessionStateCache.SetBuildTransferContainers(selectedBuilds.Select(x => ShipBuildContainer.CreateNew(AppData.ShipDictionary[x.Build.ShipIndex], x.Build, null)).ToList());
+        NavManager.NavigateTo("/ship?shipIndexes=" + indexes);
+    }
+
+    private string GetStyle(Guid id)
+    {
+        if (mudTabs.ActivePanel is not null && mudTabs.ActivePanel.Tag!.Equals(id))
+        {
+            return " background-color: rgba(0, 0, 0, 0.4);";
+        }
+        return string.Empty;
+    }
+
+    private void UpdateUrl(Guid? buildId)
+    {
+        NavManager.NavigateTo(buildId is not null ? $"/recommended-builds?build={buildId}" : "/recommended-builds");
+    }
+}
