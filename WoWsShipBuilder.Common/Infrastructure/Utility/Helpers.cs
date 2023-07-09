@@ -54,7 +54,7 @@ public static class Helpers
     public static bool IsAprilFool()
     {
         // For debugging
-        // Return DateTime.Now.Minute > 30;
+        // Return DateTime.Now.Minute > 30
         return DateTime.Now is { Month: 4, Day: 1 };
     }
 
