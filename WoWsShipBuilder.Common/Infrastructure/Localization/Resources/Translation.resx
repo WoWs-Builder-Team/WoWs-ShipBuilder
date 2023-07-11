@@ -2048,4 +2048,7 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipStats_PenetrationAp" xml:space="preserve">
       <value>Penetration</value>
   </data>
+  <data name="BETA_UserAuth" xml:space="preserve">
+      <value>User login</value>
+  </data>
 </root>

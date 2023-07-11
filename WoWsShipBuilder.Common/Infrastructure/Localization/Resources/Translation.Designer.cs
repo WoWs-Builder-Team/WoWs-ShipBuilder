@@ -180,6 +180,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User login.
+        /// </summary>
+        public static string BETA_UserAuth {
+            get {
+                return ResourceManager.GetString("BETA_UserAuth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Code.
         /// </summary>
         public static string BetaAccess_AddCode {
