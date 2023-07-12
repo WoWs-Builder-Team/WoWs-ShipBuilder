@@ -6,6 +6,7 @@ using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Utility;
+using WoWsShipBuilder.Web.Features.Authentication;
 using WoWsShipBuilder.Web.Infrastructure;
 using WoWsShipBuilder.Web.Infrastructure.Data;
 using WoWsShipBuilder.Web.Infrastructure.Metrics;
@@ -35,6 +36,7 @@ resolver.InitializeSplat();
 resolver.InitializeReactiveUI(RegistrationNamespace.Blazor);
 
 builder.Services.UseShipBuilderWeb();
+builder.Services.AddCookieAuth();
 
 var app = builder.Build();
 app.Services.UseMicrosoftDependencyResolver();
@@ -56,6 +58,7 @@ app.UseHttpMetrics(options =>
     options.AddCustomLabel("path", context => context.Request.Path);
 });
 app.UseReferrerTracking();
+app.UseShipBuilderAuth();
 
 app.MapControllers();
 app.MapMetrics();
