@@ -53,7 +53,7 @@ public class AuthController : ControllerBase
         return Task.FromResult<ActionResult>(Redirect("/"));
     }
 
-    [HttpGet("login/{server}")]
+    [HttpGet("login/{server:regex(^eu|asia|com$):required}")]
     public Task<ActionResult> Login(string server)
     {
         string baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
