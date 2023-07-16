@@ -340,7 +340,7 @@
     <value>Vízszintes</value>
   </data>
   <data name="ShipStats_Range" xml:space="preserve">
-    <value>Hatótáv</value>
+    <value>Lőtáv</value>
   </data>
   <data name="ShipStats_RoF" xml:space="preserve">
     <value>Tüzelési gyorsaság</value>
@@ -922,7 +922,7 @@
     <value>Ez a hajó nem tud ilyen messze lőni</value>
   </data>
   <data name="DispersionGraphWindow_PlotPlane" xml:space="preserve">
-    <value>Vezérgép</value>
+    <value>Ábra nézeti síkja</value>
   </data>
   <data name="HorizontalPlane" xml:space="preserve">
     <value>Vízszintes nézet</value>
@@ -934,7 +934,7 @@
     <value>Függőleges</value>
   </data>
   <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
-    <value>Fusō mint hivatkozás</value>
+    <value>Fusō mint célpont</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
     <value>A FEHÉR ellipszis a maximális szóródási területet mutatja a kiválasztott célzási távolságban.
@@ -1201,7 +1201,7 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
       <value>HP gyógyításonként</value>
   </data>
   <data name="DispersionGraphWindow_Range" xml:space="preserve">
-      <value>Hatótáv [km]:</value>
+      <value>Lőtáv [km]:</value>
   </data>
   <data name="DispersionGrapghWindow_Height" xml:space="preserve">
       <value>Magasság</value>
@@ -1806,7 +1806,7 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
       <value>Élő</value>
   </data>
   <data name="ServerTypePts" xml:space="preserve">
-      <value>PONT</value>
+      <value>PTS</value>
   </data>
   <data name="NavigationCharts" xml:space="preserve">
       <value>Szórási kép és ballisztikus ábrák mutatása</value>
