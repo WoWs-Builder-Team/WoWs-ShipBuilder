@@ -985,7 +985,7 @@ A játékban lévő hajók kétszer akkorák, mint a környezet, így egy 200 m�
       <value>Szalvónkénti</value>
   </data>
   <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-      <value>Robbanás hatósugara</value>
+      <value>Hatósugara</value>
   </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
       <value>Átütés</value>
