@@ -2051,4 +2051,7 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
   <data name="BETA_UserAuth" xml:space="preserve">
       <value>Felhasználói bejelentkezés</value>
   </data>
+  <data name="ShipStats_DcDetonationDepthExplanation" xml:space="preserve">
+      <value>A tengeralattjáról merülési mélységét a játék mint "ship_meter" mutatja. A tengeralattjárók 60[ship_m] = 120[m] mélyre merülhetnek.</value>
+  </data>
 </root>
