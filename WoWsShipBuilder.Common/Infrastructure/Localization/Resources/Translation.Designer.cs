@@ -3241,6 +3241,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The depth of submarines shown in game is expressed as &quot;ship_meter&quot;. Subs can dive 60[ship_m] = 120[m]..
+        /// </summary>
+        public static string ShipStats_DcDetonationDepthExplanation {
+            get {
+                return ResourceManager.GetString("ShipStats_DcDetonationDepthExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Explosion radius.
         /// </summary>
         public static string ShipStats_DcSplashRadius {

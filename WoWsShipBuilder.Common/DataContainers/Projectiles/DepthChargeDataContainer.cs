@@ -16,7 +16,7 @@ public partial record DepthChargeDataContainer : ProjectileDataContainer
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
     public string DetonationTimer { get; set; } = default!;
 
-    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
+    [DataElementType(DataElementTypes.Tooltip, UnitKey = "M", TooltipKey = "DcDetonationDepthExplanation")]
     public string DetonationDepth { get; set; } = default!;
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
