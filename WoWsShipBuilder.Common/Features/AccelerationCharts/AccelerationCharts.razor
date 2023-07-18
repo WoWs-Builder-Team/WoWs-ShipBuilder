@@ -1,5 +1,5 @@
 @page "/acceleration-charts"
-@using MudBlazor.Services
+
 @using WoWsShipBuilder.DataContainers
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.DataStructures.Ship
@@ -18,7 +18,7 @@
 @inject IDialogService DialogService
 @inject ChartJsInterop ChartJsInterop
 @inject MetricsService MetricsService
-@inject IBreakpointService BreakpointService
+@inject IBrowserViewportService BreakpointService
 @inject NavigationManager NavManager
 @inject SessionStateCache SessionStateCache
 
@@ -104,7 +104,7 @@
         if (firstRender)
         {
             MetricsService.PageAccessCount.WithLabels("acceleration_charts").Inc();
-            Breakpoint = await BreakpointService.GetBreakpoint();
+            Breakpoint = await BreakpointService.GetCurrentBreakpointAsync();
             await SetupChartAsync();
 
             NavManager.TryGetQueryString("shipIndexes", out string shipIndexesFromUrl);
