@@ -39,9 +39,9 @@ public class AppSettings
 
     public bool OpenAllMainExpandersByDefault { get; set; } = true;
 
-    public bool OpenAllAmmoExpandersByDefault { get; set; } = true;
+    public bool OpenAllAmmoExpandersByDefault { get; set; }
 
-    public bool OpenSecondariesAndAaExpandersByDefault { get; set; } = true;
+    public bool OpenSecondariesAndAaExpandersByDefault { get; set; }
 
     public List<string> BetaAccessCodes { get; set; } = new();
 
