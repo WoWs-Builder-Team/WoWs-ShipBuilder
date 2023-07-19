@@ -16,7 +16,7 @@ public partial record DepthChargeDataContainer : ProjectileDataContainer
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
     public string DetonationTimer { get; set; } = default!;
 
-    [DataElementType(DataElementTypes.Tooltip, UnitKey = "M", TooltipKey = "DcDetonationDepthExplanation")]
+    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
     public string DetonationDepth { get; set; } = default!;
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
@@ -38,8 +38,8 @@ public partial record DepthChargeDataContainer : ProjectileDataContainer
         decimal maxSpeed = (decimal)(depthCharge.SinkingSpeed * (1 + depthCharge.SinkingSpeedRng)) * Constants.KnotsToMps;
         decimal minTimer = (decimal)(depthCharge.DetonationTimer - depthCharge.DetonationTimerRng);
         decimal maxTimer = (decimal)(depthCharge.DetonationTimer + depthCharge.DetonationTimerRng);
-        decimal minDetDepth = minSpeed * minTimer;
-        decimal maxDetDepth = maxSpeed * maxTimer;
+        decimal minDetDepth = minSpeed * minTimer / 2;
+        decimal maxDetDepth = maxSpeed * maxTimer / 2;
 
         var depthChargeDataContainer = new DepthChargeDataContainer
         {
