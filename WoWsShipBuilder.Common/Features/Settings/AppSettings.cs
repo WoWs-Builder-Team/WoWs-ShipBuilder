@@ -61,8 +61,8 @@ public class AppSettings
         CustomImagePath = default;
         DispersionPlotSettings = new();
         OpenAllMainExpandersByDefault = true;
-        OpenAllAmmoExpandersByDefault = true;
-        OpenSecondariesAndAaExpandersByDefault = true;
+        OpenAllAmmoExpandersByDefault = false;
+        OpenSecondariesAndAaExpandersByDefault = false;
         BetaAccessCodes = new();
         BuildImageLayoutSettings = new[] { true, false, true, true, true, true };
     }
