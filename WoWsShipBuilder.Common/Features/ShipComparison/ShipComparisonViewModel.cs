@@ -217,48 +217,64 @@ public partial class ShipComparisonViewModel : ReactiveObject
         await ApplyFilters();
     }
 
-    public async Task ToggleAllTiers(bool activationState)
+    public async Task ToggleAllTiers(bool activationState, bool applyFilters = true)
     {
         SelectedTiers.Clear();
+
         if (activationState)
         {
             SelectedTiers.AddRange(Enumerable.Range(1, 11));
         }
 
-        await ApplyFilters();
+        if (applyFilters)
+        {
+            await ApplyFilters();
+        }
     }
 
-    public async Task ToggleAllClasses(bool activationState)
+    public async Task ToggleAllClasses(bool activationState, bool applyFilters = true)
     {
         SelectedClasses.Clear();
+
         if (activationState)
         {
             SelectedClasses.AddRange(Enum.GetValues<ShipClass>().Except(new[] { ShipClass.Auxiliary }));
         }
 
-        await ApplyFilters();
+        if (applyFilters)
+        {
+            await ApplyFilters();
+        }
     }
 
-    public async Task ToggleAllNations(bool activationState)
+    public async Task ToggleAllNations(bool activationState, bool applyFilters = true)
     {
         SelectedNations.Clear();
+
         if (activationState)
         {
             SelectedNations.AddRange(Enum.GetValues<Nation>().Except(new[] { Nation.Common }));
         }
 
-        await ApplyFilters();
+        if (applyFilters)
+        {
+            await ApplyFilters();
+        }
     }
 
-    public async Task ToggleAllCategories(bool activationState)
+    public async Task ToggleAllCategories(bool activationState, bool applyFilters = true)
     {
         SelectedCategories.Clear();
+
         if (activationState)
         {
             SelectedCategories.AddRange(Enum.GetValues<ShipCategory>().Except(new[] { ShipCategory.Disabled, ShipCategory.Clan }));
         }
 
-        await ApplyFilters();
+        if (applyFilters)
+        {
+            await ApplyFilters();
+        }
     }
 
     public Dictionary<Guid, GridDataWrapper> GetShipsToBeDisplayed()
