@@ -59,7 +59,7 @@ namespace WoWsShipBuilder.DataContainers
                 specialDataContainer = new()
                 {
                     Name = $"DOCK_RAGE_MODE_TITLE_{specialAbility.Name}",
-                    Description = $"RAGE_MODE_DESCRIPTION_{specialAbility.ActivatorName}",
+                    Description = specialAbility.ActivatorName.Equals("RibbonActivator") ? $"RAGE_MODE_TRIGGER_DESCRIPTION_{specialAbility.ActivatorName}" : $"RAGE_MODE_DESCRIPTION_{specialAbility.ActivatorName}",
                     Duration = Math.Round((decimal)specialAbility.Duration, 1),
                     TargetAreaRadius = Math.Round((decimal)(specialAbility.ActivatorRadius / 1000), 1),
                     ProgressPerAction = (decimal)specialAbility.ProgressPerAction,

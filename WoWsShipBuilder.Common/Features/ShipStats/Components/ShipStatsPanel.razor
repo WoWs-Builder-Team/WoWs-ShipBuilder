@@ -580,7 +580,7 @@
 
     private static string FixSpecialAbilityDescription(string description)
     {
-        if (description.Contains("press [CMD_ACTIVATE"))
+        if (description.Contains("[CMD_ACTIVATE"))
         {
             description = description.TrimEnd('.');
             return description[..(description.LastIndexOf('.') + 1)];
