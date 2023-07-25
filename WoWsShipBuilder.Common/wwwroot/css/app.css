@@ -252,5 +252,5 @@ div.mud-expand-panel {
 .custom-child-expansion-panel-header .mud-expand-panel-header {
     padding: 4px 8px;
     min-height: 24px;
-    background-color: rgb(60, 60, 60);
+    background-color: rgba(80, 80, 80, 40%);
 }
