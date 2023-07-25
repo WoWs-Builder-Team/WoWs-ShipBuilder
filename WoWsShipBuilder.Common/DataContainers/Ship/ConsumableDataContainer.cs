@@ -140,11 +140,14 @@ public partial record ConsumableDataContainer : DataContainerBase
             var talentUsesModifiers = modifiers.FindModifiers("numConsumables", true);
             uses = talentUsesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
 
-            var allCooldownModifiers = modifiers.FindModifiers($"ConsumableReloadTime_{shipClass.ShipClassToString()}");
-            cooldown = allCooldownModifiers.Aggregate(cooldown, (current, modifier) => (current * modifier));
+            var allCooldownModifiers = modifiers.FindModifiers($"ConsumableReloadTime_{shipClass.ShipClassToString()}", true);
+            cooldown = allCooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+
+            allCooldownModifiers = modifiers.FindModifiers("ConsumableReloadTime", true);
+            cooldown = allCooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
 
             var allWorkModifiers = modifiers.FindModifiers("ConsumablesWorkTime");
-            workTime = allWorkModifiers.Aggregate(workTime, (current, modifier) => (current * modifier));
+            workTime = allWorkModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
 
             if (name.Contains("PCY011", StringComparison.InvariantCultureIgnoreCase))
             {
