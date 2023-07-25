@@ -181,8 +181,6 @@ public partial record ConsumableDataContainer : DataContainerBase
 
                 var regenerationSpeedModifiers = modifiers.FindModifiers("regenerationHPSpeed", true);
                 var regenerationSpeed = regenerationSpeedModifiers.Aggregate(consumableModifiers["regenerationHPSpeed"], (current, modifier) => current * modifier);
-                var regenerationEfficiencyModifiers = modifiers.FindModifiers("regeneratedHPPartCoef", true);
-                regenerationSpeed = regenerationEfficiencyModifiers.Aggregate(regenerationSpeed, (current, modifier) => current * (1 + modifier));
                 consumableModifiers["regenerationHPSpeed"] = regenerationSpeed;
 
                 var hpPerHeal = (float)Math.Round(workTime * (regenerationSpeed * shipHp));
