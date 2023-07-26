@@ -331,7 +331,7 @@
     <value>Ilyen keresési feltételeknek egyik hajó sem felel meg</value>
   </data>
   <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>Hajókereső...</value>
+      <value>Hajókereső...</value>
   </data>
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>180°-os fordulási idő</value>
@@ -373,7 +373,7 @@
     <value>Robbanási mélység</value>
   </data>
   <data name="ShipStats_FireChance" xml:space="preserve">
-    <value>Gyulladási valószínűség</value>
+    <value>Kigyulladási valószínűség</value>
   </data>
   <data name="ShipStats_FuseTimer" xml:space="preserve">
     <value>Gyújtó késleltetés</value>
@@ -412,7 +412,7 @@
     <value>Késleltetés</value>
   </data>
   <data name="ShipStats_Detectability" xml:space="preserve">
-    <value>Felderítési távolság</value>
+    <value>Észlelési távolság</value>
   </data>
   <data name="ShipStats_Flak" xml:space="preserve">
     <value>Légvédelmi tűz</value>
@@ -451,7 +451,7 @@
     <value>Tűz általi másodpercenkénti sebzés</value>
   </data>
   <data name="ShipStats_FireDuration" xml:space="preserve">
-    <value>Égési idő</value>
+      <value>Égési idő</value>
   </data>
   <data name="ShipStats_FireReduction" xml:space="preserve">
     <value>Tűzvédelem</value>
@@ -463,7 +463,7 @@
     <value>Vízbetörés általi másodpercenkénti sebzés</value>
   </data>
   <data name="ShipStats_FloodDuration" xml:space="preserve">
-    <value>Vízbetörés időtartalma</value>
+      <value>Vízbetörés időtartalma</value>
   </data>
   <data name="ShipStats_FloodProbability" xml:space="preserve">
     <value>Vízbetörés valószínűsége</value>
@@ -532,37 +532,37 @@
     <value>Eltalálhatja</value>
   </data>
   <data name="ShipStats_Concealment" xml:space="preserve">
-    <value>Felderítési távolság</value>
+    <value>Álcázás</value>
   </data>
   <data name="ShipStats_ConcealmentByAir" xml:space="preserve">
-    <value>Felderítési távolság, levegőből</value>
+      <value>Alap</value>
   </data>
   <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
-    <value>Felderítési távolság, lángolva, levegőből</value>
+    <value>Kigyulladva</value>
   </data>
   <data name="ShipStats_ConcealmentBySea" xml:space="preserve">
-    <value>Felderítési távolság, vizen</value>
+      <value>Alap</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
-    <value>Felderítési távolság, lángolva, vizen</value>
+    <value>Kigyulladva</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
-    <value>Felderítési távolság, füstből lövés után</value>
+    <value>Füstből lövés után</value>
   </data>
   <data name="ShipStats_FireAmount" xml:space="preserve">
-    <value>Max. tűzesetek száma</value>
+      <value>Max. tűzesetek száma</value>
   </data>
   <data name="ShipStats_FireTotalDamage" xml:space="preserve">
-    <value>Teljes tűz általi sebzés</value>
+      <value>Tüzesetenkénti maximális sebződés</value>
   </data>
   <data name="ShipStats_FloodAmount" xml:space="preserve">
-    <value>Max. összesen</value>
+      <value>Max. összesen</value>
   </data>
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
     <value>Torpedóvédelem</value>
   </data>
   <data name="ShipStats_FloodTotalDamage" xml:space="preserve">
-    <value>Teljes víz általi sebzés</value>
+      <value>Vízbetörésenkénti maximális sebződés</value>
   </data>
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Nagy hatótávolságú légvédelmi aura</value>
@@ -598,7 +598,7 @@
     <value>Sebesség</value>
   </data>
   <data name="ShipStats_Weapon" xml:space="preserve">
-    <value>Fegyver</value>
+      <value>Fegyver</value>
   </data>
   <data name="SkipBomb" xml:space="preserve">
     <value>Pattogóbomba</value>
@@ -613,13 +613,13 @@
     <value>Támadási utáni pihenőidő</value>
   </data>
   <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>Utazósebesség</value>
+      <value>Utazósebesség</value>
   </data>
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>Bombák a belső körben</value>
   </data>
   <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>Max gépek a fedélzeten</value>
+      <value>Max gépek a fedélzeten</value>
   </data>
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Maximális sebesség</value>
@@ -628,10 +628,13 @@
     <value>Minimális sebesség</value>
   </data>
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Támdásonként</value>
+      <value>Támdásonként</value>
   </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>A században</value>
+      <value>A században</value>
+  </data>
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
+      <value>HP repülőgépenként</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>Helyreállítási idő</value>
@@ -643,19 +646,19 @@
     <value>Bombák gépenként</value>
   </data>
   <data name="ShipStats_DropTime" xml:space="preserve">
-    <value>Dobás</value>
+      <value>Dobás</value>
   </data>
   <data name="ShipStats_FlyAwayTime" xml:space="preserve">
-    <value>Érkezési Idő</value>
+      <value>Érkezési Idő</value>
   </data>
   <data name="ShipStats_MaximumDistance" xml:space="preserve">
-    <value>Maximális</value>
+      <value>Maximális</value>
   </data>
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
     <value>Max. vetőtávolság</value>
   </data>
   <data name="ShipStats_MinimumDistance" xml:space="preserve">
-    <value>Minimális</value>
+      <value>Minimális</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
     <value>Töltetek száma</value>
@@ -682,7 +685,7 @@
     <value>Szonár</value>
   </data>
   <data name="ShipStats_PingSpeed" xml:space="preserve">
-    <value>Minimális ping sebesség</value>
+    <value>Ping sebesség</value>
   </data>
   <data name="ShipStats_PingWidth" xml:space="preserve">
     <value>Ping szélesség</value>
@@ -748,10 +751,10 @@
     <value>Hiba a felépítés betöltése közben</value>
   </data>
   <data name="ShipStats_JatoDuration" xml:space="preserve">
-    <value>Időtartam</value>
+      <value>Időtartam</value>
   </data>
   <data name="ShipStats_JatoSpeedMultiplier" xml:space="preserve">
-    <value>Sebességnövelés</value>
+      <value>Sebességnövelés</value>
   </data>
   <data name="ShipStats_TimeToSwitch" xml:space="preserve">
     <value>Lőszercsere időtartama</value>
@@ -787,13 +790,13 @@
     <value>Támadás során elszenvedett sebzés</value>
   </data>
   <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>Támadás utáni sebezhetetlenségi idő</value>
+      <value>Támadás utáni sebezhetetlenségi idő</value>
   </data>
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Felkészítési idő</value>
   </data>
   <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-    <value>Teljes célzási idő</value>
+      <value>Teljes célzási idő</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Torpedóvetők</value>
@@ -838,7 +841,7 @@
     <value>A kiválasztott útvonal nem érvényes.</value>
   </data>
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
-    <value>Lőszertípus kiválasztása</value>
+      <value>Lőszertípus kiválasztása</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>egynél több lőszertípusa van. Válassza ki azt, amelyiket elemezni szeretné. Ugyanazt a kalibert feltételezve az alábbi a sorrend: HE-&gt;SAP-&gt;AP.</value>
@@ -856,10 +859,10 @@
     <value>Verziók másolása</value>
   </data>
   <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
-    <value>Periszkóp mélységben</value>
+      <value>Periszkóp mélységben</value>
   </data>
   <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
-    <value>Mélymerülésben</value>
+      <value>Mélymerülésben</value>
   </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
     <value>Szórási kép és ballisztikus ábrák mutatása</value>
@@ -886,13 +889,13 @@
     <value>Szóráskép mutatása</value>
   </data>
   <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>Szóráskép X(km) távolságon</value>
+      <value>Szóráskép X(km) távolságon</value>
   </data>
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Vízszintes szórás [X]</value>
   </data>
   <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-    <value>Célzástávolság (Km)</value>
+      <value>Célzástávolság (Km)</value>
   </data>
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Ballisztikus ábrák</value>
@@ -919,7 +922,7 @@
     <value>Ez a hajó nem tud ilyen messze lőni</value>
   </data>
   <data name="DispersionGraphWindow_PlotPlane" xml:space="preserve">
-    <value>Vezérgép</value>
+    <value>Ábra nézeti síkja</value>
   </data>
   <data name="HorizontalPlane" xml:space="preserve">
     <value>Vízszintes nézet</value>
@@ -931,7 +934,7 @@
     <value>Függőleges</value>
   </data>
   <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
-    <value>Fusō mint hivatkozás</value>
+    <value>Fusō mint célpont</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
     <value>A FEHÉR ellipszis a maximális szóródási területet mutatja a kiválasztott célzási távolságban.
@@ -976,22 +979,22 @@ A játékban lévő hajók kétszer akkorák, mint a környezet, így egy 200 m�
     <value>Tömeg</value>
   </data>
   <data name="ShipStats_PotentialFpm" xml:space="preserve">
-    <value>Lehetséges FPM </value>
+    <value>Lehetséges percenkénti tűz </value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
-    <value>Szalvónkénti</value>
+      <value>Szalvónkénti</value>
   </data>
   <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-    <value>Robbanás hatósugara</value>
+      <value>Hatósugara</value>
   </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-    <value>Átütés</value>
+      <value>Átütés</value>
   </data>
   <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
-    <value>Hajtómű</value>
+      <value>Hajtómű</value>
   </data>
   <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
-    <value>Kormányvédelem</value>
+      <value>Kormány</value>
   </data>
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
     <value>Ha a "modul robbanás elleni védelem" + "fegyverzet átütése" &gt; 0
@@ -1078,7 +1081,7 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
     <value>A kiválasztott képútvonal hibás.</value>
   </data>
   <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
-    <value>Készségek és képességek</value>
+      <value>Készségek és képességek</value>
   </data>
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>A következő csúszkákkal és kapcsolókkal engedélyezhet vagy letilthat bizonyos feltételes képességeffektusokat. Kiválaszthatja azt is, hogy hányszor aktiválja a tehetségeffektust, ha lehetséges. Vegye figyelembe, hogy nem minden képesség/tehetség lesz hatással a hajóstatisztikákra.</value>
@@ -1105,7 +1108,7 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
     <value>Szerver-oldali újratöltési idő</value>
   </data>
   <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
-    <value>A szerver csak 0,142857142857 másodpercenként frissül. Ez azt jelenti, hogy az e szám többszörösei közé eső újratöltések átkerülnek az utána lévő pipára. Az itt bemutatott érték a kapott valós újratöltést mutatja, amely eltérhet a fenti elméleti újratöltéstől.</value>
+      <value>A szerver csak 0,142857142857 másodpercenként frissül. Ez azt jelenti, hogy az e szám többszörösei közé eső újratöltések átkerülnek az utána lévő pipára. Az itt bemutatott érték a kapott valós újratöltést mutatja, amely eltérhet a fenti elméleti újratöltéstől.</value>
   </data>
   <data name="ShipStats_TheoreticalTrueDpm" xml:space="preserve">
     <value>Szerver-oldali percenkénti sebzés</value>
@@ -1114,10 +1117,10 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
     <value>Szerver-oldali tűzgyorsaság</value>
   </data>
   <data name="Validation_BuildName" xml:space="preserve">
-    <value>A felépítés neve nem engedélyezett karaktereket tartalmaz. Csak betű, számok, szóközök és kötőjelek engedélyezettek.</value>
+      <value>A felépítés neve nem engedélyezett karaktereket tartalmaz. Csak betű, számok, szóközök és kötőjelek engedélyezettek.</value>
   </data>
   <data name="Teststring" xml:space="preserve">
-    <value>Csak egy tesztérték</value>
+      <value>Csak egy tesztérték</value>
   </data>
   <data name="Unit_MPS" xml:space="preserve">
     <value>m/s</value>
@@ -1159,7 +1162,7 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
     <value>lövés / perc</value>
   </data>
   <data name="Unit_FPM" xml:space="preserve">
-    <value>Tüzek / perc</value>
+    <value>Tüz(ek) / perc</value>
   </data>
   <data name="ArmamentType_AP" xml:space="preserve">
     <value>Páncéltörő</value>
@@ -1171,650 +1174,884 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
     <value>Félig páncéltörő</value>
   </data>
   <data name="ChartsWeb_AddRemoveShips" xml:space="preserve">
-    <value>Hozzáad/Eltávolít (Hajót/Lövedéket)</value>
+      <value>Hozzáad/Eltávolít (Hajót/Lövedéket)</value>
   </data>
   <data name="ChartsWeb_DispersionCharts" xml:space="preserve">
-    <value>Szórás ábrák</value>
+      <value>Szórás ábrák</value>
   </data>
   <data name="ChartsWeb_BallisticCharts" xml:space="preserve">
-    <value>Ballisztikus ábrák</value>
+      <value>Ballisztikus ábrák</value>
   </data>
   <data name="ShipAndShellSelectionDialogWeb_SelectShipsAndShells" xml:space="preserve">
-    <value>Hajó és lövedék kiválasztása</value>
+      <value>Hajó és lövedék kiválasztása</value>
   </data>
   <data name="ShipAndShellSelectionDialogWeb_Loading" xml:space="preserve">
-    <value>Töltés...</value>
+      <value>Töltés...</value>
   </data>
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
-    <value>Standard</value>
+      <value>Standard</value>
   </data>
   <data name="ShipStats_TorpedoMagnetic" xml:space="preserve">
-    <value>Mágneses</value>
+      <value>Mágneses</value>
   </data>
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
-    <value>Mélyvizi</value>
+      <value>Mélyvizi</value>
   </data>
   <data name="Consumable_HpPerHeal" xml:space="preserve">
-    <value>HP gyógyításonként</value>
+      <value>HP gyógyításonként</value>
   </data>
   <data name="DispersionGraphWindow_Range" xml:space="preserve">
-    <value>Hatótáv [km]:</value>
+      <value>Lőtáv [km]:</value>
   </data>
   <data name="DispersionGrapghWindow_Height" xml:space="preserve">
-    <value>Magasság</value>
+      <value>Magasság</value>
   </data>
   <data name="ShipStats_ShowShellTrajectoryGraph" xml:space="preserve">
-    <value>Mutasd a lövedék röppályáját</value>
+      <value>Mutasd a lövedék röppályáját</value>
   </data>
   <data name="ShipStats_ConcealmentFromShips" xml:space="preserve">
-    <value>Hajókkal szemben</value>
+      <value>Hajókról</value>
   </data>
   <data name="ShipStats_ConcealmentFromPlanes" xml:space="preserve">
-    <value>Repülőgépekkel szemben</value>
+      <value>Repülőgépekről</value>
   </data>
   <data name="ShipStats_SpottingOnShips" xml:space="preserve">
-    <value>Hajókon</value>
+      <value>Hajókon</value>
   </data>
   <data name="ShipStats_SpottingOnPlanes" xml:space="preserve">
-    <value>Repülőgépeken</value>
+      <value>Repülőgépeken</value>
   </data>
   <data name="ShipStats_SpottingOnTorps" xml:space="preserve">
-    <value>Torpedókon</value>
+      <value>Torpedókon</value>
   </data>
   <data name="ShipStats_MaxViewDistance" xml:space="preserve">
-    <value>Maxinális felderítési távolság</value>
+      <value>Maxinális felderítési távolság</value>
   </data>
   <data name="ShipStats_Consumables" xml:space="preserve">
-    <value>Fogyóeszközök</value>
+      <value>Fogyóeszközök</value>
   </data>
   <data name="ShipStats_AircraftAmount" xml:space="preserve">
-    <value>Repülőgépek száma</value>
+      <value>Repülőgépek száma</value>
   </data>
   <data name="ShipStats_AircraftInAttackGroup" xml:space="preserve">
-    <value>A Támadó csoportban</value>
+      <value>A Támadó csoportban</value>
   </data>
   <data name="ShipStats_SquadronHp" xml:space="preserve">
-    <value>Osztag</value>
+      <value>Osztag</value>
   </data>
   <data name="ShipStats_AttackGroupHp" xml:space="preserve">
-    <value>Támadó csoport</value>
+      <value>Támadó csoport</value>
   </data>
   <data name="ShipStats_Max" xml:space="preserve">
-    <value>Maximális</value>
+      <value>Maximális</value>
   </data>
   <data name="ShipStats_Min" xml:space="preserve">
-    <value>Minimális</value>
+      <value>Minimális</value>
   </data>
   <data name="ShipStats_AttackTimings" xml:space="preserve">
-    <value>Támadás időzítése</value>
+      <value>Támadás időzítése</value>
   </data>
   <data name="ShipStats_Aiming" xml:space="preserve">
-    <value>Célzás</value>
+      <value>Célzás</value>
   </data>
   <data name="ShipStats_Preparation" xml:space="preserve">
-    <value>Felkészítés</value>
+      <value>Felkészítés</value>
   </data>
   <data name="ShipStats_InitialBoost" xml:space="preserve">
-    <value>Kezdeti gyorsítás</value>
+      <value>Kezdeti gyorsítás</value>
   </data>
   <data name="ShipStats_SpeedBoost" xml:space="preserve">
-    <value>Sebességnövelés</value>
+      <value>Sebességnövelés</value>
   </data>
   <data name="ModifierConverter_MaxEngagementDuration" xml:space="preserve">
-    <value>Maximális támadóidő</value>
+      <value>Maximális támadóidő</value>
   </data>
   <data name="ModifierConverter_MaxKillsAmount" xml:space="preserve">
-    <value>Max. kilövések száma</value>
+      <value>Max. kilövések száma</value>
   </data>
   <data name="CaptainSkillSelector_CurrentArBonus" xml:space="preserve">
-    <value>Adrenalinlöket HP: </value>
+      <value>Adrenalinlöket HP: </value>
   </data>
   <data name="ShipStats_Fire" xml:space="preserve">
-    <value>Tűz</value>
+      <value>Tűz</value>
   </data>
   <data name="ShipStats_Flooding" xml:space="preserve">
-    <value>Áradás</value>
+      <value>Áradás</value>
   </data>
   <data name="ShipStats_BlastProtection" xml:space="preserve">
-    <value>Robbanásvédelem</value>
+      <value>Védelem</value>
   </data>
   <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
-    <value>Max. tűzesetek száma</value>
+      <value>Max. tűzesetek száma</value>
   </data>
   <data name="ShipStats_FromSubs" xml:space="preserve">
-    <value>Tengeralattjáróktól</value>
+      <value>Tengeralattjárókról</value>
   </data>
   <data name="ShipStats_Sea" xml:space="preserve">
-    <value>Tenger</value>
+      <value>Tenger</value>
   </data>
   <data name="ShipStats_Air" xml:space="preserve">
-    <value>Levegő</value>
+      <value>Levegő</value>
   </data>
   <data name="ShipStats_Timings" xml:space="preserve">
-    <value>Időzítők</value>
+      <value>Időzítők</value>
   </data>
   <data name="ShipStats_ReloadTime" xml:space="preserve">
-    <value>Újratöltés</value>
+      <value>Újratöltés</value>
   </data>
   <data name="ShipStats_ShellFireChance" xml:space="preserve">
-    <value>Egy lövedék</value>
+      <value>Egy lövedék</value>
   </data>
   <data name="ShipStats_TheoreticalHeDpm" xml:space="preserve">
-    <value>Repeszromboló</value>
+      <value>Repeszromboló</value>
   </data>
   <data name="ShipStats_TheoreticalApDpm" xml:space="preserve">
-    <value>Páncéltörő</value>
+      <value>Páncéltörő</value>
   </data>
   <data name="ShipStats_TheoreticalSapDpm" xml:space="preserve">
-    <value>Félig páncéltörő</value>
+      <value>Félig páncéltörő</value>
   </data>
   <data name="ShipStats_TheoreticalTrueHeDpm" xml:space="preserve">
-    <value>Repeszromboló</value>
+      <value>Repeszromboló</value>
   </data>
   <data name="ShipStats_TheoreticalTrueApDpm" xml:space="preserve">
-    <value>Páncéltörő</value>
+      <value>Páncéltörő</value>
   </data>
   <data name="ShipStats_TheoreticalTrueSapDpm" xml:space="preserve">
-    <value>Félig páncéltörő</value>
+      <value>Félig páncéltörő</value>
   </data>
   <data name="ShipStats_HP" xml:space="preserve">
-    <value>Életerő</value>
+      <value>Életerő</value>
   </data>
   <data name="ShipStats_RocketType" xml:space="preserve">
-    <value>Rakéta típusa</value>
+      <value>Rakéta típusa</value>
   </data>
   <data name="ShipStats_TorpedoType" xml:space="preserve">
-    <value>Torpedó típusa</value>
+      <value>Torpedó típusa</value>
   </data>
   <data name="DataUpdate_ErrorDescription" xml:space="preserve">
-    <value>Hiba lépett fel az adatok frissítése közben. Ez a megjelenítésben hibákhoz vezethet. Újrapróbálkozáshoz indítsa újra az alkalmazást.
+      <value>Hiba lépett fel az adatok frissítése közben. Ez a megjelenítésben hibákhoz vezethet. Újrapróbálkozáshoz indítsa újra az alkalmazást.
 Bővebb információ a logfájlokban található.</value>
   </data>
   <data name="DataUpdate_ErrorTitle" xml:space="preserve">
-    <value>Adatfrissítési hiba</value>
+      <value>Adatfrissítési hiba</value>
   </data>
   <data name="NotificationService_UpdateActive" xml:space="preserve">
-    <value>Az alkalmazásfrissítés háttérben fut...</value>
+      <value>Az alkalmazásfrissítés háttérben fut...</value>
   </data>
   <data name="NotificationService_ErrorMessage" xml:space="preserve">
-    <value>Hiba lépett fel az app frissítésekor. További információk a logfájlban.</value>
+      <value>Hiba lépett fel az app frissítésekor. További információk a logfájlban.</value>
   </data>
   <data name="NotificationService_UpdateCompleted" xml:space="preserve">
-    <value>Az alkalmazás a háttérben frissítve lett. A múdosítások érvénybe lépéséhez kérjük indítsa újra. Klikk az újraindításhoz.</value>
+      <value>Az alkalmazás a háttérben frissítve lett. A múdosítások érvénybe lépéséhez kérjük indítsa újra. Klikk az újraindításhoz.</value>
   </data>
   <data name="UpdateMessageBox_Description" xml:space="preserve">
-    <value>A frissítés befejeződött. Akarja újraindítani, hogy a módosítások élesedjenek?</value>
+      <value>A frissítés befejeződött. Akarja újraindítani, hogy a módosítások élesedjenek?</value>
   </data>
   <data name="UpdateMessageBox_Title" xml:space="preserve">
-    <value>Alkalmazás frissítve</value>
+      <value>Alkalmazás frissítve</value>
   </data>
   <data name="Placeholder" xml:space="preserve">
-    <value>---</value>
+      <value>---</value>
   </data>
   <data name="ShipStats_Splash" xml:space="preserve">
-    <value>Becsapódás</value>
+      <value>Sebzés tengeralattjárók ellen</value>
   </data>
   <data name="ShipStats_SplashRadius" xml:space="preserve">
-    <value>Becsapódás hatósugara</value>
+      <value>Becsapódás hatósugara</value>
   </data>
   <data name="ShipStats_SplashDmg" xml:space="preserve">
-    <value>Sebzés</value>
+      <value>Sebzés</value>
   </data>
   <data name="ShipStats_SplashExplanation" xml:space="preserve">
-    <value>Ezek a paraméterek csak tengeralattjáróra hatnak.
+      <value>Ezek a paraméterek csak tengeralattjáróra hatnak.
 Felszini hajókra nincs hatásuk.</value>
   </data>
   <data name="ShipStats_DcSplashRadius" xml:space="preserve">
-    <value>Robbanás hatósugara</value>
+      <value>Robbanás hatósugara</value>
   </data>
   <data name="ShipStats_DetonationTimer" xml:space="preserve">
-    <value>Robbantás időzítő</value>
+      <value>Robbantás időzítő</value>
   </data>
   <data name="ShipStats_SinkSpeed" xml:space="preserve">
-    <value>Süllyedési sebesség</value>
+      <value>Süllyedési sebesség</value>
   </data>
   <data name="ShipStats_DetonationDepth" xml:space="preserve">
-    <value>Robbantási mélyég</value>
+      <value>Robbantási mélyég</value>
   </data>
   <data name="ShipStats_Blast" xml:space="preserve">
-    <value>Robbanás</value>
+      <value>Robbanás</value>
   </data>
   <data name="ShipStats_ShowDcDamageDistribution" xml:space="preserve">
-    <value>Sebzési szóráskép mutatása</value>
+      <value>Sebzési szóráskép mutatása</value>
   </data>
   <data name="ShipStats_Citadel" xml:space="preserve">
-    <value>Citadella rész</value>
+      <value>Citadella rész</value>
   </data>
   <data name="ShipStats_Bow" xml:space="preserve">
-    <value>Orr rész</value>
+      <value>Orr rész</value>
   </data>
   <data name="ShipStats_RegenRatio" xml:space="preserve">
-    <value>Javítható sebzés</value>
+      <value>Javítható sebzés</value>
   </data>
   <data name="ShipStats_Stern" xml:space="preserve">
-    <value>Tat rész</value>
+      <value>Tat rész</value>
   </data>
   <data name="ShipStats_Superstructure" xml:space="preserve">
-    <value>Felépítmény rész</value>
+      <value>Felépítmény rész</value>
   </data>
   <data name="ShipStats_Casemate" xml:space="preserve">
-    <value>Kazamata rész</value>
+      <value>Kazamata rész</value>
   </data>
   <data name="ShipStats_Hull" xml:space="preserve">
-    <value>Törzs rész</value>
+      <value>Törzs rész</value>
   </data>
   <data name="ShipStats_AuxiliaryRooms" xml:space="preserve">
-    <value>Kiegészítő gépészeti rész</value>
+      <value>Kiegészítő gépészeti rész</value>
   </data>
   <data name="ShipStats_ShipHp" xml:space="preserve">
-    <value>Hajó HP</value>
+      <value>Hajó HP</value>
   </data>
   <data name="Consumable_RightClickToggle" xml:space="preserve">
-    <value>Jobb-klick az ikonon be-kikapcsolja a hatását</value>
+      <value>Jobb-klick az ikonon be-kikapcsolja a hatását</value>
   </data>
   <data name="ChartsWeb_ShellTrajectoryChart" xml:space="preserve">
-    <value>Lövedék röppályája</value>
+      <value>Lövedék röppályája</value>
   </data>
   <data name="ChartsWeb_Height" xml:space="preserve">
-    <value>Magasság </value>
+      <value>Magasság </value>
   </data>
   <data name="ChartsWeb_ShowCharts" xml:space="preserve">
-    <value>Szórási kép és ballisztikus ábrák mutatása</value>
+      <value>Szórási kép és ballisztikus ábrák mutatása</value>
   </data>
   <data name="WebApp_ApplicationInfo" xml:space="preserve">
-    <value>Az alkalmazás adatai</value>
+      <value>Az alkalmazás adatai</value>
   </data>
   <data name="WebApp_CurrentVersion" xml:space="preserve">
-    <value>Aktuális adatverzió:</value>
+      <value>Aktuális adatverzió:</value>
   </data>
   <data name="WebApp_SelectedLanguage" xml:space="preserve">
-    <value>Kiválasztott nyelv</value>
+      <value>Kiválasztott nyelv</value>
   </data>
   <data name="WebApp_AmmoExpanderSetting" xml:space="preserve">
-    <value>Alapbeállításból nyitva legyen a lövedékek és a Torpedók fül</value>
+      <value>Alapbeállításból nyitva legyen a lövedékek és a Torpedók fül</value>
   </data>
   <data name="WebApp_SettingsSaved" xml:space="preserve">
-    <value>Beállítások mentve</value>
+      <value>Beállítások mentve</value>
   </data>
   <data name="Consumable_HoldToggle" xml:space="preserve">
-    <value>Nyomvatartva állítható az effekt</value>
+      <value>Nyomvatartva állítható az effekt</value>
   </data>
   <data name="DispersionPlot_Hits" xml:space="preserve">
-    <value>Találatok</value>
+      <value>Találatok</value>
   </data>
   <data name="WebApp_ArtilleryAngleExplanation" xml:space="preserve">
-    <value>A 0°fent van. Az óramutató járásával megegyező irány a pozitív az azzal ellentétes a negatív. A vörös szögek a halott zónák (ahova a löveg csak forogni tud, de lőni nem).      </value>
+      <value>A 0°fent van. Az óramutató járásával megegyező irány a pozitív az azzal ellentétes a negatív. A vörös szögek a halott zónák (ahova a löveg csak forogni tud, de lőni nem).      </value>
   </data>
   <data name="Build_CopyUrl" xml:space="preserve">
-    <value>Build URL másolása</value>
+      <value>Build URL másolása</value>
   </data>
   <data name="WebApp_ExpanderSetting" xml:space="preserve">
-    <value>Alapbeállításból nyitva legyenek a fő fülek</value>
+      <value>Alapbeállításból nyitva legyenek a fő fülek</value>
   </data>
   <data name="WebApp_SecondariesAndAAExpanderSetting" xml:space="preserve">
-    <value>Minden másodlagos, repülőgép fegyverzet és légvédelmi expander alapbeállítás szerint kinyitva</value>
+      <value>Minden másodlagos, repülőgép fegyverzet és légvédelmi expander alapbeállítás szerint kinyitva</value>
   </data>
   <data name="WebApp_ExpanderSettingHeader" xml:space="preserve">
-    <value>Expander beállítások</value>
+      <value>Expander beállítások</value>
   </data>
   <data name="ShipStats_ShipSectionsHp" xml:space="preserve">
-    <value>Hajórész HP</value>
+      <value>Hajórész HP</value>
   </data>
   <data name="ShipStats_HideDcDamageDistribution" xml:space="preserve">
-    <value>Sebzési szóráskép elrejtése</value>
+      <value>Sebzési szóráskép elrejtése</value>
   </data>
   <data name="ShipStats_ShowLaunchersAngles" xml:space="preserve">
-    <value>Kivetők szögének mutatása</value>
+      <value>Kivetők szögének mutatása</value>
   </data>
   <data name="ShipStats_MaxEngineBoostDuration" xml:space="preserve">
-    <value>Maximális motorerősítési idő</value>
+      <value>Maximális motorerősítési idő</value>
   </data>
   <data name="Build_CopyShortUrl" xml:space="preserve">
-    <value>Gyorslink másolása</value>
+      <value>Gyorslink másolása</value>
   </data>
   <data name="Build_EnterBuildName" xml:space="preserve">
-    <value>Kérjük, adja meg a build nevét. A hajó neve automatikusan megjelenik a végén.</value>
+      <value>Kérjük, adja meg a build nevét. A hajó neve automatikusan megjelenik a végén.</value>
   </data>
   <data name="BETA_ShipComparison" xml:space="preserve">
-    <value>Gyorsulási ábrák - béta</value>
+      <value>Gyorsulási ábrák - béta</value>
   </data>
   <data name="BETA_AccelerationCharts" xml:space="preserve">
-    <value>Hajó összehasonlítás - béta</value>
+      <value>Hajó összehasonlítás - béta</value>
   </data>
   <data name="BetaAccess_Heading" xml:space="preserve">
-    <value>Béta hozzáférés</value>
+      <value>Béta hozzáférés</value>
   </data>
   <data name="BetaAccess_Code" xml:space="preserve">
-    <value>Kód</value>
+      <value>Kód</value>
   </data>
   <data name="BetaAccess_AddCode" xml:space="preserve">
-    <value>Kód hozzáadása</value>
+      <value>Kód hozzáadása</value>
   </data>
   <data name="BetaAccess_Feature" xml:space="preserve">
-    <value>Funkció</value>
+      <value>Funkció</value>
   </data>
   <data name="BetaAccess_Remove" xml:space="preserve">
-    <value>Törlés</value>
+      <value>Törlés</value>
   </data>
   <data name="BetaAccess_Invalid" xml:space="preserve">
-    <value>Érvénytelen kód</value>
+      <value>Érvénytelen kód</value>
   </data>
   <data name="BetaAccess_CodeEnabled" xml:space="preserve">
-    <value>engedélyezve.</value>
+      <value>engedélyezve.</value>
   </data>
   <data name="BetaAccess_Duplicate" xml:space="preserve">
-    <value>már engedélyezett.</value>
+      <value>már engedélyezett.</value>
   </data>
   <data name="ShipStats_MaxSpeedTime" xml:space="preserve">
-    <value>Maximális sebesség eléréséhez szükséges idő</value>
+      <value>Maximális sebesség eléréséhez szükséges idő</value>
   </data>
   <data name="ShipStats_ForwardMaxSpeedTime" xml:space="preserve">
-    <value>Teljes erővel előre</value>
+      <value>Teljes erővel előre</value>
   </data>
   <data name="ShipStats_ReverseMaxSpeedTime" xml:space="preserve">
-    <value>Tolatás</value>
+      <value>Tolatás</value>
   </data>
   <data name="AccelerationChart_Acceleration" xml:space="preserve">
-    <value>Gyorsulás</value>
+      <value>Gyorsulás</value>
   </data>
   <data name="AccelerationChart_Time" xml:space="preserve">
-    <value>Idő</value>
+      <value>Idő</value>
   </data>
   <data name="AccelerationChart_AddRemoveShip" xml:space="preserve">
-    <value>Hajót hozzáad / eltávolít</value>
+      <value>Hajót hozzáad / eltávolít</value>
   </data>
   <data name="Charts_ChangeBuilds" xml:space="preserve">
-    <value>Build megváltoztatása</value>
+      <value>Build megváltoztatása</value>
   </data>
   <data name="AccelerationChart_ExplanationText" xml:space="preserve">
-    <value>A hajó kiválasztása után lehetősége van kiválasztani azt a 3 sebességfokozatot, amelyet használni fog az ábra.
+      <value>A hajó kiválasztása után lehetősége van kiválasztani azt a 3 sebességfokozatot, amelyet használni fog az ábra.
 A táblázat a következő sorrendben fog haladni: Kezdő fokozat --&gt; kozépső fokozat --&gt; végső fokozat, csak az aktuális fokozat maximális sebességének elérése után vált a következőre.
 Ha két sebességfokozatot azonos értékre állít be, azok egybeolvadnak.
 A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többször is hozzáadhat egy hajót, ha össze szeretné hasonlítani a különböző buildeket.</value>
   </data>
   <data name="AccelerationChart_Explanation" xml:space="preserve">
-    <value>Gyorsulási ábra magyarázat</value>
+      <value>Gyorsulási ábra magyarázat</value>
   </data>
   <data name="AccelerationChart_CustomDataTitle" xml:space="preserve">
-    <value>Egyéni adatok hozzáadása</value>
+      <value>Egyéni adatok hozzáadása</value>
   </data>
   <data name="ShipStats_EnginePower" xml:space="preserve">
-    <value>Motorerő</value>
+      <value>Motorerő</value>
   </data>
   <data name="ShipStats_Tonnage" xml:space="preserve">
-    <value>Vízkiszorítás</value>
+      <value>Vízkiszorítás</value>
   </data>
   <data name="ShipStats_ForwardEngineUpTime" xml:space="preserve">
-    <value>Gyorsulás előre</value>
+      <value>Gyorsulás előre</value>
   </data>
   <data name="ShipStats_BackwardEngineUpTime" xml:space="preserve">
-    <value>Gyorsulás hátra</value>
+      <value>Gyorsulás hátra</value>
   </data>
   <data name="ShipStats_ForwardEngineForsag" xml:space="preserve">
-    <value>Gyorsulás előre forszázzsal</value>
+      <value>Gyorsulás előre forszázzsal</value>
   </data>
   <data name="ShipStats_BackwardEngineForsag" xml:space="preserve">
-    <value>Gyorsulás hátra forszázzsal</value>
+      <value>Gyorsulás hátra forszázzsal</value>
   </data>
   <data name="ShipStats_ForwardEngineForsagMaxSpeed" xml:space="preserve">
-    <value>Max sebesség előre forszázzsal</value>
+      <value>Max sebesség előre forszázzsal</value>
   </data>
   <data name="ShipStats_BackwardEngineForsagMaxSpeed" xml:space="preserve">
-    <value>Max sebesség hátra forszázzsal</value>
+      <value>Max sebesség hátra forszázzsal</value>
   </data>
   <data name="ShipStats_HeSalvo" xml:space="preserve">
-    <value>Repeszromboló</value>
+      <value>Repeszromboló</value>
   </data>
   <data name="ShipStats_ApSalvo" xml:space="preserve">
-    <value>Páncéltörő</value>
+      <value>Páncéltörő</value>
   </data>
   <data name="ShipStats_SapSalvo" xml:space="preserve">
-    <value>Félig páncéltörő</value>
+      <value>Félig páncéltörő</value>
   </data>
   <data name="ShipStats_FullSalvoDamage" xml:space="preserve">
-    <value>Teljes szalvó sebzés</value>
+      <value>Teljes szalvó sebzés</value>
   </data>
   <data name="ShipStats_FirstOption" xml:space="preserve">
-    <value>1. lehetőség</value>
+      <value>1. lehetőség</value>
   </data>
   <data name="ShipStats_SecondOption" xml:space="preserve">
-    <value>2. lehetőség</value>
+      <value>2. lehetőség</value>
   </data>
   <data name="ShipStats_DispersionAtMaxRange" xml:space="preserve">
-    <value>Szórás maximális lőtávnál</value>
+      <value>Szórás maximális lőtávnál</value>
   </data>
   <data name="ShipStats_ManeuverabilitySubsMaxSpeedOnSurface" xml:space="preserve">
-    <value>A felszínen</value>
+      <value>A felszínen</value>
   </data>
   <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth" xml:space="preserve">
-    <value>Mélymerülésben</value>
+      <value>Mélymerülésben</value>
   </data>
   <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope" xml:space="preserve">
-    <value>Periszkóp mélységben</value>
+      <value>Periszkóp mélységben</value>
   </data>
   <data name="ShipStats_Fighter" xml:space="preserve">
-    <value>Rakéták</value>
+      <value>Rakéták</value>
   </data>
   <data name="ShipStats_TacticalFighter" xml:space="preserve">
-    <value>Taktikai rakéták</value>
+      <value>Taktikai rakéták</value>
   </data>
   <data name="ShipStats_DiveBomber" xml:space="preserve">
-    <value>Zuhanó bombázók</value>
+      <value>Zuhanó bombázók</value>
   </data>
   <data name="ShipStats_TacticalDiveBomber" xml:space="preserve">
-    <value>Taktikai zuhanó bombázók</value>
+      <value>Taktikai zuhanó bombázók</value>
   </data>
   <data name="ShipStats_TorpedoBomber" xml:space="preserve">
-    <value>Torpedó bombázók</value>
+      <value>Torpedó bombázók</value>
   </data>
   <data name="ShipStats_TacticalTorpedoBomber" xml:space="preserve">
-    <value>Taktikai torpedó bombázók</value>
+      <value>Taktikai torpedó bombázók</value>
   </data>
   <data name="ShipStats_SkipBomber" xml:space="preserve">
-    <value>Pattogóbomba-vetők</value>
+      <value>Pattogóbomba-vetők</value>
   </data>
   <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
-    <value>Taktikai pattogóbomba-vetők</value>
+      <value>Taktikai pattogóbomba-vetők</value>
   </data>
   <data name="ChartsWeb_Build" xml:space="preserve">
-    <value>Build</value>
+      <value>Build</value>
   </data>
   <data name="ShipSelectionWindow_EditBuilds" xml:space="preserve">
-    <value>Build szerkesztése</value>
+      <value>Build szerkesztése</value>
   </data>
   <data name="ShipAndShellsSelectionDialog_NoShipSelected" xml:space="preserve">
-    <value>Nincs kiválasztott hajó</value>
+      <value>Nincs kiválasztott hajó</value>
   </data>
   <data name="ShipStats_TargetAreaRadius" xml:space="preserve">
-    <value>Célterület sugara</value>
+      <value>Célterület sugara</value>
   </data>
   <data name="ShipStats_ProgressPerAction" xml:space="preserve">
-    <value>Akciónkénti előrehaladás</value>
+      <value>Akciónkénti előrehaladás</value>
   </data>
   <data name="ShipStats_InactivityDelay" xml:space="preserve">
-    <value>Türelmi idő az előrehaladás elvesztése előtt</value>
+      <value>Türelmi idő az előrehaladás elvesztése előtt</value>
   </data>
   <data name="ShipStats_ProgressLossInterval" xml:space="preserve">
-    <value>Előrehaladás-veszteségi ütem</value>
+      <value>Előrehaladás-veszteségi ütem</value>
   </data>
   <data name="ShipStats_ProgressLossPerInterval" xml:space="preserve">
-    <value>Előrehaladási veszteség</value>
+      <value>Előrehaladási veszteség</value>
   </data>
   <data name="ShipStats_ShowAccelerationCharts" xml:space="preserve">
-    <value>Gyorsulási diagram megjelenítése</value>
+      <value>Gyorsulási diagram megjelenítése</value>
   </data>
   <data name="BuildStringInputDialog_EnterBuildStringOrLink" xml:space="preserve">
-    <value>Felépítési leírás vagy link beszúrása</value>
+      <value>Felépítési leírás vagy link beszúrása</value>
   </data>
   <data name="WebApp_LoadBuild" xml:space="preserve">
-    <value>Felépítés betöltése</value>
+      <value>Felépítés betöltése</value>
   </data>
   <data name="WebApp_GoToShipsPage" xml:space="preserve">
-    <value>Ugrás a hajók oldalra</value>
+      <value>Ugrás a hajók oldalra</value>
   </data>
   <data name="ShipStats_ShowInBallisticCharts" xml:space="preserve">
-    <value>Összes ballisztikus diagram megjelenítése</value>
+      <value>Összes ballisztikus diagram megjelenítése</value>
   </data>
   <data name="ShipStats_ShowInAccelerationCharts" xml:space="preserve">
-    <value>Gyorsulási diagram megjelenítése</value>
+      <value>Gyorsulási diagram megjelenítése</value>
   </data>
   <data name="Validation_InvalidBuild" xml:space="preserve">
-    <value>Helytelen build</value>
+      <value>Helytelen build</value>
   </data>
   <data name="Validation_Incompatibility" xml:space="preserve">
-    <value>Inkompatibilitás</value>
+      <value>Inkompatibilitás</value>
   </data>
   <data name="Validation_SelectedShip" xml:space="preserve">
-    <value>Kiválasztott hajó</value>
+      <value>Kiválasztott hajó</value>
   </data>
   <data name="Validation_ShipInBuild" xml:space="preserve">
-    <value>Hajó felszerelés alatt</value>
+      <value>Hajó felszerelés alatt</value>
   </data>
   <data name="ShipStats_Loaders" xml:space="preserve">
-    <value>Betöltők</value>
+      <value>Vetőcsövek</value>
   </data>
   <data name="ShipStats_BowLoaders" xml:space="preserve">
-    <value>Orr</value>
+      <value>Orr</value>
   </data>
   <data name="ShipStats_SternLoaders" xml:space="preserve">
-    <value>Tat</value>
+      <value>Tat</value>
   </data>
   <data name="ShipStats_First" xml:space="preserve">
-    <value>Első</value>
+      <value>Első</value>
   </data>
   <data name="ShipStats_Second" xml:space="preserve">
-    <value>Második</value>
+      <value>Második</value>
   </data>
   <data name="Unit_U" xml:space="preserve">
-    <value>egység</value>
+      <value>egység</value>
   </data>
   <data name="Unit_UPS" xml:space="preserve">
-    <value>egység/s</value>
+      <value>egység/s</value>
   </data>
   <data name="ShipStats_ManeuverabilitySubsMaxDiveSpeed" xml:space="preserve">
-    <value>Max. merülési sebesség</value>
+      <value>Max. merülési sebesség</value>
   </data>
   <data name="ShipStats_ManeuverabilitySubsDivingPlaneShiftTime" xml:space="preserve">
-    <value>Merülőkormány fordulási ideje</value>
+      <value>Merülőkormány fordulási ideje</value>
   </data>
   <data name="ShipStats_DiveCapacity" xml:space="preserve">
-    <value>Kapacitás</value>
+      <value>Kapacitás</value>
   </data>
   <data name="ShipStats_DiveCapacityRechargeRate" xml:space="preserve">
-    <value>Újratöltési sebesség</value>
+      <value>Újratöltési sebesség</value>
   </data>
   <data name="ShipStats_Battery" xml:space="preserve">
-    <value>Akkumulátor</value>
+      <value>Akkumulátor</value>
   </data>
   <data name="ShipStats_FirstPing" xml:space="preserve">
-    <value>1 ping</value>
+      <value>1 ping</value>
   </data>
   <data name="ShipStats_SecondPing" xml:space="preserve">
-    <value>2 ping</value>
+      <value>2 ping</value>
   </data>
   <data name="Unit_MPS2" xml:space="preserve">
-    <value>m/s²</value>
+      <value>m/s²</value>
   </data>
   <data name="ShipStats_MaxTurningSpeed" xml:space="preserve">
-    <value>Max. fordulási sebesség</value>
+      <value>Max. fordulási sebesség</value>
   </data>
   <data name="ShipStats_TurningAcceleration" xml:space="preserve">
-    <value>Fordulási gyorsulás</value>
+      <value>Fordulási gyorsulás</value>
   </data>
   <data name="ShipStats_MaxVerticalSpeed" xml:space="preserve">
-    <value>Max. függőleges sebesség</value>
+      <value>Max. függőleges sebesség</value>
   </data>
   <data name="ShipStats_VerticalAcceleration" xml:space="preserve">
-    <value>Függőleges gyorsulás</value>
+      <value>Függőleges gyorsulás</value>
   </data>
   <data name="ShipStats_SearchRadius" xml:space="preserve">
-    <value>Keresési sugár</value>
+      <value>Keresési sugár</value>
   </data>
   <data name="ShipStats_SearchAngle" xml:space="preserve">
-    <value>Keresési szög</value>
+      <value>Keresési szög</value>
   </data>
   <data name="ShipStats_AirCarrier" xml:space="preserve">
-    <value>Repülőgép-hordozó</value>
+      <value>Repülőgép-hordozó</value>
   </data>
   <data name="ShipStats_Submarine" xml:space="preserve">
-    <value>Tengeralattjáró</value>
+      <value>Tengeralattjáró</value>
   </data>
   <data name="ShipStats_Cruiser" xml:space="preserve">
-    <value>Cirkáló</value>
+      <value>Cirkáló</value>
   </data>
   <data name="ShipStats_Battleship" xml:space="preserve">
-    <value>Csatahajó</value>
+      <value>Csatahajó</value>
   </data>
   <data name="ShipStats_Destroyer" xml:space="preserve">
-    <value>Romboló</value>
+      <value>Romboló</value>
   </data>
   <data name="ShipStats_MoreDetails" xml:space="preserve">
-    <value>További részletek</value>
+      <value>További részletek</value>
   </data>
   <data name="ShipStats_CutOffDistances" xml:space="preserve">
-    <value>Levágási távolság</value>
+      <value>Levágási távolság</value>
   </data>
   <data name="Unit_DegreePerSecond2" xml:space="preserve">
-    <value>°/s²</value>
+      <value>°/s²</value>
   </data>
   <data name="BuildImageSettingsDialog_Modules" xml:space="preserve">
-    <value>Modulok</value>
+      <value>Modulok</value>
   </data>
   <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
-    <value>Kapitánypontok</value>
+      <value>Kapitánypontok</value>
   </data>
   <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
-    <value>Zászlók</value>
+      <value>Zászlók</value>
   </data>
   <data name="BuildImageSettingsDialog_Consumables" xml:space="preserve">
-    <value>Fogyóeszközök</value>
+      <value>Fogyóeszközök</value>
   </data>
   <data name="BuildImageSettingsDialog_Upgrades" xml:space="preserve">
-    <value>Fejlesztések</value>
+      <value>Fejlesztések</value>
   </data>
   <data name="BuildImageSettingsDialog_TwoColumns" xml:space="preserve">
-    <value>Két oszlop</value>
+      <value>Két oszlop</value>
   </data>
   <data name="BuildImageSettingsDialog_Layout" xml:space="preserve">
-    <value>Elrendezés</value>
+      <value>Elrendezés</value>
   </data>
   <data name="BuildImageSettingsDialog_Elements" xml:space="preserve">
-    <value>Elemek</value>
+      <value>Elemek</value>
   </data>
   <data name="BuildImageSettingsDialog_TwoColumnsTooltip" xml:space="preserve">
-    <value>Szélesíti a kép elrendezését az elemek 2 egymás melletti oszlopra való felosztásával (a kapitány képességei és a zászlók nem lesznek elrejthetők).</value>
+      <value>Szélesíti a kép elrendezését az elemek 2 egymás melletti oszlopra való felosztásával (a kapitány képességei és a zászlók nem lesznek elrejthetők).</value>
   </data>
   <data name="BuildNameDialog_BuildName" xml:space="preserve">
-    <value>Összeállítás neve</value>
+      <value>Összeállítás neve</value>
   </data>
   <data name="BuildNameDialog_EnterBuildName" xml:space="preserve">
-    <value>Összeállítás elnevezése</value>
+      <value>Összeállítás elnevezése</value>
   </data>
   <data name="BuildImageRenderDialog_SaveImage" xml:space="preserve">
-    <value>Kép mentése</value>
+      <value>Kép mentése</value>
   </data>
   <data name="BuildImageRenderDialog_GetUrl" xml:space="preserve">
-    <value>Link megszerzése</value>
+      <value>Link megszerzése</value>
   </data>
   <data name="BuildImageRenderDialog_GetShortLink" xml:space="preserve">
-    <value>Rövid-link megszerzése</value>
+      <value>Rövid-link megszerzése</value>
   </data>
   <data name="ServerTypeLive" xml:space="preserve">
-    <value>Élő</value>
+      <value>Élő</value>
   </data>
   <data name="ServerTypePts" xml:space="preserve">
-    <value>PONT</value>
+      <value>PTS</value>
   </data>
   <data name="NavigationCharts" xml:space="preserve">
-    <value>Szórási kép és ballisztikus ábrák mutatása</value>
+      <value>Szórási kép és ballisztikus ábrák mutatása</value>
   </data>
   <data name="NavigationAccelerationCharts" xml:space="preserve">
-    <value>Gyorsulási diagram megjelenítése</value>
+      <value>Gyorsulási ábra</value>
   </data>
   <data name="NavigationComparison" xml:space="preserve">
-    <value>Hajó összehasonlítás</value>
+      <value>Hajó összehasonlítás</value>
   </data>
   <data name="NavigationHome" xml:space="preserve">
-    <value>Kezdőlap</value>
+      <value>Kezdőlap</value>
+  </data>
+  <data name="ShipComparison_Image" xml:space="preserve">
+      <value>Kép</value>
+  </data>
+  <data name="ShipComparison_NoMatchingShipsFound" xml:space="preserve">
+      <value>Nincs megfelelő hajó</value>
+  </data>
+  <data name="ShipComparison_ActiveColumns" xml:space="preserve">
+      <value>Aktív oszlopok</value>
+  </data>
+  <data name="ShipComparison_Section" xml:space="preserve">
+      <value>Szekció</value>
+  </data>
+  <data name="ShipComparison_Filters" xml:space="preserve">
+      <value>Szűrők</value>
+  </data>
+  <data name="ShipComparison_All" xml:space="preserve">
+      <value>Mind</value>
+  </data>
+  <data name="ShipComparison_None" xml:space="preserve">
+      <value>Egyik sem</value>
+  </data>
+  <data name="ShipComparison_ResetAll" xml:space="preserve">
+      <value>Alaphelyzetbe mindet</value>
+  </data>
+  <data name="ShipComparison_Duplicate" xml:space="preserve">
+      <value>Másolás</value>
+  </data>
+  <data name="ShipComparison_RemoveBuilds" xml:space="preserve">
+      <value>Buildek eltávolítása</value>
+  </data>
+  <data name="ShipComparison_ViewStats" xml:space="preserve">
+      <value>Statisztikák megtekintése</value>
+  </data>
+  <data name="ShipComparison_ViewBallistic" xml:space="preserve">
+      <value>Ballisztika megtekintése</value>
+  </data>
+  <data name="ShipComparison_ViewAcceleration" xml:space="preserve">
+      <value>Gyorsulás megtekintése</value>
+  </data>
+  <data name="ShipComparison_DisplayOnlyPinnedShips" xml:space="preserve">
+      <value>Csak kitűzött hajók megjelenítése</value>
+  </data>
+  <data name="ShipComparison_UseUpgradedModules" xml:space="preserve">
+      <value>Fejlesztett modulok használata ha nincs build</value>
+  </data>
+  <data name="ShipComparison_HideIfNoSection" xml:space="preserve">
+      <value>A kiválasztott szekció nélküli hajók elrejtése</value>
+  </data>
+  <data name="ShipComparison_SelectAll" xml:space="preserve">
+      <value>Összes kijelölése</value>
+  </data>
+  <data name="ShipComparison_UnselectAll" xml:space="preserve">
+      <value>Minden kijelölés megszüntetése</value>
+  </data>
+  <data name="ShipComparison_PinAll" xml:space="preserve">
+      <value>Mindet kitűz</value>
+  </data>
+  <data name="ShipComparison_UnpinAll" xml:space="preserve">
+      <value>Kitűzések eltávolítása</value>
+  </data>
+  <data name="ShipStats_ShowInShipComparison" xml:space="preserve">
+      <value>Minden mutatása a hajóösszehasonlításban</value>
+  </data>
+  <data name="ShipComparison_General" xml:space="preserve">
+      <value>Általános</value>
+  </data>
+  <data name="ShipComparison_SecondaryBatteryShells" xml:space="preserve">
+      <value>Másodlagos lövegek lőszerei</value>
+  </data>
+  <data name="ShipComparison_Asw" xml:space="preserve">
+      <value>Tengeralattjáró elleni fegyverzet</value>
+  </data>
+  <data name="ShipComparison_RocketPlanes" xml:space="preserve">
+      <value>Rakétás repülők</value>
+  </data>
+  <data name="ShipComparison_AerialTorpedoes" xml:space="preserve">
+      <value>Légi torpedók</value>
+  </data>
+  <data name="ShipComparison_Bombers" xml:space="preserve">
+      <value>Bombázók</value>
+  </data>
+  <data name="ShipComparison_Bombs" xml:space="preserve">
+      <value>Bombák</value>
+  </data>
+  <data name="ShipComparison_Caliber" xml:space="preserve">
+      <value>Űrméret</value>
+  </data>
+  <data name="ShipComparison_Barrels" xml:space="preserve">
+      <value>Lövegcsövek</value>
+  </data>
+  <data name="ShipComparison_MaxRange" xml:space="preserve">
+      <value>Max hatósugár</value>
+  </data>
+  <data name="ShipStats_Dpm" xml:space="preserve">
+      <value>Percenkénti sebzés</value>
+  </data>
+  <data name="ShipStats_Salvo" xml:space="preserve">
+      <value>Szalvó</value>
+  </data>
+  <data name="ShipComparison_Fpm" xml:space="preserve">
+      <value>FPM</value>
+  </data>
+  <data name="ShipComparison_1st" xml:space="preserve">
+      <value>Első</value>
+  </data>
+  <data name="ShipComparison_2nd" xml:space="preserve">
+      <value>Második</value>
+  </data>
+  <data name="ShipComparison_Amount" xml:space="preserve">
+      <value>Mennyiség</value>
+  </data>
+  <data name="ShipComparison_OnFire" xml:space="preserve">
+      <value>Kigyulladva</value>
+  </data>
+  <data name="ShipComparison_SmokeFiring" xml:space="preserve">
+      <value>Tüzelés füstből</value>
+  </data>
+  <data name="ShipComparison_FullReverseTime" xml:space="preserve">
+      <value>Idő a teljes hátramenetig</value>
+  </data>
+  <data name="ShipComparison_Charges" xml:space="preserve">
+      <value>Töltetek</value>
+  </data>
+  <data name="ShipComparison_DropRange" xml:space="preserve">
+      <value>Ejtési távolság</value>
+  </data>
+  <data name="ShipComparison_PlanesInSquadron" xml:space="preserve">
+      <value>Repülőgépek egy században</value>
+  </data>
+  <data name="ShipComparison_SplashRadius" xml:space="preserve">
+      <value>Hatókör</value>
+  </data>
+  <data name="ShipComparison_InitialSpeed" xml:space="preserve">
+      <value>Kezdeti sebesség</value>
+  </data>
+  <data name="ShipComparison_PlaneHp" xml:space="preserve">
+      <value>Repülőgép életerő</value>
+  </data>
+  <data name="ShipComparison_Spread" xml:space="preserve">
+      <value>Szórás</value>
+  </data>
+  <data name="ShipComparison_SwitchTime" xml:space="preserve">
+      <value>Váltási idő</value>
+  </data>
+  <data name="ShipComparison_Plane" xml:space="preserve">
+      <value>Repülő</value>
+  </data>
+  <data name="ShipComparison_Planes" xml:space="preserve">
+      <value>Repülők</value>
+  </data>
+  <data name="ShipComparison_OnDeck" xml:space="preserve">
+      <value>A fedélzeten</value>
+  </data>
+  <data name="ShipComparison_EngineBoostDuration" xml:space="preserve">
+      <value>Motortúlpörgetési idő</value>
+  </data>
+  <data name="ShipComparison_Invulnerability" xml:space="preserve">
+      <value>Sebezhetetlenség</value>
+  </data>
+  <data name="ShipComparison_ViewDistance" xml:space="preserve">
+      <value>Látótávolság</value>
+  </data>
+  <data name="ShipComparison_AreaChange" xml:space="preserve">
+      <value>Területi változás</value>
+  </data>
+  <data name="ShipComparison_PerPlane" xml:space="preserve">
+      <value>Gépenként</value>
+  </data>
+  <data name="ShipComparison_TorpsPerPlane" xml:space="preserve">
+      <value>Torpedók száma egy repülőgépen</value>
+  </data>
+  <data name="ShipStats_MaxReverseSpeed" xml:space="preserve">
+      <value>Maximális hátrameneti sebesség</value>
+  </data>
+  <data name="ShipComparison_TypeName" xml:space="preserve">
+      <value>Név beírása...</value>
+  </data>
+  <data name="ShipComparison_SearchAndPin" xml:space="preserve">
+      <value>Hajó keresése és kitűzése</value>
+  </data>
+  <data name="ShipComparison_DispersionAt" xml:space="preserve">
+      <value>Szórás, távolságban</value>
+  </data>
+  <data name="ShipComparison_FiringRange" xml:space="preserve">
+      <value>Lőtávolság</value>
+  </data>
+  <data name="ShipSelectionWindow_SearchShipOrBuild" xml:space="preserve">
+      <value>Hajó vagy build keresése</value>
+  </data>
+  <data name="SettingsWindow_Export" xml:space="preserve">
+      <value>Exportálás</value>
+  </data>
+  <data name="SettingsWindow_DeleteAll" xml:space="preserve">
+      <value>Összes törlése</value>
+  </data>
+  <data name="BuildConfigurationDialog_Load" xml:space="preserve">
+      <value>Betöltés</value>
+  </data>
+  <data name="SettingsWindow_InvalidJsonFileError" xml:space="preserve">
+      <value>Érvénytelen fájl, csak .json engedélyezett.</value>
+  </data>
+  <data name="ShipSelector_InvalidPngFileError" xml:space="preserve">
+      <value>Érvénytelen fájl, csak .png engedélyezett.</value>
+  </data>
+  <data name="SettingsWindow_LocalStorageWarning" xml:space="preserve">
+      <value>A buildek a böngésző helyi tárhelyére kerülnek mentésre. Az olyan műveletek, mint például a böngésző gyorsítótárának törlése, nagy valószínűséggel törli a helyi tárhelyen tárolt összes adatot. Erősen javasoljuk, hogy rendszeresen, vagy legalább az ilyen műveletek végrehajtása előtt exportálja a buildjeit.</value>
+  </data>
+  <data name="ShipStats_Krupp" xml:space="preserve">
+      <value>Krupp</value>
+  </data>
+  <data name="ShipStats_KruppExplanation" xml:space="preserve">
+      <value>Ez egy állandó, amelyet a lövedék átütési erejének módosítására használnak.
+         Azt jelzi, hogy a lövedék milyen erős.
+         Minél nagyobb az érték, annál nagyobb az átütés.</value>
+  </data>
+  <data name="ShipStats_ApPenetrationFormula" xml:space="preserve">
+      <value>K = a lövedék krupp értéke
+        M = a lövedék tömege [kg]
+        S = a lövedék becsapódási sebessége [m/s]
+        C = a lövedék űrmérete [m]
+
+        Átütés [mm] = K * (M * S^2)^0.69 * C^(-1.07) * 0.0000001
+
+     TTaro_ által megfejtve</value>
+  </data>
+  <data name="ShipStats_PenetrationAp" xml:space="preserve">
+      <value>Átütés</value>
+  </data>
+  <data name="BETA_UserAuth" xml:space="preserve">
+      <value>Felhasználói bejelentkezés</value>
+  </data>
+  <data name="ShipStats_DcDetonationDepthExplanation" xml:space="preserve">
+      <value>A tengeralattjáról merülési mélységét a játék mint "ship_meter" mutatja. A tengeralattjárók 60[ship_m] = 120[m] mélyre merülhetnek.</value>
   </data>
 </root>
