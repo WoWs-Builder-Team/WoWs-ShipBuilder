@@ -34,10 +34,11 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebView.WindowsForms" Version="7.0.86" />
-        <PackageReference Include="Avalonia" Version="0.10.21" />
-        <PackageReference Include="Avalonia.Desktop" Version="0.10.21" />
-        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.21" />
-        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.21" />
+        <PackageReference Include="Avalonia" Version="11.0.2" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.0.2" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="11.0.2" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.2" />
+        <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.2" />
         <PackageReference Include="Clowd.Squirrel" Version="2.9.42" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="NLog.Extensions.Logging" Version="5.2.3" />
@@ -93,9 +94,6 @@
           <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
           <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-        </Content>
-        <Content Update="App.razor">
-          <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         </Content>
     </ItemGroup>
 </Project>

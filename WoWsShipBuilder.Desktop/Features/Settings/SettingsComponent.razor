@@ -20,6 +20,7 @@
 @using System.IO.Abstractions
 @using System.Net
 @using System.IO
+@using Avalonia.Platform.Storage
 
 @implements IDisposable
 @inject ILocalizer Localizer
@@ -325,23 +326,21 @@
 
     private async Task OnImageFolderSelectClicked(MouseEventArgs obj)
     {
-        var dialog = new OpenFolderDialog
-        {
-            Directory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
-        };
-
-        var mainWindow = (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow;
-        var path = await Dispatcher.UIThread.InvokeAsync(async () => await dialog.ShowAsync(mainWindow!));
+        var mainWindow = (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow!;
+        var startLocation = await mainWindow.StorageProvider.TryGetWellKnownFolderAsync(WellKnownFolder.Pictures);
+        var selectionResult = await Dispatcher.UIThread.InvokeAsync(async () => await mainWindow.StorageProvider.OpenFolderPickerAsync(new() { SuggestedStartLocation = startLocation, AllowMultiple = false }));
+        var path = selectionResult.Single().TryGetLocalPath();
         if (path is not null)
         {
             customBuildImagePath = path;
         }
     }
+    
     private async Task ExportSavedBuilds()
     {
-        var dialog = new OpenFolderDialog();
-        var mainWindow = (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow;
-        var path = await Dispatcher.UIThread.InvokeAsync(async () => await dialog.ShowAsync(mainWindow!));
+        var mainWindow = (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow!;
+        var selectionResult = await Dispatcher.UIThread.InvokeAsync(async () => await mainWindow.StorageProvider.OpenFolderPickerAsync(new() { AllowMultiple = false }));
+        var path = selectionResult.Single().TryGetLocalPath();
         if (path is not null)
         {
             var buildStrings = savedBuilds.Select(x => x.CreateShortStringFromBuild()).ToList();
