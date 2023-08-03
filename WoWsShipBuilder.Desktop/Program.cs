@@ -19,7 +19,7 @@ using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace WoWsShipBuilder.Desktop;
 
-class Program
+internal class Program
 {
     [STAThread]
     public static void Main(string[] args) => RunProgram(args).GetAwaiter().GetResult();

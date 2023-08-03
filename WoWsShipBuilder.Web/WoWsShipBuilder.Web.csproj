@@ -16,7 +16,6 @@
       <PackageReference Include="ReactiveUI.Blazor" Version="18.4.44" />
       <PackageReference Include="MudBlazor" Version="6.7.0" />
       <PackageReference Include="Sentry.NLog" Version="3.33.0" />
-      <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" Version="14.6.8" />
       <PackageReference Include="Nerdbank.GitVersioning" PrivateAssets="all" Version="3.6.132" />
     </ItemGroup>
 
