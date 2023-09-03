@@ -53,37 +53,36 @@ public partial class MessageBox : Window
             CanResize = false,
         };
 
-        msgbox.FindControl<AppHeader>("Header").Title = title;
+        msgbox.Header.Title = title;
 
         msgbox.Width = width;
         msgbox.Height = height;
 
         if (icon != MessageBoxIcon.None)
         {
-            var iconControl = msgbox.FindControl<Image>("Icon");
-            var assets = AvaloniaLocator.Current.GetService<IAssetLoader>()!;
+            var iconControl = msgbox.IconImage;
             Bitmap? bitmap = null;
             switch (icon)
             {
                 case MessageBoxIcon.Error:
-                    bitmap = new Bitmap(assets.Open(new Uri("avares://WoWsShipBuilder/Assets/Icons/Error.png")));
+                    bitmap = new Bitmap(AssetLoader.Open(new Uri("avares://WoWsShipBuilder/Assets/Icons/Error.png")));
                     break;
                 case MessageBoxIcon.Info:
-                    bitmap = new Bitmap(assets.Open(new Uri("avares://WoWsShipBuilder/Assets/Icons/Info.png")));
+                    bitmap = new Bitmap(AssetLoader.Open(new Uri("avares://WoWsShipBuilder/Assets/Icons/Info.png")));
                     break;
                 case MessageBoxIcon.Question:
-                    bitmap = new Bitmap(assets.Open(new Uri("avares://WoWsShipBuilder/Assets/Icons/Question.png")));
+                    bitmap = new Bitmap(AssetLoader.Open(new Uri("avares://WoWsShipBuilder/Assets/Icons/Question.png")));
                     break;
                 case MessageBoxIcon.Warning:
-                    bitmap = new Bitmap(assets.Open(new Uri("avares://WoWsShipBuilder/Assets/Icons/Warning.png")));
+                    bitmap = new Bitmap(AssetLoader.Open(new Uri("avares://WoWsShipBuilder/Assets/Icons/Warning.png")));
                     break;
             }
 
             iconControl.Source = bitmap;
         }
 
-        msgbox.FindControl<TextBlock>("Text").Text = text;
-        var buttonPanel = msgbox.FindControl<StackPanel>("Buttons");
+        msgbox.Text.Text = text;
+        var buttonPanel = msgbox.Buttons;
 
         var res = MessageBoxResult.Ok;
 

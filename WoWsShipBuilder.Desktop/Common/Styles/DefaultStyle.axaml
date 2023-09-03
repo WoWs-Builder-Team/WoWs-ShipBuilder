@@ -3,11 +3,11 @@
     <Style Selector="Window">
         <Setter Property="Icon" Value="/Assets/ShipBuilder_WindowIcon.ico" />
     </Style>
-    <Style Selector="Button">
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="FontSize" Value="15" />
-    </Style>
+    <!-- <Style Selector="Button"> -->
+    <!--     <Setter Property="HorizontalAlignment" Value="Center" /> -->
+    <!--     <Setter Property="VerticalAlignment" Value="Center" /> -->
+    <!--     <Setter Property="FontSize" Value="15" /> -->
+    <!-- </Style> -->
     <Style Selector="ListBox">
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />

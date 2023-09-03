@@ -3,7 +3,6 @@ using NLog.Web;
 using Prometheus;
 using ReactiveUI;
 using Splat;
-using Splat.Microsoft.Extensions.DependencyInjection;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Utility;
 using WoWsShipBuilder.Web.Features.Authentication;
@@ -30,16 +29,10 @@ SetupExtensions.ConfigureNlog(builder.Configuration.GetValue<bool>("DisableLoki"
 
 PlatformRegistrationManager.SetRegistrationNamespaces(RegistrationNamespace.Blazor);
 
-builder.Services.UseMicrosoftDependencyResolver();
-var resolver = Locator.CurrentMutable;
-resolver.InitializeSplat();
-resolver.InitializeReactiveUI(RegistrationNamespace.Blazor);
-
 builder.Services.UseShipBuilderWeb();
 builder.Services.AddCookieAuth();
 
 var app = builder.Build();
-app.Services.UseMicrosoftDependencyResolver();
 Logging.Initialize(app.Services.GetRequiredService<ILoggerFactory>());
 
 // Configure the HTTP request pipeline.

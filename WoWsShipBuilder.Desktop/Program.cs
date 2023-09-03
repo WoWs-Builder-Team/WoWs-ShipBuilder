@@ -3,16 +3,14 @@ using System.Runtime.Versioning;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.ReactiveUI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Extensions.Logging;
-using ReactiveUI;
 using Sentry;
-using Splat;
 using Squirrel;
-using WoWsShipBuilder.Desktop.Extensions;
 using WoWsShipBuilder.Desktop.Infrastructure;
 using WoWsShipBuilder.Desktop.Infrastructure.StaticConfiguration;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
@@ -21,7 +19,7 @@ using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace WoWsShipBuilder.Desktop;
 
-class Program
+internal class Program
 {
     [STAThread]
     public static void Main(string[] args) => RunProgram(args).GetAwaiter().GetResult();
@@ -36,11 +34,6 @@ class Program
         builder.Logging.SetMinimumLevel(LogLevel.Trace);
         builder.Logging.AddNLog(LoggingSetup.CreateLoggingConfiguration(), new() { ParseMessageTemplates = true });
         builder.UseShipBuilderDesktop();
-
-        var resolver = Locator.CurrentMutable;
-        resolver.InitializeSplat();
-        resolver.InitializeReactiveUI(RegistrationNamespace.Avalonia);
-        resolver.InitializeAvalonia();
 
         using var app = builder.Build();
         AppData.WebMode = false;
@@ -93,7 +86,7 @@ class Program
             .UsePlatformDetect()
             .LogToTrace()
             .UseSkia()
-            .UseUpdatedReactiveUI();
+            .UseReactiveUI();
 
     public static AppBuilder BuildAvaloniaApp() => BuildAvaloniaApp(null!);
 
