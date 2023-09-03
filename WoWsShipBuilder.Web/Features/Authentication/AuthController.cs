@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using System.Globalization;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -31,7 +32,7 @@ public class AuthController : ControllerBase
             return await AuthenticationConfirmed(HttpContext.Request.Query["access_token"]!, HttpContext.Request.Query["account_id"]!, HttpContext.Request.Query["nickname"]!);
         }
 
-        return await AuthenticationCanceled(status, HttpContext.Request.Query["message"]!, int.Parse(HttpContext.Request.Query["code"]!));
+        return await AuthenticationCanceled(status, HttpContext.Request.Query["message"]!, int.Parse(HttpContext.Request.Query["code"]!, CultureInfo.InvariantCulture));
     }
 
     public async Task<ActionResult> AuthenticationConfirmed(string accessToken, string accountId, string nickname)

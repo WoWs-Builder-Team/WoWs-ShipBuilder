@@ -2,7 +2,7 @@
 
 namespace WoWsShipBuilder.Web.Features.Authentication;
 
-internal class WgResponse
+internal sealed class WgResponse
 {
     [JsonPropertyName("status")]
     public string Status { get; set; } = string.Empty;
@@ -11,7 +11,7 @@ internal class WgResponse
     public Dictionary<string, Data?> Data { get; set; } = new();
 }
 
-internal class Data
+internal sealed class Data
 {
     [JsonPropertyName("private")]
     public Dictionary<string, object>? Private { get; set; }

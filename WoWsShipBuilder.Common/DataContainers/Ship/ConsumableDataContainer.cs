@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
@@ -280,7 +281,7 @@ public partial record ConsumableDataContainer : DataContainerBase
         var consumableDataContainer = new ConsumableDataContainer
         {
             Name = localizationKey,
-            NumberOfUses = consumable.NumConsumables != -1 ? uses.ToString() : "∞",
+            NumberOfUses = consumable.NumConsumables != -1 ? uses.ToString(CultureInfo.InvariantCulture) : "∞",
             IconName = iconName,
             Slot = slot,
             Desc = "",

@@ -3,6 +3,7 @@
     <PropertyGroup>
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>WoWsShipBuilder</RootNamespace>
+        <NeutralLanguage>en-GB</NeutralLanguage>
     </PropertyGroup>
 
     <ItemGroup>

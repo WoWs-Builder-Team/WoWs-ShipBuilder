@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Globalization;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Options;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
@@ -21,7 +22,7 @@ public class AuthenticationService
 
     public async Task<bool> VerifyToken(string accountId, string accessToken)
     {
-        long numericId = long.Parse(accountId);
+        long numericId = long.Parse(accountId, CultureInfo.InvariantCulture);
         string server = numericId switch
         {
             > 500_000_000 and < 1_000_000_000 => "eu",

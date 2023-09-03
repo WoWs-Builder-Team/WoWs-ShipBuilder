@@ -1,3 +1,4 @@
+using System.Globalization;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
@@ -341,8 +342,8 @@ namespace WoWsShipBuilder.DataContainers
                 PreparationTime = plane.PreparationTime,
                 PostAttackInvulnerabilityDuration = plane.PostAttackInvulnerabilityDuration,
                 DamageTakenDuringAttack = (int)Math.Round(plane.DamageTakenMultiplier * 100),
-                AimingRateMoving = (aimingRateMoving * 100).ToString(stringFormat),
-                AimingPreparationRateMoving = (preparationAimingRateMoving * 100).ToString(stringFormat),
+                AimingRateMoving = (aimingRateMoving * 100).ToString(stringFormat, CultureInfo.InvariantCulture),
+                AimingPreparationRateMoving = (preparationAimingRateMoving * 100).ToString(stringFormat, CultureInfo.InvariantCulture),
                 TimeToFullyAimed = Math.Round(fullAimTime, 1),
                 ConcealmentFromShips = (decimal)planesConcealmentFromShips,
                 ConcealmentFromPlanes = (decimal)planesConcealmentFromPlanes,

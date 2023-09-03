@@ -11,7 +11,10 @@ using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
-public partial class ShipViewModel : ReactiveObject
+// TODO: implement IDisposable properly
+#pragma warning disable CA1001
+public sealed partial class ShipViewModel : ReactiveObject
+#pragma warning restore CA1001
 {
     private readonly CompositeDisposable disposables = new();
 

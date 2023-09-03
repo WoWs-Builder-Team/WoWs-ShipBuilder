@@ -4,7 +4,7 @@ using WoWsShipBuilder.Features.BallisticCharts.Data;
 
 namespace WoWsShipBuilder.Features.BallisticCharts;
 
-public class ChartJsInterop : IAsyncDisposable
+public sealed class ChartJsInterop : IAsyncDisposable
 {
     private readonly IJSRuntime runtime;
 

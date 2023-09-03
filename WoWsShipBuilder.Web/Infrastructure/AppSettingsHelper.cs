@@ -6,7 +6,7 @@ using WoWsShipBuilder.Infrastructure.ApplicationData;
 
 namespace WoWsShipBuilder.Web.Infrastructure;
 
-public class WebSettingsAccessor : IAsyncDisposable, ISettingsAccessor
+public sealed class WebSettingsAccessor : IAsyncDisposable, ISettingsAccessor
 {
     private readonly IJSRuntime runtime;
 

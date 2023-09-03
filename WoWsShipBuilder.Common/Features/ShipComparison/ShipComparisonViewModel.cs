@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using DynamicData;
 using ReactiveUI;
@@ -609,6 +610,7 @@ public partial class ShipComparisonViewModel : ReactiveObject
         DataSections = !displayedShipList.Any() ? new() { ShipComparisonDataSections.General } : HideEmptyDataSections(displayedShipList);
     }
 
+    [SuppressMessage("Performance", "CA1822", Justification = "not static to preserve file structure")]
     private List<ShipComparisonDataSections> HideEmptyDataSections(Dictionary<Guid, GridDataWrapper> displayedShips)
     {
         var dataSections = Enum.GetValues<ShipComparisonDataSections>().ToList();

@@ -94,7 +94,7 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
         {
             var current = arrangementList[i];
             launcherNames.Add(current.LauncherName);
-            arrangementString.AppendLine($"{current.LauncherCount}x{current.BarrelCount} {{{i}}}");
+            arrangementString.AppendLine(CultureInfo.InvariantCulture, $"{current.LauncherCount}x{current.BarrelCount} {{{i}}}");
             torpLayout[i] = $"{current.LauncherCount}x{current.BarrelCount}";
             torpCount += current.LauncherCount * current.BarrelCount;
         }

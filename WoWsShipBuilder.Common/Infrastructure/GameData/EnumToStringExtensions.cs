@@ -1,4 +1,5 @@
-﻿using WoWsShipBuilder.DataStructures;
+﻿using System.Globalization;
+using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Infrastructure.GameData;
 
@@ -19,7 +20,7 @@ public static class EnumToStringExtensions
             9 => "IX",
             10 => "X",
             11 => "XI",
-            _ => level.ToString(),
+            _ => level.ToString(CultureInfo.InvariantCulture),
         };
     }
 

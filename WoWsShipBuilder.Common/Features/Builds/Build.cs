@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.IO.Compression;
 using System.Security.Cryptography;
 using Microsoft.Extensions.Logging;
@@ -131,7 +132,7 @@ public class Build
         List<int> skills = parts[4].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).Select(int.Parse).ToList();
         List<string> consumables = parts[5].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
         List<string> signals = parts[6].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
-        int buildVersion = int.Parse(parts[7]);
+        int buildVersion = int.Parse(parts[7], CultureInfo.InvariantCulture);
         return new(buildName, shipIndex, nation, modules, upgrades, consumables, captain, skills, signals, buildVersion);
     }
 
@@ -167,9 +168,8 @@ public class Build
     private static string CreateHash(Build build)
     {
         string buildString = JsonConvert.SerializeObject(build);
-        using var sha = SHA256.Create();
         byte[] textData = System.Text.Encoding.UTF8.GetBytes(buildString);
-        byte[] hash = sha.ComputeHash(textData);
+        byte[] hash = SHA256.HashData(textData);
         return BitConverter.ToString(hash).Replace("-", string.Empty);
     }
 
