@@ -60,7 +60,7 @@ public class ConsumableViewModel : ReactiveObject, IBuildComponentProvider
     {
         foreach (var slotViewModel in ConsumableSlots)
         {
-            var index = slotViewModel.ConsumableData.FindIndex(consumable => storedData.Any(s => consumable.IconName.StartsWith(s)));
+            var index = slotViewModel.ConsumableData.FindIndex(consumable => storedData.Any(s => consumable.IconName.StartsWith(s, StringComparison.OrdinalIgnoreCase)));
             if (index > -1)
             {
                 slotViewModel.SelectedIndex = index;

@@ -8,7 +8,7 @@ using WoWsShipBuilder.Features.Builds;
 
 namespace WoWsShipBuilder.Features.LinkShortening;
 
-public class FirebaseLinkShortener : ILinkShortener
+public sealed class FirebaseLinkShortener : ILinkShortener, IDisposable
 {
     private readonly HttpClient httpClient;
 
@@ -34,6 +34,11 @@ public class FirebaseLinkShortener : ILinkShortener
     }
 
     public bool IsAvailable { get; }
+
+    public void Dispose()
+    {
+        semaphore.Dispose();
+    }
 
     public async Task<ShorteningResult> CreateLinkForBuild(Build build)
     {

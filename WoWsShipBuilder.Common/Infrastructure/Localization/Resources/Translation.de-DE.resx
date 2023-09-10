@@ -331,7 +331,7 @@
     <value>Keine den Filterkriterien entsprechenden Schiffe gefunden</value>
   </data>
   <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>Schiff suchen...</value>
+      <value>Schiff suchen...</value>
   </data>
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>Dauer für 180°-Drehung</value>
@@ -451,7 +451,7 @@
     <value>DPS je Brand</value>
   </data>
   <data name="ShipStats_FireDuration" xml:space="preserve">
-    <value>Branddauer</value>
+      <value>Branddauer</value>
   </data>
   <data name="ShipStats_FireReduction" xml:space="preserve">
     <value>Verminderung der Brandwahrscheinlichkeit</value>
@@ -463,7 +463,7 @@
     <value>DPS je Wassereinbruch</value>
   </data>
   <data name="ShipStats_FloodDuration" xml:space="preserve">
-    <value>Dauer eines Wassereinbruchs</value>
+      <value>Dauer eines Wassereinbruchs</value>
   </data>
   <data name="ShipStats_FloodProbability" xml:space="preserve">
     <value>Wassereinbruchswahrscheinlichkeit</value>
@@ -535,13 +535,13 @@
     <value>Verborgenheit</value>
   </data>
   <data name="ShipStats_ConcealmentByAir" xml:space="preserve">
-    <value>Basis</value>
+      <value>Basis</value>
   </data>
   <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
     <value>Bei brennendem Schiff</value>
   </data>
   <data name="ShipStats_ConcealmentBySea" xml:space="preserve">
-    <value>Basis</value>
+      <value>Basis</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
     <value>Bei brennendem Schiff</value>
@@ -550,19 +550,19 @@
     <value>Nach Abfeuern der Hauptgeschütze im Nebel</value>
   </data>
   <data name="ShipStats_FireAmount" xml:space="preserve">
-    <value>Maximale Brände</value>
+      <value>Maximale Brände</value>
   </data>
   <data name="ShipStats_FireTotalDamage" xml:space="preserve">
-    <value>Gesamter Brandschaden</value>
+      <value>Gesamter Brandschaden</value>
   </data>
   <data name="ShipStats_FloodAmount" xml:space="preserve">
-    <value>Maximale Wassereinbrüche</value>
+      <value>Maximale Wassereinbrüche</value>
   </data>
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
     <value>Torpedoschutz</value>
   </data>
   <data name="ShipStats_FloodTotalDamage" xml:space="preserve">
-    <value>Gesamter Wassereinbruchsschaden</value>
+      <value>Gesamter Wassereinbruchsschaden</value>
   </data>
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Langstreckenaura</value>
@@ -598,7 +598,7 @@
     <value>Geschwindigkeit</value>
   </data>
   <data name="ShipStats_Weapon" xml:space="preserve">
-    <value>Waffe</value>
+      <value>Waffe</value>
   </data>
   <data name="SkipBomb" xml:space="preserve">
     <value>Springbombe</value>
@@ -613,13 +613,13 @@
     <value>Angriffsabklingzeit</value>
   </data>
   <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>Reisegeschwindigkeit</value>
+      <value>Reisegeschwindigkeit</value>
   </data>
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>Bomben in innerer Ellipse</value>
   </data>
   <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>Maximale Flugzeuge an Deck</value>
+      <value>Maximale Flugzeuge an Deck</value>
   </data>
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Maximalgeschwindigkeit</value>
@@ -628,13 +628,13 @@
     <value>Minimalgeschwindigkeit</value>
   </data>
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Pro Angriff</value>
+      <value>Pro Angriff</value>
   </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>Flugzeuge pro Staffel</value>
+      <value>Flugzeuge pro Staffel</value>
   </data>
   <data name="ShipStats_PlaneHp" xml:space="preserve">
-    <value>TP pro Flugzeug</value>
+      <value>TP pro Flugzeug</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>Wiederherstellungszeit</value>
@@ -646,19 +646,19 @@
     <value>Bomben je Flugzeug</value>
   </data>
   <data name="ShipStats_DropTime" xml:space="preserve">
-    <value>Abwurfzeit</value>
+      <value>Abwurfzeit</value>
   </data>
   <data name="ShipStats_FlyAwayTime" xml:space="preserve">
-    <value>Zeit bis zur Ankunft</value>
+      <value>Zeit bis zur Ankunft</value>
   </data>
   <data name="ShipStats_MaximumDistance" xml:space="preserve">
-    <value>Maximale Reichweite</value>
+      <value>Maximale Reichweite</value>
   </data>
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
     <value>Maximaler Abwurfbereich</value>
   </data>
   <data name="ShipStats_MinimumDistance" xml:space="preserve">
-    <value>Minimale Reichweite</value>
+      <value>Minimale Reichweite</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
     <value>Bomben pro Ladung</value>
@@ -751,10 +751,10 @@
     <value>Fehler beim Laden des Builds</value>
   </data>
   <data name="ShipStats_JatoDuration" xml:space="preserve">
-    <value>Dauer</value>
+      <value>Dauer</value>
   </data>
   <data name="ShipStats_JatoSpeedMultiplier" xml:space="preserve">
-    <value>Geschwindigkeitsbonus</value>
+      <value>Geschwindigkeitsbonus</value>
   </data>
   <data name="ShipStats_TimeToSwitch" xml:space="preserve">
     <value>Zeit zum Wechseln des Munitionstyps</value>
@@ -790,13 +790,13 @@
     <value>Schaden während des Angriffs</value>
   </data>
   <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>Unverwundbarkeit nach Angriff</value>
+      <value>Unverwundbarkeit nach Angriff</value>
   </data>
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Vorbereitungszeit</value>
   </data>
   <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-    <value>Bis zur maximalen Genauigkeit</value>
+      <value>Bis zur maximalen Genauigkeit</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Torpedowerfer</value>
@@ -841,7 +841,7 @@
     <value>Der ausgewählte Pfad ist ungültig.</value>
   </data>
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
-    <value>Granate wählen</value>
+      <value>Granate wählen</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>hat mehr als eine Granate. Wähle die Granate, deren Ballistik du sehen möchtest. Bei gleichem Kaliber ist die Reihenfolge HE-&gt;SAP-&gt;AP.</value>
@@ -859,10 +859,10 @@
     <value>Versionsinformationen kopieren</value>
   </data>
   <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
-    <value>Auf Periskoptiefe</value>
+      <value>Auf Periskoptiefe</value>
   </data>
   <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
-    <value>Auf Einsatztiefe</value>
+      <value>Auf Einsatztiefe</value>
   </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
     <value>Streuungs- und Ballistikdiagramme zeigen</value>
@@ -889,13 +889,13 @@
     <value>Zeige Streuungsdiagramm</value>
   </data>
   <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>Formel bei Reichweite X(km)</value>
+      <value>Formel bei Reichweite X(km)</value>
   </data>
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Horizontale Streuung [X]</value>
   </data>
   <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-    <value>Zielreichweite (km)</value>
+      <value>Zielreichweite (km)</value>
   </data>
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Ballistische Graphen</value>
@@ -982,19 +982,19 @@ Schiffe im Spiel sind doppelt so groß wie die Umwelt, so dass ein 200 m langes 
     <value>Potentielle BPM</value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
-    <value>Brandwahrscheinlichkeit per Salve</value>
+      <value>Brandwahrscheinlichkeit per Salve</value>
   </data>
   <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-    <value>Explosionsradius</value>
+      <value>Explosionsradius</value>
   </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-    <value>Explosions-Durchschlagskraft</value>
+      <value>Explosions-Durchschlagskraft</value>
   </data>
   <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
-    <value>Antriebs-Explosionsschutz</value>
+      <value>Antriebs-Explosionsschutz</value>
   </data>
   <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
-    <value>Ruder-Explosionsschutz</value>
+      <value>Ruder-Explosionsschutz</value>
   </data>
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
     <value>Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &gt; 0
@@ -1081,7 +1081,7 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
     <value>Der ausgewählte Pfad ist ungültig.</value>
   </data>
   <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
-    <value>Fertigkeiten und Talente</value>
+      <value>Fertigkeiten und Talente</value>
   </data>
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>Mit den folgenden Schieberegler und Schalter können einzelne bedingte Fertigkeitseffekte aktiviert und deaktiviert werden. Für einige Effekte kann außerdem die Zahl der Aktivierungen gewählt werden. Beachte, dass nicht alle Fertigkeiten und Talente einen Effekt auf die Statistiken des Schiffs haben.</value>
@@ -1108,7 +1108,7 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
     <value>Serverseitige Nachladezeit</value>
   </data>
   <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
-    <value>Die Server-Aktualisierungsrate beträgt 0,142857142857 Sekunden. Das bedeutet, dass Nachladezeiten, welche kein Vielfaches dieses Wertes sind, auf das nächste Vielfache des Wertes aufgerundet werden. Somit zeigt dieser Wert die tatsächliche Nachladezeit im Spiel, welche von der theoretischen Ladezeit abweichen kann.</value>
+      <value>Die Server-Aktualisierungsrate beträgt 0,142857142857 Sekunden. Das bedeutet, dass Nachladezeiten, welche kein Vielfaches dieses Wertes sind, auf das nächste Vielfache des Wertes aufgerundet werden. Somit zeigt dieser Wert die tatsächliche Nachladezeit im Spiel, welche von der theoretischen Ladezeit abweichen kann.</value>
   </data>
   <data name="ShipStats_TheoreticalTrueDpm" xml:space="preserve">
     <value>Serverseitige DPM</value>
@@ -1117,10 +1117,10 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
     <value>Serverseitige Feuerrate</value>
   </data>
   <data name="Validation_BuildName" xml:space="preserve">
-    <value>Der Build-Name enthält ungültige Zeichen. Es sind nur Buchstaben, Zahlen, Leerzeichen, Bindestriche und Unterstriche erlaubt.</value>
+      <value>Der Build-Name enthält ungültige Zeichen. Es sind nur Buchstaben, Zahlen, Leerzeichen, Bindestriche und Unterstriche erlaubt.</value>
   </data>
   <data name="Teststring" xml:space="preserve">
-    <value>Nur ein Wert zum Testen</value>
+      <value>Nur ein Wert zum Testen</value>
   </data>
   <data name="Unit_MPS" xml:space="preserve">
     <value>m/s</value>
@@ -1174,751 +1174,751 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
     <value>SAP</value>
   </data>
   <data name="ChartsWeb_AddRemoveShips" xml:space="preserve">
-    <value>Schiffe/Granaten hinzufügen/entfernen</value>
+      <value>Schiffe/Granaten hinzufügen/entfernen</value>
   </data>
   <data name="ChartsWeb_DispersionCharts" xml:space="preserve">
-    <value>Streuungsdiagramme</value>
+      <value>Streuungsdiagramme</value>
   </data>
   <data name="ChartsWeb_BallisticCharts" xml:space="preserve">
-    <value>Ballistikdiagramme</value>
+      <value>Ballistikdiagramme</value>
   </data>
   <data name="ShipAndShellSelectionDialogWeb_SelectShipsAndShells" xml:space="preserve">
-    <value>Schiffe und Granaten wählen</value>
+      <value>Schiffe und Granaten wählen</value>
   </data>
   <data name="ShipAndShellSelectionDialogWeb_Loading" xml:space="preserve">
-    <value>Lädt...</value>
+      <value>Lädt...</value>
   </data>
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
-    <value>Standard</value>
+      <value>Standard</value>
   </data>
   <data name="ShipStats_TorpedoMagnetic" xml:space="preserve">
-    <value>Magnetisch</value>
+      <value>Magnetisch</value>
   </data>
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
-    <value>Tiefwasser</value>
+      <value>Tiefwasser</value>
   </data>
   <data name="Consumable_HpPerHeal" xml:space="preserve">
-    <value>TP pro Heilung</value>
+      <value>TP pro Heilung</value>
   </data>
   <data name="DispersionGraphWindow_Range" xml:space="preserve">
-    <value>Reichweite [km]:</value>
+      <value>Reichweite [km]:</value>
   </data>
   <data name="DispersionGrapghWindow_Height" xml:space="preserve">
-    <value>Höhe</value>
+      <value>Höhe</value>
   </data>
   <data name="ShipStats_ShowShellTrajectoryGraph" xml:space="preserve">
-    <value>Zeige Granatenflugbahngraph</value>
+      <value>Zeige Granatenflugbahngraph</value>
   </data>
   <data name="ShipStats_ConcealmentFromShips" xml:space="preserve">
-    <value>Durch Schiffe</value>
+      <value>Durch Schiffe</value>
   </data>
   <data name="ShipStats_ConcealmentFromPlanes" xml:space="preserve">
-    <value>Durch Flugzeuge</value>
+      <value>Durch Flugzeuge</value>
   </data>
   <data name="ShipStats_SpottingOnShips" xml:space="preserve">
-    <value>Von Schiffen</value>
+      <value>Von Schiffen</value>
   </data>
   <data name="ShipStats_SpottingOnPlanes" xml:space="preserve">
-    <value>Von Flugzeugen</value>
+      <value>Von Flugzeugen</value>
   </data>
   <data name="ShipStats_SpottingOnTorps" xml:space="preserve">
-    <value>Von Torpedos</value>
+      <value>Von Torpedos</value>
   </data>
   <data name="ShipStats_MaxViewDistance" xml:space="preserve">
-    <value>Maximale Sichtweite</value>
+      <value>Maximale Sichtweite</value>
   </data>
   <data name="ShipStats_Consumables" xml:space="preserve">
-    <value>Verbrauchsmaterialien</value>
+      <value>Verbrauchsmaterialien</value>
   </data>
   <data name="ShipStats_AircraftAmount" xml:space="preserve">
-    <value>Anzahl Flugzeuge</value>
+      <value>Anzahl Flugzeuge</value>
   </data>
   <data name="ShipStats_AircraftInAttackGroup" xml:space="preserve">
-    <value>In der Angriffsgruppe</value>
+      <value>In der Angriffsgruppe</value>
   </data>
   <data name="ShipStats_SquadronHp" xml:space="preserve">
-    <value>Staffel</value>
+      <value>Staffel</value>
   </data>
   <data name="ShipStats_AttackGroupHp" xml:space="preserve">
-    <value>Angriffsgruppe</value>
+      <value>Angriffsgruppe</value>
   </data>
   <data name="ShipStats_Max" xml:space="preserve">
-    <value>Max.</value>
+      <value>Max.</value>
   </data>
   <data name="ShipStats_Min" xml:space="preserve">
-    <value>Min.</value>
+      <value>Min.</value>
   </data>
   <data name="ShipStats_AttackTimings" xml:space="preserve">
-    <value>Angriffszeiten</value>
+      <value>Angriffszeiten</value>
   </data>
   <data name="ShipStats_Aiming" xml:space="preserve">
-    <value>Während des Angriffs</value>
+      <value>Während des Angriffs</value>
   </data>
   <data name="ShipStats_Preparation" xml:space="preserve">
-    <value>Während der Vorbereitungszeit</value>
+      <value>Während der Vorbereitungszeit</value>
   </data>
   <data name="ShipStats_InitialBoost" xml:space="preserve">
-    <value>Start-Boost</value>
+      <value>Start-Boost</value>
   </data>
   <data name="ShipStats_SpeedBoost" xml:space="preserve">
-    <value>Geschwindigkeitsboost</value>
+      <value>Geschwindigkeitsboost</value>
   </data>
   <data name="ModifierConverter_MaxEngagementDuration" xml:space="preserve">
-    <value>Maximale Kampfdauer</value>
+      <value>Maximale Kampfdauer</value>
   </data>
   <data name="ModifierConverter_MaxKillsAmount" xml:space="preserve">
-    <value>Maximale Abschüsse</value>
+      <value>Maximale Abschüsse</value>
   </data>
   <data name="CaptainSkillSelector_CurrentArBonus" xml:space="preserve">
-    <value>TP für Adrenalinrausch: </value>
+      <value>TP für Adrenalinrausch: </value>
   </data>
   <data name="ShipStats_Fire" xml:space="preserve">
-    <value>Brand</value>
+      <value>Brand</value>
   </data>
   <data name="ShipStats_Flooding" xml:space="preserve">
-    <value>Wassereinbruch</value>
+      <value>Wassereinbruch</value>
   </data>
   <data name="ShipStats_BlastProtection" xml:space="preserve">
-    <value>Explosionsschutz</value>
+      <value>Explosionsschutz</value>
   </data>
   <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
-    <value>Maximale Brände</value>
+      <value>Maximale Brände</value>
   </data>
   <data name="ShipStats_FromSubs" xml:space="preserve">
-    <value>Von U-Booten</value>
+      <value>Von U-Booten</value>
   </data>
   <data name="ShipStats_Sea" xml:space="preserve">
-    <value>Zu See</value>
+      <value>Zu See</value>
   </data>
   <data name="ShipStats_Air" xml:space="preserve">
-    <value>Aus der Luft</value>
+      <value>Aus der Luft</value>
   </data>
   <data name="ShipStats_Timings" xml:space="preserve">
-    <value>Zeiten</value>
+      <value>Zeiten</value>
   </data>
   <data name="ShipStats_ReloadTime" xml:space="preserve">
-    <value>Ladezeit</value>
+      <value>Ladezeit</value>
   </data>
   <data name="ShipStats_ShellFireChance" xml:space="preserve">
-    <value>Einzelne Granate</value>
+      <value>Einzelne Granate</value>
   </data>
   <data name="ShipStats_TheoreticalHeDpm" xml:space="preserve">
-    <value>HE</value>
+      <value>HE</value>
   </data>
   <data name="ShipStats_TheoreticalApDpm" xml:space="preserve">
-    <value>AP</value>
+      <value>AP</value>
   </data>
   <data name="ShipStats_TheoreticalSapDpm" xml:space="preserve">
-    <value>SAP</value>
+      <value>SAP</value>
   </data>
   <data name="ShipStats_TheoreticalTrueHeDpm" xml:space="preserve">
-    <value>HE</value>
+      <value>HE</value>
   </data>
   <data name="ShipStats_TheoreticalTrueApDpm" xml:space="preserve">
-    <value>AP</value>
+      <value>AP</value>
   </data>
   <data name="ShipStats_TheoreticalTrueSapDpm" xml:space="preserve">
-    <value>SAP</value>
+      <value>SAP</value>
   </data>
   <data name="ShipStats_HP" xml:space="preserve">
-    <value>TP</value>
+      <value>TP</value>
   </data>
   <data name="ShipStats_RocketType" xml:space="preserve">
-    <value>Raketen-Art</value>
+      <value>Raketen-Art</value>
   </data>
   <data name="ShipStats_TorpedoType" xml:space="preserve">
-    <value>Torpedo-Art</value>
+      <value>Torpedo-Art</value>
   </data>
   <data name="DataUpdate_ErrorDescription" xml:space="preserve">
-    <value>Beim Update der Daten ist ein Fehler aufgetreten. Dadurch können Daten beschädigt oder nicht mehr aktuell sein. Starte die App neu, um es erneut zu versuchen. Weitere Details sind im Log der App zu finden.</value>
+      <value>Beim Update der Daten ist ein Fehler aufgetreten. Dadurch können Daten beschädigt oder nicht mehr aktuell sein. Starte die App neu, um es erneut zu versuchen. Weitere Details sind im Log der App zu finden.</value>
   </data>
   <data name="DataUpdate_ErrorTitle" xml:space="preserve">
-    <value>Fehler beim Daten-Update</value>
+      <value>Fehler beim Daten-Update</value>
   </data>
   <data name="NotificationService_UpdateActive" xml:space="preserve">
-    <value>App-Update im Hintergrund...</value>
+      <value>App-Update im Hintergrund...</value>
   </data>
   <data name="NotificationService_ErrorMessage" xml:space="preserve">
-    <value>Beim App-Update ist ein Fehler aufgetreten. Weitere Details findest du in der Log-Datei.</value>
+      <value>Beim App-Update ist ein Fehler aufgetreten. Weitere Details findest du in der Log-Datei.</value>
   </data>
   <data name="NotificationService_UpdateCompleted" xml:space="preserve">
-    <value>Die App wurde im Hintergrund aktualisiert. Ein Neustart ist erforderlich, um das Update anzuwenden. Klicke zum Neustarten.</value>
+      <value>Die App wurde im Hintergrund aktualisiert. Ein Neustart ist erforderlich, um das Update anzuwenden. Klicke zum Neustarten.</value>
   </data>
   <data name="UpdateMessageBox_Description" xml:space="preserve">
-    <value>Die App wurde aktualisiert, möchtest du sie neu starten, um die Änderungen anzuwenden?</value>
+      <value>Die App wurde aktualisiert, möchtest du sie neu starten, um die Änderungen anzuwenden?</value>
   </data>
   <data name="UpdateMessageBox_Title" xml:space="preserve">
-    <value>App aktualisiert</value>
+      <value>App aktualisiert</value>
   </data>
   <data name="Placeholder" xml:space="preserve">
-    <value>---</value>
-  </data>
-  <data name="ShipStats_Splash" xml:space="preserve">
-    <value>Schadensbereich</value>
+      <value>---</value>
   </data>
   <data name="ShipStats_SplashRadius" xml:space="preserve">
-    <value>Explosionsradius</value>
+      <value>Explosionsradius</value>
   </data>
   <data name="ShipStats_SplashDmg" xml:space="preserve">
-    <value>Schaden</value>
+      <value>Schaden</value>
   </data>
   <data name="ShipStats_SplashExplanation" xml:space="preserve">
-    <value>Diese Parameter betreffen nur U-Boote.
+      <value>Diese Parameter betreffen nur U-Boote.
 Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   </data>
   <data name="ShipStats_DcSplashRadius" xml:space="preserve">
-    <value>Explosionsradius</value>
+      <value>Explosionsradius</value>
   </data>
   <data name="ShipStats_DetonationTimer" xml:space="preserve">
-    <value>Detonationstimer</value>
+      <value>Detonationstimer</value>
   </data>
   <data name="ShipStats_SinkSpeed" xml:space="preserve">
-    <value>Sinkgeschwindigkeit</value>
+      <value>Sinkgeschwindigkeit</value>
   </data>
   <data name="ShipStats_DetonationDepth" xml:space="preserve">
-    <value>Detonationstiefe</value>
+      <value>Detonationstiefe</value>
   </data>
   <data name="ShipStats_Blast" xml:space="preserve">
-    <value>Explosion</value>
+      <value>Explosion</value>
   </data>
   <data name="ShipStats_ShowDcDamageDistribution" xml:space="preserve">
-    <value>Wasserbomben Schadensverteilungs-Diagramm anzeigen</value>
+      <value>Wasserbomben Schadensverteilungs-Diagramm anzeigen</value>
   </data>
   <data name="ShipStats_Citadel" xml:space="preserve">
-    <value>Zitadelle</value>
+      <value>Zitadelle</value>
   </data>
   <data name="ShipStats_Bow" xml:space="preserve">
-    <value>Bug</value>
+      <value>Bug</value>
   </data>
   <data name="ShipStats_RegenRatio" xml:space="preserve">
-    <value>Reparierbarer Schaden</value>
+      <value>Reparierbarer Schaden</value>
   </data>
   <data name="ShipStats_Stern" xml:space="preserve">
-    <value>Heck</value>
+      <value>Heck</value>
   </data>
   <data name="ShipStats_Superstructure" xml:space="preserve">
-    <value>Aufbauten</value>
+      <value>Aufbauten</value>
   </data>
   <data name="ShipStats_Casemate" xml:space="preserve">
-    <value>Kasematte</value>
+      <value>Kasematte</value>
   </data>
   <data name="ShipStats_Hull" xml:space="preserve">
-    <value>Rumpf</value>
+      <value>Rumpf</value>
   </data>
   <data name="ShipStats_AuxiliaryRooms" xml:space="preserve">
-    <value>Hilfsräume</value>
+      <value>Hilfsräume</value>
   </data>
   <data name="ShipStats_ShipHp" xml:space="preserve">
-    <value>Schiffs-TP</value>
+      <value>Schiffs-TP</value>
   </data>
   <data name="Consumable_RightClickToggle" xml:space="preserve">
-    <value>Rechts-Klick auf ein Verbrauchsmaterial-Symbol, um die Effekte zu aktivieren</value>
+      <value>Rechts-Klick auf ein Verbrauchsmaterial-Symbol, um die Effekte zu aktivieren</value>
   </data>
   <data name="ChartsWeb_ShellTrajectoryChart" xml:space="preserve">
-    <value>Granatenflugbahn-Diagramm</value>
+      <value>Granatenflugbahn-Diagramm</value>
   </data>
   <data name="ChartsWeb_Height" xml:space="preserve">
-    <value>Höhe</value>
+      <value>Höhe</value>
   </data>
   <data name="ChartsWeb_ShowCharts" xml:space="preserve">
-    <value>Streuungs- und Ballistikdiagramme zeigen</value>
+      <value>Streuungs- und Ballistikdiagramme zeigen</value>
   </data>
   <data name="WebApp_ApplicationInfo" xml:space="preserve">
-    <value>App-Info</value>
+      <value>App-Info</value>
   </data>
   <data name="WebApp_CurrentVersion" xml:space="preserve">
-    <value>Aktuelle Datenversion:</value>
+      <value>Aktuelle Datenversion:</value>
   </data>
   <data name="WebApp_SelectedLanguage" xml:space="preserve">
-    <value>Ausgewählte Sprache</value>
+      <value>Ausgewählte Sprache</value>
   </data>
   <data name="WebApp_AmmoExpanderSetting" xml:space="preserve">
-    <value>Expander für Granaten, Torpedos und Flugzeuge standardmäßig öffnen</value>
+      <value>Expander für Granaten, Torpedos und Flugzeuge standardmäßig öffnen</value>
   </data>
   <data name="WebApp_SettingsSaved" xml:space="preserve">
-    <value>Einstellungen gespeichert</value>
+      <value>Einstellungen gespeichert</value>
   </data>
   <data name="Consumable_HoldToggle" xml:space="preserve">
-    <value>Halte ein Symbol gedrückt, um die Effekte zu aktivieren</value>
+      <value>Halte ein Symbol gedrückt, um die Effekte zu aktivieren</value>
   </data>
   <data name="DispersionPlot_Hits" xml:space="preserve">
-    <value>Treffer</value>
+      <value>Treffer</value>
   </data>
   <data name="WebApp_ArtilleryAngleExplanation" xml:space="preserve">
-    <value>Der 0° Winkel ist oben. Positive Winkel sind im Uhrzeigersinn, negative Winkel gegen den Uhrzeigersinn. The roten Winkel sind Bereiche, in denen Türme nicht feuern können, auch wenn sie durch diesen Bereich rotieren.</value>
+      <value>Der 0° Winkel ist oben. Positive Winkel sind im Uhrzeigersinn, negative Winkel gegen den Uhrzeigersinn. The roten Winkel sind Bereiche, in denen Türme nicht feuern können, auch wenn sie durch diesen Bereich rotieren.</value>
   </data>
   <data name="Build_CopyUrl" xml:space="preserve">
-    <value>Build-URL kopieren</value>
+      <value>Build-URL kopieren</value>
   </data>
   <data name="WebApp_ExpanderSetting" xml:space="preserve">
-    <value>Granaten- und Torpedo-Expander standardmäßig öffnen</value>
+      <value>Granaten- und Torpedo-Expander standardmäßig öffnen</value>
   </data>
   <data name="WebApp_SecondariesAndAAExpanderSetting" xml:space="preserve">
-    <value>Expander für Sekundärbewaffnung, Flugzeugwaffen und Flugabwehr standardmäßig öffnen</value>
+      <value>Expander für Sekundärbewaffnung, Flugzeugwaffen und Flugabwehr standardmäßig öffnen</value>
   </data>
   <data name="WebApp_ExpanderSettingHeader" xml:space="preserve">
-    <value>Expander-Einstellungen</value>
+      <value>Expander-Einstellungen</value>
   </data>
   <data name="ShipStats_ShipSectionsHp" xml:space="preserve">
-    <value>HP der Schiffssektion</value>
+      <value>HP der Schiffssektion</value>
   </data>
   <data name="ShipStats_HideDcDamageDistribution" xml:space="preserve">
-    <value>Schadensverteilungs-Diagramm ausblenden</value>
+      <value>Schadensverteilungs-Diagramm ausblenden</value>
   </data>
   <data name="ShipStats_ShowLaunchersAngles" xml:space="preserve">
-    <value>Zeige Torpedowerfer-Winkel</value>
+      <value>Zeige Torpedowerfer-Winkel</value>
   </data>
   <data name="ShipStats_MaxEngineBoostDuration" xml:space="preserve">
-    <value>Maximale Motorboost-Dauer</value>
+      <value>Maximale Motorboost-Dauer</value>
   </data>
   <data name="Build_CopyShortUrl" xml:space="preserve">
-    <value>Kopiere kurzen Link</value>
+      <value>Kopiere kurzen Link</value>
   </data>
   <data name="Build_EnterBuildName" xml:space="preserve">
-    <value>Bitte gib einen Namen für den Build ein. Der Schiffsname wird am automatisch dahinter angezeigt.</value>
+      <value>Bitte gib einen Namen für den Build ein. Der Schiffsname wird am automatisch dahinter angezeigt.</value>
   </data>
   <data name="BETA_ShipComparison" xml:space="preserve">
-    <value>Beschleunigungsdiagramme Beta</value>
+      <value>Beschleunigungsdiagramme Beta</value>
   </data>
   <data name="BETA_AccelerationCharts" xml:space="preserve">
-    <value>Schiffsvergleich Beta</value>
+      <value>Schiffsvergleich Beta</value>
   </data>
   <data name="BetaAccess_Heading" xml:space="preserve">
-    <value>Beta-Zugang</value>
+      <value>Beta-Zugang</value>
   </data>
   <data name="BetaAccess_Code" xml:space="preserve">
-    <value>Code</value>
+      <value>Code</value>
   </data>
   <data name="BetaAccess_AddCode" xml:space="preserve">
-    <value>Code hinzufügen</value>
+      <value>Code hinzufügen</value>
   </data>
   <data name="BetaAccess_Feature" xml:space="preserve">
-    <value>Feature</value>
+      <value>Feature</value>
   </data>
   <data name="BetaAccess_Remove" xml:space="preserve">
-    <value>Entfernen</value>
+      <value>Entfernen</value>
   </data>
   <data name="BetaAccess_Invalid" xml:space="preserve">
-    <value>Ungültiger Code</value>
+      <value>Ungültiger Code</value>
   </data>
   <data name="BetaAccess_CodeEnabled" xml:space="preserve">
-    <value>wurde aktiviert.</value>
+      <value>wurde aktiviert.</value>
   </data>
   <data name="BetaAccess_Duplicate" xml:space="preserve">
-    <value>war bereits aktiviert.</value>
+      <value>war bereits aktiviert.</value>
   </data>
   <data name="ShipStats_MaxSpeedTime" xml:space="preserve">
-    <value>Zeit bis zur maximalen Geschwindigkeit</value>
+      <value>Zeit bis zur maximalen Geschwindigkeit</value>
   </data>
   <data name="ShipStats_ForwardMaxSpeedTime" xml:space="preserve">
-    <value>Volle Fahrt voraus</value>
+      <value>Volle Fahrt voraus</value>
   </data>
   <data name="ShipStats_ReverseMaxSpeedTime" xml:space="preserve">
-    <value>Rückwärts</value>
+      <value>Rückwärts</value>
   </data>
   <data name="AccelerationChart_Acceleration" xml:space="preserve">
-    <value>Beschleunigung</value>
+      <value>Beschleunigung</value>
   </data>
   <data name="AccelerationChart_Time" xml:space="preserve">
-    <value>Zeit</value>
+      <value>Zeit</value>
   </data>
   <data name="AccelerationChart_AddRemoveShip" xml:space="preserve">
-    <value>Schiffe hinzufügen/entfernen</value>
+      <value>Schiffe hinzufügen/entfernen</value>
   </data>
   <data name="Charts_ChangeBuilds" xml:space="preserve">
-    <value>Builds ändern</value>
+      <value>Builds ändern</value>
   </data>
   <data name="AccelerationChart_Explanation" xml:space="preserve">
-    <value>Erklärung des Beschleunigungsdiagramms</value>
+      <value>Erklärung des Beschleunigungsdiagramms</value>
   </data>
   <data name="AccelerationChart_CustomDataTitle" xml:space="preserve">
-    <value>Benutzerdefinierte Daten hinzufügen</value>
+      <value>Benutzerdefinierte Daten hinzufügen</value>
   </data>
   <data name="ShipStats_EnginePower" xml:space="preserve">
-    <value>Motorleistung</value>
+      <value>Motorleistung</value>
   </data>
   <data name="ShipStats_Tonnage" xml:space="preserve">
-    <value>Tonnage</value>
+      <value>Tonnage</value>
   </data>
   <data name="ShipStats_ForwardEngineForsagMaxSpeed" xml:space="preserve">
-    <value>Maximale Vorwärtsgeschwindigkeit</value>
+      <value>Maximale Vorwärtsgeschwindigkeit</value>
   </data>
   <data name="ShipStats_BackwardEngineForsagMaxSpeed" xml:space="preserve">
-    <value>Maximale Rückwärtsgeschwindigkeit</value>
+      <value>Maximale Rückwärtsgeschwindigkeit</value>
   </data>
   <data name="ShipStats_HeSalvo" xml:space="preserve">
-    <value>HE</value>
+      <value>HE</value>
   </data>
   <data name="ShipStats_ApSalvo" xml:space="preserve">
-    <value>AP</value>
+      <value>AP</value>
   </data>
   <data name="ShipStats_SapSalvo" xml:space="preserve">
-    <value>SAP</value>
+      <value>SAP</value>
   </data>
   <data name="ShipStats_FullSalvoDamage" xml:space="preserve">
-    <value>Gesamtschaden je Salve</value>
+      <value>Gesamtschaden je Salve</value>
   </data>
   <data name="ShipStats_FirstOption" xml:space="preserve">
-    <value>Option 1</value>
+      <value>Option 1</value>
   </data>
   <data name="ShipStats_SecondOption" xml:space="preserve">
-    <value>Option 2</value>
+      <value>Option 2</value>
   </data>
   <data name="ShipStats_DispersionAtMaxRange" xml:space="preserve">
-    <value>Streuung bei maximaler Reichweite</value>
+      <value>Streuung bei maximaler Reichweite</value>
   </data>
   <data name="ShipStats_ManeuverabilitySubsMaxSpeedOnSurface" xml:space="preserve">
-    <value>Aufgetaucht</value>
+      <value>Aufgetaucht</value>
   </data>
   <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth" xml:space="preserve">
-    <value>Auf Einsatztiefe</value>
+      <value>Auf Einsatztiefe</value>
   </data>
   <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope" xml:space="preserve">
-    <value>Auf Periskoptiefe</value>
+      <value>Auf Periskoptiefe</value>
   </data>
   <data name="ShipStats_Fighter" xml:space="preserve">
-    <value>Raketen</value>
+      <value>Raketen</value>
   </data>
   <data name="ShipStats_TacticalFighter" xml:space="preserve">
-    <value>Taktische Raketen</value>
+      <value>Taktische Raketen</value>
   </data>
   <data name="ShipStats_DiveBomber" xml:space="preserve">
-    <value>Sturzkampfbomber</value>
+      <value>Sturzkampfbomber</value>
   </data>
   <data name="ShipStats_TacticalDiveBomber" xml:space="preserve">
-    <value>Taktische Sturzkampfbomber</value>
+      <value>Taktische Sturzkampfbomber</value>
   </data>
   <data name="ShipStats_TorpedoBomber" xml:space="preserve">
-    <value>Torpedobomber</value>
+      <value>Torpedobomber</value>
   </data>
   <data name="ShipStats_TacticalTorpedoBomber" xml:space="preserve">
-    <value>Taktische Torpedobomber</value>
+      <value>Taktische Torpedobomber</value>
   </data>
   <data name="ShipStats_SkipBomber" xml:space="preserve">
-    <value>Springbomber</value>
+      <value>Springbomber</value>
   </data>
   <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
-    <value>Taktische Springbomber</value>
+      <value>Taktische Springbomber</value>
   </data>
   <data name="ChartsWeb_Build" xml:space="preserve">
-    <value>Build</value>
+      <value>Build</value>
   </data>
   <data name="ShipSelectionWindow_EditBuilds" xml:space="preserve">
-    <value>Builds bearbeiten</value>
+      <value>Builds bearbeiten</value>
   </data>
   <data name="ShipAndShellsSelectionDialog_NoShipSelected" xml:space="preserve">
-    <value>Kein Schiff ausgewählt</value>
+      <value>Kein Schiff ausgewählt</value>
   </data>
   <data name="ShipStats_ProgressPerAction" xml:space="preserve">
-    <value>Fortschritt pro Aktion</value>
+      <value>Fortschritt pro Aktion</value>
   </data>
   <data name="ShipStats_InactivityDelay" xml:space="preserve">
-    <value>Inaktivitätszeit vor Fortschrittsverlust</value>
+      <value>Inaktivitätszeit vor Fortschrittsverlust</value>
   </data>
   <data name="ShipStats_ProgressLossInterval" xml:space="preserve">
-    <value>Intervall zwischen Fortschrittsverlusten</value>
+      <value>Intervall zwischen Fortschrittsverlusten</value>
   </data>
   <data name="ShipStats_ProgressLossPerInterval" xml:space="preserve">
-    <value>Fortschrittsverlust pro Intervall</value>
+      <value>Fortschrittsverlust pro Intervall</value>
   </data>
   <data name="ShipStats_ShowAccelerationCharts" xml:space="preserve">
-    <value>Beschleunigungsdiagramme zeigen</value>
+      <value>Beschleunigungsdiagramme zeigen</value>
   </data>
   <data name="BuildStringInputDialog_EnterBuildStringOrLink" xml:space="preserve">
-    <value>Build String oder Link eingeben</value>
+      <value>Build String oder Link eingeben</value>
   </data>
   <data name="WebApp_LoadBuild" xml:space="preserve">
-    <value>Build laden</value>
+      <value>Build laden</value>
   </data>
   <data name="WebApp_GoToShipsPage" xml:space="preserve">
-    <value>Gehe zur Schiffs-Seite</value>
+      <value>Gehe zur Schiffs-Seite</value>
   </data>
   <data name="ShipStats_ShowInBallisticCharts" xml:space="preserve">
-    <value>Im Ballistik-Diagramm anzeigen</value>
+      <value>Im Ballistik-Diagramm anzeigen</value>
   </data>
   <data name="ShipStats_ShowInAccelerationCharts" xml:space="preserve">
-    <value>In Beschleunigungsdiagrammen anzeigen</value>
+      <value>In Beschleunigungsdiagrammen anzeigen</value>
   </data>
   <data name="Validation_InvalidBuild" xml:space="preserve">
-    <value>Ungültiger Build</value>
+      <value>Ungültiger Build</value>
   </data>
   <data name="Validation_Incompatibility" xml:space="preserve">
-    <value>Inkompatibilität</value>
+      <value>Inkompatibilität</value>
   </data>
   <data name="Validation_SelectedShip" xml:space="preserve">
-    <value>Ausgewähltes Schiff</value>
+      <value>Ausgewähltes Schiff</value>
   </data>
   <data name="Validation_ShipInBuild" xml:space="preserve">
-    <value>Schiff im Build</value>
+      <value>Schiff im Build</value>
   </data>
   <data name="ShipStats_Loaders" xml:space="preserve">
-    <value>Lader</value>
+      <value>Lader</value>
   </data>
   <data name="ShipStats_BowLoaders" xml:space="preserve">
-    <value>Bug</value>
+      <value>Bug</value>
   </data>
   <data name="ShipStats_SternLoaders" xml:space="preserve">
-    <value>Heck</value>
+      <value>Heck</value>
   </data>
   <data name="Unit_U" xml:space="preserve">
-    <value>Einheit</value>
+      <value>Einheit</value>
   </data>
   <data name="Unit_UPS" xml:space="preserve">
-    <value>Einheit/s</value>
+      <value>Einheit/s</value>
   </data>
   <data name="ShipStats_ManeuverabilitySubsMaxDiveSpeed" xml:space="preserve">
-    <value>Maximale Tauchgeschwindigkeit</value>
+      <value>Maximale Tauchgeschwindigkeit</value>
   </data>
   <data name="ShipStats_DiveCapacity" xml:space="preserve">
-    <value>Tauchkapazität</value>
+      <value>Tauchkapazität</value>
   </data>
   <data name="ShipStats_DiveCapacityRechargeRate" xml:space="preserve">
-    <value>Nachladerate</value>
+      <value>Nachladerate</value>
   </data>
   <data name="ShipStats_Battery" xml:space="preserve">
-    <value>Batterie</value>
+      <value>Batterie</value>
   </data>
   <data name="ShipStats_FirstPing" xml:space="preserve">
-    <value>1 Ping</value>
+      <value>1 Ping</value>
   </data>
   <data name="ShipStats_SecondPing" xml:space="preserve">
-    <value>2 Pings</value>
+      <value>2 Pings</value>
   </data>
   <data name="Unit_MPS2" xml:space="preserve">
-    <value>m/s²</value>
+      <value>m/s²</value>
   </data>
   <data name="ShipStats_MaxTurningSpeed" xml:space="preserve">
-    <value>Maximale Drehgeschwindigkeit</value>
+      <value>Maximale Drehgeschwindigkeit</value>
   </data>
   <data name="ShipStats_MaxVerticalSpeed" xml:space="preserve">
-    <value>Maximale vertikale Geschwindigkeit</value>
+      <value>Maximale vertikale Geschwindigkeit</value>
   </data>
   <data name="ShipStats_VerticalAcceleration" xml:space="preserve">
-    <value>Vertikale Beschleunigung</value>
+      <value>Vertikale Beschleunigung</value>
   </data>
   <data name="ShipStats_SearchRadius" xml:space="preserve">
-    <value>Suchradius</value>
+      <value>Suchradius</value>
   </data>
   <data name="ShipStats_SearchAngle" xml:space="preserve">
-    <value>Suchwinkel</value>
+      <value>Suchwinkel</value>
   </data>
   <data name="ShipStats_AirCarrier" xml:space="preserve">
-    <value>Flugzeugträger</value>
+      <value>Flugzeugträger</value>
   </data>
   <data name="ShipStats_Submarine" xml:space="preserve">
-    <value>U-Boot</value>
+      <value>U-Boot</value>
   </data>
   <data name="ShipStats_Cruiser" xml:space="preserve">
-    <value>Kreuzer</value>
+      <value>Kreuzer</value>
   </data>
   <data name="ShipStats_Battleship" xml:space="preserve">
-    <value>Schlachtschiff</value>
+      <value>Schlachtschiff</value>
   </data>
   <data name="ShipStats_Destroyer" xml:space="preserve">
-    <value>Zerstörer</value>
+      <value>Zerstörer</value>
   </data>
   <data name="ShipStats_MoreDetails" xml:space="preserve">
-    <value>Weitere Details</value>
+      <value>Weitere Details</value>
   </data>
   <data name="Unit_DegreePerSecond2" xml:space="preserve">
-    <value>^/s²</value>
+      <value>^/s²</value>
   </data>
   <data name="BuildImageSettingsDialog_Modules" xml:space="preserve">
-    <value>Module</value>
+      <value>Module</value>
   </data>
   <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
-    <value>Kapitänsfertigkeiten</value>
+      <value>Kapitänsfertigkeiten</value>
   </data>
   <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
-    <value>Signale</value>
+      <value>Signale</value>
   </data>
   <data name="BuildImageSettingsDialog_Consumables" xml:space="preserve">
-    <value>Verbrauchsmaterialien</value>
+      <value>Verbrauchsmaterialien</value>
   </data>
   <data name="BuildImageSettingsDialog_Upgrades" xml:space="preserve">
-    <value>Verbesserungen</value>
+      <value>Verbesserungen</value>
   </data>
   <data name="BuildImageSettingsDialog_TwoColumns" xml:space="preserve">
-    <value>Zweispaltig</value>
+      <value>Zweispaltig</value>
   </data>
   <data name="BuildImageSettingsDialog_Layout" xml:space="preserve">
-    <value>LAYOUT</value>
+      <value>LAYOUT</value>
   </data>
   <data name="BuildImageSettingsDialog_Elements" xml:space="preserve">
-    <value>Elemente</value>
+      <value>Elemente</value>
   </data>
   <data name="BuildImageSettingsDialog_TwoColumnsTooltip" xml:space="preserve">
-    <value>Vergrößert das Bildlayout durch Aufteilen von Elementen in zwei nebeneinander liegende Spalten (Kapitänsfertigkeiten und Signale sind nicht verdeckbar).</value>
+      <value>Vergrößert das Bildlayout durch Aufteilen von Elementen in zwei nebeneinander liegende Spalten (Kapitänsfertigkeiten und Signale sind nicht verdeckbar).</value>
   </data>
   <data name="BuildImageRenderDialog_SaveImage" xml:space="preserve">
-    <value>Bild speichern</value>
+      <value>Bild speichern</value>
   </data>
   <data name="BuildImageRenderDialog_GetUrl" xml:space="preserve">
-    <value>URL abrufen</value>
+      <value>URL abrufen</value>
   </data>
   <data name="BuildImageRenderDialog_GetShortLink" xml:space="preserve">
-    <value>Kurzlink abrufen</value>
+      <value>Kurzlink abrufen</value>
   </data>
   <data name="ServerTypeLive" xml:space="preserve">
-    <value>Live</value>
+      <value>Live</value>
   </data>
   <data name="ServerTypePts" xml:space="preserve">
-    <value>PTS</value>
+      <value>PTS</value>
   </data>
   <data name="NavigationCharts" xml:space="preserve">
-    <value>Streuungs- und Ballistikdiagramme</value>
+      <value>Streuungs- und Ballistikdiagramme</value>
   </data>
   <data name="NavigationAccelerationCharts" xml:space="preserve">
-    <value>Beschleunigungsdiagramme</value>
+      <value>Beschleunigungsdiagramme</value>
   </data>
   <data name="NavigationComparison" xml:space="preserve">
-    <value>Schiffsvergleich</value>
+      <value>Schiffsvergleich</value>
   </data>
   <data name="NavigationHome" xml:space="preserve">
-    <value>Startseite</value>
+      <value>Startseite</value>
   </data>
   <data name="ShipComparison_Image" xml:space="preserve">
-    <value>Bild</value>
+      <value>Bild</value>
   </data>
   <data name="ShipComparison_NoMatchingShipsFound" xml:space="preserve">
-    <value>Keine passenden Schiffe gefunden</value>
+      <value>Keine passenden Schiffe gefunden</value>
   </data>
   <data name="ShipComparison_ActiveColumns" xml:space="preserve">
-    <value>Aktive Spalten</value>
+      <value>Aktive Spalten</value>
   </data>
   <data name="ShipComparison_Section" xml:space="preserve">
-    <value>Abschnitt</value>
+      <value>Abschnitt</value>
   </data>
   <data name="ShipComparison_Filters" xml:space="preserve">
-    <value>Filter</value>
+      <value>Filter</value>
   </data>
   <data name="ShipComparison_All" xml:space="preserve">
-    <value>Alle</value>
+      <value>Alle</value>
   </data>
   <data name="ShipComparison_None" xml:space="preserve">
-    <value>Keine</value>
+      <value>Keine</value>
   </data>
   <data name="ShipComparison_ResetAll" xml:space="preserve">
-    <value>Alle zurücksetzen</value>
+      <value>Alle zurücksetzen</value>
   </data>
   <data name="ShipComparison_Duplicate" xml:space="preserve">
-    <value>Duplikat</value>
+      <value>Duplikat</value>
   </data>
   <data name="ShipComparison_RemoveBuilds" xml:space="preserve">
-    <value>Builds entfernen</value>
+      <value>Builds entfernen</value>
   </data>
   <data name="ShipComparison_ViewStats" xml:space="preserve">
-    <value>Statistiken anzeigen</value>
+      <value>Statistiken anzeigen</value>
   </data>
   <data name="ShipComparison_ViewBallistic" xml:space="preserve">
-    <value>Ballistik anzeigen</value>
+      <value>Ballistik anzeigen</value>
   </data>
   <data name="ShipComparison_ViewAcceleration" xml:space="preserve">
-    <value>Beschleunigung anzeigen</value>
+      <value>Beschleunigung anzeigen</value>
   </data>
   <data name="ShipComparison_DisplayOnlyPinnedShips" xml:space="preserve">
-    <value>Nur angeheftete Schiffe anzeigen</value>
+      <value>Nur angeheftete Schiffe anzeigen</value>
   </data>
   <data name="ShipComparison_UseUpgradedModules" xml:space="preserve">
-    <value>Ohne Build: Verbesserte Module verwenden</value>
+      <value>Ohne Build: Verbesserte Module verwenden</value>
   </data>
   <data name="ShipComparison_HideIfNoSection" xml:space="preserve">
-    <value>Schiffe ohne die ausgewählte Sektion ausblenden</value>
+      <value>Schiffe ohne die ausgewählte Sektion ausblenden</value>
   </data>
   <data name="ShipComparison_SelectAll" xml:space="preserve">
-    <value>Alle markieren</value>
+      <value>Alle markieren</value>
   </data>
   <data name="ShipComparison_UnselectAll" xml:space="preserve">
-    <value>Alle abwählen</value>
+      <value>Alle abwählen</value>
   </data>
   <data name="ShipComparison_PinAll" xml:space="preserve">
-    <value>Alle anheften</value>
+      <value>Alle anheften</value>
   </data>
   <data name="ShipComparison_UnpinAll" xml:space="preserve">
-    <value>Alle lösen</value>
+      <value>Alle lösen</value>
   </data>
   <data name="ShipStats_ShowInShipComparison" xml:space="preserve">
-    <value>Alle im Schiffsvergleich anzeigen</value>
+      <value>Alle im Schiffsvergleich anzeigen</value>
   </data>
   <data name="ShipComparison_General" xml:space="preserve">
-    <value>Allgemein</value>
+      <value>Allgemein</value>
   </data>
   <data name="ShipComparison_SecondaryBatteryShells" xml:space="preserve">
-    <value>Sekundärbatterie-Granaten</value>
+      <value>Sekundärbatterie-Granaten</value>
   </data>
   <data name="ShipComparison_Asw" xml:space="preserve">
-    <value>U-Boot Abwehr</value>
+      <value>U-Boot Abwehr</value>
   </data>
   <data name="ShipComparison_RocketPlanes" xml:space="preserve">
-    <value>Schlachtflugzeuge</value>
+      <value>Schlachtflugzeuge</value>
   </data>
   <data name="ShipComparison_AerialTorpedoes" xml:space="preserve">
-    <value>Flugzeugtorpedos</value>
+      <value>Flugzeugtorpedos</value>
   </data>
   <data name="ShipComparison_Bombers" xml:space="preserve">
-    <value>Sturzbomber</value>
+      <value>Sturzbomber</value>
   </data>
   <data name="ShipComparison_Bombs" xml:space="preserve">
-    <value>Bomben</value>
+      <value>Bomben</value>
   </data>
   <data name="ShipComparison_Caliber" xml:space="preserve">
-    <value>Kaliber</value>
+      <value>Kaliber</value>
   </data>
   <data name="ShipComparison_Barrels" xml:space="preserve">
-    <value>Läufe</value>
+      <value>Läufe</value>
   </data>
   <data name="ShipComparison_MaxRange" xml:space="preserve">
-    <value>Max. Reichweite</value>
+      <value>Max. Reichweite</value>
   </data>
   <data name="ShipStats_Dpm" xml:space="preserve">
-    <value>DPM</value>
+      <value>DPM</value>
   </data>
   <data name="ShipStats_Salvo" xml:space="preserve">
-    <value>Salve</value>
+      <value>Salve</value>
   </data>
   <data name="ShipComparison_Fpm" xml:space="preserve">
-    <value>FPM</value>
+      <value>FPM</value>
   </data>
   <data name="ShipComparison_1st" xml:space="preserve">
-    <value>1.</value>
+      <value>1.</value>
   </data>
   <data name="ShipComparison_2nd" xml:space="preserve">
-    <value>2.</value>
+      <value>2.</value>
   </data>
   <data name="ShipComparison_Amount" xml:space="preserve">
-    <value>Anzahl</value>
+      <value>Anzahl</value>
   </data>
   <data name="ShipComparison_OnFire" xml:space="preserve">
-    <value>In Brand</value>
+      <value>In Brand</value>
   </data>
   <data name="ShipComparison_FullReverseTime" xml:space="preserve">
-    <value>Volle Umkehrzeit</value>
+      <value>Volle Umkehrzeit</value>
   </data>
   <data name="ShipComparison_Charges" xml:space="preserve">
-    <value>Ladungen</value>
+      <value>Ladungen</value>
   </data>
   <data name="ShipComparison_PlanesInSquadron" xml:space="preserve">
-    <value>Flugzeuge pro Staffel</value>
+      <value>Flugzeuge pro Staffel</value>
   </data>
   <data name="ShipComparison_SplashRadius" xml:space="preserve">
-    <value>Streuradius</value>
+      <value>Streuradius</value>
   </data>
   <data name="ShipComparison_InitialSpeed" xml:space="preserve">
-    <value>Anfangsgeschwindigkeit</value>
+      <value>Anfangsgeschwindigkeit</value>
   </data>
   <data name="ShipComparison_PlaneHp" xml:space="preserve">
-    <value>Flugzeug TP</value>
+      <value>Flugzeug TP</value>
   </data>
   <data name="ShipComparison_Spread" xml:space="preserve">
-    <value>Streuung</value>
+      <value>Streuung</value>
   </data>
   <data name="ShipComparison_SwitchTime" xml:space="preserve">
-    <value>Wechselzeit</value>
+      <value>Wechselzeit</value>
   </data>
   <data name="ShipComparison_Plane" xml:space="preserve">
-    <value>Flugzeug</value>
+      <value>Flugzeug</value>
   </data>
   <data name="ShipComparison_Planes" xml:space="preserve">
-    <value>Flugzeuge</value>
+      <value>Flugzeuge</value>
+  </data>
+  <data name="ShipStats_PenetrationAp" xml:space="preserve">
+      <value>Durchschlagskraft</value>
   </data>
 </root>

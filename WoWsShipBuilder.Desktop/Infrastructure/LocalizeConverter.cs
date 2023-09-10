@@ -72,7 +72,7 @@ namespace WoWsShipBuilder.Desktop.Infrastructure
                 }
                 else
                 {
-                    if (!stringParam.EndsWith("_"))
+                    if (!stringParam.EndsWith("_", StringComparison.OrdinalIgnoreCase))
                     {
                         stringParam += "_";
                     }
@@ -133,7 +133,7 @@ namespace WoWsShipBuilder.Desktop.Infrastructure
             LocalizeConverter.localizer = localizer;
         }
 
-        private class DemoLocalizerImpl : ILocalizer
+        private sealed class DemoLocalizerImpl : ILocalizer
         {
             public LocalizationResult this[string key] => GetGameLocalization(key);
 

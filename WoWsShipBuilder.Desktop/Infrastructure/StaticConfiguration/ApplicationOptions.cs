@@ -1,6 +1,6 @@
 namespace WoWsShipBuilder.Desktop.Infrastructure.StaticConfiguration;
 
-internal class ApplicationOptions
+internal sealed class ApplicationOptions
 {
     public string? SentryDsn { get; set; }
 

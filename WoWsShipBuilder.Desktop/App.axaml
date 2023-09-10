@@ -1,10 +1,10 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:infrastructure="clr-namespace:WoWsShipBuilder.Desktop.Infrastructure"
-             x:Class="WoWsShipBuilder.Desktop.App">
+             x:Class="WoWsShipBuilder.Desktop.App"
+             RequestedThemeVariant="Dark">
     <Application.Styles>
-        <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>
-        <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseDark.xaml"/>
+        <SimpleTheme />
         <StyleInclude Source="/Common/Styles/ThemeOverride.axaml"/>
         <StyleInclude Source="/Common/Styles/DefaultStyle.axaml"/>
     </Application.Styles>

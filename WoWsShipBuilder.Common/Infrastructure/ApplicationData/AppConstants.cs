@@ -11,6 +11,10 @@ public static class AppConstants
     public const string ShipBuilderName = "WoWsShipBuilder";
 #endif
 
+    public const string AdminRoleName = "admin";
+
+    public const string BuildCuratorRoleName = "build-curator";
+
     // Workaround for webworkers
     static AppConstants()
     {

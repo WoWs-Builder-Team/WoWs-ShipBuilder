@@ -180,6 +180,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User login.
+        /// </summary>
+        public static string BETA_UserAuth {
+            get {
+                return ResourceManager.GetString("BETA_UserAuth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Code.
         /// </summary>
         public static string BetaAccess_AddCode {
@@ -3228,6 +3237,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string ShipStats_DamageTakenDuringAttack {
             get {
                 return ResourceManager.GetString("ShipStats_DamageTakenDuringAttack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The depth of submarines shown in game is expressed as &quot;ship_meter&quot;. Subs can dive 60[ship_m] = 120[m]..
+        /// </summary>
+        public static string ShipStats_DcDetonationDepthExplanation {
+            get {
+                return ResourceManager.GetString("ShipStats_DcDetonationDepthExplanation", resourceCulture);
             }
         }
         

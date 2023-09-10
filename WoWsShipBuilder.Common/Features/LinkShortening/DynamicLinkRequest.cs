@@ -2,11 +2,13 @@
 
 namespace WoWsShipBuilder.Features.LinkShortening;
 
+#pragma warning disable CA1720
 public enum LinkSuffixType
 {
     SHORT,
     UNGUESSABLE,
 }
+#pragma warning restore CA1720
 
 public record DynamicLinkRequest([property:JsonPropertyName("dynamicLinkInfo")] DynamicLinkInfo DynamicLinkInfo, [property:JsonPropertyName("suffix")] DynamicLinkSuffix Suffix);
 

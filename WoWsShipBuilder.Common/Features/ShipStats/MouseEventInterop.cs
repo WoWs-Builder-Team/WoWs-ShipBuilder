@@ -3,7 +3,7 @@ using Microsoft.JSInterop;
 
 namespace WoWsShipBuilder.Features.ShipStats;
 
-public class MouseEventInterop : IAsyncDisposable
+public sealed class MouseEventInterop : IAsyncDisposable
 {
     private readonly IJSRuntime runtime;
 

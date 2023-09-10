@@ -9,7 +9,7 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace WoWsShipBuilder.Web.Infrastructure.Data;
 
-public class WebUserDataService : IUserDataService, IAsyncDisposable
+public sealed class WebUserDataService : IUserDataService, IAsyncDisposable
 {
     private const string JsFileName = "/scripts/userDataService.js";
 

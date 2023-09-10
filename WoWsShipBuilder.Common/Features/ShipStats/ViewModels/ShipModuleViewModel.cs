@@ -37,7 +37,7 @@ namespace WoWsShipBuilder.Features.ShipStats.ViewModels
             ShipUpgrades = ShipModuleHelper.GroupAndSortUpgrades(upgradeInfo.ShipUpgrades).OrderBy(entry => entry.Key).Select(entry => entry.Value).ToList();
             foreach (List<ShipUpgrade> upgrade in ShipUpgrades)
             {
-                SelectedModules.Add(upgrade.First());
+                SelectedModules.Add(upgrade[0]);
             }
         }
 
@@ -63,7 +63,6 @@ namespace WoWsShipBuilder.Features.ShipStats.ViewModels
             ShipUpgrade? oldItem = SelectedModules.FirstOrDefault(module => module.UcType == parameter.UcType);
             if (oldItem != null)
             {
-                // SelectedModules.Remove(oldItem);
                 SelectedModules.Replace(oldItem, parameter);
             }
             else
@@ -80,7 +79,7 @@ namespace WoWsShipBuilder.Features.ShipStats.ViewModels
                 results.AddRange(upgradeList.Where(upgrade => storedData.Contains(upgrade.Name.NameToIndex())));
             }
 
-            var modulesToRemove = SelectedModules.Where(module => results.Any(newSelection => newSelection.UcType == module.UcType)).ToList();
+            var modulesToRemove = SelectedModules.Where(module => results.Exists(newSelection => newSelection.UcType == module.UcType)).ToList();
             SelectedModules.RemoveMany(modulesToRemove);
             SelectedModules.AddRange(results);
         }

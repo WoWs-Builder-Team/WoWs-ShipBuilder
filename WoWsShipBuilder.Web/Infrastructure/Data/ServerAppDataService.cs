@@ -1,14 +1,13 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System.Globalization;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Sentry;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Versioning;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.HttpClients;
-using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Web.Infrastructure.Data;
 
@@ -59,7 +58,7 @@ public class ServerAppDataService : IAppDataService
         SentrySdk.ConfigureScope(scope =>
         {
             scope.SetTag("data.version", onlineVersionInfo.CurrentVersion?.MainVersion.ToString(3) ?? undefinedMarker);
-            scope.SetTag("data.iteration", onlineVersionInfo.CurrentVersion?.DataIteration.ToString() ?? undefinedMarker);
+            scope.SetTag("data.iteration", onlineVersionInfo.CurrentVersion?.DataIteration.ToString(CultureInfo.InvariantCulture) ?? undefinedMarker);
             scope.SetTag("data.server", onlineVersionInfo.CurrentVersion?.VersionType.ToString() ?? undefinedMarker);
         });
         var files = onlineVersionInfo.Categories.SelectMany(category => category.Value.Select(file => (category.Key, file.FileName))).ToList();

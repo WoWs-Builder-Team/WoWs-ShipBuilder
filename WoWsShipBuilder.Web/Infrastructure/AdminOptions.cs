@@ -6,5 +6,7 @@ public class AdminOptions
 
     public string WgApiKey { get; set; } = string.Empty;
 
-    public string[] AllowedUsers { get; set; } = Array.Empty<string>();
+    public string[] AdminUsers { get; set; } = Array.Empty<string>();
+
+    public string[] BuildCurators { get; set; } = Array.Empty<string>();
 }

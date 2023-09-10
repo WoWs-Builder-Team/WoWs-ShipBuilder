@@ -1,30 +1,46 @@
 ﻿@page "/admin"
-@using System.Text.Json.Serialization
-@using Microsoft.Extensions.Options
-@using WoWsShipBuilder.Infrastructure
-@using WoWsShipBuilder.Infrastructure.Utility
-@using WoWsShipBuilder.Web.Infrastructure
-@inject NavigationManager NavigationManager
-@inject HttpClient Client
-@inject IOptions<AdminOptions> AdminOptions
+@attribute [Authorize(Roles = AppConstants.AdminRoleName)]
+
+@using WoWsShipBuilder.Infrastructure.ApplicationData
+@using WoWsShipBuilder.Infrastructure.DataTransfer
+@using WoWsShipBuilder.Infrastructure.Localization
+@using WoWsShipBuilder.Infrastructure.Localization.Resources
+@using WoWsShipBuilder.Web.Infrastructure.BetaAccess
+@using System.Security.Claims
+
+@inject ILocalizer Localizer
+@inject IBetaAccessManager BetaAccessManager
+@inject IClipboardService ClipboardService
 
 <MudText Class="ma-2" Align="Align.Center" Typo="Typo.h4">Administration page</MudText>
 
-<div class="d-flex align-center flex-column">
-    <MudButton Variant="Variant.Outlined" OnClick="TryWgAuth">Auth with Wg</MudButton>
-    @if (authorized)
-    {
-        <MudStack Class="mt-2">
-            <MudText>@($"status: {status}")</MudText>
-            <MudText>@($"account_id: {accountId}")</MudText>
-            <MudText>@($"access_token: {accessToken}")</MudText>
-        </MudStack>
-    }
-</div>
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+    <MudStack Class="mt-2">
+        <MudText>@($"status: {status}")</MudText>
+        <MudText>@($"account_id: {accountId}")</MudText>
+        <MudText>@($"access_token: {accessToken}")</MudText>
+    </MudStack>
+
+    <MudDivider DividerType="DividerType.FullWidth" Class="my-4" Light/>
+    <MudText Typo="Typo.h5">Beta Access codes</MudText>
+    <MudTable Items="@BetaAccessManager.ActiveBetas" Outlined Striped Dense>
+        <HeaderContent>
+            <MudTh>@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Code))</MudTh>
+            <MudTh>@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Feature))</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Code))">
+                @context.Code
+                <MudIconButton OnClick="async () => await ClipboardService.SetTextAsync(context.Code)" Icon="@Icons.Material.Filled.ContentCopy"/>
+            </MudTd>
+            <MudTd DataLabel="@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Feature))">
+                @Localizer.SimpleAppLocalization(context.LocalizationKey)
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+</MudContainer>
 
 @code {
-
-    private bool authorized = false;
 
     private string status = string.Empty;
 
@@ -32,66 +48,22 @@
 
     private string accessToken = string.Empty;
 
-    protected override async Task OnInitializedAsync()
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; } = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await base.OnInitializedAsync();
-        if (NavigationManager.TryGetQueryString("status", out status) && status.Equals("ok"))
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
         {
-            NavigationManager.TryGetQueryString("account_id", out accountId);
-            if (AdminOptions.Value.AllowedUsers.Contains(accountId))
+            var authState = await AuthenticationStateTask;
+            if (authState.User.Identity?.IsAuthenticated ?? false)
             {
-                NavigationManager.TryGetQueryString("access_token", out accessToken);
-                authorized = await ValidateAuth();
+                accountId = authState.User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+                accessToken = authState.User.FindFirstValue(ClaimTypes.UserData)!;
+                status = string.Join(", ", authState.User.FindAll(ClaimTypes.Role).Select(c => c.Value));
+                StateHasChanged();
             }
         }
     }
-
-    private void TryWgAuth()
-    {
-        var pageUrl = $"{NavigationManager.BaseUri}admin";
-        var url = @$"https://api.worldoftanks.eu/wot/auth/login/?application_id={AdminOptions.Value.WgApiKey}&redirect_uri={pageUrl}";
-        NavigationManager.NavigateTo(url);
-    }
-
-    private async Task<bool> ValidateAuth()
-    {
-        var checkUrl = @$"https://api.worldofwarships.eu/wows/account/info/?application_id={AdminOptions.Value.WgApiKey}&account_id={accountId}&access_token={accessToken}&fields=private.gold";
-
-        var request = new HttpRequestMessage(HttpMethod.Get,checkUrl);
-        var response = await Client.SendAsync(request);
-
-        if (response.IsSuccessStatusCode)
-        {
-            var data = await response.Content.ReadFromJsonAsync<WgResponse>();
-
-            if (data is not null && data.Status.Equals("ok"))
-            {
-                return data.Data.First().Value.Private?.Gold is not null;
-            }
-        }
-
-        return false;
-    }
-
-    private class WgResponse
-    {
-        [JsonPropertyName("status")]
-        public string Status { get; set; } = string.Empty;
-
-        [JsonPropertyName("data")]
-        public Dictionary<string, Data> Data { get; set; } = new();
-    }
-
-    private class Data
-    {
-        [JsonPropertyName("private")]
-        public Private? Private { get; set; }
-    }
-
-    private class Private
-    {
-        [JsonPropertyName("gold")]
-        public int? Gold { get; set; }
-    }
-
 }

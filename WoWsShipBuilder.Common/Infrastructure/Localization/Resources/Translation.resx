@@ -2048,4 +2048,10 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipStats_PenetrationAp" xml:space="preserve">
       <value>Penetration</value>
   </data>
+  <data name="BETA_UserAuth" xml:space="preserve">
+      <value>User login</value>
+  </data>
+  <data name="ShipStats_DcDetonationDepthExplanation" xml:space="preserve">
+      <value>The depth of submarines shown in game is expressed as "ship_meter". Subs can dive 60[ship_m] = 120[m].</value>
+  </data>
 </root>
