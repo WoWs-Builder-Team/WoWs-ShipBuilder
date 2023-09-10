@@ -317,8 +317,8 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         // this check is purely for backward compatibility
         if (captainIndex != null)
         {
-            var captain = CaptainList!.First(x => x.Index.Equals(captainIndex));
-            SelectedCaptain = captain;
+            var captain = CaptainList!.Find(x => x.Index.Equals(captainIndex, StringComparison.Ordinal));
+            SelectedCaptain = captain ?? CaptainList![0];
         }
 
         var skills = selectedSkills.Select(skillId => SelectedCaptain!.Skills.First(captainSkill => captainSkill.Value.SkillNumber == skillId)).Select(pair => pair.Value);
