@@ -218,7 +218,8 @@ public class BlazorWebView : NativeControlHost
         base.OnDetachedFromVisualTree(e);
         if (OperatingSystem.IsWindows())
         {
-            blazorWebView?.Dispose();
+            // Do not use until dotnet 8 because disposing the webview will deadlock. see https://github.com/dotnet/maui/issues/7997#issuecomment-1258681003
+            // blazorWebView?.Dispose();
             blazorWebView = null;
         }
     }
