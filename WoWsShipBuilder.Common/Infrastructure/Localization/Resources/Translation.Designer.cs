@@ -2484,6 +2484,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ships per page:.
+        /// </summary>
+        public static string ShipComparison_ShipsPerPage {
+            get {
+                return ResourceManager.GetString("ShipComparison_ShipsPerPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Smoke Firing.
         /// </summary>
         public static string ShipComparison_SmokeFiring {

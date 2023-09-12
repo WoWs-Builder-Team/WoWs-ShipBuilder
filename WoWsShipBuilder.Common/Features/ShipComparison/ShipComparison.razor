@@ -74,120 +74,233 @@
         </MudPaper>
     }
     <MudPaper Outlined Elevation="0" Class="pl-2 pb-2 mt-3">
-        <MudText GutterBottom="true" Style="font-size: medium; margin-bottom: -1px;" Class="mt-1">
-            @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_TierFilter))
-        </MudText>
-        <MudButtonGroup OverrideStyles="false" Class="gap-2" Style="flex-wrap: wrap" Size="Size.Small">
-            @for (int i = TiersRange.First(); i <= TiersRange.Last(); i++)
+        <MudBreakpointProvider @ref="breakpointProvider">
+            @if (IsSmallScreen())
             {
-                int tier = i;
-                bool isSelected = ViewModel.SelectedTiers.Contains(tier);
-                <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" @onmouseup="@(args => ToggleTierSelection(tier, args))" oncontextmenu = "return false;">
-                    @tier.ToTierString()
-                </MudButton>
+                <MudStack Row Class="mt-1" AlignItems="AlignItems.Center">
+                    <MudText GutterBottom="true" Style="font-size: medium;">
+                        @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_TierFilter))
+                    </MudText>
+                    <MudButtonGroup OverrideStyles="false" Class="gap-2 mb-1" Style="flex-wrap: wrap" Size="Size.Small">
+                        <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllTiers(true))">
+                            @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_All))
+                        </MudButton>
+                        <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllTiers(false))">
+                            @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_None))
+                        </MudButton>
+                    </MudButtonGroup>
+                </MudStack>
+                <MudButtonGroup OverrideStyles="false" Class="gap-2" Style="flex-wrap: wrap" Size="Size.Small">
+                    @for (int i = TiersRange.First(); i <= TiersRange.Last(); i++)
+                    {
+                        int tier = i;
+                        bool isSelected = ViewModel.SelectedTiers.Contains(tier);
+                        <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" @onmouseup="@(args => ToggleTierSelection(tier, args))" oncontextmenu="return false;">
+                            @tier.ToTierString()
+                        </MudButton>
+                    }
+                </MudButtonGroup>
+                <MudStack Row Class="mt-1" AlignItems="AlignItems.Center">
+                     <MudText GutterBottom="true" Style="font-size: medium;">
+                        @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_ClassFilter))
+                    </MudText>
+                    <MudButtonGroup OverrideStyles="false" Class="gap-2 mb-1" Style="flex-wrap: wrap" Size="Size.Small">
+                        <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllClasses(true))">
+                            @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_All))
+                        </MudButton>
+                        <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllClasses(false))">
+                            @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_None))
+                        </MudButton>
+                    </MudButtonGroup>
+                </MudStack>
+                <MudButtonGroup OverrideStyles="false" Class="gap-2" Style="flex-wrap: wrap" Size="Size.Small">
+                    @foreach (var shipClass in ViewModel!.AvailableClasses)
+                    {
+                        bool isSelected = ViewModel.SelectedClasses.Contains(shipClass);
+                        <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" @onmouseup="@(args => ToggleClassSelection(shipClass, args))" oncontextmenu="return false;">
+                            @Localizer.GetAppLocalization(shipClass.ShipClassToString()).Localization
+                        </MudButton>
+                    }
+                </MudButtonGroup>
+                <MudStack Row Class="mt-1" AlignItems="AlignItems.Center">
+                    <MudText GutterBottom="true" Style="font-size: medium;">
+                        @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_NationFilter))
+                    </MudText>
+                    <MudButtonGroup OverrideStyles="false" Class="gap-2 mb-1" Style="flex-wrap: wrap" Size="Size.Small">
+                        <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllNations(true))">
+                            @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_All))
+                        </MudButton>
+                        <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllNations(false))">
+                            @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_None))
+                        </MudButton>
+                    </MudButtonGroup>
+                </MudStack>
+                <MudButtonGroup OverrideStyles="false" Class="gap-2" Style="flex-wrap: wrap" Size="Size.Small">
+                    @foreach (var nation in ViewModel!.AvailableNations)
+                    {
+                        bool isSelected = ViewModel.SelectedNations.Contains(nation);
+                        <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" @onmouseup="@(args => ToggleNationSelection(nation, args))" oncontextmenu="return false;">
+                            @Localizer.GetAppLocalization(nation.ShipNationToString()).Localization
+                        </MudButton>
+                    }
+                </MudButtonGroup>
+                <MudStack Row Class="mt-1" AlignItems="AlignItems.Center">
+                    <MudText GutterBottom="true" Style="font-size: medium;">
+                        @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_TypeFilter))
+                    </MudText>
+                    <MudButtonGroup OverrideStyles="false" Class="gap-2 mb-1" Style="flex-wrap: wrap" Size="Size.Small">
+                        <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllCategories(true))">
+                            @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_All))
+                        </MudButton>
+                        <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllCategories(false))">
+                            @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_None))
+                        </MudButton>
+                    </MudButtonGroup>
+                </MudStack>
+                <MudButtonGroup OverrideStyles="false" Class="gap-2" Style="flex-wrap: wrap" Size="Size.Small">
+                    @foreach (var category in ViewModel!.AvailableShipCategories)
+                    {
+                        bool isSelected = ViewModel.SelectedCategories.Contains(category);
+                        <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" @onmouseup="@(args => ToggleCategorySelection(category, args))" oncontextmenu="return false;">
+                            @Localizer.GetAppLocalization(category.ShipCategoryToString()).Localization
+                        </MudButton>
+                    }
+                </MudButtonGroup>
             }
-            <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllTiers(true))">
-                @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_All))
-            </MudButton>
-            <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllTiers(false))">
-                @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_None))
-            </MudButton>
-        </MudButtonGroup>
-        <MudText GutterBottom="true" Style="font-size: medium; margin-bottom: -1px;" Class="mt-1">
-            @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_ClassFilter))
-        </MudText>
-        <MudButtonGroup OverrideStyles="false" Class="gap-2" Style="flex-wrap: wrap" Size="Size.Small">
-            @foreach (var shipClass in ViewModel!.AvailableClasses)
+            else
             {
-                bool isSelected = ViewModel.SelectedClasses.Contains(shipClass);
-                <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" @onmouseup="@(args => ToggleClassSelection(shipClass, args))" oncontextmenu = "return false;">
-                    @Localizer.GetAppLocalization(shipClass.ShipClassToString()).Localization
-                </MudButton>
+                <MudStack Row Class="mt-3">
+                    <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center">
+                        <MudText GutterBottom="true" Style="font-size: medium; margin-top: 2px">
+                            @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_TierFilter))
+                        </MudText>
+                        <MudText GutterBottom="true" Style="font-size: medium; margin-top: 3px">
+                            @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_ClassFilter))
+                        </MudText>
+                        <MudText GutterBottom="true" Style="font-size: medium; margin-top: 4px">
+                            @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_NationFilter))
+                        </MudText>
+                        <MudText GutterBottom="true" Style="font-size: medium; margin-top: 5px">
+                            @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_TypeFilter))
+                        </MudText>
+                    </MudStack>
+                    <MudStack>
+                        <MudButtonGroup OverrideStyles="false" Class="gap-2" Style="flex-wrap: wrap" Size="Size.Small">
+                            @for (int i = TiersRange.First(); i <= TiersRange.Last(); i++)
+                            {
+                                int tier = i;
+                                bool isSelected = ViewModel.SelectedTiers.Contains(tier);
+                                <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" @onmouseup="@(args => ToggleTierSelection(tier, args))" oncontextmenu="return false;">
+                                    @tier.ToTierString()
+                                </MudButton>
+                            }
+                        </MudButtonGroup>
+                        <MudButtonGroup OverrideStyles="false" Class="gap-2" Style="flex-wrap: wrap" Size="Size.Small">
+                            @foreach (var shipClass in ViewModel!.AvailableClasses)
+                            {
+                                bool isSelected = ViewModel.SelectedClasses.Contains(shipClass);
+                                <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" @onmouseup="@(args => ToggleClassSelection(shipClass, args))" oncontextmenu="return false;">
+                                    @Localizer.GetAppLocalization(shipClass.ShipClassToString()).Localization
+                                </MudButton>
+                            }
+                        </MudButtonGroup>
+                        <MudButtonGroup OverrideStyles="false" Class="gap-2" Style="flex-wrap: wrap" Size="Size.Small">
+                            @foreach (var nation in ViewModel!.AvailableNations)
+                            {
+                                bool isSelected = ViewModel.SelectedNations.Contains(nation);
+                                <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" @onmouseup="@(args => ToggleNationSelection(nation, args))" oncontextmenu="return false;">
+                                    @Localizer.GetAppLocalization(nation.ShipNationToString()).Localization
+                                </MudButton>
+                            }
+                        </MudButtonGroup>
+                        <MudButtonGroup OverrideStyles="false" Class="gap-2" Style="flex-wrap: wrap" Size="Size.Small">
+                            @foreach (var category in ViewModel!.AvailableShipCategories)
+                            {
+                                bool isSelected = ViewModel.SelectedCategories.Contains(category);
+                                <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" @onmouseup="@(args => ToggleCategorySelection(category, args))" oncontextmenu="return false;">
+                                    @Localizer.GetAppLocalization(category.ShipCategoryToString()).Localization
+                                </MudButton>
+                            }
+                        </MudButtonGroup>
+                    </MudStack>
+                    <MudStack>
+                        <MudButtonGroup OverrideStyles="false" Class="gap-2" Style="flex-wrap: wrap; margin-top: 1px" Size="Size.Small">
+                            <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllTiers(true))">
+                                @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_All))
+                            </MudButton>
+                            <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllTiers(false))">
+                                @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_None))
+                            </MudButton>
+                        </MudButtonGroup>
+                        <MudButtonGroup OverrideStyles="false" Class="gap-2" Style="flex-wrap: wrap; margin-top: 2px" Size="Size.Small">
+                            <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllClasses(true))">
+                                @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_All))
+                            </MudButton>
+                            <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllClasses(false))">
+                                @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_None))
+                            </MudButton>
+                        </MudButtonGroup>
+                        <MudButtonGroup OverrideStyles="false" Class="gap-2" Style="flex-wrap: wrap; margin-top: 3px" Size="Size.Small">
+                            <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllNations(true))">
+                                @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_All))
+                            </MudButton>
+                            <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllNations(false))">
+                                @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_None))
+                            </MudButton>
+                        </MudButtonGroup>
+                        <MudButtonGroup OverrideStyles="false" Class="gap-2" Style="flex-wrap: wrap; margin-top: 4px" Size="Size.Small">
+                            <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllCategories(true))">
+                                @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_All))
+                            </MudButton>
+                            <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllCategories(false))">
+                                @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_None))
+                            </MudButton>
+                        </MudButtonGroup>
+                    </MudStack>
+                </MudStack>
             }
-            <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllClasses(true))">
-                @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_All))
-            </MudButton>
-            <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllClasses(false))">
-                @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_None))
-            </MudButton>
-        </MudButtonGroup>
-        <MudText GutterBottom="true" Style="font-size: medium; margin-bottom: -1px;" Class="mt-1">
-            @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_NationFilter))
-        </MudText>
-        <MudButtonGroup OverrideStyles="false" Class="gap-2" Style="flex-wrap: wrap" Size="Size.Small">
-            @foreach (var nation in ViewModel!.AvailableNations)
-            {
-                bool isSelected = ViewModel.SelectedNations.Contains(nation);
-                <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" @onmouseup="@(args => ToggleNationSelection(nation, args))" oncontextmenu = "return false;">
-                    @Localizer.GetAppLocalization(nation.ShipNationToString()).Localization
-                </MudButton>
-            }
-            <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllNations(true))">
-                @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_All))
-            </MudButton>
-            <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllNations(false))">
-                @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_None))
-            </MudButton>
-        </MudButtonGroup>
-        <MudText GutterBottom="true" Style="font-size: medium; margin-bottom: -1px;" Class="mt-1">
-            @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_TypeFilter))
-        </MudText>
-        <MudButtonGroup OverrideStyles="false" Class="gap-2" Style="flex-wrap: wrap" Size="Size.Small">
-            @foreach (var category in ViewModel!.AvailableShipCategories)
-            {
-                bool isSelected = ViewModel.SelectedCategories.Contains(category);
-                <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" @onmouseup="@(args => ToggleCategorySelection(category, args))" oncontextmenu = "return false;">
-                    @Localizer.GetAppLocalization(category.ShipCategoryToString()).Localization
-                </MudButton>
-            }
-            <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllCategories(true))">
-                @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_All))
-            </MudButton>
-            <MudButton Variant="Variant.Text" Color="Color.Info" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllCategories(false))">
-                @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_None))
-            </MudButton>
-        </MudButtonGroup>
+        </MudBreakpointProvider>
     </MudPaper>
     <MudStack Spacing="3" Class="my-3">
         <MudPaper Outlined Class="pa-2" Style="width: 100%;">
             <MudStack Spacing="2">
                 <MudButtonGroup OverrideStyles="false" Class="gap-2" Style="flex-wrap: wrap; width: 100%; display: flex">
-                    <MudButton DisableElevation="true" Size="Size.Small" Variant="GetVariantFromBool(ViewModel.ShowPinnedShipsOnly)" Color="GetColorFromBool(ViewModel.ShowPinnedShipsOnly)" OnClick="ToggleShowPinnedShipOnly" Class="ma-auto" Style="flex: 1">
+                    <MudButton DisableElevation="true" Size="Size.Small" Variant="GetVariantFromBool(ViewModel.ShowPinnedShipsOnly)" Color="GetColorFromBool(ViewModel.ShowPinnedShipsOnly)" OnClick="@ToggleShowPinnedShipOnly" Class="ma-auto" Style="flex: 1">
                         @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_DisplayOnlyPinnedShips))
                     </MudButton>
-                    <MudButton DisableElevation="true" Size="Size.Small" Variant="GetVariantFromBool(ViewModel.UseUpgradedModules)" Color="GetColorFromBool(ViewModel.UseUpgradedModules)" OnClick="ToggleUpgradedModules" Class="ma-auto" Style="flex: 1">
+                    <MudButton DisableElevation="true" Size="Size.Small" Variant="GetVariantFromBool(ViewModel.UseUpgradedModules)" Color="GetColorFromBool(ViewModel.UseUpgradedModules)" OnClick="@ToggleUpgradedModules" Class="ma-auto" Style="flex: 1">
                         @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_UseUpgradedModules))
                     </MudButton>
-                    <MudButton DisableElevation="true" Size="Size.Small" Variant="GetVariantFromBool(ViewModel.HideShipsWithoutSelectedSection)" Color="GetColorFromBool(ViewModel.HideShipsWithoutSelectedSection)" OnClick="ToggleHideShipsWithoutSelectedSection" Disabled="ViewModel.ShowPinnedShipsOnly" Class="ma-auto" Style="flex: 1">
+                    <MudButton DisableElevation="true" Size="Size.Small" Variant="GetVariantFromBool(ViewModel.HideShipsWithoutSelectedSection)" Color="GetColorFromBool(ViewModel.HideShipsWithoutSelectedSection)" OnClick="@ToggleHideShipsWithoutSelectedSection" Disabled="ViewModel.ShowPinnedShipsOnly" Class="ma-auto" Style="flex: 1">
                         @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_HideIfNoSection))
                     </MudButton>
                 </MudButtonGroup>
                 <MudButtonGroup DisableElevation Variant="Variant.Outlined" Color="Color.Secondary" Class="gap-2" Style="flex-wrap: wrap; width: 100%; display: flex" Size="Size.Small">
-                    <MudButton OnClick="ViewModel.SelectAllDisplayedShips" Disabled="@(ViewModel.GetShipsToBeDisplayed().Count == 0)" Class="ma-auto" Style="flex: 1">
+                    <MudButton OnClick="@ViewModel.SelectAllDisplayedShips" Disabled="@(ViewModel.GetShipsToBeDisplayed().Count == 0)" Class="ma-auto" Style="flex: 1">
                         @(ViewModel.SelectAllShips ? Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_UnselectAll)) : Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SelectAll)))
                     </MudButton>
-                    <MudButton OnClick="PinAllDisplayedShips" Disabled="@(ViewModel.GetShipsToBeDisplayed().Count == 0)" Class="ma-auto" Style="flex: 1">
+                    <MudButton OnClick="@PinAllDisplayedShips" Disabled="@(ViewModel.GetShipsToBeDisplayed().Count == 0)" Class="ma-auto" Style="flex: 1">
                         @(ViewModel!.PinAllShips ? Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_UnpinAll)) : Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_PinAll)))
                     </MudButton>
-                    <MudButton OnClick="ResetAllBuilds" Class="ma-auto" Style="flex: 1">
+                    <MudButton OnClick="@ResetAllBuilds" Class="ma-auto" Style="flex: 1">
                         @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_ResetAll))
                     </MudButton>
-                    <MudButton OnClick="DuplicateSelectedShips" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1">
+                    <MudButton OnClick="@DuplicateSelectedShips" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1">
                         @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Duplicate))
                     </MudButton>
                     <MudButton OnClick="@(() => EditBuilds())" Disabled="@(isDialogOpen || ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1">
                         @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_EditBuilds))
                     </MudButton>
-                    <MudButton OnClick="RemoveBuilds" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1">
+                    <MudButton OnClick="@RemoveBuilds" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1">
                         @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_RemoveBuilds))
                     </MudButton>
-                    <MudButton OnClick="OpenShipStats" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1">
+                    <MudButton OnClick="@OpenShipStats" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1">
                         @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_ViewStats))
                     </MudButton>
-                    <MudButton OnClick="OpenBallisticCharts" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1">
+                    <MudButton OnClick="@OpenBallisticCharts" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1">
                         @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_ViewBallistic))
                     </MudButton>
-                    <MudButton OnClick="OpenAccelerationCharts" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1">
+                    <MudButton OnClick="@OpenAccelerationCharts" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1">
                         @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_ViewAcceleration))
                     </MudButton>
                 </MudButtonGroup>
@@ -222,7 +335,7 @@
             <div style="width: 5%">
                 <MudSpacer/>
             </div>
-            <MudDataGridPager T="GridDataWrapper" PageSizeOptions="GridPagination" Class="mr-n1" Style="margin-top: -14px"/>
+            <MudDataGridPager T="GridDataWrapper" PageSizeOptions="GridPagination" RowsPerPageString="@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_ShipsPerPage))" Class="mr-n1" Style="margin-top: -14px"/>
         </ToolBarContent>
         <Columns>
             <TemplateColumn T="GridDataWrapper" ShowColumnOptions="false" Hideable="false" Filterable="false" DragAndDropEnabled="false" StickyLeft SortBy="@(x => !ViewModel.SelectedShipList.ContainsKey(x.Id))" HeaderStyle="width:70px; background-clip: padding-box; background-color: #282828;" CellStyle="@($"width:70px; {StickyColumnsBackgroundColor}")" Resizable="false" HeaderClass="column-text-center" CellClass="column-text-center">
@@ -296,7 +409,7 @@
             @BombsDataFragment((IsColumnHidden, Localizer))
         </Columns>
         <PagerContent>
-            <MudDataGridPager T="GridDataWrapper" PageSizeOptions="GridPagination"/>
+            <MudDataGridPager T="GridDataWrapper" RowsPerPageString="@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_ShipsPerPage))" PageSizeOptions="GridPagination"/>
         </PagerContent>
         <NoRecordsContent>
             <MudText>@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_NoMatchingShipsFound))</MudText>
@@ -337,6 +450,8 @@
     private Dictionary<string, bool> hiddenColumns = new();
 
     private BuildConfigurationDialogHelper buildConfigurationHelper = default!;
+
+    private MudBreakpointProvider breakpointProvider = default!;
 
     private bool isDialogOpen;
 
@@ -783,6 +898,11 @@
     private bool IsColumnHidden(string section, string columnTitle)
     {
         return !ViewModel!.SelectedDataSection.AsString().Equals(section) || hiddenColumns.TryGetValue($"{section}_{columnTitle}", out bool hidden) && hidden;
+    }
+
+    private bool IsSmallScreen()
+    {
+        return breakpointProvider.Breakpoint is Breakpoint.Xs or Breakpoint.Sm;
     }
 
     private async Task UpdateUrl()
