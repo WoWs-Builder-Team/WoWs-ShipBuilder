@@ -1918,6 +1918,9 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="ShipComparison_Planes" xml:space="preserve">
       <value>Flugzeuge</value>
   </data>
+  <data name="BuildConfigurationDialog_Load" xml:space="preserve">
+      <value>Laden</value>
+  </data>
   <data name="ShipStats_PenetrationAp" xml:space="preserve">
       <value>Durchschlagskraft</value>
   </data>
