@@ -63,4 +63,9 @@
         </Compile>
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\lib\chartJs\dist\chart.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\html2canvas\dist\html2canvas.min.js" />
+    </ItemGroup>
+
 </Project>
