@@ -9,15 +9,15 @@ export function SetupGlobalChartConfig(aspectRatio)
     defaults.datasets.spanGaps = true;
     defaults.animation = false;
     defaults.aspectRatio = aspectRatio;
-    
+
     //colors settings
     defaults.color = '#a9a9a9';
     defaults.borderColor = '#696969';
 
     //title settings
     defaults.plugins.title.display = true;
-    defaults.plugins.title.font.size = 30; 
-    
+    defaults.plugins.title.font.size = 30;
+
     //tooltip settings
     defaults.interaction.mode = 'nearest';
     defaults.interaction.intersect = true;
@@ -27,18 +27,18 @@ export function SetupGlobalChartConfig(aspectRatio)
     defaults.plugins.tooltip.caretSize = 10;
     defaults.plugins.tooltip.usePointStyle = true;
     defaults.plugins.tooltip.boxPadding = 5;
-    
+
     //point settings
     defaults.elements.point.radius = 0;
     defaults.elements.point.hitRadius = 5;
     defaults.elements.point.hoverRadius = 5;
-    
+
     //line settings
     defaults.elements.line.borderJoinStyle = "bevel";
-    
+
     const autocolors = window['chartjs-plugin-autocolors'];
     Chart.register(autocolors);
-    
+
 }
 
 /**
@@ -183,7 +183,7 @@ export function MultipleBatchAddOrUpdateDataNewLabels(chartIds, multipleUpdatedC
             {
                 chart.data.datasets[shipIndex].data = chartData.datasets[chartIndex];
                 chart.data.datasets[shipIndex].label = chartData.newLabel;
-                chart.data.datasets[shipIndex].guid = chartData.newId;   
+                chart.data.datasets[shipIndex].guid = chartData.newId;
             }
         });
         chart.update();

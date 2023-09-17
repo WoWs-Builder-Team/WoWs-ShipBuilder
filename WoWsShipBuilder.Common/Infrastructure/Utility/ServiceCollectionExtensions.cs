@@ -16,7 +16,11 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection UseShipBuilder(this IServiceCollection services)
     {
-        services.AddMudServices(config => { config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight; });
+        services.AddMudServices(config =>
+        {
+            config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight;
+            config.PopoverOptions.Mode = PopoverMode.Legacy;
+        });
         services.AddSingleton<ILocalizationProvider, LocalizationProvider>();
         services.AddSingleton<MetricsService>();
         if (OperatingSystem.IsBrowser())
