@@ -1,5 +1,4 @@
 ﻿@page "/charts"
-@using MudBlazor.Services
 @using WoWsShipBuilder.DataContainers
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.DataStructures.Ship
@@ -19,7 +18,7 @@
 @inject IDialogService DialogService
 @inject ChartJsInterop ChartJsInterop
 @inject MetricsService MetricsService
-@inject IBreakpointService BreakpointService
+@inject IBrowserViewportService BreakpointService
 @inject SessionStateCache SessionStateCache
 
 <PageTitle>WoWs ShipBuilder: Charts</PageTitle>
@@ -318,7 +317,7 @@
             var panelId = chartsTabs.ActivePanel.ID.ToString() ?? "unknown";
             MetricsService.ChartsTabUsage.WithLabels(panelId).Inc();
             SetProcessing(true);
-            Breakpoint = await BreakpointService.GetBreakpoint();
+            Breakpoint = await BreakpointService.GetCurrentBreakpointAsync();
             await SetupChartsAsync();
             if (shipIndexesFromUrl.Any())
             {

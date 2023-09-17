@@ -12,8 +12,6 @@ dotnet build dirs.proj -c $buildConfig
 Write-Output "Publishing build"
 dotnet publish WoWsShipBuilder.Desktop -c $buildConfig -p:PublishProfile=PublishWindows
 $publishDir = "WoWsShipBuilder.Desktop\bin\$buildConfig\publish"
-Copy-Item -Path WoWsShipBuilder.Desktop\bin\$buildConfig\$frameworkVersion\runtimes\win7-x64\native\av_libGLESv2.dll -Destination $publishDir
-Copy-Item -Path WoWsShipBuilder.Desktop\bin\$buildConfig\$frameworkVersion\Third-Party-Licenses.txt -Destination $publishDir
 
 Write-Output "Creating Squirrel.Windows release"
 $version = Get-Content -Path WoWsShipBuilder.Desktop\buildInfo.txt

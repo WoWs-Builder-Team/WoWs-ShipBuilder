@@ -26,7 +26,7 @@ public static class Helpers
         return ShipModuleHelper.GroupAndSortUpgrades(ship.ShipUpgradeInfo.ShipUpgrades)
             .OrderBy(entry => entry.Key)
             .Select(entry => entry.Value)
-            .Select(module => module.First())
+            .Select(module => module[0])
             .ToList();
     }
 
@@ -35,7 +35,7 @@ public static class Helpers
         return ShipModuleHelper.GroupAndSortUpgrades(ship.ShipUpgradeInfo.ShipUpgrades)
             .OrderBy(entry => entry.Key)
             .Select(entry => entry.Value)
-            .Select(module => module.Last())
+            .Select(module => module[^1])
             .ToList();
     }
 
@@ -54,7 +54,7 @@ public static class Helpers
     public static bool IsAprilFool()
     {
         // For debugging
-        // Return DateTime.Now.Minute > 30;
+        // Return DateTime.Now.Minute > 30
         return DateTime.Now is { Month: 4, Day: 1 };
     }
 

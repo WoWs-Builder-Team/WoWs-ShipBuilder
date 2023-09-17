@@ -3,14 +3,14 @@
   "defaultProvider": "jsdelivr",
   "libraries": [
     {
-      "library": "chart.js@3.8.0",
+      "library": "chart.js@4.4.0",
       "destination": "wwwroot/lib/chartJs/",
       "files": [
-        "dist/chart.min.js"
+        "dist/chart.umd.min.js"
       ]
     },
     {
-      "library": "chartjs-plugin-autocolors@0.0.6",
+      "library": "chartjs-plugin-autocolors@0.2.2",
       "destination": "wwwroot/lib/autocolor/",
       "files":[
         "dist/chartjs-plugin-autocolors.min.js"

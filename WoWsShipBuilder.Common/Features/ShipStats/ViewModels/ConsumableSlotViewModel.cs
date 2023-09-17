@@ -29,7 +29,7 @@ public class ConsumableSlotViewModel : ReactiveObject
         this.activationChangeHandler = activationChangeHandler;
         this.logger = logger;
         this.shipConsumables = new(shipConsumables);
-        Slot = this.shipConsumables.First().Slot;
+        Slot = this.shipConsumables[0].Slot;
     }
 
     public int Slot { get; }
@@ -77,7 +77,7 @@ public class ConsumableSlotViewModel : ReactiveObject
 
     public void UpdateDataContainers(List<(string, float)> modifiers, int shipHp, ShipClass shipClass)
     {
-        var dataContainers = shipConsumables.Select(c => ConsumableDataContainer.FromTypeAndVariant(c, modifiers, false, 0, shipHp, shipClass));
+        var dataContainers = shipConsumables.Select(c => ConsumableDataContainer.FromTypeAndVariant(c, modifiers, false, shipHp, shipClass));
         ConsumableData = dataContainers.ToList();
     }
 }

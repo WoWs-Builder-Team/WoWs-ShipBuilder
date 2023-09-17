@@ -3,5 +3,6 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <LangVersion>11</LangVersion>
+    <AnalysisMode>Recommended</AnalysisMode>
   </PropertyGroup>
 </Project>

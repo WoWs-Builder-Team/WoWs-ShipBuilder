@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform;
@@ -9,6 +10,7 @@ using Color = System.Drawing.Color;
 
 namespace WoWsShipBuilder.Desktop.Infrastructure.WebView;
 
+[SuppressMessage("Design", "CA1001", Justification = "Disposal happens in OnDetachedFromVisualTree")]
 public class BlazorWebView : NativeControlHost
 {
     private Uri? source;
@@ -211,12 +213,13 @@ public class BlazorWebView : NativeControlHost
         }
     }
 
-    // Helper method to dispose underlying blazor webview. Do not use until dotnet 8 because disposing the webview will deadlock.
-    public void OnUnloaded()
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
+        base.OnDetachedFromVisualTree(e);
         if (OperatingSystem.IsWindows())
         {
-            blazorWebView?.Dispose();
+            // Do not use until dotnet 8 because disposing the webview will deadlock. see https://github.com/dotnet/maui/issues/7997#issuecomment-1258681003
+            // blazorWebView?.Dispose();
             blazorWebView = null;
         }
     }

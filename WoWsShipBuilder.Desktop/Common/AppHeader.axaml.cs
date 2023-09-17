@@ -2,18 +2,12 @@ using System;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Shapes;
 using Avalonia.Markup.Xaml;
 
-namespace WoWsShipBuilder.Desktop.Infrastructure
+namespace WoWsShipBuilder.Desktop.Common
 {
     public partial class AppHeader : UserControl
     {
-        private Button minimizeButton;
-        private Button maximizeButton;
-        private Path maximizeIcon;
-        private Button closeButton;
-
         public static readonly StyledProperty<bool> ShowTitleProperty =
             AvaloniaProperty.Register<AppHeader, bool>(nameof(ShowTitle), true);
 
@@ -33,14 +27,9 @@ namespace WoWsShipBuilder.Desktop.Infrastructure
         {
             InitializeComponent();
 
-            minimizeButton = this.FindControl<Button>("MinimizeButton");
-            maximizeButton = this.FindControl<Button>("MaximizeButton");
-            maximizeIcon = this.FindControl<Path>("MaximizeIcon");
-            closeButton = this.FindControl<Button>("CloseButton");
-
-            minimizeButton.Click += MinimizeWindow;
-            maximizeButton.Click += MaximizeWindow;
-            closeButton.Click += CloseWindow;
+            MinimizeButton.Click += MinimizeWindow;
+            MaximizeButton.Click += MaximizeWindow;
+            CloseButton.Click += CloseWindow;
 
             SubscribeToWindowState();
         }
@@ -135,13 +124,13 @@ namespace WoWsShipBuilder.Desktop.Infrastructure
             {
                 if (s != WindowState.Maximized)
                 {
-                    maximizeIcon.Data = Avalonia.Media.Geometry.Parse("M2048 2048v-2048h-2048v2048h2048zM1843 1843h-1638v-1638h1638v1638z");
+                    MaximizeIcon.Data = Avalonia.Media.Geometry.Parse("M2048 2048v-2048h-2048v2048h2048zM1843 1843h-1638v-1638h1638v1638z");
                     hostWindow.Padding = new Thickness(0, 0, 0, 0);
                 }
 
                 if (s == WindowState.Maximized)
                 {
-                    maximizeIcon.Data = Avalonia.Media.Geometry.Parse("M2048 1638h-410v410h-1638v-1638h410v-410h1638v1638zm-614-1024h-1229v1229h1229v-1229zm409-409h-1229v205h1024v1024h205v-1229z");
+                    MaximizeIcon.Data = Avalonia.Media.Geometry.Parse("M2048 1638h-410v410h-1638v-1638h410v-410h1638v1638zm-614-1024h-1229v1229h1229v-1229zm409-409h-1229v205h1024v1024h205v-1229z");
 
                     // This should be a more universal approach in both cases, but I found it to be less reliable, when for example double-clicking the title bar.
                     hostWindow.Padding = new Thickness(

@@ -1,6 +1,7 @@
 ﻿using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.DataTransfer;
 using WoWsShipBuilder.Infrastructure.Utility;
+using WoWsShipBuilder.Web.Features.Authentication;
 
 namespace WoWsShipBuilder.Web.Infrastructure;
 
@@ -21,6 +22,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUserDataService, WebUserDataService>();
         services.AddScoped<IClipboardService, WebClipboardService>();
         services.AddScoped<ISettingsAccessor, WebSettingsAccessor>();
+        services.AddScoped<AuthenticationService>();
 
         services.AddTransient<DataInitializer>();
 

@@ -1,4 +1,5 @@
-﻿using WoWsShipBuilder.DataElements.DataElements;
+﻿using System.Globalization;
+using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.Infrastructure.Localization;
 
 namespace WoWsShipBuilder.Features.ShipStats;
@@ -19,6 +20,6 @@ public static class FormattedTextHelper
             values = formattedTextDataElement.AreValuesAppLocalization ? values.Select(x => localizer.GetAppLocalization(x).Localization) : values.Select(x => localizer.GetGameLocalization(x).Localization);
         }
 
-        return string.Format(text, values.Cast<object>().ToArray());
+        return string.Format(CultureInfo.InvariantCulture, text, values.Cast<object>().ToArray());
     }
 }

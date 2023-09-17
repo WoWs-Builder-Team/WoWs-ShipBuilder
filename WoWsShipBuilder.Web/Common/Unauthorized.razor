@@ -1,0 +1,18 @@
+﻿<MudContainer MaxWidth="MaxWidth.False">
+    <MudText Typo="Typo.h3" Class="my-4">Unauthorized</MudText>
+
+    <MudText Class="mb-4">Sorry, you are not authorized to view this resource.</MudText>
+    <AuthorizeView>
+        <Authorized>
+            <MudText>It seems like you don't have enough permissions to access this resource. Try to re-log or contact the site administrators if you think this is a bug.</MudText>
+        </Authorized>
+        <NotAuthorized>
+            <MudStack Row AlignItems="AlignItems.Center">
+                <MudText>Please try to log in to access this resource:</MudText>
+                <MudButton Color="Color.Info" Class="rounded-4" Variant="Variant.Filled" Href="/api/auth/login/eu">EU</MudButton>
+                <MudButton Color="Color.Info" Class="rounded-4" Variant="Variant.Filled" Href="/api/auth/login/com">NA</MudButton>
+                <MudButton Color="Color.Info" Class="rounded-4" Variant="Variant.Filled" Href="/api/auth/login/asia">SEA</MudButton>
+            </MudStack>
+        </NotAuthorized>
+    </AuthorizeView>
+</MudContainer>

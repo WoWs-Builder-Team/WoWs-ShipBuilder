@@ -38,8 +38,8 @@ public partial record DepthChargeDataContainer : ProjectileDataContainer
         decimal maxSpeed = (decimal)(depthCharge.SinkingSpeed * (1 + depthCharge.SinkingSpeedRng)) * Constants.KnotsToMps;
         decimal minTimer = (decimal)(depthCharge.DetonationTimer - depthCharge.DetonationTimerRng);
         decimal maxTimer = (decimal)(depthCharge.DetonationTimer + depthCharge.DetonationTimerRng);
-        decimal minDetDepth = minSpeed * minTimer;
-        decimal maxDetDepth = maxSpeed * maxTimer;
+        decimal minDetDepth = minSpeed * minTimer / 2;
+        decimal maxDetDepth = maxSpeed * maxTimer / 2;
 
         var depthChargeDataContainer = new DepthChargeDataContainer
         {

@@ -3,15 +3,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:infrastructure="clr-namespace:WoWsShipBuilder.Desktop.Infrastructure"
+        xmlns:common="clr-namespace:WoWsShipBuilder.Desktop.Common"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="150"
         x:Class="WoWsShipBuilder.Desktop.Features.MessageBox.MessageBox"
         WindowStartupLocation="CenterOwner"
         ExtendClientAreaChromeHints="NoChrome">
 
     <Grid RowDefinitions="30,*">
-        <infrastructure:AppHeader Name="Header" ShowMinimizeButton="False"/>
+        <common:AppHeader Name="Header" ShowMinimizeButton="False"/>
         <Grid HorizontalAlignment="Center" RowDefinitions="Auto,*" ColumnDefinitions="Auto,*" Grid.Row="1" Margin="10">
-            <Image Name="Icon" Height="35" Width="35" Grid.Row="0" Grid.Column="0" Margin="0,0,20,0" />
+            <Image Name="IconImage" Height="35" Width="35" Grid.Row="0" Grid.Column="0" Margin="0,0,20,0" />
             <TextBlock HorizontalAlignment="Center" Name="Text" Grid.Row="0" Grid.Column="1" TextWrapping="Wrap"/>
             <StackPanel HorizontalAlignment="Right" Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" Name="Buttons">
                 <StackPanel.Styles>

@@ -139,7 +139,7 @@ public partial record MainBatteryDataContainer : DataContainerBase
         {
             var current = arrangementList[i];
             turretNames.Add(current.GunName);
-            arrangementString.AppendLine($"{current.TurretCount}x{current.BarrelCount} {{{i}}}");
+            arrangementString.AppendLine(CultureInfo.InvariantCulture, $"{current.TurretCount}x{current.BarrelCount} {{{i}}}");
             barrelLayout[i] = $"{current.TurretCount}x{current.BarrelCount}";
             barrelCount += current.TurretCount * current.BarrelCount;
         }

@@ -136,6 +136,8 @@ namespace WoWsShipBuilder.DataContainers
             decimal diveCapacityRechargeRateModifier = modifiers.FindModifiers("batteryRegenCoeff").Aggregate(1M, (current, modifier) => current * (decimal)modifier);
             decimal diveCapacityModifier = modifiers.FindModifiers("batteryCapacityCoeff").Aggregate(1M, (current, modifier) => current * (decimal)modifier);
 
+            float repairableDamageModifier = modifiers.FindModifiers("regeneratedHPPartCoef", true).Aggregate(0f, (current, modifier) => current + modifier);
+
             var survivability = new SurvivabilityDataContainer
             {
                 HitPoints = (int)hitPoints,
@@ -159,31 +161,31 @@ namespace WoWsShipBuilder.DataContainers
                 {
                     case ShipHitLocation.Citadel:
                         survivability.CitadelHp = (int)Math.Ceiling(location.Hp * (survivability.HitPoints / shipHull.Health) / 50) * 50;
-                        survivability.CitadelRegenRatio = Math.Round((decimal)location.RepairableDamage * 100);
+                        survivability.CitadelRegenRatio = Math.Round((decimal)(location.RepairableDamage + repairableDamageModifier) * 100);
                         break;
                     case ShipHitLocation.Bow:
                         survivability.BowHp = (int)Math.Ceiling(location.Hp * (survivability.HitPoints / shipHull.Health) / 50) * 50;
-                        survivability.BowRegenRatio = Math.Round((decimal)location.RepairableDamage * 100);
+                        survivability.BowRegenRatio = Math.Round((decimal)(location.RepairableDamage + repairableDamageModifier) * 100);
                         break;
                     case ShipHitLocation.Stern:
                         survivability.SternHp = (int)Math.Ceiling(location.Hp * (survivability.HitPoints / shipHull.Health) / 50) * 50;
-                        survivability.SternRegenRatio = Math.Round((decimal)location.RepairableDamage * 100);
+                        survivability.SternRegenRatio = Math.Round((decimal)(location.RepairableDamage + repairableDamageModifier) * 100);
                         break;
                     case ShipHitLocation.Superstructure:
                         survivability.SuperstructureHp = (int)Math.Ceiling(location.Hp * (survivability.HitPoints / shipHull.Health) / 50) * 50;
-                        survivability.SuperstructureRegenRatio = Math.Round((decimal)location.RepairableDamage * 100);
+                        survivability.SuperstructureRegenRatio = Math.Round((decimal)(location.RepairableDamage + repairableDamageModifier) * 100);
                         break;
                     case ShipHitLocation.AuxiliaryRooms:
                         survivability.AuxiliaryRoomsHp = (int)Math.Ceiling(location.Hp * (survivability.HitPoints / shipHull.Health) / 50) * 50;
-                        survivability.AuxiliaryRoomsRegenRatio = Math.Round((decimal)location.RepairableDamage * 100);
+                        survivability.AuxiliaryRoomsRegenRatio = Math.Round((decimal)(location.RepairableDamage + repairableDamageModifier) * 100);
                         break;
                     case ShipHitLocation.Casemate:
                         survivability.CasemateHp = (int)Math.Ceiling(location.Hp * (survivability.HitPoints / shipHull.Health) / 50) * 50;
-                        survivability.CasemateRegenRatio = Math.Round((decimal)location.RepairableDamage * 100);
+                        survivability.CasemateRegenRatio = Math.Round((decimal)(location.RepairableDamage + repairableDamageModifier) * 100);
                         break;
                     default:
                         survivability.HullHp = (int)Math.Ceiling(location.Hp * (survivability.HitPoints / shipHull.Health) / 50) * 50;
-                        survivability.HullRegenRatio = Math.Round((decimal)location.RepairableDamage * 100);
+                        survivability.HullRegenRatio = Math.Round((decimal)(location.RepairableDamage + repairableDamageModifier) * 100);
                         break;
                 }
             }

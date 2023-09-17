@@ -97,6 +97,10 @@ h1:focus {
     padding: 0 12px 8px;
 }
 
+.child-expander-content-padding {
+    padding: 8px 12px 8px;
+}
+
 .child-expander {
     border: 1px solid rgba(255, 255, 255, .5) !important;
 }
@@ -166,7 +170,7 @@ span.kofitext {
 }
 
 a.kofi-button {
-    box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
     line-height: 36px ;
     display: inline-block ;
     padding: 2px 12px ;
@@ -237,4 +241,16 @@ div.mud-expand-panel {
     max-height: calc(95vh - 110px);
     overflow-y: scroll;
     padding: 12px;
+}
+
+.custom-expansion-panel-header .mud-expand-panel-header {
+    padding: 4px 8px;
+    min-height: 24px;
+    background-color: rgb(80, 80, 80);
+}
+
+.custom-child-expansion-panel-header .mud-expand-panel-header {
+    padding: 4px 8px;
+    min-height: 24px;
+    background-color: rgba(80, 80, 80, 40%);
 }

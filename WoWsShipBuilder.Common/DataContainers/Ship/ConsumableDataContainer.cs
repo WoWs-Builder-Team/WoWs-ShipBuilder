@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
@@ -34,17 +35,17 @@ public partial record ConsumableDataContainer : DataContainerBase
 
     public Dictionary<string, float> Modifiers { get; set; } = null!;
 
-    public static ConsumableDataContainer FromTypeAndVariant(ShipConsumable consumable, List<(string name, float value)> modifiers, bool isCvPlanes, int planesHp, int shipHp, ShipClass shipClass)
+    public static ConsumableDataContainer FromTypeAndVariant(ShipConsumable consumable, List<(string name, float value)> modifiers, bool isCvPlanes, int shipHp, ShipClass shipClass)
     {
-        return FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, isCvPlanes, planesHp, shipHp, shipClass);
+        return FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, isCvPlanes, shipHp, shipClass);
     }
 
-    public static ConsumableDataContainer FromTypeAndVariant(AircraftConsumable consumable, List<(string name, float value)> modifiers, bool isCvPlanes, int planesHp, int shipHp, ShipClass shipClass)
+    public static ConsumableDataContainer FromTypeAndVariant(AircraftConsumable consumable, List<(string name, float value)> modifiers, bool isCvPlanes, int shipHp, ShipClass shipClass)
     {
-        return FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, isCvPlanes, planesHp, shipHp, shipClass);
+        return FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, isCvPlanes, shipHp, shipClass);
     }
 
-    private static ConsumableDataContainer FromTypeAndVariant(string name, string variant, int slot, List<(string name, float value)> modifiers, bool isCvPlanes, int planesHp, int shipHp, ShipClass shipClass)
+    private static ConsumableDataContainer FromTypeAndVariant(string name, string variant, int slot, List<(string name, float value)> modifiers, bool isCvPlanes, int shipHp, ShipClass shipClass)
     {
         var consumableIdentifier = $"{name} {variant}";
         var usingFallback = false;
@@ -109,12 +110,12 @@ public partial record ConsumableDataContainer : DataContainerBase
 
                 var plane = AppData.FindAircraft(consumable.PlaneName.Substring(0, consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)));
                 consumableModifiers.Add("cruisingSpeed", plane.Speed);
-                consumableModifiers.Add("maxViewDistance", (float)plane.SpottingOnShips);
                 consumableModifiers.Add("concealment", (float)plane.ConcealmentFromShips);
                 consumableModifiers.Add("maxKills", consumableModifiers["fightersNum"]);
 
                 var maxViewDistanceModifiers = modifiers.FindModifiers("interceptorSelected").ToList();
-                var maxViewDistance = maxViewDistanceModifiers.Aggregate(consumableModifiers["maxViewDistance"], (current, modifier) => current * modifier);
+                var baseMaxViewDistance = (float)plane.SpottingOnShips;
+                var maxViewDistance = maxViewDistanceModifiers.Aggregate(baseMaxViewDistance, (current, modifier) => current * modifier);
                 consumableModifiers["maxViewDistance"] = maxViewDistance;
                 if (maxViewDistanceModifiers.Count > 0)
                 {
@@ -140,11 +141,14 @@ public partial record ConsumableDataContainer : DataContainerBase
             var talentUsesModifiers = modifiers.FindModifiers("numConsumables", true);
             uses = talentUsesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
 
-            var allCooldownModifiers = modifiers.FindModifiers($"ConsumableReloadTime_{shipClass.ShipClassToString()}");
-            cooldown = allCooldownModifiers.Aggregate(cooldown, (current, modifier) => (current * modifier));
+            var allCooldownModifiers = modifiers.FindModifiers($"ConsumableReloadTime_{shipClass.ShipClassToString()}", true);
+            cooldown = allCooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+
+            allCooldownModifiers = modifiers.FindModifiers("ConsumableReloadTime", true);
+            cooldown = allCooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
 
             var allWorkModifiers = modifiers.FindModifiers("ConsumablesWorkTime");
-            workTime = allWorkModifiers.Aggregate(workTime, (current, modifier) => (current * modifier));
+            workTime = allWorkModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
 
             if (name.Contains("PCY011", StringComparison.InvariantCultureIgnoreCase))
             {
@@ -178,8 +182,6 @@ public partial record ConsumableDataContainer : DataContainerBase
 
                 var regenerationSpeedModifiers = modifiers.FindModifiers("regenerationHPSpeed", true);
                 var regenerationSpeed = regenerationSpeedModifiers.Aggregate(consumableModifiers["regenerationHPSpeed"], (current, modifier) => current * modifier);
-                var regenerationEfficiencyModifiers = modifiers.FindModifiers("regeneratedHPPartCoef", true);
-                regenerationSpeed = regenerationEfficiencyModifiers.Aggregate(regenerationSpeed, (current, modifier) => current * (1 + modifier));
                 consumableModifiers["regenerationHPSpeed"] = regenerationSpeed;
 
                 var hpPerHeal = (float)Math.Round(workTime * (regenerationSpeed * shipHp));
@@ -247,11 +249,11 @@ public partial record ConsumableDataContainer : DataContainerBase
                 var plane = AppData.FindAircraft(consumable.PlaneName[..consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)]);
                 consumableModifiers.Add("cruisingSpeed", plane.Speed);
                 consumableModifiers.Add("maxViewDistance", (float)plane.SpottingOnShips);
-                consumableModifiers.Add("concealment", (float)plane.ConcealmentFromShips);
                 consumableModifiers.Add("maxKills", consumableModifiers["fightersNum"]);
 
+                var concealment = (float)plane.ConcealmentFromShips;
                 var planesConcealmentModifiers = modifiers.FindModifiers("planeVisibilityFactor");
-                var planesConcealment = planesConcealmentModifiers.Aggregate(consumableModifiers["concealment"], (current, modifier) => current * modifier);
+                var planesConcealment = planesConcealmentModifiers.Aggregate(concealment, (current, modifier) => current * modifier);
                 consumableModifiers["concealment"] = planesConcealment;
             }
             else if (name.Contains("PCY018", StringComparison.InvariantCultureIgnoreCase))
@@ -279,7 +281,7 @@ public partial record ConsumableDataContainer : DataContainerBase
         var consumableDataContainer = new ConsumableDataContainer
         {
             Name = localizationKey,
-            NumberOfUses = consumable.NumConsumables != -1 ? uses.ToString() : "∞",
+            NumberOfUses = consumable.NumConsumables != -1 ? uses.ToString(CultureInfo.InvariantCulture) : "∞",
             IconName = iconName,
             Slot = slot,
             Desc = "",

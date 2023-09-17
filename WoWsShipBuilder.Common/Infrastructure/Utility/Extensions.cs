@@ -5,30 +5,30 @@ namespace WoWsShipBuilder.Infrastructure.Utility;
 public static class Extensions
 {
     // ReSharper disable once InconsistentNaming
-    public static void AddDict<T, S>(this Dictionary<T, S?> thisDict, Dictionary<T, S?> otherDict) where T : struct where S : class
+    public static void AddDict<TKey, TValue>(this Dictionary<TKey, TValue?> thisDict, Dictionary<TKey, TValue?> otherDict) where TKey : struct where TValue : class
     {
-        foreach ((T key, S? value) in otherDict)
+        foreach (var (key, value) in otherDict)
         {
             thisDict.Add(key, value);
         }
     }
 
     // ReSharper disable once InconsistentNaming
-    public static void AddRange<T, S>(this Dictionary<T, S> thisDict, IEnumerable<KeyValuePair<T, S>> otherDict) where T : struct where S : class
+    public static void AddRange<TKey, TValue>(this Dictionary<TKey, TValue> thisDict, IEnumerable<KeyValuePair<TKey, TValue>> otherDict) where TKey : struct where TValue : class
     {
-        foreach ((T key, S value) in otherDict)
+        foreach (var (key, value) in otherDict)
         {
             thisDict.Add(key, value);
         }
     }
 
     // ReSharper disable once InconsistentNaming
-    public static void RemoveMany<T, S>(this Dictionary<T, S> thisDict, IEnumerable<KeyValuePair<T, S>> otherDict) where T : struct where S : class => thisDict.RemoveMany(otherDict.Select(x => x.Key));
+    public static void RemoveMany<TKey, TValue>(this Dictionary<TKey, TValue> thisDict, IEnumerable<KeyValuePair<TKey, TValue>> otherDict) where TKey : struct where TValue : class => thisDict.RemoveMany(otherDict.Select(x => x.Key));
 
     // ReSharper disable once InconsistentNaming
-    public static void RemoveMany<T, S>(this Dictionary<T, S> thisDict, IEnumerable<T> keyList) where T : struct where S : class
+    public static void RemoveMany<TKey, TValue>(this Dictionary<TKey, TValue> thisDict, IEnumerable<TKey> keyList) where TKey : struct where TValue : class
     {
-        foreach (T key in keyList)
+        foreach (var key in keyList)
         {
             thisDict.Remove(key);
         }
@@ -77,5 +77,5 @@ public static class Extensions
         return true;
     }
 
-    public static string NameToIndex(this string name) => name.Split('_').First();
+    public static string NameToIndex(this string name) => name.Split('_')[0];
 }

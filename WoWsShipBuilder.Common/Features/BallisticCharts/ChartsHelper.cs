@@ -78,6 +78,8 @@ public static class ChartsHelper
                 verticalDispSeries = vertDispSeries.VerticalDispersionOnPerpendicularToWater;
                 break;
             case EllipsePlanes.RealPlane:
+                verticalDispSeries = vertDispSeries.VerticalDispersionAtImpactAngle;
+                break;
             default:
                 verticalDispSeries = vertDispSeries.VerticalDispersionAtImpactAngle;
                 break;
@@ -97,7 +99,7 @@ public static class ChartsHelper
             validData.Add(ballisticSeries.Last());
         }
 
-        IEnumerable<Point> trajectory = validData.First().Value.Coordinates.Select(x => new Point(x.X / 1000, x.Y));
+        IEnumerable<Point> trajectory = validData[0].Value.Coordinates.Select(x => new Point(x.X / 1000, x.Y));
         return trajectory;
     }
 
