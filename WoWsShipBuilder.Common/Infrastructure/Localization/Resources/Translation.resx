@@ -2057,4 +2057,7 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipComparison_ShipsPerPage" xml:space="preserve">
     <value>Ships per page:</value>
   </data>
+  <data name="ShipComparison_HideColumns" xml:space="preserve">
+    <value>Hide Columns</value>
+  </data>
 </root>

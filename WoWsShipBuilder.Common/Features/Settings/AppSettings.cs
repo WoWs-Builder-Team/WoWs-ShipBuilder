@@ -47,6 +47,14 @@ public class AppSettings
 
     public bool[] BuildImageLayoutSettings { get; set; } = { true, false, true, true, true, true };
 
+    public bool ShipComparisonUseUpgradedModules { get; set; } = true;
+
+    public bool ShipComparisonHideShipsWithoutSection { get; set; }
+
+    public double ShipComparisonFiringRange { get; set; } = 10;
+
+    public string? ShipComparisonHiddenColumns { get; set; }
+
     public void ClearSettings()
     {
         AutoUpdateEnabled = true;
@@ -65,6 +73,10 @@ public class AppSettings
         OpenSecondariesAndAaExpandersByDefault = false;
         BetaAccessCodes = new();
         BuildImageLayoutSettings = new[] { true, false, true, true, true, true };
+        ShipComparisonFiringRange = 10;
+        ShipComparisonUseUpgradedModules = true;
+        ShipComparisonHideShipsWithoutSection = false;
+        ShipComparisonHiddenColumns = default;
     }
 
     public void UpdateFromSettings(AppSettings settings)
@@ -85,5 +97,9 @@ public class AppSettings
         OpenSecondariesAndAaExpandersByDefault = settings.OpenSecondariesAndAaExpandersByDefault;
         BetaAccessCodes = settings.BetaAccessCodes;
         BuildImageLayoutSettings = settings.BuildImageLayoutSettings;
+        ShipComparisonFiringRange = settings.ShipComparisonFiringRange;
+        ShipComparisonUseUpgradedModules = settings.ShipComparisonUseUpgradedModules;
+        ShipComparisonHideShipsWithoutSection = settings.ShipComparisonHideShipsWithoutSection;
+        ShipComparisonHiddenColumns = settings.ShipComparisonHiddenColumns;
     }
 }

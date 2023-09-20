@@ -254,3 +254,22 @@ div.mud-expand-panel {
     min-height: 24px;
     background-color: rgba(80, 80, 80, 40%);
 }
+.mud-data-grid button.drag-icon-options {
+    visibility: hidden;
+    width: 0;
+    padding: 0;
+}
+
+.mud-data-grid .mud-table-cell {
+    padding: 1px 3px !important;
+    margin: 0;
+}
+
+.mud-data-grid-range-selector div.mud-input-control-input-container {
+    margin: 0 10px 10px auto;
+    width: 100px
+}
+
+.mud-data-grid-range-selector label.mud-input-label-text {
+    display: ruby !important;
+}
