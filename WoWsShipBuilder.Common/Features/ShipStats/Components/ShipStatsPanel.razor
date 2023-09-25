@@ -146,7 +146,7 @@
                                         {
                                             for(int i = 0; i < torpedo.DataElements.Count - 11; i++)
                                             {
-                                                @DataElementFragment((torpedo.DataElements[i]!, Localizer))
+                                                @DataElementFragment((torpedo.DataElements[i], Localizer))
                                             }
                                         }
                                         else
@@ -177,7 +177,7 @@
                                                 <MudStack Spacing="1" Class="child-expander-content-padding">
                                                     @for (var i = torpedo.DataElements.Count - 11; i < torpedo.DataElements.Count - 5; i++)
                                                     {
-                                                        @DataElementFragment((torpedo.DataElements[i]!, Localizer))
+                                                        @DataElementFragment((torpedo.DataElements[i], Localizer))
                                                     }
                                                 </MudStack>
                                             </MudExpansionPanel>
@@ -185,7 +185,7 @@
                                                     <MudStack Spacing="1" Class="child-expander-content-padding">
                                                         @for (var i = torpedo.DataElements.Count - 5; i < torpedo.DataElements.Count; i++)
                                                         {
-                                                            @DataElementFragment((torpedo.DataElements[i]!, Localizer))
+                                                            @DataElementFragment((torpedo.DataElements[i], Localizer))
                                                         }
                                                     </MudStack>
                                                 </MudExpansionPanel>
@@ -273,6 +273,10 @@
                 @if (ViewModel.CurrentShipStats?.SecondaryBatteryUiDataContainer.Secondaries is not null)
                 {
                     <MudExpansionPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_SecondaryBattery)).Localization" IsInitiallyExpanded="@(AppSettings.OpenAllMainExpandersByDefault)" Style="border-bottom: initial" Class="custom-expansion-panel-header header-border border border-solid rounded-0 my-4">
+                        <div class="d-flex justify-space-between expander-content-padding">
+                            <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@Localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Range))</MudText>
+                            <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@($"{ViewModel.CurrentShipStats?.SecondaryBatteryUiDataContainer.Range} {Localizer.SimpleAppLocalization(nameof(Translation.Unit_KM))}")</MudText>
+                        </div>
                         <MudExpansionPanels MultiExpansion Dense DisableGutters Class="expander-content-padding my-n2">
                             @foreach (var secondary in ViewModel.CurrentShipStats.SecondaryBatteryUiDataContainer.Secondaries)
                             {
@@ -424,19 +428,6 @@
     <!--Misc-->
     <MudItem xs="12" lg="@(ViewModel.CurrentShipStats.SecondColumnContent.Any() ? 4 : 6)">
         <MudExpansionPanels MultiExpansion Dense DisableGutters Class="my-n4">
-            <!--Maneuverability-->
-            <MudExpansionPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Maneuverability)).Localization" IsInitiallyExpanded="@(AppSettings.OpenAllMainExpandersByDefault)" Style="border-bottom: initial" Class="custom-expansion-panel-header header-border border border-solid rounded-0 my-4">
-                <MudStack Spacing="1" Class="expander-content-padding">
-                    @foreach (var data in ViewModel.CurrentShipStats?.ManeuverabilityDataContainer?.DataElements ?? new())
-                    {
-                        @DataElementFragment((data, Localizer))
-                    }
-                </MudStack>
-                <MudText Typo="Typo.body2" Class="expander-content-padding mt-n1" Style="color: paleturquoise !important; text-decoration: underline; cursor: pointer" @onclick="@(_ => SendBuildToAccelerationCharts(false))">
-                    @Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowAccelerationCharts)).Localization
-                </MudText>
-            </MudExpansionPanel>
-
             <!--Concealment-->
             <MudExpansionPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Concealment)).Localization" IsInitiallyExpanded="@(AppSettings.OpenAllMainExpandersByDefault)" Style="border-bottom: initial" Class="custom-expansion-panel-header header-border border border-solid rounded-0 my-4">
                 <MudStack Spacing="1" Class="expander-content-padding">
@@ -447,18 +438,31 @@
                 </MudStack>
             </MudExpansionPanel>
 
+            <!--Maneuverability-->
+            <MudExpansionPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Maneuverability)).Localization" IsInitiallyExpanded="@(AppSettings.OpenAllMainExpandersByDefault)" Style="border-bottom: initial" Class="custom-expansion-panel-header header-border border border-solid rounded-0 my-4">
+                <MudStack Spacing="1" Class="expander-content-padding">
+                    @foreach (var data in ViewModel.CurrentShipStats?.ManeuverabilityDataContainer.DataElements ?? new())
+                    {
+                        @DataElementFragment((data, Localizer))
+                    }
+                </MudStack>
+                <MudText Typo="Typo.body2" Class="expander-content-padding mt-n1" Style="color: paleturquoise !important; text-decoration: underline; cursor: pointer" @onclick="@(_ => SendBuildToAccelerationCharts(false))">
+                    @Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowAccelerationCharts)).Localization
+                </MudText>
+            </MudExpansionPanel>
+
             <!--Survivability-->
             <MudExpansionPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Survivability)).Localization" IsInitiallyExpanded="@(AppSettings.OpenAllMainExpandersByDefault)" Style="border-bottom: initial" Class="custom-expansion-panel-header header-border border border-solid rounded-0 my-4">
                 <ChildContent>
                     <MudStack Spacing="1" Class="expander-content-padding">
-                         @DataElementFragment((ViewModel.CurrentShipStats?.SurvivabilityDataContainer.DataElements[0]!, Localizer))
-                         @{
+                        @DataElementFragment((ViewModel.CurrentShipStats?.SurvivabilityDataContainer.DataElements[0]!, Localizer))
+                        @{
                             var j = ViewModel.CurrentShipStats?.PingerGunDataContainer is null ? 2 : 3; // subs have battery data that other ships do not have so we have to account for it
-                            for(int i = ViewModel.CurrentShipStats!.SurvivabilityDataContainer.DataElements.Count - j; i < ViewModel.CurrentShipStats?.SurvivabilityDataContainer.DataElements.Count; i++)
+                            for (int i = ViewModel.CurrentShipStats!.SurvivabilityDataContainer.DataElements.Count - j; i < ViewModel.CurrentShipStats?.SurvivabilityDataContainer.DataElements.Count; i++)
                             {
                                 @DataElementFragment((ViewModel.CurrentShipStats?.SurvivabilityDataContainer.DataElements[i]!, Localizer))
                             }
-                         }
+                        }
                         <MudExpansionPanel Dense DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShipSectionsHp)).Localization" Style="border-bottom: initial" Class="custom-child-expansion-panel-header child-expander rounded-0 my-0">
                             <MudStack Spacing="1" Class="child-expander-content-padding">
                                 @for (var i = 1; i < ViewModel.CurrentShipStats?.SurvivabilityDataContainer.DataElements.Count - j; i++)
