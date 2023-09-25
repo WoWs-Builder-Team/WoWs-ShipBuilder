@@ -23,16 +23,12 @@ namespace WoWsShipBuilder.DataContainers
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Air", UnitKey = "KM")]
         public decimal ConcealmentByAirFire { get; set; }
 
-        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "FromSubs", UnitKey = "KM")]
-        public decimal ConcealmentBySubPeriscope { get; set; }
-
-        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "FromSubs", UnitKey = "KM")]
-        [DataElementFiltering(false)]
-        public decimal ConcealmentBySubOperating { get; set; }
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
+        public decimal FromSubsAtPeriscopeDepth { get; set; }
 
         public static ConcealmentDataContainer FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)
         {
-            var hull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull].First()];
+            var hull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull][0]];
 
             // Sea Detection
             decimal concealmentBySea = hull.SurfaceDetection;
@@ -40,20 +36,17 @@ namespace WoWsShipBuilder.DataContainers
 
             // AA Detection
             decimal concealmentByAir = hull.AirDetection;
-
             decimal concealmentBySubPeriscope = hull.DetectionBySubPeriscope;
-            decimal concealmentBySubOperating = hull.DetectionBySubOperating;
 
             int concealmentExpertIndex = modifiers.FindModifierIndex("visibilityDistCoeff");
             if (concealmentExpertIndex > -1)
             {
-                List<float> modifiersValues = modifiers.FindModifiers("visibilityDistCoeff").ToList();
+                var modifiersValues = modifiers.FindModifiers("visibilityDistCoeff").ToList();
                 foreach (decimal value in modifiersValues.Select(f => (decimal)f))
                 {
                     concealmentBySea *= value;
                     concealmentByAir *= value;
                     concealmentBySubPeriscope *= value;
-                    concealmentBySubOperating *= value;
                 }
             }
 
@@ -65,22 +58,22 @@ namespace WoWsShipBuilder.DataContainers
             }
 
             // Checks for Heavy He
-            var artilleryConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Artillery);
+            var artilleryConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.Artillery);
             if (artilleryConfiguration != null)
             {
-                string[]? artilleryOptions = artilleryConfiguration.Components[ComponentType.Artillery];
+                string[] artilleryOptions = artilleryConfiguration.Components[ComponentType.Artillery];
                 TurretModule? mainBattery;
                 if (artilleryOptions.Length == 1)
                 {
-                    mainBattery = ship.MainBatteryModuleList[artilleryConfiguration.Components[ComponentType.Artillery].First()];
+                    mainBattery = ship.MainBatteryModuleList[artilleryConfiguration.Components[ComponentType.Artillery][0]];
                 }
                 else
                 {
-                    string? hullArtilleryName = shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Artillery].First();
+                    string hullArtilleryName = shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Artillery][0];
                     mainBattery = ship.MainBatteryModuleList[hullArtilleryName];
                 }
 
-                var gun = mainBattery.Guns.First();
+                var gun = mainBattery.Guns[0];
 
                 // GMBigGunVisibilityCoeff
                 if (gun.BarrelDiameter >= 0.149M)
@@ -91,7 +84,6 @@ namespace WoWsShipBuilder.DataContainers
                         var bigGunVisibilityFactorModifier = (decimal)modifiers[bigGunVisibilityFactorIndex].Value;
                         concealmentBySea *= bigGunVisibilityFactorModifier;
                         concealmentByAir *= bigGunVisibilityFactorModifier;
-                        concealmentBySubOperating *= bigGunVisibilityFactorModifier;
                         concealmentBySubPeriscope *= bigGunVisibilityFactorModifier;
                     }
                 }
@@ -107,8 +99,7 @@ namespace WoWsShipBuilder.DataContainers
                 ConcealmentBySeaFire = Math.Round(concealmentBySeaFire, 2),
                 ConcealmentByAir = Math.Round(concealmentByAir, 2),
                 ConcealmentByAirFire = Math.Round(concealmentByAirFire, 2),
-                ConcealmentBySubOperating = Math.Round(concealmentBySubOperating, 2),
-                ConcealmentBySubPeriscope = Math.Round(concealmentBySubPeriscope, 2),
+                FromSubsAtPeriscopeDepth = Math.Round(concealmentBySubPeriscope, 2),
             };
 
             concealment.UpdateDataElements();
