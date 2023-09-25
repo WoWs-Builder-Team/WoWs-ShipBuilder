@@ -85,6 +85,11 @@
                 break;
         }
         <MudDivider DividerType="DividerType.Middle" FlexItem Vertical/>
+        <NavLink href="/settings" class="main-nav-link d-flex" ActiveClass="nav-link-active">
+            <MudIcon Icon="@Icons.Material.Filled.Settings" Color="Color.Inherit" Style="font-size: xx-large"/>
+            <MudText Class="align-self-center">@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Settings))</MudText>
+        </NavLink>
+        <MudDivider DividerType="DividerType.Middle" FlexItem Vertical/>
         <MudTooltip>
             <TooltipContent>
                 <MudText Typo="Typo.body1">The replay renderer tool created by notyourfather and Trackpad.</MudText>
@@ -104,16 +109,6 @@
                 </span>
             </a>
         </div>
-        <MudTooltip>
-            <TooltipContent>
-                <MudText Typo="Typo.body1">@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Settings))</MudText>
-            </TooltipContent>
-            <ChildContent>
-                <NavLink href="/settings" class="main-nav-link d-flex" ActiveClass="nav-link-active">
-                    <MudIcon Icon="@Icons.Material.Filled.Settings" Color="Color.Inherit" Style="font-size: xx-large"/>
-                </NavLink>
-            </ChildContent>
-        </MudTooltip>
         <MudTooltip>
             <TooltipContent>
                 <MudText Typo="Typo.body1">Download ShipBuilder Desktop App</MudText>

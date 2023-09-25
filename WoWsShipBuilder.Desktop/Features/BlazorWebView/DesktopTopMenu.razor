@@ -21,6 +21,11 @@
     <NavLink href="/charts" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationCharts))</NavLink>
     <NavLink href="/acceleration-charts" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationAccelerationCharts))</NavLink>
     <NavLink href="/comparison" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationComparison))</NavLink>
+    <MudDivider DividerType="DividerType.Middle" FlexItem Vertical/>
+    <MudButton StartIcon="@Icons.Material.Filled.Settings" IconSize="Size.Large" Color="Color.Inherit" OnClick="@OpenSettings" Target="_blank" Size="Size.Medium">
+        @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Settings))
+    </MudButton>
+    <MudDivider DividerType="DividerType.Middle" FlexItem Vertical/>
     <MudSpacer/>
     @if (updateStatus == UpdateStatus.Active)
     {
@@ -47,7 +52,6 @@
             </span>
         </a>
     </div>
-    <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Inherit" OnClick="OpenSettings" Target="_blank" Size="Size.Medium" Title="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Settings))"/>
     <MudIconButton Icon="@Icons.Custom.Brands.Discord" Color="Color.Inherit" Link="https://discord.gg/C8EaepZJDY" Target="_blank" Size="Size.Large" Title="Discord server"/>
     <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder#wows-shipbuilder" Target="_blank" Title="Github repository"/>
 </MudAppBar>
