@@ -54,7 +54,10 @@ public partial class ShipComparisonViewModel : ReactiveObject
     {
         this.localizer = localizer;
         this.appSettings = appSettings;
-        LoadSettings();
+
+        useUpgradedModules = appSettings.ShipComparisonUseUpgradedModules;
+        hideShipsWithoutSelectedSection = appSettings.ShipComparisonHideShipsWithoutSection;
+        Range = appSettings.ShipComparisonFiringRange;
     }
 
     private Dictionary<Guid, GridDataWrapper> FilteredShipList
@@ -105,13 +108,6 @@ public partial class ShipComparisonViewModel : ReactiveObject
     private static bool ContainsShipIndex(string shipIndex, IEnumerable<KeyValuePair<Guid, GridDataWrapper>> list)
     {
         return list.Select(x => x.Value.ShipIndex).Contains(shipIndex);
-    }
-
-    private void LoadSettings()
-    {
-        useUpgradedModules = appSettings.ShipComparisonUseUpgradedModules;
-        hideShipsWithoutSelectedSection = appSettings.ShipComparisonHideShipsWithoutSection;
-        Range = appSettings.ShipComparisonFiringRange;
     }
 
     public Task ApplyFilters()
