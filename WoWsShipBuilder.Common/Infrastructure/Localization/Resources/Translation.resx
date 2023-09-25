@@ -2054,4 +2054,7 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipStats_DcDetonationDepthExplanation" xml:space="preserve">
       <value>The depth of submarines shown in game is expressed as "ship_meter". Subs can dive 60[ship_m] = 120[m].</value>
   </data>
+  <data name="ShipStats_FromSubsAtPeriscopeDepth" xml:space="preserve">
+    <value>From subs at periscope depth</value>
+  </data>
 </root>
