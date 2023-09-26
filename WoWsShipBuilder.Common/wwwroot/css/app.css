@@ -254,3 +254,9 @@ div.mud-expand-panel {
     min-height: 24px;
     background-color: rgba(80, 80, 80, 40%);
 }
+
+.sticky-tabs-header .mud-tabs-toolbar {
+    position: sticky !important;
+    z-index: 10 !important;
+    top: 64px !important;
+}
