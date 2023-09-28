@@ -256,7 +256,7 @@ div.mud-expand-panel {
 }
 
 .sticky-tabs-header .mud-tabs-toolbar {
-    position: sticky !important;
-    z-index: 10 !important;
-    top: 64px !important;
+    position: sticky;
+    z-index: 10;
+    top: 64px;
 }
