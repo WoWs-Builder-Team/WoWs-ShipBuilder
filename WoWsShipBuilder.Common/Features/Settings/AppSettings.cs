@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.DataTransfer;
 using ServerType = WoWsShipBuilder.Infrastructure.GameData.ServerType;

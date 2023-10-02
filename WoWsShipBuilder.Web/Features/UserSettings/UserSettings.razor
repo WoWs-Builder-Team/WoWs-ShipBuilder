@@ -1,5 +1,4 @@
 ﻿@page "/settings"
-@using Newtonsoft.Json
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.Settings
 @using WoWsShipBuilder.Infrastructure.ApplicationData
@@ -9,6 +8,7 @@
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
 @using WoWsShipBuilder.Web.Features.BetaAccess
+@using System.Text.Json
 
 @implements IDisposable
 @implements IAsyncDisposable
@@ -305,17 +305,18 @@
     {
         if (file is not null && file.ContentType.Equals("application/json"))
         {
-            using StreamReader reader = new(file.OpenReadStream());
-            string buildsString = await reader.ReadToEndAsync();
             IEnumerable<string>? buildList;
-            try
+            await using (var fileStream = file.OpenReadStream())
             {
-                buildList = JsonConvert.DeserializeObject<IEnumerable<string>>(buildsString);
-            }
-            catch (JsonReaderException)
-            {
-                Snackbar.Add("Corrupted JSON file.", Severity.Error);
-                return;
+                try
+                {
+                    buildList = await JsonSerializer.DeserializeAsync<IEnumerable<string>>(fileStream, AppConstants.JsonSerializerOptions);
+                }
+                catch (JsonException)
+                {
+                    Snackbar.Add("Corrupted JSON file.", Severity.Error);
+                    return;
+                }
             }
 
             if (buildList is not null)

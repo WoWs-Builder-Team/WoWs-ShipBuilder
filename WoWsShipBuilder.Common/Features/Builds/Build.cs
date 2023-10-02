@@ -1,9 +1,11 @@
 using System.Globalization;
 using System.IO.Compression;
 using System.Security.Cryptography;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
 
@@ -20,15 +22,15 @@ public class Build
     [JsonConstructor]
     private Build(string buildName, string shipIndex, Nation nation, List<string> modules, List<string> upgrades, List<string> consumables, string captain, List<int> skills, List<string> signals, int buildVersion = CurrentBuildVersion)
     {
-        this.BuildName = buildName;
-        this.ShipIndex = shipIndex;
+        this.BuildName = buildName ?? throw new ArgumentNullException(nameof(buildName));
+        this.ShipIndex = shipIndex ?? throw new ArgumentNullException(nameof(shipIndex));
         this.Nation = nation;
-        this.Modules = modules;
-        this.Upgrades = upgrades;
-        this.Captain = captain;
-        this.Skills = skills;
-        this.Signals = signals;
-        this.Consumables = consumables;
+        this.Modules = modules ?? throw new ArgumentNullException(nameof(modules));
+        this.Upgrades = upgrades ?? throw new ArgumentNullException(nameof(upgrades));
+        this.Captain = captain ?? throw new ArgumentNullException(nameof(captain));
+        this.Skills = skills ?? throw new ArgumentNullException(nameof(skills));
+        this.Signals = signals ?? throw new ArgumentNullException(nameof(signals));
+        this.Consumables = consumables ?? throw new ArgumentNullException(nameof(consumables));
         this.BuildVersion = buildVersion;
 
         this.Hash = CreateHash(this);
@@ -39,7 +41,6 @@ public class Build
     {
     }
 
-    [JsonProperty(Required = Required.Always)]
     public string BuildName { get; }
 
     public string ShipIndex { get; }
@@ -93,11 +94,11 @@ public class Build
                 using var gzip = new DeflateStream(inputStream, CompressionMode.Decompress);
                 using var reader = new StreamReader(gzip, System.Text.Encoding.UTF8);
                 string buildJson = reader.ReadToEnd();
-                build = JsonConvert.DeserializeObject<Build>(buildJson) ?? throw new InvalidOperationException("Failed to deserialize build object from string");
+                build = JsonSerializer.Deserialize<Build>(buildJson, AppConstants.JsonSerializerOptions) ?? throw new InvalidOperationException("Failed to deserialize build object from string");
             }
             else if (buildString.StartsWith('{') && buildString.EndsWith('}'))
             {
-                build = JsonConvert.DeserializeObject<Build>(buildString)!;
+                build = JsonSerializer.Deserialize<Build>(buildString, AppConstants.JsonSerializerOptions)!;
             }
             else
             {
@@ -167,7 +168,7 @@ public class Build
 
     private static string CreateHash(Build build)
     {
-        string buildString = JsonConvert.SerializeObject(build);
+        string buildString = JsonSerializer.Serialize(build, AppConstants.JsonSerializerOptions);
         byte[] textData = System.Text.Encoding.UTF8.GetBytes(buildString);
         byte[] hash = SHA256.HashData(textData);
         return BitConverter.ToString(hash).Replace("-", string.Empty);
@@ -192,7 +193,7 @@ public class Build
 
     public string CreateStringFromBuild()
     {
-        string buildString = JsonConvert.SerializeObject(this);
+        string buildString = JsonSerializer.Serialize(this, AppConstants.JsonSerializerOptions);
         using var output = new MemoryStream();
         using (var gzip = new DeflateStream(output, CompressionLevel.Optimal))
         {

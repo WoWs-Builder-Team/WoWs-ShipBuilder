@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
+using System.Text.Json;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using Sentry;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
@@ -73,7 +73,7 @@ public class ServerAppDataService : IAppDataService
         string dataRoot = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), shipBuilderDirectory, "json", serverType.StringName());
 
         string versionInfoContent = await File.ReadAllTextAsync(Path.Join(dataRoot, "VersionInfo.json"));
-        var localVersionInfo = JsonConvert.DeserializeObject<VersionInfo>(versionInfoContent)!;
+        var localVersionInfo = JsonSerializer.Deserialize<VersionInfo>(versionInfoContent, AppConstants.JsonSerializerOptions)!;
         AppData.DataVersion = localVersionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + localVersionInfo.CurrentVersion.DataIteration;
 
         var dataRootInfo = new DirectoryInfo(dataRoot);
@@ -111,7 +111,7 @@ public class ServerAppDataService : IAppDataService
             }
 
             string fileContent = await File.ReadAllTextAsync(Path.Join(localizationRoot, $"{language}.json"));
-            return JsonConvert.DeserializeObject<Dictionary<string, string>>(fileContent);
+            return JsonSerializer.Deserialize<Dictionary<string, string>>(fileContent, AppConstants.JsonSerializerOptions);
         }
 
         if (this.awsClient is ServerAwsClient serverAwsClient)
