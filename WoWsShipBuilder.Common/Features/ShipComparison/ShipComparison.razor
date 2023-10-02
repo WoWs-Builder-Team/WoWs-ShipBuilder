@@ -55,7 +55,8 @@
 
 @if (ViewModel is not null)
 {
-    <MudTextField AutoFocus T="string" Margin="Margin.Normal" Adornment="Adornment.Start" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_TypeName))" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Label="@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SearchAndPin))" @bind-Text="@ViewModel.ResearchedShip" Immediate="true" DebounceInterval="150"/>
+    <div style="margin: 8px 0;"></div>
+    <MudTextField AutoFocus T="string" Margin="Margin.Dense" Adornment="Adornment.Start" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_TypeName))" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Label="@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SearchAndPin))" @bind-Text="@ViewModel.ResearchedShip" Immediate DebounceInterval="150"/>
     if (!string.IsNullOrEmpty(ViewModel.ResearchedShip))
     {
         <MudPaper Style="max-height: 300px; overflow:auto; margin-top: -9px" Outlined="true">
@@ -65,7 +66,7 @@
                         <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center">
                             <MudImage Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{ship.Index}.png")" Height="35" ObjectPosition="ObjectPosition.Center"/>
                             <MudText Color="Color.Secondary" Class="mt-3">
-                                @(LocalizeShipName(ship.Index))
+                                @LocalizeShipName(ship.Index)
                             </MudText>
                         </MudStack>
                     </MudListItem>

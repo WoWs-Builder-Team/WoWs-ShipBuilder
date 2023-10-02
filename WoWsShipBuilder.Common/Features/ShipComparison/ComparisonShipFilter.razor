@@ -119,7 +119,7 @@
                     @for (int i = TiersRange.First(); i <= TiersRange.Last(); i++)
                     {
                         int tier = i;
-                        bool isSelected = ViewModel.SelectedTiers.Contains(tier);
+                        bool isSelected = ViewModel!.SelectedTiers.Contains(tier);
                         <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" @onmouseup="@(args => ToggleTierSelection(tier, args))" oncontextmenu="return false;">
                             @tier.ToTierString()
                         </MudButton>
