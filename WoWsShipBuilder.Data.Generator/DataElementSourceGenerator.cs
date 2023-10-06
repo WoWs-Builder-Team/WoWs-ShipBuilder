@@ -8,7 +8,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using WoWsShipBuilder.Data.Generator.Attributes;
 using WoWsShipBuilder.Data.Generator.Internals;
 
 namespace WoWsShipBuilder.Data.Generator;
@@ -94,7 +93,7 @@ public class DataElementSourceGenerator : IIncrementalGenerator
         cancellationToken.ThrowIfCancellationRequested();
         var name = symbol!.Name;
         var dataNamespace = symbol.ContainingNamespace.ToDisplayString();
-        var properties = symbol.GetMembers().OfType<IPropertySymbol>().Where(prop => prop.GetAttributes().Any(attr => attr.AttributeClass!.Name == nameof(AttributeGenerator.DataElementTypeAttribute))).ToList();
+        var properties = symbol.GetMembers().OfType<IPropertySymbol>().Where(prop => prop.GetAttributes().Any(attr => attr.AttributeClass!.Name == "DataElementTypeAttribute")).ToList();
         return (name, dataNamespace, properties);
     }
 
@@ -170,7 +169,7 @@ public partial record {dataRecord.className}
         {
             context.ReportDiagnostic(Diagnostic.Create(TooManyIterationsError, typeAttribute.ApplicationSyntaxReference!.GetSyntax().GetLocation()));
             additionalPropIndexes.Add(0);
-            return("", additionalPropIndexes);
+            return ("", additionalPropIndexes);
         }
 
         var builder = new StringBuilder();
@@ -180,12 +179,13 @@ public partial record {dataRecord.className}
         if (isGroup)
         {
             type &= ~DataElementTypes.Grouped;
+
             // Grouped element is missing the element own type. Return and add error diagnostic
             if (type == 0)
             {
                 context.ReportDiagnostic(Diagnostic.Create(GroupedMissingDefinitionError, typeAttribute.ApplicationSyntaxReference!.GetSyntax().GetLocation(), currentProp.Name));
                 additionalPropIndexes.Add(0);
-                return("", additionalPropIndexes);
+                return ("", additionalPropIndexes);
             }
         }
 
@@ -232,7 +232,6 @@ public partial record {dataRecord.className}
 
     private static (string code, List<int> additionalIndexes) GenerateGroupedRecord(SourceProductionContext context, AttributeData typeAttr, List<IPropertySymbol> properties, string collectionName, int iterationCounter)
     {
-
         var groupName = (string?)typeAttr.NamedArguments.First(arg => arg.Key == "GroupKey").Value.Value;
 
         if (string.IsNullOrWhiteSpace(groupName))
@@ -291,12 +290,12 @@ public partial record {dataRecord.className}
             context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, typeAttribute.ApplicationSyntaxReference!.GetSyntax().GetLocation(), "ValuesPropertyName", "TooltipDataElement"));
             return string.Empty;
         }
+
         var isKeyLocalization = (bool?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueLocalizationKey").Value.Value ?? false;
         var isListLocalization = (bool?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "ArePropertyNameValuesKeys").Value.Value ?? false;
 
-        var isKeyAppLocalization = (bool?) typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueAppLocalization").Value.Value ?? false;
-        var isListAppLocalization = (bool?) typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsPropertyNameValuesAppLocalization").Value.Value ?? false;
-
+        var isKeyAppLocalization = (bool?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueAppLocalization").Value.Value ?? false;
+        var isListAppLocalization = (bool?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsPropertyNameValuesAppLocalization").Value.Value ?? false;
 
         var filter = GetFilterAttributeData(property.Name, propertyAttributes);
         var builder = new StringBuilder();
@@ -365,9 +364,9 @@ public partial record {dataRecord.className}
         var filter = GetFilterAttributeData(property.Name, propertyAttributes);
 
         var isKeyLocalization = (bool?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueLocalizationKey").Value.Value ?? false;
-        var isKeyAppLocalization = (bool?) typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueAppLocalization").Value.Value ?? false;
+        var isKeyAppLocalization = (bool?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueAppLocalization").Value.Value ?? false;
 
-        var localizationKey = (string?) typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "NameLocalizationKey").Value.Value ?? name;
+        var localizationKey = (string?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "NameLocalizationKey").Value.Value ?? name;
 
         var builder = new StringBuilder();
         builder.Append(filter);
@@ -382,7 +381,7 @@ public partial record {dataRecord.className}
         var filter = GetFilterAttributeData(property.Name, propertyAttributes);
 
         var isKeyLocalization = (bool?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueLocalizationKey").Value.Value ?? false;
-        var isKeyAppLocalization = (bool?) typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueAppLocalization").Value.Value ?? false;
+        var isKeyAppLocalization = (bool?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueAppLocalization").Value.Value ?? false;
 
         var builder = new StringBuilder();
         builder.Append(filter);

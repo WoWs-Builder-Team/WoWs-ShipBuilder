@@ -3,9 +3,12 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Testing;
+using Microsoft.CodeAnalysis.Testing.Verifiers;
 using NUnit.Framework;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using Binder = Microsoft.CSharp.RuntimeBinder.Binder;
@@ -61,176 +64,185 @@ public partial record TestDataUi1 : ProjectileDataContainer
     public void ManeuverabilityDataContainer_NoErrors()
     {
         var code = """
-using WoWsShipBuilder.DataElements.DataElementAttributes;
-using WoWsShipBuilder.DataElements.DataElements;
-using WoWsShipBuilder.DataStructures;
-using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.Infrastructure.Utility;
+                   using WoWsShipBuilder.DataElements.DataElementAttributes;
+                   using WoWsShipBuilder.DataElements.DataElements;
+                   using WoWsShipBuilder.DataStructures;
+                   using WoWsShipBuilder.DataStructures.Ship;
+                   using WoWsShipBuilder.Infrastructure.Utility;
 
-namespace WoWsShipBuilder.DataContainers;
+                   namespace WoWsShipBuilder.DataContainers;
 
-public partial record ManeuverabilityDataContainer : DataContainerBase
-{
-    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Knots")]
-    public decimal ManeuverabilityMaxSpeed { get; set; }
+                   public partial record ManeuverabilityDataContainer : DataContainerBase
+                   {
+                       [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Knots")]
+                       public decimal ManeuverabilityMaxSpeed { get; set; }
 
-    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Knots", NameLocalizationKey = "MaxReverseSpeed")]
-    public decimal ManeuverabilityMaxReverseSpeed { get; set; }
+                       [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Knots", NameLocalizationKey = "MaxReverseSpeed")]
+                       public decimal ManeuverabilityMaxReverseSpeed { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxSpeed", UnitKey = "Knots")]
-    public decimal ManeuverabilitySubsMaxSpeedOnSurface { get; set; }
+                       [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxSpeed", UnitKey = "Knots")]
+                       public decimal ManeuverabilitySubsMaxSpeedOnSurface { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxSpeed", UnitKey = "Knots")]
-    public decimal ManeuverabilitySubsMaxSpeedAtPeriscope { get; set; }
+                       [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxSpeed", UnitKey = "Knots")]
+                       public decimal ManeuverabilitySubsMaxSpeedAtPeriscope { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxSpeed", UnitKey = "Knots")]
-    public decimal ManeuverabilitySubsMaxSpeedAtMaxDepth { get; set; }
+                       [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxSpeed", UnitKey = "Knots")]
+                       public decimal ManeuverabilitySubsMaxSpeedAtMaxDepth { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxReverseSpeed", UnitKey = "Knots", NameLocalizationKey = "ManeuverabilitySubsMaxSpeedOnSurface")]
-    public decimal ManeuverabilitySubsMaxReverseSpeedOnSurface { get; set; }
+                       [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxReverseSpeed", UnitKey = "Knots", NameLocalizationKey = "ManeuverabilitySubsMaxSpeedOnSurface")]
+                       public decimal ManeuverabilitySubsMaxReverseSpeedOnSurface { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxReverseSpeed", UnitKey = "Knots", NameLocalizationKey = "ManeuverabilitySubsMaxSpeedAtPeriscope")]
-    public decimal ManeuverabilitySubsMaxReverseSpeedAtPeriscope { get; set; }
+                       [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxReverseSpeed", UnitKey = "Knots", NameLocalizationKey = "ManeuverabilitySubsMaxSpeedAtPeriscope")]
+                       public decimal ManeuverabilitySubsMaxReverseSpeedAtPeriscope { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxReverseSpeed", UnitKey = "Knots", NameLocalizationKey = "ManeuverabilitySubsMaxSpeedAtMaxDepth")]
-    public decimal ManeuverabilitySubsMaxReverseSpeedAtMaxDepth { get; set; }
+                       [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxReverseSpeed", UnitKey = "Knots", NameLocalizationKey = "ManeuverabilitySubsMaxSpeedAtMaxDepth")]
+                       public decimal ManeuverabilitySubsMaxReverseSpeedAtMaxDepth { get; set; }
 
-    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MPS")]
-    public decimal ManeuverabilitySubsMaxDiveSpeed { get; set; }
+                       [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MPS")]
+                       public decimal ManeuverabilitySubsMaxDiveSpeed { get; set; }
 
-    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
-    public decimal ManeuverabilitySubsDivingPlaneShiftTime { get; set; }
+                       [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
+                       public decimal ManeuverabilitySubsDivingPlaneShiftTime { get; set; }
 
-    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
-    public decimal ManeuverabilityRudderShiftTime { get; set; }
+                       [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
+                       public decimal ManeuverabilityRudderShiftTime { get; set; }
 
-    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
-    public decimal ManeuverabilityTurningCircle { get; set; }
+                       [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
+                       public decimal ManeuverabilityTurningCircle { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxSpeedTime", UnitKey = "S")]
-    public decimal ForwardMaxSpeedTime { get; set; }
+                       [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxSpeedTime", UnitKey = "S")]
+                       public decimal ForwardMaxSpeedTime { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxSpeedTime", UnitKey = "S")]
-    public decimal ReverseMaxSpeedTime { get; set; }
+                       [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxSpeedTime", UnitKey = "S")]
+                       public decimal ReverseMaxSpeedTime { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "BlastProtection", TooltipKey = "BlastExplanation")]
-    [DataElementFiltering(false)]
-    public decimal RudderBlastProtection { get; set; }
+                       [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "BlastProtection", TooltipKey = "BlastExplanation")]
+                       [DataElementFiltering(false)]
+                       public decimal RudderBlastProtection { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "BlastProtection", TooltipKey = "BlastExplanation")]
-    [DataElementFiltering(false)]
-    public decimal EngineBlastProtection { get; set; }
-}
-""";
+                       [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "BlastProtection", TooltipKey = "BlastExplanation")]
+                       [DataElementFiltering(false)]
+                       public decimal EngineBlastProtection { get; set; }
+                   }
+                   """;
         var expected = """
-using System;
-using System.Collections.Generic;
-using WoWsShipBuilder.DataElements.DataElements;
+                       using System;
+                       using System.Collections.Generic;
+                       using WoWsShipBuilder.DataElements.DataElements;
 
-namespace WoWsShipBuilder.DataContainers;
+                       namespace WoWsShipBuilder.DataContainers;
 
-#nullable enable
-public partial record ManeuverabilityDataContainer
-{
-    private void UpdateDataElements()
-    {
-        DataElements.Clear();
-    if (DataContainerBase.ShouldAdd(ManeuverabilityMaxSpeed))
-        DataElements.Add(new KeyValueUnitDataElement("ShipStats_ManeuverabilityMaxSpeed", ManeuverabilityMaxSpeed.ToString(), "Unit_Knots"));
+                       #nullable enable
+                       public partial record ManeuverabilityDataContainer
+                       {
+                           private void UpdateDataElements()
+                           {
+                               DataElements.Clear();
+                           if (DataContainerBase.ShouldAdd(ManeuverabilityMaxSpeed))
+                               DataElements.Add(new KeyValueUnitDataElement("ShipStats_ManeuverabilityMaxSpeed", ManeuverabilityMaxSpeed.ToString(), "Unit_Knots"));
 
-    if (DataContainerBase.ShouldAdd(ManeuverabilityMaxReverseSpeed))
-        DataElements.Add(new KeyValueUnitDataElement("ShipStats_MaxReverseSpeed", ManeuverabilityMaxReverseSpeed.ToString(), "Unit_Knots"));
+                           if (DataContainerBase.ShouldAdd(ManeuverabilityMaxReverseSpeed))
+                               DataElements.Add(new KeyValueUnitDataElement("ShipStats_MaxReverseSpeed", ManeuverabilityMaxReverseSpeed.ToString(), "Unit_Knots"));
 
-        var MaxSpeedList = new List<IDataElement>();
-    if (DataContainerBase.ShouldAdd(ManeuverabilitySubsMaxSpeedOnSurface))
-        MaxSpeedList.Add(new KeyValueUnitDataElement("ShipStats_ManeuverabilitySubsMaxSpeedOnSurface", ManeuverabilitySubsMaxSpeedOnSurface.ToString(), "Unit_Knots"));
-    if (DataContainerBase.ShouldAdd(ManeuverabilitySubsMaxSpeedAtPeriscope))
-        MaxSpeedList.Add(new KeyValueUnitDataElement("ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope", ManeuverabilitySubsMaxSpeedAtPeriscope.ToString(), "Unit_Knots"));
-    if (DataContainerBase.ShouldAdd(ManeuverabilitySubsMaxSpeedAtMaxDepth))
-        MaxSpeedList.Add(new KeyValueUnitDataElement("ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth", ManeuverabilitySubsMaxSpeedAtMaxDepth.ToString(), "Unit_Knots"));
-    if (MaxSpeedList.Count > 0)
-        DataElements.Add(new GroupedDataElement("ShipStats_MaxSpeed", MaxSpeedList));
+                               var MaxSpeedList = new List<IDataElement>();
+                           if (DataContainerBase.ShouldAdd(ManeuverabilitySubsMaxSpeedOnSurface))
+                               MaxSpeedList.Add(new KeyValueUnitDataElement("ShipStats_ManeuverabilitySubsMaxSpeedOnSurface", ManeuverabilitySubsMaxSpeedOnSurface.ToString(), "Unit_Knots"));
+                           if (DataContainerBase.ShouldAdd(ManeuverabilitySubsMaxSpeedAtPeriscope))
+                               MaxSpeedList.Add(new KeyValueUnitDataElement("ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope", ManeuverabilitySubsMaxSpeedAtPeriscope.ToString(), "Unit_Knots"));
+                           if (DataContainerBase.ShouldAdd(ManeuverabilitySubsMaxSpeedAtMaxDepth))
+                               MaxSpeedList.Add(new KeyValueUnitDataElement("ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth", ManeuverabilitySubsMaxSpeedAtMaxDepth.ToString(), "Unit_Knots"));
+                           if (MaxSpeedList.Count > 0)
+                               DataElements.Add(new GroupedDataElement("ShipStats_MaxSpeed", MaxSpeedList));
 
-        var MaxReverseSpeedList = new List<IDataElement>();
-    if (DataContainerBase.ShouldAdd(ManeuverabilitySubsMaxReverseSpeedOnSurface))
-        MaxReverseSpeedList.Add(new KeyValueUnitDataElement("ShipStats_ManeuverabilitySubsMaxSpeedOnSurface", ManeuverabilitySubsMaxReverseSpeedOnSurface.ToString(), "Unit_Knots"));
-    if (DataContainerBase.ShouldAdd(ManeuverabilitySubsMaxReverseSpeedAtPeriscope))
-        MaxReverseSpeedList.Add(new KeyValueUnitDataElement("ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope", ManeuverabilitySubsMaxReverseSpeedAtPeriscope.ToString(), "Unit_Knots"));
-    if (DataContainerBase.ShouldAdd(ManeuverabilitySubsMaxReverseSpeedAtMaxDepth))
-        MaxReverseSpeedList.Add(new KeyValueUnitDataElement("ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth", ManeuverabilitySubsMaxReverseSpeedAtMaxDepth.ToString(), "Unit_Knots"));
-    if (MaxReverseSpeedList.Count > 0)
-        DataElements.Add(new GroupedDataElement("ShipStats_MaxReverseSpeed", MaxReverseSpeedList));
+                               var MaxReverseSpeedList = new List<IDataElement>();
+                           if (DataContainerBase.ShouldAdd(ManeuverabilitySubsMaxReverseSpeedOnSurface))
+                               MaxReverseSpeedList.Add(new KeyValueUnitDataElement("ShipStats_ManeuverabilitySubsMaxSpeedOnSurface", ManeuverabilitySubsMaxReverseSpeedOnSurface.ToString(), "Unit_Knots"));
+                           if (DataContainerBase.ShouldAdd(ManeuverabilitySubsMaxReverseSpeedAtPeriscope))
+                               MaxReverseSpeedList.Add(new KeyValueUnitDataElement("ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope", ManeuverabilitySubsMaxReverseSpeedAtPeriscope.ToString(), "Unit_Knots"));
+                           if (DataContainerBase.ShouldAdd(ManeuverabilitySubsMaxReverseSpeedAtMaxDepth))
+                               MaxReverseSpeedList.Add(new KeyValueUnitDataElement("ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth", ManeuverabilitySubsMaxReverseSpeedAtMaxDepth.ToString(), "Unit_Knots"));
+                           if (MaxReverseSpeedList.Count > 0)
+                               DataElements.Add(new GroupedDataElement("ShipStats_MaxReverseSpeed", MaxReverseSpeedList));
 
-    if (DataContainerBase.ShouldAdd(ManeuverabilitySubsMaxDiveSpeed))
-        DataElements.Add(new KeyValueUnitDataElement("ShipStats_ManeuverabilitySubsMaxDiveSpeed", ManeuverabilitySubsMaxDiveSpeed.ToString(), "Unit_MPS"));
+                           if (DataContainerBase.ShouldAdd(ManeuverabilitySubsMaxDiveSpeed))
+                               DataElements.Add(new KeyValueUnitDataElement("ShipStats_ManeuverabilitySubsMaxDiveSpeed", ManeuverabilitySubsMaxDiveSpeed.ToString(), "Unit_MPS"));
 
-    if (DataContainerBase.ShouldAdd(ManeuverabilitySubsDivingPlaneShiftTime))
-        DataElements.Add(new KeyValueUnitDataElement("ShipStats_ManeuverabilitySubsDivingPlaneShiftTime", ManeuverabilitySubsDivingPlaneShiftTime.ToString(), "Unit_S"));
+                           if (DataContainerBase.ShouldAdd(ManeuverabilitySubsDivingPlaneShiftTime))
+                               DataElements.Add(new KeyValueUnitDataElement("ShipStats_ManeuverabilitySubsDivingPlaneShiftTime", ManeuverabilitySubsDivingPlaneShiftTime.ToString(), "Unit_S"));
 
-    if (DataContainerBase.ShouldAdd(ManeuverabilityRudderShiftTime))
-        DataElements.Add(new KeyValueUnitDataElement("ShipStats_ManeuverabilityRudderShiftTime", ManeuverabilityRudderShiftTime.ToString(), "Unit_S"));
+                           if (DataContainerBase.ShouldAdd(ManeuverabilityRudderShiftTime))
+                               DataElements.Add(new KeyValueUnitDataElement("ShipStats_ManeuverabilityRudderShiftTime", ManeuverabilityRudderShiftTime.ToString(), "Unit_S"));
 
-    if (DataContainerBase.ShouldAdd(ManeuverabilityTurningCircle))
-        DataElements.Add(new KeyValueUnitDataElement("ShipStats_ManeuverabilityTurningCircle", ManeuverabilityTurningCircle.ToString(), "Unit_M"));
+                           if (DataContainerBase.ShouldAdd(ManeuverabilityTurningCircle))
+                               DataElements.Add(new KeyValueUnitDataElement("ShipStats_ManeuverabilityTurningCircle", ManeuverabilityTurningCircle.ToString(), "Unit_M"));
 
-        var MaxSpeedTimeList = new List<IDataElement>();
-    if (DataContainerBase.ShouldAdd(ForwardMaxSpeedTime))
-        MaxSpeedTimeList.Add(new KeyValueUnitDataElement("ShipStats_ForwardMaxSpeedTime", ForwardMaxSpeedTime.ToString(), "Unit_S"));
-    if (DataContainerBase.ShouldAdd(ReverseMaxSpeedTime))
-        MaxSpeedTimeList.Add(new KeyValueUnitDataElement("ShipStats_ReverseMaxSpeedTime", ReverseMaxSpeedTime.ToString(), "Unit_S"));
-    if (MaxSpeedTimeList.Count > 0)
-        DataElements.Add(new GroupedDataElement("ShipStats_MaxSpeedTime", MaxSpeedTimeList));
+                               var MaxSpeedTimeList = new List<IDataElement>();
+                           if (DataContainerBase.ShouldAdd(ForwardMaxSpeedTime))
+                               MaxSpeedTimeList.Add(new KeyValueUnitDataElement("ShipStats_ForwardMaxSpeedTime", ForwardMaxSpeedTime.ToString(), "Unit_S"));
+                           if (DataContainerBase.ShouldAdd(ReverseMaxSpeedTime))
+                               MaxSpeedTimeList.Add(new KeyValueUnitDataElement("ShipStats_ReverseMaxSpeedTime", ReverseMaxSpeedTime.ToString(), "Unit_S"));
+                           if (MaxSpeedTimeList.Count > 0)
+                               DataElements.Add(new GroupedDataElement("ShipStats_MaxSpeedTime", MaxSpeedTimeList));
 
-        var BlastProtectionList = new List<IDataElement>();
+                               var BlastProtectionList = new List<IDataElement>();
 
-        BlastProtectionList.Add(new TooltipDataElement("ShipStats_RudderBlastProtection", RudderBlastProtection.ToString(), "ShipStats_BlastExplanation", ""));
+                               BlastProtectionList.Add(new TooltipDataElement("ShipStats_RudderBlastProtection", RudderBlastProtection.ToString(), "ShipStats_BlastExplanation", ""));
 
-        BlastProtectionList.Add(new TooltipDataElement("ShipStats_EngineBlastProtection", EngineBlastProtection.ToString(), "ShipStats_BlastExplanation", ""));
-    if (BlastProtectionList.Count > 0)
-        DataElements.Add(new GroupedDataElement("ShipStats_BlastProtection", BlastProtectionList));
-    }
-}
-#nullable restore
-""";
+                               BlastProtectionList.Add(new TooltipDataElement("ShipStats_EngineBlastProtection", EngineBlastProtection.ToString(), "ShipStats_BlastExplanation", ""));
+                           if (BlastProtectionList.Count > 0)
+                               DataElements.Add(new GroupedDataElement("ShipStats_BlastProtection", BlastProtectionList));
+                           }
+                       }
+                       #nullable restore
+                       """;
 
         _ = VerifyGenerator(code, expected);
     }
 
     [Test]
-    public void SingleKeyValueUnitElement_NoErrors()
+    public async Task SingleKeyValueUnitElement_NoErrors()
     {
         var code = """
-using WoWsShipBuilder.DataElements.DataElementAttributes;
-using WoWsShipBuilder.DataElements.DataElements;
+                   using WoWsShipBuilder.DataElements.DataElementAttributes;
+                   using WoWsShipBuilder.DataElements.DataElements;
 
-namespace WoWsShipBuilder.DataContainers;
+                   namespace WoWsShipBuilder.DataContainers;
 
-public partial record TestContainer : DataContainerBase
-{
-    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Knots")]
-    public decimal TestProperty { get; set; }
-}
-""";
+                   public partial record TestContainer : DataContainerBase
+                   {
+                       [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Knots")]
+                       public decimal TestProperty { get; set; }
+                   }
+                   """;
         var expected = """
-using System;
-using System.Collections.Generic;
-using WoWsShipBuilder.DataElements.DataElements;
+                       using System;
+                       using System.Collections.Generic;
+                       using WoWsShipBuilder.DataElements.DataElements;
 
-namespace WoWsShipBuilder.DataContainers;
+                       namespace WoWsShipBuilder.DataContainers;
 
-#nullable enable
-public partial record TestContainer
-{
-    private void UpdateDataElements()
-    {
-        DataElements.Clear();
-        if (DataContainerBase.ShouldAdd(TestProperty))
-            DataElements.Add(new KeyValueUnitDataElement("ShipStats_TestProperty", TestProperty.ToString(), "Unit_Knots"));
-    }
-}
-#nullable restore
-""";
+                       #nullable enable
+                       public partial record TestContainer
+                       {
+                           private void UpdateDataElements()
+                           {
+                               DataElements.Clear();
+                               if (DataContainerBase.ShouldAdd(TestProperty))
+                                   DataElements.Add(new KeyValueUnitDataElement("ShipStats_TestProperty", TestProperty.ToString(), "Unit_Knots"));
+                           }
+                       }
+                       #nullable restore
+                       """;
 
+        await new CSharpSourceGeneratorTest<DataElementSourceGenerator, NUnitVerifier>
+        {
+            TestState =
+            {
+                Sources = { code },
+                GeneratedSources = { (typeof(DataElementSourceGenerator), "TestContainer.g.cs", expected) },
+                AdditionalReferences = { MetadataReference.CreateFromFile(typeof(DataElementTypeAttribute).GetTypeInfo().Assembly.Location) },
+            },
+        }.RunAsync();
         _ = VerifyGenerator(code, expected);
     }
 
@@ -238,42 +250,42 @@ public partial record TestContainer
     public void GroupedKeyValueUnitElement_NoErrors()
     {
         var code = """
-using WoWsShipBuilder.DataElements.DataElementAttributes;
-using WoWsShipBuilder.DataElements.DataElements;
+                   using WoWsShipBuilder.DataElements.DataElementAttributes;
+                   using WoWsShipBuilder.DataElements.DataElements;
 
-namespace WoWsShipBuilder.DataContainers;
+                   namespace WoWsShipBuilder.DataContainers;
 
-public partial record TestContainer : DataContainerBase
-{
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "TestGroup", UnitKey = "Knots")]
-    public decimal TestProperty { get; set; }
-}
-""";
+                   public partial record TestContainer : DataContainerBase
+                   {
+                       [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "TestGroup", UnitKey = "Knots")]
+                       public decimal TestProperty { get; set; }
+                   }
+                   """;
         var expected = """
-using System;
-using System.Collections.Generic;
-using WoWsShipBuilder.DataElements.DataElements;
+                       using System;
+                       using System.Collections.Generic;
+                       using WoWsShipBuilder.DataElements.DataElements;
 
-namespace WoWsShipBuilder.DataContainers;
+                       namespace WoWsShipBuilder.DataContainers;
 
-#nullable enable
-public partial record TestContainer
-{
-    private void UpdateDataElements()
-    {
-        DataElements.Clear();
+                       #nullable enable
+                       public partial record TestContainer
+                       {
+                           private void UpdateDataElements()
+                           {
+                               DataElements.Clear();
 
-        var TestGroupList = new List<IDataElement>();
-        if (DataContainerBase.ShouldAdd(TestProperty))
-            TestGroupList.Add(new KeyValueUnitDataElement("ShipStats_TestProperty", TestProperty.ToString(), "Unit_Knots"));
-        if (TestGroupList.Count > 0)
-            DataElements.Add(new GroupedDataElement("ShipStats_TestGroup", TestGroupList));
+                               var TestGroupList = new List<IDataElement>();
+                               if (DataContainerBase.ShouldAdd(TestProperty))
+                                   TestGroupList.Add(new KeyValueUnitDataElement("ShipStats_TestProperty", TestProperty.ToString(), "Unit_Knots"));
+                               if (TestGroupList.Count > 0)
+                                   DataElements.Add(new GroupedDataElement("ShipStats_TestGroup", TestGroupList));
 
 
-    }
-}
-#nullable restore
-""";
+                           }
+                       }
+                       #nullable restore
+                       """;
 
         _ = VerifyGenerator(code, expected);
     }
@@ -281,12 +293,12 @@ public partial record TestContainer
     private static GeneratorDriverRunResult VerifyGenerator(string source, string generated = "")
     {
         var baseInput = """
-using WoWsShipBuilder.DataElements.DataElements;
+                        using WoWsShipBuilder.DataElements.DataElements;
 
-namespace WoWsShipBuilder.Data.Generator.Test.TestStructures;
+                        namespace WoWsShipBuilder.Data.Generator.Test.TestStructures;
 
-public record ProjectileDataContainer : DataContainerBase;
-""";
+                        public record ProjectileDataContainer : DataContainerBase;
+                        """;
 
         var compilation = CreateCompilation(baseInput, source);
         GeneratorDriver driver = CSharpGeneratorDriver.Create(new DataElementSourceGenerator());
@@ -323,5 +335,4 @@ public record ProjectileDataContainer : DataContainerBase;
             },
             new(OutputKind.ConsoleApplication));
     }
-
 }
