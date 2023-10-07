@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -32,7 +33,7 @@ public class DataElementGenerator : IIncrementalGenerator
         return syntaxNode is RecordDeclarationSyntax typeDeclarationSyntax && typeDeclarationSyntax.Modifiers.Any(m => m.IsKind(SyntaxKind.PartialKeyword));
     }
 
-    private static ContainerData GetModel(GeneratorAttributeSyntaxContext context, CancellationToken token)
+    private static RawContainerData GetModel(GeneratorAttributeSyntaxContext context, CancellationToken token)
     {
         var recordSymbol = (INamedTypeSymbol)context.TargetSymbol;
         token.ThrowIfCancellationRequested();
@@ -45,29 +46,45 @@ public class DataElementGenerator : IIncrementalGenerator
             .ToEquatableArray();
 
         token.ThrowIfCancellationRequested();
-        return new(name, dataNamespace, properties, null);
+        return new(name, dataNamespace, properties);
     }
 
-    private static ContainerData ExtractPropertyGroups(ContainerData rawContainerData, CancellationToken token)
+    private static ContainerData ExtractPropertyGroups(RawContainerData rawContainerData, CancellationToken token)
     {
         token.ThrowIfCancellationRequested();
-        var propertyGroups = rawContainerData.Properties
+        IEnumerable<PropertyData> propertyGroups = rawContainerData.Properties
             .Where(prop => (prop.DataElementType & DataElementTypes.Grouped) == DataElementTypes.Grouped)
             .GroupBy(prop => prop.DisplayOptions.GroupKey!)
-            .Select(grouping => new PropertyGroup(grouping.Key, grouping.Select(prop => prop with { DataElementType = prop.DataElementType & ~DataElementTypes.Grouped }).ToEquatableArray()))
-            .ToEquatableArray();
+            .Select(CreatePropertyGroup)
+            .Select(groupData => new PropertyData(null, groupData, groupData.DeclarationIndex));
         token.ThrowIfCancellationRequested();
-        var singleProperties = rawContainerData.Properties.Where(prop => prop.DisplayOptions.GroupKey is null).ToEquatableArray();
+
+        var newProperties = rawContainerData.Properties
+            .Where(prop => prop.DisplayOptions.GroupKey is null)
+            .Select(p => new PropertyData(p, null, p.DeclarationIndex))
+            .Concat(propertyGroups)
+            .OrderBy(p => p.DeclarationIndex)
+            .ToEquatableArray();
 
         token.ThrowIfCancellationRequested();
-        return rawContainerData with { Properties = singleProperties, GroupedProperties = propertyGroups };
+        return new(rawContainerData.ContainerName, rawContainerData.Namespace, newProperties.ToEquatableArray());
     }
 
-    private sealed record ContainerData(string ContainerName, string Namespace, EquatableArray<PropertyData> Properties, EquatableArray<PropertyGroup>? GroupedProperties);
+    private static GroupPropertyData CreatePropertyGroup(IGrouping<string, SinglePropertyData> grouping)
+    {
+        var children = grouping.Select(prop => prop with { DataElementType = prop.DataElementType & ~DataElementTypes.Grouped }).ToEquatableArray();
+        return new(grouping.Key, children, children[0].DeclarationIndex);
+    }
 
-    private sealed record PropertyGroup(string GroupName, EquatableArray<PropertyData> Properties);
+    private sealed record RawContainerData(string ContainerName, string Namespace, EquatableArray<SinglePropertyData> Properties);
 
-    private sealed record PropertyData(string Name, bool IsString, bool IsNullable, DataElementTypes DataElementType, PropertyDisplayOptions DisplayOptions, PropertyFilter PropertyFilter, FormattedTextData FormattedTextData);
+    private sealed record ContainerData(string ContainerName, string Namespace, EquatableArray<PropertyData> Properties);
+
+    private sealed record PropertyData(SinglePropertyData? SinglePropertyData, GroupPropertyData? GroupPropertyData, int DeclarationIndex);
+
+    private sealed record GroupPropertyData(string GroupName, EquatableArray<SinglePropertyData> Properties, int DeclarationIndex);
+
+    private sealed record SinglePropertyData(string Name, bool IsString, bool IsNullable, DataElementTypes DataElementType, PropertyDisplayOptions DisplayOptions, PropertyFilter PropertyFilter, FormattedTextData FormattedTextData, int DeclarationIndex);
 
     private sealed record PropertyDisplayOptions(string? UnitKey, string? LocalizationKey, string? TooltipKey, string? GroupKey, bool TreatValueAsLocalizationKey, bool TreatValueAsAppLocalizationKey);
 
@@ -75,12 +92,12 @@ public class DataElementGenerator : IIncrementalGenerator
 
     private sealed record PropertyFilter(bool IsEnabled, string FilterMethodName);
 
-    private static PropertyData RefineProperty(IPropertySymbol propertySymbol)
+    private static SinglePropertyData RefineProperty(IPropertySymbol propertySymbol, int index)
     {
         var dataElementAttribute = propertySymbol.FindAttribute(DataElementAttributeFullName);
         var dataElementType = (DataElementTypes)dataElementAttribute.ConstructorArguments[0].Value!;
 
-        return new(propertySymbol.Name, propertySymbol.Type.SpecialType == SpecialType.System_String, propertySymbol.NullableAnnotation == NullableAnnotation.Annotated, dataElementType, ExtractDisplayOptions(propertySymbol, dataElementAttribute), ExtractFilterOptions(propertySymbol), ExtractFormattedTextOptions(dataElementAttribute));
+        return new(propertySymbol.Name, propertySymbol.Type.SpecialType == SpecialType.System_String, propertySymbol.NullableAnnotation == NullableAnnotation.Annotated, dataElementType, ExtractDisplayOptions(propertySymbol, dataElementAttribute), ExtractFilterOptions(propertySymbol), ExtractFormattedTextOptions(dataElementAttribute), index);
     }
 
     private static FormattedTextData ExtractFormattedTextOptions(AttributeData dataElementAttribute)
@@ -137,28 +154,31 @@ public class DataElementGenerator : IIncrementalGenerator
     private static void GenerateUpdateMethodContent(SourceBuilder builder, ContainerData containerData)
     {
         builder.Line("this.DataElements.Clear();");
-        foreach (var propertyGroup in containerData.GroupedProperties ?? EquatableArray<PropertyGroup>.Empty)
-        {
-            var listName = $"{propertyGroup.GroupName}List";
-            builder.Line($"var {listName} = new global::System.Collections.Generic.List<{DataElementNamespace}.IDataElement>();");
-            foreach (var property in propertyGroup.Properties)
-            {
-                GenerateGroupedPropertyCode(builder, property, listName);
-            }
-
-            using (builder.Block($"if ({listName}.Count > 0)"))
-            {
-                builder.Line($"{DataElementsCollectionName}.Add(new {DataElementNamespace}.GroupedDataElement(\"ShipStats_{propertyGroup.GroupName}\", {listName}));");
-            }
-        }
 
         foreach (var property in containerData.Properties)
         {
-            GeneratePropertyCode(builder, property);
+            if (property.SinglePropertyData is { } singleProperty)
+            {
+                GeneratePropertyCode(builder, singleProperty);
+            }
+            else if (property.GroupPropertyData is { } propertyGroup)
+            {
+                var listName = $"{propertyGroup.GroupName}List";
+                builder.Line($"var {listName} = new global::System.Collections.Generic.List<{DataElementNamespace}.IDataElement>();");
+                foreach (var childProperty in propertyGroup.Properties)
+                {
+                    GenerateGroupedPropertyCode(builder, childProperty, listName);
+                }
+
+                using (builder.Block($"if ({listName}.Count > 0)"))
+                {
+                    builder.Line($"{DataElementsCollectionName}.Add(new {DataElementNamespace}.GroupedDataElement(\"ShipStats_{propertyGroup.GroupName}\", {listName}));");
+                }
+            }
         }
     }
 
-    private static void GenerateGroupedPropertyCode(SourceBuilder builder, PropertyData property, string listName)
+    private static void GenerateGroupedPropertyCode(SourceBuilder builder, SinglePropertyData property, string listName)
     {
         if (property.PropertyFilter.IsEnabled)
         {
@@ -174,7 +194,7 @@ public class DataElementGenerator : IIncrementalGenerator
         }
     }
 
-    private static void GeneratePropertyCode(SourceBuilder builder, PropertyData property)
+    private static void GeneratePropertyCode(SourceBuilder builder, SinglePropertyData property)
     {
         if (property.PropertyFilter.IsEnabled)
         {
@@ -190,7 +210,7 @@ public class DataElementGenerator : IIncrementalGenerator
         }
     }
 
-    private static string GenerateDataElementCreationCode(PropertyData propertyData)
+    private static string GenerateDataElementCreationCode(SinglePropertyData propertyData)
     {
         return propertyData.DataElementType switch
         {
@@ -205,7 +225,7 @@ public class DataElementGenerator : IIncrementalGenerator
 
     private static string ComputeNullableUnitValue(PropertyDisplayOptions displayOptions) => displayOptions.UnitKey is not null ? $"Unit_{displayOptions.UnitKey}" : string.Empty;
 
-    private static string GeneratePropertyAccess(PropertyData propertyData)
+    private static string GeneratePropertyAccess(SinglePropertyData propertyData)
     {
         return propertyData switch
         {
