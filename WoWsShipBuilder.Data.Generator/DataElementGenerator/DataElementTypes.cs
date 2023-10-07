@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WoWsShipBuilder.Data.Generator.Internals;
+namespace WoWsShipBuilder.Data.Generator.DataElementGenerator;
 
 [Flags]
 internal enum DataElementTypes

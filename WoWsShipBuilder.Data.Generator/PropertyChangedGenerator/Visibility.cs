@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.Data.Generator.Internals;
+﻿namespace WoWsShipBuilder.Data.Generator.PropertyChangedGenerator;
 
 internal enum Visibility
 {

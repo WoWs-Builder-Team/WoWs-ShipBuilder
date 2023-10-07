@@ -8,9 +8,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using WoWsShipBuilder.Data.Generator.Internals;
 
-namespace WoWsShipBuilder.Data.Generator;
+namespace WoWsShipBuilder.Data.Generator.PropertyChangedGenerator;
 
 [Generator]
 public class PropertyChangedSourceGenerator : IIncrementalGenerator

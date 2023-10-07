@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WoWsShipBuilder.Data.Generator.Internals;
+namespace WoWsShipBuilder.Data.Generator.Utilities;
 
 internal sealed class SourceBuilder
 {

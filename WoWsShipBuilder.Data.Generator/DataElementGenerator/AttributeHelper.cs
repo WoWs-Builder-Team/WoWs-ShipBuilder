@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 
-namespace WoWsShipBuilder.Data.Generator.Attributes;
+namespace WoWsShipBuilder.Data.Generator.DataElementGenerator;
 
 public static class AttributeHelper
 {

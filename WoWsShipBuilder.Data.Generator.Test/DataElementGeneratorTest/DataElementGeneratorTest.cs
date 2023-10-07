@@ -1,18 +1,19 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
-using NUnit.Framework;
-using WoWsShipBuilder.Data.Generator.Attributes;
+using WoWsShipBuilder.Data.Generator.DataElementGenerator;
 using WoWsShipBuilder.DataElements.DataElements;
 
 namespace WoWsShipBuilder.Data.Generator.Test.DataElementGeneratorTest;
 
 [TestFixture]
+[SuppressMessage("Maintainability", "S2699", Justification = "false-positive since sonarlint does not recognize custom CreateTest method")]
 public partial class DataElementGeneratorTest
 {
-    private static CSharpSourceGeneratorTest<DataElementGenerator, NUnitVerifier> CreateTest(string source, string expected)
+    private static CSharpSourceGeneratorTest<DataElementGenerator.DataElementGenerator, NUnitVerifier> CreateTest(string source, string expected)
     {
         const string baseClass = """
                                  namespace WoWsShipBuilder.DataElements.DataElements;
@@ -41,11 +42,11 @@ public partial class DataElementGeneratorTest
                 Sources = { baseClass, source },
                 GeneratedSources =
                 {
-                    (typeof(DataElementGenerator), "DataElementTypes.g.cs", AttributeHelper.DataElementTypesEnum),
-                    (typeof(DataElementGenerator), "DataContainerAttribute.g.cs", AttributeHelper.DataContainerAttribute),
-                    (typeof(DataElementGenerator), "DataElementTypeAttribute.g.cs", AttributeHelper.DataElementTypeAttribute),
-                    (typeof(DataElementGenerator), "DataElementFilteringAttribute.g.cs", AttributeHelper.DataElementFilteringAttribute),
-                    (typeof(DataElementGenerator), "TestRecord.g.cs", expected),
+                    (typeof(DataElementGenerator.DataElementGenerator), "DataElementTypes.g.cs", AttributeHelper.DataElementTypesEnum),
+                    (typeof(DataElementGenerator.DataElementGenerator), "DataContainerAttribute.g.cs", AttributeHelper.DataContainerAttribute),
+                    (typeof(DataElementGenerator.DataElementGenerator), "DataElementTypeAttribute.g.cs", AttributeHelper.DataElementTypeAttribute),
+                    (typeof(DataElementGenerator.DataElementGenerator), "DataElementFilteringAttribute.g.cs", AttributeHelper.DataElementFilteringAttribute),
+                    (typeof(DataElementGenerator.DataElementGenerator), "TestRecord.g.cs", expected),
                 },
                 ReferenceAssemblies = ReferenceAssemblies.Net.Net70,
                 AdditionalReferences = { MetadataReference.CreateFromFile(typeof(IDataElement).GetTypeInfo().Assembly.Location) },

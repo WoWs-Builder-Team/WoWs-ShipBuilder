@@ -8,7 +8,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using WoWsShipBuilder.Data.Generator.Internals;
+using WoWsShipBuilder.Data.Generator.DataElementGenerator;
+using WoWsShipBuilder.Data.Generator.Utilities;
 
 namespace WoWsShipBuilder.Data.Generator;
 
@@ -93,6 +94,11 @@ public class DataElementSourceGenerator : IIncrementalGenerator
         cancellationToken.ThrowIfCancellationRequested();
         var name = symbol!.Name;
         var dataNamespace = symbol.ContainingNamespace.ToDisplayString();
+        if (symbol.HasAttributeWithFullName($"{AttributeHelper.AttributeNamespace}.{AttributeHelper.DataContainerAttributeName}"))
+        {
+            return (name, dataNamespace, new());
+        }
+
         var properties = symbol.GetMembers().OfType<IPropertySymbol>().Where(prop => prop.GetAttributes().Any(attr => attr.AttributeClass!.Name == "DataElementTypeAttribute")).ToList();
         return (name, dataNamespace, properties);
     }

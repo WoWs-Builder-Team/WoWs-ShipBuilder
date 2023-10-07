@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 
 #pragma warning disable CS0809
 
-namespace WoWsShipBuilder.Data.Generator.Internals;
+namespace WoWsShipBuilder.Data.Generator.Utilities;
 
 /// <summary>
 /// A polyfill for the HashCode struct from .NET 6 with the methods required for <see cref="EquatableArray"/>.

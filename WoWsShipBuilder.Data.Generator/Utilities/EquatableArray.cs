@@ -9,7 +9,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace WoWsShipBuilder.Data.Generator.Internals;
+namespace WoWsShipBuilder.Data.Generator.Utilities;
 
 /// <summary>
 /// Extensions for <see cref="EquatableArray{T}"/>.

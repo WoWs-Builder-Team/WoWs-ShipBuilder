@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Microsoft.CodeAnalysis;
 
-namespace WoWsShipBuilder.Data.Generator.Internals;
+namespace WoWsShipBuilder.Data.Generator.Utilities;
 
 internal static class SymbolExtensions
 {

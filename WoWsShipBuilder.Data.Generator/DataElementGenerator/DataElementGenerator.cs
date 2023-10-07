@@ -4,16 +4,13 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using WoWsShipBuilder.Data.Generator.Attributes;
-using WoWsShipBuilder.Data.Generator.Internals;
+using WoWsShipBuilder.Data.Generator.Utilities;
 
-namespace WoWsShipBuilder.Data.Generator;
+namespace WoWsShipBuilder.Data.Generator.DataElementGenerator;
 
 [Generator(LanguageNames.CSharp)]
 public class DataElementGenerator : IIncrementalGenerator
 {
-    private const string DataContainerBaseName = "DataContainerBase";
-
     private const string DataContainerAttributeFullName = $"{AttributeHelper.AttributeNamespace}.{AttributeHelper.DataContainerAttributeName}";
     private const string DataElementAttributeFullName = $"{AttributeHelper.AttributeNamespace}.{AttributeHelper.DataElementTypeAttributeName}";
     private const string DataElementNamespace = "global::WoWsShipBuilder.DataElements.DataElements";
@@ -83,7 +80,7 @@ public class DataElementGenerator : IIncrementalGenerator
         var dataElementAttribute = propertySymbol.FindAttribute(DataElementAttributeFullName);
         var dataElementType = (DataElementTypes)dataElementAttribute.ConstructorArguments[0].Value!;
 
-        return new(propertySymbol.Name, propertySymbol.Type.SpecialType == SpecialType.System_String, propertySymbol.NullableAnnotation == NullableAnnotation.Annotated, dataElementType, ExtractDisplayOptions(dataElementAttribute), ExtractFilterOptions(propertySymbol), ExtractFormattedTextOptions(dataElementAttribute));
+        return new(propertySymbol.Name, propertySymbol.Type.SpecialType == SpecialType.System_String, propertySymbol.NullableAnnotation == NullableAnnotation.Annotated, dataElementType, ExtractDisplayOptions(propertySymbol, dataElementAttribute), ExtractFilterOptions(propertySymbol), ExtractFormattedTextOptions(dataElementAttribute));
     }
 
     private static FormattedTextData ExtractFormattedTextOptions(AttributeData dataElementAttribute)
@@ -107,11 +104,11 @@ public class DataElementGenerator : IIncrementalGenerator
         return new(isEnabled, filterMethodName);
     }
 
-    private static PropertyDisplayOptions ExtractDisplayOptions(AttributeData dataElementAttribute)
+    private static PropertyDisplayOptions ExtractDisplayOptions(ISymbol propertySymbol, AttributeData dataElementAttribute)
     {
         return new(
             dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "UnitKey").Value.Value?.ToString(),
-            dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "NameLocalizationKey").Value.Value?.ToString(),
+            dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "NameLocalizationKey").Value.Value?.ToString() ?? propertySymbol.Name,
             dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "TooltipKey").Value.Value?.ToString(),
             dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "GroupKey").Value.Value?.ToString(),
             (bool?)dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueLocalizationKey").Value.Value ?? false,
@@ -200,7 +197,7 @@ public class DataElementGenerator : IIncrementalGenerator
             DataElementTypes.Value => $"new {DataElementNamespace}.ValueDataElement({GeneratePropertyAccess(propertyData)}, {propertyData.DisplayOptions.TreatValueAsLocalizationKey.ToLowerString()}, {propertyData.DisplayOptions.TreatValueAsAppLocalizationKey.ToLowerString()})",
             DataElementTypes.KeyValue => $"""new {DataElementNamespace}.KeyValueDataElement("ShipStats_{propertyData.DisplayOptions.LocalizationKey}", {GeneratePropertyAccess(propertyData)}, {propertyData.DisplayOptions.TreatValueAsLocalizationKey.ToLowerString()}, {propertyData.DisplayOptions.TreatValueAsAppLocalizationKey.ToLowerString()})""",
             DataElementTypes.KeyValueUnit => $"""new {DataElementNamespace}.KeyValueUnitDataElement("ShipStats_{propertyData.DisplayOptions.LocalizationKey}", {GeneratePropertyAccess(propertyData)}, "Unit_{propertyData.DisplayOptions.UnitKey}")""",
-            DataElementTypes.FormattedText => $"new {DataElementNamespace}.KeyValueUnitDataElement({GeneratePropertyAccess(propertyData)}, this.{propertyData.FormattedTextData.ArgumentsCollectionName}, {propertyData.DisplayOptions.TreatValueAsLocalizationKey.ToLowerString()}, {propertyData.DisplayOptions.TreatValueAsAppLocalizationKey.ToLowerString()}, {propertyData.FormattedTextData.TreatArgumentsAsLocalizationKeys.ToLowerString()}, {propertyData.FormattedTextData.TreatArgumentsAsAppLocalizationKeys.ToLowerString()})",
+            DataElementTypes.FormattedText => $"new {DataElementNamespace}.FormattedTextDataElement({GeneratePropertyAccess(propertyData)}, this.{propertyData.FormattedTextData.ArgumentsCollectionName}, {propertyData.DisplayOptions.TreatValueAsLocalizationKey.ToLowerString()}, {propertyData.DisplayOptions.TreatValueAsAppLocalizationKey.ToLowerString()}, {propertyData.FormattedTextData.TreatArgumentsAsLocalizationKeys.ToLowerString()}, {propertyData.FormattedTextData.TreatArgumentsAsAppLocalizationKeys.ToLowerString()})",
             DataElementTypes.Tooltip => $"""new {DataElementNamespace}.TooltipDataElement("ShipStats_{propertyData.DisplayOptions.LocalizationKey}", {GeneratePropertyAccess(propertyData)}, "ShipStats_{propertyData.DisplayOptions.TooltipKey}", "{ComputeNullableUnitValue(propertyData.DisplayOptions)}")""",
             _ => throw new InvalidOperationException($"Invalid DataElementType: {propertyData.DataElementType}")
         };
