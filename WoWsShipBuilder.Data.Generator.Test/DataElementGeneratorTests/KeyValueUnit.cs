@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.Data.Generator.Test.DataElementGeneratorTest;
+﻿namespace WoWsShipBuilder.Data.Generator.Test.DataElementGeneratorTests;
 
 public partial class DataElementGeneratorTest
 {

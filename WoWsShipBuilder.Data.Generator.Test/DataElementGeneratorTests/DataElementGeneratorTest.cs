@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.Testing.Verifiers;
 using WoWsShipBuilder.Data.Generator.DataElementGenerator;
 using WoWsShipBuilder.DataElements.DataElements;
 
-namespace WoWsShipBuilder.Data.Generator.Test.DataElementGeneratorTest;
+namespace WoWsShipBuilder.Data.Generator.Test.DataElementGeneratorTests;
 
 [TestFixture]
 [SuppressMessage("Maintainability", "S2699", Justification = "false-positive since sonarlint does not recognize custom CreateTest method")]

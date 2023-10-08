@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using WoWsShipBuilder.Data.Generator.DataElementGenerator.Model;
 using WoWsShipBuilder.Data.Generator.Utilities;
 
 namespace WoWsShipBuilder.Data.Generator.DataElementGenerator;
@@ -76,60 +76,12 @@ public class DataElementGenerator : IIncrementalGenerator
         return new(grouping.Key, children, children[0].DeclarationIndex);
     }
 
-    private sealed record RawContainerData(string ContainerName, string Namespace, EquatableArray<SinglePropertyData> Properties);
-
-    private sealed record ContainerData(string ContainerName, string Namespace, EquatableArray<PropertyData> Properties);
-
-    private sealed record PropertyData(SinglePropertyData? SinglePropertyData, GroupPropertyData? GroupPropertyData, int DeclarationIndex);
-
-    private sealed record GroupPropertyData(string GroupName, EquatableArray<SinglePropertyData> Properties, int DeclarationIndex);
-
-    private sealed record SinglePropertyData(string Name, bool IsString, bool IsNullable, DataElementTypes DataElementType, PropertyDisplayOptions DisplayOptions, PropertyFilter PropertyFilter, FormattedTextData FormattedTextData, int DeclarationIndex);
-
-    private sealed record PropertyDisplayOptions(string? UnitKey, string? LocalizationKey, string? TooltipKey, string? GroupKey, bool TreatValueAsLocalizationKey, bool TreatValueAsAppLocalizationKey);
-
-    private sealed record FormattedTextData(string? ArgumentsCollectionName, bool TreatArgumentsAsLocalizationKeys, bool TreatArgumentsAsAppLocalizationKeys);
-
-    private sealed record PropertyFilter(bool IsEnabled, string FilterMethodName);
-
     private static SinglePropertyData RefineProperty(IPropertySymbol propertySymbol, int index)
     {
         var dataElementAttribute = propertySymbol.FindAttribute(DataElementAttributeFullName);
         var dataElementType = (DataElementTypes)dataElementAttribute.ConstructorArguments[0].Value!;
 
-        return new(propertySymbol.Name, propertySymbol.Type.SpecialType == SpecialType.System_String, propertySymbol.NullableAnnotation == NullableAnnotation.Annotated, dataElementType, ExtractDisplayOptions(propertySymbol, dataElementAttribute), ExtractFilterOptions(propertySymbol), ExtractFormattedTextOptions(dataElementAttribute), index);
-    }
-
-    private static FormattedTextData ExtractFormattedTextOptions(AttributeData dataElementAttribute)
-    {
-        return new(
-            dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "ValuesPropertyName").Value.Value?.ToString(),
-            (bool?)dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "ArePropertyNameValuesKeys").Value.Value ?? false,
-            (bool?)dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsPropertyNameValuesAppLocalization").Value.Value ?? false);
-    }
-
-    private static PropertyFilter ExtractFilterOptions(IPropertySymbol propertySymbol)
-    {
-        var filterAttribute = propertySymbol.FindAttributeOrDefault("WoWsShipBuilder.DataElements.DataElementAttributes.DataElementFilteringAttribute");
-        if (filterAttribute is null)
-        {
-            return new(true, $"{DataElementNamespace}.DataContainerBase.ShouldAdd");
-        }
-
-        var isEnabled = (bool)filterAttribute.ConstructorArguments[0].Value!;
-        var filterMethodName = filterAttribute.ConstructorArguments[1].Value?.ToString() ?? $"{DataElementNamespace}.DataContainerBase.ShouldAdd";
-        return new(isEnabled, filterMethodName);
-    }
-
-    private static PropertyDisplayOptions ExtractDisplayOptions(ISymbol propertySymbol, AttributeData dataElementAttribute)
-    {
-        return new(
-            dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "UnitKey").Value.Value?.ToString(),
-            dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "NameLocalizationKey").Value.Value?.ToString() ?? propertySymbol.Name,
-            dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "TooltipKey").Value.Value?.ToString(),
-            dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "GroupKey").Value.Value?.ToString(),
-            (bool?)dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueLocalizationKey").Value.Value ?? false,
-            (bool?)dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueAppLocalization").Value.Value ?? false);
+        return new(propertySymbol.Name, propertySymbol.Type.SpecialType == SpecialType.System_String, propertySymbol.NullableAnnotation == NullableAnnotation.Annotated, dataElementType, PropertyHelper.ExtractDisplayOptions(propertySymbol, dataElementAttribute), PropertyHelper.ExtractFilterOptions(propertySymbol), PropertyHelper.ExtractFormattedTextOptions(dataElementAttribute), index);
     }
 
     private static void GenerateSourceCode(SourceProductionContext context, ContainerData containerData)
@@ -219,7 +171,7 @@ public class DataElementGenerator : IIncrementalGenerator
             DataElementTypes.KeyValueUnit => $"""new {DataElementNamespace}.KeyValueUnitDataElement("ShipStats_{propertyData.DisplayOptions.LocalizationKey}", {GeneratePropertyAccess(propertyData)}, "Unit_{propertyData.DisplayOptions.UnitKey}")""",
             DataElementTypes.FormattedText => $"new {DataElementNamespace}.FormattedTextDataElement({GeneratePropertyAccess(propertyData)}, this.{propertyData.FormattedTextData.ArgumentsCollectionName}, {propertyData.DisplayOptions.TreatValueAsLocalizationKey.ToLowerString()}, {propertyData.DisplayOptions.TreatValueAsAppLocalizationKey.ToLowerString()}, {propertyData.FormattedTextData.TreatArgumentsAsLocalizationKeys.ToLowerString()}, {propertyData.FormattedTextData.TreatArgumentsAsAppLocalizationKeys.ToLowerString()})",
             DataElementTypes.Tooltip => $"""new {DataElementNamespace}.TooltipDataElement("ShipStats_{propertyData.DisplayOptions.LocalizationKey}", {GeneratePropertyAccess(propertyData)}, "ShipStats_{propertyData.DisplayOptions.TooltipKey}", "{ComputeNullableUnitValue(propertyData.DisplayOptions)}")""",
-            _ => throw new InvalidOperationException($"Invalid DataElementType: {propertyData.DataElementType}")
+            _ => string.Empty,
         };
     }
 
