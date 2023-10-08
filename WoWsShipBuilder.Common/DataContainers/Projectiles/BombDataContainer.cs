@@ -7,6 +7,7 @@ using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.DataContainers;
 
+[DataContainer]
 public partial record BombDataContainer : ProjectileDataContainer
 {
     [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true, IsValueAppLocalization = true)]

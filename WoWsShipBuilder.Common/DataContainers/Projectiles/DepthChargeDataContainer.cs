@@ -5,6 +5,7 @@ using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.DataContainers;
 
+[DataContainer]
 public partial record DepthChargeDataContainer : ProjectileDataContainer
 {
     [DataElementType(DataElementTypes.KeyValue)]

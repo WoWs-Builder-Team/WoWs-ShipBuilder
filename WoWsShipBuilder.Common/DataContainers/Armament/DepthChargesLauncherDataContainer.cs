@@ -6,6 +6,7 @@ using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.DataContainers;
 
+[DataContainer]
 public partial record DepthChargesLauncherDataContainer : DataContainerBase
 {
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]

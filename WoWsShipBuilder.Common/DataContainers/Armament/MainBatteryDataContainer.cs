@@ -10,6 +10,7 @@ using WoWsShipBuilder.Infrastructure.Utility;
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace WoWsShipBuilder.DataContainers;
 
+[DataContainer]
 public partial record MainBatteryDataContainer : DataContainerBase
 {
     [DataElementType(DataElementTypes.FormattedText, ValuesPropertyName = "TurretNames", ArePropertyNameValuesKeys = true)]

@@ -9,6 +9,7 @@ using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.DataContainers;
 
+[DataContainer]
 public partial record SecondaryBatteryDataContainer : DataContainerBase
 {
     public string Name { get; set; } = default!;

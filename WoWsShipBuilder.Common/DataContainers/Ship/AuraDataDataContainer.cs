@@ -3,6 +3,7 @@ using WoWsShipBuilder.DataElements.DataElements;
 
 namespace WoWsShipBuilder.DataContainers;
 
+[DataContainer]
 public partial record AuraDataDataContainer : DataContainerBase
 {
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
@@ -22,6 +23,6 @@ public partial record AuraDataDataContainer : DataContainerBase
 
     public void UpdateData()
     {
-        UpdateDataElements();
+        this.UpdateDataElements();
     }
 }

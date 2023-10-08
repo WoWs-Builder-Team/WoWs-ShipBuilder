@@ -10,6 +10,7 @@ using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.DataContainers;
 
+[DataContainer]
 public partial record ShellDataContainer : DataContainerBase
 {
     public string Name { get; set; } = default!;

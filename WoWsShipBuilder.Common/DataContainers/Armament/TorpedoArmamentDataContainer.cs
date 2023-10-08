@@ -8,6 +8,7 @@ using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.DataContainers;
 
+[DataContainer]
 public partial record TorpedoArmamentDataContainer : DataContainerBase
 {
     [DataElementType(DataElementTypes.FormattedText, ValuesPropertyName = "LauncherNames", ArePropertyNameValuesKeys = true)]
