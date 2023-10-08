@@ -7,7 +7,7 @@ namespace WoWsShipBuilder.Data.Generator.Utilities;
 
 internal static class SymbolExtensions
 {
-    private static readonly SymbolDisplayFormat FullyQualifiedWithoutGlobalFormat = SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted);
+    private static readonly SymbolDisplayFormat FullyQualifiedWithoutGlobalFormat = SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted).AddMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier);
 
     public static AttributeData? FindAttributeOrDefault(this ISymbol symbol, string fullAttributeName)
     {
@@ -36,5 +36,5 @@ internal static class SymbolExtensions
 
     public static string ToLowerString(this bool value) => value.ToString().ToLowerInvariant();
 
-    public static string GetFullyQualifiedMetadataName(this ISymbol symbol) => symbol.ToDisplayString(FullyQualifiedWithoutGlobalFormat);
+    public static string ToFullyQualifiedMetadataName(this ISymbol symbol) => symbol.ToDisplayString(FullyQualifiedWithoutGlobalFormat);
 }
