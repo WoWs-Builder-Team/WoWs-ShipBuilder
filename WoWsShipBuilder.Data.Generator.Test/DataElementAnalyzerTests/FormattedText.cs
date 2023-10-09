@@ -14,7 +14,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.FormattedText, ValuesPropertyName="Test")]
+                         [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName="Test")]
                          public decimal Prop1 { get; set; }
                      }
                      """;
@@ -54,7 +54,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.FormattedText, ValuesPropertyName="Test", ArePropertyNameValuesKeys=true)]
+                         [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = "Test", ArgumentsTextKind = TextKind.LocalizationKey)]
                          public decimal Prop1 { get; set; }
                      }
                      """;
@@ -74,7 +74,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.FormattedText, ValuesPropertyName="Test", IsPropertyNameValuesAppLocalization=true)]
+                         [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = "Test", ArgumentsTextKind = TextKind.AppLocalizationKey)]
                          public decimal Prop1 { get; set; }
                      }
                      """;
@@ -83,7 +83,7 @@ public partial class DataElementAnalyzerTest
     }
 
     [Test]
-    public async Task AnalyzeFormattedText_NameLocalizationKeySpecified_Diagnostics()
+    public async Task AnalyzeFormattedText_LocalizationKeyOverrideSpecified_Diagnostics()
     {
         var source = """
                      using WoWsShipBuilder.DataElements.DataElementAttributes;
@@ -94,7 +94,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.FormattedText, ValuesPropertyName="Test", NameLocalizationKey="Test")]
+                         [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = "Test", LocalizationKeyOverride = "Test")]
                          public decimal {|SB1003:Prop1|} { get; set; }
                      }
                      """;
@@ -114,7 +114,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.FormattedText, ValuesPropertyName="Test", UnitKey="Test")]
+                         [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = "Test", UnitKey = "Test")]
                          public decimal {|SB1003:Prop1|} { get; set; }
                      }
                      """;
@@ -134,7 +134,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.FormattedText, ValuesPropertyName="Test", TooltipKey="Test")]
+                         [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = "Test", TooltipKey = "Test")]
                          public decimal {|SB1003:Prop1|} { get; set; }
                      }
                      """;

@@ -12,20 +12,18 @@ internal static class PropertyHelper
     public static FormattedTextData ExtractFormattedTextOptions(AttributeData dataElementAttribute)
     {
         return new(
-            dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "ValuesPropertyName").Value.Value?.ToString(),
-            (bool?)dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "ArePropertyNameValuesKeys").Value.Value ?? false,
-            (bool?)dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsPropertyNameValuesAppLocalization").Value.Value ?? false);
+            dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "ArgumentsCollectionName").Value.Value?.ToString(),
+            (TextKind)(dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "ArgumentsTextKind").Value.Value ?? TextKind.Plain));
     }
 
     public static PropertyDisplayOptions ExtractDisplayOptions(ISymbol propertySymbol, AttributeData dataElementAttribute)
     {
         return new(
             dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "UnitKey").Value.Value?.ToString(),
-            dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "NameLocalizationKey").Value.Value?.ToString() ?? propertySymbol.Name,
+            dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "LocalizationKeyOverride").Value.Value?.ToString() ?? propertySymbol.Name,
             dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "TooltipKey").Value.Value?.ToString(),
             dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "GroupKey").Value.Value?.ToString(),
-            (bool?)dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueLocalizationKey").Value.Value ?? false,
-            (bool?)dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueAppLocalization").Value.Value ?? false);
+            (TextKind)(dataElementAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "ValueTextKind").Value.Value ?? TextKind.Plain));
     }
 
     public static PropertyFilter ExtractFilterOptions(IPropertySymbol propertySymbol)

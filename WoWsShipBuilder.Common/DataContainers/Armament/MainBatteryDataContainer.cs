@@ -13,7 +13,7 @@ namespace WoWsShipBuilder.DataContainers;
 [DataContainer]
 public partial record MainBatteryDataContainer : DataContainerBase
 {
-    [DataElementType(DataElementTypes.FormattedText, ValuesPropertyName = "TurretNames", ArePropertyNameValuesKeys = true)]
+    [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = "TurretNames", ArgumentsTextKind = TextKind.LocalizationKey)]
     public string Name { get; set; } = default!;
 
     public List<string> TurretNames { get; set; } = new();

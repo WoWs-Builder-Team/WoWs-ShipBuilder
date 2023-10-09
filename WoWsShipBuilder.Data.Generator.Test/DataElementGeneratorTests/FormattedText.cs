@@ -17,7 +17,7 @@ public partial class DataElementGeneratorTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.FormattedText, ValuesPropertyName = nameof(TestValues))]
+                         [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = nameof(TestValues))]
                          public string Test { get; set; } = default!;
 
                          public List<string> TestValues { get; set; } = new();
@@ -36,7 +36,7 @@ public partial class DataElementGeneratorTest
                                    this.DataElements.Clear();
                                    if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Test))
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.FormattedTextDataElement(this.Test, this.TestValues, false, false, false, false));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.FormattedTextDataElement(this.Test, this.TestValues, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain));
                                    }
                                }
                            }
@@ -62,7 +62,7 @@ public partial class DataElementGeneratorTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.FormattedText, ValuesPropertyName = nameof(TestValues), ArePropertyNameValuesKeys = true)]
+                         [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = nameof(TestValues), ArgumentsTextKind = TextKind.LocalizationKey)]
                          public string Test { get; set; } = default!;
 
                          public List<string> TestValues { get; set; } = new();
@@ -81,7 +81,7 @@ public partial class DataElementGeneratorTest
                                    this.DataElements.Clear();
                                    if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Test))
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.FormattedTextDataElement(this.Test, this.TestValues, false, false, true, false));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.FormattedTextDataElement(this.Test, this.TestValues, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.LocalizationKey));
                                    }
                                }
                            }
@@ -107,7 +107,7 @@ public partial class DataElementGeneratorTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.FormattedText, ValuesPropertyName = nameof(TestValues), IsValueLocalizationKey = true)]
+                         [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = nameof(TestValues), ValueTextKind = TextKind.LocalizationKey)]
                          public string Test { get; set; } = default!;
 
                          public List<string> TestValues { get; set; } = new();
@@ -126,7 +126,7 @@ public partial class DataElementGeneratorTest
                                    this.DataElements.Clear();
                                    if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Test))
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.FormattedTextDataElement(this.Test, this.TestValues, true, false, false, false));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.FormattedTextDataElement(this.Test, this.TestValues, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.LocalizationKey, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain));
                                    }
                                }
                            }
@@ -152,7 +152,7 @@ public partial class DataElementGeneratorTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.FormattedText, ValuesPropertyName = nameof(TestValues), IsValueLocalizationKey = true, ArePropertyNameValuesKeys = true)]
+                         [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = nameof(TestValues), ValueTextKind = TextKind.LocalizationKey, ArgumentsTextKind = TextKind.LocalizationKey)]
                          public string Test { get; set; } = default!;
 
                          public List<string> TestValues { get; set; } = new();
@@ -171,7 +171,7 @@ public partial class DataElementGeneratorTest
                                    this.DataElements.Clear();
                                    if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Test))
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.FormattedTextDataElement(this.Test, this.TestValues, true, false, true, false));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.FormattedTextDataElement(this.Test, this.TestValues, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.LocalizationKey, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.LocalizationKey));
                                    }
                                }
                            }
@@ -197,7 +197,7 @@ public partial class DataElementGeneratorTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.FormattedText, ValuesPropertyName = nameof(TestValues), IsPropertyNameValuesAppLocalization = true)]
+                         [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = nameof(TestValues), ArgumentsTextKind = TextKind.AppLocalizationKey)]
                          public string Test { get; set; } = default!;
 
                          public List<string> TestValues { get; set; } = new();
@@ -216,7 +216,7 @@ public partial class DataElementGeneratorTest
                                    this.DataElements.Clear();
                                    if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Test))
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.FormattedTextDataElement(this.Test, this.TestValues, false, false, false, true));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.FormattedTextDataElement(this.Test, this.TestValues, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.AppLocalizationKey));
                                    }
                                }
                            }
@@ -242,7 +242,7 @@ public partial class DataElementGeneratorTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.FormattedText, ValuesPropertyName = nameof(TestValues), IsValueAppLocalization = true)]
+                         [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = nameof(TestValues), ValueTextKind = TextKind.AppLocalizationKey)]
                          public string Test { get; set; } = default!;
 
                          public List<string> TestValues { get; set; } = new();
@@ -261,7 +261,7 @@ public partial class DataElementGeneratorTest
                                    this.DataElements.Clear();
                                    if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Test))
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.FormattedTextDataElement(this.Test, this.TestValues, false, true, false, false));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.FormattedTextDataElement(this.Test, this.TestValues, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.AppLocalizationKey, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain));
                                    }
                                }
                            }
@@ -287,7 +287,7 @@ public partial class DataElementGeneratorTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.FormattedText, ValuesPropertyName = nameof(TestValues), IsValueAppLocalization = true, IsPropertyNameValuesAppLocalization = true)]
+                         [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = nameof(TestValues), ValueTextKind = TextKind.AppLocalizationKey, ArgumentsTextKind = TextKind.AppLocalizationKey)]
                          public string Test { get; set; } = default!;
 
                          public List<string> TestValues { get; set; } = new();
@@ -306,7 +306,7 @@ public partial class DataElementGeneratorTest
                                    this.DataElements.Clear();
                                    if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Test))
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.FormattedTextDataElement(this.Test, this.TestValues, false, true, false, true));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.FormattedTextDataElement(this.Test, this.TestValues, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.AppLocalizationKey, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.AppLocalizationKey));
                                    }
                                }
                            }

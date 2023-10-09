@@ -43,6 +43,7 @@ public partial class DataElementGeneratorTest
                 GeneratedSources =
                 {
                     (typeof(DataElementGenerator.DataElementGenerator), "DataElementTypes.g.cs", AttributeHelper.DataElementTypesEnum),
+                    (typeof(DataElementGenerator.DataElementGenerator), "TextKind.g.cs", AttributeHelper.DataElementTextKindEnum),
                     (typeof(DataElementGenerator.DataElementGenerator), "DataContainerAttribute.g.cs", AttributeHelper.DataContainerAttribute),
                     (typeof(DataElementGenerator.DataElementGenerator), "DataElementTypeAttribute.g.cs", AttributeHelper.DataElementTypeAttribute),
                     (typeof(DataElementGenerator.DataElementGenerator), "DataElementFilteringAttribute.g.cs", AttributeHelper.DataElementFilteringAttribute),

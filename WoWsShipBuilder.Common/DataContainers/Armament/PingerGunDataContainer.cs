@@ -22,10 +22,10 @@ public partial record PingerGunDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
     public decimal Range { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "PingDuration", UnitKey = "S", NameLocalizationKey = "First")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "PingDuration", UnitKey = "S", LocalizationKeyOverride = "First")]
     public decimal FirstPingDuration { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "PingDuration", UnitKey = "S", NameLocalizationKey = "Second")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "PingDuration", UnitKey = "S", LocalizationKeyOverride = "Second")]
     public decimal SecondPingDuration { get; set; }
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]

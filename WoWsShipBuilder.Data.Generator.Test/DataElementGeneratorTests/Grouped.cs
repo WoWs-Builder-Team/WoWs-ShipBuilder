@@ -36,12 +36,12 @@ public partial class DataElementGeneratorTest
                                    var LoadersList = new global::System.Collections.Generic.List<global::WoWsShipBuilder.DataElements.DataElements.IDataElement>();
                                    if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.BowLoaders))
                                    {
-                                       LoadersList.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueDataElement("ShipStats_BowLoaders", this.BowLoaders, false, false));
+                                       LoadersList.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueDataElement("ShipStats_BowLoaders", this.BowLoaders, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain));
                                    }
 
                                    if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.SternLoaders))
                                    {
-                                       LoadersList.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueDataElement("ShipStats_SternLoaders", this.SternLoaders, false, false));
+                                       LoadersList.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueDataElement("ShipStats_SternLoaders", this.SternLoaders, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain));
                                    }
 
                                    if (LoadersList.Count > 0)
@@ -97,12 +97,12 @@ public partial class DataElementGeneratorTest
                                    var Group1List = new global::System.Collections.Generic.List<global::WoWsShipBuilder.DataElements.DataElements.IDataElement>();
                                    if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Prop1))
                                    {
-                                       Group1List.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueDataElement("ShipStats_Prop1", this.Prop1, false, false));
+                                       Group1List.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueDataElement("ShipStats_Prop1", this.Prop1, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain));
                                    }
 
                                    if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Prop3))
                                    {
-                                       Group1List.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueDataElement("ShipStats_Prop3", this.Prop3, false, false));
+                                       Group1List.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueDataElement("ShipStats_Prop3", this.Prop3, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain));
                                    }
 
                                    if (Group1List.Count > 0)
@@ -113,12 +113,12 @@ public partial class DataElementGeneratorTest
                                    var Group2List = new global::System.Collections.Generic.List<global::WoWsShipBuilder.DataElements.DataElements.IDataElement>();
                                    if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Prop2))
                                    {
-                                       Group2List.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueDataElement("ShipStats_Prop2", this.Prop2, false, false));
+                                       Group2List.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueDataElement("ShipStats_Prop2", this.Prop2, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain));
                                    }
 
                                    if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Prop4))
                                    {
-                                       Group2List.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueDataElement("ShipStats_Prop4", this.Prop4, false, false));
+                                       Group2List.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueDataElement("ShipStats_Prop4", this.Prop4, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain));
                                    }
 
                                    if (Group2List.Count > 0)

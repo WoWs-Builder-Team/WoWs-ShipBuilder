@@ -10,10 +10,10 @@ namespace WoWsShipBuilder.DataContainers;
 [DataContainer]
 public partial record RocketDataContainer : ProjectileDataContainer
 {
-    [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true, IsValueAppLocalization = true)]
+    [DataElementType(DataElementTypes.KeyValue, ValueTextKind = TextKind.AppLocalizationKey)]
     public string RocketType { get; set; } = default!;
 
-    [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true)]
+    [DataElementType(DataElementTypes.KeyValue, ValueTextKind = TextKind.LocalizationKey)]
     public string Name { get; set; } = default!;
 
     [DataElementType(DataElementTypes.KeyValue)]

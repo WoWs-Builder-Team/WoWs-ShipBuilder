@@ -22,7 +22,7 @@
             case KeyValueDataElement element:
                 <div class="d-flex justify-space-between">
                     <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@group.localizer.GetAppLocalization(element.Key).Localization</MudText>
-                    <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@ConvertValue(element.Value, element.IsValueKey, element.IsValueAppLocalization, group.localizer)</MudText>
+                    <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@ConvertValue(element.Value, element.ValueTextKind, group.localizer)</MudText>
                 </div>
                 break;
             case KeyValueUnitDataElement element:
@@ -52,7 +52,7 @@
                 </MudTooltip>
                 break;
             case ValueDataElement element:
-                <MudText Typo="Typo.body2">@ConvertValue(element.Value, element.IsValueKey, element.IsValueAppLocalization, group.localizer)</MudText>
+                <MudText Typo="Typo.body2">@ConvertValue(element.Value, element.ValueTextKind, group.localizer)</MudText>
                 break;
             case FormattedTextDataElement element:
                 <MudText Typo="Typo.body2">
@@ -74,9 +74,14 @@
         }
     }
 
-    private static string ConvertValue(string value, bool isValueKey, bool isAppLocalizationKey, ILocalizer localizer)
+    private static string ConvertValue(string value, DataElementTextKind valueTextKind, ILocalizer localizer)
     {
-        return !isValueKey ? value : (isAppLocalizationKey ? localizer.GetAppLocalization(value) : localizer.GetGameLocalization(value)).Localization;
+        return valueTextKind switch {
+            DataElementTextKind.Plain => value,
+            DataElementTextKind.LocalizationKey => localizer.SimpleGameLocalization(value),
+            DataElementTextKind.AppLocalizationKey => localizer.SimpleAppLocalization(value),
+            _ => throw new ArgumentOutOfRangeException(nameof(valueTextKind), valueTextKind, "Unknown DataElementTextKind"),
+        };
     }
 
 }

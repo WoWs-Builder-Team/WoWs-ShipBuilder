@@ -64,6 +64,7 @@ public partial class DataElementAnalyzerTest
                 Sources =
                 {
                     AttributeHelper.DataElementTypesEnum,
+                    AttributeHelper.DataElementTextKindEnum,
                     AttributeHelper.DataContainerAttribute,
                     AttributeHelper.DataElementTypeAttribute,
                     AttributeHelper.DataElementFilteringAttribute,

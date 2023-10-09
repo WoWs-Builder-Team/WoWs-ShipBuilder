@@ -11,49 +11,49 @@ namespace WoWsShipBuilder.DataContainers;
 [DataContainer]
 public partial record SurvivabilityDataContainer : DataContainerBase
 {
-    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "HP", NameLocalizationKey = "ShipHp")]
+    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "HP", LocalizationKeyOverride = "ShipHp")]
     public int HitPoints { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Citadel", UnitKey = "HP", NameLocalizationKey = "HitPoints")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Citadel", UnitKey = "HP", LocalizationKeyOverride = "HitPoints")]
     public int CitadelHp { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Citadel", UnitKey = "PerCent", NameLocalizationKey = "RegenRatio")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Citadel", UnitKey = "PerCent", LocalizationKeyOverride = "RegenRatio")]
     public decimal CitadelRegenRatio { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Casemate", UnitKey = "HP", NameLocalizationKey = "HitPoints")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Casemate", UnitKey = "HP", LocalizationKeyOverride = "HitPoints")]
     public int CasemateHp { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Casemate", UnitKey = "PerCent", NameLocalizationKey = "RegenRatio")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Casemate", UnitKey = "PerCent", LocalizationKeyOverride = "RegenRatio")]
     public decimal CasemateRegenRatio { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Bow", UnitKey = "HP", NameLocalizationKey = "HitPoints")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Bow", UnitKey = "HP", LocalizationKeyOverride = "HitPoints")]
     public int BowHp { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Bow", UnitKey = "PerCent", NameLocalizationKey = "RegenRatio")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Bow", UnitKey = "PerCent", LocalizationKeyOverride = "RegenRatio")]
     public decimal BowRegenRatio { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Stern", UnitKey = "HP", NameLocalizationKey = "HitPoints")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Stern", UnitKey = "HP", LocalizationKeyOverride = "HitPoints")]
     public int SternHp { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Stern", UnitKey = "PerCent", NameLocalizationKey = "RegenRatio")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Stern", UnitKey = "PerCent", LocalizationKeyOverride = "RegenRatio")]
     public decimal SternRegenRatio { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Superstructure", UnitKey = "HP", NameLocalizationKey = "HitPoints")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Superstructure", UnitKey = "HP", LocalizationKeyOverride = "HitPoints")]
     public int SuperstructureHp { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Superstructure", UnitKey = "PerCent", NameLocalizationKey = "RegenRatio")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Superstructure", UnitKey = "PerCent", LocalizationKeyOverride = "RegenRatio")]
     public decimal SuperstructureRegenRatio { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "AuxiliaryRooms", UnitKey = "HP", NameLocalizationKey = "HitPoints")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "AuxiliaryRooms", UnitKey = "HP", LocalizationKeyOverride = "HitPoints")]
     public int AuxiliaryRoomsHp { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "AuxiliaryRooms", UnitKey = "PerCent", NameLocalizationKey = "RegenRatio")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "AuxiliaryRooms", UnitKey = "PerCent", LocalizationKeyOverride = "RegenRatio")]
     public decimal AuxiliaryRoomsRegenRatio { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Hull", UnitKey = "HP", NameLocalizationKey = "HitPoints")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Hull", UnitKey = "HP", LocalizationKeyOverride = "HitPoints")]
     public int HullHp { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Hull", UnitKey = "PerCent", NameLocalizationKey = "RegenRatio")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Hull", UnitKey = "PerCent", LocalizationKeyOverride = "RegenRatio")]
     public decimal HullRegenRatio { get; set; }
 
     [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Battery", UnitKey = "U")]

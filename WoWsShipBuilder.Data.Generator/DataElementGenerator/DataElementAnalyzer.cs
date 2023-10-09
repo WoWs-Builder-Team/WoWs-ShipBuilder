@@ -95,17 +95,12 @@ public class DataElementAnalyzer : DiagnosticAnalyzer
 
         if (propertyData.FormattedTextData.ArgumentsCollectionName is not null)
         {
-            incompatibleParameters.Add("ValuesPropertyName");
+            incompatibleParameters.Add("ArgumentsCollectionName");
         }
 
-        if (propertyData.FormattedTextData.TreatArgumentsAsLocalizationKeys)
+        if (propertyData.FormattedTextData.ArgumentsTextKind != TextKind.Plain)
         {
-            incompatibleParameters.Add("ArePropertyNameValuesKeys");
-        }
-
-        if (propertyData.FormattedTextData.TreatArgumentsAsAppLocalizationKeys)
-        {
-            incompatibleParameters.Add("IsPropertyNameValuesAppLocalization");
+            incompatibleParameters.Add("ArgumentsTextKind");
         }
 
         if (propertyData.DisplayOptions.UnitKey is not null)
@@ -130,17 +125,12 @@ public class DataElementAnalyzer : DiagnosticAnalyzer
 
         if (propertyData.FormattedTextData.ArgumentsCollectionName is not null)
         {
-            errors.Add("ValuesPropertyName");
+            errors.Add("ArgumentsCollectionName");
         }
 
-        if (propertyData.FormattedTextData.TreatArgumentsAsLocalizationKeys)
+        if (propertyData.FormattedTextData.ArgumentsTextKind != TextKind.Plain)
         {
-            errors.Add("ArePropertyNameValuesKeys");
-        }
-
-        if (propertyData.FormattedTextData.TreatArgumentsAsAppLocalizationKeys)
-        {
-            errors.Add("IsPropertyNameValuesAppLocalization");
+            errors.Add("ArgumentsTextKind");
         }
 
         if (propertyData.DisplayOptions.TooltipKey is not null)
@@ -148,14 +138,9 @@ public class DataElementAnalyzer : DiagnosticAnalyzer
             errors.Add("TooltipKey");
         }
 
-        if (propertyData.DisplayOptions.TreatValueAsLocalizationKey)
+        if (propertyData.DisplayOptions.ValueTextKind != TextKind.Plain)
         {
-            errors.Add("IsValueLocalizationKey");
-        }
-
-        if (propertyData.DisplayOptions.TreatValueAsAppLocalizationKey)
-        {
-            errors.Add("IsValueAppLocalizationKey");
+            errors.Add("ValueTextKind");
         }
 
         if (errors.Count > 0)
@@ -175,17 +160,12 @@ public class DataElementAnalyzer : DiagnosticAnalyzer
 
         if (propertyData.FormattedTextData.ArgumentsCollectionName is not null)
         {
-            incompatibleParameters.Add("ValuesPropertyName");
+            incompatibleParameters.Add("ArgumentsCollectionName");
         }
 
-        if (propertyData.FormattedTextData.TreatArgumentsAsLocalizationKeys)
+        if (propertyData.FormattedTextData.ArgumentsTextKind != TextKind.Plain)
         {
-            incompatibleParameters.Add("ArePropertyNameValuesKeys");
-        }
-
-        if (propertyData.FormattedTextData.TreatArgumentsAsAppLocalizationKeys)
-        {
-            incompatibleParameters.Add("IsPropertyNameValuesAppLocalization");
+            incompatibleParameters.Add("ArgumentsTextKind");
         }
 
         if (propertyData.DisplayOptions.UnitKey is not null)
@@ -200,7 +180,7 @@ public class DataElementAnalyzer : DiagnosticAnalyzer
 
         if (!propertyData.DisplayOptions.LocalizationKey.Equals(propertySymbol.Name))
         {
-            incompatibleParameters.Add("NameLocalizationKey");
+            incompatibleParameters.Add("LocalizationKeyOverride");
         }
 
         if (incompatibleParameters.Count > 0)
@@ -215,27 +195,17 @@ public class DataElementAnalyzer : DiagnosticAnalyzer
 
         if (propertyData.FormattedTextData.ArgumentsCollectionName is not null)
         {
-            errors.Add("ValuesPropertyName");
+            errors.Add("ArgumentsCollectionName");
         }
 
-        if (propertyData.FormattedTextData.TreatArgumentsAsLocalizationKeys)
+        if (propertyData.FormattedTextData.ArgumentsTextKind != TextKind.Plain)
         {
-            errors.Add("ArePropertyNameValuesKeys");
+            errors.Add("ArgumentsTextKind");
         }
 
-        if (propertyData.FormattedTextData.TreatArgumentsAsAppLocalizationKeys)
+        if (propertyData.DisplayOptions.ValueTextKind != TextKind.Plain)
         {
-            errors.Add("IsPropertyNameValuesAppLocalization");
-        }
-
-        if (propertyData.DisplayOptions.TreatValueAsLocalizationKey)
-        {
-            errors.Add("IsValueLocalizationKey");
-        }
-
-        if (propertyData.DisplayOptions.TreatValueAsAppLocalizationKey)
-        {
-            errors.Add("IsValueAppLocalizationKey");
+            errors.Add("ValueTextKind");
         }
 
         if (errors.Count > 0)
@@ -265,7 +235,7 @@ public class DataElementAnalyzer : DiagnosticAnalyzer
 
         if (!propertyData.DisplayOptions.LocalizationKey.Equals(propertySymbol.Name))
         {
-            errors.Add("NameLocalizationKey");
+            errors.Add("LocalizationKeyOverride");
         }
 
         if (errors.Count > 0)
@@ -275,7 +245,7 @@ public class DataElementAnalyzer : DiagnosticAnalyzer
 
         if (string.IsNullOrEmpty(propertyData.FormattedTextData.ArgumentsCollectionName))
         {
-            context.ReportDiagnostic(Diagnostic.Create(Rules.MissingAttributeParametersRule, propertySymbol.Locations[0], "ValuesPropertyName"));
+            context.ReportDiagnostic(Diagnostic.Create(Rules.MissingAttributeParametersRule, propertySymbol.Locations[0], "ArgumentsCollectionName"));
         }
     }
 

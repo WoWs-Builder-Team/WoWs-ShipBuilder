@@ -96,7 +96,7 @@ public partial class DataElementGeneratorTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey=true)]
+                         [DataElementType(DataElementTypes.KeyValue, ValueTextKind = TextKind.LocalizationKey)]
                          public string Prop1 { get; set; } = default!;
 
                          [DataElementType(DataElementTypes.KeyValueUnit, UnitKey="Knots")]
@@ -105,7 +105,7 @@ public partial class DataElementGeneratorTest
                          [DataElementType(DataElementTypes.Tooltip, TooltipKey = "TestTooltip")]
                          public string Prop3 { get; set; } = default!;
 
-                         [DataElementType(DataElementTypes.FormattedText, ValuesPropertyName = nameof(TestValues))]
+                         [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = nameof(TestValues))]
                          public string Prop4 { get; set; } = default!;
 
                          public List<string> TestValues { get; set; } = new();
@@ -124,7 +124,7 @@ public partial class DataElementGeneratorTest
                                    this.DataElements.Clear();
                                    if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Prop1))
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueDataElement("ShipStats_Prop1", this.Prop1, true, false));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueDataElement("ShipStats_Prop1", this.Prop1, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.LocalizationKey));
                                    }
 
                                    if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Prop2))
@@ -139,7 +139,7 @@ public partial class DataElementGeneratorTest
 
                                    if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Prop4))
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.FormattedTextDataElement(this.Prop4, this.TestValues, false, false, false, false));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.FormattedTextDataElement(this.Prop4, this.TestValues, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain));
                                    }
                                }
                            }

@@ -12,7 +12,7 @@ public partial record AirstrikeDataContainer : DataContainerBase
 {
     public string Header { get; set; } = default!;
 
-    [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true)]
+    [DataElementType(DataElementTypes.KeyValue, ValueTextKind = TextKind.LocalizationKey)]
     public string Name { get; set; } = default!;
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "HP")]

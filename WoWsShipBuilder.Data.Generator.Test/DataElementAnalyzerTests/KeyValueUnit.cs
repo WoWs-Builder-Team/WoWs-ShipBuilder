@@ -14,7 +14,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey="Test")]
+                         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Test")]
                          public decimal Prop1 { get; set; }
                      }
                      """;
@@ -23,7 +23,7 @@ public partial class DataElementAnalyzerTest
     }
 
     [Test]
-    public async Task AnalyzeKeyValueUnit_NameLocalizationKeySpecified_NoDiagnostics()
+    public async Task AnalyzeKeyValueUnit_LocalizationKeyOverrideSpecified_NoDiagnostics()
     {
         var source = """
                      using WoWsShipBuilder.DataElements.DataElementAttributes;
@@ -34,7 +34,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey="Test", NameLocalizationKey="Test")]
+                         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Test", LocalizationKeyOverride = "Test")]
                          public decimal Prop1 { get; set; }
                      }
                      """;
@@ -74,7 +74,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey="Test", ValuesPropertyName="Values")]
+                         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Test", ArgumentsCollectionName = "Values")]
                          public decimal {|SB1003:Prop1|} { get; set; }
                      }
                      """;
@@ -94,7 +94,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey="Test", ArePropertyNameValuesKeys=true)]
+                         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Test", ArgumentsTextKind = TextKind.LocalizationKey)]
                          public decimal {|SB1003:Prop1|} { get; set; }
                      }
                      """;
@@ -114,7 +114,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey="Test", IsPropertyNameValuesAppLocalization=true)]
+                         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Test", ArgumentsTextKind = TextKind.LocalizationKey)]
                          public decimal {|SB1003:Prop1|} { get; set; }
                      }
                      """;
@@ -134,7 +134,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey="Test", TooltipKey="Test")]
+                         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Test", TooltipKey = "Test")]
                          public decimal {|SB1003:Prop1|} { get; set; }
                      }
                      """;
@@ -154,7 +154,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey="Test", IsValueLocalizationKey=true)]
+                         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Test", ValueTextKind = TextKind.LocalizationKey)]
                          public decimal {|SB1003:Prop1|} { get; set; }
                      }
                      """;
@@ -174,7 +174,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey="Test", IsValueAppLocalization=true)]
+                         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Test", ValueTextKind = TextKind.AppLocalizationKey)]
                          public decimal {|SB1003:Prop1|} { get; set; }
                      }
                      """;

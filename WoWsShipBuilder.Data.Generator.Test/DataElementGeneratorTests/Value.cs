@@ -32,7 +32,7 @@ public partial class DataElementGeneratorTest
                                    this.DataElements.Clear();
                                    if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Prop1))
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.ValueDataElement(this.Prop1.ToString(), false, false));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.ValueDataElement(this.Prop1.ToString(), global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain));
                                    }
                                }
                            }
@@ -56,7 +56,7 @@ public partial class DataElementGeneratorTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.Value, IsValueLocalizationKey=true)]
+                         [DataElementType(DataElementTypes.Value, ValueTextKind = TextKind.LocalizationKey)]
                          public decimal Prop1 { get; set; }
                      }
                      """;
@@ -73,7 +73,7 @@ public partial class DataElementGeneratorTest
                                    this.DataElements.Clear();
                                    if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Prop1))
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.ValueDataElement(this.Prop1.ToString(), true, false));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.ValueDataElement(this.Prop1.ToString(), global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.LocalizationKey));
                                    }
                                }
                            }
@@ -97,7 +97,7 @@ public partial class DataElementGeneratorTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.Value, IsValueAppLocalization=true)]
+                         [DataElementType(DataElementTypes.Value, ValueTextKind = TextKind.AppLocalizationKey)]
                          public decimal Prop1 { get; set; }
                      }
                      """;
@@ -114,7 +114,7 @@ public partial class DataElementGeneratorTest
                                    this.DataElements.Clear();
                                    if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Prop1))
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.ValueDataElement(this.Prop1.ToString(), false, true));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.ValueDataElement(this.Prop1.ToString(), global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.AppLocalizationKey));
                                    }
                                }
                            }

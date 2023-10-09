@@ -34,7 +34,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.Value, ValuesPropertyName="Values")]
+                         [DataElementType(DataElementTypes.Value, ArgumentsCollectionName = "Values")]
                          public decimal {|SB1003:Prop1|} { get; set; }
                      }
                      """;
@@ -54,7 +54,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.Value, ArePropertyNameValuesKeys=true)]
+                         [DataElementType(DataElementTypes.Value, ArgumentsTextKind = TextKind.LocalizationKey)]
                          public decimal {|SB1003:Prop1|} { get; set; }
                      }
                      """;
@@ -74,7 +74,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.Value, IsPropertyNameValuesAppLocalization=true)]
+                         [DataElementType(DataElementTypes.Value, ArgumentsTextKind = TextKind.AppLocalizationKey)]
                          public decimal {|SB1003:Prop1|} { get; set; }
                      }
                      """;
@@ -94,7 +94,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.Value, UnitKey="Test")]
+                         [DataElementType(DataElementTypes.Value, UnitKey = "Test")]
                          public decimal {|SB1003:Prop1|} { get; set; }
                      }
                      """;
@@ -114,7 +114,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.Value, TooltipKey="Test")]
+                         [DataElementType(DataElementTypes.Value, TooltipKey = "Test")]
                          public decimal {|SB1003:Prop1|} { get; set; }
                      }
                      """;
@@ -134,7 +134,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.Value, NameLocalizationKey="Test")]
+                         [DataElementType(DataElementTypes.Value, LocalizationKeyOverride = "Test")]
                          public decimal {|SB1003:Prop1|} { get; set; }
                      }
                      """;

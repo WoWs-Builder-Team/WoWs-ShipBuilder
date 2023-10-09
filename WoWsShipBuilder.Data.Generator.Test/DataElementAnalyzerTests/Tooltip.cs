@@ -14,7 +14,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.Tooltip, TooltipKey="Test")]
+                         [DataElementType(DataElementTypes.Tooltip, TooltipKey = "Test")]
                          public decimal Prop1 { get; set; }
                      }
                      """;
@@ -54,7 +54,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.Tooltip, TooltipKey="Test", UnitKey="Test")]
+                         [DataElementType(DataElementTypes.Tooltip, TooltipKey = "Test", UnitKey = "Test")]
                          public decimal Prop1 { get; set; }
                      }
                      """;
@@ -74,7 +74,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.Tooltip, TooltipKey="Test", NameLocalizationKey="Test")]
+                         [DataElementType(DataElementTypes.Tooltip, TooltipKey = "Test", LocalizationKeyOverride = "Test")]
                          public decimal Prop1 { get; set; }
                      }
                      """;
@@ -94,7 +94,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.Tooltip, TooltipKey="Test", ValuesPropertyName="Values")]
+                         [DataElementType(DataElementTypes.Tooltip, TooltipKey = "Test", ArgumentsCollectionName = "Values")]
                          public decimal {|SB1003:Prop1|} { get; set; }
                      }
                      """;
@@ -114,7 +114,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.Tooltip, TooltipKey="Test", ArePropertyNameValuesKeys=true)]
+                         [DataElementType(DataElementTypes.Tooltip, TooltipKey = "Test", ArgumentsTextKind = TextKind.LocalizationKey)]
                          public decimal {|SB1003:Prop1|} { get; set; }
                      }
                      """;
@@ -134,7 +134,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.Tooltip, TooltipKey="Test", IsPropertyNameValuesAppLocalization=true)]
+                         [DataElementType(DataElementTypes.Tooltip, TooltipKey = "Test", ArgumentsTextKind = TextKind.AppLocalizationKey)]
                          public decimal {|SB1003:Prop1|} { get; set; }
                      }
                      """;
@@ -154,7 +154,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.Tooltip, TooltipKey="Test", IsValueLocalizationKey=true)]
+                         [DataElementType(DataElementTypes.Tooltip, TooltipKey = "Test", ValueTextKind = TextKind.LocalizationKey)]
                          public decimal {|SB1003:Prop1|} { get; set; }
                      }
                      """;
@@ -174,7 +174,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.Tooltip, TooltipKey="Test", IsValueAppLocalization=true)]
+                         [DataElementType(DataElementTypes.Tooltip, TooltipKey = "Test", ValueTextKind = TextKind.AppLocalizationKey)]
                          public decimal {|SB1003:Prop1|} { get; set; }
                      }
                      """;

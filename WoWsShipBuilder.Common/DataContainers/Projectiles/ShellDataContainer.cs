@@ -15,7 +15,7 @@ public partial record ShellDataContainer : DataContainerBase
 {
     public string Name { get; set; } = default!;
 
-    [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true, IsValueAppLocalization = true)]
+    [DataElementType(DataElementTypes.KeyValue, ValueTextKind = TextKind.AppLocalizationKey)]
     public string Type { get; set; } = default!;
 
     [DataElementType(DataElementTypes.KeyValue)]
