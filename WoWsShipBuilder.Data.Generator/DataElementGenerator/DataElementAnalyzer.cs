@@ -8,7 +8,6 @@ using WoWsShipBuilder.Data.Generator.Utilities;
 
 namespace WoWsShipBuilder.Data.Generator.DataElementGenerator;
 
-// ReSharper disable once UnusedType.Global
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public class DataElementAnalyzer : DiagnosticAnalyzer
 {
@@ -38,6 +37,7 @@ public class DataElementAnalyzer : DiagnosticAnalyzer
 
         var dataElementType = (DataElementTypes)dataElementAttribute.ConstructorArguments[0].Value!;
         var propertyData = ExtractPropertyData(propertySymbol, dataElementType, dataElementAttribute);
+        context.CancellationToken.ThrowIfCancellationRequested();
 
         if ((dataElementType & DataElementTypes.Grouped) == DataElementTypes.Grouped)
         {
@@ -48,6 +48,7 @@ public class DataElementAnalyzer : DiagnosticAnalyzer
             context.ReportDiagnostic(Diagnostic.Create(Rules.IncompatibleAttributeParametersRule, propertySymbol.Locations[0], "GroupKey"));
         }
 
+        context.CancellationToken.ThrowIfCancellationRequested();
         switch (dataElementType & ~DataElementTypes.Grouped)
         {
             case DataElementTypes.KeyValue:

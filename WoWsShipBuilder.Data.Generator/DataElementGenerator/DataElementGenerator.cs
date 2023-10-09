@@ -21,7 +21,7 @@ public class DataElementGenerator : IIncrementalGenerator
     {
         context.RegisterPostInitializationOutput(AttributeHelper.GenerateAttributes);
         var model = context.SyntaxProvider
-            .ForAttributeWithMetadataName(DataContainerAttributeFullName, CouldBeDataContainer, GetModel)
+            .ForAttributeWithMetadataName(DataContainerAttributeFullName, CouldBeDataContainer, ComputeRawContainerData)
             .Select(ExtractPropertyGroups);
 
         context.RegisterSourceOutput(model, GenerateSourceCode);
@@ -33,7 +33,7 @@ public class DataElementGenerator : IIncrementalGenerator
         return syntaxNode is RecordDeclarationSyntax typeDeclarationSyntax && typeDeclarationSyntax.Modifiers.Any(m => m.IsKind(SyntaxKind.PartialKeyword));
     }
 
-    private static RawContainerData GetModel(GeneratorAttributeSyntaxContext context, CancellationToken token)
+    private static RawContainerData ComputeRawContainerData(GeneratorAttributeSyntaxContext context, CancellationToken token)
     {
         var recordSymbol = (INamedTypeSymbol)context.TargetSymbol;
         token.ThrowIfCancellationRequested();
@@ -47,6 +47,14 @@ public class DataElementGenerator : IIncrementalGenerator
 
         token.ThrowIfCancellationRequested();
         return new(name, dataNamespace, properties);
+    }
+
+    private static SinglePropertyData RefineProperty(IPropertySymbol propertySymbol, int index)
+    {
+        var dataElementAttribute = propertySymbol.FindAttribute(DataElementAttributeFullName);
+        var dataElementType = (DataElementTypes)dataElementAttribute.ConstructorArguments[0].Value!;
+
+        return new(propertySymbol.Name, propertySymbol.Type.SpecialType == SpecialType.System_String, propertySymbol.NullableAnnotation == NullableAnnotation.Annotated, dataElementType, PropertyHelper.ExtractDisplayOptions(propertySymbol, dataElementAttribute), PropertyHelper.ExtractFilterOptions(propertySymbol), PropertyHelper.ExtractFormattedTextOptions(dataElementAttribute), index);
     }
 
     private static ContainerData ExtractPropertyGroups(RawContainerData rawContainerData, CancellationToken token)
@@ -74,14 +82,6 @@ public class DataElementGenerator : IIncrementalGenerator
     {
         var children = grouping.Select(prop => prop with { DataElementType = prop.DataElementType & ~DataElementTypes.Grouped }).ToEquatableArray();
         return new(grouping.Key, children, children[0].DeclarationIndex);
-    }
-
-    private static SinglePropertyData RefineProperty(IPropertySymbol propertySymbol, int index)
-    {
-        var dataElementAttribute = propertySymbol.FindAttribute(DataElementAttributeFullName);
-        var dataElementType = (DataElementTypes)dataElementAttribute.ConstructorArguments[0].Value!;
-
-        return new(propertySymbol.Name, propertySymbol.Type.SpecialType == SpecialType.System_String, propertySymbol.NullableAnnotation == NullableAnnotation.Annotated, dataElementType, PropertyHelper.ExtractDisplayOptions(propertySymbol, dataElementAttribute), PropertyHelper.ExtractFilterOptions(propertySymbol), PropertyHelper.ExtractFormattedTextOptions(dataElementAttribute), index);
     }
 
     private static void GenerateSourceCode(SourceProductionContext context, ContainerData containerData)
