@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using WoWsShipBuilder.DataElements.DataElements;
+using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.Infrastructure.Localization;
 
 namespace WoWsShipBuilder.Features.ShipStats;

@@ -7,7 +7,7 @@ public partial class DataElementGeneratorTest
     {
         var source = """
                      using WoWsShipBuilder.DataElements.DataElementAttributes;
-                     using WoWsShipBuilder.DataElements.DataElements;
+                     using WoWsShipBuilder.DataElements;
 
                      namespace Test;
 
@@ -41,7 +41,7 @@ public partial class DataElementGeneratorTest
     {
         var source = """
                      using WoWsShipBuilder.DataElements.DataElementAttributes;
-                     using WoWsShipBuilder.DataElements.DataElements;
+                     using WoWsShipBuilder.DataElements;
 
                      namespace Test;
 
@@ -71,7 +71,7 @@ public partial class DataElementGeneratorTest
                                    this.DataElements.Clear();
                                    if (ShouldDisplayTest(this.TestProperty))
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueUnitDataElement("ShipStats_TestProperty", this.TestProperty.ToString(), "Unit_FPM"));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.KeyValueUnitDataElement("ShipStats_TestProperty", this.TestProperty.ToString(), "Unit_FPM"));
                                    }
                                }
                            }
@@ -89,7 +89,7 @@ public partial class DataElementGeneratorTest
                      using System.Collections.Generic;
 
                      using WoWsShipBuilder.DataElements.DataElementAttributes;
-                     using WoWsShipBuilder.DataElements.DataElements;
+                     using WoWsShipBuilder.DataElements;
 
                      namespace Test;
 
@@ -122,12 +122,12 @@ public partial class DataElementGeneratorTest
                                private void UpdateDataElements()
                                {
                                    this.DataElements.Clear();
-                                   if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Prop1))
+                                   if (global::WoWsShipBuilder.DataElements.DataContainerBase.ShouldAdd(this.Prop1))
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueDataElement("ShipStats_Prop1", this.Prop1, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.LocalizationKey));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.KeyValueDataElement("ShipStats_Prop1", this.Prop1, global::WoWsShipBuilder.DataElements.DataElementTextKind.LocalizationKey));
                                    }
 
-                                   if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Prop2))
+                                   if (global::WoWsShipBuilder.DataElements.DataContainerBase.ShouldAdd(this.Prop2))
                                    {
                                        this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueUnitDataElement("ShipStats_Prop2", this.Prop2.ToString(), "Unit_Knots"));
                                    }

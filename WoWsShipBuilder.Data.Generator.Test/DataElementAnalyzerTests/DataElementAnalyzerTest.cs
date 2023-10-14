@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.CSharp.Testing.NUnit;
 using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
 using WoWsShipBuilder.Data.Generator.DataElementGenerator;
-using WoWsShipBuilder.DataElements.DataElements;
+using WoWsShipBuilder.DataElements;
 
 namespace WoWsShipBuilder.Data.Generator.Test.DataElementAnalyzerTests;
 
@@ -19,7 +19,7 @@ public partial class DataElementAnalyzerTest
     {
         var source = """
                      using WoWsShipBuilder.DataElements.DataElementAttributes;
-                     using WoWsShipBuilder.DataElements.DataElements;
+                     using WoWsShipBuilder.DataElements;
 
                      namespace Test;
 
@@ -37,7 +37,7 @@ public partial class DataElementAnalyzerTest
     private static CSharpAnalyzerTest<DataElementAnalyzer, NUnitVerifier> CreateTest(string source)
     {
         const string baseClass = """
-                                 namespace WoWsShipBuilder.DataElements.DataElements;
+                                 namespace WoWsShipBuilder.DataElements;
 
                                  public abstract record DataContainerBase
                                  {

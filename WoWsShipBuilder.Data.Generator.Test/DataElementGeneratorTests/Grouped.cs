@@ -8,7 +8,7 @@ public partial class DataElementGeneratorTest
     {
         var source = """
                      using WoWsShipBuilder.DataElements.DataElementAttributes;
-                     using WoWsShipBuilder.DataElements.DataElements;
+                     using WoWsShipBuilder.DataElements;
 
                      namespace Test;
 
@@ -33,13 +33,13 @@ public partial class DataElementGeneratorTest
                                private void UpdateDataElements()
                                {
                                    this.DataElements.Clear();
-                                   var LoadersList = new global::System.Collections.Generic.List<global::WoWsShipBuilder.DataElements.DataElements.IDataElement>();
-                                   if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.BowLoaders))
+                                   var LoadersList = new global::System.Collections.Generic.List<global::WoWsShipBuilder.DataElements.IDataElement>();
+                                   if (global::WoWsShipBuilder.DataElements.DataContainerBase.ShouldAdd(this.BowLoaders))
                                    {
-                                       LoadersList.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueDataElement("ShipStats_BowLoaders", this.BowLoaders, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain));
+                                       LoadersList.Add(new global::WoWsShipBuilder.DataElements.KeyValueDataElement("ShipStats_BowLoaders", this.BowLoaders, global::WoWsShipBuilder.DataElements.DataElementTextKind.Plain));
                                    }
 
-                                   if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.SternLoaders))
+                                   if (global::WoWsShipBuilder.DataElements.DataContainerBase.ShouldAdd(this.SternLoaders))
                                    {
                                        LoadersList.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueDataElement("ShipStats_SternLoaders", this.SternLoaders, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain));
                                    }

@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.DataElements.DataElements;
+﻿namespace WoWsShipBuilder.DataElements;
 
 public enum DataElementTextKind
 {

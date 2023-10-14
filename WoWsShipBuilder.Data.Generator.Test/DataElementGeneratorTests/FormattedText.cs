@@ -10,7 +10,7 @@ public partial class DataElementGeneratorTest
                      using System.Collections.Generic;
 
                      using WoWsShipBuilder.DataElements.DataElementAttributes;
-                     using WoWsShipBuilder.DataElements.DataElements;
+                     using WoWsShipBuilder.DataElements;
 
                      namespace Test;
 
@@ -34,9 +34,9 @@ public partial class DataElementGeneratorTest
                                private void UpdateDataElements()
                                {
                                    this.DataElements.Clear();
-                                   if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Test))
+                                   if (global::WoWsShipBuilder.DataElements.DataContainerBase.ShouldAdd(this.Test))
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.FormattedTextDataElement(this.Test, this.TestValues, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.FormattedTextDataElement(this.Test, this.TestValues, global::WoWsShipBuilder.DataElements.DataElementTextKind.Plain, global::WoWsShipBuilder.DataElements.DataElementTextKind.Plain));
                                    }
                                }
                            }
@@ -55,7 +55,7 @@ public partial class DataElementGeneratorTest
                      using System.Collections.Generic;
 
                      using WoWsShipBuilder.DataElements.DataElementAttributes;
-                     using WoWsShipBuilder.DataElements.DataElements;
+                     using WoWsShipBuilder.DataElements;
 
                      namespace Test;
 
@@ -79,9 +79,9 @@ public partial class DataElementGeneratorTest
                                private void UpdateDataElements()
                                {
                                    this.DataElements.Clear();
-                                   if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Test))
+                                   if (global::WoWsShipBuilder.DataElements.DataContainerBase.ShouldAdd(this.Test))
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.FormattedTextDataElement(this.Test, this.TestValues, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.LocalizationKey));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.FormattedTextDataElement(this.Test, this.TestValues, global::WoWsShipBuilder.DataElements.DataElementTextKind.Plain, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.LocalizationKey));
                                    }
                                }
                            }

@@ -8,7 +8,7 @@ public partial class DataElementGeneratorTest
     {
         var source = """
                      using WoWsShipBuilder.DataElements.DataElementAttributes;
-                     using WoWsShipBuilder.DataElements.DataElements;
+                     using WoWsShipBuilder.DataElements;
 
                      namespace Test;
 
@@ -30,9 +30,9 @@ public partial class DataElementGeneratorTest
                                private void UpdateDataElements()
                                {
                                    this.DataElements.Clear();
-                                   if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Prop1))
+                                   if (global::WoWsShipBuilder.DataElements.DataContainerBase.ShouldAdd(this.Prop1))
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.ValueDataElement(this.Prop1.ToString(), global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.ValueDataElement(this.Prop1.ToString(), global::WoWsShipBuilder.DataElements.DataElementTextKind.Plain));
                                    }
                                }
                            }
@@ -49,7 +49,7 @@ public partial class DataElementGeneratorTest
     {
         var source = """
                      using WoWsShipBuilder.DataElements.DataElementAttributes;
-                     using WoWsShipBuilder.DataElements.DataElements;
+                     using WoWsShipBuilder.DataElements;
 
                      namespace Test;
 
@@ -71,9 +71,9 @@ public partial class DataElementGeneratorTest
                                private void UpdateDataElements()
                                {
                                    this.DataElements.Clear();
-                                   if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Prop1))
+                                   if (global::WoWsShipBuilder.DataElements.DataContainerBase.ShouldAdd(this.Prop1))
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.ValueDataElement(this.Prop1.ToString(), global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.LocalizationKey));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.ValueDataElement(this.Prop1.ToString(), global::WoWsShipBuilder.DataElements.DataElementTextKind.LocalizationKey));
                                    }
                                }
                            }
@@ -90,7 +90,7 @@ public partial class DataElementGeneratorTest
     {
         var source = """
                      using WoWsShipBuilder.DataElements.DataElementAttributes;
-                     using WoWsShipBuilder.DataElements.DataElements;
+                     using WoWsShipBuilder.DataElements;
 
                      namespace Test;
 
@@ -112,7 +112,7 @@ public partial class DataElementGeneratorTest
                                private void UpdateDataElements()
                                {
                                    this.DataElements.Clear();
-                                   if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Prop1))
+                                   if (global::WoWsShipBuilder.DataElements.DataContainerBase.ShouldAdd(this.Prop1))
                                    {
                                        this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.ValueDataElement(this.Prop1.ToString(), global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.AppLocalizationKey));
                                    }

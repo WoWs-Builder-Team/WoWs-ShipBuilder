@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WoWsShipBuilder.DataElements.DataElements;
+namespace WoWsShipBuilder.DataElements;
 
 public abstract record DataContainerBase
 {

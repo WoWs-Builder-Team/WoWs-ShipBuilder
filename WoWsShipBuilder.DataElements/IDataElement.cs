@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.DataElements.DataElements;
+﻿namespace WoWsShipBuilder.DataElements;
 
 /// <summary>
 /// Base interface that marks a type as DataElement that can represent data that is supposed to be automatically rendered.

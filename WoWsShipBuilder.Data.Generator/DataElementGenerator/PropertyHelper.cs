@@ -7,7 +7,7 @@ namespace WoWsShipBuilder.Data.Generator.DataElementGenerator;
 
 internal static class PropertyHelper
 {
-    private const string DataElementNamespace = "global::WoWsShipBuilder.DataElements.DataElements";
+    private const string DataElementNamespace = "global::WoWsShipBuilder.DataElements";
 
     public static FormattedTextData ExtractFormattedTextOptions(AttributeData dataElementAttribute)
     {

@@ -14,7 +14,7 @@ public class DataElementGenerator : IIncrementalGenerator
 {
     private const string DataContainerAttributeFullName = $"{AttributeHelper.AttributeNamespace}.{AttributeHelper.DataContainerAttributeName}";
     private const string DataElementAttributeFullName = $"{AttributeHelper.AttributeNamespace}.{AttributeHelper.DataElementTypeAttributeName}";
-    private const string DataElementNamespace = "global::WoWsShipBuilder.DataElements.DataElements";
+    private const string DataElementNamespace = "global::WoWsShipBuilder.DataElements";
     private const string DataElementsCollectionName = "this.DataElements";
 
     public void Initialize(IncrementalGeneratorInitializationContext context)

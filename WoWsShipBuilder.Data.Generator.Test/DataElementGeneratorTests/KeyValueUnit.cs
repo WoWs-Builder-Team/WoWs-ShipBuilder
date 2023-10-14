@@ -8,7 +8,7 @@ public partial class DataElementGeneratorTest
     {
         var source = """
                      using WoWsShipBuilder.DataElements.DataElementAttributes;
-                     using WoWsShipBuilder.DataElements.DataElements;
+                     using WoWsShipBuilder.DataElements;
 
                      namespace Test;
 
@@ -30,9 +30,9 @@ public partial class DataElementGeneratorTest
                                private void UpdateDataElements()
                                {
                                    this.DataElements.Clear();
-                                   if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Prop1))
+                                   if (global::WoWsShipBuilder.DataElements.DataContainerBase.ShouldAdd(this.Prop1))
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueUnitDataElement("ShipStats_Prop1", this.Prop1.ToString(), "Unit_Knots"));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.KeyValueUnitDataElement("ShipStats_Prop1", this.Prop1.ToString(), "Unit_Knots"));
                                    }
                                }
                            }
