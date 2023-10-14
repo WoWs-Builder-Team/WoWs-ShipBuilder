@@ -240,7 +240,7 @@ namespace WoWsShipBuilder.DataContainers
                     break;
             }
 
-            var allPlaneHpModifiers = modifiers.FindModifiers("planeHealth", true);
+            var allPlaneHpModifiers = modifiers.FindModifiers("planeHealthCoeff", true);
             var finalPlaneHp = (int)Math.Round(allPlaneHpModifiers.Aggregate(planeHp, (current, modifier) => current * modifier), 0);
 
             int planeHpPerTierIndex = modifiers.FindModifierIndex("planeHealthPerLevel");

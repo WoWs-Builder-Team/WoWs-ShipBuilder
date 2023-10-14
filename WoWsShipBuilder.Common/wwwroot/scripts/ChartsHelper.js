@@ -219,6 +219,7 @@ export function ChangeSuggestedMax(chartId, newSuggestedMax)
 export function CreateChart(chartId, title, xLabel, yLabel, xUnit, yUnit)
 {
     const ctx = document.getElementById(chartId);
+    const fixColor = (color, value) => Chart.helpers.color(color).opaquer(1).rgbString();
     const chart = new Chart(ctx,
         {
             type: 'line',
@@ -338,10 +339,10 @@ export function CreateChart(chartId, title, xLabel, yLabel, xUnit, yUnit)
                                 {
                                     mode: 'dataset',
                                     customize(context) {
-                                        const index = context.datasetIndex;
+                                        const colors = context.colors;
                                         return {
-                                            background: GetColor(index),
-                                            border: GetColor(index)
+                                            background: fixColor(colors.background, 0.5),
+                                            border: fixColor(colors.border, 0.5),
                                         };
                                     }
                                 }
