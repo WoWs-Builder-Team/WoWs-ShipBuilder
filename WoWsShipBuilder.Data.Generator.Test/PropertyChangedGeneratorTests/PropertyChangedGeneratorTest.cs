@@ -1,5 +1,4 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Testing;
-using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
 using WoWsShipBuilder.Data.Generator.PropertyChangedGenerator;
 
@@ -74,16 +73,12 @@ public class PropertyChangedGeneratorTest
                                public string Test
                                {
                                    get => this.test;
-                                   set => global::ReactiveUI.IReactiveObjectExtensions.RaiseAndSetIfChanged(this, ref this.test, value);
+                                   set => global::{|CS0400:ReactiveUI|}.IReactiveObjectExtensions.RaiseAndSetIfChanged(this, ref this.test, value);
                                }
                            }
                        }
 
                        """;
-
-        var expectedDiagnostic = DiagnosticResult.CompilerError("CS0400")
-            .WithSpan(@"WoWsShipBuilder.Data.Generator\WoWsShipBuilder.Data.Generator.PropertyChangedGenerator.PropertyChangedSourceGenerator\Test.TestViewModel_test.g.cs", 10, 28, 10, 38)
-            .WithArguments("ReactiveUI");
 
         await new CSharpSourceGeneratorTest<PropertyChangedSourceGenerator, NUnitVerifier>
         {
@@ -91,7 +86,6 @@ public class PropertyChangedGeneratorTest
             {
                 Sources = { source, AttributeClass },
                 GeneratedSources = { (typeof(PropertyChangedSourceGenerator), "Test.TestViewModel_test.g.cs", expected) },
-                ExpectedDiagnostics = { expectedDiagnostic },
             },
         }.RunAsync();
     }
@@ -122,16 +116,12 @@ public class PropertyChangedGeneratorTest
                                public string? Test
                                {
                                    get => this.test;
-                                   set => global::ReactiveUI.IReactiveObjectExtensions.RaiseAndSetIfChanged(this, ref this.test, value);
+                                   set => global::{|CS0400:ReactiveUI|}.IReactiveObjectExtensions.RaiseAndSetIfChanged(this, ref this.test, value);
                                }
                            }
                        }
 
                        """;
-
-        var expectedDiagnostic = DiagnosticResult.CompilerError("CS0400")
-            .WithSpan(@"WoWsShipBuilder.Data.Generator\WoWsShipBuilder.Data.Generator.PropertyChangedGenerator.PropertyChangedSourceGenerator\Test.TestViewModel_test.g.cs", 10, 28, 10, 38)
-            .WithArguments("ReactiveUI");
 
         await new CSharpSourceGeneratorTest<PropertyChangedSourceGenerator, NUnitVerifier>
         {
@@ -139,7 +129,6 @@ public class PropertyChangedGeneratorTest
             {
                 Sources = { source, AttributeClass },
                 GeneratedSources = { (typeof(PropertyChangedSourceGenerator), "Test.TestViewModel_test.g.cs", expected) },
-                ExpectedDiagnostics = { expectedDiagnostic },
             },
         }.RunAsync();
     }
@@ -170,16 +159,12 @@ public class PropertyChangedGeneratorTest
                                public int? Test
                                {
                                    get => this.test;
-                                   set => global::ReactiveUI.IReactiveObjectExtensions.RaiseAndSetIfChanged(this, ref this.test, value);
+                                   set => global::{|CS0400:ReactiveUI|}.IReactiveObjectExtensions.RaiseAndSetIfChanged(this, ref this.test, value);
                                }
                            }
                        }
 
                        """;
-
-        var expectedDiagnostic = DiagnosticResult.CompilerError("CS0400")
-            .WithSpan(@"WoWsShipBuilder.Data.Generator\WoWsShipBuilder.Data.Generator.PropertyChangedGenerator.PropertyChangedSourceGenerator\Test.TestViewModel_test.g.cs", 10, 28, 10, 38)
-            .WithArguments("ReactiveUI");
 
         await new CSharpSourceGeneratorTest<PropertyChangedSourceGenerator, NUnitVerifier>
         {
@@ -187,7 +172,6 @@ public class PropertyChangedGeneratorTest
             {
                 Sources = { source, AttributeClass },
                 GeneratedSources = { (typeof(PropertyChangedSourceGenerator), "Test.TestViewModel_test.g.cs", expected) },
-                ExpectedDiagnostics = { expectedDiagnostic },
             },
         }.RunAsync();
     }
@@ -219,16 +203,12 @@ public class PropertyChangedGeneratorTest
                                public global::System.Collections.Generic.List<string?> Test
                                {
                                    get => this.test;
-                                   set => global::ReactiveUI.IReactiveObjectExtensions.RaiseAndSetIfChanged(this, ref this.test, value);
+                                   set => global::{|CS0400:ReactiveUI|}.IReactiveObjectExtensions.RaiseAndSetIfChanged(this, ref this.test, value);
                                }
                            }
                        }
 
                        """;
-
-        var expectedDiagnostic = DiagnosticResult.CompilerError("CS0400")
-            .WithSpan(@"WoWsShipBuilder.Data.Generator\WoWsShipBuilder.Data.Generator.PropertyChangedGenerator.PropertyChangedSourceGenerator\Test.TestViewModel_test.g.cs", 10, 28, 10, 38)
-            .WithArguments("ReactiveUI");
 
         await new CSharpSourceGeneratorTest<PropertyChangedSourceGenerator, NUnitVerifier>
         {
@@ -236,7 +216,6 @@ public class PropertyChangedGeneratorTest
             {
                 Sources = { source, AttributeClass },
                 GeneratedSources = { (typeof(PropertyChangedSourceGenerator), "Test.TestViewModel_test.g.cs", expected) },
-                ExpectedDiagnostics = { expectedDiagnostic },
             },
         }.RunAsync();
     }
