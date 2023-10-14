@@ -11,7 +11,7 @@ internal sealed class SourceBuilder
 
   private readonly StringBuilder sb;
 
-  private int indent;
+  private int currentIndent;
 
   private LastAction lastAction;
 
@@ -141,13 +141,13 @@ internal sealed class SourceBuilder
 
   private SourceBuilder DecreaseIndent()
   {
-    --this.indent;
+    --this.currentIndent;
     return this;
   }
 
   private SourceBuilder IncreaseIndent()
   {
-    ++this.indent;
+    ++this.currentIndent;
     return this;
   }
 
@@ -174,7 +174,7 @@ internal sealed class SourceBuilder
 
   private SourceBuilder AppendIndent()
   {
-    this.sb.Append(' ', this.indent * IndentSize);
+    this.sb.Append(' ', this.currentIndent * IndentSize);
     return this;
   }
 

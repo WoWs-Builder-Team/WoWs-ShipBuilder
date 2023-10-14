@@ -1,10 +1,12 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Testing;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
 using WoWsShipBuilder.Data.Generator.PropertyChangedGenerator;
 
 namespace WoWsShipBuilder.Data.Generator.Test.PropertyChangedGeneratorTests;
 
 [TestFixture]
+[SuppressMessage("Maintainability", "S2699", Justification = "false-positive since sonarlint does not recognize RunAsync method from generator test framework")]
 public class PropertyChangedGeneratorTest
 {
     private const string AttributeClass = """

@@ -13,6 +13,7 @@ namespace WoWsShipBuilder.Data.Generator.Test.DataElementGeneratorTests;
 [SuppressMessage("Maintainability", "S2699", Justification = "false-positive since sonarlint does not recognize custom CreateTest method")]
 public partial class DataElementGeneratorTest
 {
+    [AssertionMethod]
     private static CSharpSourceGeneratorTest<DataElementGenerator.DataElementGenerator, NUnitVerifier> CreateTest(string source, string expected)
     {
         const string baseClass = """

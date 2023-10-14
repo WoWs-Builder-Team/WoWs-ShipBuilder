@@ -114,7 +114,7 @@ public partial class DataElementAnalyzerTest
                      [DataContainer]
                      public partial record TestRecord : DataContainerBase
                      {
-                         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Test", ArgumentsTextKind = TextKind.LocalizationKey)]
+                         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Test", ArgumentsTextKind = TextKind.AppLocalizationKey)]
                          public decimal {|SB1003:Prop1|} { get; set; }
                      }
                      """;

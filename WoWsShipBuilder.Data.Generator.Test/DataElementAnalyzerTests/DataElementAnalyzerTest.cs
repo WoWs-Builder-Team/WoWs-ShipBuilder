@@ -34,6 +34,7 @@ public partial class DataElementAnalyzerTest
         await CreateTest(source).RunAsync();
     }
 
+    [AssertionMethod]
     private static CSharpAnalyzerTest<DataElementAnalyzer, NUnitVerifier> CreateTest(string source)
     {
         const string baseClass = """
