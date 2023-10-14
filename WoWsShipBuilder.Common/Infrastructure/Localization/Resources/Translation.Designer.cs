@@ -2286,6 +2286,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hide Columns.
+        /// </summary>
+        public static string ShipComparison_HideColumns {
+            get {
+                return ResourceManager.GetString("ShipComparison_HideColumns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hide ships without selected section.
         /// </summary>
         public static string ShipComparison_HideIfNoSection {
@@ -2480,6 +2489,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string ShipComparison_SelectAll {
             get {
                 return ResourceManager.GetString("ShipComparison_SelectAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ships per page:.
+        /// </summary>
+        public static string ShipComparison_ShipsPerPage {
+            get {
+                return ResourceManager.GetString("ShipComparison_ShipsPerPage", resourceCulture);
             }
         }
         

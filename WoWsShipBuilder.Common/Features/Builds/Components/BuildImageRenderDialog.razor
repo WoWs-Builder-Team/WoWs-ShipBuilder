@@ -113,7 +113,7 @@
         </MudBreakpointProvider>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel" Color="Color.Error">
+        <MudButton OnClick="@Cancel" Color="Color.Error">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
         <MudButton OnClick="@OpenSettingsDialog">

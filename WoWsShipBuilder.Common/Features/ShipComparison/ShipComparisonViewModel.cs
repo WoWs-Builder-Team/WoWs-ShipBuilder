@@ -54,6 +54,10 @@ public partial class ShipComparisonViewModel : ReactiveObject
     {
         this.localizer = localizer;
         this.appSettings = appSettings;
+
+        useUpgradedModules = appSettings.ShipComparisonUseUpgradedModules;
+        hideShipsWithoutSelectedSection = appSettings.ShipComparisonHideShipsWithoutSection;
+        Range = appSettings.ShipComparisonFiringRange;
     }
 
     private Dictionary<Guid, GridDataWrapper> FilteredShipList
@@ -88,7 +92,7 @@ public partial class ShipComparisonViewModel : ReactiveObject
 
     public Dictionary<Guid, DispersionContainer> DispersionCache { get; } = new();
 
-    public double Range { get; private set; } = 10;
+    public double Range { get; private set; }
 
     public string ResearchedShip
     {
@@ -119,10 +123,10 @@ public partial class ShipComparisonViewModel : ReactiveObject
 
         dictionary.AddRange(filteredShips.Where(x => !dictionary.ContainsKey(x.Key)));
 
-        Dictionary<Guid, GridDataWrapper> cachedWrappers = wrappersCache.Where(data => SelectedTiers.Contains(data.Value.Ship.Tier) &&
-                                                                                       SelectedClasses.Contains(data.Value.Ship.ShipClass) &&
-                                                                                       SelectedNations.Contains(data.Value.Ship.ShipNation) &&
-                                                                                       SelectedCategories.Contains(data.Value.Ship.ShipCategory)).ToDictionary(x => x.Key, x => x.Value);
+        var cachedWrappers = wrappersCache.Where(data => SelectedTiers.Contains(data.Value.Ship.Tier) &&
+                                                         SelectedClasses.Contains(data.Value.Ship.ShipClass) &&
+                                                         SelectedNations.Contains(data.Value.Ship.ShipNation) &&
+                                                         SelectedCategories.Contains(data.Value.Ship.ShipCategory)).ToDictionary(x => x.Key, x => x.Value);
 
         dictionary.AddRange(cachedWrappers.Where(x => !dictionary.ContainsKey(x.Key)));
 
@@ -291,7 +295,7 @@ public partial class ShipComparisonViewModel : ReactiveObject
     public Dictionary<Guid, GridDataWrapper> RemoveBuilds(IEnumerable<KeyValuePair<Guid, GridDataWrapper>> wrappers)
     {
         Dictionary<Guid, GridDataWrapper> warnings = new();
-        Dictionary<Guid, GridDataWrapper> buildList = wrappers.ToDictionary(x => x.Key, x => x.Value);
+        var buildList = wrappers.ToDictionary(x => x.Key, x => x.Value);
         foreach (var wrapper in buildList)
         {
             if (FilteredShipList.Count(x => x.Value.Ship.Index.Equals(wrapper.Value.Ship.Index)) > 1)
@@ -334,7 +338,7 @@ public partial class ShipComparisonViewModel : ReactiveObject
     {
         RemoveBuilds(FilteredShipList);
         SelectedShipList.Clear();
-        Dictionary<Guid, GridDataWrapper> list = FilteredShipList.Where(x => x.Value.Build is not null).ToDictionary(x => x.Key, x => ResetBuild(x.Value));
+        var list = FilteredShipList.Where(x => x.Value.Build is not null).ToDictionary(x => x.Key, x => ResetBuild(x.Value));
         EditBuilds(list, true);
         SetSelectAndPinAllButtonsStatus();
     }
@@ -462,6 +466,11 @@ public partial class ShipComparisonViewModel : ReactiveObject
         else if (obj is Ship ship)
         {
             newWrapper = new(ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer = GetShipDataContainer(ship) });
+        }
+        else if (obj is string shipIndex)
+        {
+            var shipFromIndex = fullShipList.First(x => x.Index.Equals(shipIndex, StringComparison.Ordinal));
+            newWrapper = new(ShipBuildContainer.CreateNew(shipFromIndex, null, null) with { ShipDataContainer = GetShipDataContainer(shipFromIndex) });
         }
         else
         {
