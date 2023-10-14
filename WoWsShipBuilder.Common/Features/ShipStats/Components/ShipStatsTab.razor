@@ -319,40 +319,52 @@ else if (ViewModel is not null)
 
         if (result is { Canceled: false, Data: BuildShareResult shareResult })
         {
-            BuildName = shareResult.BuildName;
-            var build = ViewModel!.CreateBuild(shareResult.BuildName);
-            var buildString = build.CreateShortStringFromBuild();
-            string urlBase;
-            if (NavManager.BaseUri.Contains("0.0.0.0"))
-            {
-                urlBase = AppSettings.SelectedServerType switch
-                {
-                    ServerType.Live => $"{ShipBuilderOptions.Value.LiveServerUrl}/",
-                    ServerType.Pts => $"{ShipBuilderOptions.Value.PtsServerUrl}/",
-                    _ => $"{ShipBuilderOptions.Value.LiveServerUrl}/",
-                };
-            }
-            else
-            {
-                urlBase = NavManager.BaseUri;
-            }
-
-            var buildUrl = $"{urlBase}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}";
-            await ClipboardService.SetTextAsync(shareResult.CreateShortLink ? (await LinkShortener.CreateShortLink(buildUrl)).Link : buildUrl);
-            if (AppSettings.StoreBuildOnShare)
-            {
-                await UserDataService.SaveBuildAsync(build);
-            }
+            await ProcessBuildShareResult(shareResult);
         }
 
         if (result is { Canceled: false, Data: string name })
         {
-            BuildName = name;
-            if (AppSettings.StoreBuildOnShare)
+            await ProcessBuildNameChanged(name);
+        }
+    }
+
+    private async Task ProcessBuildShareResult(BuildShareResult shareResult)
+    {
+        BuildName = shareResult.BuildName;
+        var build = ViewModel!.CreateBuild(shareResult.BuildName);
+        var buildString = build.CreateShortStringFromBuild();
+        string urlBase;
+        if (NavManager.BaseUri.Contains("0.0.0.0"))
+        {
+            urlBase = AppSettings.SelectedServerType switch
             {
-                var build = ViewModel!.CreateBuild(BuildName);
-                await UserDataService.SaveBuildAsync(build);
-            }
+                ServerType.Live => $"{ShipBuilderOptions.Value.LiveServerUrl}/",
+                ServerType.Pts => $"{ShipBuilderOptions.Value.PtsServerUrl}/",
+                _ => $"{ShipBuilderOptions.Value.LiveServerUrl}/",
+                };
+        }
+        else
+        {
+            urlBase = NavManager.BaseUri;
+        }
+
+        var buildUrl = $"{urlBase}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}";
+        await ClipboardService.SetTextAsync(shareResult.CreateShortLink
+            ? (await LinkShortener.CreateShortLink(buildUrl)).Link
+            : buildUrl);
+        if (AppSettings.StoreBuildOnShare)
+        {
+            await UserDataService.SaveBuildAsync(build);
+        }
+    }
+
+    private async Task ProcessBuildNameChanged(string name)
+    {
+        BuildName = name;
+        if (AppSettings.StoreBuildOnShare)
+        {
+            var build = ViewModel!.CreateBuild(BuildName);
+            await UserDataService.SaveBuildAsync(build);
         }
     }
 

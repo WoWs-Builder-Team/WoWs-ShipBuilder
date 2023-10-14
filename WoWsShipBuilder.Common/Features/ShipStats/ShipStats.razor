@@ -225,21 +225,7 @@
             }
             else
             {
-                if (container.Build is not null)
-                {
-                    var viewModel = await ShipStatsTab.CreateViewModel(container.Ship.Index, container.Build, Localizer);
-
-                    List<(string, float)> modifiers = viewModel.UpgradePanelViewModel.GetModifierList();
-                    modifiers.AddRange(viewModel.ConsumableViewModel.GetModifiersList());
-                    modifiers.AddRange(viewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
-                    modifiers.AddRange(viewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
-
-                    buildContainers.Add(container with { Modifiers = modifiers, ShipDataContainer = calculateShipDataContainer ? DataContainerUtility.GetShipDataContainerFromBuild(container.Ship, container.Build.Modules, container.Ship.ShipUpgradeInfo.ShipUpgrades, modifiers) : container.ShipDataContainer });
-                }
-                else
-                {
-                    buildContainers.Add(calculateShipDataContainer ? container with { ShipDataContainer = DataContainerUtility.GetStockShipDataContainer(container.Ship) } : container);
-                }
+                buildContainers.Add(await UpdateShipDataContainer(calculateShipDataContainer, container));
             }
 
             shipIndexes.Add(container.Ship.Index);
@@ -247,6 +233,24 @@
 
         SessionStateCache.SetBuildTransferContainers(buildContainers);
         return shipIndexes;
+    }
+
+    private async Task<ShipBuildContainer> UpdateShipDataContainer(bool calculateShipDataContainer, ShipBuildContainer container)
+    {
+        if (container.Build is not null)
+        {
+            var viewModel = await ShipStatsTab.CreateViewModel(container.Ship.Index, container.Build, Localizer);
+
+            List<(string, float)> modifiers = viewModel.UpgradePanelViewModel.GetModifierList();
+            modifiers.AddRange(viewModel.ConsumableViewModel.GetModifiersList());
+            modifiers.AddRange(viewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
+            modifiers.AddRange(viewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
+
+            var newDataContainer = calculateShipDataContainer ? DataContainerUtility.GetShipDataContainerFromBuild(container.Ship, container.Build.Modules, container.Ship.ShipUpgradeInfo.ShipUpgrades, modifiers) : container.ShipDataContainer;
+            return container with { Modifiers = modifiers, ShipDataContainer = newDataContainer };
+        }
+
+        return calculateShipDataContainer ? container with { ShipDataContainer = DataContainerUtility.GetStockShipDataContainer(container.Ship) } : container;
     }
 
     private async Task OpenBallisticCharts()
