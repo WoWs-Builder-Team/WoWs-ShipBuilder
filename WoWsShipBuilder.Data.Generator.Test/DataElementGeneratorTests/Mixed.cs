@@ -129,17 +129,17 @@ public partial class DataElementGeneratorTest
 
                                    if (global::WoWsShipBuilder.DataElements.DataContainerBase.ShouldAdd(this.Prop2))
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueUnitDataElement("ShipStats_Prop2", this.Prop2.ToString(), "Unit_Knots"));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.KeyValueUnitDataElement("ShipStats_Prop2", this.Prop2.ToString(), "Unit_Knots"));
                                    }
 
-                                   if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Prop3))
+                                   if (global::WoWsShipBuilder.DataElements.DataContainerBase.ShouldAdd(this.Prop3))
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.TooltipDataElement("ShipStats_Prop3", this.Prop3, "ShipStats_TestTooltip", ""));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.TooltipDataElement("ShipStats_Prop3", this.Prop3, "ShipStats_TestTooltip", ""));
                                    }
 
-                                   if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Prop4))
+                                   if (global::WoWsShipBuilder.DataElements.DataContainerBase.ShouldAdd(this.Prop4))
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.FormattedTextDataElement(this.Prop4, this.TestValues, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.FormattedTextDataElement(this.Prop4, this.TestValues, global::WoWsShipBuilder.DataElements.DataElementTextKind.Plain, global::WoWsShipBuilder.DataElements.DataElementTextKind.Plain));
                                    }
                                }
                            }

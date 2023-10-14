@@ -114,7 +114,7 @@ public partial class DataElementGeneratorTest
                                    this.DataElements.Clear();
                                    if (global::WoWsShipBuilder.DataElements.DataContainerBase.ShouldAdd(this.Prop1))
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueDataElement("ShipStats_Prop1", this.Prop1.ToString(), global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.AppLocalizationKey));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.KeyValueDataElement("ShipStats_Prop1", this.Prop1.ToString(), global::WoWsShipBuilder.DataElements.DataElementTextKind.AppLocalizationKey));
                                    }
                                }
                            }

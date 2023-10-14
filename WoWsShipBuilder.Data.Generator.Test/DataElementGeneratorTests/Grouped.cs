@@ -41,12 +41,12 @@ public partial class DataElementGeneratorTest
 
                                    if (global::WoWsShipBuilder.DataElements.DataContainerBase.ShouldAdd(this.SternLoaders))
                                    {
-                                       LoadersList.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueDataElement("ShipStats_SternLoaders", this.SternLoaders, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain));
+                                       LoadersList.Add(new global::WoWsShipBuilder.DataElements.KeyValueDataElement("ShipStats_SternLoaders", this.SternLoaders, global::WoWsShipBuilder.DataElements.DataElementTextKind.Plain));
                                    }
 
                                    if (LoadersList.Count > 0)
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.GroupedDataElement("ShipStats_Loaders", LoadersList));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.GroupedDataElement("ShipStats_Loaders", LoadersList));
                                    }
                                }
                            }
@@ -63,7 +63,7 @@ public partial class DataElementGeneratorTest
     {
         var source = """
                      using WoWsShipBuilder.DataElements.DataElementAttributes;
-                     using WoWsShipBuilder.DataElements.DataElements;
+                     using WoWsShipBuilder.DataElements;
 
                      namespace Test;
 
@@ -94,36 +94,36 @@ public partial class DataElementGeneratorTest
                                private void UpdateDataElements()
                                {
                                    this.DataElements.Clear();
-                                   var Group1List = new global::System.Collections.Generic.List<global::WoWsShipBuilder.DataElements.DataElements.IDataElement>();
-                                   if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Prop1))
+                                   var Group1List = new global::System.Collections.Generic.List<global::WoWsShipBuilder.DataElements.IDataElement>();
+                                   if (global::WoWsShipBuilder.DataElements.DataContainerBase.ShouldAdd(this.Prop1))
                                    {
-                                       Group1List.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueDataElement("ShipStats_Prop1", this.Prop1, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain));
+                                       Group1List.Add(new global::WoWsShipBuilder.DataElements.KeyValueDataElement("ShipStats_Prop1", this.Prop1, global::WoWsShipBuilder.DataElements.DataElementTextKind.Plain));
                                    }
 
-                                   if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Prop3))
+                                   if (global::WoWsShipBuilder.DataElements.DataContainerBase.ShouldAdd(this.Prop3))
                                    {
-                                       Group1List.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueDataElement("ShipStats_Prop3", this.Prop3, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain));
+                                       Group1List.Add(new global::WoWsShipBuilder.DataElements.KeyValueDataElement("ShipStats_Prop3", this.Prop3, global::WoWsShipBuilder.DataElements.DataElementTextKind.Plain));
                                    }
 
                                    if (Group1List.Count > 0)
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.GroupedDataElement("ShipStats_Group1", Group1List));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.GroupedDataElement("ShipStats_Group1", Group1List));
                                    }
 
-                                   var Group2List = new global::System.Collections.Generic.List<global::WoWsShipBuilder.DataElements.DataElements.IDataElement>();
-                                   if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Prop2))
+                                   var Group2List = new global::System.Collections.Generic.List<global::WoWsShipBuilder.DataElements.IDataElement>();
+                                   if (global::WoWsShipBuilder.DataElements.DataContainerBase.ShouldAdd(this.Prop2))
                                    {
-                                       Group2List.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueDataElement("ShipStats_Prop2", this.Prop2, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain));
+                                       Group2List.Add(new global::WoWsShipBuilder.DataElements.KeyValueDataElement("ShipStats_Prop2", this.Prop2, global::WoWsShipBuilder.DataElements.DataElementTextKind.Plain));
                                    }
 
-                                   if (global::WoWsShipBuilder.DataElements.DataElements.DataContainerBase.ShouldAdd(this.Prop4))
+                                   if (global::WoWsShipBuilder.DataElements.DataContainerBase.ShouldAdd(this.Prop4))
                                    {
-                                       Group2List.Add(new global::WoWsShipBuilder.DataElements.DataElements.KeyValueDataElement("ShipStats_Prop4", this.Prop4, global::WoWsShipBuilder.DataElements.DataElements.DataElementTextKind.Plain));
+                                       Group2List.Add(new global::WoWsShipBuilder.DataElements.KeyValueDataElement("ShipStats_Prop4", this.Prop4, global::WoWsShipBuilder.DataElements.DataElementTextKind.Plain));
                                    }
 
                                    if (Group2List.Count > 0)
                                    {
-                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.DataElements.GroupedDataElement("ShipStats_Group2", Group2List));
+                                       this.DataElements.Add(new global::WoWsShipBuilder.DataElements.GroupedDataElement("ShipStats_Group2", Group2List));
                                    }
                                }
                            }
