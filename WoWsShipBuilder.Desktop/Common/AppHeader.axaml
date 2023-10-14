@@ -28,7 +28,7 @@
                 </Button.Styles>
                 <Path Margin="10,0,10,0"
                       Stretch="Uniform"
-                      Fill="{StaticResource ThemeForegroundBrush}"
+                      Fill="White"
                       Data="M2048 1229v-205h-2048v205h2048z"></Path>
             </Button>
 
@@ -52,7 +52,7 @@
                 </Button.Styles>
                 <Path Margin="10,0,10,0"
                       Stretch="Uniform"
-                      Fill="{StaticResource ThemeForegroundBrush}"
+                      Fill="White"
                       Name="MaximizeIcon"
                       Data="M2048 2048v-2048h-2048v2048h2048zM1843 1843h-1638v-1638h1638v1638z"></Path>
             </Button>
@@ -70,11 +70,8 @@
                     <Style Selector="Button:not(:pointerover) /template/ ContentPresenter#PART_ContentPresenter">
                         <Setter Property="Background" Value="Transparent"/>
                     </Style>
-                    <Style Selector="Button:pointerover > Path">
-                        <Setter Property="Fill" Value="{StaticResource ThemeForegroundBrush}"/>
-                    </Style>
-                    <Style Selector="Button:not(:pointerover) > Path">
-                        <Setter Property="Fill" Value="{StaticResource ThemeForegroundBrush}"/>
+                    <Style Selector="Button > Path">
+                        <Setter Property="Fill" Value="White"/>
                     </Style>
                 </Button.Styles>
                 <Path Margin="10,0,10,0"

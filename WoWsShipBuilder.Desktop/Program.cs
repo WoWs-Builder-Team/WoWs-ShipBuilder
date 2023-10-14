@@ -7,7 +7,7 @@ using Avalonia.ReactiveUI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using NLog;
+using Microsoft.Extensions.Logging.Abstractions;
 using NLog.Extensions.Logging;
 using Sentry;
 using Squirrel;
@@ -15,12 +15,13 @@ using WoWsShipBuilder.Desktop.Infrastructure;
 using WoWsShipBuilder.Desktop.Infrastructure.StaticConfiguration;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Localization;
-using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace WoWsShipBuilder.Desktop;
 
 internal sealed class Program
 {
+    private static ILogger<Program> logger = NullLogger<Program>.Instance;
+
     [STAThread]
     public static void Main(string[] args) => RunProgram(args).GetAwaiter().GetResult();
 
@@ -39,7 +40,7 @@ internal sealed class Program
         AppData.WebMode = false;
         await app.StartAsync();
 
-        var logger = app.Services.GetRequiredService<ILogger<Program>>();
+        logger = app.Services.GetRequiredService<ILogger<Program>>();
         LocalizeConverter.InitializeLocalizer(app.Services.GetRequiredService<ILocalizer>());
 
         var avaloniaApp = BuildAvaloniaApp(app.Services);
@@ -88,29 +89,33 @@ internal sealed class Program
             .UseSkia()
             .UseReactiveUI();
 
-    public static AppBuilder BuildAvaloniaApp() => BuildAvaloniaApp(null!);
+    public static AppBuilder BuildAvaloniaApp() => BuildAvaloniaApp(CreatePreviewServiceProvider());
 
     [SupportedOSPlatform("windows")]
     private static void OnAppUninstall(SemanticVersion version, IAppTools tools)
     {
-        LogManager.GetCurrentClassLogger().Info("App is uninstalling...");
+        logger.LogInformation("App is uninstalling...");
         tools.RemoveShortcutForThisExe();
     }
 
     [SupportedOSPlatform("windows")]
     private static void OnInitialInstall(SemanticVersion version, IAppTools tools)
     {
-        var logger = LogManager.GetCurrentClassLogger();
-        logger.Info("App has been installed, creating shortcuts...");
+        logger.LogInformation("App has been installed, creating shortcuts...");
         try
         {
             tools.CreateShortcutForThisExe();
-            logger.Info("Shortcuts have been created.");
+            logger.LogInformation("Shortcuts have been created.");
         }
         catch (Exception e)
         {
-            logger.Error(e);
+            logger.LogError(e, "Error during installation");
             throw;
         }
+    }
+
+    private static IServiceProvider CreatePreviewServiceProvider()
+    {
+        return new ServiceCollection().AddLogging(builder => builder.ClearProviders()).BuildServiceProvider();
     }
 }

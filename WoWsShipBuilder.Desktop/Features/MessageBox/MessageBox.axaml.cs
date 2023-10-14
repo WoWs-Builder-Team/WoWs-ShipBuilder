@@ -1,11 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using WoWsShipBuilder.Desktop.Infrastructure;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;
 
 namespace WoWsShipBuilder.Desktop.Features.MessageBox;
@@ -14,7 +11,7 @@ public partial class MessageBox : Window
 {
     public MessageBox()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 
     public enum MessageBoxButtons
