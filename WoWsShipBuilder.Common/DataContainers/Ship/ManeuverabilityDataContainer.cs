@@ -1,17 +1,18 @@
+using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
-using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.DataContainers;
 
+[DataContainer]
 public partial record ManeuverabilityDataContainer : DataContainerBase
 {
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Knots")]
     public decimal ManeuverabilityMaxSpeed { get; set; }
 
-    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Knots", NameLocalizationKey = "MaxReverseSpeed")]
+    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Knots", LocalizationKeyOverride = "MaxReverseSpeed")]
     public decimal ManeuverabilityMaxReverseSpeed { get; set; }
 
     [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxSpeed", UnitKey = "Knots")]
@@ -23,13 +24,13 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxSpeed", UnitKey = "Knots")]
     public decimal ManeuverabilitySubsMaxSpeedAtMaxDepth { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxReverseSpeed", UnitKey = "Knots", NameLocalizationKey = "ManeuverabilitySubsMaxSpeedOnSurface")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxReverseSpeed", UnitKey = "Knots", LocalizationKeyOverride = "ManeuverabilitySubsMaxSpeedOnSurface")]
     public decimal ManeuverabilitySubsMaxReverseSpeedOnSurface { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxReverseSpeed", UnitKey = "Knots", NameLocalizationKey = "ManeuverabilitySubsMaxSpeedAtPeriscope")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxReverseSpeed", UnitKey = "Knots", LocalizationKeyOverride = "ManeuverabilitySubsMaxSpeedAtPeriscope")]
     public decimal ManeuverabilitySubsMaxReverseSpeedAtPeriscope { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxReverseSpeed", UnitKey = "Knots", NameLocalizationKey = "ManeuverabilitySubsMaxSpeedAtMaxDepth")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxReverseSpeed", UnitKey = "Knots", LocalizationKeyOverride = "ManeuverabilitySubsMaxSpeedAtMaxDepth")]
     public decimal ManeuverabilitySubsMaxReverseSpeedAtMaxDepth { get; set; }
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MPS")]

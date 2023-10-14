@@ -1,16 +1,17 @@
 using System.Globalization;
 using System.Text;
+using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
-using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.DataContainers;
 
+[DataContainer]
 public partial record TorpedoArmamentDataContainer : DataContainerBase
 {
-    [DataElementType(DataElementTypes.FormattedText, ValuesPropertyName = "LauncherNames", ArePropertyNameValuesKeys = true)]
+    [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = "LauncherNames", ArgumentsTextKind = TextKind.LocalizationKey)]
     public string Name { get; set; } = default!;
 
     public List<string> LauncherNames { get; set; } = new();
@@ -39,10 +40,10 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.KeyValue)]
     public string FullSalvoDamage { get; set; } = default!;
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "FullSalvoDamage", NameLocalizationKey = "FirstOption")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "FullSalvoDamage", LocalizationKeyOverride = "FirstOption")]
     public string TorpFullSalvoDmg { get; set; } = default!;
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "FullSalvoDamage", NameLocalizationKey = "SecondOption")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "FullSalvoDamage", LocalizationKeyOverride = "SecondOption")]
     public string AltTorpFullSalvoDmg { get; set; } = default!;
 
     public int LoadersCount { get; set; }

@@ -1,7 +1,7 @@
 using System.Globalization;
 using Microsoft.Extensions.Logging;
+using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
-using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.GameData;
@@ -9,6 +9,7 @@ using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.DataContainers;
 
+[DataContainer]
 public partial record SecondaryBatteryDataContainer : DataContainerBase
 {
     public string Name { get; set; } = default!;
@@ -92,7 +93,7 @@ public partial record SecondaryBatteryDataContainer : DataContainerBase
             {
                 Name = arrangementString,
                 TurretName = turretName,
-                TurretSetup = new(arrangementString, turretName, AreValuesKeys: true),
+                TurretSetup = new(arrangementString, turretName, ArgumentsTextKind: DataElementTextKind.LocalizationKey),
                 BarrelsLayout = $"{secondaryGroup.Count} x {secondaryGun.NumBarrels}",
                 BarrelsCount = secondaryGroup.Count * secondaryGun.NumBarrels,
                 GunCaliber = Math.Round(secondaryGun.BarrelDiameter * 1000),

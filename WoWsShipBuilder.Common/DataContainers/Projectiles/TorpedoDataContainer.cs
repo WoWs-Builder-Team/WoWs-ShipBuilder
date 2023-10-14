@@ -7,12 +7,13 @@ using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.DataContainers;
 
+[DataContainer]
 public partial record TorpedoDataContainer : ProjectileDataContainer
 {
-    [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true, IsValueAppLocalization = true)]
+    [DataElementType(DataElementTypes.KeyValue, ValueTextKind = TextKind.AppLocalizationKey)]
     public string TorpedoType { get; set; } = default!;
 
-    [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true)]
+    [DataElementType(DataElementTypes.KeyValue, ValueTextKind = TextKind.LocalizationKey)]
     [DataElementFiltering(true, "ShouldDisplayName")]
     public string Name { get; set; } = default!;
 
@@ -44,70 +45,70 @@ public partial record TorpedoDataContainer : ProjectileDataContainer
     [DataElementFiltering(false)]
     public decimal SplashCoeff { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxTurningSpeed", UnitKey = "DegreePerSecond", NameLocalizationKey = "FirstPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxTurningSpeed", UnitKey = "DegreePerSecond", LocalizationKeyOverride = "FirstPing")]
     public decimal MaxTurningSpeedFirstPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxTurningSpeed", UnitKey = "DegreePerSecond", NameLocalizationKey = "SecondPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxTurningSpeed", UnitKey = "DegreePerSecond", LocalizationKeyOverride = "SecondPing")]
     public decimal MaxTurningSpeedSecondPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "TurningAcceleration", UnitKey = "DegreePerSecond2", NameLocalizationKey = "FirstPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "TurningAcceleration", UnitKey = "DegreePerSecond2", LocalizationKeyOverride = "FirstPing")]
     public decimal TurningAccelerationFirstPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "TurningAcceleration", UnitKey = "DegreePerSecond2", NameLocalizationKey = "SecondPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "TurningAcceleration", UnitKey = "DegreePerSecond2", LocalizationKeyOverride = "SecondPing")]
     public decimal TurningAccelerationSecondPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxVerticalSpeed", UnitKey = "MPS", NameLocalizationKey = "FirstPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxVerticalSpeed", UnitKey = "MPS", LocalizationKeyOverride = "FirstPing")]
     public decimal MaxVerticalSpeedFirstPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxVerticalSpeed", UnitKey = "MPS", NameLocalizationKey = "SecondPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxVerticalSpeed", UnitKey = "MPS", LocalizationKeyOverride = "SecondPing")]
     public decimal MaxVerticalSpeedSecondPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "VerticalAcceleration", UnitKey = "MPS2", NameLocalizationKey = "FirstPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "VerticalAcceleration", UnitKey = "MPS2", LocalizationKeyOverride = "FirstPing")]
     public decimal VerticalAccelerationFirstPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "VerticalAcceleration", UnitKey = "MPS2", NameLocalizationKey = "SecondPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "VerticalAcceleration", UnitKey = "MPS2", LocalizationKeyOverride = "SecondPing")]
     public decimal VerticalAccelerationSecondPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "SearchRadius", UnitKey = "KM", NameLocalizationKey = "FirstPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "SearchRadius", UnitKey = "KM", LocalizationKeyOverride = "FirstPing")]
     public decimal SearchRadiusFirstPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "SearchRadius", UnitKey = "KM", NameLocalizationKey = "SecondPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "SearchRadius", UnitKey = "KM", LocalizationKeyOverride = "SecondPing")]
     public decimal SearchRadiusSecondPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "SearchAngle", UnitKey = "Degree", NameLocalizationKey = "FirstPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "SearchAngle", UnitKey = "Degree", LocalizationKeyOverride = "FirstPing")]
     public decimal SearchAngleFirstPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "SearchAngle", UnitKey = "Degree", NameLocalizationKey = "SecondPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "SearchAngle", UnitKey = "Degree", LocalizationKeyOverride = "SecondPing")]
     public decimal SearchAngleSecondPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Destroyer", UnitKey = "M", NameLocalizationKey = "FirstPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Destroyer", UnitKey = "M", LocalizationKeyOverride = "FirstPing")]
     public decimal DestroyerCutOffFirstPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Destroyer", UnitKey = "M", NameLocalizationKey = "SecondPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Destroyer", UnitKey = "M", LocalizationKeyOverride = "SecondPing")]
     public decimal DestroyerCutOffSecondPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Battleship", UnitKey = "M", NameLocalizationKey = "FirstPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Battleship", UnitKey = "M", LocalizationKeyOverride = "FirstPing")]
     public decimal BattleshipCutOffFirstPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Battleship", UnitKey = "M", NameLocalizationKey = "SecondPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Battleship", UnitKey = "M", LocalizationKeyOverride = "SecondPing")]
     public decimal BattleshipCutOffSecondPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Cruiser", UnitKey = "M", NameLocalizationKey = "FirstPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Cruiser", UnitKey = "M", LocalizationKeyOverride = "FirstPing")]
     public decimal CruiserCutOffFirstPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Cruiser", UnitKey = "M", NameLocalizationKey = "SecondPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Cruiser", UnitKey = "M", LocalizationKeyOverride = "SecondPing")]
     public decimal CruiserCutOffSecondPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Submarine", UnitKey = "M", NameLocalizationKey = "FirstPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Submarine", UnitKey = "M", LocalizationKeyOverride = "FirstPing")]
     public decimal SubCutOffFirstPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Submarine", UnitKey = "M", NameLocalizationKey = "SecondPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Submarine", UnitKey = "M", LocalizationKeyOverride = "SecondPing")]
     public decimal SubCutOffSecondPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "AirCarrier", UnitKey = "M", NameLocalizationKey = "FirstPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "AirCarrier", UnitKey = "M", LocalizationKeyOverride = "FirstPing")]
     public decimal CvCutOffFirstPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "AirCarrier", UnitKey = "M", NameLocalizationKey = "SecondPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "AirCarrier", UnitKey = "M", LocalizationKeyOverride = "SecondPing")]
     public decimal CvCutOffSecondPing { get; set; }
 
     public List<ShipClass>? CanHitClasses { get; set; }

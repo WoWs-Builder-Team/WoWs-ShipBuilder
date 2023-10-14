@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Text;
+using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
-using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.GameData;
@@ -10,9 +10,10 @@ using WoWsShipBuilder.Infrastructure.Utility;
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace WoWsShipBuilder.DataContainers;
 
+[DataContainer]
 public partial record MainBatteryDataContainer : DataContainerBase
 {
-    [DataElementType(DataElementTypes.FormattedText, ValuesPropertyName = "TurretNames", ArePropertyNameValuesKeys = true)]
+    [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = "TurretNames", ArgumentsTextKind = TextKind.LocalizationKey)]
     public string Name { get; set; } = default!;
 
     public List<string> TurretNames { get; set; } = new();

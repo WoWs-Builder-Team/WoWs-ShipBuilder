@@ -1,4 +1,4 @@
-using WoWsShipBuilder.DataElements.DataElements;
+using WoWsShipBuilder.DataElements;
 
 namespace WoWsShipBuilder.DataContainers;
 
