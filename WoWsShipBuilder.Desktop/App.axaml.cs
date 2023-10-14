@@ -41,11 +41,11 @@ public class App : Application
 
     public IServiceProvider Services
     {
-        get => services;
+        get => this.services;
         init
         {
-            services = value;
-            logger = services.GetRequiredService<ILogger<App>>();
+            this.services = value;
+            this.logger = this.services.GetRequiredService<ILogger<App>>();
         }
     }
 
@@ -66,17 +66,17 @@ public class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        if (this.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            Logging.Initialize(Services.GetRequiredService<ILoggerFactory>());
-            InitializeSettings();
-            var settings = Services.GetRequiredService<AppSettings>();
+            Logging.Initialize(this.Services.GetRequiredService<ILoggerFactory>());
+            this.InitializeSettings();
+            var settings = this.Services.GetRequiredService<AppSettings>();
 
             LogManager.ReconfigExistingLoggers();
 
-            desktop.Exit += OnExit;
-            desktop.MainWindow = new SplashScreen(Services);
-            logger.LogInformation("AutoUpdate Enabled: {SettingsAutoUpdateEnabled}", settings.AutoUpdateEnabled);
+            desktop.Exit += this.OnExit;
+            desktop.MainWindow = new SplashScreen(this.Services);
+            this.logger.LogInformation("AutoUpdate Enabled: {SettingsAutoUpdateEnabled}", settings.AutoUpdateEnabled);
 
             if (settings.AutoUpdateEnabled)
             {
@@ -84,12 +84,12 @@ public class App : Application
                 {
                     if (OperatingSystem.IsWindows())
                     {
-                        await UpdateCheck(Services.GetRequiredService<AppNotificationService>());
-                        logger.LogInformation("Finished updatecheck");
+                        await this.UpdateCheck(this.Services.GetRequiredService<AppNotificationService>());
+                        this.logger.LogInformation("Finished updatecheck");
                     }
                     else
                     {
-                        logger.LogInformation("Skipped updatecheck");
+                        this.logger.LogInformation("Skipped updatecheck");
                     }
                 });
             }
@@ -100,48 +100,48 @@ public class App : Application
 
     private void InitializeSettings()
     {
-        var settingsAccessor = (DesktopSettingsAccessor)services.GetRequiredService<ISettingsAccessor>();
+        var settingsAccessor = (DesktopSettingsAccessor)this.services.GetRequiredService<ISettingsAccessor>();
         var settings = settingsAccessor.LoadSettingsSync();
         settings ??= new();
 
-        logger.LogDebug("Updating app settings with settings read from file...");
-        var appSettings = services.GetRequiredService<AppSettings>();
+        this.logger.LogDebug("Updating app settings with settings read from file...");
+        var appSettings = this.services.GetRequiredService<AppSettings>();
         appSettings.UpdateFromSettings(settings);
         AppData.IsInitialized = true;
         Thread.CurrentThread.CurrentCulture = appSettings.SelectedLanguage.CultureInfo;
         Thread.CurrentThread.CurrentUICulture = appSettings.SelectedLanguage.CultureInfo;
-        logger.LogDebug("Settings initialization complete");
+        this.logger.LogDebug("Settings initialization complete");
     }
 
     private void OnExit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
     {
-        logger.LogInformation("Closing app, saving setting and builds");
-        var settingsAccessor = (DesktopSettingsAccessor)Services.GetRequiredService<ISettingsAccessor>();
-        settingsAccessor.SaveSettingsSync(Services.GetRequiredService<AppSettings>());
-        logger.LogInformation("Exiting...");
-        logger.LogInformation("------------------------------");
+        this.logger.LogInformation("Closing app, saving setting and builds");
+        var settingsAccessor = (DesktopSettingsAccessor)this.Services.GetRequiredService<ISettingsAccessor>();
+        settingsAccessor.SaveSettingsSync(this.Services.GetRequiredService<AppSettings>());
+        this.logger.LogInformation("Exiting...");
+        this.logger.LogInformation("------------------------------");
     }
 
     [SupportedOSPlatform("windows")]
     private async Task UpdateCheck(AppNotificationService notificationService)
     {
-        logger.LogInformation("Current version: {Version}", Assembly.GetExecutingAssembly().GetName().Version);
+        this.logger.LogInformation("Current version: {Version}", Assembly.GetExecutingAssembly().GetName().Version);
 
         using UpdateManager updateManager = new GithubUpdateManager("https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder");
         if (!updateManager.IsInstalledApp)
         {
-            logger.LogInformation("No update.exe found, aborting update check");
+            this.logger.LogInformation("No update.exe found, aborting update check");
             return;
         }
 
-        logger.LogInformation("Update manager initialized");
+        this.logger.LogInformation("Update manager initialized");
         try
         {
             // Can throw a null-reference-exception, no idea why.
             var updateInfo = await updateManager.CheckForUpdate();
             if (!updateInfo.ReleasesToApply.Any())
             {
-                logger.LogInformation("No app update found");
+                this.logger.LogInformation("No app update found");
                 return;
             }
 
@@ -149,16 +149,16 @@ public class App : Application
             var release = await updateManager.UpdateApp();
             if (release == null)
             {
-                logger.LogInformation("No app update found");
+                this.logger.LogInformation("No app update found");
                 return;
             }
 
-            logger.LogInformation("App updated to version {ReleaseVersion}", release.Version);
+            this.logger.LogInformation("App updated to version {ReleaseVersion}", release.Version);
             await notificationService.NotifyAppUpdateComplete();
-            var result = await ShowUpdateRestartDialog((ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow, Services.GetRequiredService<ILocalizer>());
+            var result = await ShowUpdateRestartDialog((this.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow, this.Services.GetRequiredService<ILocalizer>());
             if (result.Equals(MessageBox.MessageBoxResult.Yes))
             {
-                logger.LogInformation("User decided to restart after update");
+                this.logger.LogInformation("User decided to restart after update");
                 if (OperatingSystem.IsWindows())
                 {
                     UpdateManager.RestartApp();
@@ -167,14 +167,14 @@ public class App : Application
         }
         catch (NullReferenceException)
         {
-            logger.LogDebug("NullReferenceException during app update");
+            this.logger.LogDebug("NullReferenceException during app update");
         }
         catch (Exception e)
         {
 #if DEBUG
-            logger.LogWarning(e, "Exception during app update");
+            this.logger.LogWarning(e, "Exception during app update");
 #else
-                logger.LogError(e, "Exception during app update");
+            this.logger.LogError(e, "Exception during app update");
 #endif
             await notificationService.NotifyAppUpdateError(nameof(Translation.NotificationService_ErrorMessage));
         }
