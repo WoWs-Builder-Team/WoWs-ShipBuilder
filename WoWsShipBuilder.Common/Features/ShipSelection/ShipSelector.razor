@@ -33,17 +33,19 @@
     @if (EnableBuildImport)
     {
         <MudItem xs="12">
-            <MudStack Row>
-                <MudTextField Immediate T="string" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)).Localization" @bind-Value="buildString"/>
-                <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="ImportFromString">
-                    @Localizer.GetAppLocalization(nameof(Translation.WebApp_LoadBuild)).Localization
-                </MudButton>
-                <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Style="margin-top: 0;" Class="file-upload-full-height" Accept=".png">
-                    <ButtonTemplate>
-                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Image" Style="height: 100%;" for="@context">Import from image</MudButton>
-                    </ButtonTemplate>
-                </MudFileUpload>
-            </MudStack>
+            <MudPaper>
+                <MudStack Row>
+                    <MudTextField Immediate T="string" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)).Localization" @bind-Value="buildString"/>
+                    <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="ImportFromString">
+                        @Localizer.GetAppLocalization(nameof(Translation.WebApp_LoadBuild)).Localization
+                    </MudButton>
+                    <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Style="margin-top: 0;" Class="file-upload-full-height" Accept=".png">
+                        <ButtonTemplate>
+                            <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Image" Style="height: 100%;" for="@context">Import from image</MudButton>
+                        </ButtonTemplate>
+                    </MudFileUpload>
+                </MudStack>
+            </MudPaper>
         </MudItem>
 
         <MudItem xs="12" Class="pt-2 pb-0 ml-n4 mr-4">
@@ -56,7 +58,7 @@
             @foreach (var item in tierList)
             {
                 <MudSelectItem Value="@item">
-                    <MudText Color="Color.Secondary">@item</MudText>
+                    <MudText Color="Color.Default">@item</MudText>
                 </MudSelectItem>
             }
         </MudSelect>
@@ -67,7 +69,7 @@
             @foreach (ShipClass? item in classList)
             {
                 <MudSelectItem Value="@item">
-                    <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(item.ToString()!).Localization</MudText>
+                    <MudText Color="Color.Default">@Localizer.GetAppLocalization(item.ToString()!).Localization</MudText>
                 </MudSelectItem>
             }
         </MudSelect>
@@ -78,7 +80,7 @@
             @foreach (Nation? item in nationList)
             {
                 <MudSelectItem Value="@item">
-                    <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(item.ToString()!).Localization</MudText>
+                    <MudText Color="Color.Default">@Localizer.GetAppLocalization(item.ToString()!).Localization</MudText>
                 </MudSelectItem>
             }
         </MudSelect>
@@ -89,20 +91,26 @@
             @foreach (ShipCategory? item in typeList)
             {
                 <MudSelectItem Value="@item">
-                    <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(item.ToString()!).Localization</MudText>
+                    <MudText Color="Color.Default">@Localizer.GetAppLocalization(item.ToString()!).Localization</MudText>
                 </MudSelectItem>
             }
         </MudSelect>
     </MudItem>
+
+    @* ship search box *@
     <MudItem xs="12" Class="mt-n4 mb-n2">
-        <MudTextField AutoFocus T="string" FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Placeholder="@(Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShipOrBuild)).Localization + "...")" @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
+        <MudPaper>
+            <MudTextField AutoFocus T="string" FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Placeholder="@(Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShipOrBuild)).Localization + "...")" @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
+        </MudPaper>
     </MudItem>
+
+    @* ship list *@
     <MudItem xs="12" md="@(HideSelectedShipList ? 6 : 4)">
         <MudPaper Style="max-height: 300px; min-height: 300px; overflow:auto" Outlined="true">
             <MudList @ref="mudList" Clickable="true" SelectedValueChanged="AddShip">
                 <MudVirtualize IsEnabled="true" Items="@filteredSummaryList" Context="pair">
                     <MudListItem Style="text-align: center" Value="@pair.Value.Index">
-                        <MudText Color="Color.Secondary">
+                        <MudText Color="Color.Default">
                             @pair.Key
                         </MudText>
                     </MudListItem>
@@ -110,6 +118,8 @@
             </MudList>
         </MudPaper>
     </MudItem>
+
+    @* selected ship list *@
     @if (!HideSelectedShipList)
     {
         <MudItem xs="12" md="4">
@@ -155,6 +165,8 @@
             </MudPaper>
         </MudItem>
     }
+
+    @* saved build list *@
     @if (EnableSavedBuildList)
     {
         <MudItem xs="12" md="@(HideSelectedShipList ? 6 : 4)">

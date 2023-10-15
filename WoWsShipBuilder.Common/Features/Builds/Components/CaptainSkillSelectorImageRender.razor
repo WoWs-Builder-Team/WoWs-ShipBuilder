@@ -16,7 +16,7 @@
                 <MudText Typo="Typo.body2" Align="Align.Center">
                     @Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_Points)).Localization @ViewModel.AssignedPoints/21
                 </MudText>
-                <MudText Typo="Typo.body2" Color="Color.Secondary" Align="Align.Center" Class="mt-1">
+                <MudText Typo="Typo.body2" Color="Color.Default" Align="Align.Center" Class="mt-1">
                     @Localizer.GetAppLocalization(Translation.ScreenshotWindow_Captain).Localization @Localizer.GetGameLocalization(ViewModel.SelectedCaptain!.Name).Localization
                 </MudText>
             </MudItem>
@@ -150,7 +150,7 @@
 
     private string GetImageStyle(SkillItemViewModel skillItem)
     {
-        return ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? string.Empty : @"opacity: 0.4";
+        return ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? string.Empty : "opacity: 0.4";
     }
 
     private int GetImageSize()
@@ -179,6 +179,6 @@
 
     private string GetMudPaperBorderColor(SkillItemViewModel skillItem)
     {
-        return " border-color: " + (ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? "#BC0606" : "#3C3C3C") + ";";
+        return $" border-color: {(ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? "var(--mud-palette-text-primary)" : "var(--mud-palette-text-disabled)")};";
     }
 }

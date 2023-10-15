@@ -247,6 +247,7 @@ div.mud-expand-panel {
     padding: 4px 8px;
     min-height: 24px;
     background-color: rgb(80, 80, 80);
+    border-radius: var(--mud-default-borderradius);
 }
 
 .custom-child-expansion-panel-header .mud-expand-panel-header {

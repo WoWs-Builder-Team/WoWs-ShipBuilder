@@ -24,11 +24,11 @@
                 </MudText>
             </MudItem>
             <MudItem xs="7" Class="mb-n2">
-                <MudSelect Margin="Margin.Dense" T="Captain" Variant="Variant.Outlined" Dense="true" Strict="true" @bind-Value="@ViewModel.SelectedCaptain">
+                <MudSelect Margin="Margin.Dense" T="Captain" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Dense="true" Strict="true" @bind-Value="@ViewModel.SelectedCaptain">
                     @foreach (var captain in ViewModel.CaptainList!)
                     {
                         <MudSelectItem Value="captain">
-                            <MudText Typo="Typo.body2" Color="Color.Secondary">
+                            <MudText Typo="Typo.body2" Color="Color.Default">
                                 @Localizer.GetGameLocalization(captain.Name).Localization
                             </MudText>
                         </MudSelectItem>
@@ -181,17 +181,7 @@
 
     private Color GetColorFromState(SkillItemViewModel skillItem)
     {
-        if (ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)))
-        {
-            return Color.Error;
-        }
-
-        if (!skillItem.CanExecute)
-        {
-            return Color.Primary;
-        }
-
-        return Color.Secondary;
+        return ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? Color.Error : Color.Default;
     }
 
     private void OnSkillClick(SkillItemViewModel skillItem)

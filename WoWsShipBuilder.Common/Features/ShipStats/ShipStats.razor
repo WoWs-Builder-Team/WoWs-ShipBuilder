@@ -21,7 +21,7 @@
 
 <MudBreakpointProvider>
     @* HideSlider is set to true because of an issue in MudBlazor. see https://github.com/MudBlazor/MudBlazor/issues/4742*@
-    <MudDynamicTabs Color="Color.Primary" Position="Position.Top" HideSlider CloseTab="@RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="py-6" Outlined Border Class="px-md-6 pt-3">
+    <MudDynamicTabs Color="Color.Default" Position="Position.Top" HideSlider CloseTab="@RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="py-6" Outlined Border Class="px-md-6 pt-3">
         <ChildContent>
             @foreach (var container in shipContainers)
             {

@@ -64,17 +64,17 @@
                 <MudText Typo="Typo.h6">
                     @($"Saved builds ({savedBuilds.Count}/1000)")
                 </MudText>
-                <MudButton Class="rounded-4" Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Download" OnClick="@(async () => await ExportSavedBuilds())">
+                <MudButton Class="rounded-4" Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Download" OnClick="@ExportSavedBuilds">
                     @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Export))
                 </MudButton>
                 <MudFileUpload T="IBrowserFile" FilesChanged="@(async file => await ImportSavedBuilds(file))" Style="margin-top: 0;" Class="file-upload-full-height" Accept=".json" MaximumFileCount="1">
                     <ButtonTemplate>
-                        <MudButton HtmlTag="label" Class="rounded-4" Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Upload" Style="height: 100%;" for="@context">
+                        <MudButton HtmlTag="label" Class="rounded-4" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Upload" Style="height: 100%;" for="@context">
                             @Localizer.SimpleAppLocalization(nameof(Translation.BuildImport_Import))
                         </MudButton>
                     </ButtonTemplate>
                 </MudFileUpload>
-                <MudButton Class="rounded-4" Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Delete" OnClick="@(async () => await DeleteAllSavedBuilds())">
+                <MudButton Class="rounded-4" Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Delete" OnClick="@DeleteAllSavedBuilds">
                     @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_DeleteAll))
                 </MudButton>
             </MudStack>
@@ -111,7 +111,7 @@
                             @(BetaAccessManager.FindBetaByCode(context)?.LocalizationKey ?? "N/A")
                         </MudTd>
                         <MudTd DataLabel="@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Remove))">
-                            <MudIconButton OnClick="async () => await RemoveCode(context)" Icon="@Icons.Material.Filled.Delete"/>
+                            <MudIconButton OnClick="@(async () => await RemoveCode(context))" Icon="@Icons.Material.Filled.Delete"/>
                         </MudTd>
                     </RowTemplate>
                 </MudTable>
@@ -119,10 +119,10 @@
         </MudItem>
         <MudItem xs="12"/>
         <MudItem xs="3">
-            <MudButton FullWidth Variant="Variant.Outlined" Color="Color.Secondary" OnClick="SaveSettingsAsync">@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Save)).Localization</MudButton>
+            <MudButton FullWidth Variant="Variant.Outlined" Color="Color.Primary" OnClick="@SaveSettingsAsync">@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Save)).Localization</MudButton>
         </MudItem>
         <MudItem xs="3">
-            <MudButton FullWidth Variant="Variant.Outlined" Color="Color.Secondary" OnClick="ResetSettingsAsync">@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Reset)).Localization</MudButton>
+            <MudButton FullWidth Variant="Variant.Outlined" Color="Color.Primary" OnClick="@ResetSettingsAsync">@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Reset)).Localization</MudButton>
         </MudItem>
     </MudGrid>
 </MudContainer>
