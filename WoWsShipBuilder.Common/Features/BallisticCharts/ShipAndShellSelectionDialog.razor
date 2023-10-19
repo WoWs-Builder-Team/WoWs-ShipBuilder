@@ -74,10 +74,10 @@
         </MudContainer>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Primary">
+        <MudButton OnClick="@Cancel" Variant="Variant.Filled" Color="Color.Warning">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
-        <MudButton Color="Color.Warning" OnClick="@(() => ReturnSelectedShells(true))" Variant="Variant.Filled" Disabled="@(processing || !dataWrappers.Any(wrapper => wrapper.SelectedShells.Any()))">
+        <MudButton Color="Color.Tertiary" OnClick="@(() => ReturnSelectedShells(true))" Variant="Variant.Filled" Disabled="@(processing || !dataWrappers.Any(wrapper => wrapper.SelectedShells.Any()))">
             @if (processing)
             {
                 <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -346,7 +346,7 @@
 
     private static Color GetColorFromBool(bool active)
     {
-        return active ? Color.Primary : Color.Default;
+        return active ? Color.Secondary : Color.Default;
     }
 
     private void Cancel()

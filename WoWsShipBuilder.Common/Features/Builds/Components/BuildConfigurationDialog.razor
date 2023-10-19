@@ -79,10 +79,10 @@
         </MudBreakpointProvider>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Primary">
+        <MudButton OnClick="@Cancel" Variant="Variant.Filled" Color="Color.Warning">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
-        <MudButton Color="Color.Warning" OnClick="ResetBuild" Variant="Variant.Filled">
+        <MudButton Color="Color.Tertiary" OnClick="@ResetBuild" Variant="Variant.Filled">
             <MudText Typo="Typo.button">
                  @Localizer.GetAppLocalization(nameof(Translation.MainWindow_ResetBuild)).Localization
             </MudText>

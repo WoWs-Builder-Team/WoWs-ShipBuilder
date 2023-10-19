@@ -36,7 +36,7 @@
             <MudPaper>
                 <MudStack Row>
                     <MudTextField Immediate T="string" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)).Localization" @bind-Value="buildString"/>
-                    <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="ImportFromString">
+                    <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@ImportFromString">
                         @Localizer.GetAppLocalization(nameof(Translation.WebApp_LoadBuild)).Localization
                     </MudButton>
                     <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Style="margin-top: 0;" Class="file-upload-full-height" Accept=".png">
@@ -107,9 +107,9 @@
     @* ship list *@
     <MudItem xs="12" md="@(HideSelectedShipList ? 6 : 4)">
         <MudPaper Style="max-height: 300px; min-height: 300px; overflow:auto" Outlined="true">
-            <MudList @ref="mudList" Clickable="true" SelectedValueChanged="AddShip">
-                <MudVirtualize IsEnabled="true" Items="@filteredSummaryList" Context="pair">
-                    <MudListItem Style="text-align: center" Value="@pair.Value.Index">
+            <MudList Clickable>
+                <MudVirtualize IsEnabled Items="@filteredSummaryList" Context="pair">
+                    <MudListItem Style="text-align: center" Value="@pair.Value.Index" OnClick="@(() => AddShip(pair.Value.Index))">
                         <MudText Color="Color.Default">
                             @pair.Key
                         </MudText>
@@ -171,7 +171,7 @@
     {
         <MudItem xs="12" md="@(HideSelectedShipList ? 6 : 4)">
             <MudPaper Outlined Style="min-height: 300px; max-height: 300px; overflow: auto">
-                <MudList @ref="buildList" Clickable Dense>
+                <MudList Clickable Dense>
                     @if (!filteredBuildsList.Any())
                     {
                         <MudListItem Disabled>
@@ -227,10 +227,6 @@
     public bool DisableSelectedShipBuildEditing { get; set; }
 
     private ImmutableList<KeyValuePair<string, ShipSummary>> shipNameList = ImmutableList<KeyValuePair<string, ShipSummary>>.Empty;
-
-    private MudList mudList = default!;
-
-    private MudList? buildList;
 
     private List<KeyValuePair<string, ShipSummary>> filteredSummaryList = new();
 
@@ -405,18 +401,15 @@
     private void RemoveShip(ShipBuildContainer container)
     {
         SelectedShips.Remove(container);
-#pragma warning disable BL0005
-        mudList.SelectedValue = null;
-        if (buildList != null)
-        {
-            buildList.SelectedValue = null;
-        }
-#pragma warning restore BL0005
     }
 
-    private void AddShip(object? obj)
+    private void AddShip(string shipIndex)
     {
-        if (obj is not string shipIndex || !AllowCopies && SelectedShips.Any(x => x.Ship.Index.Equals(shipIndex))) return;
+        if (!AllowCopies && SelectedShips.Any(x => x.Ship.Index.Equals(shipIndex)))
+        {
+            return;
+        }
+
         if (MultiSelect)
         {
             var ship = AppData.ShipDictionary[shipIndex];
@@ -426,12 +419,6 @@
         {
             var ship = AppData.ShipDictionary[shipIndex];
             SelectedShips.Add(ShipBuildContainer.CreateNew(ship, null, null));
-        }
-        if (AllowCopies)
-        {
-#pragma warning disable BL0005
-            mudList.SelectedValue = null;
-#pragma warning restore BL0005
         }
     }
 
@@ -449,29 +436,11 @@
             MetricsService.BuildImports.WithLabels("ship-selector", "saved-builds").Inc();
             SelectedShips.Add(ShipBuildContainer.CreateNew(AppData.ShipDictionary[build.ShipIndex], build, null));
         }
-
-        if (AllowCopies)
-        {
-#pragma warning disable BL0005
-            mudList.SelectedValue = null;
-            if (buildList != null)
-            {
-                buildList.SelectedValue = null;
-            }
-#pragma warning restore BL0005
-        }
     }
 
     private void RemoveAllShips()
     {
         SelectedShips.Clear();
-#pragma warning disable BL0005
-        mudList.SelectedValue = null;
-        if (buildList != null)
-        {
-            buildList.SelectedValue = null;
-        }
-#pragma warning restore BL0005
     }
 
     private async Task AddBuild(ShipBuildContainer ship)

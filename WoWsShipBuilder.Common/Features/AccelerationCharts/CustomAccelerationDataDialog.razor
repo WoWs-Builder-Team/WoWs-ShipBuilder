@@ -61,10 +61,10 @@
         </MudStack>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Primary">
+        <MudButton OnClick="@Cancel" Variant="Variant.Filled" Color="Color.Warning">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
-        <MudButton Disabled="!ValidateCustomParameters()" OnClick="ReturnShipBuildContainer" Variant="Variant.Filled" Color="Color.Primary">
+        <MudButton Disabled="!ValidateCustomParameters()" OnClick="@ReturnShipBuildContainer" Variant="Variant.Filled" Color="Color.Success">
             @Localizer.GetAppLocalization(nameof(Translation.Ok)).Localization
         </MudButton>
     </DialogActions>
