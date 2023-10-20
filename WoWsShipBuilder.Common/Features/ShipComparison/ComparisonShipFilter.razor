@@ -26,7 +26,7 @@
             {
                 int tier = i;
                 bool isSelected = ViewModel!.SelectedTiers.Contains(tier);
-                <MudButton @key="tier" DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="Color.Primary" @onmouseup="@(args => ToggleTierSelection(tier, args))" oncontextmenu="return false;">
+                <MudButton @key="tier" DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="@GetColorFromBool(isSelected)" @onmouseup="@(args => ToggleTierSelection(tier, args))" oncontextmenu="return false;">
                     @tier.ToTierString()
                 </MudButton>
             }
@@ -48,7 +48,7 @@
             @foreach (var shipClass in ViewModel!.AvailableClasses)
             {
                 bool isSelected = ViewModel.SelectedClasses.Contains(shipClass);
-                <MudButton @key="shipClass" DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="Color.Primary" @onmouseup="@(args => ToggleClassSelection(shipClass, args))" oncontextmenu="return false;">
+                <MudButton @key="shipClass" DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="@GetColorFromBool(isSelected)" @onmouseup="@(args => ToggleClassSelection(shipClass, args))" oncontextmenu="return false;">
                     @Localizer.GetAppLocalization(shipClass.ShipClassToString()).Localization
                 </MudButton>
             }
@@ -70,7 +70,7 @@
             @foreach (var nation in ViewModel!.AvailableNations)
             {
                 bool isSelected = ViewModel.SelectedNations.Contains(nation);
-                <MudButton @key="nation" DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="Color.Primary" @onmouseup="@(args => ToggleNationSelection(nation, args))" oncontextmenu="return false;">
+                <MudButton @key="nation" DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="@GetColorFromBool(isSelected)" @onmouseup="@(args => ToggleNationSelection(nation, args))" oncontextmenu="return false;">
                     @Localizer.GetAppLocalization(nation.ShipNationToString()).Localization
                 </MudButton>
             }
@@ -92,7 +92,7 @@
             @foreach (var category in ViewModel!.AvailableShipCategories)
             {
                 bool isSelected = ViewModel.SelectedCategories.Contains(category);
-                <MudButton @key="category" DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="Color.Primary" @onmouseup="@(args => ToggleCategorySelection(category, args))" oncontextmenu="return false;">
+                <MudButton @key="category" DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="@GetColorFromBool(isSelected)" @onmouseup="@(args => ToggleCategorySelection(category, args))" oncontextmenu="return false;">
                     @Localizer.GetAppLocalization(category.ShipCategoryToString()).Localization
                 </MudButton>
             }
@@ -120,7 +120,7 @@
                     {
                         int tier = i;
                         bool isSelected = ViewModel!.SelectedTiers.Contains(tier);
-                        <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="Color.Primary" @onmouseup="@(args => ToggleTierSelection(tier, args))" oncontextmenu="return false;">
+                        <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="@GetColorFromBool(isSelected)" @onmouseup="@(args => ToggleTierSelection(tier, args))" oncontextmenu="return false;">
                             @tier.ToTierString()
                         </MudButton>
                     }
@@ -129,7 +129,7 @@
                     @foreach (var shipClass in ViewModel!.AvailableClasses)
                     {
                         bool isSelected = ViewModel.SelectedClasses.Contains(shipClass);
-                        <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="Color.Primary" @onmouseup="@(args => ToggleClassSelection(shipClass, args))" oncontextmenu="return false;">
+                        <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="@GetColorFromBool(isSelected)" @onmouseup="@(args => ToggleClassSelection(shipClass, args))" oncontextmenu="return false;">
                             @Localizer.GetAppLocalization(shipClass.ShipClassToString()).Localization
                         </MudButton>
                     }
@@ -138,7 +138,7 @@
                     @foreach (var nation in ViewModel!.AvailableNations)
                     {
                         bool isSelected = ViewModel.SelectedNations.Contains(nation);
-                        <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="Color.Primary" @onmouseup="@(args => ToggleNationSelection(nation, args))" oncontextmenu="return false;">
+                        <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="@GetColorFromBool(isSelected)" @onmouseup="@(args => ToggleNationSelection(nation, args))" oncontextmenu="return false;">
                             @Localizer.GetAppLocalization(nation.ShipNationToString()).Localization
                         </MudButton>
                     }
@@ -147,7 +147,7 @@
                     @foreach (var category in ViewModel!.AvailableShipCategories)
                     {
                         bool isSelected = ViewModel.SelectedCategories.Contains(category);
-                        <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="Color.Primary" @onmouseup="@(args => ToggleCategorySelection(category, args))" oncontextmenu="return false;">
+                        <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="@GetColorFromBool(isSelected)" @onmouseup="@(args => ToggleCategorySelection(category, args))" oncontextmenu="return false;">
                             @Localizer.GetAppLocalization(category.ShipCategoryToString()).Localization
                         </MudButton>
                     }
@@ -201,6 +201,11 @@
     private static Variant GetVariantFromBool(bool active)
     {
         return active ? Variant.Filled : Variant.Outlined;
+    }
+
+    private static Color GetColorFromBool(bool active)
+    {
+        return active ? Color.Primary : Color.Secondary;
     }
 
     private async Task ToggleTierSelection(int tier, MouseEventArgs args)

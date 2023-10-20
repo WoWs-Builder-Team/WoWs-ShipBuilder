@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Hosting;
+using MudBlazor;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.GameData;
@@ -61,5 +62,45 @@ public static class Helpers
     public static string GenerateRandomColor()
     {
         return $"#{Random.Shared.Next(0x1000000):X6}";
+    }
+
+    public static MudTheme CreateDarkTheme(bool sharpCorners)
+    {
+        return new()
+        {
+            LayoutProperties =
+            {
+                DefaultBorderRadius = sharpCorners ? "0" : "4px",
+            },
+            PaletteDark =
+            {
+                Black = "#121212FF",
+                White = "#FDFDFDFF",
+                Primary = "#6186FF",
+                PrimaryContrastText = "#FDFDFDFF",
+                Secondary = "#D4D4D4",
+                SecondaryContrastText = "#282828",
+                Tertiary = "#FFD700",
+                TertiaryContrastText = "#282828",
+                InfoContrastText = "#FDFDFDFF",
+                SuccessContrastText = "#282828",
+                WarningContrastText = "#282828",
+                Error = "#BF0000FF",
+                ErrorContrastText = "#FDFDFDFF",
+                Dark = "#505050",
+                DarkContrastText = "#FDFDFDFF",
+                Surface = "#232323",
+                HoverOpacity = 0.25,
+                AppbarBackground = "#121212FF",
+                Background = "#282828",
+                BackgroundGrey = "#1E1E1E",
+            },
+            ZIndex =
+            {
+                Dialog = 2000,
+                Popover = 3000,
+                Tooltip = 4000,
+            },
+        };
     }
 }

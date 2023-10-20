@@ -48,55 +48,7 @@
         }
     }
 
-    private readonly MudTheme theme = new()
-    {
-        LayoutProperties =
-        {
-            DefaultBorderRadius = "0",
-        },
-        PaletteDark =
-        {
-            Black = "#121212FF",
-            White = "#FDFDFDFF",
-            Primary = "#6186FF",
-            PrimaryContrastText = "#FDFDFDFF",
-            Secondary = "#D4D4D4",
-            SecondaryContrastText = "#282828",
-            Tertiary = "#FFD700",
-            TertiaryContrastText = "#282828",
-            // Info = "#5C60DBFF",
-            InfoContrastText = "#FDFDFDFF",
-            // Success = "#008C3AFF",
-            SuccessContrastText = "#282828",
-            // Warning = "#BF7300FF",
-            WarningContrastText = "#282828",
-            Error = "#BF0000FF",
-            ErrorContrastText = "#FDFDFDFF",
-            Dark = "#505050",
-            DarkContrastText = "#FDFDFDFF",
-            // TextPrimary = "#DEDEDEFF",
-            // TextSecondary = "#FFFFFF89",
-            // TextDisabled = "#FFFFFF60",
-            // ActionDefault = "#FFFFFF89",
-            // ActionDisabled = "#FFFFFF42",
-            // ActionDisabledBackground = " #FFFFFF1E",
-            Surface = "#232323",
-            HoverOpacity = 0.25,
-            // LinesDefault = "#FFFFFF4D",
-            // LinesInputs = "#808080",
-            AppbarBackground = "#121212FF",
-            // DrawerBackground = "#1F1F1F",
-            // DividerLight = "#FFFFFFCC",
-            Background = "#282828",
-            BackgroundGrey = "#1E1E1E",
-        },
-        ZIndex =
-        {
-            Dialog = 2000,
-            Popover = 3000,
-            Tooltip = 4000,
-        },
-    };
+    private readonly MudTheme theme = Helpers.CreateDarkTheme(true);
 
     private readonly MudTheme aprilFoolTheme = new()
     {
