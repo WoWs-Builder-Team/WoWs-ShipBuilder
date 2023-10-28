@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.Web.Infrastructure.BetaAccess;
+﻿namespace WoWsShipBuilder.Web.Features.BetaAccess;
 
 public interface IBetaAccessManager
 {

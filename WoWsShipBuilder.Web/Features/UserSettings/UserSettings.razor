@@ -1,4 +1,6 @@
 ﻿@page "/settings"
+@using Newtonsoft.Json
+@using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.Settings
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.DataTransfer
@@ -6,12 +8,11 @@
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
-@using WoWsShipBuilder.Web.Infrastructure.BetaAccess
-@using WoWsShipBuilder.Features.Builds
-@using Newtonsoft.Json
+@using WoWsShipBuilder.Web.Features.BetaAccess
 
 @implements IDisposable
 @implements IAsyncDisposable
+
 @inject ILocalizer Localizer
 @inject RefreshNotifierService RefreshNotifierService
 @inject AppSettings AppSettings

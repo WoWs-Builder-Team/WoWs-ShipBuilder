@@ -1,6 +1,6 @@
 ﻿using WoWsShipBuilder.Infrastructure.Localization.Resources;
 
-namespace WoWsShipBuilder.Web.Infrastructure.BetaAccess;
+namespace WoWsShipBuilder.Web.Features.BetaAccess;
 
 public class BetaAccessManager : IBetaAccessManager
 {
@@ -11,9 +11,9 @@ public class BetaAccessManager : IBetaAccessManager
         UserAuth,
     };
 
-    public BetaAccessEntry? FindBetaByCode(string code) => ActiveBetas.FirstOrDefault(b => b.Code == code);
+    public BetaAccessEntry? FindBetaByCode(string code) => this.ActiveBetas.FirstOrDefault(b => b.Code == code);
 
-    public bool IsBetaActive(BetaAccessEntry entry) => ActiveBetas.Contains(entry);
+    public bool IsBetaActive(BetaAccessEntry entry) => this.ActiveBetas.Contains(entry);
 }
 
 public sealed record BetaAccessEntry(string Code, string LocalizationKey);
