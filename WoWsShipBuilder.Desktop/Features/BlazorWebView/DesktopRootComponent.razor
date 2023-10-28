@@ -1,7 +1,7 @@
 ﻿@using System.Reflection
 @using WoWsShipBuilder.Features.ShipStats
 
-<Router AppAssembly="@typeof(AppRouter).Assembly" AdditionalAssemblies="@assemblies">
+<Router AppAssembly="@typeof(DesktopRootComponent).Assembly" AdditionalAssemblies="@assemblies">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(DesktopLayout)"/>
         <FocusOnNavigate RouteData="@routeData" Selector="h1"/>

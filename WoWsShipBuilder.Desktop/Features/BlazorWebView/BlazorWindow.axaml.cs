@@ -18,7 +18,7 @@ public partial class BlazorWindow : Window
         var services = (Application.Current as App)?.Services;
         var rootComponents = new RootComponentsCollection
         {
-            new("#app", typeof(AppRouter), null),
+            new("#app", typeof(DesktopRootComponent), null),
         };
 
         Resources.Add("services", services);

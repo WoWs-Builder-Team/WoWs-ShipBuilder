@@ -1,9 +1,8 @@
 ﻿@using System.Reflection
 @using WoWsShipBuilder.Features.ShipStats
-@using WoWsShipBuilder.Web.Common
 
 <CascadingAuthenticationState>
-    <Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="@assemblies">
+    <Router AppAssembly="@typeof(WebRootComponent).Assembly" AdditionalAssemblies="@assemblies">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <NotAuthorized>
