@@ -23,7 +23,7 @@ public partial class ShipBuildViewModel : ReactiveObject
 
     private ShipBuildViewModel(Ship ship)
     {
-        CurrentShip = ship;
+        this.CurrentShip = ship;
     }
 
     public ShipModuleViewModel ShipModuleViewModel { get; private init; } = default!;
@@ -67,12 +67,10 @@ public partial class ShipBuildViewModel : ReactiveObject
 
     private Build? DumpToBuild()
     {
-        bool isCustomBuild = !string.IsNullOrWhiteSpace(BuildName) || ShipModuleViewModel.SelectedModules.Any(m => !string.IsNullOrEmpty(m.Prev)) ||
-                             UpgradePanelViewModel.SelectedModernizationList.Any() || ConsumableViewModel.ActivatedSlots.Any() ||
-                             CaptainSkillSelectorViewModel.SkillOrderList.Any() || SignalSelectorViewModel.SelectedSignals.Any();
+        bool isCustomBuild = !string.IsNullOrWhiteSpace(this.BuildName) || this.ShipModuleViewModel.SelectedModules.Any(m => !string.IsNullOrEmpty(m.Prev)) || this.UpgradePanelViewModel.SelectedModernizationList.Any() || this.ConsumableViewModel.ActivatedSlots.Any() || this.CaptainSkillSelectorViewModel.SkillOrderList.Any() || this.SignalSelectorViewModel.SelectedSignals.Any();
         if (isCustomBuild)
         {
-            return new(BuildName.Trim(), CurrentShip.Index, CurrentShip.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel.GetCaptainIndex(), CaptainSkillSelectorViewModel.GetSkillNumberList(), SignalSelectorViewModel.GetFlagList());
+            return new(this.BuildName.Trim(), this.CurrentShip.Index, this.CurrentShip.ShipNation, this.ShipModuleViewModel.SaveBuild(), this.UpgradePanelViewModel.SaveBuild(), this.ConsumableViewModel.SaveBuild(), this.CaptainSkillSelectorViewModel.GetCaptainIndex(), this.CaptainSkillSelectorViewModel.GetSkillNumberList(), this.SignalSelectorViewModel.GetFlagList());
         }
 
         return null;
@@ -80,32 +78,32 @@ public partial class ShipBuildViewModel : ReactiveObject
 
     public ShipBuildContainer CreateShipBuildContainerAsync(ShipBuildContainer baseContainer)
     {
-        var build = DumpToBuild();
-        List<int>? activatedConsumables = ConsumableViewModel.ActivatedSlots.Any() ? ConsumableViewModel.ActivatedSlots.ToList() : null;
-        List<(string, float)> modifiers = GenerateModifierList();
+        var build = this.DumpToBuild();
+        List<int>? activatedConsumables = this.ConsumableViewModel.ActivatedSlots.Any() ? this.ConsumableViewModel.ActivatedSlots.ToList() : null;
+        List<(string, float)> modifiers = this.GenerateModifierList();
         return baseContainer with
         {
             Build = build,
             ActivatedConsumableSlots = activatedConsumables,
-            SpecialAbilityActive = SpecialAbilityActive,
-            ShipDataContainer = CreateDataContainerAsync(modifiers),
+            SpecialAbilityActive = this.SpecialAbilityActive,
+            ShipDataContainer = this.CreateDataContainerAsync(modifiers),
             Modifiers = modifiers,
         };
     }
 
     private ShipDataContainer CreateDataContainerAsync(List<(string, float)> modifiers)
     {
-        return ShipDataContainer.CreateFromShip(CurrentShip, ShipModuleViewModel.SelectedModules.ToList(), modifiers);
+        return ShipDataContainer.CreateFromShip(this.CurrentShip, this.ShipModuleViewModel.SelectedModules.ToList(), modifiers);
     }
 
     private List<(string, float)> GenerateModifierList()
     {
         var modifiers = new List<(string, float)>();
 
-        modifiers.AddRange(UpgradePanelViewModel.GetModifierList());
-        modifiers.AddRange(SignalSelectorViewModel.GetModifierList());
-        modifiers.AddRange(CaptainSkillSelectorViewModel.GetModifiersList());
-        modifiers.AddRange(ConsumableViewModel.GetModifiersList());
+        modifiers.AddRange(this.UpgradePanelViewModel.GetModifierList());
+        modifiers.AddRange(this.SignalSelectorViewModel.GetModifierList());
+        modifiers.AddRange(this.CaptainSkillSelectorViewModel.GetModifiersList());
+        modifiers.AddRange(this.ConsumableViewModel.GetModifiersList());
         return modifiers;
     }
 }

@@ -34,25 +34,25 @@ public class UpgradePanelViewModelBase : ReactiveObject, IBuildComponentProvider
             subList.Insert(0, PlaceholderModernization);
         }
 
-        AvailableModernizationList = groupedList;
-        SelectedModernizationList = new(AvailableModernizationList.Select(list => list[0]).Where(m => !string.IsNullOrEmpty(m.Index)));
+        this.AvailableModernizationList = groupedList;
+        this.SelectedModernizationList = new(this.AvailableModernizationList.Select(list => list[0]).Where(m => !string.IsNullOrEmpty(m.Index)));
 
-        OnModernizationSelected = (modernization, modernizationList) =>
+        this.OnModernizationSelected = (modernization, modernizationList) =>
         {
-            int listIndex = AvailableModernizationList.IndexOf(modernizationList);
-            var oldSelection = SelectedModernizationList.ToList().Find(m => AvailableModernizationList[listIndex].Contains(m));
+            int listIndex = this.AvailableModernizationList.IndexOf(modernizationList);
+            var oldSelection = this.SelectedModernizationList.ToList().Find(m => this.AvailableModernizationList[listIndex].Contains(m));
 
             if (oldSelection != null)
             {
-                SelectedModernizationList.Remove(oldSelection);
+                this.SelectedModernizationList.Remove(oldSelection);
             }
 
             if (modernization?.Index != null)
             {
-                SelectedModernizationList.Add(modernization);
+                this.SelectedModernizationList.Add(modernization);
             }
 
-            this.RaisePropertyChanged(nameof(SelectedModernizationList));
+            this.RaisePropertyChanged(nameof(this.SelectedModernizationList));
         };
     }
 
@@ -62,13 +62,13 @@ public class UpgradePanelViewModelBase : ReactiveObject, IBuildComponentProvider
 
     public List<List<Modernization>> AvailableModernizationList
     {
-        get => availableModernizationList;
-        set => this.RaiseAndSetIfChanged(ref availableModernizationList, value);
+        get => this.availableModernizationList;
+        set => this.RaiseAndSetIfChanged(ref this.availableModernizationList, value);
     }
 
     public List<(string, float)> GetModifierList()
     {
-        var modifiers = SelectedModernizationList
+        var modifiers = this.SelectedModernizationList
             .Where(m => !string.IsNullOrEmpty(m.Index))
             .SelectMany(m => m.Effect.Select(effect => (effect.Key, (float)effect.Value)))
             .ToList();
@@ -80,19 +80,19 @@ public class UpgradePanelViewModelBase : ReactiveObject, IBuildComponentProvider
     public void LoadBuild(IEnumerable<string> storedData)
     {
         var selection = new List<Modernization>();
-        foreach (List<Modernization> modernizations in AvailableModernizationList)
+        foreach (List<Modernization> modernizations in this.AvailableModernizationList)
         {
             selection.AddRange(modernizations.Where(modernization => storedData.Contains(modernization.Index)));
         }
 
-        var removeList = SelectedModernizationList.Where(selected => selection.Exists(newSelected => newSelected.Slot == selected.Slot)).ToList();
-        SelectedModernizationList.RemoveMany(removeList);
-        SelectedModernizationList.AddRange(selection);
-        this.RaisePropertyChanged(nameof(SelectedModernizationList));
+        var removeList = this.SelectedModernizationList.Where(selected => selection.Exists(newSelected => newSelected.Slot == selected.Slot)).ToList();
+        this.SelectedModernizationList.RemoveMany(removeList);
+        this.SelectedModernizationList.AddRange(selection);
+        this.RaisePropertyChanged(nameof(this.SelectedModernizationList));
     }
 
     public List<string> SaveBuild()
     {
-        return SelectedModernizationList.Select(modernization => modernization.Index).ToList();
+        return this.SelectedModernizationList.Select(modernization => modernization.Index).ToList();
     }
 }

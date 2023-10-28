@@ -25,47 +25,47 @@ public partial class AppHeader : UserControl
 
     public AppHeader()
     {
-        InitializeComponent();
+        this.InitializeComponent();
     }
 
     public bool ShowTitle
     {
-        get => GetValue(ShowTitleProperty);
-        set => SetValue(ShowTitleProperty, value);
+        get => this.GetValue(ShowTitleProperty);
+        set => this.SetValue(ShowTitleProperty, value);
     }
 
     public string Title
     {
-        get => GetValue(TitleProperty);
-        set => SetValue(TitleProperty, value);
+        get => this.GetValue(TitleProperty);
+        set => this.SetValue(TitleProperty, value);
     }
 
     public bool ShowMinimizeButton
     {
-        get => GetValue(ShowMinimizeButtonProperty);
-        set => SetValue(ShowMinimizeButtonProperty, value);
+        get => this.GetValue(ShowMinimizeButtonProperty);
+        set => this.SetValue(ShowMinimizeButtonProperty, value);
     }
 
     public bool ShowMaximizeButton
     {
-        get => GetValue(ShowMaximizeButtonProperty);
-        set => SetValue(ShowMaximizeButtonProperty, value);
+        get => this.GetValue(ShowMaximizeButtonProperty);
+        set => this.SetValue(ShowMaximizeButtonProperty, value);
     }
 
     public bool ShowCloseButton
     {
-        get => GetValue(ShowCloseButtonProperty);
-        set => SetValue(ShowCloseButtonProperty, value);
+        get => this.GetValue(ShowCloseButtonProperty);
+        set => this.SetValue(ShowCloseButtonProperty, value);
     }
 
     protected override void OnLoaded(RoutedEventArgs e)
     {
         base.OnLoaded(e);
-        MinimizeButton.Click += MinimizeWindow;
-        MaximizeButton.Click += MaximizeWindow;
-        CloseButton.Click += CloseWindow;
+        this.MinimizeButton.Click += this.MinimizeWindow;
+        this.MaximizeButton.Click += this.MaximizeWindow;
+        this.CloseButton.Click += this.CloseWindow;
 
-        SubscribeToWindowState();
+        this.SubscribeToWindowState();
     }
 
     private void CloseWindow(object? sender, RoutedEventArgs e)
@@ -75,7 +75,7 @@ public partial class AppHeader : UserControl
             return;
         }
 
-        Window hostWindow = (Window)VisualRoot!;
+        Window hostWindow = (Window)this.VisualRoot!;
         hostWindow.Close();
     }
 
@@ -86,7 +86,7 @@ public partial class AppHeader : UserControl
             return;
         }
 
-        Window hostWindow = (Window)VisualRoot!;
+        Window hostWindow = (Window)this.VisualRoot!;
 
         if (hostWindow.WindowState == WindowState.Normal)
         {
@@ -105,17 +105,17 @@ public partial class AppHeader : UserControl
             return;
         }
 
-        Window hostWindow = (Window)VisualRoot!;
+        Window hostWindow = (Window)this.VisualRoot!;
         hostWindow.WindowState = WindowState.Minimized;
     }
 
     private async void SubscribeToWindowState()
     {
-        var hostWindow = (Window?)VisualRoot;
+        var hostWindow = (Window?)this.VisualRoot;
 
         while (hostWindow == null)
         {
-            hostWindow = (Window)VisualRoot!;
+            hostWindow = (Window)this.VisualRoot!;
             await Task.Delay(50);
         }
 
@@ -123,13 +123,13 @@ public partial class AppHeader : UserControl
         {
             if (s != WindowState.Maximized)
             {
-                MaximizeIcon.Data = Avalonia.Media.Geometry.Parse("M2048 2048v-2048h-2048v2048h2048zM1843 1843h-1638v-1638h1638v1638z");
+                this.MaximizeIcon.Data = Avalonia.Media.Geometry.Parse("M2048 2048v-2048h-2048v2048h2048zM1843 1843h-1638v-1638h1638v1638z");
                 hostWindow.Padding = new Thickness(0, 0, 0, 0);
             }
 
             if (s == WindowState.Maximized)
             {
-                MaximizeIcon.Data = Avalonia.Media.Geometry.Parse("M2048 1638h-410v410h-1638v-1638h410v-410h1638v1638zm-614-1024h-1229v1229h1229v-1229zm409-409h-1229v205h1024v1024h205v-1229z");
+                this.MaximizeIcon.Data = Avalonia.Media.Geometry.Parse("M2048 1638h-410v410h-1638v-1638h410v-410h1638v1638zm-614-1024h-1229v1229h1229v-1229zm409-409h-1229v205h1024v1024h205v-1229z");
 
                 // This should be a more universal approach in both cases, but I found it to be less reliable, when for example double-clicking the title bar.
                 hostWindow.Padding = new Thickness(

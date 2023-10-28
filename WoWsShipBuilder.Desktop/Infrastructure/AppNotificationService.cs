@@ -21,8 +21,8 @@ public class AppNotificationService : ReactiveObject
     /// </summary>
     public UpdateStatus AppUpdateStatus
     {
-        get => appUpdateStatus;
-        set => this.RaiseAndSetIfChanged(ref appUpdateStatus, value);
+        get => this.appUpdateStatus;
+        set => this.RaiseAndSetIfChanged(ref this.appUpdateStatus, value);
     }
 
     /// <summary>
@@ -32,8 +32,8 @@ public class AppNotificationService : ReactiveObject
     /// </summary>
     public string AppUpdateMessage
     {
-        get => appUpdateMessage;
-        set => this.RaiseAndSetIfChanged(ref appUpdateMessage, value);
+        get => this.appUpdateMessage;
+        set => this.RaiseAndSetIfChanged(ref this.appUpdateMessage, value);
     }
 
     /// <summary>
@@ -41,7 +41,7 @@ public class AppNotificationService : ReactiveObject
     /// </summary>
     public async Task NotifyAppUpdateStart()
     {
-        await Dispatcher.UIThread.InvokeAsync(() => AppUpdateStatus = UpdateStatus.Active);
+        await Dispatcher.UIThread.InvokeAsync(() => this.AppUpdateStatus = UpdateStatus.Active);
     }
 
     /// <summary>
@@ -49,7 +49,7 @@ public class AppNotificationService : ReactiveObject
     /// </summary>
     public async Task NotifyAppUpdateComplete()
     {
-        await Dispatcher.UIThread.InvokeAsync(() => AppUpdateStatus = UpdateStatus.Completed);
+        await Dispatcher.UIThread.InvokeAsync(() => this.AppUpdateStatus = UpdateStatus.Completed);
     }
 
     /// <summary>
@@ -61,10 +61,10 @@ public class AppNotificationService : ReactiveObject
     {
         await Dispatcher.UIThread.InvokeAsync(() =>
         {
-            AppUpdateStatus = UpdateStatus.Error;
+            this.AppUpdateStatus = UpdateStatus.Error;
             if (!string.IsNullOrWhiteSpace(message))
             {
-                AppUpdateMessage = message;
+                this.AppUpdateMessage = message;
             }
         });
     }

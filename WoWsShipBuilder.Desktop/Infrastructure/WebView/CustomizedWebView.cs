@@ -9,8 +9,8 @@ public class CustomizedWebView : Microsoft.AspNetCore.Components.WebView.Windows
 {
     public override IFileProvider CreateFileProvider(string contentRootDir)
     {
-        var appDataService = Services.GetRequiredService<IAppDataService>();
-        var dataService = Services.GetRequiredService<IDataService>();
+        var appDataService = this.Services.GetRequiredService<IAppDataService>();
+        var dataService = this.Services.GetRequiredService<IDataService>();
         return new CompositeFileProvider(new PhysicalFileProvider(dataService.CombinePaths(appDataService.AppDataImageDirectory, "Ships")), base.CreateFileProvider(contentRootDir));
     }
 }

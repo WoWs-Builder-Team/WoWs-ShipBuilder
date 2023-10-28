@@ -16,13 +16,13 @@ public partial class SkillActivationItemViewModel : ReactiveObject
 
     public SkillActivationItemViewModel(string name, int skillId, Dictionary<string, float> modifiers, bool activationStatus, int maximumActivations = 0, int activationNumbers = 1, string description = "")
     {
-        SkillName = name;
-        Status = activationStatus;
-        SkillId = skillId;
-        MaximumActivations = maximumActivations;
-        ActivationNumbers = activationNumbers;
-        Modifiers = modifiers;
-        Description = description;
+        this.SkillName = name;
+        this.Status = activationStatus;
+        this.SkillId = skillId;
+        this.MaximumActivations = maximumActivations;
+        this.ActivationNumbers = activationNumbers;
+        this.Modifiers = modifiers;
+        this.Description = description;
     }
 
     public Dictionary<string, float> Modifiers { get; }

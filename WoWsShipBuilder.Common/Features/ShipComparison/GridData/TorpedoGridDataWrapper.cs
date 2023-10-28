@@ -9,18 +9,18 @@ public class TorpedoGridDataWrapper
     {
         List<TorpedoDataContainer>? torpedoes = torpedoArmament?.Torpedoes;
 
-        FullSalvoDamage = new() { torpedoArmament?.FullSalvoDamage, torpedoArmament?.TorpFullSalvoDmg, torpedoArmament?.AltTorpFullSalvoDmg };
-        Type = torpedoes?.Select(x => x.TorpedoType).ToList() ?? new();
-        Damage = torpedoes?.Select(x => x.Damage).ToList() ?? new();
-        Range = torpedoes?.Select(x => x.Range).ToList() ?? new();
-        Speed = torpedoes?.Select(x => x.Speed).ToList() ?? new();
-        DetectRange = torpedoes?.Select(x => x.Detectability).ToList() ?? new();
-        ArmingDistance = torpedoes?.Select(x => x.ArmingDistance).ToList() ?? new();
-        ReactionTime = torpedoes?.Select(x => x.ReactionTime).ToList() ?? new();
-        FloodingChance = torpedoes?.Select(x => x.FloodingChance).ToList() ?? new();
-        BlastRadius = torpedoes?.Select(x => x.ExplosionRadius).ToList() ?? new();
-        BlastPenetration = torpedoes?.Select(x => x.SplashCoeff).ToList() ?? new();
-        CanHit = torpedoes?.Select(x => x.CanHitClasses).ToList() ?? new();
+        this.FullSalvoDamage = new() { torpedoArmament?.FullSalvoDamage, torpedoArmament?.TorpFullSalvoDmg, torpedoArmament?.AltTorpFullSalvoDmg };
+        this.Type = torpedoes?.Select(x => x.TorpedoType).ToList() ?? new();
+        this.Damage = torpedoes?.Select(x => x.Damage).ToList() ?? new();
+        this.Range = torpedoes?.Select(x => x.Range).ToList() ?? new();
+        this.Speed = torpedoes?.Select(x => x.Speed).ToList() ?? new();
+        this.DetectRange = torpedoes?.Select(x => x.Detectability).ToList() ?? new();
+        this.ArmingDistance = torpedoes?.Select(x => x.ArmingDistance).ToList() ?? new();
+        this.ReactionTime = torpedoes?.Select(x => x.ReactionTime).ToList() ?? new();
+        this.FloodingChance = torpedoes?.Select(x => x.FloodingChance).ToList() ?? new();
+        this.BlastRadius = torpedoes?.Select(x => x.ExplosionRadius).ToList() ?? new();
+        this.BlastPenetration = torpedoes?.Select(x => x.SplashCoeff).ToList() ?? new();
+        this.CanHit = torpedoes?.Select(x => x.CanHitClasses).ToList() ?? new();
     }
 
     public List<string?> FullSalvoDamage { get; }

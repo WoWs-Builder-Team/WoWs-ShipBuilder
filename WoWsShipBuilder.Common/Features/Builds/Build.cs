@@ -20,18 +20,18 @@ public class Build
     [JsonConstructor]
     private Build(string buildName, string shipIndex, Nation nation, List<string> modules, List<string> upgrades, List<string> consumables, string captain, List<int> skills, List<string> signals, int buildVersion = CurrentBuildVersion)
     {
-        BuildName = buildName;
-        ShipIndex = shipIndex;
-        Nation = nation;
-        Modules = modules;
-        Upgrades = upgrades;
-        Captain = captain;
-        Skills = skills;
-        Signals = signals;
-        Consumables = consumables;
-        BuildVersion = buildVersion;
+        this.BuildName = buildName;
+        this.ShipIndex = shipIndex;
+        this.Nation = nation;
+        this.Modules = modules;
+        this.Upgrades = upgrades;
+        this.Captain = captain;
+        this.Skills = skills;
+        this.Signals = signals;
+        this.Consumables = consumables;
+        this.BuildVersion = buildVersion;
 
-        Hash = CreateHash(this);
+        this.Hash = CreateHash(this);
     }
 
     public Build(string buildName, string shipIndex, Nation nation, List<string> modules, List<string> upgrades, List<string> consumables, string captain, List<int> skills, List<string> signals)
@@ -176,7 +176,7 @@ public class Build
     public override int GetHashCode()
     {
         var hashCode = default(HashCode);
-        hashCode.Add(Hash);
+        hashCode.Add(this.Hash);
         return hashCode.ToHashCode();
     }
 
@@ -184,7 +184,7 @@ public class Build
     {
         if (obj is Build build)
         {
-            return Hash == build.Hash;
+            return this.Hash == build.Hash;
         }
 
         return false;
@@ -209,7 +209,7 @@ public class Build
 
     public string CreateShortStringFromBuild()
     {
-        string buildString = $"{ShipIndex};{string.Join(ListSeparator, ReduceToIndex(Modules))};{string.Join(ListSeparator, ReduceToIndex(Upgrades))};{Captain};{string.Join(ListSeparator, Skills)};{string.Join(ListSeparator, ReduceToIndex(Consumables))};{string.Join(ListSeparator, ReduceToIndex(Signals))};{BuildVersion};{BuildName}";
+        string buildString = $"{this.ShipIndex};{string.Join(ListSeparator, ReduceToIndex(this.Modules))};{string.Join(ListSeparator, ReduceToIndex(this.Upgrades))};{this.Captain};{string.Join(ListSeparator, this.Skills)};{string.Join(ListSeparator, ReduceToIndex(this.Consumables))};{string.Join(ListSeparator, ReduceToIndex(this.Signals))};{this.BuildVersion};{this.BuildName}";
         return buildString;
     }
 

@@ -145,18 +145,18 @@ public sealed record DispersionEllipse(string Label, Dispersion DispersionData, 
         double projectedOnPerpendicularToWaterVerticalRadiusHalfHitPoints)
         : this(name, dispersionData, shell, sigma, maxRange, modifier)
     {
-        HorizontalRadius = horizontalRadius;
-        VerticalRadius = verticalRadius;
-        ProjectedOnWaterVerticalRadius = projectedOnWaterVerticalRadius;
-        ProjectedOnPerpendicularToWaterVerticalRadius = projectedOnPerpendicularToWaterVerticalRadius;
-        RealHitPoints = realHitPoints;
-        OnWaterHitPoints = onWaterHitPoints;
-        PerpendicularToWaterHitPoints = onPerpendicularToWaterHitPoints;
-        HorizontalRadiusHalfHitPoints = horizontalRadiusHalfHitPoints;
-        VerticalRadiusHalfHitPoints = verticalRadiusHalfHitPoints;
-        ProjectedOnWaterVerticalRadiusHalfHitPoints = projectedOnWaterVerticalRadiusHalfHitPoints;
-        ProjectedOnPerpendicularToWaterVerticalRadiusHalfHitPoints = projectedOnPerpendicularToWaterVerticalRadiusHalfHitPoints;
-        IsValid = true;
+        this.HorizontalRadius = horizontalRadius;
+        this.VerticalRadius = verticalRadius;
+        this.ProjectedOnWaterVerticalRadius = projectedOnWaterVerticalRadius;
+        this.ProjectedOnPerpendicularToWaterVerticalRadius = projectedOnPerpendicularToWaterVerticalRadius;
+        this.RealHitPoints = realHitPoints;
+        this.OnWaterHitPoints = onWaterHitPoints;
+        this.PerpendicularToWaterHitPoints = onPerpendicularToWaterHitPoints;
+        this.HorizontalRadiusHalfHitPoints = horizontalRadiusHalfHitPoints;
+        this.VerticalRadiusHalfHitPoints = verticalRadiusHalfHitPoints;
+        this.ProjectedOnWaterVerticalRadiusHalfHitPoints = projectedOnWaterVerticalRadiusHalfHitPoints;
+        this.ProjectedOnPerpendicularToWaterVerticalRadiusHalfHitPoints = projectedOnPerpendicularToWaterVerticalRadiusHalfHitPoints;
+        this.IsValid = true;
     }
 
     public bool IsValid { get; }

@@ -52,22 +52,22 @@ public class BlazorWebView : NativeControlHost
     {
         get
         {
-            if (blazorWebView != null)
+            if (this.blazorWebView != null)
             {
-                hostPage = blazorWebView.HostPage;
+                this.hostPage = this.blazorWebView.HostPage;
             }
 
-            return hostPage;
+            return this.hostPage;
         }
 
         set
         {
-            if (hostPage != value)
+            if (this.hostPage != value)
             {
-                hostPage = value;
-                if (blazorWebView != null)
+                this.hostPage = value;
+                if (this.blazorWebView != null)
                 {
-                    blazorWebView.HostPage = value;
+                    this.blazorWebView.HostPage = value;
                 }
             }
         }
@@ -77,22 +77,22 @@ public class BlazorWebView : NativeControlHost
     {
         get
         {
-            if (blazorWebView != null)
+            if (this.blazorWebView != null)
             {
-                source = blazorWebView.WebView.Source;
+                this.source = this.blazorWebView.WebView.Source;
             }
 
-            return source;
+            return this.source;
         }
 
         set
         {
-            if (source != value)
+            if (this.source != value)
             {
-                source = value;
-                if (blazorWebView != null)
+                this.source = value;
+                if (this.blazorWebView != null)
                 {
-                    blazorWebView.WebView.Source = value;
+                    this.blazorWebView.WebView.Source = value;
                 }
             }
         }
@@ -102,22 +102,22 @@ public class BlazorWebView : NativeControlHost
     {
         get
         {
-            if (blazorWebView != null)
+            if (this.blazorWebView != null)
             {
-                zoomFactor = blazorWebView.WebView.ZoomFactor;
+                this.zoomFactor = this.blazorWebView.WebView.ZoomFactor;
             }
 
-            return zoomFactor;
+            return this.zoomFactor;
         }
 
         set
         {
-            if (zoomFactor != value)
+            if (this.zoomFactor != value)
             {
-                zoomFactor = value;
-                if (blazorWebView != null)
+                this.zoomFactor = value;
+                if (this.blazorWebView != null)
                 {
-                    blazorWebView.WebView.ZoomFactor = value;
+                    this.blazorWebView.WebView.ZoomFactor = value;
                 }
             }
         }
@@ -125,41 +125,41 @@ public class BlazorWebView : NativeControlHost
 
     public IServiceProvider Services
     {
-        get => serviceProvider;
+        get => this.serviceProvider;
         set
         {
-            serviceProvider = value;
-            if (blazorWebView != null)
+            this.serviceProvider = value;
+            if (this.blazorWebView != null)
             {
-                blazorWebView.Services = serviceProvider;
+                this.blazorWebView.Services = this.serviceProvider;
             }
         }
     }
 
     public RootComponentsCollection RootComponents
     {
-        get => rootComponents;
-        set => rootComponents = value;
+        get => this.rootComponents;
+        set => this.rootComponents = value;
     }
 
     public string DefaultDownloadFolderPath
     {
         get
         {
-            if (blazorWebView is not null)
+            if (this.blazorWebView is not null)
             {
-                blazorWebView.WebView.CoreWebView2.Profile.DefaultDownloadFolderPath = defaultDownloadPath;
+                this.blazorWebView.WebView.CoreWebView2.Profile.DefaultDownloadFolderPath = this.defaultDownloadPath;
             }
 
-            return defaultDownloadPath;
+            return this.defaultDownloadPath;
         }
 
         set
         {
-            defaultDownloadPath = value;
-            if (blazorWebView is not null)
+            this.defaultDownloadPath = value;
+            if (this.blazorWebView is not null)
             {
-                blazorWebView.WebView.CoreWebView2.Profile.DefaultDownloadFolderPath = value;
+                this.blazorWebView.WebView.CoreWebView2.Profile.DefaultDownloadFolderPath = value;
             }
         }
     }
@@ -168,17 +168,17 @@ public class BlazorWebView : NativeControlHost
     {
         if (OperatingSystem.IsWindows())
         {
-            blazorWebView = new CustomizedWebView
+            this.blazorWebView = new CustomizedWebView
             {
-                HostPage = hostPage,
-                Services = serviceProvider,
+                HostPage = this.hostPage,
+                Services = this.serviceProvider,
                 BackColor = Color.FromArgb(255, 40, 40, 40),
             };
-            blazorWebView.WebView.CoreWebView2InitializationCompleted += WebViewOnCoreWebView2InitializationCompleted;
-            blazorWebView.WebView.DefaultBackgroundColor = Color.FromArgb(255, 40, 40, 40);
-            blazorWebView.WebView.ZoomFactor = Math.Clamp(zoomFactor, 0.1, 4.0);
-            blazorWebView.RootComponents.AddRange(rootComponents);
-            return new PlatformHandle(blazorWebView.Handle, "HWND");
+            this.blazorWebView.WebView.CoreWebView2InitializationCompleted += this.WebViewOnCoreWebView2InitializationCompleted;
+            this.blazorWebView.WebView.DefaultBackgroundColor = Color.FromArgb(255, 40, 40, 40);
+            this.blazorWebView.WebView.ZoomFactor = Math.Clamp(this.zoomFactor, 0.1, 4.0);
+            this.blazorWebView.RootComponents.AddRange(this.rootComponents);
+            return new PlatformHandle(this.blazorWebView.Handle, "HWND");
         }
 
         return base.CreateNativeControlCore(parent);
@@ -186,17 +186,17 @@ public class BlazorWebView : NativeControlHost
 
     private void CoreWebView2OnIsDefaultDownloadDialogOpenChanged(object? sender, object e)
     {
-        if (blazorWebView?.WebView.CoreWebView2.IsDefaultDownloadDialogOpen == true)
+        if (this.blazorWebView?.WebView.CoreWebView2.IsDefaultDownloadDialogOpen == true)
         {
-            blazorWebView.WebView.CoreWebView2.CloseDefaultDownloadDialog();
+            this.blazorWebView.WebView.CoreWebView2.CloseDefaultDownloadDialog();
         }
     }
 
     private void WebViewOnCoreWebView2InitializationCompleted(object? sender, CoreWebView2InitializationCompletedEventArgs e)
     {
         // blazorWebView!.WebView.CoreWebView2.IsDefaultDownloadDialogOpenChanged += CoreWebView2OnIsDefaultDownloadDialogOpenChanged;
-        DefaultDownloadFolderPath = defaultDownloadPath;
-        blazorWebView!.WebView.CoreWebView2InitializationCompleted -= WebViewOnCoreWebView2InitializationCompleted;
+        this.DefaultDownloadFolderPath = this.defaultDownloadPath;
+        this.blazorWebView!.WebView.CoreWebView2InitializationCompleted -= this.WebViewOnCoreWebView2InitializationCompleted;
     }
 
     protected override void DestroyNativeControlCore(IPlatformHandle control)
@@ -204,8 +204,8 @@ public class BlazorWebView : NativeControlHost
         if (OperatingSystem.IsWindows())
         {
             // blazorWebView!.WebView.CoreWebView2.IsDefaultDownloadDialogOpenChanged -= CoreWebView2OnIsDefaultDownloadDialogOpenChanged;
-            blazorWebView?.Dispose();
-            blazorWebView = null;
+            this.blazorWebView?.Dispose();
+            this.blazorWebView = null;
         }
         else
         {
@@ -220,7 +220,7 @@ public class BlazorWebView : NativeControlHost
         {
             // Do not use until dotnet 8 because disposing the webview will deadlock. see https://github.com/dotnet/maui/issues/7997#issuecomment-1258681003
             // blazorWebView?.Dispose();
-            blazorWebView = null;
+            this.blazorWebView = null;
         }
     }
 }

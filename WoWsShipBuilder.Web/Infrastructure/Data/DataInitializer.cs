@@ -23,12 +23,12 @@ public class DataInitializer
 
     public async Task InitializeData()
     {
-        await localizationProvider.RefreshDataAsync(cdnOptions.Server, AppConstants.SupportedLanguages.ToArray());
-        if (appDataService is ServerAppDataService serverAppDataService)
+        await this.localizationProvider.RefreshDataAsync(this.cdnOptions.Server, AppConstants.SupportedLanguages.ToArray());
+        if (this.appDataService is ServerAppDataService serverAppDataService)
         {
-            if (cdnOptions.UseLocalFiles)
+            if (this.cdnOptions.UseLocalFiles)
             {
-                await serverAppDataService.LoadLocalFilesAsync(cdnOptions.Server);
+                await serverAppDataService.LoadLocalFilesAsync(this.cdnOptions.Server);
             }
             else
             {

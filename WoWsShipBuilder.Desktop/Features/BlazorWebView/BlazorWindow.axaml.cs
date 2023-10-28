@@ -21,12 +21,12 @@ public partial class BlazorWindow : Window
             new("#app", typeof(DesktopRootComponent), null),
         };
 
-        Resources.Add("services", services);
-        Resources.Add("rootComponents", rootComponents);
+        this.Resources.Add("services", services);
+        this.Resources.Add("rootComponents", rootComponents);
         var settings = services!.GetRequiredService<AppSettings>();
         var dataService = services!.GetRequiredService<IDataService>();
-        Resources.Add("downloadPath", settings.CustomImagePath ?? dataService.CombinePaths(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), AppConstants.ShipBuilderName));
+        this.Resources.Add("downloadPath", settings.CustomImagePath ?? dataService.CombinePaths(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), AppConstants.ShipBuilderName));
 
-        InitializeComponent();
+        this.InitializeComponent();
     }
 }

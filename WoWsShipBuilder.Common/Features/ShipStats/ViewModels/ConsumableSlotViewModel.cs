@@ -29,44 +29,44 @@ public class ConsumableSlotViewModel : ReactiveObject
         this.activationChangeHandler = activationChangeHandler;
         this.logger = logger;
         this.shipConsumables = new(shipConsumables);
-        Slot = this.shipConsumables[0].Slot;
+        this.Slot = this.shipConsumables[0].Slot;
     }
 
     public int Slot { get; }
 
     public List<ConsumableDataContainer> ConsumableData
     {
-        get => consumableData;
+        get => this.consumableData;
         set
         {
-            this.RaiseAndSetIfChanged(ref consumableData, value);
-            this.RaisePropertyChanged(nameof(SelectedIndex)); // Necessary to update index for selection popup
+            this.RaiseAndSetIfChanged(ref this.consumableData, value);
+            this.RaisePropertyChanged(nameof(this.SelectedIndex)); // Necessary to update index for selection popup
         }
     }
 
     public int SelectedIndex
     {
-        get => selectedIndex;
+        get => this.selectedIndex;
         set
         {
-            this.RaiseAndSetIfChanged(ref selectedIndex, value);
-            this.RaisePropertyChanged(nameof(SelectedConsumable));
-            logger.LogDebug("Selected consumable changed to index {Index}", value);
-            ConsumableActivated = false;
+            this.RaiseAndSetIfChanged(ref this.selectedIndex, value);
+            this.RaisePropertyChanged(nameof(this.SelectedConsumable));
+            this.logger.LogDebug("Selected consumable changed to index {Index}", value);
+            this.ConsumableActivated = false;
         }
     }
 
     public bool ConsumableActivated
     {
-        get => consumableActivated;
+        get => this.consumableActivated;
         set
         {
-            this.RaiseAndSetIfChanged(ref consumableActivated, value);
-            activationChangeHandler?.Invoke(Slot, value);
+            this.RaiseAndSetIfChanged(ref this.consumableActivated, value);
+            this.activationChangeHandler?.Invoke(this.Slot, value);
         }
     }
 
-    public ConsumableDataContainer SelectedConsumable => ConsumableData[SelectedIndex];
+    public ConsumableDataContainer SelectedConsumable => this.ConsumableData[this.SelectedIndex];
 
     public static ConsumableSlotViewModel Create(IEnumerable<ShipConsumable> shipConsumables, ILoggerFactory loggerFactory, ShipClass shipClass, Action<int, bool>? activationChangeHandler = null)
     {
@@ -77,7 +77,7 @@ public class ConsumableSlotViewModel : ReactiveObject
 
     public void UpdateDataContainers(List<(string, float)> modifiers, int shipHp, ShipClass shipClass)
     {
-        var dataContainers = shipConsumables.Select(c => ConsumableDataContainer.FromTypeAndVariant(c, modifiers, false, shipHp, shipClass));
-        ConsumableData = dataContainers.ToList();
+        var dataContainers = this.shipConsumables.Select(c => ConsumableDataContainer.FromTypeAndVariant(c, modifiers, false, shipHp, shipClass));
+        this.ConsumableData = dataContainers.ToList();
     }
 }

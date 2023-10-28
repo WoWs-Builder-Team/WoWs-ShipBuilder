@@ -62,8 +62,8 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
 
     public CaptainSkillSelectorViewModel(ShipClass shipClass, (Captain defaultCaptain, Dictionary<string, Captain>? captainList) vmParams)
     {
-        logger = Logging.LoggerFactory.CreateLogger<CaptainSkillSelectorViewModel>();
-        currentClass = shipClass;
+        this.logger = Logging.LoggerFactory.CreateLogger<CaptainSkillSelectorViewModel>();
+        this.currentClass = shipClass;
 
         var defaultCaptain = vmParams.defaultCaptain;
 
@@ -77,13 +77,13 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
             capList = capList.Union(nationCaptains).ToDictionary(x => x.Key, x => x.Value);
         }
 
-        CaptainList = capList.Select(x => x.Value).ToList();
-        SelectedCaptain = CaptainList[0];
+        this.CaptainList = capList.Select(x => x.Value).ToList();
+        this.SelectedCaptain = this.CaptainList[0];
 
-        this.WhenAnyValue(x => x.AssignedPoints).Do(_ => UpdateCanAddSkill()).Subscribe();
+        this.WhenAnyValue(x => x.AssignedPoints).Do(_ => this.UpdateCanAddSkill()).Subscribe();
 
-        CaptainTalentsList.CollectionChanged += CaptainTalentsListOnCollectionChanged;
-        ConditionalModifiersList.CollectionChanged += ConditionalModifiersListOnCollectionChanged;
+        this.CaptainTalentsList.CollectionChanged += this.CaptainTalentsListOnCollectionChanged;
+        this.ConditionalModifiersList.CollectionChanged += this.ConditionalModifiersListOnCollectionChanged;
     }
 
     /// <summary>
@@ -91,17 +91,17 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     /// </summary>
     public Captain? SelectedCaptain
     {
-        get => selectedCaptain;
+        get => this.selectedCaptain;
         set
         {
-            var newCaptain = value ?? selectedCaptain;
-            this.RaiseAndSetIfChanged(ref selectedCaptain, newCaptain);
-            SkillList = ConvertSkillToViewModel(currentClass, newCaptain);
-            CaptainTalentsList.Clear();
+            var newCaptain = value ?? this.selectedCaptain;
+            this.RaiseAndSetIfChanged(ref this.selectedCaptain, newCaptain);
+            this.SkillList = this.ConvertSkillToViewModel(this.currentClass, newCaptain);
+            this.CaptainTalentsList.Clear();
 
             if (newCaptain!.UniqueSkills.Any())
             {
-                CaptainWithTalents = true;
+                this.CaptainWithTalents = true;
                 foreach ((string _, UniqueSkill talent) in newCaptain.UniqueSkills)
                 {
                     SkillActivationItemViewModel talentModel;
@@ -117,24 +117,24 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
                         talentModel = new(talent.TranslationId, -1, modifiers, false, talent.MaxTriggerNum, 1, talent.TranslationId + "_DESCRIPTION");
                     }
 
-                    CaptainTalentsList.Add(talentModel);
+                    this.CaptainTalentsList.Add(talentModel);
                 }
             }
             else
             {
-                CaptainWithTalents = false;
+                this.CaptainWithTalents = false;
             }
 
-            var currentlySelectedNumbersList = SkillOrderList.Select(x => x.SkillNumber).ToList();
-            SkillOrderList.Clear();
+            var currentlySelectedNumbersList = this.SkillOrderList.Select(x => x.SkillNumber).ToList();
+            this.SkillOrderList.Clear();
             foreach (var skillNumber in currentlySelectedNumbersList)
             {
-                var skill = SkillList.Values.Single(x => x.Skill.SkillNumber.Equals(skillNumber)).Skill;
-                SkillOrderList.Add(skill);
+                var skill = this.SkillList.Values.Single(x => x.Skill.SkillNumber.Equals(skillNumber)).Skill;
+                this.SkillOrderList.Add(skill);
             }
 
-            UpdateCanAddSkill(); // Needs to be called to update the internal state of the skill viewmodels
-            SkillActivationButtonEnabled = CaptainTalentsList.Count > 0 || ConditionalModifiersList.Count > 0 || ShowArHpSelection;
+            this.UpdateCanAddSkill(); // Needs to be called to update the internal state of the skill viewmodels
+            this.SkillActivationButtonEnabled = this.CaptainTalentsList.Count > 0 || this.ConditionalModifiersList.Count > 0 || this.ShowArHpSelection;
         }
     }
 
@@ -148,11 +148,11 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     /// </summary>
     public bool ShowArHpSelection
     {
-        get => showArHpSelection;
+        get => this.showArHpSelection;
         set
         {
-            this.RaiseAndSetIfChanged(ref showArHpSelection, value);
-            TalentOrConditionalSkillEnabled = (showArHpSelection && ArHpPercentage < 100) || CaptainTalentsList.Any(talent => talent.Status) || ConditionalModifiersList.Any(skill => skill.Status);
+            this.RaiseAndSetIfChanged(ref this.showArHpSelection, value);
+            this.TalentOrConditionalSkillEnabled = (this.showArHpSelection && this.ArHpPercentage < 100) || this.CaptainTalentsList.Any(talent => talent.Status) || this.ConditionalModifiersList.Any(skill => skill.Status);
         }
     }
 
@@ -171,11 +171,11 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     /// </summary>
     public bool SkillActivationPopupOpen
     {
-        get => skillActivationPopupOpen;
+        get => this.skillActivationPopupOpen;
         set
         {
-            this.RaiseAndSetIfChanged(ref skillActivationPopupOpen, value);
-            TalentOrConditionalSkillEnabled = (showArHpSelection && ArHpPercentage < 100) || CaptainTalentsList.Any(talent => talent.Status) || ConditionalModifiersList.Any(skill => skill.Status);
+            this.RaiseAndSetIfChanged(ref this.skillActivationPopupOpen, value);
+            this.TalentOrConditionalSkillEnabled = (this.showArHpSelection && this.ArHpPercentage < 100) || this.CaptainTalentsList.Any(talent => talent.Status) || this.ConditionalModifiersList.Any(skill => skill.Status);
         }
     }
 
@@ -209,46 +209,46 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     /// <param name="skill"> the <see cref="Skill"/> to add.</param>
     public void AddSkill(Skill skill)
     {
-        if (SkillOrderList.Contains(skill))
+        if (this.SkillOrderList.Contains(skill))
         {
-            logger.LogDebug("Adding skill {Skill} to skill order list", skill.SkillNumber);
-            SkillOrderList.Remove(skill);
-            ReorderSkillList();
-            int pointCost = skill.Tiers.First(x => x.ShipClass == currentClass).Tier + 1;
-            AssignedPoints -= pointCost;
+            this.logger.LogDebug("Adding skill {Skill} to skill order list", skill.SkillNumber);
+            this.SkillOrderList.Remove(skill);
+            this.ReorderSkillList();
+            int pointCost = skill.Tiers.First(x => x.ShipClass == this.currentClass).Tier + 1;
+            this.AssignedPoints -= pointCost;
             if (skill.SkillNumber == ArSkillNumber || skill.SkillNumber == ArSkillNumberSubs)
             {
-                ShowArHpSelection = false;
+                this.ShowArHpSelection = false;
             }
 
             if (skill.ConditionalModifiers is { Count: > 0 })
             {
-                var skillName = SkillList!.Single(x => x.Value.Skill.Equals(skill)).Key;
-                ConditionalModifiersList.Remove(ConditionalModifiersList.Single(x => x.SkillName.Equals(skillName)));
+                var skillName = this.SkillList!.Single(x => x.Value.Skill.Equals(skill)).Key;
+                this.ConditionalModifiersList.Remove(this.ConditionalModifiersList.Single(x => x.SkillName.Equals(skillName)));
             }
 
-            this.RaisePropertyChanged(nameof(SkillOrderList));
+            this.RaisePropertyChanged(nameof(this.SkillOrderList));
         }
         else
         {
-            logger.LogDebug("Removing skill {Skill} from skill order list", skill.SkillNumber);
-            SkillOrderList.Add(skill);
-            var pointCost = skill.Tiers.First(x => x.ShipClass == currentClass).Tier + 1;
-            AssignedPoints += pointCost;
+            this.logger.LogDebug("Removing skill {Skill} from skill order list", skill.SkillNumber);
+            this.SkillOrderList.Add(skill);
+            var pointCost = skill.Tiers.First(x => x.ShipClass == this.currentClass).Tier + 1;
+            this.AssignedPoints += pointCost;
             if (skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs)
             {
-                ShowArHpSelection = true;
+                this.ShowArHpSelection = true;
             }
 
             if (skill.ConditionalModifiers is { Count: > 0 })
             {
-                ConditionalModifiersList.Add(CreateItemViewModelForSkill(skill));
+                this.ConditionalModifiersList.Add(this.CreateItemViewModelForSkill(skill));
             }
 
-            this.RaisePropertyChanged(nameof(SkillOrderList));
+            this.RaisePropertyChanged(nameof(this.SkillOrderList));
         }
 
-        SkillActivationButtonEnabled = CaptainTalentsList.Count > 0 || ConditionalModifiersList.Count > 0 || ShowArHpSelection;
+        this.SkillActivationButtonEnabled = this.CaptainTalentsList.Count > 0 || this.ConditionalModifiersList.Count > 0 || this.ShowArHpSelection;
     }
 
     /// <summary>
@@ -257,41 +257,41 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     /// <returns>The List of modifiers of the currently selected skill.</returns>
     public List<(string, float)> GetModifiersList()
     {
-        var modifiers = SkillOrderList.ToList()
+        var modifiers = this.SkillOrderList.ToList()
             .Where(skill => skill.Modifiers.Any() && skill.SkillNumber != ArSkillNumber && skill.SkillNumber != ArSkillNumberSubs && skill.SkillNumber != FuriousSkillNumber && skill.SkillNumber != ImprovedRepairPartyReadinessSkillNumber)
             .SelectMany(m => m.Modifiers)
             .Select(effect => (effect.Key, effect.Value))
             .ToList();
 
         // filter out modifiers that are class specific
-        modifiers = modifiers.Where(x => !x.Key.Contains('_') || x.Key.Contains("_" + currentClass))
+        modifiers = modifiers.Where(x => !x.Key.Contains('_') || x.Key.Contains("_" + this.currentClass))
             .Select(effect => (effect.Key, effect.Value))
             .ToList();
 
-        if (SkillOrderList.Any(skill => skill.SkillNumber == 14))
+        if (this.SkillOrderList.Any(skill => skill.SkillNumber == 14))
         {
             modifiers.Add(("fireResistanceEnabled", 1));
         }
 
-        if (SkillOrderList.Any(skill => skill.SkillNumber == 22))
+        if (this.SkillOrderList.Any(skill => skill.SkillNumber == 22))
         {
             modifiers.Add(("interceptorSelected", 0));
         }
 
-        if (ConditionalModifiersList.Count > 0)
+        if (this.ConditionalModifiersList.Count > 0)
         {
-            modifiers.AddRange(CollectConditionalModifiers());
+            modifiers.AddRange(this.CollectConditionalModifiers());
         }
 
-        var arSkill = SkillOrderList.SingleOrDefault(skill => skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs);
+        var arSkill = this.SkillOrderList.SingleOrDefault(skill => skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs);
         if (arSkill is not null)
         {
-            modifiers.Add(("lastChanceReloadCoefficient", arSkill.Modifiers["lastChanceReloadCoefficient"] * (100 - ArHpPercentage)));
+            modifiers.Add(("lastChanceReloadCoefficient", arSkill.Modifiers["lastChanceReloadCoefficient"] * (100 - this.ArHpPercentage)));
         }
 
-        if (CaptainTalentsList.Count > 0)
+        if (this.CaptainTalentsList.Count > 0)
         {
-            modifiers.AddRange(CollectTalentModifiers());
+            modifiers.AddRange(this.CollectTalentModifiers());
         }
 
         return modifiers;
@@ -301,7 +301,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     /// Create a list of skill numbers from the currently selected list.
     /// </summary>
     /// <returns>The list of currently selected skill numbers.</returns>
-    public List<int> GetSkillNumberList() => SkillOrderList.Select(skill => skill.SkillNumber).ToList();
+    public List<int> GetSkillNumberList() => this.SkillOrderList.Select(skill => skill.SkillNumber).ToList();
 
     /// <summary>
     /// Return the index of the selected captain.
@@ -309,7 +309,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     /// <returns>The index of the selected captain.</returns>
     public string GetCaptainIndex()
     {
-        return SelectedCaptain!.Index;
+        return this.SelectedCaptain!.Index;
     }
 
     public void LoadBuild(IEnumerable<int> selectedSkills, string? captainIndex)
@@ -317,42 +317,42 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         // this check is purely for backward compatibility
         if (captainIndex != null)
         {
-            var captain = CaptainList!.Find(x => x.Index.Equals(captainIndex, StringComparison.Ordinal));
-            SelectedCaptain = captain ?? CaptainList![0];
+            var captain = this.CaptainList!.Find(x => x.Index.Equals(captainIndex, StringComparison.Ordinal));
+            this.SelectedCaptain = captain ?? this.CaptainList![0];
         }
 
-        var skills = selectedSkills.Select(skillId => SelectedCaptain!.Skills.First(captainSkill => captainSkill.Value.SkillNumber == skillId)).Select(pair => pair.Value);
-        SkillOrderList.AddRange(skills);
-        AssignedPoints = SkillOrderList.Sum(skill => skill.Tiers.First(t => t.ShipClass == currentClass).Tier + 1);
-        ReorderSkillList();
-        foreach (var skill in SkillOrderList)
+        var skills = selectedSkills.Select(skillId => this.SelectedCaptain!.Skills.First(captainSkill => captainSkill.Value.SkillNumber == skillId)).Select(pair => pair.Value);
+        this.SkillOrderList.AddRange(skills);
+        this.AssignedPoints = this.SkillOrderList.Sum(skill => skill.Tiers.First(t => t.ShipClass == this.currentClass).Tier + 1);
+        this.ReorderSkillList();
+        foreach (var skill in this.SkillOrderList)
         {
             if (skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs)
             {
-                ShowArHpSelection = true;
+                this.ShowArHpSelection = true;
             }
 
             if (skill.ConditionalModifiers.Any())
             {
-                ConditionalModifiersList.Add(CreateItemViewModelForSkill(skill));
+                this.ConditionalModifiersList.Add(this.CreateItemViewModelForSkill(skill));
             }
         }
 
-        SkillActivationButtonEnabled = CaptainTalentsList.Count > 0 || ConditionalModifiersList.Count > 0 || ShowArHpSelection;
+        this.SkillActivationButtonEnabled = this.CaptainTalentsList.Count > 0 || this.ConditionalModifiersList.Count > 0 || this.ShowArHpSelection;
     }
 
     private IEnumerable<(string, float)> CollectConditionalModifiers()
     {
         var modifiers = new List<(string, float)>();
-        var conditionalModifiers = ConditionalModifiersList.Where(skill => skill.Status && skill.SkillId != FuriousSkillNumber)
+        var conditionalModifiers = this.ConditionalModifiersList.Where(skill => skill.Status && skill.SkillId != FuriousSkillNumber)
             .SelectMany(skill => skill.Modifiers)
             .Select(x => (x.Key, x.Value));
 
         modifiers.AddRange(conditionalModifiers);
 
         // Custom handling for Furious skill. Needs to take into account the number of fires
-        var furiousSkill = SkillOrderList.SingleOrDefault(skill => skill.SkillNumber is FuriousSkillNumber);
-        var furiousSkillModifier = ConditionalModifiersList.SingleOrDefault(skill => skill.SkillId is FuriousSkillNumber);
+        var furiousSkill = this.SkillOrderList.SingleOrDefault(skill => skill.SkillNumber is FuriousSkillNumber);
+        var furiousSkillModifier = this.ConditionalModifiersList.SingleOrDefault(skill => skill.SkillId is FuriousSkillNumber);
         if (furiousSkill is not null && furiousSkillModifier is not null && furiousSkillModifier.Status)
         {
             var multiplier = (float)Math.Round(1 - (furiousSkillModifier.ActivationNumbers * (1 - furiousSkill.ConditionalModifiers["GMShotDelay"])), 2);
@@ -360,8 +360,8 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         }
 
         // Custom handling for Improved Repair Party Readiness Skill
-        var improvedRepairPartyReadinessSkill = SkillOrderList.SingleOrDefault(skill => skill.SkillNumber is ImprovedRepairPartyReadinessSkillNumber);
-        var improvedRepairPartyReadinessSkillModifier = ConditionalModifiersList.SingleOrDefault(skill => skill.SkillId is ImprovedRepairPartyReadinessSkillNumber);
+        var improvedRepairPartyReadinessSkill = this.SkillOrderList.SingleOrDefault(skill => skill.SkillNumber is ImprovedRepairPartyReadinessSkillNumber);
+        var improvedRepairPartyReadinessSkillModifier = this.ConditionalModifiersList.SingleOrDefault(skill => skill.SkillId is ImprovedRepairPartyReadinessSkillNumber);
         if (improvedRepairPartyReadinessSkill is not null && improvedRepairPartyReadinessSkillModifier is not null && improvedRepairPartyReadinessSkillModifier.Status)
         {
             float skillFactor = improvedRepairPartyReadinessSkill.ConditionalModifiers["regenCrewReloadCoeff"];
@@ -375,17 +375,17 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     private IEnumerable<(string, float)> CollectTalentModifiers()
     {
         var modifiers = new List<(string, float)>();
-        var talentModifiers = CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: <= 1 } && !talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus")))
+        var talentModifiers = this.CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: <= 1 } && !talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus")))
             .SelectMany(skill => skill.Modifiers)
             .Select(x => (x.Key, x.Value));
         modifiers.AddRange(talentModifiers);
 
-        var talentMultipleActivationModifiers = CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: > 1 } && !talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus")))
+        var talentMultipleActivationModifiers = this.CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: > 1 } && !talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus")))
             .SelectMany(talent => talent.Modifiers.Select(modifier => (modifier.Key, Value: Math.Pow(modifier.Value, talent.ActivationNumbers))))
             .Select(x => (x.Key, (float)x.Value));
         modifiers.AddRange(talentMultipleActivationModifiers);
 
-        var talentFireChanceModifier = CaptainTalentsList.Where(talent => talent.Status && talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus")))
+        var talentFireChanceModifier = this.CaptainTalentsList.Where(talent => talent.Status && talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus")))
             .SelectMany(talent => talent.Modifiers.Select(modifier => (modifier.Key, Value: Math.Round(modifier.Value * talent.ActivationNumbers, 2))))
             .Select(x => (x.Key, (float)x.Value));
         modifiers.AddRange(talentFireChanceModifier);
@@ -395,12 +395,12 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
 
     private void CaptainTalentsListOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        TalentOrConditionalSkillEnabled = (showArHpSelection && ArHpPercentage < 100) || CaptainTalentsList.Any(talent => talent.Status);
+        this.TalentOrConditionalSkillEnabled = (this.showArHpSelection && this.ArHpPercentage < 100) || this.CaptainTalentsList.Any(talent => talent.Status);
     }
 
     private void ConditionalModifiersListOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        TalentOrConditionalSkillEnabled = (showArHpSelection && ArHpPercentage < 100) || ConditionalModifiersList.Any(skill => skill.Status);
+        this.TalentOrConditionalSkillEnabled = (this.showArHpSelection && this.ArHpPercentage < 100) || this.ConditionalModifiersList.Any(skill => skill.Status);
     }
 
     /// <summary>
@@ -411,13 +411,13 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     /// <returns>A dictionary containing the skill for the class from the captain.</returns>
     private Dictionary<string, SkillItemViewModel> ConvertSkillToViewModel(ShipClass shipClass, Captain? captain)
     {
-        logger.LogDebug("Getting skill for class {ShipClass} from captain {CaptainName}", shipClass.ToString(), captain!.Name);
+        this.logger.LogDebug("Getting skill for class {ShipClass} from captain {CaptainName}", shipClass.ToString(), captain!.Name);
         var skills = captain.Skills;
 
         var filteredSkills = skills.Where(x => x.Value.LearnableOn.Contains(shipClass)).ToList();
 
-        var dictionary = filteredSkills.ToDictionary(x => x.Key, x => new SkillItemViewModel(x.Value, this, shipClass, canAddSkillCache, canRemoveSkillCache));
-        logger.LogDebug("Found {SkillCount} skills", dictionary.Count);
+        var dictionary = filteredSkills.ToDictionary(x => x.Key, x => new SkillItemViewModel(x.Value, this, shipClass, this.canAddSkillCache, this.canRemoveSkillCache));
+        this.logger.LogDebug("Found {SkillCount} skills", dictionary.Count);
         return dictionary;
     }
 
@@ -427,14 +427,14 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     /// </summary>
     private void UpdateCanAddSkill()
     {
-        if (SkillList == null)
+        if (this.SkillList == null)
         {
             return;
         }
 
-        canAddSkillCache.Clear();
-        canRemoveSkillCache.Clear();
-        foreach (KeyValuePair<string, SkillItemViewModel> skill in SkillList)
+        this.canAddSkillCache.Clear();
+        this.canRemoveSkillCache.Clear();
+        foreach (KeyValuePair<string, SkillItemViewModel> skill in this.SkillList)
         {
             skill.Value.CanExecuteChanged();
         }
@@ -442,7 +442,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
 
     private SkillActivationItemViewModel CreateItemViewModelForSkill(Skill skill)
     {
-        var skillName = SkillList!.Single(x => x.Value.Skill.Equals(skill)).Key;
+        var skillName = this.SkillList!.Single(x => x.Value.Skill.Equals(skill)).Key;
         SkillActivationItemViewModel result;
         if (skill.SkillNumber is FuriousSkillNumber)
         {
@@ -466,35 +466,35 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     /// </summary>
     private void ReorderSkillList()
     {
-        if (SkillOrderList.Count == 0)
+        if (this.SkillOrderList.Count == 0)
         {
             return;
         }
 
-        logger.LogDebug("Reordering skills");
+        this.logger.LogDebug("Reordering skills");
 
-        var groups = SkillOrderList.GroupBy(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier)
+        var groups = this.SkillOrderList.GroupBy(skill => skill.Tiers.First(x => x.ShipClass == this.currentClass).Tier)
             .Select(x => x.ToList())
             .ToList()
-            .OrderBy(x => x[0].Tiers.First(skillPosition => skillPosition.ShipClass == currentClass).Tier)
+            .OrderBy(x => x[0].Tiers.First(skillPosition => skillPosition.ShipClass == this.currentClass).Tier)
             .ToList();
 
         // Tier 0 skill reordering
-        ReorderTier0Skills(groups[0]);
+        this.ReorderTier0Skills(groups[0]);
 
         // Tier 1 skill reordering
         if (groups.Count > 2)
         {
-            ReorderTierSkills(groups[1], 1);
+            this.ReorderTierSkills(groups[1], 1);
         }
 
         // Tier 2 skill reordering
         if (groups.Count > 3)
         {
-            ReorderTierSkills(groups[2], 2);
+            this.ReorderTierSkills(groups[2], 2);
         }
 
-        logger.LogDebug("Finished reordering skills");
+        this.logger.LogDebug("Finished reordering skills");
     }
 
     private void ReorderTier0Skills(List<Skill> tier0Skills)
@@ -502,7 +502,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         var tier0SkillsFirst = false;
         foreach (var tier0Skill in tier0Skills)
         {
-            if (SkillOrderList.IndexOf(tier0Skill) == 0)
+            if (this.SkillOrderList.IndexOf(tier0Skill) == 0)
             {
                 tier0SkillsFirst = true;
             }
@@ -511,21 +511,21 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         if (!tier0SkillsFirst)
         {
             var firstTier0Skill = tier0Skills[0];
-            SkillOrderList.Remove(firstTier0Skill);
-            SkillOrderList.Insert(0, firstTier0Skill);
+            this.SkillOrderList.Remove(firstTier0Skill);
+            this.SkillOrderList.Insert(0, firstTier0Skill);
         }
     }
 
     private void ReorderTierSkills(List<Skill> tierSkills, int skillTier)
     {
-        var firstPrevTierSkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == skillTier - 1);
-        var firstHigherTierSkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier > skillTier);
+        var firstPrevTierSkillIndex = this.SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == this.currentClass).Tier == skillTier - 1);
+        var firstHigherTierSkillIndex = this.SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == this.currentClass).Tier > skillTier);
 
         var currentTierSkillFirst = false;
 
         foreach (var skill in tierSkills)
         {
-            if (SkillOrderList.IndexOf(skill) > firstPrevTierSkillIndex && SkillOrderList.IndexOf(skill) < firstHigherTierSkillIndex)
+            if (this.SkillOrderList.IndexOf(skill) > firstPrevTierSkillIndex && this.SkillOrderList.IndexOf(skill) < firstHigherTierSkillIndex)
             {
                 currentTierSkillFirst = true;
             }
@@ -534,8 +534,8 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         if (!currentTierSkillFirst)
         {
             var skill = tierSkills[0];
-            SkillOrderList.Remove(skill);
-            SkillOrderList.Insert(firstHigherTierSkillIndex, skill);
+            this.SkillOrderList.Remove(skill);
+            this.SkillOrderList.Insert(firstHigherTierSkillIndex, skill);
         }
     }
 }

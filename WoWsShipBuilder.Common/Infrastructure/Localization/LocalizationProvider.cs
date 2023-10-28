@@ -19,14 +19,14 @@ public class LocalizationProvider : ILocalizationProvider
     {
         foreach (var culture in supportedCultures)
         {
-            var cultureLocalization = await appDataService.ReadLocalizationData(serverType, culture.LocalizationFileName) ?? throw new InvalidOperationException("Localization data not found");
-            localizationData[culture] = cultureLocalization;
+            var cultureLocalization = await this.appDataService.ReadLocalizationData(serverType, culture.LocalizationFileName) ?? throw new InvalidOperationException("Localization data not found");
+            this.localizationData[culture] = cultureLocalization;
         }
     }
 
     public string? GetString(string key, CultureDetails cultureDetails)
     {
-        if (!localizationData.TryGetValue(cultureDetails, out Dictionary<string, string>? cultureLocalization))
+        if (!this.localizationData.TryGetValue(cultureDetails, out Dictionary<string, string>? cultureLocalization))
         {
             return null;
         }

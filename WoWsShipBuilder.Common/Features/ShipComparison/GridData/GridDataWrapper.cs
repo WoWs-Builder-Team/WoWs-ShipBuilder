@@ -15,43 +15,43 @@ public sealed class GridDataWrapper
 {
     public GridDataWrapper(ShipBuildContainer shipBuildContainer)
     {
-        ShipBuildContainer = shipBuildContainer;
+        this.ShipBuildContainer = shipBuildContainer;
 
-        Ship = shipBuildContainer.Ship;
-        ShipDataContainer = shipBuildContainer.ShipDataContainer ?? throw new InvalidDataException("ShipDataContainer is null. ShipDataContainer must not be null.");
-        Build = shipBuildContainer.Build;
-        Id = shipBuildContainer.Id;
+        this.Ship = shipBuildContainer.Ship;
+        this.ShipDataContainer = shipBuildContainer.ShipDataContainer ?? throw new InvalidDataException("ShipDataContainer is null. ShipDataContainer must not be null.");
+        this.Build = shipBuildContainer.Build;
+        this.Id = shipBuildContainer.Id;
 
-        ShipIndex = shipBuildContainer.Ship.Index;
-        ShipNation = shipBuildContainer.Ship.ShipNation;
-        ShipClass = shipBuildContainer.Ship.ShipClass;
-        ShipCategory = shipBuildContainer.Ship.ShipCategory;
-        ShipTier = shipBuildContainer.Ship.Tier;
-        BuildName = shipBuildContainer.Build?.BuildName;
+        this.ShipIndex = shipBuildContainer.Ship.Index;
+        this.ShipNation = shipBuildContainer.Ship.ShipNation;
+        this.ShipClass = shipBuildContainer.Ship.ShipClass;
+        this.ShipCategory = shipBuildContainer.Ship.ShipCategory;
+        this.ShipTier = shipBuildContainer.Ship.Tier;
+        this.BuildName = shipBuildContainer.Build?.BuildName;
 
-        MainBattery = ShipBuildContainer.ShipDataContainer?.MainBatteryDataContainer;
-        HeShell = MainBattery?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.HE.ShellTypeToString()}"));
-        ApShell = MainBattery?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP.ShellTypeToString()}"));
-        SapShell = MainBattery?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP.ShellTypeToString()}"));
+        this.MainBattery = this.ShipBuildContainer.ShipDataContainer?.MainBatteryDataContainer;
+        this.HeShell = this.MainBattery?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.HE.ShellTypeToString()}"));
+        this.ApShell = this.MainBattery?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP.ShellTypeToString()}"));
+        this.SapShell = this.MainBattery?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP.ShellTypeToString()}"));
 
         var torpedoArmament = shipBuildContainer.ShipDataContainer.TorpedoArmamentDataContainer;
-        TorpedoLauncher = torpedoArmament;
-        Torpedo = new(torpedoArmament);
-        Secondary = new(shipBuildContainer.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries);
-        AntiAirArmament = shipBuildContainer.ShipDataContainer.AntiAirDataContainer;
-        Asw = new(shipBuildContainer.ShipDataContainer.AswAirstrikeDataContainer, shipBuildContainer.ShipDataContainer.DepthChargeLauncherDataContainer);
+        this.TorpedoLauncher = torpedoArmament;
+        this.Torpedo = new(torpedoArmament);
+        this.Secondary = new(shipBuildContainer.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries);
+        this.AntiAirArmament = shipBuildContainer.ShipDataContainer.AntiAirDataContainer;
+        this.Asw = new(shipBuildContainer.ShipDataContainer.AswAirstrikeDataContainer, shipBuildContainer.ShipDataContainer.DepthChargeLauncherDataContainer);
 
-        AirStrike = shipBuildContainer.ShipDataContainer.AirstrikeDataContainer;
-        AirStrikeWeapon = AirStrike?.Weapon as BombDataContainer;
+        this.AirStrike = shipBuildContainer.ShipDataContainer.AirstrikeDataContainer;
+        this.AirStrikeWeapon = this.AirStrike?.Weapon as BombDataContainer;
 
-        ManeuverabilityData = new(shipBuildContainer.ShipDataContainer.ManeuverabilityDataContainer);
-        Concealment = shipBuildContainer.ShipDataContainer.ConcealmentDataContainer;
-        Survivability = shipBuildContainer.ShipDataContainer.SurvivabilityDataContainer;
-        Sonar = shipBuildContainer.ShipDataContainer.PingerGunDataContainer;
+        this.ManeuverabilityData = new(shipBuildContainer.ShipDataContainer.ManeuverabilityDataContainer);
+        this.Concealment = shipBuildContainer.ShipDataContainer.ConcealmentDataContainer;
+        this.Survivability = shipBuildContainer.ShipDataContainer.SurvivabilityDataContainer;
+        this.Sonar = shipBuildContainer.ShipDataContainer.PingerGunDataContainer;
 
-        RocketPlanes = new(shipBuildContainer.ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ProjectileTypeToString())).ToList());
-        TorpedoBombers = new(shipBuildContainer.ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ProjectileTypeToString())).ToList());
-        Bombers = new(shipBuildContainer.ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ProjectileTypeToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ProjectileTypeToString())).ToList());
+        this.RocketPlanes = new(shipBuildContainer.ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ProjectileTypeToString())).ToList());
+        this.TorpedoBombers = new(shipBuildContainer.ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ProjectileTypeToString())).ToList());
+        this.Bombers = new(shipBuildContainer.ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ProjectileTypeToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ProjectileTypeToString())).ToList());
     }
 
     public ShipBuildContainer ShipBuildContainer { get; }

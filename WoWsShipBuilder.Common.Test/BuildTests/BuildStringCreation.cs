@@ -31,7 +31,7 @@ public class BuildStringCreation
         var build = new Build(buildName, shipIndex, Nation.Usa, new(), new(), new(), "PCW001", new(), new());
         string buildString = build.CreateShortStringFromBuild();
 
-        var result = buildRegex.Match(buildString);
+        var result = this.buildRegex.Match(buildString);
 
         result.Success.Should().BeTrue();
         result.Length.Should().Be(buildString.Length);
@@ -48,7 +48,7 @@ public class BuildStringCreation
         var build = new Build(string.Empty, shipIndex, Nation.Usa, new(), new(), new(), "PCW001", new(), new());
         string buildString = build.CreateShortStringFromBuild();
 
-        var result = buildRegex.Match(buildString);
+        var result = this.buildRegex.Match(buildString);
 
         result.Success.Should().BeTrue();
         result.Length.Should().Be(buildString.Length);

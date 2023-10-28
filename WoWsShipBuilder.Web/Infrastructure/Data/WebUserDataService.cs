@@ -31,20 +31,20 @@ public sealed class WebUserDataService : IUserDataService, IAsyncDisposable
 
     public async Task SaveBuildsAsync(IEnumerable<Build> builds)
     {
-        await InitializeModule();
+        await this.InitializeModule();
         var buildStrings = builds.Select(x => x.CreateShortStringFromBuild());
-        await module.InvokeVoidAsync("saveData", BuildFileName, JsonSerializer.Serialize(buildStrings));
+        await this.module.InvokeVoidAsync("saveData", BuildFileName, JsonSerializer.Serialize(buildStrings));
     }
 
     public async Task<IEnumerable<Build>> LoadBuildsAsync()
     {
-        if (savedBuilds is not null)
+        if (this.savedBuilds is not null)
         {
-            return savedBuilds;
+            return this.savedBuilds;
         }
 
-        await InitializeModule();
-        var buildStrings = await module.InvokeAsync<string?>("loadData", BuildFileName);
+        await this.InitializeModule();
+        var buildStrings = await this.module.InvokeAsync<string?>("loadData", BuildFileName);
         if (buildStrings is not null)
         {
             IEnumerable<string>? buildList = null;
@@ -82,71 +82,71 @@ public sealed class WebUserDataService : IUserDataService, IAsyncDisposable
                 }
                 if (counter > 0)
                 {
-                    snackbar.Add($"{counter} builds could not be loaded.", Severity.Warning);
+                    this.snackbar.Add($"{counter} builds could not be loaded.", Severity.Warning);
                 }
 
-                savedBuilds = builds.DistinctBy(x => x.Hash).ToList();
+                this.savedBuilds = builds.DistinctBy(x => x.Hash).ToList();
             }
         }
 
-        return savedBuilds ?? new List<Build>();
+        return this.savedBuilds ?? new List<Build>();
     }
 
     public async Task ImportBuildsAsync(IEnumerable<Build> builds)
     {
-        savedBuilds ??= (await LoadBuildsAsync()).ToList();
+        this.savedBuilds ??= (await this.LoadBuildsAsync()).ToList();
 
         foreach (var build in builds)
         {
-            savedBuilds.RemoveAll(x => x.Equals(build));
-            savedBuilds.Insert(0, build);
+            this.savedBuilds.RemoveAll(x => x.Equals(build));
+            this.savedBuilds.Insert(0, build);
         }
 
-        snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomEnd;
+        this.snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomEnd;
 
         // actual local storage limit is around 3700 builds but we limit it to 1000 for performance reasons
-        switch (savedBuilds.Count)
+        switch (this.savedBuilds.Count)
         {
             case < 1000:
             {
-                snackbar.Add("Builds have been saved.", Severity.Success);
+                this.snackbar.Add("Builds have been saved.", Severity.Success);
                 break;
             }
             case 1000:
             {
-                snackbar.Add("Builds storage limit reached. Next addition will replace the oldest saved build.", Severity.Warning);
+                this.snackbar.Add("Builds storage limit reached. Next addition will replace the oldest saved build.", Severity.Warning);
                 break;
             }
             case > 1000:
             {
-                snackbar.Add("Builds storage is full. The oldest saved build has been replaced.", Severity.Error);
-                savedBuilds = savedBuilds.Take(1000).ToList();
+                this.snackbar.Add("Builds storage is full. The oldest saved build has been replaced.", Severity.Error);
+                this.savedBuilds = this.savedBuilds.Take(1000).ToList();
                 break;
             }
         }
 
-        await SaveBuildsAsync(savedBuilds);
+        await this.SaveBuildsAsync(this.savedBuilds);
     }
 
-    public async Task SaveBuildAsync(Build build) => await ImportBuildsAsync(new List<Build> { build });
+    public async Task SaveBuildAsync(Build build) => await this.ImportBuildsAsync(new List<Build> { build });
 
-    public async Task RemoveSavedBuildAsync(Build build) => await RemoveSavedBuildsAsync(new List<Build> { build });
+    public async Task RemoveSavedBuildAsync(Build build) => await this.RemoveSavedBuildsAsync(new List<Build> { build });
 
     public async Task RemoveSavedBuildsAsync(IEnumerable<Build> builds)
     {
-        savedBuilds ??= (await LoadBuildsAsync()).ToList();
-        savedBuilds.RemoveMany(builds);
+        this.savedBuilds ??= (await this.LoadBuildsAsync()).ToList();
+        this.savedBuilds.RemoveMany(builds);
 
-        await SaveBuildsAsync(savedBuilds);
+        await this.SaveBuildsAsync(this.savedBuilds);
     }
 
     public async ValueTask DisposeAsync()
     {
-        if (module is not null)
+        if (this.module is not null)
         {
             try
             {
-                await module.DisposeAsync();
+                await this.module.DisposeAsync();
             }
             catch (JSDisconnectedException)
             {
@@ -160,7 +160,7 @@ public sealed class WebUserDataService : IUserDataService, IAsyncDisposable
     {
         // module is not null after this method but apparently, Roslyn does not want to recognize that.
 #pragma warning disable CS8774
-        module ??= await runtime.InvokeAsync<IJSObjectReference>("import", JsFileName);
+        this.module ??= await this.runtime.InvokeAsync<IJSObjectReference>("import", JsFileName);
 #pragma warning restore CS8774
     }
 }

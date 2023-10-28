@@ -55,54 +55,54 @@ public class LocalDataUpdater : ILocalDataUpdater
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     public async Task RunDataUpdateCheck(ServerType serverType, IProgress<(int, string)> progressTracker, bool overrideDateCheck = false)
     {
-        logger.LogInformation("UpdateCheck triggered. Checking whether update should execute...");
-        if (!overrideDateCheck && !await ShouldUpdaterRun(serverType))
+        this.logger.LogInformation("UpdateCheck triggered. Checking whether update should execute...");
+        if (!overrideDateCheck && !await this.ShouldUpdaterRun(serverType))
         {
-            logger.LogInformation("Skipping update check");
+            this.logger.LogInformation("Skipping update check");
         }
         else
         {
-            logger.LogInformation("Starting update check...");
-            await CheckFilesAndDownloadUpdates(serverType, progressTracker);
-            logger.LogInformation("Completed update check");
+            this.logger.LogInformation("Starting update check...");
+            await this.CheckFilesAndDownloadUpdates(serverType, progressTracker);
+            this.logger.LogInformation("Completed update check");
         }
 
-        logger.LogInformation("Checking installed localization files...");
-        await CheckInstalledLocalizations(serverType);
-        logger.LogInformation("Starting data validation...");
-        string dataBasePath = appDataService.GetDataPath(serverType);
-        var validation = await ValidateData(serverType, dataBasePath);
+        this.logger.LogInformation("Checking installed localization files...");
+        await this.CheckInstalledLocalizations(serverType);
+        this.logger.LogInformation("Starting data validation...");
+        string dataBasePath = this.appDataService.GetDataPath(serverType);
+        var validation = await this.ValidateData(serverType, dataBasePath);
         if (!validation.ValidationStatus)
         {
-            logger.LogInformation("Data validation failed. Selecting repair method...");
+            this.logger.LogInformation("Data validation failed. Selecting repair method...");
             if (validation.InvalidFiles != null)
             {
-                logger.LogInformation("List of corrupted files found. Attempting partial repair...");
-                await awsClient.DownloadFiles(serverType, validation.InvalidFiles.ToList());
+                this.logger.LogInformation("List of corrupted files found. Attempting partial repair...");
+                await this.awsClient.DownloadFiles(serverType, validation.InvalidFiles.ToList());
             }
             else
             {
-                logger.LogInformation("No list of corrupted files found. Attempting clean reload of gamedata...");
-                fileSystem.Directory.Delete(dataBasePath, true);
-                await CheckFilesAndDownloadUpdates(serverType, progressTracker);
+                this.logger.LogInformation("No list of corrupted files found. Attempting clean reload of gamedata...");
+                this.fileSystem.Directory.Delete(dataBasePath, true);
+                await this.CheckFilesAndDownloadUpdates(serverType, progressTracker);
             }
 
-            validation = await ValidateData(serverType, dataBasePath);
+            validation = await this.ValidateData(serverType, dataBasePath);
             if (!validation.ValidationStatus)
             {
-                logger.LogError("Invalid application data after data reload detected");
+                this.logger.LogError("Invalid application data after data reload detected");
             }
             else
             {
-                logger.LogInformation("Application data has been repaired and validated");
+                this.logger.LogInformation("Application data has been repaired and validated");
             }
         }
         else
         {
-            logger.LogInformation("Data validation successful");
+            this.logger.LogInformation("Data validation successful");
         }
 
-        logger.LogInformation("Completed update check run");
+        this.logger.LogInformation("Completed update check run");
     }
 
     /// <summary>
@@ -113,15 +113,15 @@ public class LocalDataUpdater : ILocalDataUpdater
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     public async Task UpdateLocalization(ServerType serverType)
     {
-        var installedLocales = await appDataService.GetInstalledLocales(serverType);
+        var installedLocales = await this.appDataService.GetInstalledLocales(serverType);
 
-        if (!installedLocales.Contains(appSettings.SelectedLanguage.LocalizationFileName + ".json"))
+        if (!installedLocales.Contains(this.appSettings.SelectedLanguage.LocalizationFileName + ".json"))
         {
-            installedLocales.Add(appSettings.SelectedLanguage.LocalizationFileName + ".json");
+            installedLocales.Add(this.appSettings.SelectedLanguage.LocalizationFileName + ".json");
         }
 
         var downloadList = installedLocales.Select(locale => ("Localization", locale)).ToList();
-        await awsClient.DownloadFiles(serverType, downloadList);
+        await this.awsClient.DownloadFiles(serverType, downloadList);
     }
 
     /// <summary>
@@ -132,9 +132,9 @@ public class LocalDataUpdater : ILocalDataUpdater
     /// <returns>A <see cref="UpdateCheckResult"/> containing the results of the version check.</returns>
     public async Task<UpdateCheckResult> CheckJsonFileVersions(ServerType serverType)
     {
-        logger.LogInformation("Checking json file versions for server type {ServerType}", serverType.DisplayName());
-        VersionInfo onlineVersionInfo = await awsClient.DownloadVersionInfo(serverType);
-        VersionInfo? localVersionInfo = await appDataService.GetCurrentVersionInfo(serverType);
+        this.logger.LogInformation("Checking json file versions for server type {ServerType}", serverType.DisplayName());
+        VersionInfo onlineVersionInfo = await this.awsClient.DownloadVersionInfo(serverType);
+        VersionInfo? localVersionInfo = await this.appDataService.GetCurrentVersionInfo(serverType);
 
         List<(string, string)> filesToDownload;
         bool shouldImagesUpdate;
@@ -144,7 +144,7 @@ public class LocalDataUpdater : ILocalDataUpdater
         if (localVersionInfo == null)
         {
             // Local version info file being null means it does not exist or could not be found. Always requires a full data download.
-            logger.LogInformation("No local version info found. Downloading full data and flagging images for full update");
+            this.logger.LogInformation("No local version info found. Downloading full data and flagging images for full update");
             filesToDownload = onlineVersionInfo.Categories
                 .SelectMany(category => category.Value.Select(file => (category.Key, file.FileName)))
                 .ToList();
@@ -154,7 +154,7 @@ public class LocalDataUpdater : ILocalDataUpdater
         }
         else if (localVersionInfo.CurrentVersionCode < onlineVersionInfo.CurrentVersionCode)
         {
-            logger.LogInformation(
+            this.logger.LogInformation(
                 "Local data version ({CurrentVersionLocal}) is older than online data version ({CurrentVersionOnline}). Selecting files for update...",
                 localVersionInfo.CurrentVersionCode,
                 onlineVersionInfo.CurrentVersionCode);
@@ -165,7 +165,7 @@ public class LocalDataUpdater : ILocalDataUpdater
                 localVersionInfo.Categories.TryGetValue(category, out var localCategoryFiles);
                 if (localCategoryFiles == null)
                 {
-                    logger.LogInformation("Category {Category} not found in local version info file. Adding category to download list", category);
+                    this.logger.LogInformation("Category {Category} not found in local version info file. Adding category to download list", category);
                     filesToDownload.AddRange(fileVersions.Select(file => (category, file.FileName)));
                     continue;
                 }
@@ -190,7 +190,7 @@ public class LocalDataUpdater : ILocalDataUpdater
             }
             catch (Exception)
             {
-                logger.LogError(
+                this.logger.LogError(
                     "Unable to strip suffix from a version name. Local version name: {LocalVersion}, Online version name: {OnlineVersion}",
                     localVersionInfo.CurrentVersion,
                     onlineVersionInfo.CurrentVersion);
@@ -213,22 +213,19 @@ public class LocalDataUpdater : ILocalDataUpdater
 
         var versionName = onlineVersionInfo.CurrentVersion.MainVersion.ToString(3);
 
-        if (SupportedDataStructureVersion.Major < onlineVersionInfo.DataStructuresVersion.Major || SupportedDataStructureVersion.Minor < onlineVersionInfo.DataStructuresVersion.Minor)
+        if (this.SupportedDataStructureVersion.Major < onlineVersionInfo.DataStructuresVersion.Major || this.SupportedDataStructureVersion.Minor < onlineVersionInfo.DataStructuresVersion.Minor)
         {
-            logger.LogWarning(
-                "Online data is incompatible with this application version. Online data version: {}, maximum supported version: {}",
-                SupportedDataStructureVersion,
-                onlineVersionInfo.DataStructuresVersion);
+            this.logger.LogWarning("Online data is incompatible with this application version. Online data version: {}, maximum supported version: {}", this.SupportedDataStructureVersion, onlineVersionInfo.DataStructuresVersion);
             return new(new(), false, false, false, versionName, serverType);
         }
 
-        if (SupportedDataStructureVersion.Build != onlineVersionInfo.DataStructuresVersion.Build)
+        if (this.SupportedDataStructureVersion.Build != onlineVersionInfo.DataStructuresVersion.Build)
         {
-            logger.LogWarning("The build version of the online data is different to the currently supported version. Some data may be unavailable");
+            this.logger.LogWarning("The build version of the online data is different to the currently supported version. Some data may be unavailable");
         }
-        else if (SupportedDataStructureVersion.Major > onlineVersionInfo.DataStructuresVersion.Major || SupportedDataStructureVersion.Minor > onlineVersionInfo.DataStructuresVersion.Minor)
+        else if (this.SupportedDataStructureVersion.Major > onlineVersionInfo.DataStructuresVersion.Major || this.SupportedDataStructureVersion.Minor > onlineVersionInfo.DataStructuresVersion.Minor)
         {
-            logger.LogWarning("Online data version is behind the currently supported data version. Loading data may crash the application");
+            this.logger.LogWarning("Online data version is behind the currently supported data version. Loading data may crash the application");
         }
 
         return new(filesToDownload, shouldImagesUpdate, canImagesDeltaUpdate, shouldLocalizationUpdate, versionName, serverType);
@@ -244,10 +241,10 @@ public class LocalDataUpdater : ILocalDataUpdater
     /// <returns><see langword="true"/> if the local data matches the structure of the version info file, <see langword="false"/> otherwise.</returns>
     public async Task<ValidationResult> ValidateData(ServerType serverType, string dataBasePath)
     {
-        var versionInfo = await appDataService.GetCurrentVersionInfo(serverType);
+        var versionInfo = await this.appDataService.GetCurrentVersionInfo(serverType);
         if (versionInfo == null)
         {
-            logger.LogError("VersionInfo does not exist. AppData validation failed");
+            this.logger.LogError("VersionInfo does not exist. AppData validation failed");
             return new(false);
         }
 
@@ -255,14 +252,14 @@ public class LocalDataUpdater : ILocalDataUpdater
         var categoryFiles = versionInfo.Categories.SelectMany(category => category.Value.Select(file => (category.Key, file)));
         foreach ((string category, var file) in categoryFiles)
         {
-            string path = fileSystem.Path.Combine(dataBasePath, category, file.FileName);
-            if (!fileSystem.File.Exists(path))
+            string path = this.fileSystem.Path.Combine(dataBasePath, category, file.FileName);
+            if (!this.fileSystem.File.Exists(path))
             {
                 missingFiles.Add((category, file.FileName));
                 continue;
             }
 
-            await using var fs = fileSystem.File.OpenRead(path);
+            await using var fs = this.fileSystem.File.OpenRead(path);
             string hash = FileVersion.ComputeChecksum(fs);
             if (!hash.Equals(file.Checksum))
             {
@@ -275,7 +272,7 @@ public class LocalDataUpdater : ILocalDataUpdater
             return new(true);
         }
 
-        logger.LogWarning("Missing files during data validation. These files were missing: {MissingFiles}", string.Join(", ", missingFiles));
+        this.logger.LogWarning("Missing files during data validation. These files were missing: {MissingFiles}", string.Join(", ", missingFiles));
         return new(false) { InvalidFiles = missingFiles };
     }
 
@@ -287,23 +284,23 @@ public class LocalDataUpdater : ILocalDataUpdater
     public async Task<bool> ShouldUpdaterRun(ServerType serverType)
     {
         var today = DateTime.Today;
-        return appSettings.LastDataUpdateCheck == null || (today - appSettings.LastDataUpdateCheck).Value.TotalDays > 1 ||
-               await appDataService.GetCurrentVersionInfo(serverType) == null;
+        return this.appSettings.LastDataUpdateCheck == null || (today - this.appSettings.LastDataUpdateCheck).Value.TotalDays > 1 ||
+               await this.appDataService.GetCurrentVersionInfo(serverType) == null;
     }
 
     public async Task CheckInstalledLocalizations(ServerType serverType)
     {
-        List<string> installedLocales = await appDataService.GetInstalledLocales(serverType, false);
-        if (!installedLocales.Contains(appSettings.SelectedLanguage.LocalizationFileName))
+        List<string> installedLocales = await this.appDataService.GetInstalledLocales(serverType, false);
+        if (!installedLocales.Contains(this.appSettings.SelectedLanguage.LocalizationFileName))
         {
-            logger.LogInformation("Selected localization is not installed. Downloading file...");
-            string localizationFile = appSettings.SelectedLanguage.LocalizationFileName + ".json";
-            await awsClient.DownloadFiles(serverType, new() { ("Localization", localizationFile) });
-            logger.LogInformation("Downloaded localization file for selected localization. Updating localizer data...");
+            this.logger.LogInformation("Selected localization is not installed. Downloading file...");
+            string localizationFile = this.appSettings.SelectedLanguage.LocalizationFileName + ".json";
+            await this.awsClient.DownloadFiles(serverType, new() { ("Localization", localizationFile) });
+            this.logger.LogInformation("Downloaded localization file for selected localization. Updating localizer data...");
         }
         else
         {
-            logger.LogInformation("Selected localization is installed");
+            this.logger.LogInformation("Selected localization is installed");
         }
     }
 
@@ -314,24 +311,24 @@ public class LocalDataUpdater : ILocalDataUpdater
     /// <param name="progressTracker">An <see cref="IProgress{T}"/> used to monitor the progress of the update.</param>
     private async Task CheckFilesAndDownloadUpdates(ServerType serverType, IProgress<(int, string)> progressTracker)
     {
-        UpdateCheckResult checkResult = await CheckJsonFileVersions(serverType);
+        UpdateCheckResult checkResult = await this.CheckJsonFileVersions(serverType);
         if (checkResult.AvailableFileUpdates.Any())
         {
-            logger.LogInformation("Updating {AvailableUpdateCount} files...", checkResult.AvailableFileUpdates.Count);
+            this.logger.LogInformation("Updating {AvailableUpdateCount} files...", checkResult.AvailableFileUpdates.Count);
             progressTracker.Report((1, nameof(Translation.SplashScreen_Json)));
-            await awsClient.DownloadFiles(serverType, checkResult.AvailableFileUpdates);
+            await this.awsClient.DownloadFiles(serverType, checkResult.AvailableFileUpdates);
         }
 
         if (checkResult.ShouldLocalizationUpdate)
         {
-            logger.LogInformation("Updating installed localizations...");
-            await UpdateLocalization(serverType);
+            this.logger.LogInformation("Updating installed localizations...");
+            await this.UpdateLocalization(serverType);
         }
 
         if (checkResult.ShouldImagesUpdate)
         {
-            logger.LogInformation("Updating images. Can delta update: {CanImagesDeltaUpdate}", checkResult.CanImagesDeltaUpdate);
-            await ImageUpdate(progressTracker, checkResult.CanImagesDeltaUpdate, checkResult.DataVersionName);
+            this.logger.LogInformation("Updating images. Can delta update: {CanImagesDeltaUpdate}", checkResult.CanImagesDeltaUpdate);
+            await this.ImageUpdate(progressTracker, checkResult.CanImagesDeltaUpdate, checkResult.DataVersionName);
         }
     }
 
@@ -343,17 +340,17 @@ public class LocalDataUpdater : ILocalDataUpdater
     /// <param name="versionName">The version name of the new image data, needs to be identical to the WG version name.</param>
     private async Task ImageUpdate(IProgress<(int, string)> progressTracker, bool canDeltaUpdate, string? versionName)
     {
-        string imageBasePath = appDataService.AppDataImageDirectory;
-        var shipImageDirectory = fileSystem.DirectoryInfo.New(fileSystem.Path.Combine(imageBasePath, "Ships"));
+        string imageBasePath = this.appDataService.AppDataImageDirectory;
+        var shipImageDirectory = this.fileSystem.DirectoryInfo.New(this.fileSystem.Path.Combine(imageBasePath, "Ships"));
         if (!shipImageDirectory.Exists || !shipImageDirectory.GetFiles().Any() || !canDeltaUpdate)
         {
             progressTracker.Report((2, nameof(Translation.SplashScreen_ShipImages)));
-            await awsClient.DownloadImages(fileSystem);
+            await this.awsClient.DownloadImages(this.fileSystem);
         }
         else
         {
             progressTracker.Report((2, nameof(Translation.SplashScreen_ShipImages)));
-            await awsClient.DownloadImages(fileSystem, versionName);
+            await this.awsClient.DownloadImages(this.fileSystem, versionName);
         }
     }
 }

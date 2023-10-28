@@ -11,7 +11,7 @@ public partial class MessageBox : Window
 {
     public MessageBox()
     {
-        InitializeComponent();
+        this.InitializeComponent();
     }
 
     public enum MessageBoxButtons
