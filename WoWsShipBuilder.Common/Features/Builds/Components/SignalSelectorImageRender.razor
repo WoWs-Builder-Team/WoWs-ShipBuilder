@@ -85,6 +85,6 @@
 
     private string GetMudPaperStyle(bool isSelected)
     {
-        return " border-color: " + (isSelected ? "#BC0606;" : "#3C3C3C; opacity: 0.4;");
+        return $" border-color: {(isSelected ? "#BC0606" : "var(--mud-palette-text-disabled); opacity: 0.4;")};";
     }
 }

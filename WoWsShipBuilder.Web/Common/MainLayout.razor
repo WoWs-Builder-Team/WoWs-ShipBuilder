@@ -48,50 +48,7 @@
         }
     }
 
-    private readonly MudTheme theme = new()
-    {
-        LayoutProperties =
-        {
-            DefaultBorderRadius = "0",
-        },
-        PaletteDark =
-        {
-            Black = "#121212FF",
-            White = "#FDFDFDFF",
-            Primary = "#505050FF",
-            PrimaryContrastText = "#DEDEDEFF",
-            Secondary = "#DEDEDEFF",
-            Info = "#5C60DBFF",
-            InfoContrastText = "#FAF7F9FF",
-            Success = "#008C3AFF",
-            SuccessContrastText = "#FAF7F9FF",
-            Warning = "#BF7300FF",
-            WarningContrastText = "#FAF7F9FF",
-            Error = "#BF0000FF",
-            ErrorContrastText = "#FAF7F9FF",
-            Dark = "#282828FF",
-            DarkContrastText = "#DEDEDEFF",
-            TextPrimary = "#DEDEDEFF",
-            TextSecondary = "#FFFFFF89",
-            TextDisabled = "#FFFFFF60",
-            ActionDefault = "#FFFFFF89",
-            ActionDisabled = "#FFFFFF42",
-            ActionDisabledBackground = " #FFFFFF1E",
-            Surface = "#282828FF",
-            LinesDefault = "#FFFFFF4D",
-            LinesInputs = "#808080",
-            AppbarBackground = "#121212FF",
-            HoverOpacity = 0.2,
-            DrawerBackground = "#1F1F1F",
-            DividerLight = "#FFFFFFCC",
-        },
-        ZIndex =
-        {
-            Dialog = 2000,
-            Popover = 3000,
-            Tooltip = 4000,
-        },
-    };
+    private readonly MudTheme theme = Helpers.CreateDarkTheme(true);
 
     private readonly MudTheme aprilFoolTheme = new()
     {

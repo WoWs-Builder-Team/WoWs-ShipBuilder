@@ -7,15 +7,15 @@
 @implements IDisposable
 @inject ILocalizer Localizer
 
-<MudDialog ContentStyle="max-height: calc(90vh - 100px); overflow-y: scroll; padding: 12px;">
+<MudDialog ContentStyle="max-height: calc(90vh - 100px); overflow-y: scroll; padding: 12px;" Class="default-background">
     <DialogContent>
         <ShipSelector SelectedShips="@selectedShips" MultiSelect AllowCopies EnableBuildImport EnableSavedBuildList DisableSelectedShipBuildEditing/>
     </DialogContent>
     <DialogActions>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@Cancel">
+        <MudButton Variant="Variant.Filled" Color="Color.Warning" DisableElevation="true" OnClick="@Cancel">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Warning" DisableElevation="true" Disabled="@(ShipList != null && ShipList!.Count == 0)" OnClick="@(() => SubmitShips(true))">
+        <MudButton Variant="Variant.Filled" Color="Color.Tertiary" DisableElevation="true" Disabled="@(ShipList != null && ShipList!.Count == 0)" OnClick="@(() => SubmitShips(true))">
             @if (processing)
             {
                 <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>

@@ -23,7 +23,7 @@
 @inject IOptions<LinkShorteningOptions> LinkShorteningOptions
 @inject IJSRuntime Runtime
 
-<MudDialog Style="max-height: 95vh;">
+<MudDialog Style="max-height: 95vh;" Class="default-background">
     <DialogContent>
         <MudBreakpointProvider>
             <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
@@ -48,16 +48,16 @@
                         </MudStack>
                     </MudItem>
                     <MudItem xs="2">
-                        <MudList @bind-SelectedValue="selectedListValue" Dense Clickable Style="max-height: min(80vh, 850px); overflow-y: scroll;" Class="">
+                        <MudList @bind-SelectedValue="selectedListValue" Dense Clickable Style="max-height: min(80vh, 850px); overflow-y: scroll;">
                             @for (var i = 0; i < Ships.Count; i++)
                             {
                                 int index = i;
                                 var shipData = Ships[index];
                                 <MudListItem Value="index" OnClick="@(() => desktopTabs.ActivatePanel(index))">
-                                    <MudText >
+                                    <MudText Color="Color.Secondary">
                                         @Localizer.GetGameLocalization(Ships[index].Ship.Index + "_FULL").Localization
                                     </MudText>
-                                    <MudText Typo="Typo.body2" Class="ml-2">
+                                    <MudText Typo="Typo.body2" Class="ml-2" Color="Color.Secondary">
                                         @(Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (buildNameDictionary.TryGetValue(shipData.Id, out string? value) ? value : !string.IsNullOrEmpty(shipData.Build?.BuildName) ? shipData.Build.BuildName : Build.DefaultBuildName))
                                     </MudText>
                                 </MudListItem>
@@ -79,10 +79,10 @@
         </MudBreakpointProvider>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Primary">
+        <MudButton OnClick="@Cancel" Variant="Variant.Filled" Color="Color.Warning">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
-        <MudButton Color="Color.Warning" OnClick="ResetBuild" Variant="Variant.Filled">
+        <MudButton Color="Color.Tertiary" OnClick="@ResetBuild" Variant="Variant.Filled">
             <MudText Typo="Typo.button">
                  @Localizer.GetAppLocalization(nameof(Translation.MainWindow_ResetBuild)).Localization
             </MudText>
@@ -183,7 +183,7 @@
                                     }
                                     @if (!SpecialAbilityDisabled && (shipData.Ship.SpecialAbility is not null || shipData.Ship.MainBatteryModuleList.Any(x => x.Value.BurstModeAbility is not null)))
                                     {
-                                        <MudSwitch T="bool" @bind-Checked="ViewModel.SpecialAbilityActive" Color="Color.Info" Label="Activate special ability"/>
+                                        <MudSwitch T="bool" @bind-Checked="ViewModel.SpecialAbilityActive" Color="Color.Primary" Label="Activate special ability"/>
                                     }
                                 </MudStack>
                             </MudItem>
@@ -195,19 +195,19 @@
                             </MudItem>
                             <MudItem xs="12" md="6">
                                 <MudStack Row="true" Justify="Justify.Center" Style="margin-top: -14px">
-                                    <MudTextField @bind-Value="inputBuildString" Immediate DebounceInterval="150" Validation="@(new Func<string, Task<string?>>(ValidateBuildString))" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Alternative" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink))" Variant="Variant.Outlined"/>
-                                    <MudButton Disabled="@(string.IsNullOrWhiteSpace(buildString))" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Style="margin-top: 6px" OnClick="@ImportBuildFromString">
+                                    <MudTextField @bind-Value="inputBuildString" Class="default-label-background" Immediate DebounceInterval="150" Validation="@(new Func<string, Task<string?>>(ValidateBuildString))" Clearable FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Alternative" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink))" Variant="Variant.Outlined"/>
+                                    <MudButton Disabled="@(string.IsNullOrWhiteSpace(buildString))" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" Style="margin-top: 6px" OnClick="@ImportBuildFromString">
                                         @Localizer.GetAppLocalization(Translation.BuildConfigurationDialog_Load).Localization
                                     </MudButton>
                                     <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Class="file-upload-full-height" Accept=".png">
                                         <ButtonTemplate>
-                                            <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Image" Style="height: 100%;" for="@context">Import</MudButton>
+                                            <MudButton HtmlTag="label" Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Image" Style="height: 100%;" for="@context">Import</MudButton>
                                         </ButtonTemplate>
                                     </MudFileUpload>
                                 </MudStack>
                             </MudItem>
                             <MudItem xs="12" md="6">
-                                <MudTextField @bind-Value="ViewModel.BuildName" Immediate Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))" DebounceInterval="150" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-n2 mb-0"/>
+                                <MudTextField @bind-Value="ViewModel.BuildName" Immediate Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))" DebounceInterval="150" Clearable FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-n2 mb-0 default-label-background"/>
                             </MudItem>
                         }
                         else

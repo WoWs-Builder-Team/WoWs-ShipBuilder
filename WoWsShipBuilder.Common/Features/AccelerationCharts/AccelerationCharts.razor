@@ -46,29 +46,29 @@
         @Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_CustomDataTitle)).Localization
     </MudButton>
     <MudDivider Vertical FlexItem Light/>
-    <MudSelect Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" T="int" Value="@firstGear" Label="Initial Gear" ValueChanged="@(value => UpdateThrottle(0, value))">
-        <MudSelectItem Value="AccelerationCalculator.FullReverse"> <MudText Color="Color.Secondary">-1</MudText></MudSelectItem>
-        <MudSelectItem Value="AccelerationCalculator.Zero"><MudText Color="Color.Secondary">0</MudText></MudSelectItem>
-        <MudSelectItem Value="AccelerationCalculator.OneQuarter"><MudText Color="Color.Secondary">1/4</MudText></MudSelectItem>
-        <MudSelectItem Value="AccelerationCalculator.Half"><MudText Color="Color.Secondary">2/4</MudText></MudSelectItem>
-        <MudSelectItem Value="AccelerationCalculator.ThreeQuarter"><MudText Color="Color.Secondary">3/4</MudText></MudSelectItem>
-        <MudSelectItem Value="AccelerationCalculator.FullAhead"><MudText Color="Color.Secondary">4/4</MudText></MudSelectItem>
+    <MudSelect Class="default-label-background" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" T="int" Value="@firstGear" Label="Initial Gear" ValueChanged="@(value => UpdateThrottle(0, value))">
+        <MudSelectItem Value="AccelerationCalculator.FullReverse"> <MudText Color="Color.Default">-1</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationCalculator.Zero"><MudText Color="Color.Default">0</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationCalculator.OneQuarter"><MudText Color="Color.Default">1/4</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationCalculator.Half"><MudText Color="Color.Default">2/4</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationCalculator.ThreeQuarter"><MudText Color="Color.Default">3/4</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationCalculator.FullAhead"><MudText Color="Color.Default">4/4</MudText></MudSelectItem>
     </MudSelect>
-    <MudSelect Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" T="int" Value="@secondGear" Label="Middle Gear" ValueChanged="@(value => UpdateThrottle(1, value))">
-       <MudSelectItem Value="AccelerationCalculator.FullReverse"> <MudText Color="Color.Secondary">-1</MudText></MudSelectItem>
-       <MudSelectItem Value="AccelerationCalculator.Zero"><MudText Color="Color.Secondary">0</MudText></MudSelectItem>
-       <MudSelectItem Value="AccelerationCalculator.OneQuarter"><MudText Color="Color.Secondary">1/4</MudText></MudSelectItem>
-       <MudSelectItem Value="AccelerationCalculator.Half"><MudText Color="Color.Secondary">2/4</MudText></MudSelectItem>
-       <MudSelectItem Value="AccelerationCalculator.ThreeQuarter"><MudText Color="Color.Secondary">3/4</MudText></MudSelectItem>
-       <MudSelectItem Value="AccelerationCalculator.FullAhead"><MudText Color="Color.Secondary">4/4</MudText></MudSelectItem>
+    <MudSelect Class="default-label-background" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" T="int" Value="@secondGear" Label="Middle Gear" ValueChanged="@(value => UpdateThrottle(1, value))">
+       <MudSelectItem Value="AccelerationCalculator.FullReverse"> <MudText Color="Color.Default">-1</MudText></MudSelectItem>
+       <MudSelectItem Value="AccelerationCalculator.Zero"><MudText Color="Color.Default">0</MudText></MudSelectItem>
+       <MudSelectItem Value="AccelerationCalculator.OneQuarter"><MudText Color="Color.Default">1/4</MudText></MudSelectItem>
+       <MudSelectItem Value="AccelerationCalculator.Half"><MudText Color="Color.Default">2/4</MudText></MudSelectItem>
+       <MudSelectItem Value="AccelerationCalculator.ThreeQuarter"><MudText Color="Color.Default">3/4</MudText></MudSelectItem>
+       <MudSelectItem Value="AccelerationCalculator.FullAhead"><MudText Color="Color.Default">4/4</MudText></MudSelectItem>
     </MudSelect>
-    <MudSelect Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" T="int" Value="@thirdGear" Label="Final Gear" ValueChanged="@(value => UpdateThrottle(2, value))">
-        <MudSelectItem Value="AccelerationCalculator.FullReverse"> <MudText Color="Color.Secondary">-1</MudText></MudSelectItem>
-        <MudSelectItem Value="AccelerationCalculator.Zero"><MudText Color="Color.Secondary">0</MudText></MudSelectItem>
-        <MudSelectItem Value="AccelerationCalculator.OneQuarter"><MudText Color="Color.Secondary">1/4</MudText></MudSelectItem>
-        <MudSelectItem Value="AccelerationCalculator.Half"><MudText Color="Color.Secondary">2/4</MudText></MudSelectItem>
-        <MudSelectItem Value="AccelerationCalculator.ThreeQuarter"><MudText Color="Color.Secondary">3/4</MudText></MudSelectItem>
-        <MudSelectItem Value="AccelerationCalculator.FullAhead"><MudText Color="Color.Secondary">4/4</MudText></MudSelectItem>
+    <MudSelect Class="default-label-background" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" T="int" Value="@thirdGear" Label="Final Gear" ValueChanged="@(value => UpdateThrottle(2, value))">
+        <MudSelectItem Value="AccelerationCalculator.FullReverse"> <MudText Color="Color.Default">-1</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationCalculator.Zero"><MudText Color="Color.Default">0</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationCalculator.OneQuarter"><MudText Color="Color.Default">1/4</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationCalculator.Half"><MudText Color="Color.Default">2/4</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationCalculator.ThreeQuarter"><MudText Color="Color.Default">3/4</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationCalculator.FullAhead"><MudText Color="Color.Default">4/4</MudText></MudSelectItem>
     </MudSelect>
 </MudStack>
 

@@ -2,7 +2,6 @@ using System.Globalization;
 using NLog.Web;
 using Prometheus;
 using ReactiveUI;
-using Splat;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Utility;
 using WoWsShipBuilder.Web.Features.Authentication;

@@ -1,0 +1,10 @@
+﻿@code {
+    // Parameter needs to be named __builder, otherwise compilation will fail.
+    // ReSharper disable once InconsistentNaming UnusedParameter.Local
+    public static readonly RenderFragment DataNotAvailableFragment = __builder =>
+    {
+        <MudText Typo="Typo.body2" Color="Color.Dark">
+            @ShipComparisonViewModel.DataNotAvailable
+        </MudText>
+    };
+}

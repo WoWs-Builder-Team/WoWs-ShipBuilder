@@ -24,11 +24,11 @@
                 </MudText>
             </MudItem>
             <MudItem xs="7" Class="mb-n2">
-                <MudSelect Margin="Margin.Dense" T="Captain" Variant="Variant.Outlined" Dense="true" Strict="true" @bind-Value="@ViewModel.SelectedCaptain">
+                <MudSelect Margin="Margin.Dense" T="Captain" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Dense="true" Strict="true" @bind-Value="@ViewModel.SelectedCaptain">
                     @foreach (var captain in ViewModel.CaptainList!)
                     {
                         <MudSelectItem Value="captain">
-                            <MudText Typo="Typo.body2" Color="Color.Secondary">
+                            <MudText Typo="Typo.body2" Color="Color.Default">
                                 @Localizer.GetGameLocalization(captain.Name).Localization
                             </MudText>
                         </MudSelectItem>
@@ -36,7 +36,7 @@
                 </MudSelect>
             </MudItem>
             <MudItem xs="5" Style="text-align: center" Class="mb-n2">
-                <MudButton Disabled="@(!ViewModel.SkillActivationButtonEnabled)" Variant="Variant.Filled" Color="Color.Primary" Style="@GetSkillOrTalentsEnabledIndicator()" OnClick="@OpenSkillDialog">
+                <MudButton Disabled="@(!ViewModel.SkillActivationButtonEnabled)" Variant="Variant.Outlined" Color="@(GetSkillOrTalentsEnabledIndicator())" OnClick="@OpenSkillDialog">
                     <MudText Typo="Typo.body2">
                         @Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_SkillTalent)).Localization
                     </MudText>
@@ -181,17 +181,7 @@
 
     private Color GetColorFromState(SkillItemViewModel skillItem)
     {
-        if (ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)))
-        {
-            return Color.Error;
-        }
-
-        if (!skillItem.CanExecute)
-        {
-            return Color.Primary;
-        }
-
-        return Color.Secondary;
+        return ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? Color.Error : Color.Default;
     }
 
     private void OnSkillClick(SkillItemViewModel skillItem)
@@ -205,9 +195,9 @@
         return !skillItem.CanExecute && !ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? @"opacity: 0.4" : string.Empty;
     }
 
-    private string GetSkillOrTalentsEnabledIndicator()
+    private Color GetSkillOrTalentsEnabledIndicator()
     {
-        return ViewModel!.ArHpPercentage < 100 || ViewModel.TalentOrConditionalSkillEnabled ? "border: #BF0000FF solid 1px" : string.Empty;
+        return ViewModel!.ArHpPercentage < 100 || ViewModel.TalentOrConditionalSkillEnabled ? Color.Primary : Color.Default;
     }
 
     private int GetImageSize()
@@ -236,7 +226,7 @@
 
     private string GetMudPaperBorderColor(SkillItemViewModel skillItem)
     {
-        return " border-color: " + (ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? "#BC0606" : "#3C3C3C") + ";";
+        return " border-color: " + (ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? "#BC0606" : "var(--mud-palette-text-disabled)") + ";";
     }
 
     private async Task OpenSkillDialog()
