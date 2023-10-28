@@ -23,7 +23,7 @@
 
 @if (ViewModel?.CurrentShipStats is not null)
 {
-    <MudPaper Outlined="true" Class="pa-2">
+<MudPaper Outlined="true" Class="pa-2">
     <MudGrid>
     <!--Main Armament column-->
     <MudItem xs="12" lg="@(ViewModel.CurrentShipStats.SecondColumnContent.Any() ? 4 : 6)">
@@ -83,7 +83,7 @@
                                 </MudPaper>
                             </TooltipContent>
                         </MudTooltip>
-                        <MudText Style="color: paleturquoise !important; text-decoration: underline; cursor: pointer;" Typo="Typo.body2" @onclick="@(_ => OpenAngleDialog(ViewModel.CurrentShipStats.MainBatteryDataContainer.OriginalMainBatteryData.Guns, true))" Class="mb-2">
+                            <MudText Typo="Typo.body2" @onclick="@(_ => OpenAngleDialog(ViewModel.CurrentShipStats.MainBatteryDataContainer.OriginalMainBatteryData.Guns, true))" Class="mb-2 link-text">
                             @Localizer.GetAppLocalization(nameof(Translation.ShipStats_TurretAngles)).Localization
                         </MudText>
 
@@ -98,7 +98,7 @@
                                         {
                                             @DataElementFragment((data, Localizer))
                                         }
-                                        <MudText Typo="Typo.body2" Style="color: paleturquoise !important; text-decoration: underline; cursor: pointer" @onclick="@(_ => SendBuildToBallisticCharts(shell.Name, true))">
+                                        <MudText Typo="Typo.body2" Class="link-text" @onclick="@(_ => SendBuildToBallisticCharts(shell.Name, true))">
                                             @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_ShowCharts)).Localization
                                         </MudText>
                                     </MudStack>
@@ -131,7 +131,7 @@
                         {
                             @DataElementFragment((data,Localizer))
                         }
-                        <MudText Style="color: paleturquoise !important; text-decoration: underline; cursor: pointer;" Typo="Typo.body2" @onclick="@(_ => OpenAngleDialog(ViewModel.CurrentShipStats.TorpedoArmamentDataContainer.TorpedoLaunchers, false))" Class="mb-2">
+                        <MudText Typo="Typo.body2" @onclick="@(_ => OpenAngleDialog(ViewModel.CurrentShipStats.TorpedoArmamentDataContainer.TorpedoLaunchers, false))" Class="mb-2 link-text">
                             @Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowLaunchersAngles)).Localization
                         </MudText>
                         <!--Torpedo data-->
@@ -345,7 +345,7 @@
                     </MudExpansionPanel>
                 }
 
-                <!--Airstrikes-->
+                <!--Airstrike-->
                 @if (ViewModel.CurrentShipStats?.AirstrikeDataContainer is not null)
                 {
                     <MudExpansionPanel Text="@Localizer.GetAppLocalization(ViewModel.CurrentShipStats.AirstrikeDataContainer.Header).Localization" IsInitiallyExpanded="@(AppSettings.OpenAllMainExpandersByDefault)" Style="border-bottom: initial" Class="custom-expansion-panel-header header-border border border-solid my-4">
@@ -366,6 +366,7 @@
                     </MudExpansionPanel>
                 }
 
+                <!--ASW Airstrike-->
                 @if (ViewModel.CurrentShipStats?.AswAirstrikeDataContainer is not null)
                 {
                     var dcDataContext = ViewModel.CurrentShipStats.AswAirstrikeDataContainer.Weapon as DepthChargeDataContainer ?? throw new InvalidOperationException("Expected DepthChargeDataContainer but found another type.");
@@ -381,7 +382,7 @@
                                     {
                                         @DataElementFragment((weaponData,Localizer))
                                     }
-                                    <MudText Typo="Typo.body2" Style="color: paleturquoise !important; text-decoration: underline; cursor: pointer" @onclick="@(SetDepthChargeDamageDistributionChartVisibility)">
+                                    <MudText Typo="Typo.body2" Class="link-text" @onclick="@(SetDepthChargeDamageDistributionChartVisibility)">
                                         @(showDepthChargeDamageDistributionChart ? Localizer.GetAppLocalization(nameof(Translation.ShipStats_HideDcDamageDistribution)).Localization : Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDcDamageDistribution)).Localization)
                                     </MudText>
                                     <div style="@GetDepthChargeDamageDistributionChartVisibility()" class="ma-auto">
@@ -407,7 +408,7 @@
                             {
                                 @DataElementFragment((data, Localizer))
                             }
-                            <MudText Typo="Typo.body2" Style="color: paleturquoise !important; text-decoration: underline; cursor: pointer" @onclick="@(SetDepthChargeDamageDistributionChartVisibility)">
+                            <MudText Typo="Typo.body2" Class="link-text" @onclick="@(SetDepthChargeDamageDistributionChartVisibility)">
                                 @(showDepthChargeDamageDistributionChart ? Localizer.GetAppLocalization(nameof(Translation.ShipStats_HideDcDamageDistribution)).Localization : Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDcDamageDistribution)).Localization)
                             </MudText>
                             <div style="@GetDepthChargeDamageDistributionChartVisibility()" class="ma-auto">
@@ -431,7 +432,7 @@
                         @DataElementFragment((data, Localizer))
                     }
                 </MudStack>
-                <MudText Typo="Typo.body2" Class="expander-content-padding mt-n1" Style="color: paleturquoise !important; text-decoration: underline; cursor: pointer" @onclick="@(_ => SendBuildToAccelerationCharts(false))">
+                <MudText Typo="Typo.body2" Class="expander-content-padding mt-n1 link-text" @onclick="@(_ => SendBuildToAccelerationCharts(false))">
                     @Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowAccelerationCharts)).Localization
                 </MudText>
             </MudExpansionPanel>

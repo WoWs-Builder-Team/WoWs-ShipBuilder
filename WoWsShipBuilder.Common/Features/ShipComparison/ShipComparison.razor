@@ -83,13 +83,13 @@
         <MudPaper Outlined Class="pa-2" Style="width: 100%;">
             <MudStack Spacing="2">
                 <MudButtonGroup OverrideStyles="false" Class="gap-2" Style="flex-wrap: wrap; width: 100%; display: flex">
-                    <MudButton DisableElevation="true" Size="Size.Small" Variant="GetVariantFromBool(ViewModel.ShowPinnedShipsOnly)" Color="GetColorFromBool(ViewModel.ShowPinnedShipsOnly)" OnClick="@ToggleShowPinnedShipOnly" Class="ma-auto" Style="flex: 1">
+                    <MudButton DisableElevation="true" Size="Size.Small" Variant="Variant.Outlined" Color="GetColorFromBool(ViewModel.ShowPinnedShipsOnly)" OnClick="@ToggleShowPinnedShipOnly" Class="ma-auto" Style="flex: 1">
                         @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_DisplayOnlyPinnedShips))
                     </MudButton>
-                    <MudButton DisableElevation="true" Size="Size.Small" Variant="GetVariantFromBool(ViewModel.UseUpgradedModules)" Color="GetColorFromBool(ViewModel.UseUpgradedModules)" OnClick="@ToggleUpgradedModules" Class="ma-auto" Style="flex: 1">
+                    <MudButton DisableElevation="true" Size="Size.Small" Variant="Variant.Outlined" Color="GetColorFromBool(ViewModel.UseUpgradedModules)" OnClick="@ToggleUpgradedModules" Class="ma-auto" Style="flex: 1">
                         @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_UseUpgradedModules))
                     </MudButton>
-                    <MudButton DisableElevation="true" Size="Size.Small" Variant="GetVariantFromBool(ViewModel.HideShipsWithoutSelectedSection)" Color="GetColorFromBool(ViewModel.HideShipsWithoutSelectedSection)" OnClick="@ToggleHideShipsWithoutSelectedSection" Disabled="ViewModel.ShowPinnedShipsOnly" Class="ma-auto" Style="flex: 1">
+                    <MudButton DisableElevation="true" Size="Size.Small" Variant="Variant.Outlined" Color="GetColorFromBool(ViewModel.HideShipsWithoutSelectedSection)" OnClick="@ToggleHideShipsWithoutSelectedSection" Disabled="ViewModel.ShowPinnedShipsOnly" Class="ma-auto" Style="flex: 1">
                         @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_HideIfNoSection))
                     </MudButton>
                 </MudButtonGroup>
@@ -148,12 +148,12 @@
         <Columns>
             <TemplateColumn T="GridDataWrapper" ShowColumnOptions="false" Hideable="false" Filterable="false" DragAndDropEnabled="false" StickyLeft SortBy="@(x => !ViewModel.SelectedShipList.ContainsKey(x.Id))" HeaderStyle="width:70px; background-clip: padding-box; background-color: var(--mud-palette-surface);" CellStyle="@($"width:70px; {StickyColumnsBackgroundColor}")" Resizable="false" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
-                    <MudIcon Icon="@(ViewModel.SelectedShipList.ContainsKey(context.Item.Id) ? Icons.Material.Filled.CheckBox : Icons.Material.Filled.CheckBoxOutlineBlank)" Size="Size.Medium" Color="@(ViewModel.SelectedShipList.ContainsKey(context.Item.Id) ? Color.Info : Color.Default)" Style="cursor: pointer" onclick="@(() => AddSelectedShip(context.Item))" ViewBox="1 1 24 24" Class="mt-1 mb-n1"/>
+                    <MudIcon Icon="@(ViewModel.SelectedShipList.ContainsKey(context.Item.Id) ? Icons.Material.Filled.CheckBox : Icons.Material.Filled.CheckBoxOutlineBlank)" Size="Size.Medium" Color="@(ViewModel.SelectedShipList.ContainsKey(context.Item.Id) ? Color.Primary : Color.Default)" Style="cursor: pointer" onclick="@(() => AddSelectedShip(context.Item))" ViewBox="1 1 24 24" Class="mt-1 mb-n1"/>
                 </CellTemplate>
             </TemplateColumn>
             <TemplateColumn T="GridDataWrapper" Filterable="false" Hideable="false" ShowColumnOptions="false" DragAndDropEnabled="false" StickyLeft SortBy="@(x => !ViewModel.PinnedShipList.ContainsKey(x.Id))" HeaderStyle="width:70px; background-clip: padding-box; background-color: var(--mud-palette-surface);" CellStyle="@($"width:70px; {StickyColumnsBackgroundColor}")" Resizable="false" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
-                    <MudIcon Icon="@(ViewModel.PinnedShipList.ContainsKey(context.Item.Id) ? Icons.Material.Filled.PushPin : Icons.Material.Outlined.PushPin)" Size="Size.Medium" Color="@(ViewModel.PinnedShipList.ContainsKey(context.Item.Id) ? Color.Info : Color.Default)" Style="cursor: pointer" onclick="@(() => AddPinnedShip(context.Item))" ViewBox="1 1 24 24" Class="mt-1 mb-n1"/>
+                    <MudIcon Icon="@(ViewModel.PinnedShipList.ContainsKey(context.Item.Id) ? Icons.Material.Filled.PushPin : Icons.Material.Outlined.PushPin)" Size="Size.Medium" Color="@(ViewModel.PinnedShipList.ContainsKey(context.Item.Id) ? Color.Primary : Color.Default)" Style="cursor: pointer" onclick="@(() => AddPinnedShip(context.Item))" ViewBox="1 1 24 24" Class="mt-1 mb-n1"/>
                 </CellTemplate>
             </TemplateColumn>
             <TemplateColumn T="GridDataWrapper" TProperty="string" Title="@Localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Name))" Hideable="false" StickyLeft HeaderStyle="background-clip: padding-box; background-color: var(--mud-palette-surface);" CellStyle="@($"cursor: pointer; background-clip: padding-box; {StickyColumnsBackgroundColor}")" SortBy="@(x => LocalizeShipName(x.Ship.Index))" InitialDirection="SortDirection.Ascending" HeaderClass="column-text-center" CellClass="column-text-center">
@@ -245,7 +245,7 @@
     <BuildConfigurationDialogHelper @ref="buildConfigurationHelper" MaxWidth="MaxWidth.Large" DisableBackdropClick="true" FullWidth NoHeader/>
 
     <MudScrollToTop TopOffset="100" Style="z-index:2001" Visible="@(!isDialogOpen)">
-        <MudFab Color="Color.Info" StartIcon="@Icons.Material.Filled.KeyboardDoubleArrowUp"/>
+        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.KeyboardDoubleArrowUp"/>
     </MudScrollToTop>
 }
 

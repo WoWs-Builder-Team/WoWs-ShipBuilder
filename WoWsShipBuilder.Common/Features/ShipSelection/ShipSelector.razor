@@ -34,7 +34,7 @@
     {
         <MudItem xs="12">
             <MudStack Row>
-                <MudTextField Variant="Variant.Filled" Immediate T="string" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)).Localization" @bind-Value="buildString"/>
+                <MudTextField Variant="Variant.Outlined" Immediate T="string" Class="default-label-background" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)).Localization" @bind-Value="buildString"/>
                 <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@ImportFromString">
                     @Localizer.GetAppLocalization(nameof(Translation.WebApp_LoadBuild)).Localization
                 </MudButton>
@@ -52,7 +52,7 @@
     }
 
     <MudItem xs="6" md="3">
-        <MudSelect T="string" Variant="Variant.Filled" @bind-Value="@SelectedTier" Label="@(Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_TierFilter)))" Clearable AnchorOrigin="Origin.BottomCenter">
+        <MudSelect T="string" Variant="Variant.Outlined" Class="default-label-background" @bind-Value="@SelectedTier" Label="@(Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_TierFilter)))" Clearable AnchorOrigin="Origin.BottomCenter">
             @foreach (var item in tierList)
             {
                 <MudSelectItem Value="@item">
@@ -63,7 +63,7 @@
     </MudItem>
 
     <MudItem xs="6" md="3">
-        <MudSelect T="ShipClass?" Variant="Variant.Filled" @bind-Value="@SelectedClass" Label="@(Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_ClassFilter)))" Clearable AnchorOrigin="Origin.BottomCenter">
+        <MudSelect T="ShipClass?" Variant="Variant.Outlined" Class="default-label-background" @bind-Value="@SelectedClass" Label="@(Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_ClassFilter)))" Clearable AnchorOrigin="Origin.BottomCenter">
             @foreach (ShipClass? item in classList)
             {
                 <MudSelectItem Value="@item">
@@ -74,7 +74,7 @@
     </MudItem>
 
     <MudItem xs="6" md="3">
-        <MudSelect T="Nation?" Variant="Variant.Filled" @bind-Value="@SelectedNation" Label="@(Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_NationFilter)))" Clearable AnchorOrigin="Origin.BottomCenter">
+        <MudSelect T="Nation?" Variant="Variant.Outlined" Class="default-label-background" @bind-Value="@SelectedNation" Label="@(Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_NationFilter)))" Clearable AnchorOrigin="Origin.BottomCenter">
             @foreach (Nation? item in nationList)
             {
                 <MudSelectItem Value="@item">
@@ -85,7 +85,7 @@
     </MudItem>
 
     <MudItem xs="6" md="3">
-        <MudSelect T="ShipCategory?" Variant="Variant.Filled" @bind-Value="@SelectedType" Label="@(Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_TypeFilter)))" Clearable AnchorOrigin="Origin.BottomCenter">
+        <MudSelect T="ShipCategory?" Variant="Variant.Outlined" Class="default-label-background" @bind-Value="@SelectedType" Label="@(Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_TypeFilter)))" Clearable AnchorOrigin="Origin.BottomCenter">
             @foreach (ShipCategory? item in typeList)
             {
                 <MudSelectItem Value="@item">
@@ -97,9 +97,7 @@
 
     @* ship search box *@
     <MudItem xs="12" Class="mt-n4 mb-n2">
-        <MudPaper>
-            <MudTextField AutoFocus T="string" FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Placeholder="@(Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShipOrBuild)).Localization + "...")" @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
-        </MudPaper>
+        <MudTextField AutoFocus T="string" FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Placeholder="@(Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShipOrBuild)).Localization + "...")" @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
     </MudItem>
 
     @* ship list *@

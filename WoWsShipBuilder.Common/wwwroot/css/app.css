@@ -223,6 +223,7 @@ a.kofi-button:active {
     border-radius: 4px;
 }
 
+/*noinspection CssUnresolvedCustomProperty*/
 div.mud-expand-panel {
     border-radius: var(--mud-default-borderradius) !important;
 }
@@ -243,6 +244,7 @@ div.mud-expand-panel {
     padding: 12px;
 }
 
+/*noinspection CssUnresolvedCustomProperty*/
 .custom-expansion-panel-header .mud-expand-panel-header {
     padding: 4px 8px;
     min-height: 24px;
@@ -273,4 +275,24 @@ div.mud-expand-panel {
 
 .mud-data-grid-range-selector label.mud-input-label-text {
     display: ruby !important;
+}
+
+/*noinspection CssUnresolvedCustomProperty*/
+div.default-label-background label {
+    background-color: var(--mud-palette-background) !important;
+}
+
+/*noinspection CssUnresolvedCustomProperty*/
+.link-text {
+    color: var(--mud-palette-primary-lighten) !important;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.ship-stats-tabs .mud-tabs-toolbar .mud-tab-active {
+    background-color: var(--mud-palette-primary);
+    color: var(--mud-palette-primary-text);
+    & svg {
+        fill: var(--mud-palette-primary-text);
+    }
 }

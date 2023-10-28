@@ -179,6 +179,6 @@
 
     private string GetMudPaperBorderColor(SkillItemViewModel skillItem)
     {
-        return $" border-color: {(ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? "var(--mud-palette-text-primary)" : "var(--mud-palette-text-disabled)")};";
+        return $" border-color: {(ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? "#BC0606" : "var(--mud-palette-text-disabled)")};";
     }
 }

@@ -16,7 +16,6 @@
 <MudDialog Style="background-color: #282828">
     <TitleContent>
         <MudItem Class="d-flex align-center">
-            <MudIcon Icon="@Icons.Material.Filled.HelpOutline" Color="Color.Info" Size="Size.Large"/>
             <MudText Typo="Typo.h6" Class="mx-auto">
                 @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_SelectShipsAndShells)).Localization
             </MudText>
@@ -35,40 +34,38 @@
                             @Localizer.GetAppLocalization(Translation.ShipAndShellsSelectionDialog_NoShipSelected).Localization
                         </MudText>
                     }
-                    <MudPaper>
-                        @foreach (var dataWrapper in dataWrappers)
-                        {
-                            <MudItem Class="d-flex" Style="flex-direction: column">
-                                <MudItem Class="d-flex mt-2" Style="justify-content: space-between">
-                                    <MudText Typo="Typo.caption" Class="my-auto">
-                                        @Localizer.GetGameLocalization($"{dataWrapper.ShipBuildContainer.Ship.Index}_FULL").Localization
-                                    </MudText>
-                                    <MudIconButton Icon="@Icons.Material.Filled.Clear" Color="Color.Primary" Size="Size.Small" OnClick="@(() => RemoveShip(dataWrapper))"/>
-                                </MudItem>
-                                @if (dataWrapper.ShipBuildContainer.Ship.MainBatteryModuleList.Any())
-                                {
-                                    <MudButtonGroup OverrideStyles="false" VerticalAlign="true" Class="gap-1">
-                                        @foreach (string shell in dataWrapper.ShipBuildContainer.Ship.ShellCompatibilities.Keys)
-                                        {
-                                            <MudButton Disabled="@(disabledShells.ContainsKey(dataWrapper.ShipBuildContainer.Id) && disabledShells[dataWrapper.ShipBuildContainer.Id].Any(item => item.Value.Contains(shell)))" Color="@(GetColorFromBool(dataWrapper.SelectedShells.ContainsKey(shell)))" Variant="@(GetVariantFromBool(dataWrapper.SelectedShells.ContainsKey(shell)))" DisableElevation="true" OnClick="@(() => ToggleSelection(dataWrapper, shell))">
-                                                @Localizer.GetGameLocalization(shell).Localization
-                                            </MudButton>
-                                        }
-                                    </MudButtonGroup>
-                                }
-                                else
-                                {
-                                    <MudText Color="Color.Dark">
-                                        @Localizer.GetAppLocalization(nameof(Translation.MessageBox_ShipNoGun)).Localization
-                                    </MudText>
-                                }
-                                <MudText Typo="Typo.caption" Class="my-1">
-                                    @($"{Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {(!string.IsNullOrWhiteSpace(dataWrapper.ShipBuildContainer.Build?.BuildName) ? dataWrapper.ShipBuildContainer.Build.BuildName : Build.DefaultBuildName)}")
+                    @foreach (var dataWrapper in dataWrappers)
+                    {
+                        <MudItem Class="d-flex" Style="flex-direction: column">
+                            <MudItem Class="d-flex mt-2" Style="justify-content: space-between">
+                                <MudText Typo="Typo.caption" Class="my-auto">
+                                    @Localizer.GetGameLocalization($"{dataWrapper.ShipBuildContainer.Ship.Index}_FULL").Localization
                                 </MudText>
-                                <MudDivider Light="true"/>
+                                <MudIconButton Icon="@Icons.Material.Filled.Clear" Color="Color.Secondary" Size="Size.Small" OnClick="@(() => RemoveShip(dataWrapper))"/>
                             </MudItem>
-                        }
-                    </MudPaper>
+                            @if (dataWrapper.ShipBuildContainer.Ship.MainBatteryModuleList.Any())
+                            {
+                                <MudButtonGroup OverrideStyles="false" VerticalAlign="true" Class="gap-1">
+                                    @foreach (string shell in dataWrapper.ShipBuildContainer.Ship.ShellCompatibilities.Keys)
+                                    {
+                                        <MudButton Disabled="@(disabledShells.ContainsKey(dataWrapper.ShipBuildContainer.Id) && disabledShells[dataWrapper.ShipBuildContainer.Id].Any(item => item.Value.Contains(shell)))" Color="@(GetColorFromBool(dataWrapper.SelectedShells.ContainsKey(shell)))" Variant="@(GetVariantFromBool(dataWrapper.SelectedShells.ContainsKey(shell)))" DisableElevation="true" OnClick="@(() => ToggleSelection(dataWrapper, shell))">
+                                            @Localizer.GetGameLocalization(shell).Localization
+                                        </MudButton>
+                                    }
+                                </MudButtonGroup>
+                            }
+                            else
+                            {
+                                <MudText Color="Color.Dark">
+                                    @Localizer.GetAppLocalization(nameof(Translation.MessageBox_ShipNoGun)).Localization
+                                </MudText>
+                            }
+                            <MudText Typo="Typo.caption" Class="my-1">
+                                @($"{Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {(!string.IsNullOrWhiteSpace(dataWrapper.ShipBuildContainer.Build?.BuildName) ? dataWrapper.ShipBuildContainer.Build.BuildName : Build.DefaultBuildName)}")
+                            </MudText>
+                            <MudDivider Light="true"/>
+                        </MudItem>
+                    }
                 </MudItem>
             </MudGrid>
         </MudContainer>
@@ -346,7 +343,7 @@
 
     private static Color GetColorFromBool(bool active)
     {
-        return active ? Color.Secondary : Color.Default;
+        return active ? Color.Primary : Color.Secondary;
     }
 
     private void Cancel()
