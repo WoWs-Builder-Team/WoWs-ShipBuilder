@@ -91,10 +91,11 @@ public static class Helpers
                 Dark = "#505050",
                 DarkContrastText = "#FDFDFDFF",
                 Surface = "#232323",
-                HoverOpacity = 0.25,
+                HoverOpacity = 0.165,
                 AppbarBackground = "#121212FF",
                 Background = "#282828",
                 BackgroundGrey = "#1E1E1E",
+                GrayDark = "#505050",
             },
             ZIndex =
             {

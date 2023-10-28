@@ -174,11 +174,11 @@
         <MudDrawerHeader>
             <MudText Typo="Typo.h6">WoWs&#x2011;ShipBuilder</MudText>
         </MudDrawerHeader>
-        <MudNavMenu Bordered Color="Color.Info">
+        <MudNavMenu Bordered Color="Color.Primary">
             <MudNavLink Icon="@shipBuilderIcon" Match="NavLinkMatch.All" Href="/">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationHome))</MudNavLink>
-            <MudNavLink Icon="@Icons.Material.Filled.Speed" Href="/acceleration-charts" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationAccelerationCharts))</MudNavLink>
-            <MudNavLink Icon="@Icons.Material.Filled.FormatListBulleted" Href="/comparison" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationComparison))</MudNavLink>
             <MudNavLink Icon="@Icons.Material.Filled.SsidChart" Href="/charts">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationCharts))</MudNavLink>
+            <MudNavLink Icon="@Icons.Material.Filled.Speed" Href="/acceleration-charts">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationAccelerationCharts))</MudNavLink>
+            <MudNavLink Icon="@Icons.Material.Filled.FormatListBulleted" Href="/comparison">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationComparison))</MudNavLink>
             <MudNavLink Icon="@kofiIcon" Href="https://ko-fi.com/L4L3DT7EM" Target="_blank">Donate</MudNavLink>
             @* <MudNavLink Icon="@Icons.Filled.Science" Href="/test">Test page</MudNavLink> *@
             <MudDivider Class="my-4"/>

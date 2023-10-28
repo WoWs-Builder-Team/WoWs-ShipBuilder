@@ -248,15 +248,17 @@ div.mud-expand-panel {
 .custom-expansion-panel-header .mud-expand-panel-header {
     padding: 4px 8px;
     min-height: 24px;
-    background-color: rgb(80, 80, 80);
+    background-color: var(--mud-palette-grey-dark);
     border-radius: var(--mud-default-borderradius);
 }
 
+/*noinspection CssUnresolvedCustomProperty*/
 .custom-child-expansion-panel-header .mud-expand-panel-header {
     padding: 4px 8px;
     min-height: 24px;
-    background-color: rgba(80, 80, 80, 40%);
+    background-color: color-mix(in srgb, var(--mud-palette-grey-dark), transparent 40%);
 }
+
 .mud-data-grid button.drag-icon-options {
     visibility: hidden;
     width: 0;
@@ -289,10 +291,18 @@ div.default-label-background label {
     cursor: pointer;
 }
 
+/*noinspection CssUnresolvedCustomProperty*/
 .ship-stats-tabs .mud-tabs-toolbar .mud-tab-active {
     background-color: var(--mud-palette-primary);
     color: var(--mud-palette-primary-text);
+
+    /*noinspection CssUnresolvedCustomProperty*/
     & svg {
         fill: var(--mud-palette-primary-text);
     }
+}
+
+/*noinspection CssUnresolvedCustomProperty*/
+.default-background {
+    background-color: var(--mud-palette-background);
 }
