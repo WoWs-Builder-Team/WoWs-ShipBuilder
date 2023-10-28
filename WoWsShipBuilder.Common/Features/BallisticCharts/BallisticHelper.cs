@@ -1,6 +1,6 @@
-using WoWsShipBuilder.DataContainers;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Projectile;
+using WoWsShipBuilder.Features.DataContainers;
 
 namespace WoWsShipBuilder.Features.BallisticCharts;
 

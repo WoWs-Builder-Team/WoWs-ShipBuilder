@@ -3,7 +3,7 @@ using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.Utility;
 
 // ReSharper disable InconsistentNaming
-namespace WoWsShipBuilder.DataContainers;
+namespace WoWsShipBuilder.Features.DataContainers;
 
 public record AntiAirDataContainer
 {

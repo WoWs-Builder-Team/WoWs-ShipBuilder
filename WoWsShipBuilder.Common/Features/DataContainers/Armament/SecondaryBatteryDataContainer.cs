@@ -7,7 +7,7 @@ using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
 
-namespace WoWsShipBuilder.DataContainers;
+namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
 public partial record SecondaryBatteryDataContainer : DataContainerBase
@@ -142,6 +142,6 @@ public partial record SecondaryBatteryDataContainer : DataContainerBase
 
     private bool ShouldDisplayFpm(object obj)
     {
-        return DisplayFpm;
+        return this.DisplayFpm;
     }
 }

@@ -1,6 +1,6 @@
-﻿using WoWsShipBuilder.DataContainers;
-using WoWsShipBuilder.DataStructures.Ship;
+﻿using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Features.Builds;
+using WoWsShipBuilder.Features.DataContainers;
 
 namespace WoWsShipBuilder.Infrastructure.DataTransfer;
 

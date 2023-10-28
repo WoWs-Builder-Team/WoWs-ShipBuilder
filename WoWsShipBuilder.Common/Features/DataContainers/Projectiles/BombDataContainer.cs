@@ -5,16 +5,19 @@ using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
 
-namespace WoWsShipBuilder.DataContainers;
+namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record RocketDataContainer : ProjectileDataContainer
+public partial record BombDataContainer : ProjectileDataContainer
 {
     [DataElementType(DataElementTypes.KeyValue, ValueTextKind = TextKind.AppLocalizationKey)]
-    public string RocketType { get; set; } = default!;
+    public string BombType { get; set; } = default!;
 
     [DataElementType(DataElementTypes.KeyValue, ValueTextKind = TextKind.LocalizationKey)]
     public string Name { get; set; } = default!;
+
+    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MM")]
+    public int Caliber { get; set; }
 
     [DataElementType(DataElementTypes.KeyValue)]
     public decimal Damage { get; set; }
@@ -55,63 +58,66 @@ public partial record RocketDataContainer : ProjectileDataContainer
 
     public bool ShowBlastPenetration { get; private set; }
 
-    public static RocketDataContainer FromRocketName(string name, List<(string name, float value)> modifiers)
+    public static BombDataContainer FromBombName(string name, List<(string name, float value)> modifiers)
     {
-        var rocket = AppData.FindProjectile<Rocket>(name);
+        var bomb = AppData.FindProjectile<Bomb>(name);
 
-        var rocketDamage = (decimal)rocket.Damage;
-        var showBlastPenetration = true;
+        decimal bombDamage;
         var ricochetAngle = "";
-        decimal fuseTimer = 0;
         var armingThreshold = 0;
+        decimal fuseTimer = 0;
+        var showBlastPenetration = true;
         decimal fireChance = 0;
         int penetrationHe = 0;
         int penetrationAp = 0;
-        if (rocket.RocketType.Equals(DataStructures.RocketType.AP))
+
+        if (bomb.BombType.Equals(DataStructures.BombType.AP))
         {
-            List<float> rocketDamageModifiers = modifiers.FindModifiers("rocketApAlphaDamageMultiplier").ToList();
-            rocketDamage = rocketDamageModifiers.Aggregate(rocketDamage, (current, modifier) => current * (decimal)modifier);
-            ricochetAngle = $"{rocket.RicochetAngle}-{rocket.AlwaysRicochetAngle}";
-            fuseTimer = (decimal)rocket.FuseTimer;
-            armingThreshold = (int)rocket.ArmingThreshold;
+            List<float> bombDamageModifiers = modifiers.FindModifiers("bombApAlphaDamageMultiplier").ToList();
+            bombDamage = (decimal)bombDamageModifiers.Aggregate(bomb.Damage, (current, modifier) => current * modifier);
+            ricochetAngle = $"{bomb.RicochetAngle}-{bomb.AlwaysRicochetAngle}";
+            armingThreshold = (int)bomb.ArmingThreshold;
+            fuseTimer = (decimal)bomb.FuseTimer;
             showBlastPenetration = false;
-            penetrationAp = (int)Math.Round(BallisticHelper.CalculatePen(rocket.MuzzleVelocity, rocket.Caliber, rocket.Mass, rocket.Krupp));
+            penetrationAp = (int)Math.Round(Math.Round(BallisticHelper.CalculatePen(bomb.MuzzleVelocity, bomb.Caliber, bomb.Mass, bomb.Krupp), 1), MidpointRounding.AwayFromZero); // this double Math.Round is needed for Shokaku bombs to round 282.469 to 283 instead of 282
         }
         else
         {
-            var fireChanceModifiers = modifiers.FindModifiers("rocketBurnChanceBonus");
-            fireChance = (decimal)fireChanceModifiers.Aggregate(rocket.FireChance, (current, modifier) => current + modifier);
-            var fireChanceModifiersRockets = modifiers.FindModifiers("burnChanceFactorSmall");
-            fireChance = fireChanceModifiersRockets.Aggregate(fireChance, (current, modifier) => current + (decimal)modifier);
-            penetrationHe = (int)Math.Truncate(rocket.Penetration);
+            List<float> bombDamageModifiers = modifiers.FindModifiers("bombAlphaDamageMultiplier").ToList();
+            bombDamage = (decimal)bombDamageModifiers.Aggregate(bomb.Damage, (current, modifier) => current * modifier);
+            var fireChanceModifiers = modifiers.FindModifiers("bombBurnChanceBonus");
+            fireChance = (decimal)fireChanceModifiers.Aggregate(bomb.FireChance, (current, modifier) => current + modifier);
+            var fireChanceModifiersBombs = modifiers.FindModifiers("burnChanceFactorBig");
+            fireChance = fireChanceModifiersBombs.Aggregate(fireChance, (current, modifier) => current + (decimal)modifier);
+            penetrationHe = (int)Math.Truncate(bomb.Penetration);
         }
 
-        var rocketDataContainer = new RocketDataContainer
+        var bombDataContainer = new BombDataContainer
         {
-            Name = rocket.Name,
-            RocketType = $"ArmamentType_{rocket.RocketType.RocketTypeToString()}",
-            Damage = Math.Round(rocketDamage, 2),
+            Name = bomb.Name,
+            BombType = $"ArmamentType_{bomb.BombType.BombTypeToString()}",
+            Damage = Math.Round(bombDamage, 2),
             Penetration = penetrationHe,
             PenetrationAp = penetrationAp,
             FuseTimer = fuseTimer,
             ArmingThreshold = armingThreshold,
             RicochetAngles = ricochetAngle,
             FireChance = Math.Round(fireChance * 100, 1),
-            ExplosionRadius = (decimal)rocket.ExplosionRadius,
-            SplashCoeff = (decimal)rocket.SplashCoeff,
+            ExplosionRadius = (decimal)bomb.ExplosionRadius,
+            SplashCoeff = (decimal)bomb.SplashCoeff,
             ShowBlastPenetration = showBlastPenetration,
-            SplashRadius = Math.Round((decimal)rocket.DepthSplashRadius, 1),
-            SplashDmg = Math.Round(rocketDamage * (decimal)rocket.SplashDamageCoefficient),
-            Krupp = (decimal)rocket.Krupp,
+            SplashRadius = Math.Round((decimal)bomb.DepthSplashRadius, 1),
+            SplashDmg = Math.Round(bombDamage * (decimal)bomb.SplashDamageCoefficient),
+            Krupp = (decimal)bomb.Krupp,
         };
 
-        rocketDataContainer.UpdateDataElements();
+        bombDataContainer.UpdateDataElements();
 
-        return rocketDataContainer;
+        return bombDataContainer;
     }
 
     private bool ShouldDisplayBlastPenetration(object obj)
     {
-        return ShowBlastPenetration;
+        return this.ShowBlastPenetration;
     }
 }

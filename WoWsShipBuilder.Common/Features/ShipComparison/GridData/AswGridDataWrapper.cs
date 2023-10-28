@@ -1,4 +1,4 @@
-﻿using WoWsShipBuilder.DataContainers;
+﻿using WoWsShipBuilder.Features.DataContainers;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;
 
 namespace WoWsShipBuilder.Features.ShipComparison.GridData;

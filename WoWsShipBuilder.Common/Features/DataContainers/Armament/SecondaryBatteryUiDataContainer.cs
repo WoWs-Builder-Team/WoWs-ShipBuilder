@@ -1,6 +1,6 @@
 ﻿using WoWsShipBuilder.DataStructures.Ship;
 
-namespace WoWsShipBuilder.DataContainers;
+namespace WoWsShipBuilder.Features.DataContainers;
 
 public record SecondaryBatteryUiDataContainer(List<SecondaryBatteryDataContainer>? Secondaries)
 {

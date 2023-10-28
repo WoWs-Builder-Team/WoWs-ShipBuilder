@@ -8,7 +8,7 @@ using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
 
-namespace WoWsShipBuilder.DataContainers;
+namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
 public partial record CvAircraftDataContainer : DataContainerBase

@@ -8,7 +8,7 @@ using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
 
-namespace WoWsShipBuilder.DataContainers;
+namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
 public partial record ShellDataContainer : DataContainerBase
@@ -216,6 +216,6 @@ public partial record ShellDataContainer : DataContainerBase
 
     private bool ShouldDisplayBlastPenetration(object obj)
     {
-        return ShowBlastPenetration;
+        return this.ShowBlastPenetration;
     }
 }

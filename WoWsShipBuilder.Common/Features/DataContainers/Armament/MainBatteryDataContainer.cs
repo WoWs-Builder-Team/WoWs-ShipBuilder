@@ -8,7 +8,7 @@ using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
-namespace WoWsShipBuilder.DataContainers;
+namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
 public partial record MainBatteryDataContainer : DataContainerBase
@@ -246,16 +246,16 @@ public partial record MainBatteryDataContainer : DataContainerBase
 
     private bool ShouldDisplayHeDpm(object obj)
     {
-        return DisplayHeDpm;
+        return this.DisplayHeDpm;
     }
 
     private bool ShouldDisplayApDpm(object obj)
     {
-        return DisplayApDpm;
+        return this.DisplayApDpm;
     }
 
     private bool ShouldDisplaySapDpm(object obj)
     {
-        return DisplaySapDpm;
+        return this.DisplaySapDpm;
     }
 }

@@ -1,5 +1,4 @@
-﻿using SecondaryBatteryDataContainer = WoWsShipBuilder.DataContainers.SecondaryBatteryDataContainer;
-using ShellDataContainer = WoWsShipBuilder.DataContainers.ShellDataContainer;
+﻿using WoWsShipBuilder.Features.DataContainers;
 
 namespace WoWsShipBuilder.Features.ShipComparison.GridData;
 

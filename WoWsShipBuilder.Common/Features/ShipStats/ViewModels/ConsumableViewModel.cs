@@ -3,7 +3,6 @@ using DynamicData;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using ReactiveUI;
-using WoWsShipBuilder.DataContainers;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.Utility;
@@ -75,7 +74,7 @@ public class ConsumableViewModel : ReactiveObject, IBuildComponentProvider
 
     /// <summary>
     /// Updates the consumable data for each slot.
-    /// This method only replaces the <see cref="ConsumableDataContainer">ConsumableDataContainer</see> objects in each slot viewmodel but not the viewmodels themselves.
+    /// This method only replaces the <see cref="DataContainers.ConsumableDataContainer">ConsumableDataContainer</see> objects in each slot viewmodel but not the viewmodels themselves.
     /// </summary>
     /// <param name="modifiers">The list of modifiers applied to the current ship.</param>
     /// <param name="shipHp">The HP of the ship after modifiers have been applied.</param>

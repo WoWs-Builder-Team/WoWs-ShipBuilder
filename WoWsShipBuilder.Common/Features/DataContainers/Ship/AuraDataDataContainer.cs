@@ -1,7 +1,7 @@
 ﻿using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 
-namespace WoWsShipBuilder.DataContainers;
+namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
 public partial record AuraDataDataContainer : DataContainerBase

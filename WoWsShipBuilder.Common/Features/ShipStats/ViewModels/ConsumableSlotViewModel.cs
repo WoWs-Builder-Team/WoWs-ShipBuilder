@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
-using ConsumableDataContainer = WoWsShipBuilder.DataContainers.ConsumableDataContainer;
+using WoWsShipBuilder.Features.DataContainers;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 

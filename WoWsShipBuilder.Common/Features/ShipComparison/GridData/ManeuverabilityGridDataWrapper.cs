@@ -1,4 +1,4 @@
-﻿using WoWsShipBuilder.DataContainers;
+﻿using WoWsShipBuilder.Features.DataContainers;
 
 namespace WoWsShipBuilder.Features.ShipComparison.GridData;
 

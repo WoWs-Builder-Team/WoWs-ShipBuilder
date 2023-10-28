@@ -1,4 +1,4 @@
-namespace WoWsShipBuilder.DataContainers;
+namespace WoWsShipBuilder.Features.DataContainers;
 
 public static class Constants
 {

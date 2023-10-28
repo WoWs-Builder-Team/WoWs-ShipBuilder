@@ -5,7 +5,7 @@ using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 
 // ReSharper disable InconsistentNaming
-namespace WoWsShipBuilder.DataContainers;
+namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
 public partial record SpecialAbilityDataContainer : DataContainerBase

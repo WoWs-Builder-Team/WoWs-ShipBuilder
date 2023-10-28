@@ -1,5 +1,5 @@
 using WoWsShipBuilder.DataElements;
 
-namespace WoWsShipBuilder.DataContainers;
+namespace WoWsShipBuilder.Features.DataContainers;
 
 public abstract record ProjectileDataContainer : DataContainerBase;

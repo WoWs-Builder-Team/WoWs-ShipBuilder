@@ -1,6 +1,6 @@
 using ReactiveUI;
-using WoWsShipBuilder.DataContainers;
 using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.Features.DataContainers;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 

@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
-using WoWsShipBuilder.DataContainers;
 using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.Features.DataContainers;
 using WoWsShipBuilder.Features.ShipStats.ViewModels;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.DataTransfer;
