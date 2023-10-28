@@ -36,7 +36,7 @@
                 </MudSelect>
             </MudItem>
             <MudItem xs="5" Style="text-align: center" Class="mb-n2">
-                <MudButton Disabled="@(!ViewModel.SkillActivationButtonEnabled)" Variant="@GetSkillOrTalentsEnabledIndicator()" Color="Color.Primary" OnClick="@OpenSkillDialog" Size="Size.Small">
+                <MudButton Disabled="@(!ViewModel.SkillActivationButtonEnabled)" Variant="Variant.Outlined" Color="@(GetSkillOrTalentsEnabledIndicator())" OnClick="@OpenSkillDialog">
                     <MudText Typo="Typo.body2">
                         @Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_SkillTalent)).Localization
                     </MudText>
@@ -195,9 +195,9 @@
         return !skillItem.CanExecute && !ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? @"opacity: 0.4" : string.Empty;
     }
 
-    private Variant GetSkillOrTalentsEnabledIndicator()
+    private Color GetSkillOrTalentsEnabledIndicator()
     {
-        return ViewModel!.ArHpPercentage < 100 || ViewModel.TalentOrConditionalSkillEnabled ? Variant.Filled : Variant.Outlined;
+        return ViewModel!.ArHpPercentage < 100 || ViewModel.TalentOrConditionalSkillEnabled ? Color.Primary : Color.Default;
     }
 
     private int GetImageSize()
