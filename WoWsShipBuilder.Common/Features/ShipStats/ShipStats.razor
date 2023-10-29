@@ -10,6 +10,8 @@
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
 
+@implements IDisposable
+
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
 @inject IDialogService DialogService
@@ -212,7 +214,7 @@
         shipContainers.AddRange(buildContainers ?? indexList.Select(index => ShipBuildContainer.CreateNew(AppData.ShipDictionary[index], null, null)));
     }
 
-    private async Task<List<string>> StoreBuildsForTransfer(bool calculateShipDataContainer)
+    private List<string> StoreBuildsForTransfer(bool calculateShipDataContainer)
     {
         List<ShipBuildContainer> buildContainers = new();
         List<string> shipIndexes = new();
@@ -225,7 +227,7 @@
             }
             else
             {
-                buildContainers.Add(await UpdateShipDataContainer(calculateShipDataContainer, container));
+                buildContainers.Add(UpdateShipDataContainer(calculateShipDataContainer, container));
             }
 
             shipIndexes.Add(container.Ship.Index);
@@ -235,11 +237,11 @@
         return shipIndexes;
     }
 
-    private async Task<ShipBuildContainer> UpdateShipDataContainer(bool calculateShipDataContainer, ShipBuildContainer container)
+    private ShipBuildContainer UpdateShipDataContainer(bool calculateShipDataContainer, ShipBuildContainer container)
     {
         if (container.Build is not null)
         {
-            var viewModel = await ShipStatsTab.CreateViewModel(container.Ship.Index, container.Build, Localizer);
+            using var viewModel = ShipStatsTab.CreateViewModel(container.Ship.Index, container.Build);
 
             List<(string, float)> modifiers = viewModel.UpgradePanelViewModel.GetModifierList();
             modifiers.AddRange(viewModel.ConsumableViewModel.GetModifiersList());
@@ -253,24 +255,24 @@
         return calculateShipDataContainer ? container with { ShipDataContainer = DataContainerUtility.GetStockShipDataContainer(container.Ship) } : container;
     }
 
-    private async Task OpenBallisticCharts()
+    private void OpenBallisticCharts()
     {
         MetricsService.ShipStatsActions.WithLabels("open-ballistic").Inc();
-        var shipIndexes = await StoreBuildsForTransfer(false);
+        var shipIndexes = StoreBuildsForTransfer(false);
         NavManager.NavigateTo($"/charts?shipIndex={string.Join(",", shipIndexes)}");
     }
 
-    private async Task OpenAccelerationCharts()
+    private void OpenAccelerationCharts()
     {
         MetricsService.ShipStatsActions.WithLabels("open-acceleration").Inc();
-        var shipIndexes = await StoreBuildsForTransfer(false);
+        var shipIndexes = StoreBuildsForTransfer(false);
         NavManager.NavigateTo($"/acceleration-charts?shipIndexes={string.Join(",", shipIndexes)}");
     }
 
-    private async Task OpenShipComparison()
+    private void OpenShipComparison()
     {
         MetricsService.ShipStatsActions.WithLabels("open-comparison").Inc();
-        await StoreBuildsForTransfer(true);
+        StoreBuildsForTransfer(true);
         NavManager.NavigateTo("/comparison");
     }
 
@@ -288,5 +290,10 @@
             return " background-color: rgba(0, 0, 0, 0.4);";
         }
         return string.Empty;
+    }
+
+    public void Dispose()
+    {
+        cache.Dispose();
     }
 }

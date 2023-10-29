@@ -11,10 +11,7 @@ using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
-// TODO: implement IDisposable properly
-#pragma warning disable CA1001
-public sealed partial class ShipViewModel : ReactiveObject
-#pragma warning restore CA1001
+public sealed partial class ShipViewModel : ReactiveObject, IDisposable
 {
     private readonly CompositeDisposable disposables = new();
 
@@ -63,7 +60,7 @@ public sealed partial class ShipViewModel : ReactiveObject
     [Observable]
     private UpgradePanelViewModelBase upgradePanelViewModel = null!;
 
-    public ShipViewModel(ILogger<ShipViewModel> logger, ShipViewModelParams viewModelParams)
+    public ShipViewModel(ShipViewModelParams viewModelParams, ILogger<ShipViewModel> logger)
     {
         this.tokenSource = new();
         this.logger = logger;
@@ -159,7 +156,7 @@ public sealed partial class ShipViewModel : ReactiveObject
         this.tokenSource.Cancel();
         this.tokenSource.Dispose();
         this.tokenSource = new();
-        CancellationToken token = this.tokenSource.Token;
+        var token = this.tokenSource.Token;
         Task.Run(
             async () =>
             {
@@ -173,15 +170,19 @@ public sealed partial class ShipViewModel : ReactiveObject
                     if (!token.IsCancellationRequested)
                     {
                         await this.semaphore.WaitAsync(token);
-                        var modifiers = this.GenerateModifierList();
-                        if (this.ShipStatsControlViewModel != null)
+                        try
                         {
-                            this.logger.LogDebug("Updating ship stats");
-                            await this.ShipStatsControlViewModel.UpdateShipStats(this.ShipModuleViewModel.SelectedModules.ToList(), modifiers);
+                            List<(string, float)> modifiers = this.GenerateModifierList();
+                            if (this.ShipStatsControlViewModel != null)
+                            {
+                                this.logger.LogDebug("Updating ship stats");
+                                await this.ShipStatsControlViewModel.UpdateShipStats(this.ShipModuleViewModel.SelectedModules.ToList(), modifiers);
+                            }
                         }
-
-                        this.ConsumableViewModel.UpdateConsumableData(modifiers, this.ShipStatsControlViewModel!.CurrentShipStats!.SurvivabilityDataContainer.HitPoints, this.RawShipData.ShipClass);
-                        this.semaphore.Release();
+                        finally
+                        {
+                            this.semaphore.Release();
+                        }
                     }
                 }
                 catch (OperationCanceledException)
@@ -201,5 +202,12 @@ public sealed partial class ShipViewModel : ReactiveObject
         modifiers.AddRange(this.CaptainSkillSelectorViewModel!.GetModifiersList());
         modifiers.AddRange(this.ConsumableViewModel.GetModifiersList());
         return modifiers;
+    }
+
+    public void Dispose()
+    {
+        this.disposables.Dispose();
+        this.semaphore.Dispose();
+        this.tokenSource.Dispose();
     }
 }

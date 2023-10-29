@@ -180,7 +180,7 @@ else if (ViewModel is not null)
         if (ViewModel is null)
         {
             Cache[CurrentTabId] = new(null!);
-            ViewModel = await LoadShipViewModel(ShipIndex);
+            ViewModel = LoadShipViewModel(ShipIndex);
             Cache[CurrentTabId] = Cache[CurrentTabId]! with { ViewModel = ViewModel };
             initialized = true;
             StateHasChanged();
@@ -208,13 +208,13 @@ else if (ViewModel is not null)
         }
     }
 
-    private async Task<ShipViewModel> LoadShipViewModel(string shipIndex)
+    private ShipViewModel LoadShipViewModel(string shipIndex)
     {
         MetricsService.ShipViewCount.WithLabels(shipIndex, Localizer.GetGameLocalization(shipIndex + "_FULL", AppConstants.DefaultCultureDetails).Localization).Inc();
         using (MetricsService.ShipViewModelInitDurationAverage.NewTimer())
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
-            var vm = await CreateViewModel(shipIndex, Build, Localizer);
+            var vm = CreateViewModel(shipIndex, Build);
             BuildName = Build?.BuildName ?? string.Empty;
             Build = null;
             shipChanged = true;
@@ -283,8 +283,10 @@ else if (ViewModel is not null)
             {
                 ShipIndex = updateToShipSummary.Index;
                 BuildName = string.Empty;
-                ViewModel = await LoadShipViewModel(ShipIndex);
-                Cache[CurrentTabId] = Cache[CurrentTabId]! with { ViewModel = ViewModel };
+                ViewModel = LoadShipViewModel(ShipIndex);
+                var oldCacheEntry = Cache[CurrentTabId]!;
+                Cache[CurrentTabId] = oldCacheEntry with { ViewModel = ViewModel };
+                oldCacheEntry.ViewModel.Dispose();
                 await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
                 StateHasChanged();
             }
@@ -395,17 +397,16 @@ else if (ViewModel is not null)
         return new(ship, build, containerId, activeConsumables, false, shipDataContainer, modifiers);
     }
 
-    public static Task<ShipViewModel> CreateViewModel(string shipIndex, Build? build, ILocalizer localizer)
+    public static ShipViewModel CreateViewModel(string shipIndex, Build? build)
     {
         var shipSummary = AppData.ShipSummaryMapper[shipIndex];
         var ship = AppData.FindShipFromSummary(shipSummary);
         var vmParams = new ShipViewModelParams(ship, shipSummary, build);
 
-        var vm = new ShipViewModel(Logging.LoggerFactory.CreateLogger<ShipViewModel>(), vmParams);
+        var vm = new ShipViewModel(vmParams, Logging.LoggerFactory.CreateLogger<ShipViewModel>());
         vm.InitializeData(vmParams);
 
-        // workaround to keep method signature compatible even though InitializeData is no longer async
-        return Task.FromResult(vm);
+        return vm;
     }
 
     private async Task OnBuildSaveClicked()

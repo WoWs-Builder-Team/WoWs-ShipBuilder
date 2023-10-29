@@ -2,7 +2,7 @@
 
 namespace WoWsShipBuilder.Features.ShipStats;
 
-public class VmCache
+public sealed class VmCache : IDisposable
 {
     private readonly Dictionary<Guid, VmCacheEntry?> cacheEntries = new();
 
@@ -15,6 +15,16 @@ public class VmCache
     public VmCacheEntry? GetOrDefault(Guid id) => this.cacheEntries.GetValueOrDefault(id, default);
 
     public bool RemoveEntry(Guid id) => this.cacheEntries.Remove(id);
+
+    public void Dispose()
+    {
+        foreach (var cacheEntry in this.cacheEntries)
+        {
+            cacheEntry.Value?.ViewModel.Dispose();
+        }
+
+        this.cacheEntries.Clear();
+    }
 }
 
 public sealed record VmCacheEntry(ShipViewModel ViewModel, string BuildName = "");
