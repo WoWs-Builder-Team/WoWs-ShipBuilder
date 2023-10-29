@@ -10,7 +10,7 @@ public class AppSettings
     [JsonConstructor]
     public AppSettings(CultureDetails? selectedLanguage = null)
     {
-        SelectedLanguage = selectedLanguage ?? AppConstants.DefaultCultureDetails;
+        this.SelectedLanguage = selectedLanguage ?? AppConstants.DefaultCultureDetails;
     }
 
     public bool AutoUpdateEnabled { get; set; } = true;
@@ -47,43 +47,59 @@ public class AppSettings
 
     public bool[] BuildImageLayoutSettings { get; set; } = { true, false, true, true, true, true };
 
+    public bool ShipComparisonUseUpgradedModules { get; set; } = true;
+
+    public bool ShipComparisonHideShipsWithoutSection { get; set; }
+
+    public double ShipComparisonFiringRange { get; set; } = 10;
+
+    public string? ShipComparisonHiddenColumns { get; set; }
+
     public void ClearSettings()
     {
-        AutoUpdateEnabled = true;
-        SelectedLanguage = AppConstants.DefaultCultureDetails;
-        SelectedServerType = ServerType.Live;
-        LastDataUpdateCheck = default;
-        CustomDataPath = default;
-        SendTelemetryData = default;
-        OpenExplorerAfterImageSave = default;
-        LastImageImportPath = default;
-        IncludeSignalsForImageExport = default;
-        CustomImagePath = default;
-        DispersionPlotSettings = new();
-        OpenAllMainExpandersByDefault = true;
-        OpenAllAmmoExpandersByDefault = false;
-        OpenSecondariesAndAaExpandersByDefault = false;
-        BetaAccessCodes = new();
-        BuildImageLayoutSettings = new[] { true, false, true, true, true, true };
+        this.AutoUpdateEnabled = true;
+        this.SelectedLanguage = AppConstants.DefaultCultureDetails;
+        this.SelectedServerType = ServerType.Live;
+        this.LastDataUpdateCheck = default;
+        this.CustomDataPath = default;
+        this.SendTelemetryData = default;
+        this.OpenExplorerAfterImageSave = default;
+        this.LastImageImportPath = default;
+        this.IncludeSignalsForImageExport = default;
+        this.CustomImagePath = default;
+        this.DispersionPlotSettings = new();
+        this.OpenAllMainExpandersByDefault = true;
+        this.OpenAllAmmoExpandersByDefault = false;
+        this.OpenSecondariesAndAaExpandersByDefault = false;
+        this.BetaAccessCodes = new();
+        this.BuildImageLayoutSettings = new[] { true, false, true, true, true, true };
+        this.ShipComparisonFiringRange = 10;
+        this.ShipComparisonUseUpgradedModules = true;
+        this.ShipComparisonHideShipsWithoutSection = false;
+        this.ShipComparisonHiddenColumns = default;
     }
 
     public void UpdateFromSettings(AppSettings settings)
     {
-        AutoUpdateEnabled = settings.AutoUpdateEnabled;
-        SelectedLanguage = settings.SelectedLanguage;
-        SelectedServerType = settings.SelectedServerType;
-        LastDataUpdateCheck = settings.LastDataUpdateCheck;
-        CustomDataPath = settings.CustomDataPath;
-        SendTelemetryData = settings.SendTelemetryData;
-        OpenExplorerAfterImageSave = settings.OpenExplorerAfterImageSave;
-        LastImageImportPath = settings.LastImageImportPath;
-        IncludeSignalsForImageExport = settings.IncludeSignalsForImageExport;
-        CustomImagePath = settings.CustomImagePath;
-        DispersionPlotSettings = settings.DispersionPlotSettings;
-        OpenAllMainExpandersByDefault = settings.OpenAllMainExpandersByDefault;
-        OpenAllAmmoExpandersByDefault = settings.OpenAllAmmoExpandersByDefault;
-        OpenSecondariesAndAaExpandersByDefault = settings.OpenSecondariesAndAaExpandersByDefault;
-        BetaAccessCodes = settings.BetaAccessCodes;
-        BuildImageLayoutSettings = settings.BuildImageLayoutSettings;
+        this.AutoUpdateEnabled = settings.AutoUpdateEnabled;
+        this.SelectedLanguage = settings.SelectedLanguage;
+        this.SelectedServerType = settings.SelectedServerType;
+        this.LastDataUpdateCheck = settings.LastDataUpdateCheck;
+        this.CustomDataPath = settings.CustomDataPath;
+        this.SendTelemetryData = settings.SendTelemetryData;
+        this.OpenExplorerAfterImageSave = settings.OpenExplorerAfterImageSave;
+        this.LastImageImportPath = settings.LastImageImportPath;
+        this.IncludeSignalsForImageExport = settings.IncludeSignalsForImageExport;
+        this.CustomImagePath = settings.CustomImagePath;
+        this.DispersionPlotSettings = settings.DispersionPlotSettings;
+        this.OpenAllMainExpandersByDefault = settings.OpenAllMainExpandersByDefault;
+        this.OpenAllAmmoExpandersByDefault = settings.OpenAllAmmoExpandersByDefault;
+        this.OpenSecondariesAndAaExpandersByDefault = settings.OpenSecondariesAndAaExpandersByDefault;
+        this.BetaAccessCodes = settings.BetaAccessCodes;
+        this.BuildImageLayoutSettings = settings.BuildImageLayoutSettings;
+        this.ShipComparisonFiringRange = settings.ShipComparisonFiringRange;
+        this.ShipComparisonUseUpgradedModules = settings.ShipComparisonUseUpgradedModules;
+        this.ShipComparisonHideShipsWithoutSection = settings.ShipComparisonHideShipsWithoutSection;
+        this.ShipComparisonHiddenColumns = settings.ShipComparisonHiddenColumns;
     }
 }

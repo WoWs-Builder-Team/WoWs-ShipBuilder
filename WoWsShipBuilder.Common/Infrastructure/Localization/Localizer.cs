@@ -16,23 +16,23 @@ public class Localizer : ILocalizer
         this.appSettings = appSettings;
     }
 
-    public LocalizationResult this[string key] => GetGameLocalization(key);
+    public LocalizationResult this[string key] => this.GetGameLocalization(key);
 
     public LocalizationResult GetGameLocalization(string key)
     {
-        string? result = gameLocalizationProvider.GetString(key, appSettings.SelectedLanguage);
+        string? result = this.gameLocalizationProvider.GetString(key, this.appSettings.SelectedLanguage);
         return new(result != null, result ?? key);
     }
 
     public LocalizationResult GetGameLocalization(string key, CultureDetails language)
     {
-        string? result = gameLocalizationProvider.GetString(key, language);
+        string? result = this.gameLocalizationProvider.GetString(key, language);
         return new(result != null, result ?? key);
     }
 
     public LocalizationResult GetAppLocalization(string key)
     {
-        string? result = Translation.ResourceManager.GetString(key, appSettings.SelectedLanguage.CultureInfo);
+        string? result = Translation.ResourceManager.GetString(key, this.appSettings.SelectedLanguage.CultureInfo);
         return new(result != null, result ?? key);
     }
 

@@ -19,8 +19,8 @@ public sealed class WebSettingsAccessor : IAsyncDisposable, ISettingsAccessor
 
     public async Task<AppSettings?> LoadSettings()
     {
-        await InitializeModule();
-        var settingsString = await module.InvokeAsync<string?>("getAppSettings");
+        await this.InitializeModule();
+        var settingsString = await this.module.InvokeAsync<string?>("getAppSettings");
         var result = settingsString == null ? null : JsonConvert.DeserializeObject<AppSettings>(settingsString);
         if (result is not null)
         {
@@ -32,8 +32,8 @@ public sealed class WebSettingsAccessor : IAsyncDisposable, ISettingsAccessor
 
     public async Task SaveSettings(AppSettings appSettings)
     {
-        await InitializeModule();
-        await module.InvokeVoidAsync("setAppSettings", JsonConvert.SerializeObject(appSettings));
+        await this.InitializeModule();
+        await this.module.InvokeVoidAsync("setAppSettings", JsonConvert.SerializeObject(appSettings));
     }
 
     [MemberNotNull(nameof(module))]
@@ -41,17 +41,17 @@ public sealed class WebSettingsAccessor : IAsyncDisposable, ISettingsAccessor
     {
         // module is not null after this method but apparently, Roslyn does not want to recognize that.
 #pragma warning disable CS8774
-        module ??= await runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/scripts/settingsHelper.js");
+        this.module ??= await this.runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/scripts/settingsHelper.js");
 #pragma warning restore CS8774
     }
 
     public async ValueTask DisposeAsync()
     {
-        if (module is not null)
+        if (this.module is not null)
         {
             try
             {
-                await module.DisposeAsync();
+                await this.module.DisposeAsync();
             }
             catch (JSDisconnectedException)
             {

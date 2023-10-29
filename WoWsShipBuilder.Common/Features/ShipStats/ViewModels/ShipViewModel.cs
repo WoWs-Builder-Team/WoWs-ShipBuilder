@@ -11,10 +11,7 @@ using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
-// TODO: implement IDisposable properly
-#pragma warning disable CA1001
-public sealed partial class ShipViewModel : ReactiveObject
-#pragma warning restore CA1001
+public sealed partial class ShipViewModel : ReactiveObject, IDisposable
 {
     private readonly CompositeDisposable disposables = new();
 
@@ -63,103 +60,103 @@ public sealed partial class ShipViewModel : ReactiveObject
     [Observable]
     private UpgradePanelViewModelBase upgradePanelViewModel = null!;
 
-    public ShipViewModel(ILogger<ShipViewModel> logger, ShipViewModelParams viewModelParams)
+    public ShipViewModel(ShipViewModelParams viewModelParams, ILogger<ShipViewModel> logger)
     {
-        tokenSource = new();
+        this.tokenSource = new();
         this.logger = logger;
-        PreviousShip = viewModelParams.ShipSummary.PrevShipIndex is null ? null : AppData.ShipSummaryMapper[viewModelParams.ShipSummary.PrevShipIndex];
-        CurrentShip = viewModelParams.ShipSummary;
+        this.PreviousShip = viewModelParams.ShipSummary.PrevShipIndex is null ? null : AppData.ShipSummaryMapper[viewModelParams.ShipSummary.PrevShipIndex];
+        this.CurrentShip = viewModelParams.ShipSummary;
     }
 
     public void ResetBuild()
     {
-        logger.LogDebug("Resetting build");
-        LoadNewShip(AppData.ShipSummaryMapper[CurrentShipIndex]);
+        this.logger.LogDebug("Resetting build");
+        this.LoadNewShip(AppData.ShipSummaryMapper[this.CurrentShipIndex]);
     }
 
     public void InitializeData(ShipViewModelParams viewModelParams)
     {
-        InitializeData(viewModelParams.Ship, viewModelParams.ShipSummary.PrevShipIndex, viewModelParams.ShipSummary.NextShipsIndex, viewModelParams.Build);
+        this.InitializeData(viewModelParams.Ship, viewModelParams.ShipSummary.PrevShipIndex, viewModelParams.ShipSummary.NextShipsIndex, viewModelParams.Build);
     }
 
     public Build CreateBuild(string buildName)
     {
-        return new(buildName, CurrentShipIndex, RawShipData.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel!.GetCaptainIndex(), CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
+        return new(buildName, this.CurrentShipIndex, this.RawShipData.ShipNation, this.ShipModuleViewModel.SaveBuild(), this.UpgradePanelViewModel.SaveBuild(), this.ConsumableViewModel.SaveBuild(), this.CaptainSkillSelectorViewModel!.GetCaptainIndex(), this.CaptainSkillSelectorViewModel!.GetSkillNumberList(), this.SignalSelectorViewModel!.GetFlagList());
     }
 
     private void LoadNewShip(ShipSummary summary)
     {
-        disposables.Clear();
+        this.disposables.Clear();
         var ship = AppData.FindShipFromSummary(summary);
-        InitializeData(ship, summary.PrevShipIndex, summary.NextShipsIndex);
+        this.InitializeData(ship, summary.PrevShipIndex, summary.NextShipsIndex);
     }
 
     private void InitializeData(Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
     {
-        logger.LogInformation("Loading data for ship {Index}", ship.Index);
-        logger.LogDebug("Build is null: {BuildIsNull}", build is null);
+        this.logger.LogInformation("Loading data for ship {Index}", ship.Index);
+        this.logger.LogDebug("Build is null: {BuildIsNull}", build is null);
 
         // Ship stats model
-        RawShipData = ship;
-        EffectiveShipData = RawShipData;
+        this.RawShipData = ship;
+        this.EffectiveShipData = this.RawShipData;
 
-        logger.LogDebug("Initializing view models");
+        this.logger.LogDebug("Initializing view models");
 
         // Viewmodel inits
-        SignalSelectorViewModel = new();
-        CaptainSkillSelectorViewModel = new(RawShipData.ShipClass, CaptainSkillSelectorViewModel.LoadParams(ship.ShipNation));
-        ShipModuleViewModel = new(RawShipData.ShipUpgradeInfo);
-        UpgradePanelViewModel = new(RawShipData, AppData.ModernizationCache);
-        ConsumableViewModel = ConsumableViewModel.Create(RawShipData, new List<string>(), Logging.LoggerFactory);
+        this.SignalSelectorViewModel = new();
+        this.CaptainSkillSelectorViewModel = new(this.RawShipData.ShipClass, CaptainSkillSelectorViewModel.LoadParams(ship.ShipNation));
+        this.ShipModuleViewModel = new(this.RawShipData.ShipUpgradeInfo);
+        this.UpgradePanelViewModel = new(this.RawShipData, AppData.ModernizationCache);
+        this.ConsumableViewModel = ConsumableViewModel.Create(this.RawShipData, new List<string>(), Logging.LoggerFactory);
 
-        ShipStatsControlViewModel = new(EffectiveShipData);
+        this.ShipStatsControlViewModel = new(this.EffectiveShipData);
 
         if (build != null)
         {
-            logger.LogDebug("Loading build");
-            SignalSelectorViewModel.LoadBuild(build.Signals);
-            CaptainSkillSelectorViewModel.LoadBuild(build.Skills, build.Captain);
-            ShipModuleViewModel.LoadBuild(build.Modules);
-            UpgradePanelViewModel.LoadBuild(build.Upgrades);
-            ConsumableViewModel.LoadBuild(build.Consumables);
+            this.logger.LogDebug("Loading build");
+            this.SignalSelectorViewModel.LoadBuild(build.Signals);
+            this.CaptainSkillSelectorViewModel.LoadBuild(build.Skills, build.Captain);
+            this.ShipModuleViewModel.LoadBuild(build.Modules);
+            this.UpgradePanelViewModel.LoadBuild(build.Upgrades);
+            this.ConsumableViewModel.LoadBuild(build.Consumables);
         }
 
-        CurrentShipIndex = ship.Index;
-        CurrentShipTier = ship.Tier;
-        CurrentShip = AppData.ShipSummaryMapper[ship.Index];
-        PreviousShip = previousIndex is null ? null : AppData.ShipSummaryMapper[previousIndex];
-        NextShips = nextShipsIndexes?.Select(index => AppData.ShipSummaryMapper[index]).ToList();
+        this.CurrentShipIndex = ship.Index;
+        this.CurrentShipTier = ship.Tier;
+        this.CurrentShip = AppData.ShipSummaryMapper[ship.Index];
+        this.PreviousShip = previousIndex is null ? null : AppData.ShipSummaryMapper[previousIndex];
+        this.NextShips = nextShipsIndexes?.Select(index => AppData.ShipSummaryMapper[index]).ToList();
 
-        AddChangeListeners();
-        UpdateStatsViewModel(true);
+        this.AddChangeListeners();
+        this.UpdateStatsViewModel(true);
     }
 
     private void AddChangeListeners()
     {
-        ShipModuleViewModel.SelectedModules.ToObservableChangeSet().Do(_ => UpdateStatsViewModel()).Subscribe().DisposeWith(disposables);
-        UpgradePanelViewModel.SelectedModernizationList.ToObservableChangeSet().Do(_ => UpdateStatsViewModel()).Subscribe().DisposeWith(disposables);
-        SignalSelectorViewModel?.SelectedSignals.ToObservableChangeSet().Do(_ => UpdateStatsViewModel()).Subscribe().DisposeWith(disposables);
-        CaptainSkillSelectorViewModel?.SkillOrderList.ToObservableChangeSet().Do(_ => UpdateStatsViewModel()).Subscribe().DisposeWith(disposables);
-        ConsumableViewModel.ActivatedSlots.ToObservableChangeSet().Do(_ => UpdateStatsViewModel()).Subscribe().DisposeWith(disposables);
+        this.ShipModuleViewModel.SelectedModules.ToObservableChangeSet().Do(_ => this.UpdateStatsViewModel()).Subscribe().DisposeWith(this.disposables);
+        this.UpgradePanelViewModel.SelectedModernizationList.ToObservableChangeSet().Do(_ => this.UpdateStatsViewModel()).Subscribe().DisposeWith(this.disposables);
+        this.SignalSelectorViewModel?.SelectedSignals.ToObservableChangeSet().Do(_ => this.UpdateStatsViewModel()).Subscribe().DisposeWith(this.disposables);
+        this.CaptainSkillSelectorViewModel?.SkillOrderList.ToObservableChangeSet().Do(_ => this.UpdateStatsViewModel()).Subscribe().DisposeWith(this.disposables);
+        this.ConsumableViewModel.ActivatedSlots.ToObservableChangeSet().Do(_ => this.UpdateStatsViewModel()).Subscribe().DisposeWith(this.disposables);
 
-        CaptainSkillSelectorViewModel.WhenAnyValue(x => x.SkillActivationPopupOpen).Subscribe(HandleCaptainParamsChange).DisposeWith(disposables);
-        CaptainSkillSelectorViewModel.WhenAnyValue(x => x.CaptainWithTalents).Subscribe(HandleCaptainParamsChange).DisposeWith(disposables);
+        this.CaptainSkillSelectorViewModel.WhenAnyValue(x => x.SkillActivationPopupOpen).Subscribe(this.HandleCaptainParamsChange).DisposeWith(this.disposables);
+        this.CaptainSkillSelectorViewModel.WhenAnyValue(x => x.CaptainWithTalents).Subscribe(this.HandleCaptainParamsChange).DisposeWith(this.disposables);
     }
 
     private void HandleCaptainParamsChange(bool newValue)
     {
         if (!newValue)
         {
-            UpdateStatsViewModel();
+            this.UpdateStatsViewModel();
         }
     }
 
     private void UpdateStatsViewModel(bool skipDelay = false)
     {
-        tokenSource.Cancel();
-        tokenSource.Dispose();
-        tokenSource = new();
-        CancellationToken token = tokenSource.Token;
+        this.tokenSource.Cancel();
+        this.tokenSource.Dispose();
+        this.tokenSource = new();
+        var token = this.tokenSource.Token;
         Task.Run(
             async () =>
             {
@@ -172,16 +169,20 @@ public sealed partial class ShipViewModel : ReactiveObject
 
                     if (!token.IsCancellationRequested)
                     {
-                        await semaphore.WaitAsync(token);
-                        var modifiers = GenerateModifierList();
-                        if (ShipStatsControlViewModel != null)
+                        await this.semaphore.WaitAsync(token);
+                        try
                         {
-                            logger.LogDebug("Updating ship stats");
-                            await ShipStatsControlViewModel.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), modifiers);
+                            List<(string, float)> modifiers = this.GenerateModifierList();
+                            if (this.ShipStatsControlViewModel != null)
+                            {
+                                this.logger.LogDebug("Updating ship stats");
+                                await this.ShipStatsControlViewModel.UpdateShipStats(this.ShipModuleViewModel.SelectedModules.ToList(), modifiers);
+                            }
                         }
-
-                        ConsumableViewModel.UpdateConsumableData(modifiers, ShipStatsControlViewModel!.CurrentShipStats!.SurvivabilityDataContainer.HitPoints, RawShipData.ShipClass);
-                        semaphore.Release();
+                        finally
+                        {
+                            this.semaphore.Release();
+                        }
                     }
                 }
                 catch (OperationCanceledException)
@@ -196,10 +197,17 @@ public sealed partial class ShipViewModel : ReactiveObject
     {
         var modifiers = new List<(string, float)>();
 
-        modifiers.AddRange(UpgradePanelViewModel.GetModifierList());
-        modifiers.AddRange(SignalSelectorViewModel!.GetModifierList());
-        modifiers.AddRange(CaptainSkillSelectorViewModel!.GetModifiersList());
-        modifiers.AddRange(ConsumableViewModel.GetModifiersList());
+        modifiers.AddRange(this.UpgradePanelViewModel.GetModifierList());
+        modifiers.AddRange(this.SignalSelectorViewModel!.GetModifierList());
+        modifiers.AddRange(this.CaptainSkillSelectorViewModel!.GetModifiersList());
+        modifiers.AddRange(this.ConsumableViewModel.GetModifiersList());
         return modifiers;
+    }
+
+    public void Dispose()
+    {
+        this.disposables.Dispose();
+        this.semaphore.Dispose();
+        this.tokenSource.Dispose();
     }
 }

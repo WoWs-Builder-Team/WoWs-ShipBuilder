@@ -28,7 +28,7 @@ public class ServerAwsClientTest
     [SetUp]
     public void Setup()
     {
-        messageHandlerMock = new();
+        this.messageHandlerMock = new();
         AppData.ShipDictionary.Clear();
     }
 
@@ -39,14 +39,14 @@ public class ServerAwsClientTest
         const string testShipKey = "PGSA001";
         var shipDictionary = new Dictionary<string, Ship> { { testShipKey, new Ship { Index = testShipKey, Id = 1234 } } };
 
-        messageHandlerMock.Protected().Setup<Task<HttpResponseMessage>>(
+        this.messageHandlerMock.Protected().Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
                 ItExpr.Is<HttpRequestMessage>(message => message.RequestUri!.AbsoluteUri.EndsWith("VersionInfo.json")),
                 ItExpr.IsAny<CancellationToken>())
             .ReturnsAsync(new HttpResponseMessage { Content = new StringContent(JsonConvert.SerializeObject(testVersionInfo)) });
 
         var shipRequestExpression = ItExpr.Is<HttpRequestMessage>(message => message.RequestUri!.AbsolutePath.Equals("/api/live/Ship/Germany.json"));
-        messageHandlerMock.Protected().Setup<Task<HttpResponseMessage>>(
+        this.messageHandlerMock.Protected().Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
                 shipRequestExpression,
                 ItExpr.IsAny<CancellationToken>())
@@ -54,7 +54,7 @@ public class ServerAwsClientTest
 
         var cdnOptions = new CdnOptions { Host = "https://example.com"};
         IOptions<CdnOptions>? options = Options.Create(cdnOptions);
-        var client = new ServerAwsClient(new(messageHandlerMock.Object), options, NullLogger<ServerAwsClient>.Instance);
+        var client = new ServerAwsClient(new(this.messageHandlerMock.Object), options, NullLogger<ServerAwsClient>.Instance);
 
         var versionInfo = await client.DownloadVersionInfo(ServerType.Live);
         var files = versionInfo.Categories.SelectMany(category => category.Value.Select(file => (category.Key, file.FileName))).ToList();
@@ -62,7 +62,7 @@ public class ServerAwsClientTest
 
         AppData.ShipDictionary.Should().HaveCount(1);
         AppData.ShipDictionary.Should().ContainKey(testShipKey);
-        messageHandlerMock.Protected().Verify("SendAsync", Times.Exactly(1), shipRequestExpression, ItExpr.IsAny<CancellationToken>());
-        messageHandlerMock.Protected().Verify("SendAsync", Times.Exactly(2), ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>());
+        this.messageHandlerMock.Protected().Verify("SendAsync", Times.Exactly(1), shipRequestExpression, ItExpr.IsAny<CancellationToken>());
+        this.messageHandlerMock.Protected().Verify("SendAsync", Times.Exactly(2), ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>());
     }
 }

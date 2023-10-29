@@ -181,7 +181,7 @@ a.kofi-button {
     overflow-wrap: break-word;
     vertical-align: middle;
     border: 0 none #dedede ;
-    font-family: 'Roboto','Helvetica','Arial','sans-serif';
+    font-family: 'Roboto','Helvetica','Arial', sans-serif;
     text-decoration: none;
     text-shadow: none;
     font-weight: 400 ;
@@ -223,6 +223,7 @@ a.kofi-button:active {
     border-radius: 4px;
 }
 
+/*noinspection CssUnresolvedCustomProperty*/
 div.mud-expand-panel {
     border-radius: var(--mud-default-borderradius) !important;
 }
@@ -243,17 +244,69 @@ div.mud-expand-panel {
     padding: 12px;
 }
 
+/*noinspection CssUnresolvedCustomProperty*/
 .custom-expansion-panel-header .mud-expand-panel-header {
     padding: 4px 8px;
     min-height: 24px;
-    background-color: rgb(80, 80, 80);
+    background-color: var(--mud-palette-grey-dark);
+    border-radius: var(--mud-default-borderradius);
 }
 
+/*noinspection CssUnresolvedCustomProperty*/
 .custom-child-expansion-panel-header .mud-expand-panel-header {
     padding: 4px 8px;
     min-height: 24px;
-    background-color: rgba(80, 80, 80, 40%);
+    background-color: color-mix(in srgb, var(--mud-palette-grey-dark), transparent 40%);
 }
+
+.mud-data-grid button.drag-icon-options {
+    visibility: hidden;
+    width: 0;
+    padding: 0;
+}
+
+.mud-data-grid .mud-table-cell {
+    padding: 1px 3px !important;
+    margin: 0;
+}
+
+.mud-data-grid-range-selector div.mud-input-control-input-container {
+    margin: 0 10px 10px auto;
+    width: 100px
+}
+
+.mud-data-grid-range-selector label.mud-input-label-text {
+    display: ruby !important;
+}
+
+/*noinspection CssUnresolvedCustomProperty*/
+div.default-label-background label {
+    background-color: var(--mud-palette-background) !important;
+}
+
+/*noinspection CssUnresolvedCustomProperty*/
+.link-text {
+    color: var(--mud-palette-primary-lighten) !important;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/*noinspection CssUnresolvedCustomProperty*/
+.ship-stats-tabs .mud-tabs-toolbar .mud-tab-active {
+    background-color: var(--mud-palette-primary);
+    color: var(--mud-palette-primary-text);
+
+    /*noinspection CssUnresolvedCustomProperty*/
+    & svg {
+        fill: var(--mud-palette-primary-text);
+    }
+}
+
+/*noinspection CssUnresolvedCustomProperty*/
+.default-background {
+    background-color: var(--mud-palette-background);
+}
+
 
 .sticky-tabs-header .mud-tabs-toolbar {
     position: sticky;

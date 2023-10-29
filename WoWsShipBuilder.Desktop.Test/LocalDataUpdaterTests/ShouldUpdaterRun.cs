@@ -20,7 +20,7 @@ public partial class LocalDataUpdaterTest
         };
 
         // Act
-        bool result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, appSettings, NullLogger<LocalDataUpdater>.Instance).ShouldUpdaterRun(ServerType.Live);
+        bool result = await new LocalDataUpdater(this.mockFileSystem, this.awsClientMock.Object, this.appDataHelper.Object, appSettings, NullLogger<LocalDataUpdater>.Instance).ShouldUpdaterRun(ServerType.Live);
 
         // Assert
         result.Should().BeTrue();
@@ -34,10 +34,10 @@ public partial class LocalDataUpdaterTest
         {
             LastDataUpdateCheck = DateTime.Now.Subtract(TimeSpan.FromHours(2)),
         };
-        appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(CreateTestVersionInfo(1, GameVersion.Default));
+        this.appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(this.CreateTestVersionInfo(1, GameVersion.Default));
 
         // Act
-        bool result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, appSettings, NullLogger<LocalDataUpdater>.Instance).ShouldUpdaterRun(ServerType.Live);
+        bool result = await new LocalDataUpdater(this.mockFileSystem, this.awsClientMock.Object, this.appDataHelper.Object, appSettings, NullLogger<LocalDataUpdater>.Instance).ShouldUpdaterRun(ServerType.Live);
 
         // Assert
         result.Should().BeFalse();
@@ -51,10 +51,10 @@ public partial class LocalDataUpdaterTest
         {
             LastDataUpdateCheck = DateTime.Now.Subtract(TimeSpan.FromHours(2)),
         };
-        appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync((VersionInfo?)null);
+        this.appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync((VersionInfo?)null);
 
         // Act
-        bool result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, appSettings, NullLogger<LocalDataUpdater>.Instance).ShouldUpdaterRun(ServerType.Live);
+        bool result = await new LocalDataUpdater(this.mockFileSystem, this.awsClientMock.Object, this.appDataHelper.Object, appSettings, NullLogger<LocalDataUpdater>.Instance).ShouldUpdaterRun(ServerType.Live);
 
         // Assert
         result.Should().BeTrue();

@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using WoWsShipBuilder.DataElements.DataElements;
+using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.Infrastructure.Localization;
 
 namespace WoWsShipBuilder.Features.ShipStats;
@@ -8,17 +8,21 @@ public static class FormattedTextHelper
 {
     public static string ConvertFormattedText(FormattedTextDataElement formattedTextDataElement, ILocalizer localizer)
     {
-        string text = formattedTextDataElement.Text;
-        if (formattedTextDataElement.IsTextKey)
+        string text = formattedTextDataElement.ValueTextKind switch
         {
-            text = formattedTextDataElement.IsTextAppLocalization ? localizer.GetAppLocalization(text).Localization : localizer.GetGameLocalization(text).Localization;
-        }
+            DataElementTextKind.Plain => formattedTextDataElement.Text,
+            DataElementTextKind.LocalizationKey => localizer.SimpleGameLocalization(formattedTextDataElement.Text),
+            DataElementTextKind.AppLocalizationKey => localizer.SimpleAppLocalization(formattedTextDataElement.Text),
+            _ => throw new NotSupportedException("Invalid value for ValueTextKind"),
+        };
 
-        IEnumerable<string> values = formattedTextDataElement.Values;
-        if (formattedTextDataElement.AreValuesKeys)
+        IEnumerable<string> values = formattedTextDataElement.ArgumentsTextKind switch
         {
-            values = formattedTextDataElement.AreValuesAppLocalization ? values.Select(x => localizer.GetAppLocalization(x).Localization) : values.Select(x => localizer.GetGameLocalization(x).Localization);
-        }
+            DataElementTextKind.Plain => formattedTextDataElement.Arguments,
+            DataElementTextKind.LocalizationKey => formattedTextDataElement.Arguments.Select(localizer.SimpleGameLocalization),
+            DataElementTextKind.AppLocalizationKey => formattedTextDataElement.Arguments.Select(localizer.SimpleAppLocalization),
+            _ => throw new NotSupportedException("Invalid value for ArgumentsTextKind"),
+        };
 
         return string.Format(CultureInfo.InvariantCulture, text, values.Cast<object>().ToArray());
     }

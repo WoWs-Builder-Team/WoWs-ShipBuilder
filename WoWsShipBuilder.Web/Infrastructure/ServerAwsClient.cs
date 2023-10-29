@@ -26,14 +26,14 @@ public class ServerAwsClient : IAwsClient
 
     public async Task<VersionInfo> DownloadVersionInfo(ServerType serverType)
     {
-        var url = @$"{options.Host}/api/{serverType.StringName()}/VersionInfo.json";
-        string stringContent = await httpClient.GetStringAsync(url);
+        var url = @$"{this.options.Host}/api/{serverType.StringName()}/VersionInfo.json";
+        string stringContent = await this.httpClient.GetStringAsync(url);
         return JsonConvert.DeserializeObject<VersionInfo>(stringContent) ?? throw new HttpRequestException("Unable to process VersionInfo response from AWS server.");
     }
 
     public async Task DownloadFiles(ServerType serverType, List<(string, string)> relativeFilePaths, IProgress<int>? downloadProgress = null)
     {
-        string baseUrl = @$"{options.Host}/api/{serverType.StringName()}/";
+        string baseUrl = @$"{this.options.Host}/api/{serverType.StringName()}/";
         var taskList = new List<Task>();
         int totalFiles = relativeFilePaths.Count;
         var finished = 0;
@@ -50,11 +50,11 @@ public class ServerAwsClient : IAwsClient
             {
                 try
                 {
-                    await DownloadFileAsync(uri, category, fileName);
+                    await this.DownloadFileAsync(uri, category, fileName);
                 }
                 catch (HttpRequestException e)
                 {
-                    logger.LogWarning(e, "Encountered an exception while downloading a file with uri {Uri}", uri);
+                    this.logger.LogWarning(e, "Encountered an exception while downloading a file with uri {Uri}", uri);
                 }
 
                 progress.Report(1);
@@ -68,13 +68,13 @@ public class ServerAwsClient : IAwsClient
 
     public async Task<Dictionary<string, string>> DownloadLocalization(string language, ServerType serverType)
     {
-        string baseUrl = @$"{options.Host}/api/{serverType.StringName()}/";
-        return await httpClient.GetFromJsonAsync<Dictionary<string, string>>($"{baseUrl}Localization/{language}.json") ?? throw new InvalidOperationException();
+        string baseUrl = @$"{this.options.Host}/api/{serverType.StringName()}/";
+        return await this.httpClient.GetFromJsonAsync<Dictionary<string, string>>($"{baseUrl}Localization/{language}.json") ?? throw new InvalidOperationException();
     }
 
     private async Task DownloadFileAsync(Uri uri, string category, string fileName)
     {
-        var str = await httpClient.GetStringAsync(uri);
+        var str = await this.httpClient.GetStringAsync(uri);
         await DataCacheHelper.AddToCache(fileName, category, str);
     }
 }

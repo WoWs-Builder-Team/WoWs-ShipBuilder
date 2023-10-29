@@ -13,9 +13,6 @@
         <ProjectReference Include="WoWsShipBuilder.Web\*.csproj" />
         <ProjectReference Include="WoWsShipBuilder.Web.Test\*.csproj" />
     </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="WoWsShipBuilder.ReleaseTest\*.csproj" Condition="'$(ReleaseTest)' == 'true'" />
-    </ItemGroup>
     <ItemGroup Condition="$([MSBuild]::IsOsPlatform('WINDOWS')) == false">
         <ProjectReference Remove="WoWsShipBuilder.Desktop\*.csproj" />
         <ProjectReference Remove="WoWsShipBuilder.Desktop.Test\*.csproj" />

@@ -34,8 +34,8 @@
     {
         <MudItem xs="12">
             <MudStack Row>
-                <MudTextField Immediate T="string" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)).Localization" @bind-Value="buildString"/>
-                <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="ImportFromString">
+                <MudTextField Variant="Variant.Outlined" Immediate T="string" Class="default-label-background" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)).Localization" @bind-Value="buildString"/>
+                <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@ImportFromString">
                     @Localizer.GetAppLocalization(nameof(Translation.WebApp_LoadBuild)).Localization
                 </MudButton>
                 <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Style="margin-top: 0;" Class="file-upload-full-height" Accept=".png">
@@ -52,57 +52,61 @@
     }
 
     <MudItem xs="6" md="3">
-        <MudSelect T="string" Variant="Variant.Outlined" @bind-Value="@SelectedTier" Placeholder="@(Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_TierFilter)).Localization + "...")" Clearable="true" AnchorOrigin="Origin.BottomCenter">
+        <MudSelect T="string" Variant="Variant.Outlined" Class="default-label-background" @bind-Value="@SelectedTier" Label="@(Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_TierFilter)))" Clearable AnchorOrigin="Origin.BottomCenter">
             @foreach (var item in tierList)
             {
                 <MudSelectItem Value="@item">
-                    <MudText Color="Color.Secondary">@item</MudText>
+                    <MudText Color="Color.Default">@item</MudText>
                 </MudSelectItem>
             }
         </MudSelect>
     </MudItem>
 
     <MudItem xs="6" md="3">
-        <MudSelect T="ShipClass?" Variant="Variant.Outlined" @bind-Value="@SelectedClass" Placeholder="@(Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_ClassFilter)).Localization + "...")" Clearable="true" AnchorOrigin="Origin.BottomCenter">
+        <MudSelect T="ShipClass?" Variant="Variant.Outlined" Class="default-label-background" @bind-Value="@SelectedClass" Label="@(Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_ClassFilter)))" Clearable AnchorOrigin="Origin.BottomCenter">
             @foreach (ShipClass? item in classList)
             {
                 <MudSelectItem Value="@item">
-                    <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(item.ToString()!).Localization</MudText>
+                    <MudText Color="Color.Default">@Localizer.GetAppLocalization(item.ToString()!).Localization</MudText>
                 </MudSelectItem>
             }
         </MudSelect>
     </MudItem>
 
     <MudItem xs="6" md="3">
-        <MudSelect T="Nation?" Variant="Variant.Outlined" @bind-Value="@SelectedNation" Placeholder="@(Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_NationFilter)).Localization + "...")" Clearable="true" AnchorOrigin="Origin.BottomCenter">
+        <MudSelect T="Nation?" Variant="Variant.Outlined" Class="default-label-background" @bind-Value="@SelectedNation" Label="@(Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_NationFilter)))" Clearable AnchorOrigin="Origin.BottomCenter">
             @foreach (Nation? item in nationList)
             {
                 <MudSelectItem Value="@item">
-                    <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(item.ToString()!).Localization</MudText>
+                    <MudText Color="Color.Default">@Localizer.GetAppLocalization(item.ToString()!).Localization</MudText>
                 </MudSelectItem>
             }
         </MudSelect>
     </MudItem>
 
     <MudItem xs="6" md="3">
-        <MudSelect T="ShipCategory?" Variant="Variant.Outlined" @bind-Value="@SelectedType" Placeholder="@(Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_TypeFilter)).Localization + "...")" Clearable="true" AnchorOrigin="Origin.BottomCenter">
+        <MudSelect T="ShipCategory?" Variant="Variant.Outlined" Class="default-label-background" @bind-Value="@SelectedType" Label="@(Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_TypeFilter)))" Clearable AnchorOrigin="Origin.BottomCenter">
             @foreach (ShipCategory? item in typeList)
             {
                 <MudSelectItem Value="@item">
-                    <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(item.ToString()!).Localization</MudText>
+                    <MudText Color="Color.Default">@Localizer.GetAppLocalization(item.ToString()!).Localization</MudText>
                 </MudSelectItem>
             }
         </MudSelect>
     </MudItem>
+
+    @* ship search box *@
     <MudItem xs="12" Class="mt-n4 mb-n2">
         <MudTextField AutoFocus T="string" FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Placeholder="@(Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShipOrBuild)).Localization + "...")" @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
     </MudItem>
+
+    @* ship list *@
     <MudItem xs="12" md="@(HideSelectedShipList ? 6 : 4)">
         <MudPaper Style="max-height: 300px; min-height: 300px; overflow:auto" Outlined="true">
-            <MudList @ref="mudList" Clickable="true" SelectedValueChanged="AddShip">
-                <MudVirtualize IsEnabled="true" Items="@filteredSummaryList" Context="pair">
-                    <MudListItem Style="text-align: center" Value="@pair.Value.Index">
-                        <MudText Color="Color.Secondary">
+            <MudList Clickable>
+                <MudVirtualize IsEnabled Items="@filteredSummaryList" Context="pair">
+                    <MudListItem Style="text-align: center" Value="@pair.Value.Index" OnClick="@(() => AddShip(pair.Value.Index))">
+                        <MudText Color="Color.Default">
                             @pair.Key
                         </MudText>
                     </MudListItem>
@@ -110,6 +114,8 @@
             </MudList>
         </MudPaper>
     </MudItem>
+
+    @* selected ship list *@
     @if (!HideSelectedShipList)
     {
         <MudItem xs="12" md="4">
@@ -155,11 +161,13 @@
             </MudPaper>
         </MudItem>
     }
+
+    @* saved build list *@
     @if (EnableSavedBuildList)
     {
         <MudItem xs="12" md="@(HideSelectedShipList ? 6 : 4)">
             <MudPaper Outlined Style="min-height: 300px; max-height: 300px; overflow: auto">
-                <MudList @ref="buildList" Clickable Dense>
+                <MudList Clickable Dense>
                     @if (!filteredBuildsList.Any())
                     {
                         <MudListItem Disabled>
@@ -215,10 +223,6 @@
     public bool DisableSelectedShipBuildEditing { get; set; }
 
     private ImmutableList<KeyValuePair<string, ShipSummary>> shipNameList = ImmutableList<KeyValuePair<string, ShipSummary>>.Empty;
-
-    private MudList mudList = default!;
-
-    private MudList? buildList;
 
     private List<KeyValuePair<string, ShipSummary>> filteredSummaryList = new();
 
@@ -393,18 +397,15 @@
     private void RemoveShip(ShipBuildContainer container)
     {
         SelectedShips.Remove(container);
-#pragma warning disable BL0005
-        mudList.SelectedValue = null;
-        if (buildList != null)
-        {
-            buildList.SelectedValue = null;
-        }
-#pragma warning restore BL0005
     }
 
-    private void AddShip(object? obj)
+    private void AddShip(string shipIndex)
     {
-        if (obj is not string shipIndex || !AllowCopies && SelectedShips.Any(x => x.Ship.Index.Equals(shipIndex))) return;
+        if (!AllowCopies && SelectedShips.Any(x => x.Ship.Index.Equals(shipIndex)))
+        {
+            return;
+        }
+
         if (MultiSelect)
         {
             var ship = AppData.ShipDictionary[shipIndex];
@@ -414,12 +415,6 @@
         {
             var ship = AppData.ShipDictionary[shipIndex];
             SelectedShips.Add(ShipBuildContainer.CreateNew(ship, null, null));
-        }
-        if (AllowCopies)
-        {
-#pragma warning disable BL0005
-            mudList.SelectedValue = null;
-#pragma warning restore BL0005
         }
     }
 
@@ -437,29 +432,11 @@
             MetricsService.BuildImports.WithLabels("ship-selector", "saved-builds").Inc();
             SelectedShips.Add(ShipBuildContainer.CreateNew(AppData.ShipDictionary[build.ShipIndex], build, null));
         }
-
-        if (AllowCopies)
-        {
-#pragma warning disable BL0005
-            mudList.SelectedValue = null;
-            if (buildList != null)
-            {
-                buildList.SelectedValue = null;
-            }
-#pragma warning restore BL0005
-        }
     }
 
     private void RemoveAllShips()
     {
         SelectedShips.Clear();
-#pragma warning disable BL0005
-        mudList.SelectedValue = null;
-        if (buildList != null)
-        {
-            buildList.SelectedValue = null;
-        }
-#pragma warning restore BL0005
     }
 
     private async Task AddBuild(ShipBuildContainer ship)

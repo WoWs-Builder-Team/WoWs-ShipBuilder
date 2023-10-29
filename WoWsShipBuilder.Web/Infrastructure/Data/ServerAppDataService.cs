@@ -32,27 +32,27 @@ public class ServerAppDataService : IAppDataService
         this.awsClient = awsClient;
         this.options = options.Value;
         this.logger = logger;
-        DefaultAppDataDirectory = string.Empty;
-        AppDataDirectory = string.Empty;
-        AppDataImageDirectory = string.Empty;
+        this.DefaultAppDataDirectory = string.Empty;
+        this.AppDataDirectory = string.Empty;
+        this.AppDataImageDirectory = string.Empty;
     }
 
     public async Task FetchData()
     {
-        logger.LogInformation("Starting to fetch data with server type {Server}...", options.Server);
+        this.logger.LogInformation("Starting to fetch data with server type {Server}...", this.options.Server);
         const string undefinedMarker = "undefined";
         AppData.ResetCaches();
 
-        var onlineVersionInfo = await awsClient.DownloadVersionInfo(options.Server);
+        var onlineVersionInfo = await this.awsClient.DownloadVersionInfo(this.options.Server);
         if (onlineVersionInfo.CurrentVersion is not null)
         {
             AppData.DataVersion = onlineVersionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + onlineVersionInfo.CurrentVersion.DataIteration;
-            logger.LogInformation("Found online version info with version {Version}", AppData.DataVersion);
+            this.logger.LogInformation("Found online version info with version {Version}", AppData.DataVersion);
         }
         else
         {
             AppData.DataVersion = undefinedMarker;
-            logger.LogWarning("Online version info not available");
+            this.logger.LogWarning("Online version info not available");
         }
 
         SentrySdk.ConfigureScope(scope =>
@@ -62,8 +62,8 @@ public class ServerAppDataService : IAppDataService
             scope.SetTag("data.server", onlineVersionInfo.CurrentVersion?.VersionType.ToString() ?? undefinedMarker);
         });
         var files = onlineVersionInfo.Categories.SelectMany(category => category.Value.Select(file => (category.Key, file.FileName))).ToList();
-        await awsClient.DownloadFiles(options.Server, files);
-        logger.LogInformation("Finished fetching data");
+        await this.awsClient.DownloadFiles(this.options.Server, files);
+        this.logger.LogInformation("Finished fetching data");
     }
 
     public async Task LoadLocalFilesAsync(ServerType serverType)
@@ -94,16 +94,16 @@ public class ServerAppDataService : IAppDataService
 
     public async Task<VersionInfo?> GetCurrentVersionInfo(ServerType serverType)
     {
-        versionInfo ??= await awsClient.DownloadVersionInfo(serverType);
-        return versionInfo;
+        this.versionInfo ??= await this.awsClient.DownloadVersionInfo(serverType);
+        return this.versionInfo;
     }
 
     public async Task<Dictionary<string, string>?> ReadLocalizationData(ServerType serverType, string language)
     {
-        if (options.UseLocalFiles)
+        if (this.options.UseLocalFiles)
         {
             const string shipBuilderDirectory = "WoWsShipBuilderDev";
-            string localizationRoot = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), shipBuilderDirectory, "json", options.Server.StringName(), "Localization");
+            string localizationRoot = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), shipBuilderDirectory, "json", this.options.Server.StringName(), "Localization");
             string file = Path.Join(localizationRoot, $"{language}.json");
             if (!File.Exists(file))
             {
@@ -114,7 +114,7 @@ public class ServerAppDataService : IAppDataService
             return JsonConvert.DeserializeObject<Dictionary<string, string>>(fileContent);
         }
 
-        if (awsClient is ServerAwsClient serverAwsClient)
+        if (this.awsClient is ServerAwsClient serverAwsClient)
         {
             return await serverAwsClient.DownloadLocalization(language, serverType);
         }

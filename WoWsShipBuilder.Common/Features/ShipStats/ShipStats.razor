@@ -1,14 +1,16 @@
 ﻿@page "/ship"
 
 @using DynamicData
-@using WoWsShipBuilder.DataContainers
-@using WoWsShipBuilder.Features.ShipStats.Components
 @using WoWsShipBuilder.Features.Builds
+@using WoWsShipBuilder.Features.DataContainers
+@using WoWsShipBuilder.Features.ShipStats.Components
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
+
+@implements IDisposable
 
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
@@ -21,11 +23,11 @@
 
 <MudBreakpointProvider>
     @* HideSlider is set to true because of an issue in MudBlazor. see https://github.com/MudBlazor/MudBlazor/issues/4742*@
-    <MudDynamicTabs Color="Color.Primary" Position="Position.Top" HideSlider CloseTab="@RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="py-6" Outlined Border Class="px-md-6 pt-3 sticky-tabs-header">
+    <MudDynamicTabs Position="Position.Top" HideSlider CloseTab="@RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="py-6" Outlined Border Class="px-md-6 pt-3 ship-stats-tabs sticky-tabs-header">
         <ChildContent>
             @foreach (var container in shipContainers)
             {
-                <MudTabPanel Style="@GetStyle(container.Id)" Text="@Localizer.GetGameLocalization(container.Ship.Index + "_FULL").Localization" Tag="@container.Id" ID="@container.Id" @key="@container.Id">
+                <MudTabPanel Text="@Localizer.GetGameLocalization(container.Ship.Index + "_FULL").Localization" Tag="@container.Id" ID="@container.Id" @key="@container.Id">
                     <ShipStatsTab Cache="@cache" CurrentTabId="container.Id" ShipIndex="@container.Ship.Index" OnShipChanged="@OnShipIndexChanged" Build="@container.Build"/>
                 </MudTabPanel>
             }
@@ -34,25 +36,25 @@
             <MudStack Row>
                 <MudDivider Vertical/>
                 <MudTooltip Text="@Localizer.GetAppLocalization(Translation.DispersionGraphWindow_AddShip).Localization" Arrow Delay="350">
-                    <MudIconButton Icon="@Icons.Material.Filled.Add" OnClick="@OpenAddDialogAsync" Color="Color.Secondary"/>
+                    <MudIconButton Icon="@Icons.Material.Filled.Add" OnClick="@OpenAddDialogAsync" Color="Color.Primary"/>
                 </MudTooltip>
                 <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInBallisticCharts).Localization" Arrow Delay="350">
-                    <MudIconButton OnClick="@OpenBallisticCharts" Color="Color.Secondary" Style="width: 48px; height: 48px">
+                    <MudIconButton OnClick="@OpenBallisticCharts" Color="Color.Primary" Style="width: 48px; height: 48px">
                         <MudIcon Icon="@DispersionAndBallisticChartsPath" ViewBox="-4 -7 24 24"/>
                     </MudIconButton>
                 </MudTooltip>
                 <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInAccelerationCharts).Localization" Arrow Delay="350">
-                    <MudIconButton Icon="@Icons.Material.Filled.Speed" OnClick="@OpenAccelerationCharts" Color="Color.Secondary"/>
+                    <MudIconButton Icon="@Icons.Material.Filled.Speed" OnClick="@OpenAccelerationCharts" Color="Color.Primary"/>
                 </MudTooltip>
                 <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInShipComparison).Localization" Arrow Delay="350">
-                    <MudIconButton Icon="@Icons.Material.Filled.FormatListBulleted" OnClick="@OpenShipComparison" Color="Color.Secondary"/>
+                    <MudIconButton Icon="@Icons.Material.Filled.FormatListBulleted" OnClick="@OpenShipComparison" Color="Color.Primary"/>
                 </MudTooltip>
             </MudStack>
         </Header>
     </MudDynamicTabs>
 </MudBreakpointProvider>
 <MudScrollToTop TopOffset="100" Style="z-index:2001">
-    <MudFab Color="Color.Info" StartIcon="@Icons.Material.Filled.KeyboardDoubleArrowUp"/>
+    <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.KeyboardDoubleArrowUp"/>
 </MudScrollToTop>
 
 @code {
@@ -217,7 +219,7 @@
         shipContainers.AddRange(buildContainers ?? indexList.Select(index => ShipBuildContainer.CreateNew(AppData.ShipDictionary[index], null, null)));
     }
 
-    private async Task<List<string>> StoreBuildsForTransfer(bool calculateShipDataContainer)
+    private List<string> StoreBuildsForTransfer(bool calculateShipDataContainer)
     {
         List<ShipBuildContainer> buildContainers = new();
         List<string> shipIndexes = new();
@@ -230,21 +232,7 @@
             }
             else
             {
-                if (container.Build is not null)
-                {
-                    var viewModel = await ShipStatsTab.CreateViewModel(container.Ship.Index, container.Build, Localizer);
-
-                    List<(string, float)> modifiers = viewModel.UpgradePanelViewModel.GetModifierList();
-                    modifiers.AddRange(viewModel.ConsumableViewModel.GetModifiersList());
-                    modifiers.AddRange(viewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
-                    modifiers.AddRange(viewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
-
-                    buildContainers.Add(container with { Modifiers = modifiers, ShipDataContainer = calculateShipDataContainer ? DataContainerUtility.GetShipDataContainerFromBuild(container.Ship, container.Build.Modules, container.Ship.ShipUpgradeInfo.ShipUpgrades, modifiers) : container.ShipDataContainer });
-                }
-                else
-                {
-                    buildContainers.Add(calculateShipDataContainer ? container with { ShipDataContainer = DataContainerUtility.GetStockShipDataContainer(container.Ship) } : container);
-                }
+                buildContainers.Add(UpdateShipDataContainer(calculateShipDataContainer, container));
             }
 
             shipIndexes.Add(container.Ship.Index);
@@ -254,24 +242,42 @@
         return shipIndexes;
     }
 
-    private async Task OpenBallisticCharts()
+    private ShipBuildContainer UpdateShipDataContainer(bool calculateShipDataContainer, ShipBuildContainer container)
+    {
+        if (container.Build is not null)
+        {
+            using var viewModel = ShipStatsTab.CreateViewModel(container.Ship.Index, container.Build);
+
+            List<(string, float)> modifiers = viewModel.UpgradePanelViewModel.GetModifierList();
+            modifiers.AddRange(viewModel.ConsumableViewModel.GetModifiersList());
+            modifiers.AddRange(viewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
+            modifiers.AddRange(viewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
+
+            var newDataContainer = calculateShipDataContainer ? DataContainerUtility.GetShipDataContainerFromBuild(container.Ship, container.Build.Modules, container.Ship.ShipUpgradeInfo.ShipUpgrades, modifiers) : container.ShipDataContainer;
+            return container with { Modifiers = modifiers, ShipDataContainer = newDataContainer };
+        }
+
+        return calculateShipDataContainer ? container with { ShipDataContainer = DataContainerUtility.GetStockShipDataContainer(container.Ship) } : container;
+    }
+
+    private void OpenBallisticCharts()
     {
         MetricsService.ShipStatsActions.WithLabels("open-ballistic").Inc();
-        var shipIndexes = await StoreBuildsForTransfer(false);
+        var shipIndexes = StoreBuildsForTransfer(false);
         NavManager.NavigateTo($"/charts?shipIndex={string.Join(",", shipIndexes)}");
     }
 
-    private async Task OpenAccelerationCharts()
+    private void OpenAccelerationCharts()
     {
         MetricsService.ShipStatsActions.WithLabels("open-acceleration").Inc();
-        var shipIndexes = await StoreBuildsForTransfer(false);
+        var shipIndexes = StoreBuildsForTransfer(false);
         NavManager.NavigateTo($"/acceleration-charts?shipIndexes={string.Join(",", shipIndexes)}");
     }
 
-    private async Task OpenShipComparison()
+    private void OpenShipComparison()
     {
         MetricsService.ShipStatsActions.WithLabels("open-comparison").Inc();
-        await StoreBuildsForTransfer(true);
+        StoreBuildsForTransfer(true);
         NavManager.NavigateTo("/comparison");
     }
 
@@ -289,5 +295,10 @@
             return " background-color: rgba(0, 0, 0, 0.4);";
         }
         return string.Empty;
+    }
+
+    public void Dispose()
+    {
+        cache.Dispose();
     }
 }

@@ -11,7 +11,7 @@ namespace WoWsShipBuilder.Test.Infrastructure.GameData.ShipModuleTests
         [Test]
         public void SortShipUpgrades_SimpleUnsortedList()
         {
-            var data = CreateUpgradeList();
+            var data = this.CreateUpgradeList();
 
             var sortedData = ShipModuleHelper.GroupAndSortUpgrades(data);
 

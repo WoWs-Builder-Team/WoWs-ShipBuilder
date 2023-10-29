@@ -16,12 +16,12 @@ public partial class LocalDataUpdaterTest
     public async Task CheckJsonFileVersion_NoExistingData_AllFilesMarkedForDownload()
     {
         // Arrange
-        var testVersionInfo = CreateTestVersionInfo(1, new(Version.Parse("0.11.0"), GameVersionType.Live, 1));
-        awsClientMock.Setup(x => x.DownloadVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
-        mockFileSystem.AddDirectory(appDataHelper.Object.GetDataPath(ServerType.Live));
+        var testVersionInfo = this.CreateTestVersionInfo(1, new(Version.Parse("0.11.0"), GameVersionType.Live, 1));
+        this.awsClientMock.Setup(x => x.DownloadVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
+        this.mockFileSystem.AddDirectory(this.appDataHelper.Object.GetDataPath(ServerType.Live));
 
         // Act
-        var result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance).CheckJsonFileVersions(ServerType.Live);
+        var result = await new LocalDataUpdater(this.mockFileSystem, this.awsClientMock.Object, this.appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance).CheckJsonFileVersions(ServerType.Live);
 
         // Assert
         result.AvailableFileUpdates.Should()
@@ -37,7 +37,7 @@ public partial class LocalDataUpdaterTest
         // Arrange
         var currentVersion = new GameVersion(new(0, 10, 10), GameVersionType.Live, 1);
         var previousVersion = new GameVersion(new(0, 10, 9), GameVersionType.Live, 1);
-        var localVersionInfo = CreateTestVersionInfo(1, previousVersion);
+        var localVersionInfo = this.CreateTestVersionInfo(1, previousVersion);
         var testVersionInfo = new VersionInfo(
             new()
             {
@@ -47,12 +47,12 @@ public partial class LocalDataUpdaterTest
             2,
             currentVersion,
             localVersionInfo.CurrentVersion);
-        awsClientMock.Setup(x => x.DownloadVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
-        mockFileSystem.AddDirectory(appDataHelper.Object.GetDataPath(ServerType.Live));
-        appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(localVersionInfo);
+        this.awsClientMock.Setup(x => x.DownloadVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
+        this.mockFileSystem.AddDirectory(this.appDataHelper.Object.GetDataPath(ServerType.Live));
+        this.appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(localVersionInfo);
 
         // Act
-        var result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance).CheckJsonFileVersions(ServerType.Live);
+        var result = await new LocalDataUpdater(this.mockFileSystem, this.awsClientMock.Object, this.appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance).CheckJsonFileVersions(ServerType.Live);
 
         // Assert
         result.AvailableFileUpdates.Should().HaveCount(2);
@@ -65,13 +65,13 @@ public partial class LocalDataUpdaterTest
     public async Task CheckJsonFileVersion_ExistingData_NoDownloads()
     {
         // Arrange
-        var testVersionInfo = CreateTestVersionInfo(1, new(Version.Parse("0.11.0"), GameVersionType.Live, 1));
-        awsClientMock.Setup(x => x.DownloadVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
-        mockFileSystem.AddDirectory(appDataHelper.Object.GetDataPath(ServerType.Live));
-        appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
+        var testVersionInfo = this.CreateTestVersionInfo(1, new(Version.Parse("0.11.0"), GameVersionType.Live, 1));
+        this.awsClientMock.Setup(x => x.DownloadVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
+        this.mockFileSystem.AddDirectory(this.appDataHelper.Object.GetDataPath(ServerType.Live));
+        this.appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
 
         // Act
-        var result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance).CheckJsonFileVersions(ServerType.Live);
+        var result = await new LocalDataUpdater(this.mockFileSystem, this.awsClientMock.Object, this.appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance).CheckJsonFileVersions(ServerType.Live);
 
         // Assert
         result.AvailableFileUpdates.Should().BeEmpty();
@@ -108,12 +108,12 @@ public partial class LocalDataUpdaterTest
         {
             DataStructuresVersion = new(supportedDataVersion.Major, supportedDataVersion.Minor + 1, supportedDataVersion.Build),
         };
-        awsClientMock.Setup(x => x.DownloadVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
-        mockFileSystem.AddDirectory(appDataHelper.Object.GetDataPath(ServerType.Live));
-        appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(localVersionInfo);
+        this.awsClientMock.Setup(x => x.DownloadVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
+        this.mockFileSystem.AddDirectory(this.appDataHelper.Object.GetDataPath(ServerType.Live));
+        this.appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(localVersionInfo);
 
         // Act
-        var result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance).CheckJsonFileVersions(ServerType.Live);
+        var result = await new LocalDataUpdater(this.mockFileSystem, this.awsClientMock.Object, this.appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance).CheckJsonFileVersions(ServerType.Live);
 
         // Assert
         result.AvailableFileUpdates.Should().BeEmpty();

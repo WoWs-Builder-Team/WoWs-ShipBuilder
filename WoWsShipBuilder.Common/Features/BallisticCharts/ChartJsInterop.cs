@@ -17,20 +17,20 @@ public sealed class ChartJsInterop : IAsyncDisposable
 
     public async Task SetupGlobalChartConfigAsync(double aspectRatio)
     {
-        await InitializeModule();
-        await module.InvokeVoidAsync("SetupGlobalChartConfig", aspectRatio);
+        await this.InitializeModule();
+        await this.module.InvokeVoidAsync("SetupGlobalChartConfig", aspectRatio);
     }
 
     public async Task CreateChartAsync(string chartId, string title, string xLabel, string yLabel, string xUnit, string yUnit)
     {
-        await InitializeModule();
-        await module.InvokeVoidAsync("CreateChart", chartId, title, xLabel, yLabel, xUnit, yUnit);
+        await this.InitializeModule();
+        await this.module.InvokeVoidAsync("CreateChart", chartId, title, xLabel, yLabel, xUnit, yUnit);
     }
 
     public async Task ChangeSuggestedMaxAsync(string chartId, double newSuggestedMax)
     {
-        await InitializeModule();
-        await module.InvokeVoidAsync("ChangeSuggestedMax", chartId, newSuggestedMax);
+        await this.InitializeModule();
+        await this.module.InvokeVoidAsync("ChangeSuggestedMax", chartId, newSuggestedMax);
     }
 
     public async Task BatchAddDataAsync(List<string> chartIds, List<NewChartDataInput> newChartData)
@@ -40,26 +40,26 @@ public sealed class ChartJsInterop : IAsyncDisposable
             throw new InvalidOperationException("The number of chartId is not equal to the number of dataset of each NewChartDataInput");
         }
 
-        await InitializeModule();
-        await module.InvokeVoidAsync("BatchAddData", chartIds, newChartData);
+        await this.InitializeModule();
+        await this.module.InvokeVoidAsync("BatchAddData", chartIds, newChartData);
     }
 
     public async Task BatchRemoveDataAsync(List<string> chartId, List<string> id)
     {
-        await InitializeModule();
-        await module.InvokeVoidAsync("BatchRemoveData", chartId, id);
+        await this.InitializeModule();
+        await this.module.InvokeVoidAsync("BatchRemoveData", chartId, id);
     }
 
     public async Task BatchUpdateDataAsync(string chartId, List<UpdateChartDataInput> updatedChartData)
     {
-        await InitializeModule();
-        await module.InvokeVoidAsync("BatchUpdateData", chartId, updatedChartData);
+        await this.InitializeModule();
+        await this.module.InvokeVoidAsync("BatchUpdateData", chartId, updatedChartData);
     }
 
     public async Task BatchUpdateDataNewLabelsAsync(string chartId, List<UpdateChartDataLabelInput> updatedChartData)
     {
-        await InitializeModule();
-        await module.InvokeVoidAsync("BatchUpdateDataNewLabels", chartId, updatedChartData);
+        await this.InitializeModule();
+        await this.module.InvokeVoidAsync("BatchUpdateDataNewLabels", chartId, updatedChartData);
     }
 
     public async Task MultipleBatchUpdateDataNewLabels(List<string> chartIds, List<MultipleUpdateChartDataLabelInput> multipleUpdatedChartDataList)
@@ -69,8 +69,8 @@ public sealed class ChartJsInterop : IAsyncDisposable
             throw new InvalidOperationException("The number of chartId is not equal to the number of dataset of each MultipleUpdatedChartDataList");
         }
 
-        await InitializeModule();
-        await module.InvokeVoidAsync("MultipleBatchUpdateDataNewLabels", chartIds, multipleUpdatedChartDataList);
+        await this.InitializeModule();
+        await this.module.InvokeVoidAsync("MultipleBatchUpdateDataNewLabels", chartIds, multipleUpdatedChartDataList);
     }
 
     public async Task MultipleBatchAddOrUpdateDataNewLabels(List<string> chartIds, List<MultipleUpdateChartDataLabelInput> multipleUpdatedChartDataList)
@@ -80,8 +80,8 @@ public sealed class ChartJsInterop : IAsyncDisposable
             throw new InvalidOperationException("The number of chartId is not equal to the number of dataset of each MultipleUpdatedChartDataList");
         }
 
-        await InitializeModule();
-        await module.InvokeVoidAsync("MultipleBatchAddOrUpdateDataNewLabels", chartIds, multipleUpdatedChartDataList);
+        await this.InitializeModule();
+        await this.module.InvokeVoidAsync("MultipleBatchAddOrUpdateDataNewLabels", chartIds, multipleUpdatedChartDataList);
     }
 
     [MemberNotNull(nameof(module))]
@@ -89,17 +89,17 @@ public sealed class ChartJsInterop : IAsyncDisposable
     {
         // module is not null after this method but apparently, Roslyn does not want to recognize that.
 #pragma warning disable CS8774
-        module ??= await runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/scripts/ChartsHelper.js");
+        this.module ??= await this.runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/scripts/ChartsHelper.js");
 #pragma warning restore CS8774
     }
 
     async ValueTask IAsyncDisposable.DisposeAsync()
     {
-        if (module is not null)
+        if (this.module is not null)
         {
             try
             {
-                await module.DisposeAsync();
+                await this.module.DisposeAsync();
             }
             catch (JSDisconnectedException)
             {

@@ -2,21 +2,20 @@
 @using System.Collections.Specialized
 @using System.Linq
 @using DynamicData
-@using WoWsShipBuilder.DataContainers
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.Features.BallisticCharts.Data
 @using WoWsShipBuilder.Features.Builds
+@using WoWsShipBuilder.Features.DataContainers
 @using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Utility
 @implements IDisposable
 @inject ILocalizer Localizer
 
-<MudDialog>
+<MudDialog Class="default-background">
     <TitleContent>
         <MudItem Class="d-flex align-center">
-            <MudIcon Icon="@Icons.Material.Filled.HelpOutline" Color="Color.Info" Size="Size.Large"/>
             <MudText Typo="Typo.h6" Class="mx-auto">
                 @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_SelectShipsAndShells)).Localization
             </MudText>
@@ -31,7 +30,7 @@
                 <MudItem xs="12" md="4" Style="min-height: 600px; max-height: 600px; overflow-y: auto;">
                     @if (dataWrappers.Count == 0)
                     {
-                        <MudText Typo="Typo.body2" Class="mt-4" Align="Align.Center" Color="Color.Primary" Style="font-size: x-large">
+                        <MudText Typo="Typo.body2" Class="mt-4" Align="Align.Center" Color="Color.Default" Style="font-size: x-large">
                             @Localizer.GetAppLocalization(Translation.ShipAndShellsSelectionDialog_NoShipSelected).Localization
                         </MudText>
                     }
@@ -42,7 +41,7 @@
                                 <MudText Typo="Typo.caption" Class="my-auto">
                                     @Localizer.GetGameLocalization($"{dataWrapper.ShipBuildContainer.Ship.Index}_FULL").Localization
                                 </MudText>
-                                <MudIconButton Icon="@Icons.Material.Filled.Clear" Color="Color.Primary" Size="Size.Small" OnClick="@(() => RemoveShip(dataWrapper))"/>
+                                <MudIconButton Icon="@Icons.Material.Filled.Clear" Color="Color.Secondary" Size="Size.Small" OnClick="@(() => RemoveShip(dataWrapper))"/>
                             </MudItem>
                             @if (dataWrapper.ShipBuildContainer.Ship.MainBatteryModuleList.Any())
                             {
@@ -57,7 +56,7 @@
                             }
                             else
                             {
-                                <MudText Color="Color.Primary">
+                                <MudText Color="Color.Dark">
                                     @Localizer.GetAppLocalization(nameof(Translation.MessageBox_ShipNoGun)).Localization
                                 </MudText>
                             }
@@ -72,10 +71,10 @@
         </MudContainer>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Primary">
+        <MudButton OnClick="@Cancel" Variant="Variant.Filled" Color="Color.Warning">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
-        <MudButton Color="Color.Warning" OnClick="@(() => ReturnSelectedShells(true))" Variant="Variant.Filled" Disabled="@(processing || !dataWrappers.Any(wrapper => wrapper.SelectedShells.Any()))">
+        <MudButton Color="Color.Tertiary" OnClick="@(() => ReturnSelectedShells(true))" Variant="Variant.Filled" Disabled="@(processing || !dataWrappers.Exists(wrapper => wrapper.SelectedShells.Any()))">
             @if (processing)
             {
                 <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -221,7 +220,7 @@
             else
             {
                 commonHullName = wrapper.ShipBuildContainer.Ship.ShellCompatibilities[selectedShells.Single()].CompatibleHullArtilleryModulesCombo.Keys.First();
-                commonArtilleryName = wrapper.ShipBuildContainer.Ship.ShellCompatibilities[selectedShells.Single()].CompatibleHullArtilleryModulesCombo[commonHullName].First();
+                commonArtilleryName = wrapper.ShipBuildContainer.Ship.ShellCompatibilities[selectedShells.Single()].CompatibleHullArtilleryModulesCombo[commonHullName][0];
             }
 
             var ship = wrapper.ShipBuildContainer.Ship;
@@ -325,10 +324,9 @@
 
     private static void UpgradeModuleInShipConfiguration(List<ShipUpgrade> shipUpgrades, ShipUpgrade shipUpgrade)
     {
-        ShipUpgrade? oldItem = shipUpgrades.FirstOrDefault(module => module.UcType == shipUpgrade.UcType);
+        var oldItem = shipUpgrades.Find(module => module.UcType == shipUpgrade.UcType);
         if (oldItem != null)
         {
-            // SelectedModules.Remove(oldItem);
             shipUpgrades.Replace(oldItem, shipUpgrade);
         }
         else

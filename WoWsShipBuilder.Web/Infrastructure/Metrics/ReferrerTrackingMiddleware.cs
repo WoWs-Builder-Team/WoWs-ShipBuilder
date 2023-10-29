@@ -20,10 +20,10 @@ public class ReferrerTrackingMiddleware
     {
         if (context.Request.Query.TryGetValue(ReferrerQueryParamName, out var refValue) && !string.IsNullOrWhiteSpace(refValue))
         {
-            metricsService.RefCount.WithLabels(refValue!, context.Request.Path).Inc();
+            this.metricsService.RefCount.WithLabels(refValue!, context.Request.Path).Inc();
         }
 
-        await next(context);
+        await this.next(context);
     }
 }
 

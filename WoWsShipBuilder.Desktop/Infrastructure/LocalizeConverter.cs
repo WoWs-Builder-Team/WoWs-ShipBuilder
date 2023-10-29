@@ -135,7 +135,7 @@ namespace WoWsShipBuilder.Desktop.Infrastructure
 
         private sealed class DemoLocalizerImpl : ILocalizer
         {
-            public LocalizationResult this[string key] => GetGameLocalization(key);
+            public LocalizationResult this[string key] => this.GetGameLocalization(key);
 
             public LocalizationResult GetGameLocalization(string key) => new(true, key);
 
