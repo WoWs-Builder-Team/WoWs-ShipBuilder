@@ -58,7 +58,7 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
 
     public static TorpedoArmamentDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
     {
-        var torpConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Torpedoes);
+        var torpConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.Torpedoes);
         if (torpConfiguration == null)
         {
             return null;
@@ -70,7 +70,7 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
         TorpedoModule? torpedoModule;
         if (torpedoOptions.Length == 1)
         {
-            torpedoModule = ship.TorpedoModules[supportedModules.First()];
+            torpedoModule = ship.TorpedoModules[supportedModules[0]];
         }
         else
         {
@@ -78,7 +78,7 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
             torpedoModule = ship.TorpedoModules[hullTorpedoName];
         }
 
-        var launcher = torpedoModule.TorpedoLaunchers.First();
+        var launcher = torpedoModule.TorpedoLaunchers[0];
 
         List<(int BarrelCount, int LauncherCount, string LauncherName)> arrangementList = torpedoModule.TorpedoLaunchers
             .GroupBy(torpModule => torpModule.NumBarrels)
@@ -119,13 +119,13 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
         var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
         nfi.NumberGroupSeparator = "'";
 
-        var fullSalvoDamage = (torpCount * torpedoes.First().Damage).ToString("n0", nfi);
+        var fullSalvoDamage = (torpCount * torpedoes[0].Damage).ToString("n0", nfi);
         string torpFullSalvoDmg = default!;
         string altTorpFullSalvoDmg = default!;
         if (torpedoes.Count > 1)
         {
             torpFullSalvoDmg = fullSalvoDamage;
-            altTorpFullSalvoDmg = (torpCount * torpedoes.Last().Damage).ToString("n0", nfi);
+            altTorpFullSalvoDmg = (torpCount * torpedoes[^1].Damage).ToString("n0", nfi);
             fullSalvoDamage = default!;
         }
 
@@ -165,7 +165,7 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
 
         torpedoArmamentDataContainer.LoadersCount = loadersSum;
 
-        torpedoArmamentDataContainer.Torpedoes.Last().IsLast = true;
+        torpedoArmamentDataContainer.Torpedoes[^1].IsLast = true;
 
         torpedoArmamentDataContainer.UpdateDataElements();
         return torpedoArmamentDataContainer;

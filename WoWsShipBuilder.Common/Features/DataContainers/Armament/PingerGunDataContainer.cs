@@ -57,7 +57,7 @@ public partial record PingerGunDataContainer : DataContainerBase
         // Safe approach is necessary because data up until 0.11.9#1 does not include this data due to an issue in the data converter
         if (pingerUpgrade.Components.TryGetValue(ComponentType.Sonar, out string[]? pingerGunInfo))
         {
-            pingerGun = ship.PingerGunList[pingerGunInfo.First()];
+            pingerGun = ship.PingerGunList[pingerGunInfo[0]];
         }
         else
         {
@@ -65,7 +65,7 @@ public partial record PingerGunDataContainer : DataContainerBase
             pingerGun = ship.PingerGunList.First().Value;
         }
 
-        var pingSpeed = pingerGun.WaveParams.First().WaveSpeed.First();
+        var pingSpeed = pingerGun.WaveParams[0].WaveSpeed[0];
         var pingSpeedModifiers = modifiers.FindModifiers("pingerWaveSpeedCoeff");
         pingSpeed = pingSpeedModifiers.Aggregate(pingSpeed, (current, pingSpeedModifier) => current * (decimal)pingSpeedModifier);
 
@@ -92,7 +92,7 @@ public partial record PingerGunDataContainer : DataContainerBase
             Range = pingerGun.WaveDistance / 1000,
             FirstPingDuration = Math.Round(firstPingDuration, 1),
             SecondPingDuration = Math.Round(secondPingDuration, 1),
-            PingWidth = pingerGun.WaveParams.First().StartWaveWidth,
+            PingWidth = pingerGun.WaveParams[0].StartWaveWidth,
             PingSpeed = Math.Round(pingSpeed, 0),
         };
 

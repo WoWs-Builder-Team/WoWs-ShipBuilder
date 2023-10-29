@@ -160,18 +160,18 @@ public partial record TorpedoDataContainer : ProjectileDataContainer
 
             if (torp.TorpedoType == DataStructures.TorpedoType.Magnetic)
             {
-                torpedoDataContainer.MaxTurningSpeedFirstPing = Math.Round((decimal)torp.MagneticTorpedoParams.MaxTurningSpeed.First(), 1);
-                torpedoDataContainer.MaxTurningSpeedSecondPing = Math.Round((decimal)torp.MagneticTorpedoParams.MaxTurningSpeed.Last(), 1);
-                torpedoDataContainer.TurningAccelerationFirstPing = Math.Round((decimal)torp.MagneticTorpedoParams.TurningAcceleration.First(), 1);
-                torpedoDataContainer.TurningAccelerationSecondPing = Math.Round((decimal)torp.MagneticTorpedoParams.TurningAcceleration.Last(), 1);
-                torpedoDataContainer.MaxVerticalSpeedFirstPing = Math.Round((decimal)torp.MagneticTorpedoParams.MaxVerticalSpeed.First(), 1);
-                torpedoDataContainer.MaxVerticalSpeedSecondPing = Math.Round((decimal)torp.MagneticTorpedoParams.MaxVerticalSpeed.Last(), 1);
-                torpedoDataContainer.VerticalAccelerationFirstPing = Math.Round((decimal)torp.MagneticTorpedoParams.VerticalAcceleration.First(), 1);
-                torpedoDataContainer.VerticalAccelerationSecondPing = Math.Round((decimal)torp.MagneticTorpedoParams.VerticalAcceleration.Last(), 1);
-                torpedoDataContainer.SearchRadiusFirstPing = Math.Round((decimal)torp.MagneticTorpedoParams.SearchRadius.First(), 1);
-                torpedoDataContainer.SearchRadiusSecondPing = Math.Round((decimal)torp.MagneticTorpedoParams.SearchRadius.Last(), 1);
-                torpedoDataContainer.SearchAngleFirstPing = Math.Round((decimal)torp.MagneticTorpedoParams.SearchAngle.First(), 1);
-                torpedoDataContainer.SearchAngleSecondPing = Math.Round((decimal)torp.MagneticTorpedoParams.SearchAngle.Last(), 1);
+                torpedoDataContainer.MaxTurningSpeedFirstPing = Math.Round((decimal)torp.MagneticTorpedoParams.MaxTurningSpeed[0], 1);
+                torpedoDataContainer.MaxTurningSpeedSecondPing = Math.Round((decimal)torp.MagneticTorpedoParams.MaxTurningSpeed[^1], 1);
+                torpedoDataContainer.TurningAccelerationFirstPing = Math.Round((decimal)torp.MagneticTorpedoParams.TurningAcceleration[0], 1);
+                torpedoDataContainer.TurningAccelerationSecondPing = Math.Round((decimal)torp.MagneticTorpedoParams.TurningAcceleration[^1], 1);
+                torpedoDataContainer.MaxVerticalSpeedFirstPing = Math.Round((decimal)torp.MagneticTorpedoParams.MaxVerticalSpeed[0], 1);
+                torpedoDataContainer.MaxVerticalSpeedSecondPing = Math.Round((decimal)torp.MagneticTorpedoParams.MaxVerticalSpeed[^1], 1);
+                torpedoDataContainer.VerticalAccelerationFirstPing = Math.Round((decimal)torp.MagneticTorpedoParams.VerticalAcceleration[0], 1);
+                torpedoDataContainer.VerticalAccelerationSecondPing = Math.Round((decimal)torp.MagneticTorpedoParams.VerticalAcceleration[^1], 1);
+                torpedoDataContainer.SearchRadiusFirstPing = Math.Round((decimal)torp.MagneticTorpedoParams.SearchRadius[0], 1);
+                torpedoDataContainer.SearchRadiusSecondPing = Math.Round((decimal)torp.MagneticTorpedoParams.SearchRadius[^1], 1);
+                torpedoDataContainer.SearchAngleFirstPing = Math.Round((decimal)torp.MagneticTorpedoParams.SearchAngle[0], 1);
+                torpedoDataContainer.SearchAngleSecondPing = Math.Round((decimal)torp.MagneticTorpedoParams.SearchAngle[^1], 1);
 
                 var ddCutOff = torp.MagneticTorpedoParams.DropTargetAtDistance.First(x => x.Key == ShipClass.Destroyer).Value;
                 var bbCutOff = torp.MagneticTorpedoParams.DropTargetAtDistance.First(x => x.Key == ShipClass.Battleship).Value;
@@ -179,16 +179,16 @@ public partial record TorpedoDataContainer : ProjectileDataContainer
                 var subCutOff = torp.MagneticTorpedoParams.DropTargetAtDistance.First(x => x.Key == ShipClass.Submarine).Value;
                 var cvCutOff = torp.MagneticTorpedoParams.DropTargetAtDistance.First(x => x.Key == ShipClass.AirCarrier).Value;
 
-                torpedoDataContainer.DestroyerCutOffFirstPing = Math.Round((decimal)ddCutOff.First(), 1);
-                torpedoDataContainer.DestroyerCutOffSecondPing = Math.Round((decimal)ddCutOff.Last(), 1);
-                torpedoDataContainer.BattleshipCutOffFirstPing = Math.Round((decimal)bbCutOff.First(), 1);
-                torpedoDataContainer.BattleshipCutOffSecondPing = Math.Round((decimal)bbCutOff.Last(), 1);
-                torpedoDataContainer.CruiserCutOffFirstPing = Math.Round((decimal)caCutOff.First(), 1);
-                torpedoDataContainer.CruiserCutOffSecondPing = Math.Round((decimal)caCutOff.Last(), 1);
-                torpedoDataContainer.SubCutOffFirstPing = Math.Round((decimal)subCutOff.First(), 1);
-                torpedoDataContainer.SubCutOffSecondPing = Math.Round((decimal)subCutOff.Last(), 1);
-                torpedoDataContainer.CvCutOffFirstPing = Math.Round((decimal)cvCutOff.First(), 1);
-                torpedoDataContainer.CvCutOffSecondPing = Math.Round((decimal)cvCutOff.Last(), 1);
+                torpedoDataContainer.DestroyerCutOffFirstPing = Math.Round((decimal)ddCutOff[0], 1);
+                torpedoDataContainer.DestroyerCutOffSecondPing = Math.Round((decimal)ddCutOff[^1], 1);
+                torpedoDataContainer.BattleshipCutOffFirstPing = Math.Round((decimal)bbCutOff[0], 1);
+                torpedoDataContainer.BattleshipCutOffSecondPing = Math.Round((decimal)bbCutOff[^1], 1);
+                torpedoDataContainer.CruiserCutOffFirstPing = Math.Round((decimal)caCutOff[0], 1);
+                torpedoDataContainer.CruiserCutOffSecondPing = Math.Round((decimal)caCutOff[^1], 1);
+                torpedoDataContainer.SubCutOffFirstPing = Math.Round((decimal)subCutOff[0], 1);
+                torpedoDataContainer.SubCutOffSecondPing = Math.Round((decimal)subCutOff[^1], 1);
+                torpedoDataContainer.CvCutOffFirstPing = Math.Round((decimal)cvCutOff[0], 1);
+                torpedoDataContainer.CvCutOffSecondPing = Math.Round((decimal)cvCutOff[^1], 1);
             }
 
             if (torp.IgnoreClasses != null && torp.IgnoreClasses.Any())

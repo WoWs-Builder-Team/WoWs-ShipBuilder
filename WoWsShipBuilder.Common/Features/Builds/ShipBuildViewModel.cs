@@ -76,7 +76,7 @@ public partial class ShipBuildViewModel : ReactiveObject
         return null;
     }
 
-    public ShipBuildContainer CreateShipBuildContainerAsync(ShipBuildContainer baseContainer)
+    public ShipBuildContainer CreateShipBuildContainer(ShipBuildContainer baseContainer)
     {
         var build = this.DumpToBuild();
         List<int>? activatedConsumables = this.ConsumableViewModel.ActivatedSlots.Any() ? this.ConsumableViewModel.ActivatedSlots.ToList() : null;
@@ -86,12 +86,12 @@ public partial class ShipBuildViewModel : ReactiveObject
             Build = build,
             ActivatedConsumableSlots = activatedConsumables,
             SpecialAbilityActive = this.SpecialAbilityActive,
-            ShipDataContainer = this.CreateDataContainerAsync(modifiers),
+            ShipDataContainer = this.CreateDataContainer(modifiers),
             Modifiers = modifiers,
         };
     }
 
-    private ShipDataContainer CreateDataContainerAsync(List<(string, float)> modifiers)
+    private ShipDataContainer CreateDataContainer(List<(string, float)> modifiers)
     {
         return ShipDataContainer.CreateFromShip(this.CurrentShip, this.ShipModuleViewModel.SelectedModules.ToList(), modifiers);
     }

@@ -215,6 +215,6 @@ public class Build
 
     private static IEnumerable<string> ReduceToIndex(IEnumerable<string> names)
     {
-        return names.Select(x => x.Split("_").First());
+        return names.Select(x => x.Split("_")[0]);
     }
 }

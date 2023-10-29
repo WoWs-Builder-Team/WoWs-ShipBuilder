@@ -33,7 +33,7 @@ public partial record ConcealmentDataContainer : DataContainerBase
 
     public static ConcealmentDataContainer FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)
     {
-        var hull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull].First()];
+        var hull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull][0]];
 
         // Sea Detection
         decimal concealmentBySea = hull.SurfaceDetection;
@@ -66,22 +66,22 @@ public partial record ConcealmentDataContainer : DataContainerBase
         }
 
         // Checks for Heavy He
-        var artilleryConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Artillery);
+        var artilleryConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.Artillery);
         if (artilleryConfiguration != null)
         {
-            string[]? artilleryOptions = artilleryConfiguration.Components[ComponentType.Artillery];
+            string[] artilleryOptions = artilleryConfiguration.Components[ComponentType.Artillery];
             TurretModule? mainBattery;
             if (artilleryOptions.Length == 1)
             {
-                mainBattery = ship.MainBatteryModuleList[artilleryConfiguration.Components[ComponentType.Artillery].First()];
+                mainBattery = ship.MainBatteryModuleList[artilleryConfiguration.Components[ComponentType.Artillery][0]];
             }
             else
             {
-                string? hullArtilleryName = shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Artillery].First();
+                string hullArtilleryName = shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Artillery][0];
                 mainBattery = ship.MainBatteryModuleList[hullArtilleryName];
             }
 
-            var gun = mainBattery.Guns.First();
+            var gun = mainBattery.Guns[0];
 
             // GMBigGunVisibilityCoeff
             if (gun.BarrelDiameter >= 0.149M)

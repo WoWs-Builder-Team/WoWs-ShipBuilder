@@ -51,20 +51,6 @@ public static class BallisticHelper
         return list;
     }
 
-    private static double GetNormalization(double caliber)
-    {
-        double norm = caliber switch
-        {
-            <= 0.139 => 10 * Math.PI / 180,
-            <= 0.152 => 8.5 * Math.PI / 180,
-            <= 0.24 => 7 * Math.PI / 180,
-            < 0.51 => 6 * Math.PI / 180,
-            _ => 15 * Math.PI / 180,
-        };
-
-        return norm;
-    }
-
     /// <summary>
     /// Calculate all <see cref="Ballistic"/> values for a shell.
     /// </summary>

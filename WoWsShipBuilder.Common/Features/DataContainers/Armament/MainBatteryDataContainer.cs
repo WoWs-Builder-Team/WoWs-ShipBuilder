@@ -102,7 +102,7 @@ public partial record MainBatteryDataContainer : DataContainerBase
 
     public static MainBatteryDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
     {
-        var artilleryConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Artillery);
+        var artilleryConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.Artillery);
         if (artilleryConfiguration == null)
         {
             return null;
@@ -114,7 +114,7 @@ public partial record MainBatteryDataContainer : DataContainerBase
         TurretModule? mainBattery;
         if (artilleryOptions.Length == 1)
         {
-            mainBattery = ship.MainBatteryModuleList[supportedModules.First()];
+            mainBattery = ship.MainBatteryModuleList[supportedModules[0]];
         }
         else
         {
@@ -122,7 +122,7 @@ public partial record MainBatteryDataContainer : DataContainerBase
             mainBattery = ship.MainBatteryModuleList[hullArtilleryName];
         }
 
-        var suoName = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Suo)?.Components[ComponentType.Suo].First();
+        var suoName = shipConfiguration.Find(c => c.UcType == ComponentType.Suo)?.Components[ComponentType.Suo][0];
         var suoConfiguration = suoName is not null ? ship.FireControlList[suoName] : null;
 
         List<(int BarrelCount, int TurretCount, string GunName)> arrangementList = mainBattery.Guns
@@ -145,7 +145,7 @@ public partial record MainBatteryDataContainer : DataContainerBase
             barrelCount += current.TurretCount * current.BarrelCount;
         }
 
-        var gun = mainBattery.Guns.First();
+        var gun = mainBattery.Guns[0];
 
         // Calculate main battery reload
         var reloadModifiers = modifiers.FindModifiers("GMShotDelay");
@@ -183,7 +183,7 @@ public partial record MainBatteryDataContainer : DataContainerBase
         var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
         nfi.NumberGroupSeparator = "'";
 
-        var shellData = ShellDataContainer.FromShellName(mainBattery.Guns.First().AmmoList, modifiers, barrelCount, true);
+        var shellData = ShellDataContainer.FromShellName(mainBattery.Guns[0].AmmoList, modifiers, barrelCount, true);
 
         var (horizontalDispersion, verticalDispersion) = dispersion.CalculateDispersion((double)range * 1000, dispersionModifier);
 
@@ -220,7 +220,7 @@ public partial record MainBatteryDataContainer : DataContainerBase
 
         if (mainBatteryDataContainer.DisplayHeDpm)
         {
-            var heShell = shellData.First(x => x.Type.Equals($"ArmamentType_{ShellType.HE.ShellTypeToString()}"));
+            var heShell = shellData.First(x => x.Type.Equals($"ArmamentType_{ShellType.HE.ShellTypeToString()}", StringComparison.Ordinal));
             mainBatteryDataContainer.TheoreticalHeDpm = Math.Round(heShell.Damage * barrelCount * rateOfFire).ToString("n0", nfi);
             mainBatteryDataContainer.HeSalvo = Math.Round(heShell.Damage * barrelCount).ToString("n0", nfi);
             mainBatteryDataContainer.PotentialFpm = Math.Round(heShell.ShellFireChance / 100 * barrelCount * rateOfFire, 2);
@@ -228,14 +228,14 @@ public partial record MainBatteryDataContainer : DataContainerBase
 
         if (mainBatteryDataContainer.DisplayApDpm)
         {
-            decimal shellDamage = shellData.First(x => x.Type.Equals($"ArmamentType_{ShellType.AP.ShellTypeToString()}")).Damage;
+            decimal shellDamage = shellData.First(x => x.Type.Equals($"ArmamentType_{ShellType.AP.ShellTypeToString()}", StringComparison.Ordinal)).Damage;
             mainBatteryDataContainer.TheoreticalApDpm = Math.Round(shellDamage * barrelCount * rateOfFire).ToString("n0", nfi);
             mainBatteryDataContainer.ApSalvo = Math.Round(shellDamage * barrelCount).ToString("n0", nfi);
         }
 
         if (mainBatteryDataContainer.DisplaySapDpm)
         {
-            decimal shellDamage = shellData.First(x => x.Type.Equals($"ArmamentType_{ShellType.SAP.ShellTypeToString()}")).Damage;
+            decimal shellDamage = shellData.First(x => x.Type.Equals($"ArmamentType_{ShellType.SAP.ShellTypeToString()}", StringComparison.Ordinal)).Damage;
             mainBatteryDataContainer.TheoreticalSapDpm = Math.Round(shellDamage * barrelCount * rateOfFire).ToString("n0", nfi);
             mainBatteryDataContainer.SapSalvo = Math.Round(shellDamage * barrelCount).ToString("n0", nfi);
         }

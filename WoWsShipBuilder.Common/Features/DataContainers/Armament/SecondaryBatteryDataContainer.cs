@@ -51,7 +51,7 @@ public partial record SecondaryBatteryDataContainer : DataContainerBase
 
     public static List<SecondaryBatteryDataContainer>? FromShip(Ship ship, IEnumerable<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers)
     {
-        var secondary = ship.Hulls[shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Hull].First()].SecondaryModule;
+        var secondary = ship.Hulls[shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Hull][0]].SecondaryModule;
         if (secondary == null)
         {
             return null;
@@ -66,7 +66,7 @@ public partial record SecondaryBatteryDataContainer : DataContainerBase
 
         foreach (List<Gun> secondaryGroup in groupedSecondaries)
         {
-            var secondaryGun = secondaryGroup.First();
+            var secondaryGun = secondaryGroup[0];
             string arrangementString = $"{secondaryGroup.Count} x {secondaryGun.NumBarrels} {{0}}";
             List<string> turretName = new() { secondaryGun.Name };
 
@@ -106,7 +106,7 @@ public partial record SecondaryBatteryDataContainer : DataContainerBase
             ShellDataContainer? shellData;
             try
             {
-                shellData = ShellDataContainer.FromShellName(secondaryGun.AmmoList, modifiers, barrelCount, false).First();
+                shellData = ShellDataContainer.FromShellName(secondaryGun.AmmoList, modifiers, barrelCount, false)[0];
             }
             catch (KeyNotFoundException e)
             {
@@ -122,7 +122,7 @@ public partial record SecondaryBatteryDataContainer : DataContainerBase
             }
 
             secondaryBatteryDataContainer.Shell = shellData;
-            secondaryBatteryDataContainer.DisplayFpm = shellData.Type.Equals($"ArmamentType_{ShellType.HE.ShellTypeToString()}");
+            secondaryBatteryDataContainer.DisplayFpm = shellData.Type.Equals($"ArmamentType_{ShellType.HE.ShellTypeToString()}", StringComparison.Ordinal);
             secondaryBatteryDataContainer.TheoreticalDpm = Math.Round(shellData.Damage * barrelCount * rof).ToString("n0", nfi);
 
             if (secondaryBatteryDataContainer.DisplayFpm)
@@ -135,7 +135,7 @@ public partial record SecondaryBatteryDataContainer : DataContainerBase
             result.Add(secondaryBatteryDataContainer);
         }
 
-        result.Last().IsLast = true;
+        result[^1].IsLast = true;
 
         return result;
     }

@@ -181,7 +181,7 @@ a.kofi-button {
     overflow-wrap: break-word;
     vertical-align: middle;
     border: 0 none #dedede ;
-    font-family: 'Roboto','Helvetica','Arial','sans-serif';
+    font-family: 'Roboto','Helvetica','Arial', sans-serif;
     text-decoration: none;
     text-shadow: none;
     font-weight: 400 ;

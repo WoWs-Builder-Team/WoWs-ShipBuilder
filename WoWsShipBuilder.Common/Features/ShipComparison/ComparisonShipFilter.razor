@@ -22,7 +22,7 @@
             </MudButtonGroup>
         </MudStack>
         <MudButtonGroup OverrideStyles="false" Class="gap-2" Style="flex-wrap: wrap" Size="Size.Small">
-            @for (int i = TiersRange.First(); i <= TiersRange.Last(); i++)
+            @for (int i = TiersRange[0]; i <= TiersRange[^1]; i++)
             {
                 int tier = i;
                 bool isSelected = ViewModel!.SelectedTiers.Contains(tier);
@@ -116,7 +116,7 @@
             </MudStack>
             <MudStack>
                 <MudButtonGroup OverrideStyles="false" Class="gap-2" Style="flex-wrap: nowrap" Size="Size.Small">
-                    @for (int i = TiersRange.First(); i <= TiersRange.Last(); i++)
+                    @for (int i = TiersRange[0]; i <= TiersRange[^1]; i++)
                     {
                         int tier = i;
                         bool isSelected = ViewModel!.SelectedTiers.Contains(tier);

@@ -97,8 +97,6 @@ public partial record CvAircraftDataContainer : DataContainerBase
 
     public string WeaponType { get; set; } = default!;
 
-    public bool IsLast { get; set; }
-
     public ProjectileDataContainer? Weapon { get; set; }
 
     public List<ConsumableDataContainer> PlaneConsumables { get; set; } = default!;
@@ -120,31 +118,31 @@ public partial record CvAircraftDataContainer : DataContainerBase
         var list = new List<CvAircraftDataContainer>();
         var planes = new List<string>();
 
-        var rocketConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Fighter);
+        var rocketConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.Fighter);
         if (rocketConfiguration != null)
         {
-            List<string> skipModule = ship.CvPlanes[rocketConfiguration.Components[ComponentType.Fighter].First()];
+            List<string> skipModule = ship.CvPlanes[rocketConfiguration.Components[ComponentType.Fighter][0]];
             planes.AddRange(skipModule);
         }
 
-        var torpConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.TorpedoBomber);
+        var torpConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.TorpedoBomber);
         if (torpConfiguration != null)
         {
-            List<string> skipModule = ship.CvPlanes[torpConfiguration.Components[ComponentType.TorpedoBomber].First()];
+            List<string> skipModule = ship.CvPlanes[torpConfiguration.Components[ComponentType.TorpedoBomber][0]];
             planes.AddRange(skipModule);
         }
 
-        var diveConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.DiveBomber);
+        var diveConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.DiveBomber);
         if (diveConfiguration != null)
         {
-            List<string> diveModule = ship.CvPlanes[diveConfiguration.Components[ComponentType.DiveBomber].First()];
+            List<string> diveModule = ship.CvPlanes[diveConfiguration.Components[ComponentType.DiveBomber][0]];
             planes.AddRange(diveModule);
         }
 
-        var skipConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.SkipBomber);
+        var skipConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.SkipBomber);
         if (skipConfiguration != null)
         {
-            List<string> skipModule = ship.CvPlanes[skipConfiguration.Components[ComponentType.SkipBomber].First()];
+            List<string> skipModule = ship.CvPlanes[skipConfiguration.Components[ComponentType.SkipBomber][0]];
             planes.AddRange(skipModule);
         }
 
@@ -157,7 +155,6 @@ public partial record CvAircraftDataContainer : DataContainerBase
             list.Add(planeDataContainer);
         }
 
-        list.Last().IsLast = true;
         return list;
     }
 
@@ -291,7 +288,7 @@ public partial record CvAircraftDataContainer : DataContainerBase
                 {
                     plane.BombName,
                 };
-                weapon = TorpedoDataContainer.FromTorpedoName(torpList, modifiers, true).First();
+                weapon = TorpedoDataContainer.FromTorpedoName(torpList, modifiers, true)[0];
                 break;
             case ProjectileType.Rocket:
                 weapon = RocketDataContainer.FromRocketName(plane.BombName, modifiers);

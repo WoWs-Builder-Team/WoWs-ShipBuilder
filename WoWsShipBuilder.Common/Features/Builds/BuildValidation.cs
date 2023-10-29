@@ -40,7 +40,7 @@ public static class BuildValidation
             try
             {
                 var build = Build.CreateBuildFromString(buildStr);
-                if (selectedShipIndex.Equals(build.ShipIndex))
+                if (selectedShipIndex.Equals(build.ShipIndex, StringComparison.Ordinal))
                 {
                     validatedBuildString = buildStr;
                     return new(null, validatedBuildString);

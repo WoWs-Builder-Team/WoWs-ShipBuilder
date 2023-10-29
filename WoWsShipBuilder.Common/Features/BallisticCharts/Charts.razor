@@ -704,13 +704,13 @@
 
     private void UpdateDispersionPlotParameters()
     {
-        foreach (var wrapper in displayedShips.Values)
+        foreach (var selectedShells in displayedShips.Values.Select(wrapper => wrapper.SelectedShells))
         {
-            foreach (var (shellIndex, shellData) in wrapper.SelectedShells.ToDictionary(x => x.Key, x => x.Value))
+            foreach (var (shellIndex, shellData) in selectedShells.ToDictionary(x => x.Key, x => x.Value))
             {
                 var dispPlotShipsCache = shellData.DispPlotShipsCache;
                 var dispersionPlotParameter = DispersionPlotHelper.CalculateDispersionPlotParameters(dispPlotShipsCache!.Label, dispPlotShipsCache.DispersionData, dispPlotShipsCache.Shell, dispPlotShipsCache.MaxRange, aimingRange * 1000, dispPlotShipsCache.Sigma, shotsNumber, dispPlotShipsCache.Modifier);
-                wrapper.SelectedShells[shellIndex] = shellData with { DispPlotShipsCache = dispersionPlotParameter };
+                selectedShells[shellIndex] = shellData with { DispPlotShipsCache = dispersionPlotParameter };
             }
         }
     }

@@ -30,9 +30,9 @@ public sealed class GridDataWrapper
         this.BuildName = shipBuildContainer.Build?.BuildName;
 
         this.MainBattery = this.ShipBuildContainer.ShipDataContainer?.MainBatteryDataContainer;
-        this.HeShell = this.MainBattery?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.HE.ShellTypeToString()}"));
-        this.ApShell = this.MainBattery?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP.ShellTypeToString()}"));
-        this.SapShell = this.MainBattery?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP.ShellTypeToString()}"));
+        this.HeShell = this.MainBattery?.ShellData.Find(x => x.Type.Equals($"ArmamentType_{ShellType.HE.ShellTypeToString()}", StringComparison.Ordinal));
+        this.ApShell = this.MainBattery?.ShellData.Find(x => x.Type.Equals($"ArmamentType_{ShellType.AP.ShellTypeToString()}", StringComparison.Ordinal));
+        this.SapShell = this.MainBattery?.ShellData.Find(x => x.Type.Equals($"ArmamentType_{ShellType.SAP.ShellTypeToString()}", StringComparison.Ordinal));
 
         var torpedoArmament = shipBuildContainer.ShipDataContainer.TorpedoArmamentDataContainer;
         this.TorpedoLauncher = torpedoArmament;
@@ -49,9 +49,9 @@ public sealed class GridDataWrapper
         this.Survivability = shipBuildContainer.ShipDataContainer.SurvivabilityDataContainer;
         this.Sonar = shipBuildContainer.ShipDataContainer.PingerGunDataContainer;
 
-        this.RocketPlanes = new(shipBuildContainer.ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ProjectileTypeToString())).ToList());
-        this.TorpedoBombers = new(shipBuildContainer.ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ProjectileTypeToString())).ToList());
-        this.Bombers = new(shipBuildContainer.ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ProjectileTypeToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ProjectileTypeToString())).ToList());
+        this.RocketPlanes = new(shipBuildContainer.ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ProjectileTypeToString(), StringComparison.Ordinal)).ToList());
+        this.TorpedoBombers = new(shipBuildContainer.ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ProjectileTypeToString(), StringComparison.Ordinal)).ToList());
+        this.Bombers = new(shipBuildContainer.ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ProjectileTypeToString(), StringComparison.Ordinal) || x.WeaponType.Equals(ProjectileType.SkipBomb.ProjectileTypeToString(), StringComparison.Ordinal)).ToList());
     }
 
     public ShipBuildContainer ShipBuildContainer { get; }

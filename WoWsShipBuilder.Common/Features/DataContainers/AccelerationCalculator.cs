@@ -166,7 +166,7 @@ public static class AccelerationCalculator
     /// <returns>The value of the ratio.</returns>
     private static int GetPfToPbRatio(ShipClass shipClass, string shipIndex)
     {
-        if (shipIndex.Equals(CaraccioloId))
+        if (shipIndex.Equals(CaraccioloId, StringComparison.Ordinal))
         {
             return 3;
         }

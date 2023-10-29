@@ -25,11 +25,11 @@ public record AntiAirDataContainer
             return null;
         }
 
-        var hull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull].First()];
+        var hull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull][0]];
         TurretModule? guns = null;
         if (ship.MainBatteryModuleList is { Count: > 0 })
         {
-            guns = ship.MainBatteryModuleList[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Artillery).Components[ComponentType.Artillery].First()];
+            guns = ship.MainBatteryModuleList[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Artillery).Components[ComponentType.Artillery][0]];
         }
 
         decimal flakDamageBonus = modifiers.FindModifiers("AABubbleDamage").Aggregate(1M, (current, value) => current * (decimal)value);
@@ -52,14 +52,7 @@ public record AntiAirDataContainer
 
         if (guns?.AntiAir != null)
         {
-            if (longRange is null)
-            {
-                longRange = guns.AntiAir;
-            }
-            else
-            {
-                longRange = longRange.AddAura(guns.AntiAir);
-            }
+            longRange = longRange is null ? guns.AntiAir : longRange.AddAura(guns.AntiAir);
         }
 
         var flakAmount = 0;

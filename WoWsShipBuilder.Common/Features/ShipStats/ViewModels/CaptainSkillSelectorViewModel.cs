@@ -107,7 +107,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
                     SkillActivationItemViewModel talentModel;
 
                     // get all the modifiers from the talents. workTime is excluded because it's for talents that automatically trigger a consumable, so it's not an effect we can show.
-                    var modifiers = talent.SkillEffects.SelectMany(effect => effect.Value.Modifiers.Where(modifier => !modifier.Key.Equals("workTime"))).ToDictionary(x => x.Key, x => x.Value);
+                    var modifiers = talent.SkillEffects.SelectMany(effect => effect.Value.Modifiers.Where(modifier => !modifier.Key.Equals("workTime", StringComparison.Ordinal))).ToDictionary(x => x.Key, x => x.Value);
                     if (talent.MaxTriggerNum <= 1)
                     {
                         talentModel = new(talent.TranslationId, -1, modifiers, false, description: talent.TranslationId + "_DESCRIPTION");
@@ -224,7 +224,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
             if (skill.ConditionalModifiers is { Count: > 0 })
             {
                 var skillName = this.SkillList!.Single(x => x.Value.Skill.Equals(skill)).Key;
-                this.ConditionalModifiersList.Remove(this.ConditionalModifiersList.Single(x => x.SkillName.Equals(skillName)));
+                this.ConditionalModifiersList.Remove(this.ConditionalModifiersList.Single(x => x.SkillName.Equals(skillName, StringComparison.Ordinal)));
             }
 
             this.RaisePropertyChanged(nameof(this.SkillOrderList));
@@ -375,17 +375,17 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     private IEnumerable<(string, float)> CollectTalentModifiers()
     {
         var modifiers = new List<(string, float)>();
-        var talentModifiers = this.CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: <= 1 } && !talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus")))
+        var talentModifiers = this.CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: <= 1 } && !talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
             .SelectMany(skill => skill.Modifiers)
             .Select(x => (x.Key, x.Value));
         modifiers.AddRange(talentModifiers);
 
-        var talentMultipleActivationModifiers = this.CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: > 1 } && !talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus")))
+        var talentMultipleActivationModifiers = this.CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: > 1 } && !talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
             .SelectMany(talent => talent.Modifiers.Select(modifier => (modifier.Key, Value: Math.Pow(modifier.Value, talent.ActivationNumbers))))
             .Select(x => (x.Key, (float)x.Value));
         modifiers.AddRange(talentMultipleActivationModifiers);
 
-        var talentFireChanceModifier = this.CaptainTalentsList.Where(talent => talent.Status && talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus")))
+        var talentFireChanceModifier = this.CaptainTalentsList.Where(talent => talent.Status && talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
             .SelectMany(talent => talent.Modifiers.Select(modifier => (modifier.Key, Value: Math.Round(modifier.Value * talent.ActivationNumbers, 2))))
             .Select(x => (x.Key, (float)x.Value));
         modifiers.AddRange(talentFireChanceModifier);
