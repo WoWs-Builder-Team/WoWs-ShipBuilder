@@ -21,6 +21,7 @@
 @using System.Net
 @using System.IO
 @using Avalonia.Platform.Storage
+@using MudBlazor.Utilities
 
 @implements IDisposable
 @inject ILocalizer Localizer
@@ -82,7 +83,15 @@
                 }
             </MudSelect>
         </MudItem>
-
+        <MudItem xs="12">
+            <MudStack Row AlignItems="AlignItems.Center">
+                <MudText Typo="Typo.h6">
+                    @Localizer.SimpleAppLocalization(nameof(Translation.Settings_ThemePrimaryColor)):
+                </MudText>
+                <div style="@($"background-color:{themePrimaryColor}; height: 40px; width:40px;")"></div>
+                <MudColorPicker DisableToolbar="false" PickerVariant="PickerVariant.Dialog" @bind-Value="themePrimaryColor" Style="@($"color: {themePrimaryColor};")" Disabled="@Helpers.IsAprilFool()"/>
+            </MudStack>
+        </MudItem>
         <MudItem xs="12">
             <MudStack Row Class="mb-1" AlignItems="AlignItems.Center">
                 <MudText Typo="Typo.h6">
@@ -180,6 +189,8 @@
 
     private List<Build> savedBuilds = new();
 
+    private MudColor themePrimaryColor = default!;
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -223,6 +234,7 @@
         customBuildImagePath = AppSettings.CustomImagePath;
         autoUpdateEnabled = AppSettings.AutoUpdateEnabled;
         storeBuildOnShare = AppSettings.StoreBuildOnShare;
+        themePrimaryColor = AppSettings.ThemePrimaryColor;
 
         StateHasChanged();
     }
@@ -262,6 +274,8 @@
 
         settingsChanged = settingsChanged || storeBuildOnShare != AppSettings.StoreBuildOnShare;
         AppSettings.StoreBuildOnShare = storeBuildOnShare;
+
+        AppSettings.ThemePrimaryColor = themePrimaryColor.Value;
 
         await SettingsAccessor.SaveSettings(AppSettings);
 

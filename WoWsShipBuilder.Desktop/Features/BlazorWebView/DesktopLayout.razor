@@ -1,5 +1,7 @@
 ﻿@using WoWsShipBuilder.Infrastructure.Utility
+@using WoWsShipBuilder.Features.Settings
 @inherits LayoutComponentBase
+@inject AppSettings AppSettings
 
 <MudThemeProvider Theme="@theme" IsDarkMode="true"/>
 <MudDialogProvider/>
@@ -18,5 +20,11 @@
 {
     private readonly bool settingsInitialized = true;
 
-    private readonly MudTheme theme = Helpers.CreateDarkTheme(false);
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        theme = Helpers.CreateDarkTheme(false, AppSettings.ThemePrimaryColor);
+    }
+
+    private MudTheme theme = new();
 }

@@ -1728,6 +1728,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Theme Primary Color.
+        /// </summary>
+        public static string Settings_ThemePrimaryColor {
+            get {
+                return ResourceManager.GetString("Settings_ThemePrimaryColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Art by:.
         /// </summary>
         public static string SettingsWindow_ArtBy {

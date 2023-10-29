@@ -64,7 +64,7 @@ public static class Helpers
         return $"#{Random.Shared.Next(0x1000000):X6}";
     }
 
-    public static MudTheme CreateDarkTheme(bool sharpCorners)
+    public static MudTheme CreateDarkTheme(bool sharpCorners, string primaryColor)
     {
         return new()
         {
@@ -76,7 +76,7 @@ public static class Helpers
             {
                 Black = "#121212FF",
                 White = "#FDFDFDFF",
-                Primary = "#6186FF",
+                Primary = primaryColor,
                 PrimaryContrastText = "#242424",
                 Secondary = "#D4D4D4",
                 SecondaryContrastText = "#282828",

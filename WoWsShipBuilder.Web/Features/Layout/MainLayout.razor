@@ -42,13 +42,14 @@
             }
 
             AppSettings.UpdateFromSettings(settings);
+            theme = Helpers.CreateDarkTheme(true, AppSettings.ThemePrimaryColor);
             settingsInitialized = true;
             RefreshNotifierService.NotifyRefreshRequested();
             StateHasChanged();
         }
     }
 
-    private readonly MudTheme theme = Helpers.CreateDarkTheme(true);
+    private MudTheme theme = new();
 
     private readonly MudTheme aprilFoolTheme = new()
     {

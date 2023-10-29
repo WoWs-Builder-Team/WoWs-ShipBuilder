@@ -9,6 +9,7 @@
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
 @using WoWsShipBuilder.Web.Features.BetaAccess
+@using MudBlazor.Utilities
 
 @implements IDisposable
 @implements IAsyncDisposable
@@ -61,21 +62,30 @@
             </MudStack>
         </MudItem>
         <MudItem xs="12">
+            <MudStack Row AlignItems="AlignItems.Center">
+                <MudText Typo="Typo.h6">
+                    @Localizer.SimpleAppLocalization(nameof(Translation.Settings_ThemePrimaryColor)):
+                </MudText>
+                <div style="@($"background-color:{themePrimaryColor}; height: 40px; width:40px;")"></div>
+                <MudColorPicker DisableToolbar="false" PickerVariant="PickerVariant.Dialog" @bind-Value="themePrimaryColor" Style="@($"color: {themePrimaryColor};")" Disabled="@Helpers.IsAprilFool()"/>
+            </MudStack>
+        </MudItem>
+        <MudItem xs="12">
             <MudStack Row Class="mb-1" AlignItems="AlignItems.Center">
                 <MudText Typo="Typo.h6">
                     @($"Saved builds ({savedBuilds.Count}/1000)")
                 </MudText>
-                <MudButton Class="rounded-4" Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Download" OnClick="@ExportSavedBuilds">
+                <MudButton Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Download" OnClick="@ExportSavedBuilds">
                     @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Export))
                 </MudButton>
                 <MudFileUpload T="IBrowserFile" FilesChanged="@(async file => await ImportSavedBuilds(file))" Style="margin-top: 0;" Class="file-upload-full-height" Accept=".json" MaximumFileCount="1">
                     <ButtonTemplate>
-                        <MudButton HtmlTag="label" Class="rounded-4" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Upload" Style="height: 100%;" for="@context">
+                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Upload" Style="height: 100%;" for="@context">
                             @Localizer.SimpleAppLocalization(nameof(Translation.BuildImport_Import))
                         </MudButton>
                     </ButtonTemplate>
                 </MudFileUpload>
-                <MudButton Class="rounded-4" Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Delete" OnClick="@DeleteAllSavedBuilds">
+                <MudButton Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Delete" OnClick="@DeleteAllSavedBuilds">
                     @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_DeleteAll))
                 </MudButton>
             </MudStack>
@@ -92,7 +102,7 @@
             <MudText Typo="Typo.h6">@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Heading))</MudText>
             <MudStack Row AlignItems="AlignItems.End">
                 <MudTextField @ref="betaCodeInput" T="string" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Code))" OnKeyDown="@CodeOnKeyDown" Immediate="true" @bind-Value="@CurrentCode"></MudTextField>
-                <MudButton Class="rounded-4" Disabled="@betaCodeSubmitDisabled" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="@AddBetaCode">
+                <MudButton Disabled="@betaCodeSubmitDisabled" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="@AddBetaCode">
                     @Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_AddCode))
                 </MudButton>
             </MudStack>
@@ -153,6 +163,8 @@
 
     private bool storeBuildOnShare = true;
 
+    private MudColor themePrimaryColor = default!;
+
     private string CurrentCode
     {
         get => currentCode;
@@ -190,6 +202,7 @@
         openAmmoExpandersByDefault = AppSettings.OpenAllAmmoExpandersByDefault;
         openSecondariesAndAaExpandersByDefault = AppSettings.OpenSecondariesAndAaExpandersByDefault;
         storeBuildOnShare = AppSettings.StoreBuildOnShare;
+        themePrimaryColor = AppSettings.ThemePrimaryColor;
 
         StateHasChanged();
     }
@@ -210,6 +223,8 @@
 
         AppSettings.StoreBuildOnShare = storeBuildOnShare;
 
+        AppSettings.ThemePrimaryColor = themePrimaryColor.Value;
+
         await SettingsAccessor.SaveSettings(AppSettings);
 
         Snackbar.Add("Settings saved", Severity.Success, config => { config.CloseAfterNavigation = true; });
@@ -217,6 +232,8 @@
         {
             RefreshNotifierService.NotifyRefreshRequested();
         }
+
+        StateHasChanged();
     }
 
     public void Dispose()

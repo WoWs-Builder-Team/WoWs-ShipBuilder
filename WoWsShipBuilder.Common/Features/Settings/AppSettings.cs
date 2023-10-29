@@ -55,6 +55,8 @@ public class AppSettings
 
     public string? ShipComparisonHiddenColumns { get; set; }
 
+    public string ThemePrimaryColor { get; set; } = "#6186FF";
+
     public void ClearSettings()
     {
         this.AutoUpdateEnabled = true;
@@ -77,6 +79,7 @@ public class AppSettings
         this.ShipComparisonUseUpgradedModules = true;
         this.ShipComparisonHideShipsWithoutSection = false;
         this.ShipComparisonHiddenColumns = default;
+        this.ThemePrimaryColor = "#6186FF";
     }
 
     public void UpdateFromSettings(AppSettings settings)
@@ -101,5 +104,6 @@ public class AppSettings
         this.ShipComparisonUseUpgradedModules = settings.ShipComparisonUseUpgradedModules;
         this.ShipComparisonHideShipsWithoutSection = settings.ShipComparisonHideShipsWithoutSection;
         this.ShipComparisonHiddenColumns = settings.ShipComparisonHiddenColumns;
+        this.ThemePrimaryColor = settings.ThemePrimaryColor;
     }
 }

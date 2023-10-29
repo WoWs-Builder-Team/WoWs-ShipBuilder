@@ -2060,4 +2060,7 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipComparison_HideColumns" xml:space="preserve">
     <value>Hide Columns</value>
   </data>
+  <data name="Settings_ThemePrimaryColor" xml:space="preserve">
+    <value>Theme Primary Color</value>
+  </data>
 </root>
