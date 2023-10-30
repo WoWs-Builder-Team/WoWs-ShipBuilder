@@ -1540,6 +1540,9 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="ShipStats_Tonnage" xml:space="preserve">
       <value>Tonnage</value>
   </data>
+  <data name="ShipStats_BackwardEngineUpTime" xml:space="preserve">
+      <value>Zeit bis zum Erreichen der Rückwärtsgeschwindigkeit</value>
+  </data>
   <data name="ShipStats_ForwardEngineForsagMaxSpeed" xml:space="preserve">
       <value>Maximale Vorwärtsgeschwindigkeit</value>
   </data>
@@ -1734,6 +1737,9 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   </data>
   <data name="ShipStats_MoreDetails" xml:space="preserve">
       <value>Weitere Details</value>
+  </data>
+  <data name="ShipStats_CutOffDistances" xml:space="preserve">
+      <value>Abbruchdistanzen</value>
   </data>
   <data name="Unit_DegreePerSecond2" xml:space="preserve">
       <value>^/s²</value>
