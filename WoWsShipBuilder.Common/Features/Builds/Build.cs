@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Globalization;
 using System.IO.Compression;
 using System.Security.Cryptography;
@@ -19,25 +20,26 @@ public class Build
 
     private const char ListSeparator = ',';
 
+    // TODO: make private when updating to .NET 8
     [JsonConstructor]
-    private Build(string buildName, string shipIndex, Nation nation, List<string> modules, List<string> upgrades, List<string> consumables, string captain, List<int> skills, List<string> signals, int buildVersion = CurrentBuildVersion)
+    public Build(string buildName, string shipIndex, Nation nation, ImmutableArray<string> modules, ImmutableArray<string> upgrades, ImmutableArray<string> consumables, string captain, ImmutableArray<int> skills, ImmutableArray<string> signals, int buildVersion = CurrentBuildVersion)
     {
         this.BuildName = buildName ?? throw new ArgumentNullException(nameof(buildName));
         this.ShipIndex = shipIndex ?? throw new ArgumentNullException(nameof(shipIndex));
         this.Nation = nation;
-        this.Modules = modules ?? throw new ArgumentNullException(nameof(modules));
-        this.Upgrades = upgrades ?? throw new ArgumentNullException(nameof(upgrades));
+        this.Modules = modules;
+        this.Upgrades = upgrades;
         this.Captain = captain ?? throw new ArgumentNullException(nameof(captain));
-        this.Skills = skills ?? throw new ArgumentNullException(nameof(skills));
-        this.Signals = signals ?? throw new ArgumentNullException(nameof(signals));
-        this.Consumables = consumables ?? throw new ArgumentNullException(nameof(consumables));
+        this.Skills = skills;
+        this.Signals = signals;
+        this.Consumables = consumables;
         this.BuildVersion = buildVersion;
 
         this.Hash = CreateHash(this);
     }
 
-    public Build(string buildName, string shipIndex, Nation nation, List<string> modules, List<string> upgrades, List<string> consumables, string captain, List<int> skills, List<string> signals)
-        : this(buildName, shipIndex, nation, modules, upgrades, consumables, captain, skills, signals, CurrentBuildVersion)
+    public Build(string buildName, string shipIndex, Nation nation, IEnumerable<string> modules, IEnumerable<string> upgrades, IEnumerable<string> consumables, string captain, IEnumerable<int> skills, IEnumerable<string> signals)
+        : this(buildName, shipIndex, nation, modules.ToImmutableArray(), upgrades.ToImmutableArray(), consumables.ToImmutableArray(), captain, skills.ToImmutableArray(), signals.ToImmutableArray())
     {
     }
 
@@ -47,17 +49,17 @@ public class Build
 
     public Nation Nation { get; }
 
-    public IReadOnlyList<string> Modules { get; private set; }
+    public ImmutableArray<string> Modules { get; private set; }
 
-    public IReadOnlyList<string> Upgrades { get; }
+    public ImmutableArray<string> Upgrades { get; }
 
     public string Captain { get; }
 
-    public IReadOnlyList<int> Skills { get; }
+    public ImmutableArray<int> Skills { get; }
 
-    public IReadOnlyList<string> Consumables { get; }
+    public ImmutableArray<string> Consumables { get; }
 
-    public IReadOnlyList<string> Signals { get; private set; }
+    public ImmutableArray<string> Signals { get; private set; }
 
     /// <summary>
     /// Gets a value indicating the version number of a build.
@@ -127,12 +129,12 @@ public class Build
         string buildName = parts.Length == 9 ? parts[8] : string.Empty;
         string shipIndex = parts[0];
         var nation = GameDataHelper.GetNationFromIndex(shipIndex);
-        List<string> modules = parts[1].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
-        List<string> upgrades = parts[2].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+        var modules = parts[1].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).ToImmutableArray();
+        var upgrades = parts[2].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).ToImmutableArray();
         string captain = parts[3];
-        List<int> skills = parts[4].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).Select(int.Parse).ToList();
-        List<string> consumables = parts[5].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
-        List<string> signals = parts[6].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+        var skills = parts[4].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).Select(int.Parse).ToImmutableArray();
+        var consumables = parts[5].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).ToImmutableArray();
+        var signals = parts[6].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).ToImmutableArray();
         int buildVersion = int.Parse(parts[7], CultureInfo.InvariantCulture);
         return new(buildName, shipIndex, nation, modules, upgrades, consumables, captain, skills, signals, buildVersion);
     }
@@ -147,13 +149,13 @@ public class Build
     {
         if (oldBuild.BuildVersion < 3)
         {
-            oldBuild.Signals = ReduceToIndex(oldBuild.Signals).ToList();
+            oldBuild.Signals = ReduceToIndex(oldBuild.Signals).ToImmutableArray();
             logger.LogDebug("Reducing signal names to index for build {}", oldBuild.Hash);
         }
 
         if (oldBuild.BuildVersion < 4)
         {
-            oldBuild.Modules = ReduceToIndex(oldBuild.Modules).ToList();
+            oldBuild.Modules = ReduceToIndex(oldBuild.Modules).ToImmutableArray();
             logger.LogDebug("Reducing module names to index for build {}", oldBuild.Hash);
         }
 
