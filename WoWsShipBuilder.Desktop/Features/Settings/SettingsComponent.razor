@@ -22,6 +22,7 @@
 @using System.IO
 @using Avalonia.Platform.Storage
 @using MudBlazor.Utilities
+@using WoWsShipBuilder.Infrastructure.ApplicationTheme
 
 @implements IDisposable
 @inject ILocalizer Localizer
@@ -34,6 +35,7 @@
 @inject ILocalizationProvider LocalizationProvider
 @inject IUserDataService UserDataService
 @inject IFileSystem FileSystem
+@inject ThemeManager ThemeManager
 
 <MudContainer>
     <MudGrid Justify="Justify.Center">
@@ -234,7 +236,7 @@
         customBuildImagePath = AppSettings.CustomImagePath;
         autoUpdateEnabled = AppSettings.AutoUpdateEnabled;
         storeBuildOnShare = AppSettings.StoreBuildOnShare;
-        themePrimaryColor = AppSettings.ThemePrimaryColor;
+        themePrimaryColor = AppSettings.ThemePrimaryColor ?? ThemeManager.DefaultPrimaryColor;
 
         StateHasChanged();
     }
@@ -275,6 +277,7 @@
         settingsChanged = settingsChanged || storeBuildOnShare != AppSettings.StoreBuildOnShare;
         AppSettings.StoreBuildOnShare = storeBuildOnShare;
 
+        settingsChanged = settingsChanged || themePrimaryColor.Value != AppSettings.ThemePrimaryColor;
         AppSettings.ThemePrimaryColor = themePrimaryColor.Value;
 
         await SettingsAccessor.SaveSettings(AppSettings);
@@ -284,6 +287,7 @@
         if (settingsChanged)
         {
             RefreshNotifierService.NotifyRefreshRequested();
+            ThemeManager.UpdateTheme();
         }
     }
 
@@ -294,6 +298,7 @@
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
         Snackbar.Add(Localizer.GetAppLocalization(nameof(Translation.WebApp_SettingsSaved)).Localization, Severity.Success, config => { config.CloseAfterNavigation = true; });
         RefreshNotifierService.NotifyRefreshRequested();
+        ThemeManager.UpdateTheme();
     }
 
     public void Dispose()

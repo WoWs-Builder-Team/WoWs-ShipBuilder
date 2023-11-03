@@ -6,6 +6,7 @@ using WoWsShipBuilder.Features.BallisticCharts;
 using WoWsShipBuilder.Features.LinkShortening;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Features.ShipStats;
+using WoWsShipBuilder.Infrastructure.ApplicationTheme;
 using WoWsShipBuilder.Infrastructure.DataTransfer;
 using WoWsShipBuilder.Infrastructure.Localization;
 using WoWsShipBuilder.Infrastructure.Metrics;
@@ -45,6 +46,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ChartJsInterop>();
         services.AddScoped<MouseEventInterop>();
         services.AddScoped<SessionStateCache>();
+        services.AddScoped<ThemeManager>();
 
         return services;
     }

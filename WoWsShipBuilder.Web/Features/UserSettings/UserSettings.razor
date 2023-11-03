@@ -10,6 +10,7 @@
 @using WoWsShipBuilder.Infrastructure.Utility
 @using WoWsShipBuilder.Web.Features.BetaAccess
 @using MudBlazor.Utilities
+@using WoWsShipBuilder.Infrastructure.ApplicationTheme
 
 @implements IDisposable
 @implements IAsyncDisposable
@@ -23,6 +24,7 @@
 @inject IUserDataService UserDataService
 @inject IJSRuntime Runtime
 @inject MetricsService MetricsService
+@inject ThemeManager ThemeManager
 
 <PageTitle>@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Settings)).Localization</PageTitle>
 
@@ -67,7 +69,7 @@
                     @Localizer.SimpleAppLocalization(nameof(Translation.Settings_ThemePrimaryColor)):
                 </MudText>
                 <div style="@($"background-color:{themePrimaryColor}; height: 40px; width:40px;")"></div>
-                <MudColorPicker DisableToolbar="false" PickerVariant="PickerVariant.Dialog" @bind-Value="themePrimaryColor" Style="@($"color: {themePrimaryColor};")" Disabled="@Helpers.IsAprilFool()"/>
+                <MudColorPicker DisableToolbar="false" PickerVariant="PickerVariant.Dialog" @bind-Value="themePrimaryColor" Style="@($"color: {themePrimaryColor};")" Class="mt-n5" Disabled="@Helpers.IsAprilFool()"/>
             </MudStack>
         </MudItem>
         <MudItem xs="12">
@@ -202,7 +204,7 @@
         openAmmoExpandersByDefault = AppSettings.OpenAllAmmoExpandersByDefault;
         openSecondariesAndAaExpandersByDefault = AppSettings.OpenSecondariesAndAaExpandersByDefault;
         storeBuildOnShare = AppSettings.StoreBuildOnShare;
-        themePrimaryColor = AppSettings.ThemePrimaryColor;
+        themePrimaryColor = AppSettings.ThemePrimaryColor ?? ThemeManager.DefaultPrimaryColor;
 
         StateHasChanged();
     }
@@ -223,6 +225,7 @@
 
         AppSettings.StoreBuildOnShare = storeBuildOnShare;
 
+        settingsChanged = settingsChanged || themePrimaryColor.Value != AppSettings.ThemePrimaryColor;
         AppSettings.ThemePrimaryColor = themePrimaryColor.Value;
 
         await SettingsAccessor.SaveSettings(AppSettings);
@@ -231,6 +234,7 @@
         if (settingsChanged)
         {
             RefreshNotifierService.NotifyRefreshRequested();
+            ThemeManager.UpdateTheme();
         }
 
         StateHasChanged();
@@ -262,6 +266,7 @@
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomEnd;
         Snackbar.Add(Localizer.GetAppLocalization(nameof(Translation.WebApp_SettingsSaved)).Localization, Severity.Success, config => { config.CloseAfterNavigation = true; });
         RefreshNotifierService.NotifyRefreshRequested();
+        ThemeManager.UpdateTheme();
     }
 
     private async Task AddBetaCode()

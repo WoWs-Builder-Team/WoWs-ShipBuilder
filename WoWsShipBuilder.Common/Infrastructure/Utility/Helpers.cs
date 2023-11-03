@@ -63,46 +63,4 @@ public static class Helpers
     {
         return $"#{Random.Shared.Next(0x1000000):X6}";
     }
-
-    public static MudTheme CreateDarkTheme(bool sharpCorners, string primaryColor)
-    {
-        return new()
-        {
-            LayoutProperties =
-            {
-                DefaultBorderRadius = sharpCorners ? "0" : "4px",
-            },
-            PaletteDark =
-            {
-                Black = "#121212FF",
-                White = "#FDFDFDFF",
-                Primary = primaryColor,
-                PrimaryContrastText = "#242424",
-                Secondary = "#D4D4D4",
-                SecondaryContrastText = "#282828",
-                Tertiary = "#FFD700",
-                TertiaryContrastText = "#282828",
-                InfoContrastText = "#FDFDFDFF",
-                Success = "#00CD42",
-                SuccessContrastText = "#282828",
-                WarningContrastText = "#282828",
-                Error = "#BF0000FF",
-                ErrorContrastText = "#FDFDFDFF",
-                Dark = "#505050",
-                DarkContrastText = "#FDFDFDFF",
-                Surface = "#232323",
-                HoverOpacity = 0.165,
-                AppbarBackground = "#121212FF",
-                Background = "#282828",
-                BackgroundGrey = "#1E1E1E",
-                GrayDark = "#505050",
-            },
-            ZIndex =
-            {
-                Dialog = 2000,
-                Popover = 3000,
-                Tooltip = 4000,
-            },
-        };
-    }
 }

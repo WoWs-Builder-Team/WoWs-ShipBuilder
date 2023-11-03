@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
+using WoWsShipBuilder.Infrastructure.ApplicationTheme;
 using WoWsShipBuilder.Infrastructure.DataTransfer;
 using ServerType = WoWsShipBuilder.Infrastructure.GameData.ServerType;
 
@@ -55,7 +56,11 @@ public class AppSettings
 
     public string? ShipComparisonHiddenColumns { get; set; }
 
-    public string ThemePrimaryColor { get; set; } = "#6186FF";
+    public string? ThemePrimaryColor { get; set; }
+
+    public ThemeManager.ThemeStyle? ThemeStyle { get; set; }
+
+    public ThemeManager.ThemeVariant? ThemeVariant { get; set; }
 
     public void ClearSettings()
     {
@@ -79,7 +84,9 @@ public class AppSettings
         this.ShipComparisonUseUpgradedModules = true;
         this.ShipComparisonHideShipsWithoutSection = false;
         this.ShipComparisonHiddenColumns = default;
-        this.ThemePrimaryColor = "#6186FF";
+        this.ThemePrimaryColor = default;
+        this.ThemeStyle = default;
+        this.ThemeVariant = default;
     }
 
     public void UpdateFromSettings(AppSettings settings)
@@ -105,5 +112,7 @@ public class AppSettings
         this.ShipComparisonHideShipsWithoutSection = settings.ShipComparisonHideShipsWithoutSection;
         this.ShipComparisonHiddenColumns = settings.ShipComparisonHiddenColumns;
         this.ThemePrimaryColor = settings.ThemePrimaryColor;
+        this.ThemeStyle = settings.ThemeStyle;
+        this.ThemeVariant = settings.ThemeVariant;
     }
 }
