@@ -6,6 +6,8 @@ namespace WoWsShipBuilder.Infrastructure.ApplicationTheme;
 
 public class ThemeManager
 {
+    private const int BorderRadius = 4;
+
     private readonly AppSettings appSettings;
 
     public ThemeManager(AppSettings appSettings)
@@ -25,17 +27,21 @@ public class ThemeManager
 
     public enum ThemeStyle
     {
-        Sharp,
         Rounded,
+        Sharp,
     }
 
     public string DefaultPrimaryColor => "#6186FF";
+
+    public ThemeVariant DefaultThemeVariant => ThemeVariant.Dark;
+
+    public ThemeStyle DefaultThemeStyle => ThemeStyle.Rounded;
 
     public MudTheme AppTheme { get; private set; }
 
     private MudTheme GetAppTheme()
     {
-        ThemeVariant? selectedThemeVariant = Helpers.IsAprilFool() ? ThemeVariant.AprilFool : this.appSettings.ThemeVariant ?? ThemeVariant.Dark;
+        ThemeVariant? selectedThemeVariant = Helpers.IsAprilFool() ? ThemeVariant.AprilFool : this.appSettings.ThemeVariant ?? this.DefaultThemeVariant;
         return selectedThemeVariant switch
         {
             ThemeVariant.Dark => this.CreateDarkTheme(),
@@ -51,7 +57,7 @@ public class ThemeManager
         {
             LayoutProperties =
             {
-                DefaultBorderRadius = (this.appSettings.ThemeStyle ?? ThemeStyle.Sharp) == ThemeStyle.Sharp ? "0" : "4px",
+                DefaultBorderRadius = (this.appSettings.ThemeStyle ?? this.DefaultThemeStyle) == ThemeStyle.Sharp ? "0" : $"{BorderRadius}px",
             },
             PaletteDark =
             {
@@ -93,7 +99,7 @@ public class ThemeManager
         {
             LayoutProperties =
             {
-                DefaultBorderRadius = Random.Shared.NextDouble() > 0.5 ? "0" : "4px",
+                DefaultBorderRadius = $"{Random.Shared.Next(0, BorderRadius * 20) / 10}px",
             },
             PaletteDark =
             {

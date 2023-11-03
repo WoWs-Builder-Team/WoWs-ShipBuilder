@@ -1728,11 +1728,29 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Theme.
+        /// </summary>
+        public static string Settings_Theme {
+            get {
+                return ResourceManager.GetString("Settings_Theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Theme Primary Color.
         /// </summary>
         public static string Settings_ThemePrimaryColor {
             get {
                 return ResourceManager.GetString("Settings_ThemePrimaryColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme Style.
+        /// </summary>
+        public static string Settings_ThemeStyle {
+            get {
+                return ResourceManager.GetString("Settings_ThemeStyle", resourceCulture);
             }
         }
         
@@ -2705,6 +2723,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string ShipSelectionWindow_TypeFilter {
             get {
                 return ResourceManager.GetString("ShipSelectionWindow_TypeFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete from Saved Builds.
+        /// </summary>
+        public static string ShipSelector_DeleteFromSavedBuilds {
+            get {
+                return ResourceManager.GetString("ShipSelector_DeleteFromSavedBuilds", resourceCulture);
             }
         }
         

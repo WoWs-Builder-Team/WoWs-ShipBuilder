@@ -179,9 +179,9 @@
     {
         if (viewModel.ConsumableActivated)
         {
-            return isButton ? "border-color: #FFD700;" : "border: 1px solid; border-color: #FFD700;";
+            return isButton ? "border-color: #BF0000FF;" : "border: 1px solid; border-color: #BF0000FF; border-radius: var(--mud-default-borderradius);";
         }
-        return isButton ? $"border-color: {Color.Default};" : "border: 1px solid; border-color: transparent;";
+        return isButton ? $"border-color: {Color.Default};" : "border: 1px solid; border-color: transparent; border-radius: var(--mud-default-borderradius);";
     }
 
     private static string ConvertValue(string value, bool isValueKey, bool isAppLocalizationKey, ILocalizer localizer)

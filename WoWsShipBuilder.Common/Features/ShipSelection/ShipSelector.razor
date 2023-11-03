@@ -136,7 +136,7 @@
                             <MudListItem key="@shipContainer.Id">
                                 <MudStack Style="align-items: stretch" Spacing="1" Class="my-n1">
                                     <MudStack Row Justify="Justify.SpaceBetween">
-                                        <MudText>
+                                        <MudText Color="Color.Primary">
                                             @Localizer.GetGameLocalization(shipContainer.Ship.Index + "_FULL").Localization
                                         </MudText>
                                         <MudTooltip Text="Remove" Delay="300">
@@ -181,8 +181,7 @@
                                 <MudStack Style="align-items: stretch" Class="my-n1" Spacing="1">
                                     <MudStack Row Justify="Justify.SpaceBetween">
                                         <MudText>@Localizer.SimpleGameLocalization(build.ShipIndex + "_FULL")</MudText>
-                                        @* TODO: Localize *@
-                                        <MudTooltip Text="Delete from saved builds" Delay="300">
+                                        <MudTooltip Text="@Localizer.SimpleAppLocalization(nameof(Translation.ShipSelector_DeleteFromSavedBuilds))" Delay="300">
                                             <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" OnClick="@(async () => await RemoveSavedBuild(build))"/>
                                         </MudTooltip>
                                     </MudStack>

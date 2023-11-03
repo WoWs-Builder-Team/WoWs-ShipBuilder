@@ -11,8 +11,8 @@
         </MudContainer>
     </DialogContent>
     <DialogActions>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@Cancel">Cancel</MudButton>
-        <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@SubmitShips">
+        <MudButton Variant="Variant.Filled" Color="Color.Warning" DisableElevation="true" OnClick="@Cancel">Cancel</MudButton>
+        <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Success" DisableElevation="true" OnClick="@SubmitShips">
             Add ships
         </MudButton>
     </DialogActions>

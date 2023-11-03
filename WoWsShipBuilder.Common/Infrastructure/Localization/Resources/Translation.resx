@@ -2063,4 +2063,13 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="Settings_ThemePrimaryColor" xml:space="preserve">
     <value>Theme Primary Color</value>
   </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="Settings_ThemeStyle" xml:space="preserve">
+    <value>Theme Style</value>
+  </data>
+  <data name="ShipSelector_DeleteFromSavedBuilds" xml:space="preserve">
+    <value>Delete from Saved Builds</value>
+  </data>
 </root>

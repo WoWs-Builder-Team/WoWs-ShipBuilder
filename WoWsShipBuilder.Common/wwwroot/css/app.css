@@ -295,6 +295,7 @@ div.default-label-background label {
 .ship-stats-tabs .mud-tabs-toolbar .mud-tab-active {
     background-color: var(--mud-palette-primary);
     color: var(--mud-palette-primary-text);
+    border-radius: var(--mud-default-borderradius);
 
     /*noinspection CssUnresolvedCustomProperty*/
     & svg {

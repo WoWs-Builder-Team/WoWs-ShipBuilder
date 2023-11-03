@@ -54,6 +54,28 @@
             </MudSelect>
         </MudItem>
         <MudItem xs="12">
+            <MudStack Row AlignItems="AlignItems.Center">
+                <MudSelect T="ThemeManager.ThemeVariant" @bind-Value="themeVariant" Dense Immediate Label="@Localizer.SimpleAppLocalization(nameof(Translation.Settings_Theme))" Disabled="true">
+                    @foreach (var theme in Enum.GetValues<ThemeManager.ThemeVariant>().Except(new[] { ThemeManager.ThemeVariant.AprilFool }))
+                    {
+                        <MudSelectItem Value="@theme">
+                            <MudText Color="Color.Default">@Localizer.GetAppLocalization(theme.ToString()).Localization</MudText>
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+                <MudSelect T="ThemeManager.ThemeStyle" @bind-Value="themeStyle" Dense Immediate Label="@Localizer.SimpleAppLocalization(nameof(Translation.Settings_ThemeStyle))" Disabled="@Helpers.IsAprilFool()">
+                    @foreach (var style in Enum.GetValues<ThemeManager.ThemeStyle>())
+                    {
+                        <MudSelectItem Value="@style">
+                            <MudText Color="Color.Default">@Localizer.GetAppLocalization(style.ToString()).Localization</MudText>
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+                <div class="mt-2" style="@($"background-color:{themePrimaryColor}; height: 36.5px; width:36.5px; border-radius: var(--mud-default-borderradius);")"></div>
+                <MudColorPicker Label="@Localizer.SimpleAppLocalization(nameof(Translation.Settings_ThemePrimaryColor))" DisableToolbar="false" PickerVariant="PickerVariant.Dialog" @bind-Value="themePrimaryColor" Style="@($"color: {themePrimaryColor};")" Disabled="@Helpers.IsAprilFool()"/>
+            </MudStack>
+        </MudItem>
+        <MudItem xs="12">
             <MudStack>
                 <MudText Typo="Typo.h6">@Localizer.GetAppLocalization(nameof(Translation.WebApp_ExpanderSettingHeader)).Localization</MudText>
                 <MudStack Row>
@@ -61,15 +83,6 @@
                     <MudSwitch @bind-Checked="@openAmmoExpandersByDefault" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_AmmoExpanderSetting)).Localization" Color="Color.Primary"/>
                     <MudSwitch @bind-Checked="@openSecondariesAndAaExpandersByDefault" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_SecondariesAndAAExpanderSetting)).Localization" Color="Color.Primary"/>
                 </MudStack>
-            </MudStack>
-        </MudItem>
-        <MudItem xs="12">
-            <MudStack Row AlignItems="AlignItems.Center">
-                <MudText Typo="Typo.h6">
-                    @Localizer.SimpleAppLocalization(nameof(Translation.Settings_ThemePrimaryColor)):
-                </MudText>
-                <div style="@($"background-color:{themePrimaryColor}; height: 40px; width:40px;")"></div>
-                <MudColorPicker DisableToolbar="false" PickerVariant="PickerVariant.Dialog" @bind-Value="themePrimaryColor" Style="@($"color: {themePrimaryColor};")" Class="mt-n5" Disabled="@Helpers.IsAprilFool()"/>
             </MudStack>
         </MudItem>
         <MudItem xs="12">
@@ -167,6 +180,10 @@
 
     private MudColor themePrimaryColor = default!;
 
+    private ThemeManager.ThemeStyle themeStyle;
+
+    private ThemeManager.ThemeVariant themeVariant;
+
     private string CurrentCode
     {
         get => currentCode;
@@ -205,6 +222,8 @@
         openSecondariesAndAaExpandersByDefault = AppSettings.OpenSecondariesAndAaExpandersByDefault;
         storeBuildOnShare = AppSettings.StoreBuildOnShare;
         themePrimaryColor = AppSettings.ThemePrimaryColor ?? ThemeManager.DefaultPrimaryColor;
+        themeStyle = AppSettings.ThemeStyle ?? ThemeManager.DefaultThemeStyle;
+        themeVariant = AppSettings.ThemeVariant ?? ThemeManager.DefaultThemeVariant;
 
         StateHasChanged();
     }
@@ -227,6 +246,12 @@
 
         settingsChanged = settingsChanged || themePrimaryColor.Value != AppSettings.ThemePrimaryColor;
         AppSettings.ThemePrimaryColor = themePrimaryColor.Value;
+
+        settingsChanged = settingsChanged || themeVariant != AppSettings.ThemeVariant;
+        AppSettings.ThemeVariant = themeVariant;
+
+        settingsChanged = settingsChanged || themeStyle != AppSettings.ThemeStyle;
+        AppSettings.ThemeStyle = themeStyle;
 
         await SettingsAccessor.SaveSettings(AppSettings);
 
