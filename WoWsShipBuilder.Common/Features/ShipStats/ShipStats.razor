@@ -75,9 +75,34 @@
 
     private Guid selectedTabId;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await base.OnInitializedAsync();
+        base.OnInitialized();
+        InitializePage();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            UpdateUrl();
+            MetricsService.PageAccessCount.WithLabels("shipstats").Inc();
+            if (!string.IsNullOrWhiteSpace(shipBuildFromUrl))
+            {
+                MetricsService.BuildImports.WithLabels("ship-stats", "url").Inc();
+            }
+        }
+
+        if (!updateTab) return;
+        Logger.LogDebug("Tab update requested");
+        mudTabs.ActivatePanel(selectedTabId, true);
+        updateTab = false;
+        StateHasChanged();
+    }
+
+    private void InitializePage()
+    {
         NavManager.TryGetQueryString("shipIndexes", out shipIndexesFromUrl);
         NavManager.TryGetQueryString("build", out shipBuildFromUrl);
         if (!string.IsNullOrEmpty(shipIndexesFromUrl))
@@ -91,7 +116,6 @@
                 Build? build = null;
                 try
                 {
-                    MetricsService.BuildImports.WithLabels("ship-stats", "url").Inc();
                     build = Build.CreateBuildFromString(shipBuildFromUrl);
                     Logger.LogTrace("Build loaded from url");
                 }
@@ -115,23 +139,6 @@
 
             AddNewIndexes(shipIndexesFromUrl.Split(",").ToList(), buildList);
         }
-
-        UpdateUrl();
-    }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        base.OnAfterRender(firstRender);
-        if (firstRender)
-        {
-            MetricsService.PageAccessCount.WithLabels("shipstats").Inc();
-        }
-
-        if (!updateTab) return;
-        Logger.LogDebug("Tab update requested");
-        mudTabs.ActivatePanel(selectedTabId, true);
-        updateTab = false;
-        StateHasChanged();
     }
 
     private bool OnShipIndexChanged(Guid? oldId, string newShipIndex)
@@ -280,16 +287,7 @@
     {
         var shipsString = string.Join(",", shipContainers.Select(x => x.Ship.Index));
         Logger.LogTrace("Updating URL with shipIndexes: {ShipIndexes}", shipsString);
-        NavManager.NavigateTo($"/ship?shipIndexes={shipsString}");
-    }
-
-    private string GetStyle(Guid id)
-    {
-        if (mudTabs.ActivePanel is not null && mudTabs.ActivePanel.Tag!.Equals(id))
-        {
-            return " background-color: rgba(0, 0, 0, 0.4);";
-        }
-        return string.Empty;
+        NavManager.NavigateTo($"/ship?shipIndexes={shipsString}", replace: true);
     }
 
     public void Dispose()
