@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Hosting;
-using MudBlazor;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.GameData;

@@ -21,7 +21,7 @@ public class ThemeManager
     public enum ThemeVariant
     {
         Dark,
-        White,
+        Light,
         AprilFool,
     }
 
@@ -45,7 +45,7 @@ public class ThemeManager
         return selectedThemeVariant switch
         {
             ThemeVariant.Dark => this.CreateDarkTheme(),
-            ThemeVariant.White => this.CreateLightTheme(),
+            ThemeVariant.Light => this.CreateLightTheme(),
             ThemeVariant.AprilFool => this.CreateAprilFoolTheme(),
             _ => this.CreateDarkTheme(),
         };
@@ -99,7 +99,7 @@ public class ThemeManager
         {
             LayoutProperties =
             {
-                DefaultBorderRadius = $"{Random.Shared.Next(0, BorderRadius * 20) / 10}px",
+                DefaultBorderRadius = $"{Random.Shared.Next(0, BorderRadius * 100) / 10}px",
             },
             PaletteDark =
             {
@@ -144,7 +144,29 @@ public class ThemeManager
 
     private MudTheme CreateLightTheme()
     {
-        throw new NotImplementedException();
+        return new()
+        {
+            LayoutProperties =
+            {
+                DefaultBorderRadius = (this.appSettings.ThemeStyle ?? this.DefaultThemeStyle) == ThemeStyle.Sharp ? "0" : $"{BorderRadius}px",
+            },
+            Palette =
+            {
+                Primary = this.appSettings.ThemePrimaryColor ?? this.DefaultPrimaryColor,
+                AppbarBackground = "F0F0F0F0",
+                AppbarText = "#000000",
+                Background = "#FFFFFF",
+                TextPrimary = "#333333",
+                DrawerBackground = "#EDEDED",
+                Surface = "#EDEDED",
+            },
+            ZIndex =
+            {
+                Dialog = 2000,
+                Popover = 3000,
+                Tooltip = 4000,
+            },
+        };
     }
 
     public void UpdateTheme()

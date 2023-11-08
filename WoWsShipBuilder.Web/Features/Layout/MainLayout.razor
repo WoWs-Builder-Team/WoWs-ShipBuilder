@@ -10,7 +10,7 @@
 @inject RefreshNotifierService RefreshNotifierService
 @inject ThemeManager ThemeManager
 
-<MudThemeProvider Theme="theme" IsDarkMode="true"/>
+<MudThemeProvider Theme="theme" IsDarkMode="isDarkTheme"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
@@ -31,6 +31,7 @@
     private bool settingsInitialized;
 
     private MudTheme theme = default!;
+    private bool isDarkTheme = true;
 
     protected override void OnInitialized()
     {
@@ -42,6 +43,7 @@
     private void UpdateTheme(object? sender, MudTheme newTheme)
     {
         theme = newTheme;
+        isDarkTheme = AppSettings.ThemeVariant != ThemeManager.ThemeVariant.Light;
         StateHasChanged();
     }
 
