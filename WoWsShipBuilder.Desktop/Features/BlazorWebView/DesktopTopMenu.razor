@@ -21,11 +21,11 @@
     <NavLink href="/charts" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationCharts))</NavLink>
     <NavLink href="/acceleration-charts" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationAccelerationCharts))</NavLink>
     <NavLink href="/comparison" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationComparison))</NavLink>
-    <MudDivider DividerType="DividerType.Middle" FlexItem Vertical/>
     <MudButton StartIcon="@Icons.Material.Filled.Settings" IconSize="Size.Large" Color="Color.Inherit" OnClick="@OpenSettings" Target="_blank" Size="Size.Medium">
-        @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Settings))
+        <MudText Typo="Typo.body2">
+            @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Settings))
+        </MudText>
     </MudButton>
-    <MudDivider DividerType="DividerType.Middle" FlexItem Vertical/>
     <MudSpacer/>
     @if (updateStatus == UpdateStatus.Active)
     {
