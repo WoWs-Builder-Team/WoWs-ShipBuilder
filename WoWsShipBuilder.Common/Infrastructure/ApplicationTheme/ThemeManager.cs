@@ -99,7 +99,7 @@ public class ThemeManager
         {
             LayoutProperties =
             {
-                DefaultBorderRadius = $"{Random.Shared.Next(0, BorderRadius * 100) / 10}px",
+                DefaultBorderRadius = $"{Random.Shared.Next(0, BorderRadius * 50) / 10}px",
             },
             PaletteDark =
             {
@@ -132,6 +132,11 @@ public class ThemeManager
                 DrawerBackground = $"{Helpers.GenerateRandomColor()}",
                 DividerLight = $"{Helpers.GenerateRandomColor()}CC",
                 BackgroundGrey = $"{Helpers.GenerateRandomColor()}FF",
+                SecondaryContrastText = "#282828",
+                Tertiary = $"{Helpers.GenerateRandomColor()}FF",
+                TertiaryContrastText = $"{Helpers.GenerateRandomColor()}FF",
+                Background = $"{Helpers.GenerateRandomColor()}FF",
+                GrayDark = $"{Helpers.GenerateRandomColor()}FF",
             },
             ZIndex =
             {
