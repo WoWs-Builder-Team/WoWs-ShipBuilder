@@ -8,9 +8,9 @@
         <SettingsComponent @ref="@settingsComponent" />
     </DialogContent>
     <DialogActions>
-        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="@Cancel">@Localizer.GetAppLocalization(nameof(Translation.Dialog_Cancel)).Localization</MudButton>
-        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="@ResetSettingsAsync">@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Reset)).Localization</MudButton>
-        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="@SaveSettingsAsync">@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Save)).Localization</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Warning" OnClick="@Cancel">@Localizer.GetAppLocalization(nameof(Translation.Dialog_Cancel)).Localization</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Tertiary" OnClick="@ResetSettingsAsync">@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Reset)).Localization</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="@SaveSettingsAsync">@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Save)).Localization</MudButton>
     </DialogActions>
 </MudDialog>
 

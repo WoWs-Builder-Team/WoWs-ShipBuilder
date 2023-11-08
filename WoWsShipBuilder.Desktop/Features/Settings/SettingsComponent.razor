@@ -87,7 +87,7 @@
         </MudItem>
         <MudItem xs="12">
             <MudStack Row AlignItems="AlignItems.Center">
-                <MudSelect T="ThemeManager.ThemeVariant" @bind-Value="themeVariant" Dense Immediate Label="@Localizer.SimpleAppLocalization(nameof(Translation.Settings_Theme))" Disabled="true">
+                <MudSelect T="ThemeManager.ThemeVariant" @bind-Value="themeVariant" Dense Immediate Label="@Localizer.SimpleAppLocalization(nameof(Translation.Settings_Theme))" Disabled="@Helpers.IsAprilFool()">
                     @foreach (var theme in Enum.GetValues<ThemeManager.ThemeVariant>().Except(new[] { ThemeManager.ThemeVariant.AprilFool }))
                     {
                         <MudSelectItem Value="@theme">

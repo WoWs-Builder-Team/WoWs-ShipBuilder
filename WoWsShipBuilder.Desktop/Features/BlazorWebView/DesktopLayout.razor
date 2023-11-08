@@ -1,11 +1,13 @@
 ﻿@using WoWsShipBuilder.Infrastructure.ApplicationTheme
+@using WoWsShipBuilder.Features.Settings
 
 @inherits LayoutComponentBase
 @implements IDisposable
 
 @inject ThemeManager ThemeManager
+@inject AppSettings AppSettings
 
-<MudThemeProvider Theme="@theme" IsDarkMode="true"/>
+<MudThemeProvider Theme="@theme" IsDarkMode="isDarkTheme"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
@@ -21,7 +23,7 @@
 @code
 {
     private readonly bool settingsInitialized = true;
-
+    private bool isDarkTheme = true;
     private MudTheme theme = default!;
 
     protected override void OnInitialized()
@@ -34,6 +36,7 @@
     private void UpdateTheme(object? sender, MudTheme newTheme)
     {
         theme = newTheme;
+        isDarkTheme = AppSettings.ThemeVariant != ThemeManager.ThemeVariant.Light;
         StateHasChanged();
     }
 
