@@ -1718,6 +1718,9 @@
   <data name="Unit_DegreePerSecond2" xml:space="preserve">
       <value>°/с²</value>
   </data>
+  <data name="BuildImageSettingsDialog_Modules" xml:space="preserve">
+      <value>Модули</value>
+  </data>
   <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
       <value>Перки капитана</value>
   </data>
@@ -1726,6 +1729,36 @@
   </data>
   <data name="BuildImageSettingsDialog_Consumables" xml:space="preserve">
       <value>Расходники</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Upgrades" xml:space="preserve">
+      <value>Модернизации</value>
+  </data>
+  <data name="BuildImageSettingsDialog_TwoColumns" xml:space="preserve">
+      <value>Два столбца</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Layout" xml:space="preserve">
+      <value>ВИД</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Elements" xml:space="preserve">
+      <value>ЭЛЕМЕНТЫ</value>
+  </data>
+  <data name="BuildImageSettingsDialog_TwoColumnsTooltip" xml:space="preserve">
+      <value>Рисширяет вид изображения разделяя элементы в 2 столбца стоящие бок о бок (навыки командира и сигналы нельзя скрыть).</value>
+  </data>
+  <data name="BuildNameDialog_BuildName" xml:space="preserve">
+      <value>Название билда</value>
+  </data>
+  <data name="BuildNameDialog_EnterBuildName" xml:space="preserve">
+      <value>Введите название билда</value>
+  </data>
+  <data name="BuildImageRenderDialog_SaveImage" xml:space="preserve">
+      <value>Сохранить изображение</value>
+  </data>
+  <data name="BuildImageRenderDialog_GetUrl" xml:space="preserve">
+      <value>Получить URL</value>
+  </data>
+  <data name="BuildImageRenderDialog_GetShortLink" xml:space="preserve">
+      <value>Получить короткую ссылку</value>
   </data>
   <data name="ShipStats_PenetrationAp" xml:space="preserve">
       <value>Бронепробитие</value>
