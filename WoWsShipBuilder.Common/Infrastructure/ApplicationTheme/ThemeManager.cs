@@ -159,11 +159,16 @@ public class ThemeManager
             {
                 Primary = this.appSettings.ThemePrimaryColor ?? this.DefaultPrimaryColor,
                 AppbarBackground = "F0F0F0F0",
-                AppbarText = "#000000",
+                AppbarText = "#121212FF",
                 Background = "#FFFFFF",
                 TextPrimary = "#333333",
                 DrawerBackground = "#EDEDED",
                 Surface = "#EDEDED",
+                GrayDark = this.appSettings.ThemePrimaryColor ?? this.DefaultPrimaryColor,
+                PrimaryContrastText = "F0F0F0F0",
+                HoverOpacity = 0.165,
+                Black = "#121212FF",
+                GrayDarker = "#121212FF",
             },
             ZIndex =
             {
