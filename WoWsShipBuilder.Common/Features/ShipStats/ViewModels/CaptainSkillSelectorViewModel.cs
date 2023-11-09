@@ -264,7 +264,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
             .ToList();
 
         // filter out modifiers that are class specific
-        modifiers = modifiers.Where(x => !x.Key.Contains('_') || x.Key.Contains("_" + this.currentClass))
+        modifiers = modifiers.Where(x => !x.Key.Contains('_') || x.Key.Contains("_" + this.currentClass) || x.Key.Contains("invisible_"))
             .Select(effect => (effect.Key, effect.Value))
             .ToList();
 

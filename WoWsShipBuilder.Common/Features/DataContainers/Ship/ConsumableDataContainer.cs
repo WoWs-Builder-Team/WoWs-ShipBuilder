@@ -153,6 +153,7 @@ public partial record ConsumableDataContainer : DataContainerBase
 
             if (name.Contains("PCY011", StringComparison.InvariantCultureIgnoreCase))
             {
+                // Defensive AA
                 var cooldownModifiers = modifiers.FindModifiers("airDefenseDispReloadCoeff");
                 cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
 
@@ -161,6 +162,7 @@ public partial record ConsumableDataContainer : DataContainerBase
             }
             else if (name.Contains("PCY013", StringComparison.InvariantCultureIgnoreCase))
             {
+                // Spotting Aircraft
                 var extraScoutPlane = modifiers.FindModifiers("scoutAdditionalConsumables");
                 uses = extraScoutPlane.Aggregate(uses, (current, modifier) => (int)(current + modifier));
 
@@ -172,6 +174,7 @@ public partial record ConsumableDataContainer : DataContainerBase
             }
             else if (name.Contains("PCY010", StringComparison.InvariantCultureIgnoreCase))
             {
+                // Repair party
                 var regenUsesModifiers = modifiers.FindModifiers("regenCrewAdditionalConsumables", true);
                 uses = regenUsesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
 
@@ -190,6 +193,10 @@ public partial record ConsumableDataContainer : DataContainerBase
             }
             else if (name.Contains("PCY016", StringComparison.InvariantCultureIgnoreCase))
             {
+                // Hydro
+                var cooldownModifiers = modifiers.FindModifiers("sonarReloadCoeff");
+                cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+
                 var workTimeModifiers = modifiers.FindModifiers("sonarWorkTimeCoeff");
                 workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
 
@@ -199,11 +206,16 @@ public partial record ConsumableDataContainer : DataContainerBase
             }
             else if (name.Contains("PCY020", StringComparison.InvariantCultureIgnoreCase))
             {
+                // Radar
+                var cooldownModifiers = modifiers.FindModifiers("rlsReloadCoeff");
+                cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+
                 var workTimeModifiers = modifiers.FindModifiers("rlsWorkTimeCoeff");
                 workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
             }
             else if (name.Contains("PCY009", StringComparison.InvariantCultureIgnoreCase) || name.Contains("PCY037", StringComparison.InvariantCultureIgnoreCase))
             {
+                // Damage Control Party, Damage Control Party (auto)
                 var crashCrewUsesModifiers = modifiers.FindModifiers("crashCrewAdditionalConsumables", true);
                 uses = crashCrewUsesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
 
@@ -215,6 +227,7 @@ public partial record ConsumableDataContainer : DataContainerBase
             }
             else if (name.Contains("PCY014", StringComparison.InvariantCultureIgnoreCase))
             {
+                // Smoke Generator
                 var workTimeModifiers = modifiers.FindModifiers("smokeGeneratorWorkTimeCoeff");
                 workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
 
@@ -230,16 +243,22 @@ public partial record ConsumableDataContainer : DataContainerBase
             }
             else if (name.Contains("PCY015", StringComparison.InvariantCultureIgnoreCase))
             {
+                // Engine Boost
+                var cooldownModifiers = modifiers.FindModifiers("speedBoostersReloadCoeff");
+                cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+
                 var workTimeModifiers = modifiers.FindModifiers("speedBoostersWorkTimeCoeff");
                 workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
             }
             else if (name.Contains("PCY022", StringComparison.InvariantCultureIgnoreCase))
             {
+                // Main Battery Reload Booster
                 var cooldownModifiers = modifiers.FindModifiers("artilleryBoostersReloadCoeff");
                 cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
             }
             else if (name.Contains("PCY012", StringComparison.InvariantCultureIgnoreCase) || name.Contains("PCY038", StringComparison.InvariantCultureIgnoreCase))
             {
+                // Fighter, Fighter (auto)
                 var extraFighters = modifiers.FindModifiers("extraFighterCount");
                 var totalFighters = extraFighters.Aggregate(consumableModifiers["fightersNum"], (current, modifier) => current + modifier);
                 consumableModifiers["fightersNum"] = totalFighters;
@@ -259,17 +278,20 @@ public partial record ConsumableDataContainer : DataContainerBase
             }
             else if (name.Contains("PCY018", StringComparison.InvariantCultureIgnoreCase))
             {
+                // Torpedo Reload Booster
                 var cooldownModifiers = modifiers.FindModifiers("torpedoReloaderReloadCoeff");
                 cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
             }
             else if (name.Contains("PCY045", StringComparison.InvariantCultureIgnoreCase))
             {
+                // Hydrophone
                 var hydrophoneUpdateFrequencyModifiers = modifiers.FindModifiers("hydrophoneUpdateFrequencyCoeff");
                 var hydrophoneUpdateFrequency = hydrophoneUpdateFrequencyModifiers.Aggregate(consumableModifiers["hydrophoneUpdateFrequency"], (current, modifier) => current * modifier);
                 consumableModifiers["hydrophoneUpdateFrequency"] = hydrophoneUpdateFrequency;
             }
             else if (name.Contains("PCY048", StringComparison.InvariantCultureIgnoreCase))
             {
+                // Submarine Surveillance
                 var subsRadarPrepTimeModifiers = modifiers.FindModifiers("ConsumableReloadTime");
                 prepTime = subsRadarPrepTimeModifiers.Aggregate(prepTime, (current, modifier) => current * modifier);
             }
