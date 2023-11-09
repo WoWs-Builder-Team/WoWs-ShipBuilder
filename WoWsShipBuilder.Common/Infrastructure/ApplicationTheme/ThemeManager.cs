@@ -132,7 +132,7 @@ public class ThemeManager
                 DrawerBackground = $"{Helpers.GenerateRandomColor()}",
                 DividerLight = $"{Helpers.GenerateRandomColor()}CC",
                 BackgroundGrey = $"{Helpers.GenerateRandomColor()}FF",
-                SecondaryContrastText = "#282828",
+                SecondaryContrastText = $"{Helpers.GenerateRandomColor()}FF",
                 Tertiary = $"{Helpers.GenerateRandomColor()}FF",
                 TertiaryContrastText = $"{Helpers.GenerateRandomColor()}FF",
                 Background = $"{Helpers.GenerateRandomColor()}FF",
