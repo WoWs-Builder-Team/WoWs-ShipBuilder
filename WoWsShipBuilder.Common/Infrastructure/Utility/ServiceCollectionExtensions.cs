@@ -45,6 +45,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ChartJsInterop>();
         services.AddScoped<MouseEventInterop>();
         services.AddScoped<SessionStateCache>();
+        services.AddScoped<ExpanderStateCache>();
 
         return services;
     }

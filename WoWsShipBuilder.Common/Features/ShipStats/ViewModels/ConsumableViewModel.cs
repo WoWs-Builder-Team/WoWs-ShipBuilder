@@ -3,7 +3,6 @@ using DynamicData;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using ReactiveUI;
-using WoWsShipBuilder.DataContainers;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.Utility;
@@ -29,7 +28,7 @@ public class ConsumableViewModel : ReactiveObject, IBuildComponentProvider
     {
         this.ship = ship;
         this.logger = logger;
-        ConsumableSlots = new();
+        this.ConsumableSlots = new();
     }
 
     /// <summary>
@@ -58,7 +57,7 @@ public class ConsumableViewModel : ReactiveObject, IBuildComponentProvider
 
     public void LoadBuild(IEnumerable<string> storedData)
     {
-        foreach (var slotViewModel in ConsumableSlots)
+        foreach (var slotViewModel in this.ConsumableSlots)
         {
             var index = slotViewModel.ConsumableData.FindIndex(consumable => storedData.Any(s => consumable.IconName.StartsWith(s, StringComparison.OrdinalIgnoreCase)));
             if (index > -1)
@@ -70,27 +69,27 @@ public class ConsumableViewModel : ReactiveObject, IBuildComponentProvider
 
     public List<string> SaveBuild()
     {
-        return ConsumableSlots.Select(slot => slot.SelectedConsumable.IconName).ToList();
+        return this.ConsumableSlots.Select(slot => slot.SelectedConsumable.IconName).ToList();
     }
 
     /// <summary>
     /// Updates the consumable data for each slot.
-    /// This method only replaces the <see cref="ConsumableDataContainer">ConsumableDataContainer</see> objects in each slot viewmodel but not the viewmodels themselves.
+    /// This method only replaces the <see cref="DataContainers.ConsumableDataContainer">ConsumableDataContainer</see> objects in each slot viewmodel but not the viewmodels themselves.
     /// </summary>
     /// <param name="modifiers">The list of modifiers applied to the current ship.</param>
     /// <param name="shipHp">The HP of the ship after modifiers have been applied.</param>
     /// <param name="shipClass">The class of the ship.</param>
     public void UpdateConsumableData(List<(string, float)> modifiers, int shipHp, ShipClass shipClass)
     {
-        Parallel.ForEach(ConsumableSlots, consumableSlot => consumableSlot.UpdateDataContainers(modifiers, shipHp, shipClass));
+        Parallel.ForEach(this.ConsumableSlots, consumableSlot => consumableSlot.UpdateDataContainers(modifiers, shipHp, shipClass));
     }
 
     public IEnumerable<(string, float)> GetModifiersList()
     {
         var modifiers = new List<(string, float)>();
-        foreach (int slot in ActivatedSlots)
+        foreach (int slot in this.ActivatedSlots)
         {
-            var consumable = ConsumableSlots[slot].SelectedConsumable;
+            var consumable = this.ConsumableSlots[slot].SelectedConsumable;
             if (consumable.Name.Contains("PCY015"))
             {
                 modifiers.AddRange(consumable.Modifiers.Select(entry => ("speedBoost_" + entry.Key, entry.Value)));
@@ -110,27 +109,27 @@ public class ConsumableViewModel : ReactiveObject, IBuildComponentProvider
 
     private void UpdateSlotViewModels(IEnumerable<string> disabledConsumables)
     {
-        var rawSlots = ship.ShipConsumable.GroupBy(consumable => consumable.Slot)
+        var rawSlots = this.ship.ShipConsumable.GroupBy(consumable => consumable.Slot)
             .Select(group => group.Where(c => !disabledConsumables.Contains(c.ConsumableName)))
             .Where(consumables => consumables.Any())
-            .Select(consumables => ConsumableSlotViewModel.Create(consumables, Logging.LoggerFactory, ship.ShipClass, ConsumableActivationChanged))
+            .Select(consumables => ConsumableSlotViewModel.Create(consumables, Logging.LoggerFactory, this.ship.ShipClass, this.ConsumableActivationChanged))
             .OrderBy(vm => vm.Slot);
 
-        ConsumableSlots.Clear();
-        ConsumableSlots.AddRange(rawSlots);
+        this.ConsumableSlots.Clear();
+        this.ConsumableSlots.AddRange(rawSlots);
     }
 
     private void ConsumableActivationChanged(int slot, bool activationState)
     {
         if (activationState)
         {
-            logger.LogDebug("Consumable slot {Slot} activated", slot);
-            ActivatedSlots.Add(slot);
+            this.logger.LogDebug("Consumable slot {Slot} activated", slot);
+            this.ActivatedSlots.Add(slot);
         }
         else
         {
-            logger.LogDebug("Consumable slot {Slot} deactivated", slot);
-            ActivatedSlots.Remove(slot);
+            this.logger.LogDebug("Consumable slot {Slot} deactivated", slot);
+            this.ActivatedSlots.Remove(slot);
         }
     }
 }

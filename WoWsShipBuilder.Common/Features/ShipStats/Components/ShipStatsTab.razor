@@ -3,8 +3,8 @@
 @using Microsoft.Extensions.Hosting
 @using Microsoft.Extensions.Options
 @using Prometheus
-@using WoWsShipBuilder.DataContainers
 @using WoWsShipBuilder.Features.Builds.Components
+@using WoWsShipBuilder.Features.DataContainers
 @using WoWsShipBuilder.Features.ShipStats.ViewModels
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.LinkShortening
@@ -16,7 +16,6 @@
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
-@using ShipViewModel = WoWsShipBuilder.Features.ShipStats.ViewModels.ShipViewModel
 @using System.Diagnostics
 
 @inject IHostEnvironment Environment
@@ -97,10 +96,10 @@ else if (ViewModel is not null)
                     </MudItem>
                     <MudItem xs="12" md="2" Class="align-self-center d-flex justify-center">
                         <MudStack>
-                            <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Share" OnClick="@OnShareBuildClicked">
+                            <MudButton Size="Size.Large" Variant="Variant.Outlined" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Share" OnClick="@OnShareBuildClicked">
                                 @Localizer.GetAppLocalization(nameof(Translation.MainWindow_ShareBuild)).Localization
                             </MudButton>
-                            <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Save" OnClick="@OnBuildSaveClicked">
+                            <MudButton Size="Size.Large" Variant="Variant.Outlined" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Save" OnClick="@OnBuildSaveClicked">
                                 @Localizer.SimpleAppLocalization(nameof(Translation.Dialog_Save))
                             </MudButton>
                         </MudStack>
@@ -181,7 +180,7 @@ else if (ViewModel is not null)
         if (ViewModel is null)
         {
             Cache[CurrentTabId] = new(null!);
-            ViewModel = await LoadShipViewModel(ShipIndex);
+            ViewModel = LoadShipViewModel(ShipIndex);
             Cache[CurrentTabId] = Cache[CurrentTabId]! with { ViewModel = ViewModel };
             initialized = true;
             StateHasChanged();
@@ -209,13 +208,13 @@ else if (ViewModel is not null)
         }
     }
 
-    private async Task<ShipViewModel> LoadShipViewModel(string shipIndex)
+    private ShipViewModel LoadShipViewModel(string shipIndex)
     {
         MetricsService.ShipViewCount.WithLabels(shipIndex, Localizer.GetGameLocalization(shipIndex + "_FULL", AppConstants.DefaultCultureDetails).Localization).Inc();
         using (MetricsService.ShipViewModelInitDurationAverage.NewTimer())
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
-            var vm = await CreateViewModel(shipIndex, Build, Localizer);
+            var vm = CreateViewModel(shipIndex, Build);
             BuildName = Build?.BuildName ?? string.Empty;
             Build = null;
             shipChanged = true;
@@ -284,8 +283,10 @@ else if (ViewModel is not null)
             {
                 ShipIndex = updateToShipSummary.Index;
                 BuildName = string.Empty;
-                ViewModel = await LoadShipViewModel(ShipIndex);
-                Cache[CurrentTabId] = Cache[CurrentTabId]! with { ViewModel = ViewModel };
+                ViewModel = LoadShipViewModel(ShipIndex);
+                var oldCacheEntry = Cache[CurrentTabId]!;
+                Cache[CurrentTabId] = oldCacheEntry with { ViewModel = ViewModel };
+                oldCacheEntry.ViewModel.Dispose();
                 await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
                 StateHasChanged();
             }
@@ -319,40 +320,52 @@ else if (ViewModel is not null)
 
         if (result is { Canceled: false, Data: BuildShareResult shareResult })
         {
-            BuildName = shareResult.BuildName;
-            var build = ViewModel!.CreateBuild(shareResult.BuildName);
-            var buildString = build.CreateShortStringFromBuild();
-            string urlBase;
-            if (NavManager.BaseUri.Contains("0.0.0.0"))
-            {
-                urlBase = AppSettings.SelectedServerType switch
-                {
-                    ServerType.Live => $"{ShipBuilderOptions.Value.LiveServerUrl}/",
-                    ServerType.Pts => $"{ShipBuilderOptions.Value.PtsServerUrl}/",
-                    _ => $"{ShipBuilderOptions.Value.LiveServerUrl}/",
-                };
-            }
-            else
-            {
-                urlBase = NavManager.BaseUri;
-            }
-
-            var buildUrl = $"{urlBase}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}";
-            await ClipboardService.SetTextAsync(shareResult.CreateShortLink ? (await LinkShortener.CreateShortLink(buildUrl)).Link : buildUrl);
-            if (AppSettings.StoreBuildOnShare)
-            {
-                await UserDataService.SaveBuildAsync(build);
-            }
+            await ProcessBuildShareResult(shareResult);
         }
 
         if (result is { Canceled: false, Data: string name })
         {
-            BuildName = name;
-            if (AppSettings.StoreBuildOnShare)
+            await ProcessBuildNameChanged(name);
+        }
+    }
+
+    private async Task ProcessBuildShareResult(BuildShareResult shareResult)
+    {
+        BuildName = shareResult.BuildName;
+        var build = ViewModel!.CreateBuild(shareResult.BuildName);
+        var buildString = build.CreateShortStringFromBuild();
+        string urlBase;
+        if (NavManager.BaseUri.Contains("0.0.0.0"))
+        {
+            urlBase = AppSettings.SelectedServerType switch
             {
-                var build = ViewModel!.CreateBuild(BuildName);
-                await UserDataService.SaveBuildAsync(build);
-            }
+                ServerType.Live => $"{ShipBuilderOptions.Value.LiveServerUrl}/",
+                ServerType.Pts => $"{ShipBuilderOptions.Value.PtsServerUrl}/",
+                _ => $"{ShipBuilderOptions.Value.LiveServerUrl}/",
+                };
+        }
+        else
+        {
+            urlBase = NavManager.BaseUri;
+        }
+
+        var buildUrl = $"{urlBase}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}";
+        await ClipboardService.SetTextAsync(shareResult.CreateShortLink
+            ? (await LinkShortener.CreateShortLink(buildUrl)).Link
+            : buildUrl);
+        if (AppSettings.StoreBuildOnShare)
+        {
+            await UserDataService.SaveBuildAsync(build);
+        }
+    }
+
+    private async Task ProcessBuildNameChanged(string name)
+    {
+        BuildName = name;
+        if (AppSettings.StoreBuildOnShare)
+        {
+            var build = ViewModel!.CreateBuild(BuildName);
+            await UserDataService.SaveBuildAsync(build);
         }
     }
 
@@ -384,17 +397,16 @@ else if (ViewModel is not null)
         return new(ship, build, containerId, activeConsumables, false, shipDataContainer, modifiers);
     }
 
-    public static Task<ShipViewModel> CreateViewModel(string shipIndex, Build? build, ILocalizer localizer)
+    public static ShipViewModel CreateViewModel(string shipIndex, Build? build)
     {
         var shipSummary = AppData.ShipSummaryMapper[shipIndex];
         var ship = AppData.FindShipFromSummary(shipSummary);
         var vmParams = new ShipViewModelParams(ship, shipSummary, build);
 
-        var vm = new ShipViewModel(Logging.LoggerFactory.CreateLogger<ShipViewModel>(), vmParams);
+        var vm = new ShipViewModel(vmParams, Logging.LoggerFactory.CreateLogger<ShipViewModel>());
         vm.InitializeData(vmParams);
 
-        // workaround to keep method signature compatible even though InitializeData is no longer async
-        return Task.FromResult(vm);
+        return vm;
     }
 
     private async Task OnBuildSaveClicked()

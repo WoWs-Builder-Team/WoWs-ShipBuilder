@@ -129,7 +129,6 @@ public static class EnumToStringExtensions
             ShipCategory.TestShip => "TestShip",
             ShipCategory.Disabled => "Disabled",
             ShipCategory.Clan => "Clan",
-            ShipCategory.SuperShip => "SuperShip",
             _ => shipCategory.ToString(),
         };
     }

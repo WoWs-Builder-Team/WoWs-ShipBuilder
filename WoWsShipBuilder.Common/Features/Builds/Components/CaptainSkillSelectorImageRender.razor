@@ -1,6 +1,5 @@
-﻿@using WoWsShipBuilder.DataStructures
-@using System.Text
-@using WoWsShipBuilder.DataContainers
+﻿@using System.Text
+@using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.Features.ShipStats.ViewModels
 @using WoWsShipBuilder.DataStructures.Captain
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
@@ -16,7 +15,7 @@
                 <MudText Typo="Typo.body2" Align="Align.Center">
                     @Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_Points)).Localization @ViewModel.AssignedPoints/21
                 </MudText>
-                <MudText Typo="Typo.body2" Color="Color.Secondary" Align="Align.Center" Class="mt-1">
+                <MudText Typo="Typo.body2" Color="Color.Default" Align="Align.Center" Class="mt-1">
                     @Localizer.GetAppLocalization(Translation.ScreenshotWindow_Captain).Localization @Localizer.GetGameLocalization(ViewModel.SelectedCaptain!.Name).Localization
                 </MudText>
             </MudItem>
@@ -25,7 +24,7 @@
                 <MudItem @key="skill.Skill.SkillNumber" Class="d-flex justify-center" xs="2" Style="@(GetOrder(skill.Skill.Tiers.Single(x => x.ShipClass == ShipClass)) + GetSubFix())">
                     <MudTooltip Placement="Placement.Right" Color="Color.Transparent" Delay="350">
                         <ChildContent>
-                            <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" BadgeClass="skill-special-icon" Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">
+                            <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@SpecialIconPath" BadgeClass="skill-special-icon" Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">
                                 <MudBadge Content="@(ViewModel.SkillOrderList.IndexOf(skill.Skill) + 1)" Color="Color.Error" Origin="Origin.TopLeft" Overlap="true" BadgeClass="skill-order-number" Visible="@ShouldShowBadge(skill.Skill)">
                                     <MudPaper Outlined Elevation="0" Style="@(GetImageBreakpointStyle() + GetMudPaperBorderColor(skill))">
                                         <MudImage Width="@GetImageSize()" Height="@GetImageSize()" ObjectFit="ObjectFit.ScaleDown" Src="@("/_content/WoWsShipBuilder.Common/assets/Skills/" + ToSnakeCase(skillName) + ".png")" Style="@GetImageBreakpointStyle()" Class="pa-1"/>
@@ -64,13 +63,20 @@
                                             }
                                         }
                                     }
-                                    @if (skill.ConditionalModifiers is { Count: > 0 })
+                                    @foreach(var modifierGroup in skill.ConditionalModifierGroups)
                                     {
                                         <MudDivider Light="true" Class="ma-1"/>
                                         <MudText Align="Align.Left" Typo="Typo.body2" GutterBottom>
-                                            @Localizer.GetGameLocalization(!string.IsNullOrWhiteSpace(skill.Skill.ConditionalTriggerDescription) ? skill.Skill.ConditionalTriggerDescription : "SKILL_TRIGGER_" + skill.Skill.ConditionalTriggerType).Localization
+                                            @if (modifierGroup.LocalizationOverride is not null)
+                                            {
+                                                @Localizer.SimpleGameLocalization(modifierGroup.LocalizationOverride)
+                                            }
+                                            else
+                                            {
+                                                @Localizer.GetGameLocalization(!string.IsNullOrWhiteSpace(modifierGroup.TriggerDescription) ? modifierGroup.TriggerDescription : "SKILL_TRIGGER_" + modifierGroup.TriggerType).Localization
+                                            }
                                         </MudText>
-                                        foreach ((string modifierName, float modifierValue) in skill.ConditionalModifiers)
+                                        foreach ((string modifierName, float modifierValue) in modifierGroup.Modifiers)
                                         {
                                             // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
                                             string modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
@@ -94,13 +100,13 @@
 
 @code {
 
+    private static readonly string SpecialIconPath = """<path style="fill:#ffffff;fill-opacity:1;" d="m 9.1521727,1.5579681 h 5.6956543 v 7.5942036 h 7.594205 v 5.6956533 h -7.594205 v 7.594206 H 9.1521727 V 14.847825 H 1.5579678 V 9.1521717 h 7.5942049 z"/>""";
+
     [Parameter]
     public ShipClass ShipClass { get; set; }
 
     [CascadingParameter]
     private Breakpoint Breakpoint { get; set; }
-
-    private string specialIconPath = @"<path style=""fill:#ffffff;fill-opacity:1;"" d=""m 9.1521727,1.5579681 h 5.6956543 v 7.5942036 h 7.594205 v 5.6956533 h -7.594205 v 7.594206 H 9.1521727 V 14.847825 H 1.5579678 V 9.1521717 h 7.5942049 z""/>";
 
     private static string ToSnakeCase(string camelCaseString)
     {
@@ -150,7 +156,7 @@
 
     private string GetImageStyle(SkillItemViewModel skillItem)
     {
-        return ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? string.Empty : @"opacity: 0.4";
+        return ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? string.Empty : "opacity: 0.4";
     }
 
     private int GetImageSize()
@@ -179,6 +185,6 @@
 
     private string GetMudPaperBorderColor(SkillItemViewModel skillItem)
     {
-        return " border-color: " + (ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? "#BC0606" : "#3C3C3C") + ";";
+        return $" border-color: {(ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? "#BC0606" : "var(--mud-palette-text-disabled)")};";
     }
 }

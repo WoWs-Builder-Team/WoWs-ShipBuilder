@@ -1,5 +1,5 @@
 ﻿using System.Collections.Immutable;
-using Newtonsoft.Json;
+using System.Text.Json;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Aircraft;
 using WoWsShipBuilder.DataStructures.Captain;
@@ -39,7 +39,7 @@ public static class DataCacheHelper
             _ => throw new InvalidOperationException(),
         };
 
-        object? jsonObject = JsonConvert.DeserializeObject(content, type);
+        object? jsonObject = JsonSerializer.Deserialize(content, type, AppConstants.JsonSerializerOptions);
 
         await Semaphore.WaitAsync();
         switch (category.ToLowerInvariant())

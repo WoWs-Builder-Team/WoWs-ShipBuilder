@@ -21,10 +21,10 @@ public partial class LocalDataUpdaterTest
     [SetUp]
     public void Setup()
     {
-        mockFileSystem = new();
-        awsClientMock = new();
-        appDataHelper = new();
-        appDataHelper.Setup(x => x.GetDataPath(ServerType.Live)).Returns(@"AppData/live");
+        this.mockFileSystem = new();
+        this.awsClientMock = new();
+        this.appDataHelper = new();
+        this.appDataHelper.Setup(x => x.GetDataPath(ServerType.Live)).Returns(@"AppData/live");
     }
 
     private VersionInfo CreateTestVersionInfo(int versionCode, GameVersion gameVersion)

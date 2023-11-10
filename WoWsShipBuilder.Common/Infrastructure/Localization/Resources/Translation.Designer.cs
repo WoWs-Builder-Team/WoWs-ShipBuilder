@@ -2286,6 +2286,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hide Columns.
+        /// </summary>
+        public static string ShipComparison_HideColumns {
+            get {
+                return ResourceManager.GetString("ShipComparison_HideColumns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hide ships without selected section.
         /// </summary>
         public static string ShipComparison_HideIfNoSection {
@@ -2480,6 +2489,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string ShipComparison_SelectAll {
             get {
                 return ResourceManager.GetString("ShipComparison_SelectAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ships per page:.
+        /// </summary>
+        public static string ShipComparison_ShipsPerPage {
+            get {
+                return ResourceManager.GetString("ShipComparison_ShipsPerPage", resourceCulture);
             }
         }
         
@@ -3709,6 +3727,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to From subs at periscope depth.
+        /// </summary>
+        public static string ShipStats_FromSubsAtPeriscopeDepth {
+            get {
+                return ResourceManager.GetString("ShipStats_FromSubsAtPeriscopeDepth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Full salvo damage.
         /// </summary>
         public static string ShipStats_FullSalvoDamage {
@@ -4517,6 +4544,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string ShipStats_SecondaryBattery {
             get {
                 return ResourceManager.GetString("ShipStats_SecondaryBattery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Second and Consecutive.
+        /// </summary>
+        public static string ShipStats_SecondConsecutive {
+            get {
+                return ResourceManager.GetString("ShipStats_SecondConsecutive", resourceCulture);
             }
         }
         

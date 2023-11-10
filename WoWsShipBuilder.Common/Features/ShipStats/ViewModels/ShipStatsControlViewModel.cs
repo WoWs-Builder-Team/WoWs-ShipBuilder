@@ -1,6 +1,6 @@
 using ReactiveUI;
-using WoWsShipBuilder.DataContainers;
 using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.Features.DataContainers;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
@@ -10,13 +10,13 @@ public class ShipStatsControlViewModel : ReactiveObject
 
     public ShipStatsControlViewModel(Ship ship)
     {
-        BaseShipStats = ship;
+        this.BaseShipStats = ship;
     }
 
     public ShipDataContainer? CurrentShipStats
     {
-        get => currentShipStats;
-        set => this.RaiseAndSetIfChanged(ref currentShipStats, value);
+        get => this.currentShipStats;
+        set => this.RaiseAndSetIfChanged(ref this.currentShipStats, value);
     }
 
     // this is the ship base stats. do not modify after creation
@@ -24,7 +24,7 @@ public class ShipStatsControlViewModel : ReactiveObject
 
     public async Task UpdateShipStats(List<ShipUpgrade> selectedConfiguration, List<(string, float)> modifiers)
     {
-        ShipDataContainer shipStats = await Task.Run(() => ShipDataContainer.CreateFromShip(BaseShipStats, selectedConfiguration, modifiers));
-        CurrentShipStats = shipStats;
+        ShipDataContainer shipStats = await Task.Run(() => ShipDataContainer.CreateFromShip(this.BaseShipStats, selectedConfiguration, modifiers));
+        this.CurrentShipStats = shipStats;
     }
 }

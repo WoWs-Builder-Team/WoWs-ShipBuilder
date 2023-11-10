@@ -4,5 +4,5 @@ public class RefreshNotifierService
 {
     public event Action? RefreshRequested;
 
-    public void NotifyRefreshRequested() => RefreshRequested?.Invoke();
+    public void NotifyRefreshRequested() => this.RefreshRequested?.Invoke();
 }

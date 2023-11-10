@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.IO.Compression;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -23,7 +24,7 @@ public class AwsClient : ClientBase, IDesktopAwsClient
     public AwsClient(IDataService dataService, IAppDataService appDataService, ILogger<AwsClient> logger, HttpMessageHandler? handler = null)
         : base(dataService, appDataService)
     {
-        Client = new(new RetryHttpHandler(handler ?? new HttpClientHandler()));
+        this.Client = new(new RetryHttpHandler(handler ?? new HttpClientHandler()));
         this.logger = logger;
     }
 
@@ -40,13 +41,13 @@ public class AwsClient : ClientBase, IDesktopAwsClient
     [UnsupportedOSPlatform("browser")]
     public async Task DownloadImages(IFileSystem fileSystem, string? fileName = null)
     {
-        logger.LogDebug("Downloading ship images");
+        this.logger.LogDebug("Downloading ship images");
 
         string zipName = fileName ?? "ship";
         var zipUrl = @$"{Host}/images/ship/{zipName}.zip";
         var localFolder = "Ships";
 
-        string directoryPath = fileSystem.Path.Combine(AppDataService.AppDataImageDirectory, localFolder);
+        string directoryPath = fileSystem.Path.Combine(this.AppDataService.AppDataImageDirectory, localFolder);
 
         if (!fileSystem.Directory.Exists(directoryPath))
         {
@@ -56,25 +57,25 @@ public class AwsClient : ClientBase, IDesktopAwsClient
         string zipPath = fileSystem.Path.Combine(directoryPath, $"{zipName}.zip");
         try
         {
-            await DownloadFileAsync(new(zipUrl), zipPath);
+            await this.DownloadFileAsync(new(zipUrl), zipPath);
             ZipFile.ExtractToDirectory(zipPath, directoryPath, true);
             fileSystem.File.Delete(zipPath);
         }
         catch (HttpRequestException e)
         {
-            logger.LogWarning(e, "Failed to download images from uri {}", zipUrl);
+            this.logger.LogWarning(e, "Failed to download images from uri {}", zipUrl);
         }
     }
 
     public async Task<VersionInfo> DownloadVersionInfo(ServerType serverType)
     {
         string url = @$"{Host}/api/{serverType.StringName()}/VersionInfo.json";
-        return await GetJsonAsync<VersionInfo>(url) ?? throw new HttpRequestException("Unable to process VersionInfo response from AWS server.");
+        return await this.Client.GetFromJsonAsync<VersionInfo>(url, AppConstants.JsonSerializerOptions) ?? throw new HttpRequestException("Unable to process VersionInfo response from AWS server.");
     }
 
     public async Task DownloadFiles(ServerType serverType, List<(string, string)> relativeFilePaths, IProgress<int>? downloadProgress = null)
     {
-        logger.LogWarning("Downloading files for server type {ServerType}", serverType);
+        this.logger.LogWarning("Downloading files for server type {ServerType}", serverType);
         string baseUrl = @$"{Host}/api/{serverType.StringName()}/";
         var taskList = new List<Task>();
         int totalFiles = relativeFilePaths.Count;
@@ -86,17 +87,17 @@ public class AwsClient : ClientBase, IDesktopAwsClient
         });
         foreach ((string category, string fileName) in relativeFilePaths)
         {
-            string localFileName = DataService.CombinePaths(AppDataService.GetDataPath(serverType), category, fileName);
+            string localFileName = this.DataService.CombinePaths(this.AppDataService.GetDataPath(serverType), category, fileName);
             Uri uri = string.IsNullOrWhiteSpace(category) ? new(baseUrl + fileName) : new(baseUrl + $"{category}/{fileName}");
             var task = Task.Run(async () =>
             {
                 try
                 {
-                    await DownloadFileAsync(uri, localFileName);
+                    await this.DownloadFileAsync(uri, localFileName);
                 }
                 catch (HttpRequestException e)
                 {
-                    logger.LogWarning(e, "Encountered an exception while downloading a file with uri {} and filename {}", uri, localFileName);
+                    this.logger.LogWarning(e, "Encountered an exception while downloading a file with uri {} and filename {}", uri, localFileName);
                 }
 
                 progress.Report(1);

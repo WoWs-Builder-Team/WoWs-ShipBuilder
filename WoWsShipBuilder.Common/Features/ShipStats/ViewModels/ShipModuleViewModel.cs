@@ -34,19 +34,19 @@ namespace WoWsShipBuilder.Features.ShipStats.ViewModels
 
         public ShipModuleViewModel(UpgradeInfo upgradeInfo)
         {
-            ShipUpgrades = ShipModuleHelper.GroupAndSortUpgrades(upgradeInfo.ShipUpgrades).OrderBy(entry => entry.Key).Select(entry => entry.Value).ToList();
-            foreach (List<ShipUpgrade> upgrade in ShipUpgrades)
+            this.ShipUpgrades = ShipModuleHelper.GroupAndSortUpgrades(upgradeInfo.ShipUpgrades).OrderBy(entry => entry.Key).Select(entry => entry.Value).ToList();
+            foreach (List<ShipUpgrade> upgrade in this.ShipUpgrades)
             {
-                SelectedModules.Add(upgrade[0]);
+                this.SelectedModules.Add(upgrade[0]);
             }
         }
 
         public List<List<ShipUpgrade>> ShipUpgrades
         {
-            get => shipUpgrades;
+            get => this.shipUpgrades;
             set
             {
-                shipUpgrades = value;
+                this.shipUpgrades = value;
                 this.RaisePropertyChanged();
             }
         }
@@ -55,38 +55,38 @@ namespace WoWsShipBuilder.Features.ShipStats.ViewModels
 
         public void SelectModuleExecute(ShipUpgrade parameter)
         {
-            if (SelectedModules.Contains(parameter))
+            if (this.SelectedModules.Contains(parameter))
             {
                 return;
             }
 
-            ShipUpgrade? oldItem = SelectedModules.FirstOrDefault(module => module.UcType == parameter.UcType);
+            ShipUpgrade? oldItem = this.SelectedModules.FirstOrDefault(module => module.UcType == parameter.UcType);
             if (oldItem != null)
             {
-                SelectedModules.Replace(oldItem, parameter);
+                this.SelectedModules.Replace(oldItem, parameter);
             }
             else
             {
-                SelectedModules.Add(parameter);
+                this.SelectedModules.Add(parameter);
             }
         }
 
         public void LoadBuild(IEnumerable<string> storedData)
         {
             var results = new List<ShipUpgrade>();
-            foreach (List<ShipUpgrade> upgradeList in ShipUpgrades)
+            foreach (List<ShipUpgrade> upgradeList in this.ShipUpgrades)
             {
                 results.AddRange(upgradeList.Where(upgrade => storedData.Contains(upgrade.Name.NameToIndex())));
             }
 
-            var modulesToRemove = SelectedModules.Where(module => results.Exists(newSelection => newSelection.UcType == module.UcType)).ToList();
-            SelectedModules.RemoveMany(modulesToRemove);
-            SelectedModules.AddRange(results);
+            var modulesToRemove = this.SelectedModules.Where(module => results.Exists(newSelection => newSelection.UcType == module.UcType)).ToList();
+            this.SelectedModules.RemoveMany(modulesToRemove);
+            this.SelectedModules.AddRange(results);
         }
 
         public List<string> SaveBuild()
         {
-            return SelectedModules.Select(upgrade => upgrade.Name.NameToIndex()).ToList();
+            return this.SelectedModules.Select(upgrade => upgrade.Name.NameToIndex()).ToList();
         }
     }
 }

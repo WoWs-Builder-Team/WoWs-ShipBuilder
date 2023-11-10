@@ -1,4 +1,4 @@
-﻿using WoWsShipBuilder.DataContainers;
+﻿using WoWsShipBuilder.Features.DataContainers;
 
 namespace WoWsShipBuilder.Features.ShipComparison.GridData;
 
@@ -6,20 +6,20 @@ public class ManeuverabilityGridDataWrapper
 {
     public ManeuverabilityGridDataWrapper(ManeuverabilityDataContainer maneuverability)
     {
-        MaxSpeed = maneuverability.ManeuverabilityMaxSpeed != 0 ? maneuverability.ManeuverabilityMaxSpeed : maneuverability.ManeuverabilitySubsMaxSpeedOnSurface;
-        MaxSpeedAtPeriscopeDepth = maneuverability.ManeuverabilitySubsMaxSpeedAtPeriscope;
-        MaxSpeedAtMaxDepth = maneuverability.ManeuverabilitySubsMaxSpeedAtMaxDepth;
-        MaxReverseSpeed = maneuverability.ManeuverabilityMaxReverseSpeed != 0 ? maneuverability.ManeuverabilityMaxReverseSpeed : maneuverability.ManeuverabilitySubsMaxReverseSpeedOnSurface;
-        MaxReverseSpeedAtPeriscopeDepth = maneuverability.ManeuverabilitySubsMaxReverseSpeedAtPeriscope;
-        MaxReverseSpeedAtMaxDepth = maneuverability.ManeuverabilitySubsMaxReverseSpeedAtMaxDepth;
-        MaxDiveSpeed = maneuverability.ManeuverabilitySubsMaxDiveSpeed;
-        DivingPlaneShiftTime = maneuverability.ManeuverabilitySubsDivingPlaneShiftTime;
-        RudderShiftTime = maneuverability.ManeuverabilityRudderShiftTime;
-        TurningCircle = maneuverability.ManeuverabilityTurningCircle;
-        TimeToFullAhead = maneuverability.ForwardMaxSpeedTime;
-        TimeToFullReverse = maneuverability.ReverseMaxSpeedTime;
-        RudderProtection = maneuverability.RudderBlastProtection;
-        EngineProtection = maneuverability.EngineBlastProtection;
+        this.MaxSpeed = maneuverability.ManeuverabilityMaxSpeed != 0 ? maneuverability.ManeuverabilityMaxSpeed : maneuverability.ManeuverabilitySubsMaxSpeedOnSurface;
+        this.MaxSpeedAtPeriscopeDepth = maneuverability.ManeuverabilitySubsMaxSpeedAtPeriscope;
+        this.MaxSpeedAtMaxDepth = maneuverability.ManeuverabilitySubsMaxSpeedAtMaxDepth;
+        this.MaxReverseSpeed = maneuverability.ManeuverabilityMaxReverseSpeed != 0 ? maneuverability.ManeuverabilityMaxReverseSpeed : maneuverability.ManeuverabilitySubsMaxReverseSpeedOnSurface;
+        this.MaxReverseSpeedAtPeriscopeDepth = maneuverability.ManeuverabilitySubsMaxReverseSpeedAtPeriscope;
+        this.MaxReverseSpeedAtMaxDepth = maneuverability.ManeuverabilitySubsMaxReverseSpeedAtMaxDepth;
+        this.MaxDiveSpeed = maneuverability.ManeuverabilitySubsMaxDiveSpeed;
+        this.DivingPlaneShiftTime = maneuverability.ManeuverabilitySubsDivingPlaneShiftTime;
+        this.RudderShiftTime = maneuverability.ManeuverabilityRudderShiftTime;
+        this.TurningCircle = maneuverability.ManeuverabilityTurningCircle;
+        this.TimeToFullAhead = maneuverability.ForwardMaxSpeedTime;
+        this.TimeToFullReverse = maneuverability.ReverseMaxSpeedTime;
+        this.RudderProtection = maneuverability.RudderBlastProtection;
+        this.EngineProtection = maneuverability.EngineBlastProtection;
     }
 
     public decimal MaxSpeed { get; }

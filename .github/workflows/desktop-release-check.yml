@@ -6,9 +6,9 @@ on:
       - release/desktop
 
 jobs:
-  build-and-release:
+  build-and-test:
     runs-on: windows-latest
-    name: Release build and version check
+    name: Release build and test
 
     steps:
       - uses: actions/checkout@v3
@@ -19,9 +19,9 @@ jobs:
         with:
           global-json-file: global.json
       - name: Build application
-        run: dotnet build dirs.proj -c Release -p:ReleaseTest=true
+        run: dotnet build dirs.proj -c Release
       - name: Test application
-        run: dotnet test dirs.proj --no-build -c Release -p:ReleaseTest=true --verbosity normal
+        run: dotnet test dirs.proj --no-build -c Release --verbosity normal
 
   verify-squirrel-release:
     runs-on: windows-latest
