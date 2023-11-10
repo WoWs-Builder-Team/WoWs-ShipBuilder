@@ -29,47 +29,47 @@ public sealed class FirebaseLinkShortener : ILinkShortener, IDisposable
         this.httpClient = httpClient;
         this.options = options.Value;
         this.logger = logger;
-        semaphore = new(this.options.RateLimit, this.options.RateLimit);
-        IsAvailable = !string.IsNullOrEmpty(this.options.ApiKey);
+        this.semaphore = new(this.options.RateLimit, this.options.RateLimit);
+        this.IsAvailable = !string.IsNullOrEmpty(this.options.ApiKey);
     }
 
     public bool IsAvailable { get; }
 
     public void Dispose()
     {
-        semaphore.Dispose();
+        this.semaphore.Dispose();
     }
 
     public async Task<ShorteningResult> CreateLinkForBuild(Build build)
     {
-        logger.LogInformation("Creating short link for build {BuildHash}", build.Hash);
+        this.logger.LogInformation("Creating short link for build {BuildHash}", build.Hash);
         string buildString = build.CreateShortStringFromBuild();
         string encodedBuild = WebUtility.UrlEncode(buildString);
 
         var path = $"/ship?shipIndexes={build.ShipIndex}&build={encodedBuild}";
 
-        var request = new DynamicLinkRequest(new(options.UriPrefix, options.LinkBaseUrl + path), new(LinkSuffixType.SHORT));
-        return await SendRequestAsync(request);
+        var request = new DynamicLinkRequest(new(this.options.UriPrefix, this.options.LinkBaseUrl + path), new(LinkSuffixType.SHORT));
+        return await this.SendRequestAsync(request);
     }
 
     public async Task<ShorteningResult> CreateShortLink(string link)
     {
-        logger.LogInformation("Creating short link for link {Link}", link);
-        var request = new DynamicLinkRequest(new(options.UriPrefix, link), new(LinkSuffixType.SHORT));
-        return await SendRequestAsync(request);
+        this.logger.LogInformation("Creating short link for link {Link}", link);
+        var request = new DynamicLinkRequest(new(this.options.UriPrefix, link), new(LinkSuffixType.SHORT));
+        return await this.SendRequestAsync(request);
     }
 
     private async Task<ShorteningResult> SendRequestAsync(DynamicLinkRequest linkRequest)
     {
-        if (!await semaphore.WaitAsync(options.RequestTimeout))
+        if (!await this.semaphore.WaitAsync(this.options.RequestTimeout))
         {
-            logger.LogWarning("Timeout while waiting for dynamic link api access");
+            this.logger.LogWarning("Timeout while waiting for dynamic link api access");
             return new(false, linkRequest.DynamicLinkInfo.Link);
         }
 
-        var response = await httpClient.PostAsJsonAsync(options.ApiUrl + options.ApiKey, linkRequest, serializerOptions);
+        var response = await this.httpClient.PostAsJsonAsync(this.options.ApiUrl + this.options.ApiKey, linkRequest, this.serializerOptions);
 #pragma warning disable CS4014
-        Task.Run(async () => await ResetLock());
+        Task.Run(async () => await this.ResetLock());
 #pragma warning restore CS4014
         var result = await response.Content.ReadFromJsonAsync<DynamicLinkResponse>() ?? throw new InvalidOperationException();
         return new(true, result.ShortLink);
@@ -77,9 +77,9 @@ public sealed class FirebaseLinkShortener : ILinkShortener, IDisposable
 
     private async Task ResetLock()
     {
-        logger.LogDebug("Scheduling reset for semaphore permit. Available permits: {PermitCount}", semaphore.CurrentCount);
+        this.logger.LogDebug("Scheduling reset for semaphore permit. Available permits: {PermitCount}", this.semaphore.CurrentCount);
         await Task.Delay(1000);
-        semaphore.Release();
-        logger.LogDebug("Permit released. Available permits: {PermitCount}", semaphore.CurrentCount);
+        this.semaphore.Release();
+        this.logger.LogDebug("Permit released. Available permits: {PermitCount}", this.semaphore.CurrentCount);
     }
 }

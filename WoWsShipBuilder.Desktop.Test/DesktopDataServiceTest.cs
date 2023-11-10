@@ -1,8 +1,9 @@
 ﻿using System.IO.Abstractions.TestingHelpers;
+using System.Text.Json;
 using FluentAssertions;
-using Newtonsoft.Json;
 using WoWsShipBuilder.Desktop.Infrastructure.Data;
 using WoWsShipBuilder.Features.Settings;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
 
 namespace WoWsShipBuilder.Desktop.Test;
 
@@ -16,8 +17,8 @@ public class DesktopDataServiceTest
     [SetUp]
     public void Setup()
     {
-        mockFileSystem = new();
-        dataService = new DesktopDataService(mockFileSystem);
+        this.mockFileSystem = new();
+        this.dataService = new DesktopDataService(this.mockFileSystem);
     }
 
     [Test]
@@ -28,13 +29,13 @@ public class DesktopDataServiceTest
         const string customDataPath = "1234";
         var testSettings = new AppSettings { AutoUpdateEnabled = false, CustomDataPath = customDataPath };
 
-        dataService.Store(testSettings, settingsPath);
+        this.dataService.Store(testSettings, settingsPath);
 
-        mockFileSystem.FileExists(settingsPath).Should().BeTrue();
-        mockFileSystem.Directory.Exists(settingsDirectory).Should().BeTrue();
+        this.mockFileSystem.FileExists(settingsPath).Should().BeTrue();
+        this.mockFileSystem.Directory.Exists(settingsDirectory).Should().BeTrue();
 
-        var storedFile = mockFileSystem.File.ReadAllText(settingsPath);
-        var storedSettings = JsonConvert.DeserializeObject<AppSettings>(storedFile);
+        var storedFile = this.mockFileSystem.File.ReadAllText(settingsPath);
+        var storedSettings = JsonSerializer.Deserialize<AppSettings>(storedFile, AppConstants.JsonSerializerOptions);
         storedSettings.Should().BeEquivalentTo(testSettings);
     }
 
@@ -45,16 +46,16 @@ public class DesktopDataServiceTest
         const string settingsPath = settingsDirectory + @"/settings.json";
         const string customDataPath = "1234";
         var testSettings = new AppSettings { AutoUpdateEnabled = false, CustomDataPath = customDataPath };
-        mockFileSystem.AddFile(settingsPath, new(JsonConvert.SerializeObject(testSettings)));
+        this.mockFileSystem.AddFile(settingsPath, new(JsonSerializer.Serialize(testSettings, AppConstants.JsonSerializerOptions)));
         testSettings.AutoUpdateEnabled = true;
 
-        await dataService.StoreAsync(testSettings, settingsPath);
+        await this.dataService.StoreAsync(testSettings, settingsPath);
 
-        mockFileSystem.FileExists(settingsPath).Should().BeTrue();
-        mockFileSystem.Directory.Exists(settingsDirectory).Should().BeTrue();
+        this.mockFileSystem.FileExists(settingsPath).Should().BeTrue();
+        this.mockFileSystem.Directory.Exists(settingsDirectory).Should().BeTrue();
 
-        var storedFile = await mockFileSystem.File.ReadAllTextAsync(settingsPath);
-        var storedSettings = JsonConvert.DeserializeObject<AppSettings>(storedFile);
+        var storedFile = await this.mockFileSystem.File.ReadAllTextAsync(settingsPath);
+        var storedSettings = JsonSerializer.Deserialize<AppSettings>(storedFile, AppConstants.JsonSerializerOptions);
         storedSettings.Should().BeEquivalentTo(testSettings);
     }
 }

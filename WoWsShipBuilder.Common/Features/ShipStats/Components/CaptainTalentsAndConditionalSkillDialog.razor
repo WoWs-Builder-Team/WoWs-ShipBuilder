@@ -25,7 +25,7 @@
                         <MudText Style="font-weight: bold">@(Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_CurrentArBonus)).Localization + ViewModel.ArHpPercentage + " %")</MudText>
                     </MudItem>
                     <MudItem xs="6">
-                        <MudSlider Min="0" Max="100" Step="1" @bind-Value="@ViewModel.ArHpPercentage" Immediate="true" Variant="Variant.Filled" Color="Color.Info"></MudSlider>
+                        <MudSlider Min="0" Max="100" Step="1" @bind-Value="@ViewModel.ArHpPercentage" Immediate="true" Variant="Variant.Filled" Color="Color.Primary"></MudSlider>
                     </MudItem>
                 }
                 @if (ViewModel.ConditionalModifiersList.Count > 0)
@@ -39,11 +39,11 @@
                             <MudText Style="font-weight: bold">@Localizer.GetGameLocalization("SKILL_" + ToSnakeCase(modifier.SkillName)).Localization</MudText>
                         </MudItem>
                         <MudItem xs="5" Class="d-flex justify-end align-center">
-                            @if (modifier.MaximumActivations > 0)
+                            @if (modifier.MaximumActivations > 1)
                             {
                                 <MudNumericField Margin="Margin.Dense" Variant="Variant.Outlined" @bind-Value="@modifier.ActivationNumbers" Min="1" Max="modifier.MaximumActivations"/>
                             }
-                            <MudSwitch @bind-Checked="@modifier.Status" Color="Color.Info" Class="ml-1" Label="@(modifier.Status ? "On" : "Off")"/>
+                            <MudSwitch @bind-Checked="@modifier.Status" Color="Color.Primary" Class="ml-1" Label="@(modifier.Status ? "On" : "Off")"/>
                         </MudItem>
                     }
                 }
@@ -74,7 +74,7 @@
                             {
                                 <MudNumericField Variant="Variant.Outlined" @bind-Value="@talent.ActivationNumbers" Min="1" Max="talent.MaximumActivations"/>
                             }
-                            <MudSwitch @bind-Checked="@talent.Status" Color="Color.Info" Class="ml-1" Label="@(talent.Status ? "On" : "Off")"/>
+                            <MudSwitch @bind-Checked="@talent.Status" Color="Color.Primary" Class="ml-1" Label="@(talent.Status ? "On" : "Off")"/>
                         </MudItem>
                     }
                 }

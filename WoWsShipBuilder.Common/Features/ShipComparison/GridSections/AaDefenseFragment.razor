@@ -33,9 +33,7 @@
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
+                    @UtilityFragments.DataNotAvailableFragment
                 }
             </CellTemplate>
         </TemplateColumn>
@@ -50,9 +48,7 @@
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
+                    @UtilityFragments.DataNotAvailableFragment
                 }
             </CellTemplate>
         </TemplateColumn>
@@ -67,14 +63,12 @@
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
+                    @UtilityFragments.DataNotAvailableFragment
                 }
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFlaks}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFlaks)" T="GridDataWrapper" Title="@columnTitleFlaks" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => int.Parse(x.AntiAirArmament?.LongRangeAura?.Flak.Split(" ± ").First() ?? "0"))">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFlaks}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFlaks)" T="GridDataWrapper" Title="@columnTitleFlaks" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => int.Parse(x.AntiAirArmament?.LongRangeAura?.Flak.Split(" ± ")[0] ?? "0"))">
             <CellTemplate>
                 @if (!string.IsNullOrEmpty(context.Item.AntiAirArmament?.LongRangeAura?.Flak))
                 {
@@ -84,9 +78,7 @@
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
+                    @UtilityFragments.DataNotAvailableFragment
                 }
             </CellTemplate>
         </TemplateColumn>
@@ -101,9 +93,7 @@
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
+                    @UtilityFragments.DataNotAvailableFragment
                 }
             </CellTemplate>
         </TemplateColumn>
@@ -118,9 +108,7 @@
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
+                    @UtilityFragments.DataNotAvailableFragment
                 }
             </CellTemplate>
         </TemplateColumn>
@@ -135,9 +123,7 @@
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
+                    @UtilityFragments.DataNotAvailableFragment
                 }
             </CellTemplate>
         </TemplateColumn>
@@ -152,9 +138,7 @@
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
+                    @UtilityFragments.DataNotAvailableFragment
                 }
             </CellTemplate>
         </TemplateColumn>
@@ -169,9 +153,7 @@
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
+                    @UtilityFragments.DataNotAvailableFragment
                 }
             </CellTemplate>
         </TemplateColumn>
@@ -186,9 +168,7 @@
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
+                    @UtilityFragments.DataNotAvailableFragment
                 }
             </CellTemplate>
         </TemplateColumn>
@@ -203,9 +183,7 @@
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
+                    @UtilityFragments.DataNotAvailableFragment
                 }
             </CellTemplate>
         </TemplateColumn>

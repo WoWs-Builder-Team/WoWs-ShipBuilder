@@ -14,7 +14,7 @@ public partial class LocalDataUpdaterTest
     public async Task ValidateData_NoLocalVersionInfo_False()
     {
         // Arrange
-        var updater = new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance);
+        var updater = new LocalDataUpdater(this.mockFileSystem, this.awsClientMock.Object, this.appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance);
 
         // Act
         var result = await updater.ValidateData(ServerType.Live, @"json/live");
@@ -27,10 +27,10 @@ public partial class LocalDataUpdaterTest
     public async Task ValidateData_LocalVersionInfoNoFiles_False()
     {
         // Arrange
-        var versionInfo = CreateTestVersionInfo(1, GameVersion.Default);
-        appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(versionInfo);
-        mockFileSystem.AddDirectory(@"json/live/Ability");
-        var updater = new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance);
+        var versionInfo = this.CreateTestVersionInfo(1, GameVersion.Default);
+        this.appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(versionInfo);
+        this.mockFileSystem.AddDirectory(@"json/live/Ability");
+        var updater = new LocalDataUpdater(this.mockFileSystem, this.awsClientMock.Object, this.appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance);
 
         // Act
         var result = await updater.ValidateData(ServerType.Live, @"json/live");
@@ -53,11 +53,11 @@ public partial class LocalDataUpdaterTest
             },
             versionCode,
             GameVersion.Default);
-        appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(versionInfo);
-        mockFileSystem.AddFile(@"json/live/Ability/Common.json", new("test"));
-        mockFileSystem.AddFile(@"json/live/Ship/Japan.json", new("test"));
-        mockFileSystem.AddFile(@"json/live/Ship/Germany.json", new("test"));
-        var updater = new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance);
+        this.appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(versionInfo);
+        this.mockFileSystem.AddFile(@"json/live/Ability/Common.json", new("test"));
+        this.mockFileSystem.AddFile(@"json/live/Ship/Japan.json", new("test"));
+        this.mockFileSystem.AddFile(@"json/live/Ship/Germany.json", new("test"));
+        var updater = new LocalDataUpdater(this.mockFileSystem, this.awsClientMock.Object, this.appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance);
 
         // Act
         var result = await updater.ValidateData(ServerType.Live, @"json/live");
@@ -70,11 +70,11 @@ public partial class LocalDataUpdaterTest
     public async Task ValidateData_LocalVersionInfoOneFileMissing_False()
     {
         // Arrange
-        var versionInfo = CreateTestVersionInfo(1, GameVersion.Default);
-        appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(versionInfo);
-        mockFileSystem.AddFile(@"json/live/Ability/Common.json", new MockFileData("test"));
-        mockFileSystem.AddFile(@"json/live/Ship/Japan.json", new MockFileData("test"));
-        var updater = new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance);
+        var versionInfo = this.CreateTestVersionInfo(1, GameVersion.Default);
+        this.appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(versionInfo);
+        this.mockFileSystem.AddFile(@"json/live/Ability/Common.json", new MockFileData("test"));
+        this.mockFileSystem.AddFile(@"json/live/Ship/Japan.json", new MockFileData("test"));
+        var updater = new LocalDataUpdater(this.mockFileSystem, this.awsClientMock.Object, this.appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance);
 
         // Act
         var result = await updater.ValidateData(ServerType.Live, @"json/live");

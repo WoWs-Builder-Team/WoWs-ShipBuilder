@@ -1,11 +1,11 @@
 ﻿@using WoWsShipBuilder.DataStructures
-@using WoWsShipBuilder.DataElements.DataElements
-@using WoWsShipBuilder.DataContainers
+@using WoWsShipBuilder.DataElements
 @using WoWsShipBuilder.Features.ShipStats.ViewModels
+@using WoWsShipBuilder.Features.DataContainers;
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
-@using ConsumableDataContainer = WoWsShipBuilder.DataContainers.ConsumableDataContainer
+
 @inherits ReactiveComponentBase<ConsumableViewModel>
 @inject ILocalizer Localizer
 @inject MetricsService MetricsService

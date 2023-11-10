@@ -29,44 +29,44 @@ public class AuthController : ControllerBase
     {
         if (status == "ok")
         {
-            return await AuthenticationConfirmed(HttpContext.Request.Query["access_token"]!, HttpContext.Request.Query["account_id"]!, HttpContext.Request.Query["nickname"]!);
+            return await this.AuthenticationConfirmed(this.HttpContext.Request.Query["access_token"]!, this.HttpContext.Request.Query["account_id"]!, this.HttpContext.Request.Query["nickname"]!);
         }
 
-        return await AuthenticationCanceled(status, HttpContext.Request.Query["message"]!, int.Parse(HttpContext.Request.Query["code"]!, CultureInfo.InvariantCulture));
+        return await this.AuthenticationCanceled(status, this.HttpContext.Request.Query["message"]!, int.Parse(this.HttpContext.Request.Query["code"]!, CultureInfo.InvariantCulture));
     }
 
     public async Task<ActionResult> AuthenticationConfirmed(string accessToken, string accountId, string nickname)
     {
-        var authValid = await authenticationService.VerifyToken(accountId, accessToken);
+        var authValid = await this.authenticationService.VerifyToken(accountId, accessToken);
         if (!authValid)
         {
-            return Redirect("/auth-failed");
+            return this.Redirect("/auth-failed");
         }
 
-        var principal = authenticationService.CreatePrincipalForUser(accessToken, accountId, nickname);
-        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new() { IsPersistent = true });
-        return Redirect("/");
+        var principal = this.authenticationService.CreatePrincipalForUser(accessToken, accountId, nickname);
+        await this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new() { IsPersistent = true });
+        return this.Redirect("/");
     }
 
     public Task<ActionResult> AuthenticationCanceled(string status, string message, int code)
     {
-        logger.LogDebug("Authentication canceled. Status: {Status}, Message: {Message}, Code: {Code}", status, message, code);
-        return Task.FromResult<ActionResult>(Redirect("/"));
+        this.logger.LogDebug("Authentication canceled. Status: {Status}, Message: {Message}, Code: {Code}", status, message, code);
+        return Task.FromResult<ActionResult>(this.Redirect("/"));
     }
 
     [HttpGet("login/{server:regex(^eu|asia|com$):required}")]
     public Task<ActionResult> Login(string server)
     {
-        string baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
+        string baseUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
         var pageUrl = $"{baseUrl}/api/auth";
-        string url = @$"https://api.worldoftanks.{server}/wot/auth/login/?application_id={options.WgApiKey}&redirect_uri={pageUrl}";
-        return Task.FromResult<ActionResult>(Redirect(url));
+        string url = @$"https://api.worldoftanks.{server}/wot/auth/login/?application_id={this.options.WgApiKey}&redirect_uri={pageUrl}";
+        return Task.FromResult<ActionResult>(this.Redirect(url));
     }
 
     [HttpGet("logout")]
     public async Task<ActionResult> Logout()
     {
-        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        return Redirect("/");
+        await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        return this.Redirect("/");
     }
 }

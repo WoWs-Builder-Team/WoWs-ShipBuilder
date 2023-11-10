@@ -1,9 +1,12 @@
+using System.Collections.Immutable;
 using System.Globalization;
 using System.IO.Compression;
 using System.Security.Cryptography;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
 
@@ -17,46 +20,46 @@ public class Build
 
     private const char ListSeparator = ',';
 
+    // TODO: make private when updating to .NET 8
     [JsonConstructor]
-    private Build(string buildName, string shipIndex, Nation nation, List<string> modules, List<string> upgrades, List<string> consumables, string captain, List<int> skills, List<string> signals, int buildVersion = CurrentBuildVersion)
+    public Build(string buildName, string shipIndex, Nation nation, ImmutableArray<string> modules, ImmutableArray<string> upgrades, ImmutableArray<string> consumables, string captain, ImmutableArray<int> skills, ImmutableArray<string> signals, int buildVersion = CurrentBuildVersion)
     {
-        BuildName = buildName;
-        ShipIndex = shipIndex;
-        Nation = nation;
-        Modules = modules;
-        Upgrades = upgrades;
-        Captain = captain;
-        Skills = skills;
-        Signals = signals;
-        Consumables = consumables;
-        BuildVersion = buildVersion;
+        this.BuildName = buildName ?? throw new ArgumentNullException(nameof(buildName));
+        this.ShipIndex = shipIndex ?? throw new ArgumentNullException(nameof(shipIndex));
+        this.Nation = nation;
+        this.Modules = modules;
+        this.Upgrades = upgrades;
+        this.Captain = captain ?? throw new ArgumentNullException(nameof(captain));
+        this.Skills = skills;
+        this.Signals = signals;
+        this.Consumables = consumables;
+        this.BuildVersion = buildVersion;
 
-        Hash = CreateHash(this);
+        this.Hash = CreateHash(this);
     }
 
-    public Build(string buildName, string shipIndex, Nation nation, List<string> modules, List<string> upgrades, List<string> consumables, string captain, List<int> skills, List<string> signals)
-        : this(buildName, shipIndex, nation, modules, upgrades, consumables, captain, skills, signals, CurrentBuildVersion)
+    public Build(string buildName, string shipIndex, Nation nation, IEnumerable<string> modules, IEnumerable<string> upgrades, IEnumerable<string> consumables, string captain, IEnumerable<int> skills, IEnumerable<string> signals)
+        : this(buildName, shipIndex, nation, modules.ToImmutableArray(), upgrades.ToImmutableArray(), consumables.ToImmutableArray(), captain, skills.ToImmutableArray(), signals.ToImmutableArray())
     {
     }
 
-    [JsonProperty(Required = Required.Always)]
     public string BuildName { get; }
 
     public string ShipIndex { get; }
 
     public Nation Nation { get; }
 
-    public IReadOnlyList<string> Modules { get; private set; }
+    public ImmutableArray<string> Modules { get; private set; }
 
-    public IReadOnlyList<string> Upgrades { get; }
+    public ImmutableArray<string> Upgrades { get; }
 
     public string Captain { get; }
 
-    public IReadOnlyList<int> Skills { get; }
+    public ImmutableArray<int> Skills { get; }
 
-    public IReadOnlyList<string> Consumables { get; }
+    public ImmutableArray<string> Consumables { get; }
 
-    public IReadOnlyList<string> Signals { get; private set; }
+    public ImmutableArray<string> Signals { get; private set; }
 
     /// <summary>
     /// Gets a value indicating the version number of a build.
@@ -93,11 +96,11 @@ public class Build
                 using var gzip = new DeflateStream(inputStream, CompressionMode.Decompress);
                 using var reader = new StreamReader(gzip, System.Text.Encoding.UTF8);
                 string buildJson = reader.ReadToEnd();
-                build = JsonConvert.DeserializeObject<Build>(buildJson) ?? throw new InvalidOperationException("Failed to deserialize build object from string");
+                build = JsonSerializer.Deserialize<Build>(buildJson, AppConstants.JsonSerializerOptions) ?? throw new InvalidOperationException("Failed to deserialize build object from string");
             }
             else if (buildString.StartsWith('{') && buildString.EndsWith('}'))
             {
-                build = JsonConvert.DeserializeObject<Build>(buildString)!;
+                build = JsonSerializer.Deserialize<Build>(buildString, AppConstants.JsonSerializerOptions)!;
             }
             else
             {
@@ -126,12 +129,12 @@ public class Build
         string buildName = parts.Length == 9 ? parts[8] : string.Empty;
         string shipIndex = parts[0];
         var nation = GameDataHelper.GetNationFromIndex(shipIndex);
-        List<string> modules = parts[1].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
-        List<string> upgrades = parts[2].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+        var modules = parts[1].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).ToImmutableArray();
+        var upgrades = parts[2].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).ToImmutableArray();
         string captain = parts[3];
-        List<int> skills = parts[4].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).Select(int.Parse).ToList();
-        List<string> consumables = parts[5].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
-        List<string> signals = parts[6].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+        var skills = parts[4].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).Select(int.Parse).ToImmutableArray();
+        var consumables = parts[5].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).ToImmutableArray();
+        var signals = parts[6].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).ToImmutableArray();
         int buildVersion = int.Parse(parts[7], CultureInfo.InvariantCulture);
         return new(buildName, shipIndex, nation, modules, upgrades, consumables, captain, skills, signals, buildVersion);
     }
@@ -146,13 +149,13 @@ public class Build
     {
         if (oldBuild.BuildVersion < 3)
         {
-            oldBuild.Signals = ReduceToIndex(oldBuild.Signals).ToList();
+            oldBuild.Signals = ReduceToIndex(oldBuild.Signals).ToImmutableArray();
             logger.LogDebug("Reducing signal names to index for build {}", oldBuild.Hash);
         }
 
         if (oldBuild.BuildVersion < 4)
         {
-            oldBuild.Modules = ReduceToIndex(oldBuild.Modules).ToList();
+            oldBuild.Modules = ReduceToIndex(oldBuild.Modules).ToImmutableArray();
             logger.LogDebug("Reducing module names to index for build {}", oldBuild.Hash);
         }
 
@@ -167,7 +170,7 @@ public class Build
 
     private static string CreateHash(Build build)
     {
-        string buildString = JsonConvert.SerializeObject(build);
+        string buildString = JsonSerializer.Serialize(build, AppConstants.JsonSerializerOptions);
         byte[] textData = System.Text.Encoding.UTF8.GetBytes(buildString);
         byte[] hash = SHA256.HashData(textData);
         return BitConverter.ToString(hash).Replace("-", string.Empty);
@@ -176,7 +179,7 @@ public class Build
     public override int GetHashCode()
     {
         var hashCode = default(HashCode);
-        hashCode.Add(Hash);
+        hashCode.Add(this.Hash);
         return hashCode.ToHashCode();
     }
 
@@ -184,7 +187,7 @@ public class Build
     {
         if (obj is Build build)
         {
-            return Hash == build.Hash;
+            return this.Hash == build.Hash;
         }
 
         return false;
@@ -192,7 +195,7 @@ public class Build
 
     public string CreateStringFromBuild()
     {
-        string buildString = JsonConvert.SerializeObject(this);
+        string buildString = JsonSerializer.Serialize(this, AppConstants.JsonSerializerOptions);
         using var output = new MemoryStream();
         using (var gzip = new DeflateStream(output, CompressionLevel.Optimal))
         {
@@ -209,12 +212,12 @@ public class Build
 
     public string CreateShortStringFromBuild()
     {
-        string buildString = $"{ShipIndex};{string.Join(ListSeparator, ReduceToIndex(Modules))};{string.Join(ListSeparator, ReduceToIndex(Upgrades))};{Captain};{string.Join(ListSeparator, Skills)};{string.Join(ListSeparator, ReduceToIndex(Consumables))};{string.Join(ListSeparator, ReduceToIndex(Signals))};{BuildVersion};{BuildName}";
+        string buildString = $"{this.ShipIndex};{string.Join(ListSeparator, ReduceToIndex(this.Modules))};{string.Join(ListSeparator, ReduceToIndex(this.Upgrades))};{this.Captain};{string.Join(ListSeparator, this.Skills)};{string.Join(ListSeparator, ReduceToIndex(this.Consumables))};{string.Join(ListSeparator, ReduceToIndex(this.Signals))};{this.BuildVersion};{this.BuildName}";
         return buildString;
     }
 
     private static IEnumerable<string> ReduceToIndex(IEnumerable<string> names)
     {
-        return names.Select(x => x.Split("_").First());
+        return names.Select(x => x.Split("_")[0]);
     }
 }

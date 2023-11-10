@@ -19,12 +19,12 @@ public class WebClipboardService : IClipboardService
 
     public async Task<string> GetTextAsync()
     {
-        return await jsRuntime.InvokeAsync<string>("navigator.clipboard.readText");
+        return await this.jsRuntime.InvokeAsync<string>("navigator.clipboard.readText");
     }
 
     public async Task SetTextAsync(string text)
     {
-        await jsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", text);
+        await this.jsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", text);
     }
 
     public Task ClearAsync()

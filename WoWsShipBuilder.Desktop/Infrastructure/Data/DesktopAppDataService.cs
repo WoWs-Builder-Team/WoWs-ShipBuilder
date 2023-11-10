@@ -26,7 +26,7 @@ public class DesktopAppDataService : IAppDataService
         this.fileSystem = fileSystem;
         this.dataService = dataService;
         this.appSettings = appSettings;
-        DefaultAppDataDirectory = dataService.CombinePaths(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), AppConstants.ShipBuilderName);
+        this.DefaultAppDataDirectory = dataService.CombinePaths(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), AppConstants.ShipBuilderName);
     }
 
     public string DefaultAppDataDirectory { get; }
@@ -37,19 +37,19 @@ public class DesktopAppDataService : IAppDataService
         {
             if (AppData.IsInitialized)
             {
-                return appSettings.CustomDataPath ?? DefaultAppDataDirectory;
+                return this.appSettings.CustomDataPath ?? this.DefaultAppDataDirectory;
             }
 
-            return DefaultAppDataDirectory;
+            return this.DefaultAppDataDirectory;
         }
     }
 
-    public string AppDataImageDirectory => dataService.CombinePaths(AppDataDirectory, "Images");
+    public string AppDataImageDirectory => this.dataService.CombinePaths(this.AppDataDirectory, "Images");
 
     public string GetDataPath(ServerType serverType)
     {
         string serverName = serverType.StringName();
-        return dataService.CombinePaths(AppDataDirectory, "json", serverName);
+        return this.dataService.CombinePaths(this.AppDataDirectory, "json", serverName);
     }
 
     /// <summary>
@@ -57,7 +57,7 @@ public class DesktopAppDataService : IAppDataService
     /// </summary>
     /// <param name="serverType">The selected server type.</param>
     /// <returns>The directory path of the current localization directory.</returns>
-    public string GetLocalizationPath(ServerType serverType) => dataService.CombinePaths(GetDataPath(serverType), "Localization");
+    public string GetLocalizationPath(ServerType serverType) => this.dataService.CombinePaths(this.GetDataPath(serverType), "Localization");
 
     /// <summary>
     /// Find the list of currently installed localizations.
@@ -69,9 +69,9 @@ public class DesktopAppDataService : IAppDataService
     {
         // TODO: return Task.FromResult
         await Task.CompletedTask;
-        fileSystem.Directory.CreateDirectory(GetLocalizationPath(serverType));
-        var files = fileSystem.Directory.GetFiles(GetLocalizationPath(serverType)).Select(file => fileSystem.FileInfo.New(file));
-        return includeFileType ? files.Select(file => file.Name).ToList() : files.Select(file => fileSystem.Path.GetFileNameWithoutExtension(file.Name)).ToList();
+        this.fileSystem.Directory.CreateDirectory(this.GetLocalizationPath(serverType));
+        var files = this.fileSystem.Directory.GetFiles(this.GetLocalizationPath(serverType)).Select(file => this.fileSystem.FileInfo.New(file));
+        return includeFileType ? files.Select(file => file.Name).ToList() : files.Select(file => this.fileSystem.Path.GetFileNameWithoutExtension(file.Name)).ToList();
     }
 
     /// <summary>
@@ -81,14 +81,14 @@ public class DesktopAppDataService : IAppDataService
     /// <returns>The local VersionInfo or null if none was found.</returns>
     public async Task<VersionInfo?> GetCurrentVersionInfo(ServerType serverType)
     {
-        string filePath = dataService.CombinePaths(GetDataPath(serverType), "VersionInfo.json");
-        return await DeserializeFile<VersionInfo>(filePath);
+        string filePath = this.dataService.CombinePaths(this.GetDataPath(serverType), "VersionInfo.json");
+        return await this.DeserializeFile<VersionInfo>(filePath);
     }
 
     public async Task<Dictionary<string, string>?> ReadLocalizationData(ServerType serverType, string language)
     {
-        string fileName = dataService.CombinePaths(GetDataPath(serverType), "Localization", $"{language}.json");
-        return fileSystem.File.Exists(fileName) ? await DeserializeFile<Dictionary<string, string>>(fileName) : null;
+        string fileName = this.dataService.CombinePaths(this.GetDataPath(serverType), "Localization", $"{language}.json");
+        return this.fileSystem.File.Exists(fileName) ? await this.DeserializeFile<Dictionary<string, string>>(fileName) : null;
     }
 
     public async Task LoadLocalFilesAsync(ServerType serverType)
@@ -96,10 +96,10 @@ public class DesktopAppDataService : IAppDataService
         var sw = Stopwatch.StartNew();
         Logging.Logger.LogDebug("Loading local files from disk");
         AppData.ResetCaches();
-        var localVersionInfo = await GetCurrentVersionInfo(serverType) ?? throw new InvalidOperationException("No local data found");
+        var localVersionInfo = await this.GetCurrentVersionInfo(serverType) ?? throw new InvalidOperationException("No local data found");
         AppData.DataVersion = localVersionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + localVersionInfo.CurrentVersion.DataIteration;
 
-        var dataRootInfo = fileSystem.DirectoryInfo.New(GetDataPath(serverType));
+        var dataRootInfo = this.fileSystem.DirectoryInfo.New(this.GetDataPath(serverType));
         IDirectoryInfo[] categories = dataRootInfo.GetDirectories();
 
         // Multiple categories can be loaded simultaneously without concurrency issues because every cache is only used by one category.
@@ -112,7 +112,7 @@ public class DesktopAppDataService : IAppDataService
 
             foreach (var file in category.GetFiles())
             {
-                string content = await fileSystem.File.ReadAllTextAsync(file.FullName, ct);
+                string content = await this.fileSystem.File.ReadAllTextAsync(file.FullName, ct);
                 await DataCacheHelper.AddToCache(file.Name, category.Name, content);
             }
         });
@@ -128,12 +128,12 @@ public class DesktopAppDataService : IAppDataService
             throw new ArgumentException("The provided file path must not be empty.");
         }
 
-        if (!fileSystem.File.Exists(filePath))
+        if (!this.fileSystem.File.Exists(filePath))
         {
             Logging.Logger.LogWarning("Tried to load file {FilePath}, but it was not found", filePath);
             return default;
         }
 
-        return await dataService.LoadAsync<T>(filePath);
+        return await this.dataService.LoadAsync<T>(filePath);
     }
 }

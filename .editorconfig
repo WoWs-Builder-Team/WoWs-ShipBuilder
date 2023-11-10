@@ -51,10 +51,10 @@ dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:suggesti
 dotnet_style_parentheses_in_relational_binary_operators = never_if_unnecessary:suggestion
 dotnet_style_predefined_type_for_locals_parameters_members = true:suggestion
 dotnet_style_predefined_type_for_member_access = true:suggestion
-dotnet_style_qualification_for_event = false:suggestion
-dotnet_style_qualification_for_field = false:suggestion
-dotnet_style_qualification_for_method = false:suggestion
-dotnet_style_qualification_for_property = false:suggestion
+dotnet_style_qualification_for_event = true:warning
+dotnet_style_qualification_for_field = true:warning
+dotnet_style_qualification_for_method = true:warning
+dotnet_style_qualification_for_property = true:warning
 dotnet_style_require_accessibility_modifiers = for_non_interface_members:suggestion
 
 # ReSharper properties
@@ -82,9 +82,10 @@ resharper_place_field_attribute_on_same_line = false
 resharper_trailing_comma_in_multiline_lists = true
 resharper_use_indent_from_vs = false
 
+resharper_razor_remove_this_qualifier = true
+
 # ReSharper inspection severities
 resharper_arrange_redundant_parentheses_highlighting = hint
-resharper_arrange_this_qualifier_highlighting = hint
 resharper_arrange_type_member_modifiers_highlighting = hint
 resharper_arrange_type_modifiers_highlighting = hint
 resharper_async_void_lambda_highlighting = suggestion
@@ -112,9 +113,8 @@ dotnet_diagnostic.rs2008.severity = none # Ignore analyzer release tracking
 dotnet_diagnostic.sa0001.severity = none # Ignore disabled xml documentation
 dotnet_diagnostic.sa1000.severity = none # Ignore missing space after "new"
 dotnet_diagnostic.sa1009.severity = none # Ignore missing space after closing parenthesis
-dotnet_diagnostic.sa1028.severity = none # Ignore trailing whitespace
 dotnet_diagnostic.sa1100.severity = none # Ignore base. prefix if there is no local override
-dotnet_diagnostic.sa1101.severity = none # Ignore missing this prefix for local calls
+dotnet_diagnostic.sa1101.severity = warning # Ignore missing this prefix for local calls
 dotnet_diagnostic.sa1122.severity = none # Don't force the use of string.Empty
 dotnet_diagnostic.sa1124.severity = none # Allow the use of regions
 dotnet_diagnostic.sa1127.severity = none # Generic constraints may share a line with other declarations

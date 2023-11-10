@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using DynamicData;
-using Newtonsoft.Json;
 using WoWsShipBuilder.Features.Builds;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 
@@ -29,81 +29,82 @@ public class DesktopUserDataService : IUserDataService
 
     public async Task SaveBuildsAsync(IEnumerable<Build> builds)
     {
-        var path = dataService.CombinePaths(appDataService.DefaultAppDataDirectory, "builds.json");
+        var path = this.dataService.CombinePaths(this.appDataService.DefaultAppDataDirectory, "builds.json");
         var buildStrings = builds.Select(build => build.CreateShortStringFromBuild()).ToList();
-        await dataService.StoreAsync(buildStrings, path);
+        await this.dataService.StoreAsync(buildStrings, path);
     }
 
     public async Task<IEnumerable<Build>> LoadBuildsAsync()
     {
-        if (savedBuilds is not null)
+        if (this.savedBuilds is not null)
         {
-            return savedBuilds;
+            return this.savedBuilds;
         }
 
-        string path = dataService.CombinePaths(appDataService.DefaultAppDataDirectory, "builds.json");
-        if (fileSystem.File.Exists(path))
-        {
-            List<string>? buildList = null;
-            try
-            {
-                buildList = await dataService.LoadAsync<List<string>>(path);
-            }
-            catch (JsonReaderException)
-            {
-                // silently fails
-            }
+        string path = this.dataService.CombinePaths(this.appDataService.DefaultAppDataDirectory, "builds.json");
 
-            if (buildList is not null)
+        if (!this.fileSystem.File.Exists(path))
+        {
+            return Enumerable.Empty<Build>();
+        }
+
+        List<string>? buildList = null;
+        try
+        {
+            buildList = await this.dataService.LoadAsync<List<string>>(path);
+        }
+        catch (JsonException)
+        {
+            // silently fails
+        }
+
+        if (buildList is not null)
+        {
+            var builds = new List<Build>();
+            foreach (string buildString in buildList)
             {
-                var builds = new List<Build>();
-                foreach (string buildString in buildList)
+                try
                 {
-                    try
+                    var build = Build.CreateBuildFromString(buildString);
+                    if (AppData.ShipDictionary.ContainsKey(build.ShipIndex))
                     {
-                        var build = Build.CreateBuildFromString(buildString);
-                        if (AppData.ShipDictionary.ContainsKey(build.ShipIndex))
-                        {
-                            builds.Add(build);
-                        }
-                    }
-                    catch (FormatException)
-                    {
-                        // silently fails
+                        builds.Add(build);
                     }
                 }
-
-                savedBuilds = builds.DistinctBy(x => x.Hash).ToList();
+                catch (FormatException)
+                {
+                    // silently fails
+                }
             }
 
-            return savedBuilds ?? Enumerable.Empty<Build>();
+            this.savedBuilds = builds.DistinctBy(x => x.Hash).ToList();
         }
 
-        return Enumerable.Empty<Build>();
+        return this.savedBuilds ?? Enumerable.Empty<Build>();
     }
 
     public async Task ImportBuildsAsync(IEnumerable<Build> builds)
     {
-        savedBuilds ??= (await LoadBuildsAsync()).ToList();
+        this.savedBuilds ??= (await this.LoadBuildsAsync()).ToList();
 
         foreach (var build in builds.Where(x => AppData.ShipDictionary.ContainsKey(x.ShipIndex)))
         {
-            savedBuilds.RemoveAll(x => x.Equals(build));
-            savedBuilds.Insert(0, build);
+            this.savedBuilds.RemoveAll(x => x.Equals(build));
+            this.savedBuilds.Insert(0, build);
         }
 
-        await SaveBuildsAsync(savedBuilds);
+        await this.SaveBuildsAsync(this.savedBuilds);
     }
 
-    public async Task SaveBuildAsync(Build build) => await ImportBuildsAsync(new List<Build> { build });
+    public async Task SaveBuildAsync(Build build) => await this.ImportBuildsAsync(new List<Build> { build });
 
-    public async Task RemoveSavedBuildAsync(Build build) => await RemoveSavedBuildsAsync(new List<Build> { build });
+    public async Task RemoveSavedBuildAsync(Build build) => await this.RemoveSavedBuildsAsync(new List<Build> { build });
 
     public async Task RemoveSavedBuildsAsync(IEnumerable<Build> builds)
     {
-        savedBuilds ??= (await LoadBuildsAsync()).ToList();
-        savedBuilds.RemoveMany(builds);
+        this.savedBuilds ??= (await this.LoadBuildsAsync()).ToList();
+        this.savedBuilds.RemoveMany(builds);
 
-        await SaveBuildsAsync(savedBuilds);
+        await this.SaveBuildsAsync(this.savedBuilds);
     }
 }

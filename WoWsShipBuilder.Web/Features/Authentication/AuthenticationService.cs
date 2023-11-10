@@ -31,10 +31,10 @@ public class AuthenticationService
             _ => throw new InvalidOperationException("unsupported account id range"),
         };
 
-        logger.LogInformation("Verifying access token for account {}", accountId);
-        var checkUrl = @$"https://api.worldofwarships.{server}/wows/account/info/?application_id={options.WgApiKey}&account_id={accountId}&access_token={accessToken}&fields=private";
+        this.logger.LogInformation("Verifying access token for account {}", accountId);
+        var checkUrl = @$"https://api.worldofwarships.{server}/wows/account/info/?application_id={this.options.WgApiKey}&account_id={accountId}&access_token={accessToken}&fields=private";
         var request = new HttpRequestMessage(HttpMethod.Get, checkUrl);
-        var response = await client.SendAsync(request);
+        var response = await this.client.SendAsync(request);
 
         if (response.IsSuccessStatusCode)
         {
@@ -42,12 +42,12 @@ public class AuthenticationService
             if (responseData is not null && responseData.Status.Equals("ok"))
             {
                 Dictionary<string, object>? privateData = responseData.Data.FirstOrDefault().Value?.Private;
-                logger.LogInformation("Token-verification for account {} successful", accountId);
+                this.logger.LogInformation("Token-verification for account {} successful", accountId);
                 return privateData is not null && privateData.Any();
             }
         }
 
-        logger.LogInformation("Token-verification for account {} failed", accountId);
+        this.logger.LogInformation("Token-verification for account {} failed", accountId);
         return false;
     }
 
@@ -60,12 +60,12 @@ public class AuthenticationService
             new(ClaimTypes.UserData, accessToken),
         };
 
-        if (options.AdminUsers.Contains(accountId))
+        if (this.options.AdminUsers.Contains(accountId))
         {
             claims.Add(new(ClaimTypes.Role, AppConstants.AdminRoleName));
         }
 
-        if (options.BuildCurators.Contains(accountId))
+        if (this.options.BuildCurators.Contains(accountId))
         {
             claims.Add(new(ClaimTypes.Role, AppConstants.BuildCuratorRoleName));
         }

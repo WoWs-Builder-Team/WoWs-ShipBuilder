@@ -30,11 +30,11 @@ public class CustomObservableCollection<T> : ObservableCollection<T>
         {
             foreach (var item in itemList.SkipLast(1))
             {
-                Items.Add(item);
+                this.Items.Add(item);
             }
         }
 
-        Add(itemList[^1]);
+        this.Add(itemList[^1]);
     }
 
     public void RemoveRange(IEnumerable<T> items)
@@ -49,16 +49,16 @@ public class CustomObservableCollection<T> : ObservableCollection<T>
         {
             foreach (var item in itemList.SkipLast(1))
             {
-                Items.Remove(item);
+                this.Items.Remove(item);
             }
         }
 
-        Remove(itemList[^1]);
+        this.Remove(itemList[^1]);
     }
 
     public int FindIndex(Predicate<T> match)
     {
-        int endIndex = Count;
+        int endIndex = this.Count;
         for (var i = 0; i < endIndex; i++)
         {
             if (match(this[i]))
@@ -73,19 +73,19 @@ public class CustomObservableCollection<T> : ObservableCollection<T>
     protected override void InsertItem(int index, T item)
     {
         base.InsertItem(index, item);
-        NotifyCountChanged();
+        this.NotifyCountChanged();
     }
 
     protected override void RemoveItem(int index)
     {
         base.RemoveItem(index);
-        NotifyCountChanged();
+        this.NotifyCountChanged();
     }
 
     protected override void ClearItems()
     {
         base.ClearItems();
-        NotifyCountChanged();
+        this.NotifyCountChanged();
     }
 
     private void NotifyCountChanged()

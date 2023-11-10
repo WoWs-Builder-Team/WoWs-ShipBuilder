@@ -1,6 +1,6 @@
-﻿using WoWsShipBuilder.DataContainers;
-using WoWsShipBuilder.DataStructures.Ship;
+﻿using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Features.Builds;
+using WoWsShipBuilder.Features.DataContainers;
 
 namespace WoWsShipBuilder.Infrastructure.DataTransfer;
 
@@ -24,32 +24,32 @@ public sealed record ShipBuildContainer(Ship Ship, Build? Build, Guid Id, IEnume
     /// <returns><see langword="true"/> if all relevant properties have the same value, <see langword="false"/> otherwise.</returns>
     public bool IsEquivalentTo(ShipBuildContainer newContainer)
     {
-        if (Ship.Index != newContainer.Ship.Index)
+        if (this.Ship.Index != newContainer.Ship.Index)
         {
             return false;
         }
 
-        if (Build is null && newContainer.Build is not null)
+        if (this.Build is null && newContainer.Build is not null)
         {
             return false;
         }
 
-        if (Build is not null && !Build.Equals(newContainer.Build))
+        if (this.Build is not null && !this.Build.Equals(newContainer.Build))
         {
             return false;
         }
 
-        if (SpecialAbilityActive != newContainer.SpecialAbilityActive)
+        if (this.SpecialAbilityActive != newContainer.SpecialAbilityActive)
         {
             return false;
         }
 
-        if ((ActivatedConsumableSlots is null && newContainer.ActivatedConsumableSlots is not null) || (ActivatedConsumableSlots is not null && newContainer.ActivatedConsumableSlots is null))
+        if ((this.ActivatedConsumableSlots is null && newContainer.ActivatedConsumableSlots is not null) || (this.ActivatedConsumableSlots is not null && newContainer.ActivatedConsumableSlots is null))
         {
             return false;
         }
 
-        IOrderedEnumerable<int> oldConsumables = (ActivatedConsumableSlots ?? Enumerable.Empty<int>()).OrderBy(i => i);
+        IOrderedEnumerable<int> oldConsumables = (this.ActivatedConsumableSlots ?? Enumerable.Empty<int>()).OrderBy(i => i);
         IOrderedEnumerable<int> newConsumables = (newContainer.ActivatedConsumableSlots ?? Enumerable.Empty<int>()).OrderBy(i => i);
         return oldConsumables.SequenceEqual(newConsumables);
     }

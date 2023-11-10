@@ -18,10 +18,10 @@ public partial class SplashScreen : ReactiveWindow<SplashScreenViewModel>
 {
     public SplashScreen(IServiceProvider services)
     {
-        InitializeComponent(services.GetRequiredService<SplashScreenViewModel>());
+        this.InitializeComponent(services.GetRequiredService<SplashScreenViewModel>());
         this.WhenActivated(_ =>
         {
-            var vm = ViewModel ?? services.GetRequiredService<SplashScreenViewModel>();
+            var vm = this.ViewModel ?? services.GetRequiredService<SplashScreenViewModel>();
 
             Task.Run(async () =>
             {
@@ -63,7 +63,7 @@ public partial class SplashScreen : ReactiveWindow<SplashScreenViewModel>
 
     private void InitializeComponent(SplashScreenViewModel viewModel)
     {
-        InitializeComponent();
-        ViewModel = viewModel;
+        this.InitializeComponent();
+        this.ViewModel = viewModel;
     }
 }

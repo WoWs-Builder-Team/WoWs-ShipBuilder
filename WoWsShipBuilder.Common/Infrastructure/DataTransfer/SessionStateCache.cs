@@ -11,18 +11,18 @@ public class SessionStateCache
 
     public List<ShipBuildContainer>? GetAndResetBuildTransferContainers()
     {
-        var result = buildTransferContainers;
-        buildTransferContainers = null;
+        var result = this.buildTransferContainers;
+        this.buildTransferContainers = null;
         return result;
     }
 
     public void SetBuildTransferContainers(List<ShipBuildContainer> containers)
     {
-        buildTransferContainers = containers;
+        this.buildTransferContainers = containers;
     }
 
     public void SetBuildTransferContainers(ShipBuildContainer container)
     {
-        buildTransferContainers = new() { container };
+        this.buildTransferContainers = new() { container };
     }
 }

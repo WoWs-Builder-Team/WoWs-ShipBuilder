@@ -16,18 +16,18 @@ public class SignalSelectorViewModel : ReactiveObject
 
     public SignalSelectorViewModel()
     {
-        logger = Logging.LoggerFactory.CreateLogger<SignalSelectorViewModel>();
-        SignalList = LoadSignalList();
+        this.logger = Logging.LoggerFactory.CreateLogger<SignalSelectorViewModel>();
+        this.SignalList = LoadSignalList();
 
-        this.WhenAnyValue(x => x.SignalsNumber).Do(_ => UpdateCanToggleSkill()).Subscribe();
+        this.WhenAnyValue(x => x.SignalsNumber).Do(_ => this.UpdateCanToggleSkill()).Subscribe();
     }
 
     public List<KeyValuePair<string, SignalItemViewModel>> SignalList { get; }
 
     public int SignalsNumber
     {
-        get => signalsNumber;
-        set => this.RaiseAndSetIfChanged(ref signalsNumber, value);
+        get => this.signalsNumber;
+        set => this.RaiseAndSetIfChanged(ref this.signalsNumber, value);
     }
 
     public CustomObservableCollection<Exterior> SelectedSignals { get; } = new();
@@ -48,41 +48,41 @@ public class SignalSelectorViewModel : ReactiveObject
 
     public void SignalCommandExecute(Exterior flag)
     {
-        if (SelectedSignals.Contains(flag))
+        if (this.SelectedSignals.Contains(flag))
         {
-            SelectedSignals.Remove(flag);
-            SignalsNumber--;
+            this.SelectedSignals.Remove(flag);
+            this.SignalsNumber--;
         }
         else
         {
-            SelectedSignals.Add(flag);
-            SignalsNumber++;
+            this.SelectedSignals.Add(flag);
+            this.SignalsNumber++;
         }
     }
 
     public List<(string, float)> GetModifierList()
     {
-        return SelectedSignals.SelectMany(m => m.Modifiers.Select(effect => (effect.Key, (float)effect.Value))).ToList();
+        return this.SelectedSignals.SelectMany(m => m.Modifiers.Select(effect => (effect.Key, (float)effect.Value))).ToList();
     }
 
     public List<string> GetFlagList()
     {
-        return SelectedSignals.Select(signal => signal.Index).ToList();
+        return this.SelectedSignals.Select(signal => signal.Index).ToList();
     }
 
     public void LoadBuild(IReadOnlyList<string> initialSignalsNames)
     {
-        logger.LogInformation("Initial signal configuration found {SignalNames}", string.Join(", ", initialSignalsNames));
-        var list = SignalList.Select(x => x.Value.Signal).Where(signal => initialSignalsNames.Contains(signal.Index));
-        SelectedSignals.AddRange(list);
-        SignalsNumber = SelectedSignals.Count;
+        this.logger.LogInformation("Initial signal configuration found {SignalNames}", string.Join(", ", initialSignalsNames));
+        var list = this.SignalList.Select(x => x.Value.Signal).Where(signal => initialSignalsNames.Contains(signal.Index));
+        this.SelectedSignals.AddRange(list);
+        this.SignalsNumber = this.SelectedSignals.Count;
     }
 
     private void UpdateCanToggleSkill()
     {
-        foreach (var (_, value) in SignalList)
+        foreach (var (_, value) in this.SignalList)
         {
-            value.CanExecute = CheckSignalCommandExecute(value.Signal);
+            value.CanExecute = this.CheckSignalCommandExecute(value.Signal);
         }
     }
 
@@ -93,7 +93,7 @@ public class SignalSelectorViewModel : ReactiveObject
             return false;
         }
 
-        return SelectedSignals.Contains(flag) || SignalsNumber < 8;
+        return this.SelectedSignals.Contains(flag) || this.SignalsNumber < 8;
     }
 }
 
@@ -103,14 +103,14 @@ public class SignalItemViewModel : ReactiveObject
 
     public SignalItemViewModel(Exterior exterior)
     {
-        Signal = exterior;
+        this.Signal = exterior;
     }
 
     public Exterior Signal { get; }
 
     public bool CanExecute
     {
-        get => canExecute;
-        set => this.RaiseAndSetIfChanged(ref canExecute, value);
+        get => this.canExecute;
+        set => this.RaiseAndSetIfChanged(ref this.canExecute, value);
     }
 }
