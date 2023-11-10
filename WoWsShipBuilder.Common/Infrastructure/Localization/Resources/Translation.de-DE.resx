@@ -1353,6 +1353,9 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="Placeholder" xml:space="preserve">
       <value>---</value>
   </data>
+  <data name="ShipStats_Splash" xml:space="preserve">
+      <value>Schadensbereich</value>
+  </data>
   <data name="ShipStats_SplashRadius" xml:space="preserve">
       <value>Explosionsradius</value>
   </data>
@@ -1537,6 +1540,9 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="ShipStats_Tonnage" xml:space="preserve">
       <value>Tonnage</value>
   </data>
+  <data name="ShipStats_BackwardEngineUpTime" xml:space="preserve">
+      <value>Zeit bis zum Erreichen der Rückwärtsgeschwindigkeit</value>
+  </data>
   <data name="ShipStats_ForwardEngineForsagMaxSpeed" xml:space="preserve">
       <value>Maximale Vorwärtsgeschwindigkeit</value>
   </data>
@@ -1606,6 +1612,9 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="ShipAndShellsSelectionDialog_NoShipSelected" xml:space="preserve">
       <value>Kein Schiff ausgewählt</value>
   </data>
+  <data name="ShipStats_TargetAreaRadius" xml:space="preserve">
+      <value>Zielbereichs-Radius</value>
+  </data>
   <data name="ShipStats_ProgressPerAction" xml:space="preserve">
       <value>Fortschritt pro Aktion</value>
   </data>
@@ -1657,6 +1666,12 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="ShipStats_SternLoaders" xml:space="preserve">
       <value>Heck</value>
   </data>
+  <data name="ShipStats_First" xml:space="preserve">
+      <value>Erster</value>
+  </data>
+  <data name="ShipStats_Second" xml:space="preserve">
+      <value>Zweiter</value>
+  </data>
   <data name="Unit_U" xml:space="preserve">
       <value>Einheit</value>
   </data>
@@ -1665,6 +1680,9 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   </data>
   <data name="ShipStats_ManeuverabilitySubsMaxDiveSpeed" xml:space="preserve">
       <value>Maximale Tauchgeschwindigkeit</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsDivingPlaneShiftTime" xml:space="preserve">
+      <value>Drehgeschwindigkeit von Tiefenruder</value>
   </data>
   <data name="ShipStats_DiveCapacity" xml:space="preserve">
       <value>Tauchkapazität</value>
@@ -1686,6 +1704,9 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   </data>
   <data name="ShipStats_MaxTurningSpeed" xml:space="preserve">
       <value>Maximale Drehgeschwindigkeit</value>
+  </data>
+  <data name="ShipStats_TurningAcceleration" xml:space="preserve">
+      <value>Drehbeschleunigung</value>
   </data>
   <data name="ShipStats_MaxVerticalSpeed" xml:space="preserve">
       <value>Maximale vertikale Geschwindigkeit</value>
@@ -1717,6 +1738,9 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="ShipStats_MoreDetails" xml:space="preserve">
       <value>Weitere Details</value>
   </data>
+  <data name="ShipStats_CutOffDistances" xml:space="preserve">
+      <value>Abbruchdistanzen</value>
+  </data>
   <data name="Unit_DegreePerSecond2" xml:space="preserve">
       <value>^/s²</value>
   </data>
@@ -1746,6 +1770,12 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   </data>
   <data name="BuildImageSettingsDialog_TwoColumnsTooltip" xml:space="preserve">
       <value>Vergrößert das Bildlayout durch Aufteilen von Elementen in zwei nebeneinander liegende Spalten (Kapitänsfertigkeiten und Signale sind nicht verdeckbar).</value>
+  </data>
+  <data name="BuildNameDialog_BuildName" xml:space="preserve">
+      <value>Build Name</value>
+  </data>
+  <data name="BuildNameDialog_EnterBuildName" xml:space="preserve">
+      <value>Build-Namen eingeben</value>
   </data>
   <data name="BuildImageRenderDialog_SaveImage" xml:space="preserve">
       <value>Bild speichern</value>
@@ -1888,11 +1918,17 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="ShipComparison_OnFire" xml:space="preserve">
       <value>In Brand</value>
   </data>
+  <data name="ShipComparison_SmokeFiring" xml:space="preserve">
+      <value>Schießen aus dem Nebel</value>
+  </data>
   <data name="ShipComparison_FullReverseTime" xml:space="preserve">
       <value>Volle Umkehrzeit</value>
   </data>
   <data name="ShipComparison_Charges" xml:space="preserve">
       <value>Ladungen</value>
+  </data>
+  <data name="ShipComparison_DropRange" xml:space="preserve">
+      <value>Abwurf-Reichweite</value>
   </data>
   <data name="ShipComparison_PlanesInSquadron" xml:space="preserve">
       <value>Flugzeuge pro Staffel</value>
@@ -1918,7 +1954,97 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="ShipComparison_Planes" xml:space="preserve">
       <value>Flugzeuge</value>
   </data>
+  <data name="ShipComparison_OnDeck" xml:space="preserve">
+      <value>An Deck</value>
+  </data>
+  <data name="ShipComparison_EngineBoostDuration" xml:space="preserve">
+      <value>Motorboost-Dauer</value>
+  </data>
+  <data name="ShipComparison_Invulnerability" xml:space="preserve">
+      <value>Unverwundbarkeit</value>
+  </data>
+  <data name="ShipComparison_ViewDistance" xml:space="preserve">
+      <value>Sichtweite</value>
+  </data>
+  <data name="ShipComparison_AreaChange" xml:space="preserve">
+      <value>Bereichsänderung</value>
+  </data>
+  <data name="ShipComparison_PerPlane" xml:space="preserve">
+      <value>je Flugzeug</value>
+  </data>
+  <data name="ShipComparison_TorpsPerPlane" xml:space="preserve">
+      <value>Torpedos je Flugzeug</value>
+  </data>
+  <data name="ShipStats_MaxReverseSpeed" xml:space="preserve">
+      <value>Maximale Rückwärtsgeschwindigkeit</value>
+  </data>
+  <data name="ShipComparison_TypeName" xml:space="preserve">
+      <value>Schiffsnamen eingeben...</value>
+  </data>
+  <data name="ShipComparison_SearchAndPin" xml:space="preserve">
+      <value>Schiff suchen &amp; anheften</value>
+  </data>
+  <data name="ShipComparison_DispersionAt" xml:space="preserve">
+      <value>Streuung auf</value>
+  </data>
+  <data name="ShipComparison_FiringRange" xml:space="preserve">
+      <value>Schussreichweite</value>
+  </data>
+  <data name="ShipSelectionWindow_SearchShipOrBuild" xml:space="preserve">
+      <value>Schiff oder Build suchen</value>
+  </data>
+  <data name="SettingsWindow_Export" xml:space="preserve">
+      <value>Exportieren</value>
+  </data>
+  <data name="SettingsWindow_DeleteAll" xml:space="preserve">
+      <value>Alle Löschen</value>
+  </data>
+  <data name="BuildConfigurationDialog_Load" xml:space="preserve">
+      <value>Laden</value>
+  </data>
+  <data name="SettingsWindow_InvalidJsonFileError" xml:space="preserve">
+      <value>Ungültige Datei. Nur .json Dateien erlaubt.</value>
+  </data>
+  <data name="ShipSelector_InvalidPngFileError" xml:space="preserve">
+      <value>Ungültige Datei. Nur .png Dateien erlaubt.</value>
+  </data>
+  <data name="SettingsWindow_LocalStorageWarning" xml:space="preserve">
+      <value>Builds werden lokal im Browser gespeichert. Operationen wie das Leeren des Browser-Caches können unter Umständen alle im lokalen Speicher gespeicherten Daten löschen. Wir empfehlen daher dringend, Builds periodisch oder zumindest vor dem Ausführen solcher Operationen zu exportieren.</value>
+  </data>
+  <data name="ShipStats_Krupp" xml:space="preserve">
+      <value>Krupp</value>
+  </data>
+  <data name="ShipStats_KruppExplanation" xml:space="preserve">
+      <value>Es ist eine Konstante, die benutzt wird, um die Penetration des Projektils anzupassen.
+        Zeigt an, wie stabil das Projektil ist.
+        Je höher der Wert, desto höher ist die Penetration.</value>
+  </data>
+  <data name="ShipStats_ApPenetrationFormula" xml:space="preserve">
+      <value>K = Der Krupp
+        M = die Masse des Projektils [kg]
+        S = die Einschlaggeschwindigkeit des Projektils [m/s]
+        C = Kaliber [m]
+
+        Durchdringung [mm] = K * (M * S^2)^0. 9 * C^(-1.07) * 0.0000001
+
+      Reverse-Engineered von TTaro_</value>
+  </data>
   <data name="ShipStats_PenetrationAp" xml:space="preserve">
       <value>Durchschlagskraft</value>
+  </data>
+  <data name="BETA_UserAuth" xml:space="preserve">
+      <value>Benutzeranmeldung</value>
+  </data>
+  <data name="ShipStats_DcDetonationDepthExplanation" xml:space="preserve">
+      <value>Die Tauchtiefe der im Spiel gezeigten U-Boote wird als "ship_m" (Schiffsmeter) ausgedrückt. U-Boote können 60[ship_m] = 120[m] tauchen.</value>
+  </data>
+  <data name="ShipComparison_ShipsPerPage" xml:space="preserve">
+    <value>Schiffe pro Seite:</value>
+  </data>
+  <data name="ShipComparison_HideColumns" xml:space="preserve">
+    <value>Spalten ausblenden</value>
+  </data>
+  <data name="ShipStats_SecondConsecutive" xml:space="preserve">
+    <value>Zweite und Folgende</value>
   </data>
 </root>
