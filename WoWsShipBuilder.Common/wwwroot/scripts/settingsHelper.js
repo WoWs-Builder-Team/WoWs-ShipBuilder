@@ -1,10 +1,10 @@
 ﻿export function getAppSettings() {
-    try {
+    const settings = window.localStorage['settings'];
+    if (settings) {
         return JSON.parse(window.localStorage['settings']);
-    } catch (e) {
-        console.log(e);
-        return null;
     }
+
+    return null;
 }
 
 export function setAppSettings(settings) {
