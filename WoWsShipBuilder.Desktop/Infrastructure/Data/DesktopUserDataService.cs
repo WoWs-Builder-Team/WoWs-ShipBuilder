@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using DynamicData;
-using Newtonsoft.Json;
 using WoWsShipBuilder.Features.Builds;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 
@@ -42,44 +42,45 @@ public class DesktopUserDataService : IUserDataService
         }
 
         string path = this.dataService.CombinePaths(this.appDataService.DefaultAppDataDirectory, "builds.json");
-        if (this.fileSystem.File.Exists(path))
+
+        if (!this.fileSystem.File.Exists(path))
         {
-            List<string>? buildList = null;
-            try
-            {
-                buildList = await this.dataService.LoadAsync<List<string>>(path);
-            }
-            catch (JsonReaderException)
-            {
-                // silently fails
-            }
-
-            if (buildList is not null)
-            {
-                var builds = new List<Build>();
-                foreach (string buildString in buildList)
-                {
-                    try
-                    {
-                        var build = Build.CreateBuildFromString(buildString);
-                        if (AppData.ShipDictionary.ContainsKey(build.ShipIndex))
-                        {
-                            builds.Add(build);
-                        }
-                    }
-                    catch (FormatException)
-                    {
-                        // silently fails
-                    }
-                }
-
-                this.savedBuilds = builds.DistinctBy(x => x.Hash).ToList();
-            }
-
-            return this.savedBuilds ?? Enumerable.Empty<Build>();
+            return Enumerable.Empty<Build>();
         }
 
-        return Enumerable.Empty<Build>();
+        List<string>? buildList = null;
+        try
+        {
+            buildList = await this.dataService.LoadAsync<List<string>>(path);
+        }
+        catch (JsonException)
+        {
+            // silently fails
+        }
+
+        if (buildList is not null)
+        {
+            var builds = new List<Build>();
+            foreach (string buildString in buildList)
+            {
+                try
+                {
+                    var build = Build.CreateBuildFromString(buildString);
+                    if (AppData.ShipDictionary.ContainsKey(build.ShipIndex))
+                    {
+                        builds.Add(build);
+                    }
+                }
+                catch (FormatException)
+                {
+                    // silently fails
+                }
+            }
+
+            this.savedBuilds = builds.DistinctBy(x => x.Hash).ToList();
+        }
+
+        return this.savedBuilds ?? Enumerable.Empty<Build>();
     }
 
     public async Task ImportBuildsAsync(IEnumerable<Build> builds)

@@ -1,7 +1,7 @@
 ﻿export function getAppSettings() {
-    return window.localStorage['settings'];
+    return JSON.parse(window.localStorage['settings']);
 }
 
 export function setAppSettings(settings) {
-    window.localStorage['settings'] = settings;
+    window.localStorage['settings'] = JSON.stringify(settings);
 }

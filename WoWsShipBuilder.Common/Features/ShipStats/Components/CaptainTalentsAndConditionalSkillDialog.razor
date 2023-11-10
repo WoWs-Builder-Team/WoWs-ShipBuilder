@@ -39,7 +39,7 @@
                             <MudText Style="font-weight: bold">@Localizer.GetGameLocalization("SKILL_" + ToSnakeCase(modifier.SkillName)).Localization</MudText>
                         </MudItem>
                         <MudItem xs="5" Class="d-flex justify-end align-center">
-                            @if (modifier.MaximumActivations > 0)
+                            @if (modifier.MaximumActivations > 1)
                             {
                                 <MudNumericField Margin="Margin.Dense" Variant="Variant.Outlined" @bind-Value="@modifier.ActivationNumbers" Min="1" Max="modifier.MaximumActivations"/>
                             }

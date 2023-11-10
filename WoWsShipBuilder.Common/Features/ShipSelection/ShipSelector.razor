@@ -5,7 +5,6 @@
 @using DynamicData
 @using Microsoft.AspNetCore.WebUtilities
 @using Microsoft.Extensions.Options
-@using Newtonsoft.Json
 @using WoWsShipBuilder.Features.Builds.Components
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.LinkShortening
@@ -17,6 +16,7 @@
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
 @using System.Collections.Immutable
+@using System.Text.Json
 
 @implements IAsyncDisposable
 @inject ILocalizer Localizer
@@ -501,7 +501,7 @@
 
         try
         {
-            var build = buildString.StartsWith('{') ? JsonConvert.DeserializeObject<Build>(buildString)! : Build.CreateBuildFromString(buildString);
+            var build = buildString.StartsWith('{') ? JsonSerializer.Deserialize<Build>(buildString, AppConstants.JsonSerializerOptions)! : Build.CreateBuildFromString(buildString);
             AddSavedBuild(Build.UpgradeBuild(build));
             buildString = string.Empty;
             StateHasChanged();

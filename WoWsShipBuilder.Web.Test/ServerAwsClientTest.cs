@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -8,14 +9,11 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Moq;
 using Moq.Protected;
-using Newtonsoft.Json;
 using NUnit.Framework;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Versioning;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
-using WoWsShipBuilder.Infrastructure.Utility;
 using WoWsShipBuilder.Web.Infrastructure;
 
 namespace WoWsShipBuilder.Web.Test;
@@ -43,17 +41,17 @@ public class ServerAwsClientTest
                 "SendAsync",
                 ItExpr.Is<HttpRequestMessage>(message => message.RequestUri!.AbsoluteUri.EndsWith("VersionInfo.json")),
                 ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(new HttpResponseMessage { Content = new StringContent(JsonConvert.SerializeObject(testVersionInfo)) });
+            .ReturnsAsync(new HttpResponseMessage { Content = new StringContent(JsonSerializer.Serialize(testVersionInfo, AppConstants.JsonSerializerOptions)) });
 
         var shipRequestExpression = ItExpr.Is<HttpRequestMessage>(message => message.RequestUri!.AbsolutePath.Equals("/api/live/Ship/Germany.json"));
         this.messageHandlerMock.Protected().Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
                 shipRequestExpression,
                 ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(new HttpResponseMessage { Content = new StringContent(JsonConvert.SerializeObject(shipDictionary)) });
+            .ReturnsAsync(new HttpResponseMessage { Content = new StringContent(JsonSerializer.Serialize(shipDictionary, AppConstants.JsonSerializerOptions)) });
 
         var cdnOptions = new CdnOptions { Host = "https://example.com"};
-        IOptions<CdnOptions>? options = Options.Create(cdnOptions);
+        IOptions<CdnOptions> options = Options.Create(cdnOptions);
         var client = new ServerAwsClient(new(this.messageHandlerMock.Object), options, NullLogger<ServerAwsClient>.Instance);
 
         var versionInfo = await client.DownloadVersionInfo(ServerType.Live);

@@ -23,8 +23,8 @@ public class SkillItemViewModel : ReactiveObject
         this.SkillTier = this.SkillPosition.Tier;
         this.canAddCache = canAddCache;
         this.canRemoveCache = canRemoveCache;
-        this.Modifiers = skill.Modifiers.Where(x => !x.Key.Contains('_') || x.Key.Contains("_" + shipClass)).ToDictionary(x => x.Key, x => x.Value);
-        this.ConditionalModifiers = skill.ConditionalModifiers.Where(x => !x.Key.Contains('_') || x.Key.Contains("_" + shipClass)).ToDictionary(x => x.Key, x => x.Value);
+        this.Modifiers = skill.Modifiers.Where(x => !x.Key.Contains('_') || x.Key.StartsWith("repeatable_", StringComparison.Ordinal) || x.Key.Contains("_" + shipClass)).ToDictionary(x => x.Key, x => x.Value);
+        this.ConditionalModifierGroups = skill.ConditionalModifierGroups;
 
         this.shipClass = shipClass;
         this.parent = parent;
@@ -39,7 +39,7 @@ public class SkillItemViewModel : ReactiveObject
 
     public Dictionary<string, float> Modifiers { get; }
 
-    public Dictionary<string, float> ConditionalModifiers { get; }
+    public List<ConditionalModifierGroup> ConditionalModifierGroups { get; }
 
     public bool CanExecute
     {

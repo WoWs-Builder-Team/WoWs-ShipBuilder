@@ -298,6 +298,16 @@ public static class ModifierProcessor
             description = localizer.GetAppLocalization(nameof(Translation.Consumable_HpPerHeal)).Localization;
         }
 
+        if (localizerKey.Contains("first_GMShotDelay", StringComparison.OrdinalIgnoreCase))
+        {
+            description = $"{localizer.SimpleGameLocalization($"{prefix}GMSHOTDELAY")} ({localizer.SimpleAppLocalization(nameof(Translation.ShipStats_First))})";
+        }
+
+        if (localizerKey.Contains("other_GMShotDelay", StringComparison.OrdinalIgnoreCase))
+        {
+            description = $"{localizer.SimpleGameLocalization($"{prefix}GMSHOTDELAY")} ({localizer.SimpleAppLocalization(nameof(Translation.ShipStats_SecondConsecutive))})";
+        }
+
         if (description.Contains("[UNUSED]", StringComparison.InvariantCultureIgnoreCase))
         {
             return string.Empty;
