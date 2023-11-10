@@ -1,6 +1,7 @@
 ﻿@page "/settings"
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.Settings
+@using WoWsShipBuilder.Features.ShipStats
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization
@@ -22,6 +23,7 @@
 @inject IUserDataService UserDataService
 @inject IJSRuntime Runtime
 @inject MetricsService MetricsService
+@inject ExpanderStateCache ExpanderStateCache
 
 <PageTitle>@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Settings)).Localization</PageTitle>
 
@@ -215,6 +217,7 @@
         Snackbar.Add("Settings saved", Severity.Success, config => { config.CloseAfterNavigation = true; });
         if (settingsChanged)
         {
+            ExpanderStateCache.Reset();
             RefreshNotifierService.NotifyRefreshRequested();
         }
     }
@@ -241,6 +244,7 @@
     private async Task ResetSettingsAsync()
     {
         AppSettings.ClearSettings();
+        ExpanderStateCache.Reset();
         await SettingsAccessor.SaveSettings(AppSettings);
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomEnd;
         Snackbar.Add(Localizer.GetAppLocalization(nameof(Translation.WebApp_SettingsSaved)).Localization, Severity.Success, config => { config.CloseAfterNavigation = true; });

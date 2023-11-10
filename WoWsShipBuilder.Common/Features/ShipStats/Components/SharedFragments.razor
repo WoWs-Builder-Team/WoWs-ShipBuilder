@@ -9,13 +9,14 @@
         {
             case GroupedDataElement element:
                 <div>
-                    <MudText Typo="Typo.body2" Class="mb-1">@group.localizer.GetAppLocalization(element.Key).Localization</MudText>
-                    <div class="ml-3">
+                    <MudText Typo="Typo.body2">@group.localizer.GetAppLocalization(element.Key).Localization</MudText>
+                    <div class="ml-4">
                         @foreach (var child in element.Children)
                         {
                             @DataElementFragment?.Invoke((child, group.localizer)) // Invoke necessary due to msbuild warning
                         }
                     </div>
+                    <MudDivider Style="margin-top: 1px"/>
                 </div>
                 break;
             case KeyValueDataElement element:
@@ -52,11 +53,13 @@
                 break;
             case ValueDataElement element:
                 <MudText Typo="Typo.body2">@ConvertValue(element.Value, element.ValueTextKind, group.localizer)</MudText>
+                <MudDivider Style="margin-top: 1px"/>
                 break;
             case FormattedTextDataElement element:
                 <MudText Typo="Typo.body2">
                     <MultilineString InputString="@ConvertFormattedText(element, group.localizer)"/>
                 </MudText>
+                <MudDivider/>
                 break;
         }
     };
@@ -79,7 +82,7 @@
             DataElementTextKind.Plain => value,
             DataElementTextKind.LocalizationKey => localizer.SimpleGameLocalization(value),
             DataElementTextKind.AppLocalizationKey => localizer.SimpleAppLocalization(value),
-            _ => throw new ArgumentOutOfRangeException(nameof(valueTextKind), valueTextKind, "Unknown DataElementTextKind"),
+            _ => throw new ArgumentOutOfRangeException(nameof(valueTextKind), valueTextKind, @"Unknown DataElementTextKind"),
         };
     }
 

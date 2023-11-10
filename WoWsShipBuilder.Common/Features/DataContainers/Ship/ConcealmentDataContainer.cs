@@ -24,12 +24,8 @@ public partial record ConcealmentDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Air", UnitKey = "KM")]
     public decimal ConcealmentByAirFire { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "FromSubs", UnitKey = "KM")]
-    public decimal ConcealmentBySubPeriscope { get; set; }
-
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "FromSubs", UnitKey = "KM")]
-    [DataElementFiltering(false)]
-    public decimal ConcealmentBySubOperating { get; set; }
+    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
+    public decimal FromSubsAtPeriscopeDepth { get; set; }
 
     public static ConcealmentDataContainer FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)
     {
@@ -41,20 +37,17 @@ public partial record ConcealmentDataContainer : DataContainerBase
 
         // AA Detection
         decimal concealmentByAir = hull.AirDetection;
-
         decimal concealmentBySubPeriscope = hull.DetectionBySubPeriscope;
-        decimal concealmentBySubOperating = hull.DetectionBySubOperating;
 
         int concealmentExpertIndex = modifiers.FindModifierIndex("visibilityDistCoeff");
         if (concealmentExpertIndex > -1)
         {
-            List<float> modifiersValues = modifiers.FindModifiers("visibilityDistCoeff").ToList();
+            var modifiersValues = modifiers.FindModifiers("visibilityDistCoeff").ToList();
             foreach (decimal value in modifiersValues.Select(f => (decimal)f))
             {
                 concealmentBySea *= value;
                 concealmentByAir *= value;
                 concealmentBySubPeriscope *= value;
-                concealmentBySubOperating *= value;
             }
         }
 
@@ -92,7 +85,6 @@ public partial record ConcealmentDataContainer : DataContainerBase
                     var bigGunVisibilityFactorModifier = (decimal)modifiers[bigGunVisibilityFactorIndex].Value;
                     concealmentBySea *= bigGunVisibilityFactorModifier;
                     concealmentByAir *= bigGunVisibilityFactorModifier;
-                    concealmentBySubOperating *= bigGunVisibilityFactorModifier;
                     concealmentBySubPeriscope *= bigGunVisibilityFactorModifier;
                 }
             }
@@ -108,8 +100,7 @@ public partial record ConcealmentDataContainer : DataContainerBase
             ConcealmentBySeaFire = Math.Round(concealmentBySeaFire, 2),
             ConcealmentByAir = Math.Round(concealmentByAir, 2),
             ConcealmentByAirFire = Math.Round(concealmentByAirFire, 2),
-            ConcealmentBySubOperating = Math.Round(concealmentBySubOperating, 2),
-            ConcealmentBySubPeriscope = Math.Round(concealmentBySubPeriscope, 2),
+            FromSubsAtPeriscopeDepth = Math.Round(concealmentBySubPeriscope, 2),
         };
 
         concealment.UpdateDataElements();

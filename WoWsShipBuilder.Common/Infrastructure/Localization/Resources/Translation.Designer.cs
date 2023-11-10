@@ -3727,6 +3727,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to From subs at periscope depth.
+        /// </summary>
+        public static string ShipStats_FromSubsAtPeriscopeDepth {
+            get {
+                return ResourceManager.GetString("ShipStats_FromSubsAtPeriscopeDepth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Full salvo damage.
         /// </summary>
         public static string ShipStats_FullSalvoDamage {

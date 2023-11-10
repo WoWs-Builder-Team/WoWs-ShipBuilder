@@ -23,7 +23,7 @@
 
 <MudBreakpointProvider>
     @* HideSlider is set to true because of an issue in MudBlazor. see https://github.com/MudBlazor/MudBlazor/issues/4742*@
-    <MudDynamicTabs Position="Position.Top" HideSlider CloseTab="@RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="py-6" Outlined Border Class="px-md-6 pt-3 ship-stats-tabs">
+    <MudDynamicTabs Position="Position.Top" HideSlider CloseTab="@RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="py-6" Outlined Border Class="px-md-6 pt-3 ship-stats-tabs sticky-tabs-header">
         <ChildContent>
             @foreach (var container in shipContainers)
             {
@@ -92,6 +92,11 @@
             {
                 MetricsService.BuildImports.WithLabels("ship-stats", "url").Inc();
             }
+        }
+
+        if (!shipContainers.Any())
+        {
+            await OpenAddDialogAsync();
         }
 
         if (!updateTab) return;

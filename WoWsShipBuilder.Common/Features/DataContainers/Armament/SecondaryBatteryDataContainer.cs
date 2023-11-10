@@ -24,7 +24,6 @@ public partial record SecondaryBatteryDataContainer : DataContainerBase
 
     public string BarrelsLayout { get; set; } = default!;
 
-    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
     public decimal Range { get; set; }
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]

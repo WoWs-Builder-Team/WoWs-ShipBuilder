@@ -306,3 +306,10 @@ div.default-label-background label {
 .default-background {
     background-color: var(--mud-palette-background);
 }
+
+
+.sticky-tabs-header .mud-tabs-toolbar {
+    position: sticky;
+    z-index: 10;
+    top: 64px;
+}
