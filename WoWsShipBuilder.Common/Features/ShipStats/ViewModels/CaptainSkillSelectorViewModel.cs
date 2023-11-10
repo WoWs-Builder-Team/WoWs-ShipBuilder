@@ -357,10 +357,10 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         if (furiousSkill is not null && furiousSkillModifier is not null && furiousSkillModifier.Status)
         {
             var furiousModifiers = furiousSkill.ConditionalModifierGroups[0].Modifiers;
-            double multiplier = furiousModifiers["first_GMShotDelay"];
+            double multiplier = furiousModifiers["repeatable_first_GMShotDelay"];
             if (furiousSkillModifier.ActivationNumbers > 1)
             {
-                multiplier *= Math.Pow(furiousModifiers["other_GMShotDelay"], furiousSkillModifier.ActivationNumbers - 1);
+                multiplier *= Math.Pow(furiousModifiers["repeatable_other_GMShotDelay"], furiousSkillModifier.ActivationNumbers - 1);
             }
 
             modifiers.Add(("GMShotDelay", (float)Math.Round(multiplier, 2)));
