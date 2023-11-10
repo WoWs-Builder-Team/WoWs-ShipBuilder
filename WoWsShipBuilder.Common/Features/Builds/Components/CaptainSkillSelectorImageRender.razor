@@ -63,13 +63,20 @@
                                             }
                                         }
                                     }
-                                    @if (skill.ConditionalModifiers is { Count: > 0 })
+                                    @foreach(var modifierGroup in skill.ConditionalModifierGroups)
                                     {
                                         <MudDivider Light="true" Class="ma-1"/>
                                         <MudText Align="Align.Left" Typo="Typo.body2" GutterBottom>
-                                            @Localizer.GetGameLocalization(!string.IsNullOrWhiteSpace(skill.Skill.ConditionalTriggerDescription) ? skill.Skill.ConditionalTriggerDescription : "SKILL_TRIGGER_" + skill.Skill.ConditionalTriggerType).Localization
+                                            @if (modifierGroup.LocalizationOverride is not null)
+                                            {
+                                                @Localizer.SimpleGameLocalization(modifierGroup.LocalizationOverride)
+                                            }
+                                            else
+                                            {
+                                                @Localizer.GetGameLocalization(!string.IsNullOrWhiteSpace(modifierGroup.TriggerDescription) ? modifierGroup.TriggerDescription : "SKILL_TRIGGER_" + modifierGroup.TriggerType).Localization
+                                            }
                                         </MudText>
-                                        foreach ((string modifierName, float modifierValue) in skill.ConditionalModifiers)
+                                        foreach ((string modifierName, float modifierValue) in modifierGroup.Modifiers)
                                         {
                                             // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
                                             string modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);

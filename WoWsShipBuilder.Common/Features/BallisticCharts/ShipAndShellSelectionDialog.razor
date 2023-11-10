@@ -10,6 +10,7 @@
 @using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Utility
+@using System.Collections.Immutable
 @implements IDisposable
 @inject ILocalizer Localizer
 
@@ -233,7 +234,7 @@
                 UpgradeModuleInShipConfiguration(shipConfiguration, commonHull);
                 UpgradeModuleInShipConfiguration(shipConfiguration, commonArtillery);
                 var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, wrapper.ShipBuildContainer.Modifiers ?? new());
-                Build build = new(string.Empty, ship.Index, ship.ShipNation, shipConfiguration.Select(x => x.Name.NameToIndex()).ToList(), new(), GetStockConsumableNames(ship), "PCW001", new(), new());
+                Build build = new(string.Empty, ship.Index, ship.ShipNation, shipConfiguration.Select(x => x.Name.NameToIndex()).ToList(), ImmutableArray<string>.Empty, GetStockConsumableNames(ship), "PCW001", ImmutableArray<int>.Empty, ImmutableArray<string>.Empty);
                 var container = wrapper.ShipBuildContainer with { ShipDataContainer = dataContainer, Build = build };
                 var newWrapper = wrapper with { ShipBuildContainer = container };
                 newWrappers.Add(newWrapper);

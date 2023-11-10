@@ -129,9 +129,11 @@ public partial record SurvivabilityDataContainer : DataContainerBase
 
         decimal modifiedFloodingCoeff = modifiers.FindModifiers("uwCoeffBonus").Aggregate(shipHull.FloodingResistance * 3, (current, modifier) => current - ((decimal)modifier / 100)) * 100;
         decimal fireDps = hitPoints * shipHull.FireTickDamage / 100;
+        fireDps = modifiers.FindModifiers("vulnerabilityBurn").Aggregate(fireDps, (current, modifier) => current * (decimal)modifier);
         decimal fireTotalDamage = fireDuration * fireDps;
 
         decimal floodDps = hitPoints * shipHull.FloodingTickDamage / 100;
+        floodDps = modifiers.FindModifiers("vulnerabilityFlood").Aggregate(floodDps, (current, modifier) => current * (decimal)modifier);
         decimal floodTotalDamage = floodDuration * floodDps;
 
         decimal diveCapacityRechargeRateModifier = modifiers.FindModifiers("batteryRegenCoeff").Aggregate(1M, (current, modifier) => current * (decimal)modifier);

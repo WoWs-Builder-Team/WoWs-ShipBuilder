@@ -82,6 +82,8 @@ resharper_place_field_attribute_on_same_line = false
 resharper_trailing_comma_in_multiline_lists = true
 resharper_use_indent_from_vs = false
 
+resharper_razor_remove_this_qualifier = true
+
 # ReSharper inspection severities
 resharper_arrange_redundant_parentheses_highlighting = hint
 resharper_arrange_type_member_modifiers_highlighting = hint

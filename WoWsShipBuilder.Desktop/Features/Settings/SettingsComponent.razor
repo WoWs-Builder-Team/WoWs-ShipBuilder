@@ -12,7 +12,6 @@
 @using Avalonia
 @using Avalonia.Controls
 @using Avalonia.Controls.ApplicationLifetimes
-@using Newtonsoft.Json
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.Utility
@@ -20,6 +19,7 @@
 @using System.IO.Abstractions
 @using System.Net
 @using System.IO
+@using System.Text.Json
 @using Avalonia.Platform.Storage
 
 @implements IDisposable
@@ -344,10 +344,9 @@
         if (path is not null)
         {
             var buildStrings = savedBuilds.Select(x => x.CreateShortStringFromBuild()).ToList();
-            await using (var stream = FileSystem.File.CreateText($"{path}/builds.json"))
+            await using (var stream = FileSystem.File.Create($"{path}/builds.json"))
             {
-                var serializer = new JsonSerializer();
-                serializer.Serialize(stream, buildStrings);
+                await JsonSerializer.SerializeAsync(stream, buildStrings, AppConstants.JsonSerializerOptions);
             }
             Snackbar.Add("Builds successfully exported.", Severity.Success);
             RefreshNotifierService.NotifyRefreshRequested();
@@ -363,9 +362,9 @@
             IEnumerable<string>? buildList;
             try
             {
-                buildList = JsonConvert.DeserializeObject<IEnumerable<string>>(buildsString);
+                buildList = JsonSerializer.Deserialize<IEnumerable<string>>(buildsString, AppConstants.JsonSerializerOptions);
             }
-            catch (JsonReaderException)
+            catch (JsonException)
             {
                 Snackbar.Add("Corrupted JSON file.", Severity.Error);
                 return;

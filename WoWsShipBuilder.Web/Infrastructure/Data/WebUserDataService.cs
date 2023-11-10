@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 using DynamicData;
 using Microsoft.JSInterop;
 using MudBlazor;
-using Newtonsoft.Json;
 using WoWsShipBuilder.Features.Builds;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using JsonSerializer = System.Text.Json.JsonSerializer;
@@ -33,7 +33,7 @@ public sealed class WebUserDataService : IUserDataService, IAsyncDisposable
     {
         await this.InitializeModule();
         var buildStrings = builds.Select(x => x.CreateShortStringFromBuild());
-        await this.module.InvokeVoidAsync("saveData", BuildFileName, JsonSerializer.Serialize(buildStrings));
+        await this.module.InvokeVoidAsync("saveData", BuildFileName, JsonSerializer.Serialize(buildStrings, AppConstants.JsonSerializerOptions));
     }
 
     public async Task<IEnumerable<Build>> LoadBuildsAsync()
@@ -50,7 +50,7 @@ public sealed class WebUserDataService : IUserDataService, IAsyncDisposable
             IEnumerable<string>? buildList = null;
             try
             {
-                buildList =  JsonSerializer.Deserialize<IEnumerable<string>>(buildStrings);
+                buildList =  JsonSerializer.Deserialize<IEnumerable<string>>(buildStrings, AppConstants.JsonSerializerOptions);
             }
             catch (JsonException)
             {

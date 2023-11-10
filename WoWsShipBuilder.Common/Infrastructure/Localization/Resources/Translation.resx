@@ -2060,6 +2060,9 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipComparison_HideColumns" xml:space="preserve">
     <value>Hide Columns</value>
   </data>
+  <data name="ShipStats_SecondConsecutive" xml:space="preserve">
+    <value>Second and Consecutive</value>
+  </data>
   <data name="ShipStats_FromSubsAtPeriscopeDepth" xml:space="preserve">
     <value>From subs at periscope depth</value>
   </data>

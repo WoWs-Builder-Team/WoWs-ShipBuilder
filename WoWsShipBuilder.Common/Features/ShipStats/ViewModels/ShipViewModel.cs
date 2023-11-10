@@ -178,6 +178,8 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
                                 this.logger.LogDebug("Updating ship stats");
                                 await this.ShipStatsControlViewModel.UpdateShipStats(this.ShipModuleViewModel.SelectedModules.ToList(), modifiers);
                             }
+
+                            this.ConsumableViewModel.UpdateConsumableData(modifiers, this.ShipStatsControlViewModel!.CurrentShipStats!.SurvivabilityDataContainer.HitPoints, this.RawShipData.ShipClass);
                         }
                         finally
                         {
