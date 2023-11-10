@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Collections.Specialized;
 using System.Reactive.Linq;
 using Microsoft.Extensions.Logging;
@@ -107,7 +108,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
                     SkillActivationItemViewModel talentModel;
 
                     // get all the modifiers from the talents. workTime is excluded because it's for talents that automatically trigger a consumable, so it's not an effect we can show.
-                    var modifiers = talent.SkillEffects.SelectMany(effect => effect.Value.Modifiers.Where(modifier => !modifier.Key.Equals("workTime", StringComparison.Ordinal))).ToDictionary(x => x.Key, x => x.Value);
+                    var modifiers = talent.SkillEffects.SelectMany(effect => effect.Value.Modifiers.Where(modifier => !modifier.Key.Equals("workTime", StringComparison.Ordinal))).ToImmutableDictionary(x => x.Key, x => x.Value);
                     if (talent.MaxTriggerNum <= 1)
                     {
                         talentModel = new(talent.TranslationId, -1, modifiers, false, description: talent.TranslationId + "_DESCRIPTION");
@@ -221,10 +222,10 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
                 this.ShowArHpSelection = false;
             }
 
-            if (skill.ConditionalModifiers is { Count: > 0 })
+            if (skill.ConditionalModifierGroups is { Count: > 0 })
             {
                 var skillName = this.SkillList!.Single(x => x.Value.Skill.Equals(skill)).Key;
-                this.ConditionalModifiersList.Remove(this.ConditionalModifiersList.Single(x => x.SkillName.Equals(skillName, StringComparison.Ordinal)));
+                this.ConditionalModifiersList.RemoveRange(this.ConditionalModifiersList.Where(x => x.SkillName.Equals(skillName, StringComparison.Ordinal)));
             }
 
             this.RaisePropertyChanged(nameof(this.SkillOrderList));
@@ -240,9 +241,9 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
                 this.ShowArHpSelection = true;
             }
 
-            if (skill.ConditionalModifiers is { Count: > 0 })
+            if (skill.ConditionalModifierGroups is { Count: > 0 })
             {
-                this.ConditionalModifiersList.Add(this.CreateItemViewModelForSkill(skill));
+                this.ConditionalModifiersList.AddRange(this.CreateItemViewModelForSkill(skill));
             }
 
             this.RaisePropertyChanged(nameof(this.SkillOrderList));
@@ -332,9 +333,9 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
                 this.ShowArHpSelection = true;
             }
 
-            if (skill.ConditionalModifiers.Any())
+            if (skill.ConditionalModifierGroups.Any())
             {
-                this.ConditionalModifiersList.Add(this.CreateItemViewModelForSkill(skill));
+                this.ConditionalModifiersList.AddRange(this.CreateItemViewModelForSkill(skill));
             }
         }
 
@@ -344,7 +345,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     private IEnumerable<(string, float)> CollectConditionalModifiers()
     {
         var modifiers = new List<(string, float)>();
-        var conditionalModifiers = this.ConditionalModifiersList.Where(skill => skill.Status && skill.SkillId != FuriousSkillNumber)
+        var conditionalModifiers = this.ConditionalModifiersList.Where(skill => skill.Status && skill.SkillId != FuriousSkillNumber && skill.MaximumActivations <= 1)
             .SelectMany(skill => skill.Modifiers)
             .Select(x => (x.Key, x.Value));
 
@@ -355,17 +356,22 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         var furiousSkillModifier = this.ConditionalModifiersList.SingleOrDefault(skill => skill.SkillId is FuriousSkillNumber);
         if (furiousSkill is not null && furiousSkillModifier is not null && furiousSkillModifier.Status)
         {
-            var multiplier = (float)Math.Round(1 - (furiousSkillModifier.ActivationNumbers * (1 - furiousSkill.ConditionalModifiers["GMShotDelay"])), 2);
-            modifiers.Add(("GMShotDelay", multiplier));
+            var furiousModifiers = furiousSkill.ConditionalModifierGroups[0].Modifiers;
+            double multiplier = furiousModifiers["first_GMShotDelay"];
+            if (furiousSkillModifier.ActivationNumbers > 1)
+            {
+                multiplier *= Math.Pow(furiousModifiers["other_GMShotDelay"], furiousSkillModifier.ActivationNumbers - 1);
+            }
+
+            modifiers.Add(("GMShotDelay", (float)Math.Round(multiplier, 2)));
         }
 
         // Custom handling for Improved Repair Party Readiness Skill
-        var improvedRepairPartyReadinessSkill = this.SkillOrderList.SingleOrDefault(skill => skill.SkillNumber is ImprovedRepairPartyReadinessSkillNumber);
-        var improvedRepairPartyReadinessSkillModifier = this.ConditionalModifiersList.SingleOrDefault(skill => skill.SkillId is ImprovedRepairPartyReadinessSkillNumber);
-        if (improvedRepairPartyReadinessSkill is not null && improvedRepairPartyReadinessSkillModifier is not null && improvedRepairPartyReadinessSkillModifier.Status)
+        var irprModifierGroups = this.ConditionalModifiersList.Where(skill => skill.SkillId is ImprovedRepairPartyReadinessSkillNumber);
+        foreach (var modifierGroup in irprModifierGroups.Where(vm => vm.Status && vm.MaximumActivations != 1))
         {
-            float skillFactor = improvedRepairPartyReadinessSkill.ConditionalModifiers["regenCrewReloadCoeff"];
-            double multiplier = Math.Pow(skillFactor, improvedRepairPartyReadinessSkillModifier.ActivationNumbers);
+            float skillFactor = modifierGroup.Modifiers["regenCrewReloadCoeff"];
+            double multiplier = Math.Pow(skillFactor, modifierGroup.ActivationNumbers);
             modifiers.Add(("regenCrewReloadCoeff", Convert.ToSingle(multiplier)));
         }
 
@@ -440,24 +446,25 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         }
     }
 
-    private SkillActivationItemViewModel CreateItemViewModelForSkill(Skill skill)
+    private IEnumerable<SkillActivationItemViewModel> CreateItemViewModelForSkill(Skill skill)
     {
         var skillName = this.SkillList!.Single(x => x.Value.Skill.Equals(skill)).Key;
-        SkillActivationItemViewModel result;
         if (skill.SkillNumber is FuriousSkillNumber)
         {
-            result = new(skillName, skill.SkillNumber, skill.ConditionalModifiers, false, 4);
+            yield return new(skillName, skill.SkillNumber, skill.ConditionalModifierGroups[0].Modifiers, false, skill.ConditionalModifierGroups[0].ActivationLimit);
         }
         else if (skill.SkillNumber is ImprovedRepairPartyReadinessSkillNumber)
         {
-            result = new(skillName, skill.SkillNumber, skill.ConditionalModifiers, false, 99);
+            yield return new(skillName, skill.SkillNumber, skill.ConditionalModifierGroups[0].Modifiers, false, skill.ConditionalModifierGroups[0].ActivationLimit);
+            yield return new(skillName, skill.SkillNumber, skill.ConditionalModifierGroups[1].Modifiers, false, skill.ConditionalModifierGroups[1].ActivationLimit);
         }
         else
         {
-            result = new(skillName, skill.SkillNumber, skill.ConditionalModifiers, false);
+            foreach (var modifierGroup in skill.ConditionalModifierGroups)
+            {
+                yield return new(skillName, skill.SkillNumber, modifierGroup.Modifiers, false);
+            }
         }
-
-        return result;
     }
 
     /// <summary>

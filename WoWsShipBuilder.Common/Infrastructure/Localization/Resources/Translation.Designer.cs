@@ -4539,6 +4539,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Second and Consecutive.
+        /// </summary>
+        public static string ShipStats_SecondConsecutive {
+            get {
+                return ResourceManager.GetString("ShipStats_SecondConsecutive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Option 2.
         /// </summary>
         public static string ShipStats_SecondOption {
