@@ -1353,6 +1353,9 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
   <data name="Placeholder" xml:space="preserve">
       <value>---</value>
   </data>
+  <data name="ShipStats_Splash" xml:space="preserve">
+      <value>Splash contra Submarinos</value>
+  </data>
   <data name="ShipStats_SplashRadius" xml:space="preserve">
       <value>Raio</value>
   </data>
@@ -2044,5 +2047,17 @@ Você pode usar o botão de Mudar builds para gerenciar as builds de navios. Voc
   </data>
   <data name="ShipStats_PenetrationAp" xml:space="preserve">
       <value>Penetração</value>
+  </data>
+  <data name="BETA_UserAuth" xml:space="preserve">
+      <value>Login do usuário</value>
+  </data>
+  <data name="ShipStats_DcDetonationDepthExplanation" xml:space="preserve">
+      <value>A profundidade dos submarinos mostrada no jogo é expressa como "ship_meter". Submarinos podem mergulhar 60[ship_m] = 120[m].</value>
+  </data>
+  <data name="ShipComparison_ShipsPerPage" xml:space="preserve">
+    <value>Navios por página:</value>
+  </data>
+  <data name="ShipComparison_HideColumns" xml:space="preserve">
+    <value>Ocultar colunas</value>
   </data>
 </root>
