@@ -1540,8 +1540,17 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="ShipStats_Tonnage" xml:space="preserve">
       <value>Tonnage</value>
   </data>
+  <data name="ShipStats_ForwardEngineUpTime" xml:space="preserve">
+      <value>Zeit bis zum Erreichen der Vorwärtsgeschwindigkeit</value>
+  </data>
   <data name="ShipStats_BackwardEngineUpTime" xml:space="preserve">
       <value>Zeit bis zum Erreichen der Rückwärtsgeschwindigkeit</value>
+  </data>
+  <data name="ShipStats_ForwardEngineForsag" xml:space="preserve">
+      <value>Überdrehzahl des vorwärts Motors</value>
+  </data>
+  <data name="ShipStats_BackwardEngineForsag" xml:space="preserve">
+      <value>Überdrehzahl des rückwärts Motors</value>
   </data>
   <data name="ShipStats_ForwardEngineForsagMaxSpeed" xml:space="preserve">
       <value>Maximale Vorwärtsgeschwindigkeit</value>
