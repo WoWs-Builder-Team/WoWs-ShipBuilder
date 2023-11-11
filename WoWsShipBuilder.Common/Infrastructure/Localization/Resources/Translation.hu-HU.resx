@@ -2060,4 +2060,10 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
   <data name="ShipComparison_HideColumns" xml:space="preserve">
     <value>Oszlopok elrejtése</value>
   </data>
+  <data name="ShipStats_SecondConsecutive" xml:space="preserve">
+    <value>A második és az után következők</value>
+  </data>
+  <data name="ShipStats_FromSubsAtPeriscopeDepth" xml:space="preserve">
+    <value>Periszkópmélységig merült tengeralattjárókról</value>
+  </data>
 </root>
