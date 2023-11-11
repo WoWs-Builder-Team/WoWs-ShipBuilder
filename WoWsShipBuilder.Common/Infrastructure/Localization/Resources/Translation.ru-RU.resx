@@ -633,6 +633,9 @@
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>В эскадрилье</value>
   </data>
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
+      <value>ХП на самолет</value>
+  </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>Время восстановления</value>
   </data>
@@ -933,6 +936,29 @@
   <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
     <value>Fuso для справки</value>
   </data>
+  <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
+    <value>БЕЛЫЙ эллипс показывает максимальный разброс на выбранной дистанции стрельбы.
+КРАСНЫЙ эллипс показывает зону, в которую, в среднем, попадает 50% снарядов на выбранной дистанции стрельбы.
+ЧЕРНЫЙ эллипс показывает размеры Фусо для наглядности
+
+1) Горизонтальный: 
+   показывает точку соприкосновения снаряда с водой;
+   выбирая данный режим, вы получаете вид сверху;
+   по данному графику удобнее всего сравнивать разброс разных кораблей;
+   эллипс растянут вертикально из-за скорости снаряда.
+2) Вертикальный: 
+    показывает точку соприкосновения снаряда с вертикальной плоскостью;
+    выбирая данный режим, вы получаете вид спереди;
+    удобен для точного анализа вертикальной точности.
+3) Угол входа:
+    показывает точку соприкосновения снаряда с поверхностью под углом входа; 
+    выбирая данный режим, вы получаете вид под углом входа снаряда;
+    это плоскость, на которой игра фактически рассчитывает эллипс разброса в бою;
+    эллипс на данном графике не зависит от скорости полета снаряда;
+    полезен, если вы хотите сравнить точность кораблей без учета скорости полета снаряда.
+
+Корабли в игре в два раза больше окружающей среды, поэтому корабль длиной 200 метров занимает пространство 400 метров.</value>
+  </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
     <value>Объяснение графика</value>
   </data>
@@ -968,6 +994,12 @@
   </data>
   <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
       <value>Рули</value>
+  </data>
+  <data name="ShipStats_BlastExplanation" xml:space="preserve">
+    <value>Если "защита модуля от взрыва" + "Пробитие взрыва вооружения" &gt; 0 
+     Модуль может быть выведен из строя.
+Если "защита модуля от взрыва" + "Пробитие взрыва вооружения" &lt;= 0
+     модуль не может быть выведен из строя.</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
     <value>Требуется перезапуск</value>
@@ -1320,6 +1352,9 @@
   <data name="Placeholder" xml:space="preserve">
       <value>---</value>
   </data>
+  <data name="ShipStats_Splash" xml:space="preserve">
+      <value>Сплеш</value>
+  </data>
   <data name="ShipStats_SplashRadius" xml:space="preserve">
       <value>Радиус</value>
   </data>
@@ -1619,6 +1654,12 @@
   <data name="WebApp_GoToShipsPage" xml:space="preserve">
       <value>Перейти на страницу кораблей</value>
   </data>
+  <data name="ShipStats_ShowInBallisticCharts" xml:space="preserve">
+      <value>Показать в графиках баллистики</value>
+  </data>
+  <data name="ShipStats_ShowInAccelerationCharts" xml:space="preserve">
+      <value>Показать в графиках ускорения</value>
+  </data>
   <data name="Validation_InvalidBuild" xml:space="preserve">
       <value>Неверный билд</value>
   </data>
@@ -1760,7 +1801,268 @@
   <data name="BuildImageRenderDialog_GetShortLink" xml:space="preserve">
       <value>Получить короткую ссылку</value>
   </data>
+  <data name="ServerTypeLive" xml:space="preserve">
+      <value>Прод</value>
+  </data>
+  <data name="ServerTypePts" xml:space="preserve">
+      <value>Паблик</value>
+  </data>
+  <data name="NavigationCharts" xml:space="preserve">
+      <value>Графики разброса и баллистики</value>
+  </data>
+  <data name="NavigationAccelerationCharts" xml:space="preserve">
+      <value>Графики ускорения</value>
+  </data>
+  <data name="NavigationComparison" xml:space="preserve">
+      <value>Сравнение Кораблей</value>
+  </data>
+  <data name="NavigationHome" xml:space="preserve">
+      <value>Стартовая страница</value>
+  </data>
+  <data name="ShipComparison_Image" xml:space="preserve">
+      <value>Изображение</value>
+  </data>
+  <data name="ShipComparison_NoMatchingShipsFound" xml:space="preserve">
+      <value>Соответствующих кораблей не найдено</value>
+  </data>
+  <data name="ShipComparison_ActiveColumns" xml:space="preserve">
+      <value>Активные столбцы</value>
+  </data>
+  <data name="ShipComparison_Section" xml:space="preserve">
+      <value>Секция</value>
+  </data>
+  <data name="ShipComparison_Filters" xml:space="preserve">
+      <value>Фильтры</value>
+  </data>
+  <data name="ShipComparison_All" xml:space="preserve">
+      <value>Все</value>
+  </data>
+  <data name="ShipComparison_None" xml:space="preserve">
+      <value>Никакие</value>
+  </data>
+  <data name="ShipComparison_ResetAll" xml:space="preserve">
+      <value>Сбросить все</value>
+  </data>
+  <data name="ShipComparison_Duplicate" xml:space="preserve">
+      <value>Дублировать</value>
+  </data>
+  <data name="ShipComparison_RemoveBuilds" xml:space="preserve">
+      <value>Убрать билды</value>
+  </data>
+  <data name="ShipComparison_ViewStats" xml:space="preserve">
+      <value>Просмотреть характеристики</value>
+  </data>
+  <data name="ShipComparison_ViewBallistic" xml:space="preserve">
+      <value>Просмотреть баллистику</value>
+  </data>
+  <data name="ShipComparison_ViewAcceleration" xml:space="preserve">
+      <value>Просмотреть ускорение</value>
+  </data>
+  <data name="ShipComparison_DisplayOnlyPinnedShips" xml:space="preserve">
+      <value>Показать только закреплённые корабли</value>
+  </data>
+  <data name="ShipComparison_UseUpgradedModules" xml:space="preserve">
+      <value>Использовать топовые модули при отсутствии билда</value>
+  </data>
+  <data name="ShipComparison_HideIfNoSection" xml:space="preserve">
+      <value>Скрыть корабли без выделенной секции</value>
+  </data>
+  <data name="ShipComparison_SelectAll" xml:space="preserve">
+      <value>Выбрать все</value>
+  </data>
+  <data name="ShipComparison_UnselectAll" xml:space="preserve">
+      <value>Отменить выбор на всех</value>
+  </data>
+  <data name="ShipComparison_PinAll" xml:space="preserve">
+      <value>Закрепить все</value>
+  </data>
+  <data name="ShipComparison_UnpinAll" xml:space="preserve">
+      <value>Открепить все</value>
+  </data>
+  <data name="ShipStats_ShowInShipComparison" xml:space="preserve">
+      <value>Показать все в сравнении кораблей</value>
+  </data>
+  <data name="ShipComparison_General" xml:space="preserve">
+      <value>Общее</value>
+  </data>
+  <data name="ShipComparison_SecondaryBatteryShells" xml:space="preserve">
+      <value>Снаряды ПМК</value>
+  </data>
+  <data name="ShipComparison_Asw" xml:space="preserve">
+      <value>ПЛО</value>
+  </data>
+  <data name="ShipComparison_RocketPlanes" xml:space="preserve">
+      <value>Штурмовики</value>
+  </data>
+  <data name="ShipComparison_AerialTorpedoes" xml:space="preserve">
+      <value>Авиаторпеды</value>
+  </data>
+  <data name="ShipComparison_Bombers" xml:space="preserve">
+      <value>Бомбардировщики</value>
+  </data>
+  <data name="ShipComparison_Bombs" xml:space="preserve">
+      <value>Бомбы</value>
+  </data>
+  <data name="ShipComparison_Caliber" xml:space="preserve">
+      <value>Калибр</value>
+  </data>
+  <data name="ShipComparison_Barrels" xml:space="preserve">
+      <value>Стволы</value>
+  </data>
+  <data name="ShipComparison_MaxRange" xml:space="preserve">
+      <value>Макс дальность</value>
+  </data>
+  <data name="ShipStats_Dpm" xml:space="preserve">
+      <value>Урон в минуту</value>
+  </data>
+  <data name="ShipStats_Salvo" xml:space="preserve">
+      <value>Залп</value>
+  </data>
+  <data name="ShipComparison_Fpm" xml:space="preserve">
+      <value>Пожары в минуту</value>
+  </data>
+  <data name="ShipComparison_1st" xml:space="preserve">
+      <value>Первый</value>
+  </data>
+  <data name="ShipComparison_2nd" xml:space="preserve">
+      <value>Второй</value>
+  </data>
+  <data name="ShipComparison_Amount" xml:space="preserve">
+      <value>Количество</value>
+  </data>
+  <data name="ShipComparison_OnFire" xml:space="preserve">
+      <value>При пожаре</value>
+  </data>
+  <data name="ShipComparison_SmokeFiring" xml:space="preserve">
+      <value>При залпе из дымов</value>
+  </data>
+  <data name="ShipComparison_FullReverseTime" xml:space="preserve">
+      <value>Время полного набора обратого хода</value>
+  </data>
+  <data name="ShipComparison_Charges" xml:space="preserve">
+      <value>Заряды</value>
+  </data>
+  <data name="ShipComparison_DropRange" xml:space="preserve">
+      <value>Дальность сброса</value>
+  </data>
+  <data name="ShipComparison_PlanesInSquadron" xml:space="preserve">
+      <value>Самолетов в эскадрилье</value>
+  </data>
+  <data name="ShipComparison_SplashRadius" xml:space="preserve">
+      <value>Радиус сплеша</value>
+  </data>
+  <data name="ShipComparison_InitialSpeed" xml:space="preserve">
+      <value>Начальная скорость</value>
+  </data>
+  <data name="ShipComparison_PlaneHp" xml:space="preserve">
+      <value>ХП самолета</value>
+  </data>
+  <data name="ShipComparison_Spread" xml:space="preserve">
+      <value>Разброс</value>
+  </data>
+  <data name="ShipComparison_SwitchTime" xml:space="preserve">
+      <value>Время переключения</value>
+  </data>
+  <data name="ShipComparison_Plane" xml:space="preserve">
+      <value>Самолет</value>
+  </data>
+  <data name="ShipComparison_Planes" xml:space="preserve">
+      <value>Самолеты</value>
+  </data>
+  <data name="ShipComparison_OnDeck" xml:space="preserve">
+      <value>На палубе</value>
+  </data>
+  <data name="ShipComparison_EngineBoostDuration" xml:space="preserve">
+      <value>Время Форсажа</value>
+  </data>
+  <data name="ShipComparison_Invulnerability" xml:space="preserve">
+      <value>Неуязвимость</value>
+  </data>
+  <data name="ShipComparison_ViewDistance" xml:space="preserve">
+      <value>Дальность видимости</value>
+  </data>
+  <data name="ShipComparison_AreaChange" xml:space="preserve">
+      <value>Изменение зоны</value>
+  </data>
+  <data name="ShipComparison_PerPlane" xml:space="preserve">
+      <value>На самолет</value>
+  </data>
+  <data name="ShipComparison_TorpsPerPlane" xml:space="preserve">
+      <value>Торпед на самолет</value>
+  </data>
+  <data name="ShipStats_MaxReverseSpeed" xml:space="preserve">
+      <value>Максимальная скорость назад</value>
+  </data>
+  <data name="ShipComparison_TypeName" xml:space="preserve">
+      <value>Введите имя...</value>
+  </data>
+  <data name="ShipComparison_SearchAndPin" xml:space="preserve">
+      <value>Найти и закрепить корабль</value>
+  </data>
+  <data name="ShipComparison_DispersionAt" xml:space="preserve">
+      <value>Разброс на</value>
+  </data>
+  <data name="ShipComparison_FiringRange" xml:space="preserve">
+      <value>Дальность</value>
+  </data>
+  <data name="ShipSelectionWindow_SearchShipOrBuild" xml:space="preserve">
+      <value>Найти корабль или билд</value>
+  </data>
+  <data name="SettingsWindow_Export" xml:space="preserve">
+      <value>Экспорт</value>
+  </data>
+  <data name="SettingsWindow_DeleteAll" xml:space="preserve">
+      <value>Удалить все</value>
+  </data>
+  <data name="BuildConfigurationDialog_Load" xml:space="preserve">
+      <value>Загрузить</value>
+  </data>
+  <data name="SettingsWindow_InvalidJsonFileError" xml:space="preserve">
+      <value>Неверный файл. Допустимы только файлы .json</value>
+  </data>
+  <data name="ShipSelector_InvalidPngFileError" xml:space="preserve">
+      <value>Неверный файл. Допустимы только файлы .png</value>
+  </data>
+  <data name="SettingsWindow_LocalStorageWarning" xml:space="preserve">
+      <value>Билды сохраняются в локальной памяти вашего браузера. Такие действия как очистка кэша браузера с высокой вероятностью сотрут все данные в локальной памяти. Настоятельно рекомендуем экспортировать билды периодически, или хотя бы до того как предпринять подобные действия.</value>
+  </data>
+  <data name="ShipStats_Krupp" xml:space="preserve">
+      <value>Крупп</value>
+  </data>
+  <data name="ShipStats_KruppExplanation" xml:space="preserve">
+      <value>Это константа используемая для изменения пробития снаряда.
+        Представляет собой твердость снаряда.
+        Чем выше значение, тем выше пробитие.</value>
+  </data>
+  <data name="ShipStats_ApPenetrationFormula" xml:space="preserve">
+      <value>K = крупп снаряда
+        M = масса снаряда [кг]
+        S = скорость столкновения снаряда [м/с]
+        C = калибр снаряда [м]
+
+        Пробитие [мм] = K * (M * S^2)^0.69 * C^(-1.07) * 0.0000001
+
+      Формула обнаружена TTaro_</value>
+  </data>
   <data name="ShipStats_PenetrationAp" xml:space="preserve">
       <value>Бронепробитие</value>
+  </data>
+  <data name="BETA_UserAuth" xml:space="preserve">
+      <value>Логин</value>
+  </data>
+  <data name="ShipStats_DcDetonationDepthExplanation" xml:space="preserve">
+      <value>Глубина погружения подлодок в игре указана как "ship_meter". Подлодки могут погружаться на 60[ship_m] = 120[m].</value>
+  </data>
+  <data name="ShipComparison_ShipsPerPage" xml:space="preserve">
+    <value>Кораблей на страницу:</value>
+  </data>
+  <data name="ShipComparison_HideColumns" xml:space="preserve">
+    <value>Скрыть столбцы</value>
+  </data>
+  <data name="ShipStats_SecondConsecutive" xml:space="preserve">
+    <value>Второй и последующие</value>
+  </data>
+  <data name="ShipStats_FromSubsAtPeriscopeDepth" xml:space="preserve">
+    <value>От подлодок на перископной глубине</value>
   </data>
 </root>
