@@ -627,8 +627,14 @@
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>Velocità minima</value>
   </data>
+  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
+      <value>Per attacco</value>
+  </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>Per squadrone</value>
+  </data>
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
+      <value>HP per aereo</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>Tempo di ripristino</value>
@@ -930,6 +936,30 @@
   <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
     <value>Fuso di riferimento</value>
   </data>
+  <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
+    <value>L'ellisse BIANCA mostra l'area di dispersione massima nell'intervallo di puntamento selezionato.
+L'ellisse ROSSA mostra l'area in cui il 50% dei proiettili atterra in media.
+L'ellisse NERO mostra la dimensione di una Fuso come riferimento.
+
+Piani grafici:
+1) ORIZZONTALE: 
+    mostra il punto di impatto del proiettile con l'acqua;
+    selezionando questo piano si ottiene una vista dall'alto;
+    questo è il grafico che si desidera considerare principalmente quando si confrontano le dispersioni delle navi;
+    l'ellisse su questo piano è allungata verticalmente a causa della velocità dei proiettili.
+2) VERTICALE: 
+    mostra il punto di impatto dei proiettili con una superficie verticale;
+    selezionando questo piano si ottiene una vista dalla parte anteriore;
+    utile per un'analisi di accuratezza verticale molto precisa.
+3) ANGOLO IMPATTO: 
+    mostra il punto di impatto del proiettile con una superficie angolata all'angolo di impatto del proiettile;
+    selezionando questo piano si ottiene una vista dall'angolo di impatto dei proiettili;
+    è il piano in cui il gioco disegna l'ellisse di dispersione durante le battaglie;
+    l'ellisse su questo piano non è influenzata dalla velocità dei proiettili;
+    utile se si desidera confrontare la dispersione delle navi senza tenere conto della velocità dei proiettili.
+
+Le navi in gioco sono due volte più grandi dell'ambiente quindi una nave lunga 200 metri prende lo spazio di 400m.</value>
+  </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
     <value>Spiegazione del grafico</value>
   </data>
@@ -965,6 +995,12 @@
   </data>
   <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
       <value>Timone</value>
+  </data>
+  <data name="ShipStats_BlastExplanation" xml:space="preserve">
+    <value>Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'armamento" &gt; 0
+     Il modulo può essere incapacitato.
+Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'armamento" &lt;= 0
+     Il modulo non può essere incapacitato.</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
     <value>Riavvio richiesto</value>
