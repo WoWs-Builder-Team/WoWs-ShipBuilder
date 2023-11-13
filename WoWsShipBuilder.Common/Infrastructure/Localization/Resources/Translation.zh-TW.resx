@@ -265,7 +265,7 @@
     <value>德國</value>
   </data>
   <data name="Italy" xml:space="preserve">
-    <value>意大利</value>
+    <value>義大利</value>
   </data>
   <data name="Japan" xml:space="preserve">
     <value>日本</value>
@@ -361,7 +361,7 @@
     <value>砲彈初速</value>
   </data>
   <data name="ShipStats_ShellWeight" xml:space="preserve">
-    <value>彈藥重量</value>
+    <value>砲彈重量</value>
   </data>
   <data name="ShipStats_TheoreticalDpm" xml:space="preserve">
     <value>每分鐘傷害期望</value>
@@ -400,7 +400,7 @@
     <value>炸彈類型</value>
   </data>
   <data name="ShipStats_BompPayload" xml:space="preserve">
-    <value>彈藥載量</value>
+    <value>炸彈搭載量</value>
   </data>
   <data name="ShipStats_ConstantDamage" xml:space="preserve">
     <value>持續傷害</value>
@@ -424,7 +424,7 @@
     <value>命中率</value>
   </data>
   <data name="ShipStats_FloodingChance" xml:space="preserve">
-    <value>進水機會</value>
+    <value>進水率</value>
   </data>
   <data name="ShipStats_MainBattery" xml:space="preserve">
     <value>主砲</value>
@@ -436,7 +436,7 @@
     <value>魚雷</value>
   </data>
   <data name="DispersionGraphWindow_AddShip" xml:space="preserve">
-    <value>添加艦艇</value>
+    <value>新增艦艇</value>
   </data>
   <data name="DispersionGraphWindow_RemoveShip" xml:space="preserve">
     <value>刪除艦艇</value>
@@ -700,7 +700,7 @@
     <value>冷卻時間</value>
   </data>
   <data name="ShipStats_WorkTime" xml:space="preserve">
-    <value>行動時間</value>
+    <value>作用時間</value>
   </data>
   <data name="SettingsWindow_Cancel" xml:space="preserve">
     <value>取消</value>
@@ -1465,7 +1465,7 @@
       <value>隱藏深彈傷害分布圖</value>
   </data>
   <data name="ShipStats_ShowLaunchersAngles" xml:space="preserve">
-      <value>顯示發射角度</value>
+      <value>顯示魚雷發射角度</value>
   </data>
   <data name="ShipStats_MaxEngineBoostDuration" xml:space="preserve">
       <value>最大引擎增壓持續時間</value>
@@ -1723,16 +1723,16 @@
       <value>轉向加速度</value>
   </data>
   <data name="ShipStats_MaxVerticalSpeed" xml:space="preserve">
-      <value>最大垂直速度</value>
+      <value>最大上下浮速度</value>
   </data>
   <data name="ShipStats_VerticalAcceleration" xml:space="preserve">
-      <value>垂直加速度</value>
+      <value>上下浮加速度</value>
   </data>
   <data name="ShipStats_SearchRadius" xml:space="preserve">
-      <value>搜尋半徑</value>
+      <value>有效導引半徑</value>
   </data>
   <data name="ShipStats_SearchAngle" xml:space="preserve">
-      <value>搜尋角度</value>
+      <value>有效導引角度</value>
   </data>
   <data name="ShipStats_AirCarrier" xml:space="preserve">
       <value>航空母艦</value>
@@ -1753,7 +1753,7 @@
       <value>更多細節</value>
   </data>
   <data name="ShipStats_CutOffDistances" xml:space="preserve">
-      <value>斷開距離</value>
+      <value>停止導引距離</value>
   </data>
   <data name="Unit_DegreePerSecond2" xml:space="preserve">
       <value>度/秒²</value>
@@ -1798,7 +1798,7 @@
       <value>獲取網址</value>
   </data>
   <data name="BuildImageRenderDialog_GetShortLink" xml:space="preserve">
-      <value>獲取短鏈接</value>
+      <value>獲取短網址</value>
   </data>
   <data name="ServerTypeLive" xml:space="preserve">
       <value>在線</value>
@@ -1807,7 +1807,7 @@
       <value>測試服</value>
   </data>
   <data name="NavigationCharts" xml:space="preserve">
-      <value>散步和彈道圖表</value>
+      <value>散布和彈道圖表</value>
   </data>
   <data name="NavigationAccelerationCharts" xml:space="preserve">
       <value>加速圖表</value>
@@ -1921,10 +1921,10 @@
       <value>每分鐘點火期望</value>
   </data>
   <data name="ShipComparison_1st" xml:space="preserve">
-      <value>第一</value>
+      <value>第一次</value>
   </data>
   <data name="ShipComparison_2nd" xml:space="preserve">
-      <value>第二</value>
+      <value>第二次</value>
   </data>
   <data name="ShipComparison_Amount" xml:space="preserve">
       <value>數量</value>
@@ -1939,7 +1939,7 @@
       <value>全速倒船需要時間</value>
   </data>
   <data name="ShipComparison_Charges" xml:space="preserve">
-      <value>深水炸彈數量</value>
+      <value>可投擲次數</value>
   </data>
   <data name="ShipComparison_DropRange" xml:space="preserve">
       <value>反潛機範圍</value>
@@ -1975,7 +1975,7 @@
       <value>引擎增壓時間</value>
   </data>
   <data name="ShipComparison_Invulnerability" xml:space="preserve">
-      <value>免疫時間</value>
+      <value>無敵</value>
   </data>
   <data name="ShipComparison_ViewDistance" xml:space="preserve">
       <value>偵查距離</value>
@@ -2029,9 +2029,9 @@
       <value>Krupp係數</value>
   </data>
   <data name="ShipStats_KruppExplanation" xml:space="preserve">
-      <value>一個用來調整砲彈擊穿能力的細數
-用來表示砲彈有多堅固
-係數越高擊穿能力越高</value>
+      <value>一個用來調整砲彈擊穿能力的係數
+        用來表示砲彈有多堅固
+        係數越高擊穿能力越高</value>
   </data>
   <data name="ShipStats_ApPenetrationFormula" xml:space="preserve">
       <value>K = 砲彈的krupp係數
