@@ -307,9 +307,13 @@ div.default-label-background label {
     background-color: var(--mud-palette-background);
 }
 
-
 .sticky-tabs-header .mud-tabs-toolbar {
     position: sticky;
     z-index: 10;
     top: 64px;
+}
+
+/*noinspection CssUnresolvedCustomProperty*/
+.mud-scroll-to-top button {
+    background-color: color-mix(in srgb, var(--mud-palette-primary), transparent 50%);
 }
