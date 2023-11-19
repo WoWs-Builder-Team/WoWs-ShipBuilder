@@ -125,7 +125,7 @@ public partial record MainBatteryDataContainer : DataContainerBase
         var suoName = shipConfiguration.Find(c => c.UcType == ComponentType.Suo)?.Components[ComponentType.Suo][0];
         var suoConfiguration = suoName is not null ? ship.FireControlList[suoName] : null;
 
-        List<(int BarrelCount, int TurretCount, string GunName)> arrangementList = mainBattery.Guns
+        var arrangementList = mainBattery.Guns
             .GroupBy(gun => gun.NumBarrels)
             .Select(group => (BarrelCount: group.Key, TurretCount: group.Count(), GunName: group.First().Name))
             .OrderBy(item => item.TurretCount)
@@ -198,14 +198,14 @@ public partial record MainBatteryDataContainer : DataContainerBase
             TurnTime = Math.Round(180 / traverseSpeed, 1),
             TraverseSpeed = Math.Round(traverseSpeed, 2),
             Sigma = mainBattery.Sigma,
-            DelimDist = mainBattery.MaxRange * (decimal)dispersion.Delim / 1000,
+            DelimDist = (range * (decimal)dispersion.Delim) / 1000,
             TaperDist = (decimal)dispersion.TaperDist / 1000,
             HorizontalDisp = Math.Round((decimal)horizontalDispersion, 2),
             VerticalDisp = Math.Round((decimal)verticalDispersion, 2),
-            HorizontalDispFormula = $"X * {Math.Round((dispersion.IdealRadius - dispersion.MinRadius) / dispersion.IdealDistance * 1000, 4)} + {30 * dispersion.MinRadius}",
-            VerticalCoeffFormula = $"(X * {(decimal)Math.Round(vRadiusCoeff / 30 * 1000, 4)} + {((-maxRangeBw * dispersion.Delim) * vRadiusCoeff) + dispersion.RadiusOnDelim})",
-            HorizontalDispFormulaAtShortRange = $"X * {Math.Round(((dispersion.IdealRadius - dispersion.MinRadius) / dispersion.IdealDistance * 1000) + (dispersion.MinRadius / (dispersion.TaperDist / 30)), 4)}",
-            VerticalCoeffFormulaAtShortRange = $"(X * {(decimal)Math.Round(((dispersion.RadiusOnDelim - dispersion.RadiusOnZero) / (maxRangeBw * dispersion.Delim)) / 30 * 1000, 4)} + {dispersion.RadiusOnZero})",
+            HorizontalDispFormula = $"X * {Math.Round(((dispersion.IdealRadius - dispersion.MinRadius) / dispersion.IdealDistance) * 1000, 4)} + {30 * dispersion.MinRadius}",
+            VerticalCoeffFormula = $"(X * {(decimal)Math.Round((vRadiusCoeff / 30) * 1000, 4)} + {(-maxRangeBw * dispersion.Delim * vRadiusCoeff) + dispersion.RadiusOnDelim})",
+            HorizontalDispFormulaAtShortRange = $"X * {Math.Round((((dispersion.IdealRadius - dispersion.MinRadius) / dispersion.IdealDistance) * 1000) + (dispersion.MinRadius / (dispersion.TaperDist / 30)), 4)}",
+            VerticalCoeffFormulaAtShortRange = $"(X * {(decimal)Math.Round(((dispersion.RadiusOnDelim - dispersion.RadiusOnZero) / (maxRangeBw * dispersion.Delim) / 30) * 1000, 4)} + {dispersion.RadiusOnZero})",
             DispersionData = dispersion,
             DispersionModifier = dispersionModifier,
             OriginalMainBatteryData = mainBattery,
