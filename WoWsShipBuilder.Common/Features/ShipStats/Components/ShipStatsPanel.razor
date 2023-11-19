@@ -274,12 +274,16 @@
                         @if (ViewModel.CurrentShipStats?.SecondaryBatteryUiDataContainer.Secondaries is not null)
                         {
                             <MudExpansionPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_SecondaryBattery)).Localization" @bind-IsExpanded="@ExpanderStateCache["main-secondary"]" Style="border-bottom: initial" Class="custom-expansion-panel-header header-border border border-solid my-4">
+                                <div class="d-flex justify-space-between expander-content-padding mb-n1">
+                                    <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@Localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ShellType))</MudText>
+                                    <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@Localizer.SimpleAppLocalization(ViewModel.CurrentShipStats?.SecondaryBatteryUiDataContainer.ShellType ?? string.Empty)</MudText>
+                                </div>
                                 <div class="d-flex justify-space-between expander-content-padding">
                                     <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@Localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Range))</MudText>
                                     <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@($"{ViewModel.CurrentShipStats?.SecondaryBatteryUiDataContainer.Range} {Localizer.SimpleAppLocalization(nameof(Translation.Unit_KM))}")</MudText>
                                 </div>
                                 <MudExpansionPanels MultiExpansion Dense DisableGutters Class="expander-content-padding my-n2">
-                                    @for(var i = 0; i < ViewModel.CurrentShipStats.SecondaryBatteryUiDataContainer.Secondaries.Count; i++)
+                                    @for (var i = 0; i < ViewModel.CurrentShipStats.SecondaryBatteryUiDataContainer.Secondaries.Count; i++)
                                     {
                                         var secondary = ViewModel.CurrentShipStats.SecondaryBatteryUiDataContainer.Secondaries[i];
                                         var currentIndex = i;

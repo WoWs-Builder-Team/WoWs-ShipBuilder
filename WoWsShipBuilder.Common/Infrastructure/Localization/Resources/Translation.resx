@@ -2066,4 +2066,7 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipStats_FromSubsAtPeriscopeDepth" xml:space="preserve">
     <value>From subs at periscope depth</value>
   </data>
+  <data name="ShipStats_ShellType" xml:space="preserve">
+    <value>Shell type</value>
+  </data>
 </root>

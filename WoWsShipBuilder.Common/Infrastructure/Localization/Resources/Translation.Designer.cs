@@ -4602,6 +4602,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shell type.
+        /// </summary>
+        public static string ShipStats_ShellType {
+            get {
+                return ResourceManager.GetString("ShipStats_ShellType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Initial shell velocity.
         /// </summary>
         public static string ShipStats_ShellVelocity {
