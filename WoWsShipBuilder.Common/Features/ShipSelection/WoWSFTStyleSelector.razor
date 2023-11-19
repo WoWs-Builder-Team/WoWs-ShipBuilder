@@ -1,0 +1,100 @@
+﻿@using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.Infrastructure.ApplicationData
+@using WoWsShipBuilder.Infrastructure.GameData
+@using WoWsShipBuilder.Infrastructure.Utility
+@using ReactiveUI
+
+@inject ILocalizer Localizer
+
+<MudDrawerContainer Style="height: max-content">
+    <MudDrawer Color="Color.Dark" ClipMode="DrawerClipMode.Always" PreserveOpenState Variant="DrawerVariant.Persistent" Elevation="1" Open="openDrawer">
+        @foreach (var nation in treeStructure)
+        {
+            <MudMenuItem AutoClose="false">
+                <MudMenu Label="@Localizer.SimpleAppLocalization(nation.Key.ShipNationToString())" Variant="Variant.Filled" AnchorOrigin="Origin.CenterRight" ActivationEvent="MouseEvent.MouseOver" Size="Size.Medium" Dense>
+                    <ChildContent>
+                        @foreach (var category in nation.Value)
+                        {
+                            <MudMenuItem AutoClose="false">
+                                <MudMenu Label="@Localizer.SimpleAppLocalization(category.Key.ShipCategoryToString())" Variant="Variant.Filled" AnchorOrigin="Origin.CenterRight" ActivationEvent="MouseEvent.MouseOver" Size="Size.Large">
+                                    <ChildContent>
+                                        @foreach (var shipClass in category.Value)
+                                        {
+                                            <MudMenuItem AutoClose="false">
+                                                <MudMenu Label="@Localizer.SimpleAppLocalization(shipClass.Key.ShipClassToString())" Variant="Variant.Filled" AnchorOrigin="Origin.CenterRight" ActivationEvent="MouseEvent.MouseOver" Size="Size.Large">
+                                                    <ChildContent>
+                                                        @foreach (var tier in shipClass.Value)
+                                                        {
+                                                            <MudMenuItem AutoClose="false">
+                                                                <MudMenu Label="@Localizer.SimpleAppLocalization(tier.Key.ToTierString())" Variant="Variant.Filled" AnchorOrigin="Origin.CenterRight" ActivationEvent="MouseEvent.MouseOver" Size="Size.Large">
+                                                                    @foreach (var shipIndex in tier.Value)
+                                                                    {
+                                                                        <MudMenuItem>@Localizer.SimpleGameLocalization(shipIndex)</MudMenuItem>
+                                                                    }
+                                                                </MudMenu>
+                                                            </MudMenuItem>
+                                                        }
+                                                    </ChildContent>
+                                                </MudMenu>
+                                            </MudMenuItem>
+                                        }
+                                    </ChildContent>
+                                </MudMenu>
+                            </MudMenuItem>
+                        }
+                    </ChildContent>
+                </MudMenu>
+            </MudMenuItem>
+        }
+    </MudDrawer>
+    <div class="d-flex mud-height-full">
+        <MudIconButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => openDrawer = !openDrawer)" Icon="@(openDrawer ? Icons.Material.Filled.ArrowBackIos : Icons.Material.Filled.ArrowForwardIos)"/>
+    </div>
+</MudDrawerContainer>
+
+@code
+{
+    private bool openDrawer = true;
+    private Dictionary<Nation, Dictionary<ShipCategory, Dictionary<ShipClass, Dictionary<int, List<string>>>>> treeStructure = new();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        foreach (var ship in AppData.ShipDictionary)
+        {
+            if (!treeStructure.ContainsKey(ship.Value.ShipNation))
+            {
+                treeStructure.Add(ship.Value.ShipNation, new());
+            }
+            else
+            {
+                var currentShipNation = treeStructure[ship.Value.ShipNation];
+                if (!currentShipNation.ContainsKey(ship.Value.ShipCategory))
+                {
+                    currentShipNation.Add(ship.Value.ShipCategory, new());
+                }
+                else
+                {
+                    var currentShipCategory = currentShipNation[ship.Value.ShipCategory];
+                    if (!currentShipCategory.ContainsKey(ship.Value.ShipClass))
+                    {
+                        currentShipCategory.Add(ship.Value.ShipClass, new());
+                    }
+                    else
+                    {
+                        var currentShipClass = currentShipCategory[ship.Value.ShipClass];
+                        if (!currentShipClass.ContainsKey(ship.Value.Tier))
+                        {
+                            currentShipClass.Add(ship.Value.Tier, new());
+                        }
+                        else
+                        {
+                            var currentShipTier = currentShipClass[ship.Value.Tier];
+                            currentShipTier.Add(ship.Value.Index);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
