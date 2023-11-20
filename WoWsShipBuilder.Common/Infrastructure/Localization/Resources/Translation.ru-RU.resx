@@ -2065,4 +2065,7 @@
   <data name="ShipStats_FromSubsAtPeriscopeDepth" xml:space="preserve">
     <value>От подлодок на перископной глубине</value>
   </data>
+  <data name="ShipStats_ShellType" xml:space="preserve">
+    <value>Тип снаряда</value>
+  </data>
 </root>
