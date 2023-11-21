@@ -615,4 +615,7 @@
   <data name="ShipStats_PenetrationAp" xml:space="preserve">
       <value>Penetracja</value>
   </data>
+  <data name="ShipStats_ShellType" xml:space="preserve">
+    <value>Typ pocisku</value>
+  </data>
 </root>
