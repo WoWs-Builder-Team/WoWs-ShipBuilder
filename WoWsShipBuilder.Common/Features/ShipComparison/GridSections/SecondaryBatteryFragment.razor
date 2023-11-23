@@ -1,4 +1,5 @@
 ﻿@using System.Globalization
+@using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.Features.ShipComparison.GridData
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 
@@ -6,22 +7,25 @@
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer)> SecondaryBatteryDataFragment = element => __builder =>
+    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer, double firingRange, Dictionary<Guid, List<DispersionContainer>> dispersionCache)> SecondaryBatteryDataFragment = element => __builder =>
     {
         string dataSectionString = ShipComparisonDataSections.SecondaryBattery.AsString();
 
         var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
         nfi.NumberGroupSeparator = "'";
-
+//Dictionary<string, SortDefinition<GridDataWrapper>>? sortDefinitions
         var unitMm = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_MM))}";
         var unitKm = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_KM))}";
         var unitS = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_S))}";
         var unitShotsPerMinute = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_ShotsPerMinute))}";
         var unitFpm = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_FPM))}";
+        var unitM = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_M))}";
 
         var columnTitleCaliber = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Caliber));
         var columnTitleBarrels = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Barrels));
         var columnTitleMaxRange = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_MaxRange));
+        var columnTitleHorizontalDispersion = $"{element.localizer.SimpleAppLocalization(nameof(Translation.DispersionGraphWindow_Horizontal))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Dispersion))}";
+        var columnTitleVerticalDispersion = $"{element.localizer.SimpleAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Dispersion))}";
         var columnTitleReload = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ReloadTime));
         var columnTitleRof = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RoF));
         var columnTitleDpm = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Dpm));
@@ -176,6 +180,60 @@
                             @(item + unitFpm)
                         </MudText>
                         if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    @UtilityFragments.DataNotAvailableFragment
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleHorizontalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHorizontalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Select(y => (decimal)y.Horizontal).ToList() : new())" T="GridDataWrapper" Title="@columnTitleHorizontalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.Secondary.Range is not null && context.Item.Secondary.Range.Value < (decimal)element.firingRange)
+                {
+                    @UtilityFragments.OutOfRangeFragment((element.localizer, element.firingRange, context.Item.Secondary.Range.Value))
+                }
+                else if (element.dispersionCache.TryGetValue(context.Item.Id, out List<DispersionContainer>? value))
+                {
+                    for (var i = 0; i < value.Count; i++)
+                    {
+                        var disp = value[i];
+                        <MudText Typo="Typo.body2">
+                            @(Math.Round(disp.Horizontal, 2) + unitM)
+                        </MudText>
+                        if (i < value.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    @UtilityFragments.DataNotAvailableFragment
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleVerticalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleVerticalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Select(y => (decimal)y.Vertical).ToList() : new())" T="GridDataWrapper" Title="@columnTitleVerticalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.Secondary.Range is not null && context.Item.Secondary.Range.Value < (decimal)element.firingRange)
+                {
+                    @UtilityFragments.OutOfRangeFragment((element.localizer, element.firingRange, context.Item.Secondary.Range.Value))
+                }
+                else if (element.dispersionCache.TryGetValue(context.Item.Id, out List<DispersionContainer>? value))
+                {
+                    for (var i = 0; i < value.Count; i++)
+                    {
+                        var disp = value[i];
+                        <MudText Typo="Typo.body2">
+                            @(Math.Round(disp.Vertical, 2) + unitM)
+                        </MudText>
+                        if (i < value.Count - 1)
                         {
                             <MudDivider Class="my-1"/>
                         }

@@ -2069,4 +2069,16 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipStats_ShellType" xml:space="preserve">
     <value>Shell type</value>
   </data>
+  <data name="ShipStats_Overall" xml:space="preserve">
+    <value>Overall</value>
+  </data>
+  <data name="ShipComparison_SplashDmgSubs" xml:space="preserve">
+    <value>Splash damage vs Subs</value>
+  </data>
+  <data name="ShipComparison_OutOfRange" xml:space="preserve">
+    <value>Out of Range</value>
+  </data>
+  <data name="ShipComparison_OutOfRangeTooltip" xml:space="preserve">
+    <value>Firing range is greater than this ship max range</value>
+  </data>
 </root>

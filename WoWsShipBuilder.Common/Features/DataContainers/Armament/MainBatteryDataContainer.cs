@@ -173,17 +173,17 @@ public partial record MainBatteryDataContainer : DataContainerBase
 
         // Consider dispersion modifiers
         var dispersionModifier = modifiers.FindModifiers("GMIdealRadius").Aggregate(1f, (current, modifier) => current * modifier);
-        var dispersion = mainBattery.DispersionValues;
+        var dispersion = gun.Dispersion;
 
         decimal rateOfFire = 60 / reload;
 
-        var maxRangeBw = (double)(mainBattery.MaxRange / 30);
+        var maxRangeBw = (double)(range / 30);
         double vRadiusCoeff = (dispersion.RadiusOnMax - dispersion.RadiusOnDelim) / (maxRangeBw * (1 - dispersion.Delim));
 
         var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
         nfi.NumberGroupSeparator = "'";
 
-        var shellData = ShellDataContainer.FromShellName(mainBattery.Guns[0].AmmoList, modifiers, barrelCount, true);
+        var shellData = ShellDataContainer.FromShellName(gun.AmmoList, modifiers, barrelCount, true);
 
         var (horizontalDispersion, verticalDispersion) = dispersion.CalculateDispersion((double)range * 1000, dispersionModifier);
 

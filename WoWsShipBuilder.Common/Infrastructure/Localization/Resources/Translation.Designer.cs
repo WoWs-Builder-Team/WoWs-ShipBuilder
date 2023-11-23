@@ -2376,6 +2376,24 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Out of Range.
+        /// </summary>
+        public static string ShipComparison_OutOfRange {
+            get {
+                return ResourceManager.GetString("ShipComparison_OutOfRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Firing range is greater than this ship max range.
+        /// </summary>
+        public static string ShipComparison_OutOfRangeTooltip {
+            get {
+                return ResourceManager.GetString("ShipComparison_OutOfRangeTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Per Plane.
         /// </summary>
         public static string ShipComparison_PerPlane {
@@ -2507,6 +2525,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string ShipComparison_SmokeFiring {
             get {
                 return ResourceManager.GetString("ShipComparison_SmokeFiring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Splash damage vs Subs.
+        /// </summary>
+        public static string ShipComparison_SplashDmgSubs {
+            get {
+                return ResourceManager.GetString("ShipComparison_SplashDmgSubs", resourceCulture);
             }
         }
         
@@ -4220,6 +4247,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string ShipStats_OpenBallistic {
             get {
                 return ResourceManager.GetString("ShipStats_OpenBallistic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overall.
+        /// </summary>
+        public static string ShipStats_Overall {
+            get {
+                return ResourceManager.GetString("ShipStats_Overall", resourceCulture);
             }
         }
         
