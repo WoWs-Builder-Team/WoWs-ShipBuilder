@@ -2064,4 +2064,7 @@ C = 砲彈口徑 [m]
   <data name="ShipStats_FromSubsAtPeriscopeDepth" xml:space="preserve">
     <value>被潛艇於潛望鏡深度偵測</value>
   </data>
+  <data name="ShipStats_ShellType" xml:space="preserve">
+    <value>彈種</value>
+  </data>
 </root>
