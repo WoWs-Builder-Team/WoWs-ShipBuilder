@@ -143,7 +143,14 @@
             <MudButton OnClick="@(async () => await OpenHideColumnsDialog())" DisableElevation="true" Variant="Variant.Text" StartIcon="@Icons.Material.Outlined.Settings" Size="Size.Small" Color="Color.Secondary" Style="margin-top: -13px" Class="mx-auto">
                 @($"{Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_HideColumns))} : {hiddenColumns.Count(x => x.Value)}")
             </MudButton>
-            <MudNumericField Value="@ViewModel.Range" ValueChanged="@(async range => await UpdateRange(range))" Label="@($"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization} ({Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization})")" Class="mud-data-grid-range-selector" Variant="Variant.Text" Immediate="true" T="double" DebounceInterval="500" Margin="Margin.Dense" Min="1" Max="50" Step="0.5"/>
+            @if (ViewModel.SelectedDataSection is not (ShipComparisonDataSections.MainBattery or ShipComparisonDataSections.SecondaryBattery))
+            {
+                <div style="margin: 0 10px 10px auto; width: 100px" class="mud-input-control mud-input-control-margin-dense mud-input-input-control mud-input-number-control mud-input-showspin mud-data-grid-range-selector"></div>
+            }
+            else
+            {
+                <MudNumericField Value="@(ViewModel.SelectedDataSection == ShipComparisonDataSections.SecondaryBattery ? ViewModel.SecondaryBatteryFiringRange : ViewModel.MainBatteryFiringRange)" ValueChanged="@(async range => await UpdateRange(range))" Label="@($"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization} ({Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization})")" Class="mud-data-grid-range-selector" Variant="Variant.Text" Immediate="true" T="double" DebounceInterval="500" Margin="Margin.Dense" Min="1" Max="50" Step="0.5"/>
+            }
         </ToolBarContent>
         <Columns>
             <TemplateColumn T="GridDataWrapper" ShowColumnOptions="false" Hideable="false" Filterable="false" DragAndDropEnabled="false" StickyLeft SortBy="@(x => !ViewModel.SelectedShipList.ContainsKey(x.Id))" HeaderStyle="width:70px; background-clip: padding-box; background-color: var(--mud-palette-surface);" CellStyle="@($"width:70px; {StickyColumnsBackgroundColor}")" Resizable="false" HeaderClass="column-text-center" CellClass="column-text-center">
@@ -216,12 +223,12 @@
                     }
                 </CellTemplate>
             </TemplateColumn>
-            @MainBatteryDataFragment((IsColumnHidden, Localizer, ViewModel.Range, ViewModel.DispersionCache))
+            @MainBatteryDataFragment((IsColumnHidden, Localizer, ViewModel.MainBatteryFiringRange, ViewModel.MainBatteryDispersionCache))
             @HeShellDataFragment((IsColumnHidden, Localizer))
             @ApShellDataFragment((IsColumnHidden, Localizer))
             @SapShellDataFragment((IsColumnHidden, Localizer))
             @TorpedoDataFragment((IsColumnHidden, Localizer))
-            @SecondaryBatteryDataFragment((IsColumnHidden, Localizer))
+            @SecondaryBatteryDataFragment((IsColumnHidden, Localizer, ViewModel.SecondaryBatteryFiringRange, ViewModel.SecondaryBatteryDispersionCache))
             @SecondaryBatteryShellsDataFragment((IsColumnHidden, Localizer))
             @AaDefenseDataFragment((IsColumnHidden, Localizer))
             @AswDataFragment((IsColumnHidden, Localizer))
@@ -528,7 +535,8 @@
     private async Task UpdateRange(double range)
     {
         ViewModel!.UpdateRange(range);
-        AppSettings.ShipComparisonFiringRange = ViewModel.Range;
+        AppSettings.ShipComparisonMainBatteryFiringRange = ViewModel.MainBatteryFiringRange;
+        AppSettings.ShipComparisonSecondaryBatteryFiringRange = ViewModel.SecondaryBatteryFiringRange;
         await UpdateUrl();
         await SettingsAccessor.SaveSettings(AppSettings);
     }
@@ -796,9 +804,9 @@
             url.Add(SectionUrlParameter, $"{(int)ViewModel!.SelectedDataSection}");
         }
 
-        if (ViewModel!.Range is > 10 or < 10)
+        if (ViewModel!.MainBatteryFiringRange is > 10 or < 10)
         {
-            url.Add(RangeUrlParameter, $"{ViewModel!.Range}");
+            url.Add(RangeUrlParameter, $"{ViewModel!.MainBatteryFiringRange}");
         }
 
         if (!string.IsNullOrEmpty(hiddeColumnsUrlString))

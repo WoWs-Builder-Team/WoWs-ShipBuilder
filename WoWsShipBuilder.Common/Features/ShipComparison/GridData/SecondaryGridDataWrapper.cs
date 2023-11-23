@@ -1,4 +1,5 @@
-﻿using WoWsShipBuilder.Features.DataContainers;
+﻿using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.Features.DataContainers;
 
 namespace WoWsShipBuilder.Features.ShipComparison.GridData;
 
@@ -16,9 +17,11 @@ public class SecondaryGridDataWrapper
         this.Dpm = secondaryBattery?.Select(x => x.TheoreticalDpm).ToList() ?? new();
         this.Fpm = secondaryBattery?.Select(x => x.PotentialFpm).ToList() ?? new();
         this.Sigma = secondaryBattery?.Select(x => x.Sigma).First();
+        this.DispersionData = secondaryBattery?.Select(x => x.DispersionData).ToList() ?? new();
+        this.DispersionModifier = secondaryBattery?.Select(x => x.DispersionModifier).ToList() ?? new();
 
         // Secondary shells
-        List<ShellDataContainer?>? secondaryShellData = secondaryBattery?.Select(x => x.Shell).ToList();
+        var secondaryShellData = secondaryBattery?.Select(x => x.Shell).ToList();
 
         this.Type = secondaryShellData?.Select(x => x?.Type).First();
         this.Mass = secondaryShellData?.Select(x => x?.Mass ?? 0).ToList() ?? new();
@@ -42,6 +45,10 @@ public class SecondaryGridDataWrapper
     public List<string> BarrelsLayout { get; }
 
     public decimal? Range { get; }
+
+    public List<Dispersion> DispersionData { get; }
+
+    public List<double> DispersionModifier { get; }
 
     public List<decimal> Reload { get; }
 

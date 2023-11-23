@@ -138,7 +138,7 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
             Reload = Math.Round(reloadSpeed, 2),
             TorpedoArea = torpedoArea,
             Torpedoes = torpedoes,
-            TimeToSwitch = Math.Round(torpedoModule.TimeToChangeAmmo,  1),
+            TimeToSwitch = Math.Round(reloadSpeed * launcher.AmmoSwitchCoeff, 1),
             TorpedoLaunchers = torpedoModule.TorpedoLaunchers,
             TorpLayout = string.Join(" + ", torpLayout),
             TorpCount = torpCount,
