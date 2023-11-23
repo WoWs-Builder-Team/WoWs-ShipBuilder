@@ -216,7 +216,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSalvoDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSalvoDamage)" T="GridDataWrapper" Title="@columnTitleSalvoDamage" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.Torpedo.FullSalvoDamage.Where(y => !string.IsNullOrEmpty(y)).Select(z => int.Parse(z ?? "0", NumberStyles.AllowThousands, nfi)).ToList())">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSalvoDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSalvoDamage)" T="GridDataWrapper" Title="@columnTitleSalvoDamage" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.Torpedo.FullSalvoDamage.Where(y => !string.IsNullOrEmpty(y)).Select(z => int.Parse(z ?? "0", NumberStyles.AllowThousands, nfi)).ToNoSortList())">
             <CellTemplate>
                 @{
                    List<string?> torps = context.Item.Torpedo.FullSalvoDamage.Where(x => !string.IsNullOrEmpty(x)).ToList();

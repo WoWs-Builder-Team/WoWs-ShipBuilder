@@ -13,7 +13,7 @@
 
         var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
         nfi.NumberGroupSeparator = "'";
-//Dictionary<string, SortDefinition<GridDataWrapper>>? sortDefinitions
+
         var unitMm = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_MM))}";
         var unitKm = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_KM))}";
         var unitS = $" {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_S))}";
@@ -192,7 +192,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleHorizontalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHorizontalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Select(y => (decimal)y.Horizontal).ToList() : new())" T="GridDataWrapper" Title="@columnTitleHorizontalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleHorizontalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHorizontalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Select(y => (decimal)y.Horizontal).ToNoSortList() : new())" T="GridDataWrapper" Title="@columnTitleHorizontalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Secondary.Range is not null && context.Item.Secondary.Range.Value < (decimal)element.firingRange)
                 {
@@ -219,7 +219,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleVerticalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleVerticalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Select(y => (decimal)y.Vertical).ToList() : new())" T="GridDataWrapper" Title="@columnTitleVerticalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleVerticalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleVerticalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Select(y => (decimal)y.Vertical).ToNoSortList() : new())" T="GridDataWrapper" Title="@columnTitleVerticalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Secondary.Range is not null && context.Item.Secondary.Range.Value < (decimal)element.firingRange)
                 {

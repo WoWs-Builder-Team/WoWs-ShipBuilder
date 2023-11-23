@@ -336,7 +336,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRicochetAngles}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRicochetAngles)" T="GridDataWrapper" Title="@columnTitleRicochetAngles" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.Bombers.WeaponRicochetAngles.Select(y => int.Parse(string.IsNullOrEmpty(y) ? "0" : y.Split("-").First())).ToList())">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRicochetAngles}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRicochetAngles)" T="GridDataWrapper" Title="@columnTitleRicochetAngles" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.Bombers.WeaponRicochetAngles.Select(y => int.Parse(string.IsNullOrEmpty(y) ? "0" : y.Split("-").First())).ToNoSortList())">
             <CellTemplate>
                 @if (context.Item.Bombers.WeaponRicochetAngles.Any())
                 {
