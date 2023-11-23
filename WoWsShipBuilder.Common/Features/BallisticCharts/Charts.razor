@@ -22,7 +22,7 @@
 @inject SessionStateCache SessionStateCache
 
 <PageTitle>WoWs ShipBuilder: Charts</PageTitle>
-<MudTabs Elevation="2" PanelClass="pa-6" Centered Color="Color.Default" @ref="chartsTabs" Outlined Border KeepPanelsAlive ActivePanelIndexChanged="@ActivePanelChanged">
+<MudTabs Elevation="2" PanelClass="pa-6" Centered Color="Color.Default" @ref="chartsTabs" Outlined Border KeepPanelsAlive ActivePanelIndexChanged="@ActivePanelChanged"  Class="sticky-tabs-header">
     <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_DispersionCharts)).Localization" ID="ChartsTabs.DispersionCharts">
         <MudStack Row Justify="Justify.Center" Spacing="4">
             <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="processing">

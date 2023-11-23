@@ -309,6 +309,6 @@ div.default-label-background label {
 
 .sticky-tabs-header .mud-tabs-toolbar {
     position: sticky;
-    z-index: 10;
+    z-index: 100;
     top: 64px;
 }
