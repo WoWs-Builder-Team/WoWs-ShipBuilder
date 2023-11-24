@@ -133,7 +133,7 @@
     <value>清除</value>
   </data>
   <data name="SettingsWindow_CleanAppData" xml:space="preserve">
-    <value>清除存儲的應用程序數據</value>
+    <value>清除已儲存的數據</value>
   </data>
   <data name="SettingsWindow_DevelopedBy" xml:space="preserve">
     <value>開發者：</value>
@@ -448,7 +448,7 @@
     <value>每次火災的總傷害</value>
   </data>
   <data name="ShipStats_FireDPS" xml:space="preserve">
-    <value>每火災的DPS</value>
+    <value>每個火災的秒傷</value>
   </data>
   <data name="ShipStats_FireDuration" xml:space="preserve">
       <value>持續時間</value>
@@ -457,10 +457,10 @@
     <value>起火機率減免</value>
   </data>
   <data name="ShipStats_FloodDamageTotal" xml:space="preserve">
-    <value>每次浸水總傷害</value>
+    <value>每次進水的總傷害</value>
   </data>
   <data name="ShipStats_FloodDPS" xml:space="preserve">
-    <value>一個進水的DPS</value>
+    <value>每個進水的秒傷</value>
   </data>
   <data name="ShipStats_FloodDuration" xml:space="preserve">
       <value>持續時間</value>
@@ -493,7 +493,7 @@
     <value>此砲彈已被添加</value>
   </data>
   <data name="ShipStats_Type" xml:space="preserve">
-    <value>種類</value>
+    <value>彈種</value>
   </data>
   <data name="ShipStats_TurretAngles" xml:space="preserve">
     <value>顯示炮塔角度</value>
@@ -547,7 +547,7 @@
     <value>著火時</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
-    <value>於煙幕中開火後</value>
+    <value>於煙霧中開火後</value>
   </data>
   <data name="ShipStats_FireAmount" xml:space="preserve">
       <value>上限數量</value>
@@ -640,7 +640,7 @@
     <value>整備時間</value>
   </data>
   <data name="ShipStats_StartingNumberOnDeck" xml:space="preserve">
-    <value>起飛中的甲板機</value>
+    <value>初始飛機數量</value>
   </data>
   <data name="ShipStats_BombsPerPlane" xml:space="preserve">
     <value>酬載炸彈</value>
@@ -673,7 +673,7 @@
     <value>散佈視覺化</value>
   </data>
   <data name="ShipStats_DepthChargesLauncher" xml:space="preserve">
-    <value>ASW深水炸彈</value>
+    <value>深水炸彈</value>
   </data>
   <data name="ShipStats_FirstPingDuration" xml:space="preserve">
     <value>第一次ping持續時間</value>
@@ -721,25 +721,25 @@
     <value>配置已儲存</value>
   </data>
   <data name="BuildCreationWindow_SavedClipboard" xml:space="preserve">
-    <value>建置字串已複製到剪貼板</value>
+    <value>配置資料已複製到剪貼板</value>
   </data>
   <data name="StartMenu_DeleteBuild" xml:space="preserve">
-    <value>刪除構建</value>
+    <value>刪除配置</value>
   </data>
   <data name="BuildImport_Import" xml:space="preserve">
-    <value>導入</value>
+    <value>匯入</value>
   </data>
   <data name="BuildImport_ImportOnly" xml:space="preserve">
-    <value>僅限導入</value>
+    <value>僅限匯入</value>
   </data>
   <data name="BuildImport_ImportSave" xml:space="preserve">
-    <value>輸入並儲存 (shū rù bìng chǔ cún)</value>
+    <value>匯入並儲存</value>
   </data>
   <data name="BuildImport_InsertBuild" xml:space="preserve">
-    <value>在此處貼上構建字串</value>
+    <value>在此處貼上配置資料</value>
   </data>
   <data name="BuildImport_Title" xml:space="preserve">
-    <value>匯入建築</value>
+    <value>匯入配置</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>取消</value>
@@ -748,7 +748,7 @@
     <value>好的</value>
   </data>
   <data name="StartMenu_BuildLoadingError" xml:space="preserve">
-    <value>構建載入時發生錯誤</value>
+    <value>載入配置時發生錯誤</value>
   </data>
   <data name="ShipStats_JatoDuration" xml:space="preserve">
       <value>持續時間</value>
@@ -757,7 +757,7 @@
       <value>加速</value>
   </data>
   <data name="ShipStats_TimeToSwitch" xml:space="preserve">
-    <value>切換彈藥時間</value>
+    <value>切彈時間</value>
   </data>
   <data name="ShipStats_BurstMode" xml:space="preserve">
     <value>連發射擊模式</value>
@@ -880,19 +880,19 @@
     <value>內側水平</value>
   </data>
   <data name="ShipStats_Dispersion" xml:space="preserve">
-    <value>散布</value>
+    <value>散佈</value>
   </data>
   <data name="ShipStats_ShowDispGraph" xml:space="preserve">
-    <value>顯示散布圖表</value>
+    <value>顯示散佈圖表</value>
   </data>
   <data name="ShipStats_ShowDispPlot" xml:space="preserve">
-    <value>顯示散布平面圖</value>
+    <value>顯示散佈平面圖</value>
   </data>
   <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-      <value>距離X（公里）處的公式</value>
+      <value>距離X</value>
   </data>
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
-    <value>水平散布界[X]</value>
+    <value>X公里時的水平散佈</value>
   </data>
   <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
       <value>射擊距離 (公里)</value>
@@ -999,7 +999,10 @@
       <value>方向舵</value>
   </data>
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
-    <value>如果“模組防爆抗性” + “火炮防爆穿透力”&gt;0，</value>
+    <value>如果“配件防爆抗性” + “火炮防爆穿透力”&gt; 0，
+     則該配件會受到傷害。
+如果“配件防爆抗性” + “火炮防爆穿透力”&lt;= 0，
+     則該配件不會受到傷害。</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
     <value>需要重新啟動</value>
@@ -1035,13 +1038,13 @@
     <value>艦長技能</value>
   </data>
   <data name="BuildImport_ImportFromImage" xml:space="preserve">
-    <value>圖像導入</value>
+    <value>匯入圖片</value>
   </data>
   <data name="SettingsWindow_OpenExplorerAfterImageSave" xml:space="preserve">
-    <value>在儲存艦船構建圖紙時開啟檔案瀏覽器</value>
+    <value>當儲存圖片時開啟檔案總管</value>
   </data>
   <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
-    <value>儲存並複製圖像</value>
+    <value>儲存並複製圖片</value>
   </data>
   <data name="Dialog_Save" xml:space="preserve">
     <value>保存</value>
@@ -1068,16 +1071,16 @@
     <value>儲存並複製字串</value>
   </data>
   <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
-    <value>配置圖像已複製到剪貼簿</value>
+    <value>配置圖片已複製到剪貼簿</value>
   </data>
   <data name="SettingsWindow_EnableBuildImagePath" xml:space="preserve">
-    <value>啟用自訂圖像路徑</value>
+    <value>啟用配置圖片路徑自訂</value>
   </data>
   <data name="SettingsWindow_BuildImagePath" xml:space="preserve">
-    <value>自訂配置圖像路徑</value>
+    <value>自訂配置圖片路徑</value>
   </data>
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
-    <value>所選自訂配置圖像路徑無效。</value>
+    <value>所選圖片路徑無效。</value>
   </data>
   <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
       <value>技能與天賦</value>
@@ -1116,7 +1119,7 @@
     <value>伺服器RoF</value>
   </data>
   <data name="Validation_BuildName" xml:space="preserve">
-      <value>構建名稱包含無效字符。僅允許使用字母、數字、空格、連字符和下劃線。</value>
+      <value>配置名稱包含無效字符。僅允許使用字母、數字、空格、連字符和底線。</value>
   </data>
   <data name="Teststring" xml:space="preserve">
       <value>只是一個測試值</value>
@@ -1128,7 +1131,7 @@
     <value>公斤</value>
   </data>
   <data name="Unit_MM" xml:space="preserve">
-    <value>毫米</value>
+    <value>mm</value>
   </data>
   <data name="Unit_PerCent" xml:space="preserve">
     <value>%</value>
@@ -1176,7 +1179,7 @@
       <value>添加/移除船艦/彈藥</value>
   </data>
   <data name="ChartsWeb_DispersionCharts" xml:space="preserve">
-      <value>散布圖表</value>
+      <value>散佈圖表</value>
   </data>
   <data name="ChartsWeb_BallisticCharts" xml:space="preserve">
       <value>彈道圖表</value>
@@ -1224,7 +1227,7 @@
       <value>對於魚雷</value>
   </data>
   <data name="ShipStats_MaxViewDistance" xml:space="preserve">
-      <value>艦艇最大視程</value>
+      <value>最大水面視距</value>
   </data>
   <data name="ShipStats_Consumables" xml:space="preserve">
       <value>消耗品</value>
@@ -1419,10 +1422,10 @@
       <value>高度</value>
   </data>
   <data name="ChartsWeb_ShowCharts" xml:space="preserve">
-      <value>顯示散布和彈道圖表</value>
+      <value>顯示散佈和彈道圖表</value>
   </data>
   <data name="WebApp_ApplicationInfo" xml:space="preserve">
-      <value>應用資訊</value>
+      <value>程式資訊</value>
   </data>
   <data name="WebApp_CurrentVersion" xml:space="preserve">
       <value>當前數據版本︰</value>
@@ -1447,7 +1450,7 @@
       </value>
   </data>
   <data name="Build_CopyUrl" xml:space="preserve">
-      <value>複製構建URL</value>
+      <value>複製配置網址</value>
   </data>
   <data name="WebApp_ExpanderSetting" xml:space="preserve">
       <value>預設展開所有主擴展項</value>
@@ -1468,10 +1471,10 @@
       <value>顯示魚雷發射角度</value>
   </data>
   <data name="ShipStats_MaxEngineBoostDuration" xml:space="preserve">
-      <value>最大引擎增壓持續時間</value>
+      <value>最大增壓持續時間</value>
   </data>
   <data name="Build_CopyShortUrl" xml:space="preserve">
-      <value>複製短鏈接</value>
+      <value>複製短網址</value>
   </data>
   <data name="Build_EnterBuildName" xml:space="preserve">
       <value>請輸入版本名稱。艦名將自動顯示在最後。</value>
@@ -1612,7 +1615,7 @@
       <value>戰術魚雷轟炸機</value>
   </data>
   <data name="ShipStats_SkipBomber" xml:space="preserve">
-      <value>跳躍式轟炸機</value>
+      <value>彈跳轟炸機</value>
   </data>
   <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
       <value>戰術彈跳轟炸機</value>
@@ -1633,7 +1636,7 @@
       <value>每次進度增加</value>
   </data>
   <data name="ShipStats_InactivityDelay" xml:space="preserve">
-      <value>進度損失前的不活動時間</value>
+      <value>損失進度前的不活躍時間</value>
   </data>
   <data name="ShipStats_ProgressLossInterval" xml:space="preserve">
       <value>進度損失間隔</value>
@@ -1645,7 +1648,7 @@
       <value>顯示加速圖表</value>
   </data>
   <data name="BuildStringInputDialog_EnterBuildStringOrLink" xml:space="preserve">
-      <value>輸入構建字串或連結</value>
+      <value>輸入配置資料或連結</value>
   </data>
   <data name="WebApp_LoadBuild" xml:space="preserve">
       <value>載入配置</value>
@@ -1684,7 +1687,7 @@
       <value>第一次</value>
   </data>
   <data name="ShipStats_Second" xml:space="preserve">
-      <value>第二</value>
+      <value>第二次</value>
   </data>
   <data name="Unit_U" xml:space="preserve">
       <value>單位</value>
@@ -1759,31 +1762,31 @@
       <value>度/秒²</value>
   </data>
   <data name="BuildImageSettingsDialog_Modules" xml:space="preserve">
-      <value>模組</value>
+      <value>配件</value>
   </data>
   <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
-      <value>船長技能</value>
+      <value>艦長技能</value>
   </data>
   <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
-      <value>信號旗幟</value>
+      <value>信號旗</value>
   </data>
   <data name="BuildImageSettingsDialog_Consumables" xml:space="preserve">
       <value>消耗品</value>
   </data>
   <data name="BuildImageSettingsDialog_Upgrades" xml:space="preserve">
-      <value>升級</value>
+      <value>升級品</value>
   </data>
   <data name="BuildImageSettingsDialog_TwoColumns" xml:space="preserve">
-      <value>雙列</value>
+      <value>兩欄顯示</value>
   </data>
   <data name="BuildImageSettingsDialog_Layout" xml:space="preserve">
-      <value>佈局</value>
+      <value>版面設定</value>
   </data>
   <data name="BuildImageSettingsDialog_Elements" xml:space="preserve">
-      <value>元素</value>
+      <value>顯示內容</value>
   </data>
   <data name="BuildImageSettingsDialog_TwoColumnsTooltip" xml:space="preserve">
-      <value>把圖片排列加寬，使得數據分成兩行(將不能隱藏艦長技能與旗子)</value>
+      <value>兩欄顯示內容(將不能隱藏艦長技能與信號旗)</value>
   </data>
   <data name="BuildNameDialog_BuildName" xml:space="preserve">
       <value>配置名稱</value>
@@ -1792,7 +1795,7 @@
       <value>輸入配置名稱</value>
   </data>
   <data name="BuildImageRenderDialog_SaveImage" xml:space="preserve">
-      <value>保存圖像</value>
+      <value>保存圖片</value>
   </data>
   <data name="BuildImageRenderDialog_GetUrl" xml:space="preserve">
       <value>獲取網址</value>
@@ -1804,7 +1807,7 @@
       <value>在線</value>
   </data>
   <data name="ServerTypePts" xml:space="preserve">
-      <value>測試服</value>
+      <value>公共測試服</value>
   </data>
   <data name="NavigationCharts" xml:space="preserve">
       <value>散布和彈道圖表</value>
@@ -1888,7 +1891,7 @@
       <value>副炮砲彈</value>
   </data>
   <data name="ShipComparison_Asw" xml:space="preserve">
-      <value>反潛機</value>
+      <value>反潛</value>
   </data>
   <data name="ShipComparison_RocketPlanes" xml:space="preserve">
       <value>火箭攻擊機</value>
@@ -1921,10 +1924,10 @@
       <value>每分鐘點火期望</value>
   </data>
   <data name="ShipComparison_1st" xml:space="preserve">
-      <value>第一次</value>
+      <value>單</value>
   </data>
   <data name="ShipComparison_2nd" xml:space="preserve">
-      <value>第二次</value>
+      <value>雙</value>
   </data>
   <data name="ShipComparison_Amount" xml:space="preserve">
       <value>數量</value>
@@ -1972,13 +1975,13 @@
       <value>甲板上飛機數</value>
   </data>
   <data name="ShipComparison_EngineBoostDuration" xml:space="preserve">
-      <value>引擎增壓時間</value>
+      <value>增壓時間</value>
   </data>
   <data name="ShipComparison_Invulnerability" xml:space="preserve">
       <value>無敵</value>
   </data>
   <data name="ShipComparison_ViewDistance" xml:space="preserve">
-      <value>偵查距離</value>
+      <value>視距</value>
   </data>
   <data name="ShipComparison_AreaChange" xml:space="preserve">
       <value>縮圈速度</value>
@@ -1993,7 +1996,7 @@
       <value>最大倒船速度</value>
   </data>
   <data name="ShipComparison_TypeName" xml:space="preserve">
-      <value>輸入艦船英文名稱...</value>
+      <value>輸入艦船名稱...</value>
   </data>
   <data name="ShipComparison_SearchAndPin" xml:space="preserve">
       <value>搜尋&amp;釘選船隻</value>
@@ -2005,10 +2008,10 @@
       <value>射程</value>
   </data>
   <data name="ShipSelectionWindow_SearchShipOrBuild" xml:space="preserve">
-      <value>搜尋艦船或艦長裝備</value>
+      <value>搜尋艦船或配置</value>
   </data>
   <data name="SettingsWindow_Export" xml:space="preserve">
-      <value>輸出檔案</value>
+      <value>匯出</value>
   </data>
   <data name="SettingsWindow_DeleteAll" xml:space="preserve">
       <value>全部刪除</value>
@@ -2066,5 +2069,17 @@ C = 砲彈口徑 [m]
   </data>
   <data name="ShipStats_ShellType" xml:space="preserve">
     <value>彈種</value>
+  </data>
+  <data name="ShipStats_Overall" xml:space="preserve">
+    <value>概觀</value>
+  </data>
+  <data name="ShipComparison_SplashDmgSubs" xml:space="preserve">
+    <value>對潛艇的濺射傷害</value>
+  </data>
+  <data name="ShipComparison_OutOfRange" xml:space="preserve">
+    <value>已超出射程</value>
+  </data>
+  <data name="ShipComparison_OutOfRangeTooltip" xml:space="preserve">
+    <value>您所設定的射程已超出此艦艇的最大射程。</value>
   </data>
 </root>
