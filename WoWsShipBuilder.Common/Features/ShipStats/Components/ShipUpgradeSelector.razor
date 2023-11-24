@@ -42,13 +42,13 @@
                                                     <MudText Align="Align.Center" Typo="Typo.body2" Style="white-space: break-spaces">@Localizer.GetGameLocalization("DESC_" + currentMod.Name).Localization</MudText>
                                                 }
                                                 <MudDivider Light="true" Class="ma-1"/>
-                                                foreach ((string modifierName, double modifierValue) in currentMod.Effect)
+                                                foreach (var modifier in currentMod.Modifiers)
                                                 {
                                                     // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
-                                                    string modifier = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
-                                                    if (!string.IsNullOrWhiteSpace(modifier))
+                                                    string modifierText = ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.All, Localizer);
+                                                    if (!string.IsNullOrWhiteSpace(modifierText))
                                                     {
-                                                        <MudText Align="Align.Start" Typo="Typo.body2" Style="white-space: break-spaces" Class="flex-grow-0 flex-shrink-1">@modifier</MudText>
+                                                        <MudText Align="Align.Start" Typo="Typo.body2" Style="white-space: break-spaces" Class="flex-grow-0 flex-shrink-1">@modifierText</MudText>
                                                     }
                                                 }
                                             }
@@ -83,14 +83,14 @@
                                                             <MudText Align="Align.Center" Typo="Typo.body2" Style="white-space: break-spaces">@Localizer.GetGameLocalization("DESC_" + modernization.Name).Localization</MudText>
                                                         }
                                                         <MudDivider Light="true" Class="ma-1"/>
-                                                        foreach ((string modifierName, double modifierValue) in modernization.Effect)
+                                                        foreach (var modifier in modernization.Modifiers)
                                                         {
                                                             // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
-                                                            string modifier = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
-                                                            if (!string.IsNullOrWhiteSpace(modifier))
+                                                            string modifierText = ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.All, Localizer);
+                                                            if (!string.IsNullOrWhiteSpace(modifierText))
                                                             {
                                                                 <MudText Align="Align.Left" Typo="Typo.body2" Style="white-space: break-spaces" Class="flex-grow-0 flex-shrink-1">
-                                                                    @modifier
+                                                                    @modifierText
                                                                 </MudText>
                                                             }
                                                         }

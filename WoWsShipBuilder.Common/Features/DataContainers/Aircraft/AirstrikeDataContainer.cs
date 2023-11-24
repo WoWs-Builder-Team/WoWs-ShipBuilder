@@ -1,6 +1,7 @@
 using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Utility;
@@ -49,7 +50,7 @@ public partial record AirstrikeDataContainer : DataContainerBase
 
     public ProjectileDataContainer? Weapon { get; set; }
 
-    public static AirstrikeDataContainer? FromShip(Ship ship, List<(string, float)> modifiers, bool isAsw)
+    public static AirstrikeDataContainer? FromShip(Ship ship, List<Modifier> modifiers, bool isAsw)
     {
         string header = isAsw ? "ShipStats_AswAirstrike" : "ShipStats_Airstrike";
         Dictionary<string, AirStrike> airstrikes = ship.AirStrikes;
@@ -66,15 +67,10 @@ public partial record AirstrikeDataContainer : DataContainerBase
             return null;
         }
 
-        var reloadModifiers = modifiers.FindModifiers("asReloadTimeCoeff");
-        decimal reload = reloadModifiers.Aggregate(airstrike.ReloadTime, (current, modifier) => current * (decimal)modifier);
+        decimal reload = modifiers.ApplyModifiers("AirstrikeDataContainer.Reload", airstrike.ReloadTime);
 
-        var arModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
-        reload = arModifiers.Aggregate(reload, (current, arModifier) => current * (1 - ((decimal)arModifier / 100)));
-
-        float planeHp = plane.MaxHealth;
-        var planeHpModifiers = modifiers.FindModifiers("asMaxHealthCoeff");
-        float finalPlaneHp = planeHpModifiers.Aggregate(planeHp, (current, modifier) => current * modifier);
+        decimal planeHp = (decimal)plane.MaxHealth;
+        var finalPlaneHp = modifiers.ApplyModifiers("AirstrikeDataContainer.PlaneHp", planeHp);
 
         ProjectileDataContainer? weapon;
         string weaponType;

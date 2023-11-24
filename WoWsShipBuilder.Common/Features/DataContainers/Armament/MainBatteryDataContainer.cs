@@ -3,6 +3,7 @@ using System.Text;
 using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
@@ -100,7 +101,7 @@ public partial record MainBatteryDataContainer : DataContainerBase
 
     public string BarrelsLayout { get; set; } = default!;
 
-    public static MainBatteryDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
+    public static MainBatteryDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
         var artilleryConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.Artillery);
         if (artilleryConfiguration == null)
@@ -148,31 +149,17 @@ public partial record MainBatteryDataContainer : DataContainerBase
         var gun = mainBattery.Guns[0];
 
         // Calculate main battery reload
-        var reloadModifiers = modifiers.FindModifiers("GMShotDelay");
-        decimal reload = reloadModifiers.Aggregate(gun.Reload, (current, reloadModifier) => current * (decimal)reloadModifier);
-
-        var arModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
-        reload = arModifiers.Aggregate(reload, (current, arModifier) => current * (1 - ((decimal)arModifier / 100)));
-
-        var artilleryReloadCoeffModifiers = modifiers.FindModifiers("artilleryReloadCoeff");
-        reload = artilleryReloadCoeffModifiers.Aggregate(reload, (current, artilleryReloadCoeff) => current * (decimal)artilleryReloadCoeff);
+        decimal reload = modifiers.ApplyModifiers("MainBatteryDataContainer.Reload", gun.Reload);
 
         // Rotation speed modifiers
-        var turnSpeedModifiers = modifiers.FindModifiers("GMRotationSpeed");
-        decimal traverseSpeed = turnSpeedModifiers.Aggregate(gun.HorizontalRotationSpeed, (current, modifier) => current * (decimal)modifier);
+        decimal traverseSpeed = modifiers.ApplyModifiers("MainBatteryDataContainer.TraverseSpeed", gun.HorizontalRotationSpeed);
 
         // Range modifiers
-        var rangeModifiers = modifiers.FindModifiers("GMMaxDist");
         decimal gunRange = mainBattery.MaxRange * (suoConfiguration?.MaxRangeModifier ?? 1);
-        decimal range = rangeModifiers.Aggregate(gunRange, (current, modifier) => current * (decimal)modifier);
-        var consumableRangeModifiers = modifiers.FindModifiers("artilleryDistCoeff");
-        range = consumableRangeModifiers.Aggregate(range, (current, modifier) => current * (decimal)modifier);
-
-        var talentRangeModifiers = modifiers.FindModifiers("talentMaxDistGM");
-        range = talentRangeModifiers.Aggregate(range, (current, modifier) => current * (decimal)modifier) / 1000;
+        decimal range = modifiers.ApplyModifiers("MainBatteryDataContainer.Range", gunRange) / 1000;
 
         // Consider dispersion modifiers
-        var dispersionModifier = modifiers.FindModifiers("GMIdealRadius").Aggregate(1f, (current, modifier) => current * modifier);
+        var dispersionModifier = (float)modifiers.ApplyModifiers("MainBatteryDataContainer.Dispersion.IdealRadius", 1m);
         var dispersion = gun.Dispersion;
 
         decimal rateOfFire = 60 / reload;

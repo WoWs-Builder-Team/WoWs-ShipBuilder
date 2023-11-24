@@ -1,5 +1,6 @@
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
@@ -117,27 +118,22 @@ public partial record TorpedoDataContainer : ProjectileDataContainer
 
     public bool IsFromPlane { get; set; }
 
-    public static List<TorpedoDataContainer> FromTorpedoName(List<string> torpedoNames, List<(string name, float value)> modifiers, bool fromPlane)
+    public static List<TorpedoDataContainer> FromTorpedoName(List<string> torpedoNames, List<Modifier> modifiers, bool fromPlane)
     {
         var list = new List<TorpedoDataContainer>();
         foreach (string name in torpedoNames)
         {
             var torp = AppData.FindProjectile<Torpedo>(name);
 
-            var torpedoDamageModifiers = modifiers.FindModifiers("torpedoDamageCoeff");
-            var torpedoDamage = (decimal)torpedoDamageModifiers.Aggregate(torp.Damage, (current, modifier) => current * modifier);
+            var torpedoDamage = modifiers.ApplyModifiers("TorpedoDataContainer.Damage", (decimal)torp.Damage);
 
-            var torpedoSpeedModifiers = fromPlane ? modifiers.FindModifiers("planeTorpedoSpeedMultiplier") : modifiers.FindModifiers("torpedoSpeedMultiplier", true);
-            var torpedoSpeed = (decimal)torpedoSpeedModifiers.Aggregate(torp.Speed, (current, modifier) => current * modifier);
+            var torpedoSpeed = modifiers.ApplyModifiers(fromPlane ? "TorpedoDataContainer.Damage.Plane" : "TorpedoDataContainer.Damage.Ship", (decimal)torp.Speed);
 
-            var torpedoDetectModifiers = modifiers.FindModifiers("torpedoVisibilityFactor");
-            var torpedoDetect = (decimal)torpedoDetectModifiers.Aggregate(torp.SpottingRange, (current, modifier) => current * modifier);
+            var torpedoDetect = modifiers.ApplyModifiers("TorpedoDataContainer.Visibility", (decimal)torp.SpottingRange);
 
-            var torpedoArmingTimeModifiers = modifiers.FindModifiers("planeTorpedoArmingTimeCoeff");
-            var torpedoArmingTime = (decimal)torpedoArmingTimeModifiers.Aggregate(torp.ArmingTime, (current, modifier) => current * modifier);
+            var torpedoArmingTime = modifiers.ApplyModifiers("TorpedoDataContainer.ArmingTime", (decimal)torp.ArmingTime);
 
-            var torpedoFloodingModifiers = fromPlane ? modifiers.FindModifiers("floodChanceFactorPlane", true) : modifiers.FindModifiers("floodChanceFactor", true);
-            var torpedoFlooding = (decimal)torpedoFloodingModifiers.Aggregate(torp.FloodChance, (current, modifier) => current * modifier);
+            var torpedoFlooding = modifiers.ApplyModifiers(fromPlane ? "TorpedoDataContainer.FloodChance.Plane" : "TorpedoDataContainer.FloodChance.Ship", (decimal)torp.FloodChance);
 
             var allClasses = new List<ShipClass> { ShipClass.Destroyer, ShipClass.Cruiser, ShipClass.Battleship, ShipClass.AirCarrier };
 

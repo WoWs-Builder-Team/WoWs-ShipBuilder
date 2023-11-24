@@ -502,8 +502,8 @@
                                 @foreach (var modifier in ViewModel.CurrentShipStats.SpecialAbilityDataContainer.Modifiers ?? new())
                                 {
                                     <div class="d-flex justify-space-between">
-                                        <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@ModifierProcessor.GetUiModifierString(modifier.Key, modifier.Value, ReturnFilter.Description, Localizer)</MudText>
-                                        <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@ModifierProcessor.GetUiModifierString(modifier.Key, modifier.Value, ReturnFilter.Value, Localizer)</MudText>
+                                        <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.Description, Localizer)</MudText>
+                                        <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.Value, Localizer)</MudText>
                                     </div>
                                 }
                             </MudStack>

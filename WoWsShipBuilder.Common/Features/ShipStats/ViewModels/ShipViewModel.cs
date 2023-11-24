@@ -4,6 +4,7 @@ using DynamicData.Binding;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Features.Builds;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
@@ -172,7 +173,7 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
                         await this.semaphore.WaitAsync(token);
                         try
                         {
-                            List<(string, float)> modifiers = this.GenerateModifierList();
+                            List<Modifier> modifiers = this.GenerateModifierList();
                             if (this.ShipStatsControlViewModel != null)
                             {
                                 this.logger.LogDebug("Updating ship stats");
@@ -195,9 +196,9 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
             token);
     }
 
-    private List<(string, float)> GenerateModifierList()
+    private List<Modifier> GenerateModifierList()
     {
-        var modifiers = new List<(string, float)>();
+        var modifiers = new List<Modifier>();
 
         modifiers.AddRange(this.UpgradePanelViewModel.GetModifierList());
         modifiers.AddRange(this.SignalSelectorViewModel!.GetModifierList());

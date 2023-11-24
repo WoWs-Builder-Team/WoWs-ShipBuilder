@@ -4,6 +4,7 @@ using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Aircraft;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
@@ -34,19 +35,19 @@ public partial record ConsumableDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
     public decimal WorkTime { get; set; }
 
-    public Dictionary<string, float> Modifiers { get; set; } = null!;
+    public List<Modifier> Modifiers { get; set; } = null!;
 
-    public static ConsumableDataContainer FromTypeAndVariant(ShipConsumable consumable, List<(string name, float value)> modifiers, bool isCvPlanes, int shipHp, ShipClass shipClass)
+    public static ConsumableDataContainer FromTypeAndVariant(ShipConsumable consumable, List<Modifier> modifiers, bool isCvPlanes, int shipHp, ShipClass shipClass)
     {
         return FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, isCvPlanes, shipHp, shipClass);
     }
 
-    public static ConsumableDataContainer FromTypeAndVariant(AircraftConsumable consumable, List<(string name, float value)> modifiers, bool isCvPlanes, int shipHp, ShipClass shipClass)
+    public static ConsumableDataContainer FromTypeAndVariant(AircraftConsumable consumable, List<Modifier> modifiers, bool isCvPlanes, int shipHp, ShipClass shipClass)
     {
         return FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, isCvPlanes, shipHp, shipClass);
     }
 
-    private static ConsumableDataContainer FromTypeAndVariant(string name, string variant, int slot, List<(string name, float value)> modifiers, bool isCvPlanes, int shipHp, ShipClass shipClass)
+    private static ConsumableDataContainer FromTypeAndVariant(string name, string variant, int slot, List<Modifier> modifiers, bool isCvPlanes, int shipHp, ShipClass shipClass)
     {
         var consumableIdentifier = $"{name} {variant}";
         var usingFallback = false;
@@ -62,238 +63,189 @@ public partial record ConsumableDataContainer : DataContainerBase
                 Group = "error",
                 IconId = "error",
                 ConsumableVariantName = "error",
-                Modifiers = new() { { "error", 1 } },
+                Modifiers = new() { new Modifier("error", 1, "", null) },
             };
+
         }
 
         var iconName = string.IsNullOrEmpty(consumable.IconId) ? name : consumable.IconId;
         var localizationKey = string.IsNullOrEmpty(consumable.DescId) ? consumable.Name : consumable.DescId;
-        Dictionary<string, float> consumableModifiers = consumable.Modifiers is not null ? consumable.Modifiers.ToDictionary(x => x.Key, x => x.Value) : new();
+        List<Modifier> consumableModifiers = consumable.Modifiers;
         int uses = consumable.NumConsumables;
-        float cooldown = consumable.ReloadTime;
-        float workTime = consumable.WorkTime;
-        float prepTime = consumable.PreparationTime;
-        if (isCvPlanes && !consumableModifiers.ContainsKey("error"))
+        decimal cooldown = (decimal)consumable.ReloadTime;
+        decimal workTime = (decimal)consumable.WorkTime;
+        decimal prepTime = (decimal)consumable.PreparationTime;
+        if (isCvPlanes && !consumableModifiers.Any(x => x.Name.Equals("error", StringComparison.Ordinal)))
         {
-            workTime = modifiers.FindModifiers("planeConsumablesWorkTime").Aggregate(workTime, (current, modifier) => current * modifier);
+            workTime = modifiers.ApplyModifiers("ConsumableDataContainer.WorkTime.Plane", workTime);
 
             if (name.Contains("PCY036", StringComparison.InvariantCultureIgnoreCase))
             {
-                var workTimeModifiers = modifiers.FindModifiers("regenerateHealthWorkTimeCoeff");
-                workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
+                workTime = modifiers.ApplyModifiers("ConsumableDataContainer.WorkTime.PCY036", workTime);
 
-                var usesModifiers = modifiers.FindModifiers("regenerateHealthAdditionalConsumables");
-                uses = usesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
+                uses = modifiers.ApplyModifiers("ConsumableDataContainer.Uses.PCY036", uses);
 
-                var regenerationSpeedModifiers = modifiers.FindModifiers("planeRegenerationRate");
-                var regenerationSpeed = regenerationSpeedModifiers.Aggregate(consumableModifiers["regenerationRate"], (current, modifier) => current * modifier);
-                consumableModifiers["regenerationRate"] = regenerationSpeed;
+                consumableModifiers.UpdateConsumableModifierValue(modifiers, "ConsumableDataContainer.PlaneRegenerationRate.PCY036", "regenerationRate");
             }
             else if (name.Contains("PCY035", StringComparison.InvariantCultureIgnoreCase))
             {
-                var workTimeModifiers = modifiers.FindModifiers("callFightersWorkTimeCoeff");
-                workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
+                workTime = modifiers.ApplyModifiers("ConsumableDataContainer.WorkTime.PCY035", workTime);
 
-                var usesModifiers = modifiers.FindModifiers("callFightersAdditionalConsumables");
-                uses = usesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
+                uses = modifiers.ApplyModifiers("ConsumableDataContainer.Uses.PCY035", uses);
 
-                var radiusModifiers = modifiers.FindModifiers("callFightersRadiusCoeff");
-                var radius = radiusModifiers.Aggregate(consumableModifiers["radius"], (current, modifier) => current * modifier);
-                consumableModifiers["radius"] = radius;
+                consumableModifiers.UpdateConsumableModifierValue(modifiers,"ConsumableDataContainer.Radius.PCY035", "radius");
+                consumableModifiers.UpdateConsumableModifierValue(modifiers,"ConsumableDataContainer.TimeDelayAttack.PCY035", "timeDelayAttack");
+                consumableModifiers.UpdateConsumableModifierValue(modifiers,"ConsumableDataContainer.TimeDelayAppear.PCY035", "timeFromHeaven");
 
-                var timeDelayAttackModifiers = modifiers.FindModifiers("callFightersTimeDelayAttack");
-                var timeDelayAttack = timeDelayAttackModifiers.Aggregate(consumableModifiers["timeDelayAttack"], (current, modifier) => current * modifier);
-                consumableModifiers["timeDelayAttack"] = timeDelayAttack;
-
-                var timeFromHeavenModifiers = modifiers.FindModifiers("callFightersAppearDelay");
-                var timeFromHeaven = timeFromHeavenModifiers.Aggregate(consumableModifiers["timeFromHeaven"], (current, modifier) => current * modifier);
-                consumableModifiers["timeFromHeaven"] = timeFromHeaven;
-
+                //TODO check display value kind and translation
                 var plane = AppData.FindAircraft(consumable.PlaneName.Substring(0, consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)));
-                consumableModifiers.Add("cruisingSpeed", plane.Speed);
-                consumableModifiers.Add("concealment", (float)plane.ConcealmentFromShips);
-                consumableModifiers.Add("maxKills", consumableModifiers["fightersNum"]);
+                consumableModifiers.Add(new("", "cruisingSpeed", plane.Speed, null, "ShipStats_CruisingSpeed", Unit.Knots, new(), DisplayValueProcessingKind.None, ValueProcessingKind.None ));
+                consumableModifiers.Add(new("", "concealment", (float)plane.ConcealmentFromShips, null, "ShipStats_Concealment", Unit.KM, new(), DisplayValueProcessingKind.None, ValueProcessingKind.None ));
 
-                var maxViewDistanceModifiers = modifiers.FindModifiers("interceptorSelected").ToList();
-                var baseMaxViewDistance = (float)plane.SpottingOnShips;
-                var maxViewDistance = maxViewDistanceModifiers.Aggregate(baseMaxViewDistance, (current, modifier) => current * modifier);
-                consumableModifiers["maxViewDistance"] = maxViewDistance;
-                if (maxViewDistanceModifiers.Count > 0)
+                var fightersNum = consumableModifiers.First(x => x.Name.Equals("fightersNum", StringComparison.Ordinal)).Value;
+                consumableModifiers.Add(new("", "maxKills", fightersNum, null, "ModifierConverter_MaxKillsAmount", Unit.None, new(), DisplayValueProcessingKind.ToInt, ValueProcessingKind.None));
+
+                var baseMaxViewDistance = (decimal)plane.SpottingOnShips;
+                var maxViewDistanceModifier = consumableModifiers.Find(x => x.Name.Equals("maxViewDistance"))!;
+                var maxViewDistance = (float)modifiers.ApplyModifiers("ConsumableDataContainer.Interceptor", baseMaxViewDistance);
+                consumableModifiers.Remove(maxViewDistanceModifier);
+                consumableModifiers.Add(new (maxViewDistanceModifier.Name, maxViewDistance, "", maxViewDistanceModifier));
+
+                if (maxViewDistance == 0)
                 {
                     iconName = $"{name}_Upgrade";
                     localizationKey = $"{consumable.Name}_Upgrade";
                 }
 
-                var planesConcealmentModifiers = modifiers.FindModifiers("planeVisibilityFactor");
-                var planesConcealment = planesConcealmentModifiers.Aggregate(consumableModifiers["concealment"], (current, modifier) => current * modifier);
-                consumableModifiers["concealment"] = planesConcealment;
+                consumableModifiers.UpdateConsumableModifierValue(modifiers, "ConsumableDataContainer.PCY035.Concealment", "concealment");
             }
             else if (name.Contains("PCY034", StringComparison.InvariantCultureIgnoreCase))
             {
-                var cooldownModifiers = modifiers.FindModifiers("healForsageReloadCoeff");
-                cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+                cooldown = modifiers.ApplyModifiers("ConsumableDataContainer.PCY035.Reload", cooldown);
             }
         }
-        else if (!consumableModifiers.ContainsKey("error"))
+        else if (!consumableModifiers.Any(x => x.Name.Equals("error", StringComparison.Ordinal)))
         {
-            var usesModifiers = modifiers.FindModifiers("additionalConsumables", true);
-            uses = usesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
+            uses = modifiers.ApplyModifiers("ConsumableDataContainer.Uses.Ship", uses);
 
-            var talentUsesModifiers = modifiers.FindModifiers("numConsumables", true);
-            uses = talentUsesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
+            cooldown = modifiers.ApplyModifiers($"ConsumableDataContainer.Reload.{shipClass.ShipClassToString()}", cooldown);
+            cooldown = modifiers.ApplyModifiers("ConsumableDataContainer.Reload.Ship", cooldown);
 
-            var allCooldownModifiers = modifiers.FindModifiers($"ConsumableReloadTime_{shipClass.ShipClassToString()}", true);
-            cooldown = allCooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
-
-            allCooldownModifiers = modifiers.FindModifiers("ConsumableReloadTime", true);
-            cooldown = allCooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
-
-            var allWorkModifiers = modifiers.FindModifiers("ConsumablesWorkTime");
-            workTime = allWorkModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
+            workTime = modifiers.ApplyModifiers("ConsumableDataContainer.WorkTime.Ship", workTime);
 
             if (name.Contains("PCY011", StringComparison.InvariantCultureIgnoreCase))
             {
                 // Defensive AA
-                var cooldownModifiers = modifiers.FindModifiers("airDefenseDispReloadCoeff");
-                cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+                cooldown = modifiers.ApplyModifiers("ConsumableDataContainer.Reload.PCY011", cooldown);
 
-                var workTimeModifiers = modifiers.FindModifiers("airDefenseDispWorkTimeCoeff");
-                workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
+                workTime = modifiers.ApplyModifiers("ConsumableDataContainer.WorkTime.PCY011", workTime);
             }
             else if (name.Contains("PCY013", StringComparison.InvariantCultureIgnoreCase))
             {
                 // Spotting Aircraft
-                var extraScoutPlane = modifiers.FindModifiers("scoutAdditionalConsumables");
-                uses = extraScoutPlane.Aggregate(uses, (current, modifier) => (int)(current + modifier));
+                uses = modifiers.ApplyModifiers("ConsumableDataContainer.Uses.PCY013", uses);
 
-                var cooldownModifiers = modifiers.FindModifiers("scoutReloadCoeff");
-                cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+                cooldown = modifiers.ApplyModifiers("ConsumableDataContainer.Reload.PCY013", cooldown);
 
-                var workTimeModifiers = modifiers.FindModifiers("scoutWorkTimeCoeff");
-                workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
+                workTime = modifiers.ApplyModifiers("ConsumableDataContainer.WorkTime.PCY013", workTime);
             }
             else if (name.Contains("PCY010", StringComparison.InvariantCultureIgnoreCase))
             {
                 // Repair party
-                var regenUsesModifiers = modifiers.FindModifiers("regenCrewAdditionalConsumables", true);
-                uses = regenUsesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
+                uses = modifiers.ApplyModifiers("ConsumableDataContainer.Uses.PCY010", uses);
 
-                var cooldownModifiers = modifiers.FindModifiers("regenCrewReloadCoeff");
-                cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+                cooldown = modifiers.ApplyModifiers("ConsumableDataContainer.Reload.PCY010", cooldown);
 
-                var workTimeModifiers = modifiers.FindModifiers("regenCrewWorkTimeCoeff");
-                workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
+                workTime = modifiers.ApplyModifiers("ConsumableDataContainer.WorkTime.PCY010", workTime);
 
-                var regenerationSpeedModifiers = modifiers.FindModifiers("regenerationHPSpeed", true);
-                var regenerationSpeed = regenerationSpeedModifiers.Aggregate(consumableModifiers["regenerationHPSpeed"], (current, modifier) => current * modifier);
-                consumableModifiers["regenerationHPSpeed"] = regenerationSpeed;
+                consumableModifiers.UpdateConsumableModifierValue(modifiers, "ConsumableDataContainer.RegenerationHpSpeed.PCY010", "regenerationHPSpeed");
 
-                var hpPerHeal = (float)Math.Round(workTime * (regenerationSpeed * shipHp));
-                consumableModifiers.Add("hpPerHeal", hpPerHeal);
+                consumableModifiers.UpdateConsumableModifierValue(modifiers, "ConsumableDataContainer.RegenerationHpSpeed.PCY010", "regenerationHPSpeed");
+
+                var regenSpeed = consumableModifiers.First(x => x.Name.Equals("regenerationHPSpeed", StringComparison.Ordinal))!.Value;
+                var hpPerHeal = (float)Math.Round(workTime * (decimal)(regenSpeed * shipHp));
+
+                consumableModifiers.Add(new("", "hpPerHeal", hpPerHeal, null, "Consumable_HpPerHeal", Unit.PercentPerS, new(), DisplayValueProcessingKind.DecimalRoundedPercentage, ValueProcessingKind.None));
             }
             else if (name.Contains("PCY016", StringComparison.InvariantCultureIgnoreCase))
             {
                 // Hydro
-                var cooldownModifiers = modifiers.FindModifiers("sonarReloadCoeff");
-                cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+                cooldown = modifiers.ApplyModifiers("ConsumableDataContainer.Reload.PCY016", cooldown);
 
-                var workTimeModifiers = modifiers.FindModifiers("sonarWorkTimeCoeff");
-                workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
+                workTime = modifiers.ApplyModifiers("ConsumableDataContainer.WorkTime.PCY016", workTime);
 
-                var torpDetectionModifiers = modifiers.FindModifiers("TorpedoDetectionCoefficient");
-                var distTorpedo = torpDetectionModifiers.Aggregate(consumableModifiers["distTorpedo"], (current, modifier) => current * modifier);
-                consumableModifiers["distTorpedo"] = distTorpedo;
+                consumableModifiers.UpdateConsumableModifierValue(modifiers, "ConsumableDataContainer.TorpDetection.PCY016", "distTorpedo");
             }
             else if (name.Contains("PCY020", StringComparison.InvariantCultureIgnoreCase))
             {
                 // Radar
-                var cooldownModifiers = modifiers.FindModifiers("rlsReloadCoeff");
-                cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+                cooldown = modifiers.ApplyModifiers("ConsumableDataContainer.Reload.PCY020", cooldown);
 
-                var workTimeModifiers = modifiers.FindModifiers("rlsWorkTimeCoeff");
-                workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
+                workTime = modifiers.ApplyModifiers("ConsumableDataContainer.WorkTime.PCY020", workTime);
             }
             else if (name.Contains("PCY009", StringComparison.InvariantCultureIgnoreCase) || name.Contains("PCY037", StringComparison.InvariantCultureIgnoreCase))
             {
                 // Damage Control Party, Damage Control Party (auto)
-                var crashCrewUsesModifiers = modifiers.FindModifiers("crashCrewAdditionalConsumables", true);
-                uses = crashCrewUsesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
+                uses = modifiers.ApplyModifiers("ConsumableDataContainer.Uses.PCY009.PCY037", uses);
 
-                var cooldownModifiers = modifiers.FindModifiers("crashCrewReloadCoeff");
-                cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+                cooldown = modifiers.ApplyModifiers("ConsumableDataContainer.Reload.PCY009.PCY037", cooldown);
 
-                var workTimeModifiers = modifiers.FindModifiers("crashCrewWorkTimeCoeff");
-                workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
+                workTime = modifiers.ApplyModifiers("ConsumableDataContainer.WorkTime.PCY009.PCY037", workTime);
             }
             else if (name.Contains("PCY014", StringComparison.InvariantCultureIgnoreCase))
             {
                 // Smoke Generator
-                var workTimeModifiers = modifiers.FindModifiers("smokeGeneratorWorkTimeCoeff");
-                workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
+                uses = modifiers.ApplyModifiers("ConsumableDataContainer.Uses.PCY014", uses);
 
-                var smokeLifeTimeModifiers = modifiers.FindModifiers("smokeGeneratorLifeTime");
-                var lifeTime = smokeLifeTimeModifiers.Aggregate(consumableModifiers["lifeTime"], (current, modifier) => current * modifier);
-                consumableModifiers["lifeTime"] = lifeTime;
+                cooldown = modifiers.ApplyModifiers("ConsumableDataContainer.Reload.PCY014", cooldown);
 
-                var smokeUsesModifiers = modifiers.FindModifiers("smokeGeneratorAdditionalConsumables");
-                uses = smokeUsesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
+                workTime = modifiers.ApplyModifiers("ConsumableDataContainer.WorkTime.PCY014", workTime);
 
-                var smokeCooldownModifiers = modifiers.FindModifiers("smokeGeneratorReloadCoeff");
-                cooldown = smokeCooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+                consumableModifiers.UpdateConsumableModifierValue(modifiers, "ConsumableDataContainer.LifeTime.PCY014", "lifeTime");
             }
             else if (name.Contains("PCY015", StringComparison.InvariantCultureIgnoreCase))
             {
                 // Engine Boost
-                var cooldownModifiers = modifiers.FindModifiers("speedBoostersReloadCoeff");
-                cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+                cooldown = modifiers.ApplyModifiers("ConsumableDataContainer.Reload.PCY015", cooldown);
 
-                var workTimeModifiers = modifiers.FindModifiers("speedBoostersWorkTimeCoeff");
-                workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
+                workTime = modifiers.ApplyModifiers("ConsumableDataContainer.WorkTime.PCY015", workTime);
             }
             else if (name.Contains("PCY022", StringComparison.InvariantCultureIgnoreCase))
             {
                 // Main Battery Reload Booster
-                var cooldownModifiers = modifiers.FindModifiers("artilleryBoostersReloadCoeff");
-                cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+                cooldown = modifiers.ApplyModifiers("ConsumableDataContainer.Reload.PCY022", cooldown);
             }
             else if (name.Contains("PCY012", StringComparison.InvariantCultureIgnoreCase) || name.Contains("PCY038", StringComparison.InvariantCultureIgnoreCase))
             {
                 // Fighter, Fighter (auto)
-                var extraFighters = modifiers.FindModifiers("extraFighterCount");
-                var totalFighters = extraFighters.Aggregate(consumableModifiers["fightersNum"], (current, modifier) => current + modifier);
-                consumableModifiers["fightersNum"] = totalFighters;
+                cooldown = modifiers.ApplyModifiers("ConsumableDataContainer.Reload.PCY012.PCY038", cooldown);
 
-                var cooldownModifiers = modifiers.FindModifiers("fighterReloadCoeff");
-                cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+                consumableModifiers.UpdateConsumableModifierValue(modifiers, "ConsumableDataContainer.ExtraFighters.PCY012.PCY03", "fightersNum");
+                var maxKills = consumableModifiers.First(x => x.Name.Equals("fightersNum", StringComparison.Ordinal))!.Value;
 
                 var plane = AppData.FindAircraft(consumable.PlaneName[..consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)]);
-                consumableModifiers.Add("cruisingSpeed", plane.Speed);
-                consumableModifiers.Add("maxViewDistance", (float)plane.SpottingOnShips);
-                consumableModifiers.Add("maxKills", consumableModifiers["fightersNum"]);
+                consumableModifiers.Add(new("", "hpPerHeal", plane.Speed, null, "ShipStats_CruisingSpeed", Unit.Knots, new(), DisplayValueProcessingKind.ToInt, ValueProcessingKind.None));
+                consumableModifiers.Add(new("", "maxViewDistance", (float)plane.SpottingOnShips, null, "ShipStats_MaxViewDistance", Unit.KM, new(), DisplayValueProcessingKind.DecimalRoundedPercentage, ValueProcessingKind.None));
+                consumableModifiers.Add(new("", "maxKills", maxKills, null, "ModifierConverter_MaxKillsAmount", Unit.None, new(), DisplayValueProcessingKind.ToInt, ValueProcessingKind.None));
 
-                var concealment = (float)plane.ConcealmentFromShips;
-                var planesConcealmentModifiers = modifiers.FindModifiers("planeVisibilityFactor");
-                var planesConcealment = planesConcealmentModifiers.Aggregate(concealment, (current, modifier) => current * modifier);
-                consumableModifiers["concealment"] = planesConcealment;
+                var concealment = (decimal)plane.ConcealmentFromShips;
+                var planesConcealment = (float)modifiers.ApplyModifiers("ConsumableDataContainer.Concealment.PCY012.PCY03", concealment);
+                consumableModifiers.Add(new("", "concealment", planesConcealment, null, "ShipStats_Concealment", Unit.KM, new(), DisplayValueProcessingKind.ToInt, ValueProcessingKind.None));
             }
             else if (name.Contains("PCY018", StringComparison.InvariantCultureIgnoreCase))
             {
                 // Torpedo Reload Booster
-                var cooldownModifiers = modifiers.FindModifiers("torpedoReloaderReloadCoeff");
-                cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+                cooldown = modifiers.ApplyModifiers("ConsumableDataContainer.Reload.PCY018", cooldown);
             }
             else if (name.Contains("PCY045", StringComparison.InvariantCultureIgnoreCase))
             {
                 // Hydrophone
-                var hydrophoneUpdateFrequencyModifiers = modifiers.FindModifiers("hydrophoneUpdateFrequencyCoeff");
-                var hydrophoneUpdateFrequency = hydrophoneUpdateFrequencyModifiers.Aggregate(consumableModifiers["hydrophoneUpdateFrequency"], (current, modifier) => current * modifier);
-                consumableModifiers["hydrophoneUpdateFrequency"] = hydrophoneUpdateFrequency;
+                consumableModifiers.UpdateConsumableModifierValue(modifiers, "ConsumableDataContainer.HydrophoneUpdateFrequency.PCY045", "hydrophoneUpdateFrequency");
             }
             else if (name.Contains("PCY048", StringComparison.InvariantCultureIgnoreCase))
             {
                 // Submarine Surveillance
-                var subsRadarPrepTimeModifiers = modifiers.FindModifiers("ConsumableReloadTime");
-                prepTime = subsRadarPrepTimeModifiers.Aggregate(prepTime, (current, modifier) => current * modifier);
+                prepTime = modifiers.ApplyModifiers("ConsumableDataContainer.PrepTime.PCY048", prepTime);
             }
         }
         else if (usingFallback)
@@ -308,9 +260,9 @@ public partial record ConsumableDataContainer : DataContainerBase
             IconName = iconName,
             Slot = slot,
             Desc = "",
-            Cooldown = Math.Round((decimal)cooldown, 1),
-            PreparationTime = Math.Round((decimal)prepTime, 1),
-            WorkTime = Math.Round((decimal)workTime, 1),
+            Cooldown = Math.Round(cooldown, 1),
+            PreparationTime = Math.Round(prepTime, 1),
+            WorkTime = Math.Round(workTime, 1),
             Modifiers = consumableModifiers,
         };
 

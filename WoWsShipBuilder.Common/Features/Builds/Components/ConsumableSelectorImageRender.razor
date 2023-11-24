@@ -62,11 +62,11 @@
                     @SharedFragments.DataElementFragment((data, pair.localizer))
                 }
                 <div style="margin-top: 6px"></div>
-                @foreach ((string modifierName, float modifierValue) in pair.consumableData.Modifiers)
+                @foreach (var modifier in pair.consumableData.Modifiers)
                 {
                     // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
-                    string modifierDesc = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.Description, pair.localizer);
-                    string modifierValueString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.Value, pair.localizer);
+                    string modifierDesc = ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.Description, pair.localizer);
+                    string modifierValueString = ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.Value, pair.localizer);
                     if (!string.IsNullOrWhiteSpace(modifierDesc) && !string.IsNullOrWhiteSpace(modifierValueString))
                     {
                         <div class="d-flex justify-space-between">

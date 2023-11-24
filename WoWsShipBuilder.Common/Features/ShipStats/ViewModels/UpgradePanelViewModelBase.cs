@@ -1,6 +1,7 @@
 ﻿using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Upgrade;
 using WoWsShipBuilder.Infrastructure.Utility;
@@ -66,11 +67,11 @@ public class UpgradePanelViewModelBase : ReactiveObject, IBuildComponentProvider
         set => this.RaiseAndSetIfChanged(ref this.availableModernizationList, value);
     }
 
-    public List<(string, float)> GetModifierList()
+    public List<Modifier> GetModifierList()
     {
         var modifiers = this.SelectedModernizationList
             .Where(m => !string.IsNullOrEmpty(m.Index))
-            .SelectMany(m => m.Effect.Select(effect => (effect.Key, (float)effect.Value)))
+            .SelectMany(m => m.Modifiers)
             .ToList();
 
         // modifiers.FindIndex(pair => pair.Key.Contains())

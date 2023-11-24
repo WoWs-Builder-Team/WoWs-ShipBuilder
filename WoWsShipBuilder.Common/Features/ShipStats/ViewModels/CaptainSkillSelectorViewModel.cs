@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Captain;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;
 using WoWsShipBuilder.Infrastructure.Utility;
@@ -108,7 +109,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
                     SkillActivationItemViewModel talentModel;
 
                     // get all the modifiers from the talents. workTime is excluded because it's for talents that automatically trigger a consumable, so it's not an effect we can show.
-                    var modifiers = talent.SkillEffects.SelectMany(effect => effect.Value.Modifiers.Where(modifier => !modifier.Key.Equals("workTime", StringComparison.Ordinal))).ToImmutableDictionary(x => x.Key, x => x.Value);
+                    var modifiers = talent.SkillEffects.SelectMany(effect => effect.Value.Modifiers.Where(modifier => !modifier.Name.Equals("workTime", StringComparison.Ordinal))).ToImmutableList();
                     if (talent.MaxTriggerNum <= 1)
                     {
                         talentModel = new(talent.TranslationId, -1, modifiers, false, description: talent.TranslationId + "_DESCRIPTION");
@@ -256,27 +257,29 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     /// Create a list of modifiers in a tuple format (name, value) from the currently selected skill.
     /// </summary>
     /// <returns>The List of modifiers of the currently selected skill.</returns>
-    public List<(string, float)> GetModifiersList()
+    public List<Modifier> GetModifiersList()
     {
         var modifiers = this.SkillOrderList.ToList()
             .Where(skill => skill.Modifiers.Any() && skill.SkillNumber != ArSkillNumber && skill.SkillNumber != ArSkillNumberSubs && skill.SkillNumber != FuriousSkillNumber && skill.SkillNumber != ImprovedRepairPartyReadinessSkillNumber)
             .SelectMany(m => m.Modifiers)
-            .Select(effect => (effect.Key, effect.Value))
             .ToList();
 
         // filter out modifiers that are class specific
-        modifiers = modifiers.Where(x => !x.Key.Contains('_') || x.Key.Contains("_" + this.currentClass) || x.Key.Contains("invisible_"))
-            .Select(effect => (effect.Key, effect.Value))
+        modifiers = modifiers.Where(x => !x.Name.Contains('_') || x.Name.Contains("_" + this.currentClass) || x.Name.Contains("invisible_"))
             .ToList();
 
         if (this.SkillOrderList.Any(skill => skill.SkillNumber == 14))
         {
-            modifiers.Add(("fireResistanceEnabled", 1));
+            var affectedProp = new HashSet<string>();
+            affectedProp.Add("SurvivabilityDataContainer.FireResistance");
+            modifiers.Add(new ("", "fireResistanceEnabled", -1, null, null, Unit.None, affectedProp, DisplayValueProcessingKind.None, ValueProcessingKind.DirectAdd));
         }
 
         if (this.SkillOrderList.Any(skill => skill.SkillNumber == 22))
         {
-            modifiers.Add(("interceptorSelected", 0));
+            var affectedProp = new HashSet<string>();
+            affectedProp.Add("ConsumableDataContainer.Interceptor");
+            modifiers.Add(new("", "interceptorSelected", 0, null, null, Unit.None, affectedProp, DisplayValueProcessingKind.None, ValueProcessingKind.Multiplier));
         }
 
         if (this.ConditionalModifiersList.Count > 0)
@@ -287,7 +290,8 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         var arSkill = this.SkillOrderList.SingleOrDefault(skill => skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs);
         if (arSkill is not null)
         {
-            modifiers.Add(("lastChanceReloadCoefficient", arSkill.Modifiers["lastChanceReloadCoefficient"] * (100 - this.ArHpPercentage)));
+            // TODO add affected property
+            modifiers.Add(new("", "lastChanceReloadCoefficient", arSkill.Modifiers.First(x => x.Name.Equals("lastChanceReloadCoefficient")).Value * (100 - this.ArHpPercentage), null, null, Unit.None, new(), DisplayValueProcessingKind.None, ValueProcessingKind.None));
         }
 
         if (this.CaptainTalentsList.Count > 0)
@@ -342,12 +346,11 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         this.SkillActivationButtonEnabled = this.CaptainTalentsList.Count > 0 || this.ConditionalModifiersList.Count > 0 || this.ShowArHpSelection;
     }
 
-    private IEnumerable<(string, float)> CollectConditionalModifiers()
+    private IEnumerable<Modifier> CollectConditionalModifiers()
     {
-        var modifiers = new List<(string, float)>();
+        var modifiers = new List<Modifier>();
         var conditionalModifiers = this.ConditionalModifiersList.Where(skill => skill.Status && skill.SkillId != FuriousSkillNumber && skill.MaximumActivations <= 1)
-            .SelectMany(skill => skill.Modifiers)
-            .Select(x => (x.Key, x.Value));
+            .SelectMany(skill => skill.Modifiers);
 
         modifiers.AddRange(conditionalModifiers);
 
@@ -357,43 +360,43 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         if (furiousSkill is not null && furiousSkillModifier is not null && furiousSkillModifier.Status)
         {
             var furiousModifiers = furiousSkill.ConditionalModifierGroups[0].Modifiers;
-            double multiplier = furiousModifiers["repeatable_first_GMShotDelay"];
+            double multiplier = furiousModifiers.First(x => x.Name.Equals("repeatable_first_GMShotDelay")).Value;
             if (furiousSkillModifier.ActivationNumbers > 1)
             {
-                multiplier *= Math.Pow(furiousModifiers["repeatable_other_GMShotDelay"], furiousSkillModifier.ActivationNumbers - 1);
+                multiplier *= Math.Pow(furiousModifiers.First(x => x.Name.Equals("repeatable_other_GMShotDelay")).Value, furiousSkillModifier.ActivationNumbers - 1);
             }
 
-            modifiers.Add(("GMShotDelay", (float)Math.Round(multiplier, 2)));
+            // TODO add affected property
+            modifiers.Add(new("", "GMShotDelay", (float)Math.Round(multiplier, 2), null, null, Unit.None, new(), DisplayValueProcessingKind.None, ValueProcessingKind.None));
         }
 
         // Custom handling for Improved Repair Party Readiness Skill
         var irprModifierGroups = this.ConditionalModifiersList.Where(skill => skill.SkillId is ImprovedRepairPartyReadinessSkillNumber);
         foreach (var modifierGroup in irprModifierGroups.Where(vm => vm.Status && vm.MaximumActivations != 1))
         {
-            float skillFactor = modifierGroup.Modifiers["regenCrewReloadCoeff"];
+            float skillFactor = modifierGroup.Modifiers.First(x => x.Name.Equals("regenCrewReloadCoeff")).Value;
             double multiplier = Math.Pow(skillFactor, modifierGroup.ActivationNumbers);
-            modifiers.Add(("regenCrewReloadCoeff", Convert.ToSingle(multiplier)));
+
+            // TODO add affected property
+            modifiers.Add(new("", "regenCrewReloadCoeff", Convert.ToSingle(multiplier), null, null, Unit.None, new(), DisplayValueProcessingKind.None, ValueProcessingKind.None));
         }
 
         return modifiers;
     }
 
-    private IEnumerable<(string, float)> CollectTalentModifiers()
+    private IEnumerable<Modifier> CollectTalentModifiers()
     {
-        var modifiers = new List<(string, float)>();
-        var talentModifiers = this.CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: <= 1 } && !talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
-            .SelectMany(skill => skill.Modifiers)
-            .Select(x => (x.Key, x.Value));
+        var modifiers = new List<Modifier>();
+        var talentModifiers = this.CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: <= 1 } && !talent.Modifiers.Any(modifier => modifier.Name.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
+            .SelectMany(skill => skill.Modifiers);
         modifiers.AddRange(talentModifiers);
 
-        var talentMultipleActivationModifiers = this.CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: > 1 } && !talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
-            .SelectMany(talent => talent.Modifiers.Select(modifier => (modifier.Key, Value: Math.Pow(modifier.Value, talent.ActivationNumbers))))
-            .Select(x => (x.Key, (float)x.Value));
+        var talentMultipleActivationModifiers = this.CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: > 1 } && !talent.Modifiers.Any(modifier => modifier.Name.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
+            .SelectMany(talent => talent.Modifiers.Select(modifier => new Modifier("", modifier.Name, float.Pow(modifier.Value, talent.ActivationNumbers), modifier.GameLocalizationKey, modifier.AppLocalizationKey, modifier.Unit, modifier.AffectedProperties, modifier.DisplayedValueProcessingKind, modifier.ValueProcessingKind)));
         modifiers.AddRange(talentMultipleActivationModifiers);
 
-        var talentFireChanceModifier = this.CaptainTalentsList.Where(talent => talent.Status && talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
-            .SelectMany(talent => talent.Modifiers.Select(modifier => (modifier.Key, Value: Math.Round(modifier.Value * talent.ActivationNumbers, 2))))
-            .Select(x => (x.Key, (float)x.Value));
+        var talentFireChanceModifier = this.CaptainTalentsList.Where(talent => talent.Status && talent.Modifiers.Any(modifier => modifier.Name.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
+            .SelectMany(talent => talent.Modifiers.Select(modifier => new Modifier("", modifier.Name, float.Round(modifier.Value * talent.ActivationNumbers, 2), modifier.GameLocalizationKey, modifier.AppLocalizationKey, modifier.Unit, modifier.AffectedProperties, modifier.DisplayedValueProcessingKind, modifier.ValueProcessingKind)));
         modifiers.AddRange(talentFireChanceModifier);
 
         return modifiers;

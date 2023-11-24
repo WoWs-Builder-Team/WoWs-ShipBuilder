@@ -3,6 +3,7 @@ using System.Text;
 using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.Utility;
 
@@ -56,7 +57,7 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
 
     public IEnumerable<TorpedoLauncher> TorpedoLaunchers { get; private set; } = default!;
 
-    public static TorpedoArmamentDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
+    public static TorpedoArmamentDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
         var torpConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.Torpedoes);
         if (torpConfiguration == null)
@@ -100,17 +101,9 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
             torpCount += current.LauncherCount * current.BarrelCount;
         }
 
-        var turnSpeedModifiers = modifiers.FindModifiers("GTRotationSpeed");
-        decimal traverseSpeed = turnSpeedModifiers.Aggregate(launcher.HorizontalRotationSpeed, (current, modifier) => current * (decimal)modifier);
+        decimal traverseSpeed = modifiers.ApplyModifiers("TorpedoArmamentDataContainer.TraverseSpeed", launcher.HorizontalRotationSpeed);
 
-        var reloadSpeedModifiers = modifiers.FindModifiers("GTShotDelay");
-        decimal reloadSpeed = reloadSpeedModifiers.Aggregate(launcher.Reload, (current, modifier) => current * (decimal)modifier);
-
-        var arModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
-        reloadSpeed = arModifiers.Aggregate(reloadSpeed, (current, arModifier) => current * (1 - ((decimal)arModifier / 100)));
-
-        var talentModifiers = modifiers.FindModifiers("torpedoReloadCoeff");
-        reloadSpeed = talentModifiers.Aggregate(reloadSpeed, (current, modifier) => current * (decimal)modifier);
+        decimal reloadSpeed = modifiers.ApplyModifiers("TorpedoArmamentDataContainer.Reload", launcher.Reload);
 
         string torpedoArea = $"{launcher.TorpedoAngles[0]} - {Math.Round(launcher.TorpedoAngles[1], 1)}"; // only the second one needs rounding
 

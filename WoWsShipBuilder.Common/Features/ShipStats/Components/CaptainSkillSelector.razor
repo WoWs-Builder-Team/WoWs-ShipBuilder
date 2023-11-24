@@ -73,10 +73,10 @@
                                     @if (skill.Modifiers is { Count: > 0 })
                                     {
                                         <MudDivider Light="true" Class="ma-1"/>
-                                        foreach ((string modifierName, float modifierValue) in skill.Modifiers)
+                                        foreach (var modifier in skill.Modifiers)
                                         {
                                             // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
-                                            string modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
+                                            string modifierString = ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.All, Localizer);
                                             if (!string.IsNullOrWhiteSpace(modifierString))
                                             {
                                                 <MudText Align="Align.Left" Typo="Typo.body2">
@@ -98,10 +98,10 @@
                                                 @Localizer.GetGameLocalization(!string.IsNullOrWhiteSpace(modifierGroup.TriggerDescription) ? modifierGroup.TriggerDescription : "SKILL_TRIGGER_" + modifierGroup.TriggerType).Localization
                                             }
                                         </MudText>
-                                        foreach ((string modifierName, float modifierValue) in modifierGroup.Modifiers)
+                                        foreach (var modifier in modifierGroup.Modifiers)
                                         {
                                             // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
-                                            string modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
+                                            string modifierString = ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.All, Localizer);
                                             if (!string.IsNullOrWhiteSpace(modifierString))
                                             {
                                                 <MudText Align="Align.Left" Typo="Typo.body2">

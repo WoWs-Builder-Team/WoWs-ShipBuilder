@@ -1,4 +1,5 @@
 using WoWsShipBuilder.DataElements.DataElementAttributes;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Utility;
@@ -31,10 +32,10 @@ public partial record DepthChargeDataContainer : ProjectileDataContainer
 
     public Dictionary<float, List<float>> PointsOfDmg { get; set; } = default!;
 
-    public static DepthChargeDataContainer FromChargesName(string name, IEnumerable<(string name, float value)> modifiers)
+    public static DepthChargeDataContainer FromChargesName(string name, List<Modifier> modifiers)
     {
         var depthCharge = AppData.FindProjectile<DepthCharge>(name);
-        float damage = modifiers.FindModifiers("dcAlphaDamageMultiplier").Aggregate(depthCharge.Damage, (current, modifier) => current * modifier);
+        decimal damage = modifiers.ApplyModifiers("DepthChargeDataContainer.Damage", (decimal)depthCharge.Damage);
         decimal minSpeed = (decimal)(depthCharge.SinkingSpeed * (1 - depthCharge.SinkingSpeedRng)) * Constants.KnotsToMps;
         decimal maxSpeed = (decimal)(depthCharge.SinkingSpeed * (1 + depthCharge.SinkingSpeedRng)) * Constants.KnotsToMps;
         decimal minTimer = (decimal)(depthCharge.DetonationTimer - depthCharge.DetonationTimerRng);

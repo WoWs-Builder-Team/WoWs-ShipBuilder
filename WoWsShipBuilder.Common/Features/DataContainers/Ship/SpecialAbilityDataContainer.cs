@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 
 // ReSharper disable InconsistentNaming
@@ -45,11 +46,11 @@ public partial record SpecialAbilityDataContainer : DataContainerBase
 
     // This is in common
     [JsonIgnore]
-    public Dictionary<string, float> Modifiers { get; set; } = null!;
+    public List<Modifier> Modifiers { get; set; } = null!;
 
     public bool IsBurstMode { get; set; }
 
-    public static SpecialAbilityDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
+    public static SpecialAbilityDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
         SpecialAbilityDataContainer specialDataContainer;
 

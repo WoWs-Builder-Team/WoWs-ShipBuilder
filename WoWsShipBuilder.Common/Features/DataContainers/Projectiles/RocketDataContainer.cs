@@ -1,4 +1,5 @@
 using WoWsShipBuilder.DataElements.DataElementAttributes;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.Features.BallisticCharts;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
@@ -55,7 +56,7 @@ public partial record RocketDataContainer : ProjectileDataContainer
 
     public bool ShowBlastPenetration { get; private set; }
 
-    public static RocketDataContainer FromRocketName(string name, List<(string name, float value)> modifiers)
+    public static RocketDataContainer FromRocketName(string name, List<Modifier> modifiers)
     {
         var rocket = AppData.FindProjectile<Rocket>(name);
 
@@ -69,8 +70,7 @@ public partial record RocketDataContainer : ProjectileDataContainer
         int penetrationAp = 0;
         if (rocket.RocketType.Equals(DataStructures.RocketType.AP))
         {
-            List<float> rocketDamageModifiers = modifiers.FindModifiers("rocketApAlphaDamageMultiplier").ToList();
-            rocketDamage = rocketDamageModifiers.Aggregate(rocketDamage, (current, modifier) => current * (decimal)modifier);
+            rocketDamage = modifiers.ApplyModifiers("RocketDataContainer.Damage.Ap", rocketDamage);
             ricochetAngle = $"{rocket.RicochetAngle}-{rocket.AlwaysRicochetAngle}";
             fuseTimer = (decimal)rocket.FuseTimer;
             armingThreshold = (int)rocket.ArmingThreshold;
@@ -79,10 +79,7 @@ public partial record RocketDataContainer : ProjectileDataContainer
         }
         else
         {
-            var fireChanceModifiers = modifiers.FindModifiers("rocketBurnChanceBonus");
-            fireChance = (decimal)fireChanceModifiers.Aggregate(rocket.FireChance, (current, modifier) => current + modifier);
-            var fireChanceModifiersRockets = modifiers.FindModifiers("burnChanceFactorSmall");
-            fireChance = fireChanceModifiersRockets.Aggregate(fireChance, (current, modifier) => current + (decimal)modifier);
+            fireChance = modifiers.ApplyModifiers("RocketDataContainer.FireChance", (decimal) rocket.FireChance);
             penetrationHe = (int)Math.Truncate(rocket.Penetration);
         }
 
