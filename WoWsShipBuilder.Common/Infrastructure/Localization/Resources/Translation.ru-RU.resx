@@ -2068,4 +2068,16 @@
   <data name="ShipStats_ShellType" xml:space="preserve">
     <value>Тип снаряда</value>
   </data>
+  <data name="ShipStats_Overall" xml:space="preserve">
+    <value>Всего</value>
+  </data>
+  <data name="ShipComparison_SplashDmgSubs" xml:space="preserve">
+    <value>Урон сплешом по ПЛ</value>
+  </data>
+  <data name="ShipComparison_OutOfRange" xml:space="preserve">
+    <value>Вне досягаемости</value>
+  </data>
+  <data name="ShipComparison_OutOfRangeTooltip" xml:space="preserve">
+    <value>Дальность выстрела превышает максимальную дальность орудий корабля</value>
+  </data>
 </root>
