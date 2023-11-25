@@ -57,7 +57,7 @@
 {
     <div style="margin: 8px 0;"></div>
     <MudPaper>
-        <MudTextField AutoFocus T="string" Margin="Margin.Dense" Adornment="Adornment.Start" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_TypeName))" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Label="@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SearchAndPin))" @bind-Text="@ViewModel.ResearchedShip" Immediate DebounceInterval="150"/>
+        <MudTextField AutoFocus T="string" Margin="Margin.Dense" Adornment="Adornment.Start" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_AddAShip))" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Label="@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SearchAndPin))" @bind-Text="@ViewModel.ResearchedShip" Immediate DebounceInterval="150"/>
     </MudPaper>
     if (!string.IsNullOrEmpty(ViewModel.ResearchedShip))
     {
