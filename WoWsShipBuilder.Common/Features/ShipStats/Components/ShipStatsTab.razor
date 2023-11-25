@@ -97,10 +97,10 @@ else if (ViewModel is not null)
                     <MudItem xs="12" md="2" Class="align-self-center d-flex justify-center">
                         <MudStack>
                             <MudButton Size="Size.Large" Variant="Variant.Outlined" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Share" OnClick="@OnShareBuildClicked">
-                                @Localizer.GetAppLocalization(nameof(Translation.MainWindow_ShareBuild)).Localization
+                                @Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShareOrSaveBuild)).Localization
                             </MudButton>
                             <MudButton Size="Size.Large" Variant="Variant.Outlined" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Save" OnClick="@OnBuildSaveClicked">
-                                @Localizer.SimpleAppLocalization(nameof(Translation.Dialog_Save))
+                                @Localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ArchiveBuild))
                             </MudButton>
                         </MudStack>
                     </MudItem>
