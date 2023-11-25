@@ -5,8 +5,12 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using DynamicData;
+using MudBlazor;
 using WoWsShipBuilder.Features.Builds;
+using WoWsShipBuilder.Features.Builds.Components;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
+using WoWsShipBuilder.Infrastructure.Localization;
+using WoWsShipBuilder.Infrastructure.Localization.Resources;
 
 namespace WoWsShipBuilder.Desktop.Infrastructure.Data;
 
@@ -18,13 +22,22 @@ public class DesktopUserDataService : IUserDataService
 
     private readonly IFileSystem fileSystem;
 
+    private readonly ISnackbar snackbar;
+
+    private readonly IDialogService dialogService;
+
+    private readonly ILocalizer localizer;
+
     private List<Build>? savedBuilds;
 
-    public DesktopUserDataService(IDataService dataService, IAppDataService appDataService, IFileSystem fileSystem)
+    public DesktopUserDataService(IDataService dataService, IAppDataService appDataService, IFileSystem fileSystem, ISnackbar snackbar, IDialogService dialogService, ILocalizer localizer)
     {
         this.dataService = dataService;
         this.appDataService = appDataService;
         this.fileSystem = fileSystem;
+        this.snackbar = snackbar;
+        this.dialogService = dialogService;
+        this.localizer = localizer;
     }
 
     public async Task SaveBuildsAsync(IEnumerable<Build> builds)
@@ -86,11 +99,57 @@ public class DesktopUserDataService : IUserDataService
     public async Task ImportBuildsAsync(IEnumerable<Build> builds)
     {
         this.savedBuilds ??= (await this.LoadBuildsAsync()).ToList();
+        this.snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomEnd;
 
-        foreach (var build in builds.Where(x => AppData.ShipDictionary.ContainsKey(x.ShipIndex)))
+        var buildsList = builds.ToList();
+        var buildsUpdated = 0;
+        var savingBuildCancelled = 0;
+
+        foreach (var build in buildsList.Where(x => AppData.ShipDictionary.ContainsKey(x.ShipIndex)))
         {
             this.savedBuilds.RemoveAll(x => x.Equals(build));
-            this.savedBuilds.Insert(0, build);
+            var buildToUpdate = this.savedBuilds.Find(x => x.ShipIndex.Equals(build.ShipIndex, StringComparison.Ordinal) && x.BuildName.Equals(build.BuildName, StringComparison.Ordinal));
+            if (buildToUpdate != null)
+            {
+                DialogOptions options = new()
+                {
+                    NoHeader = true,
+                    CloseOnEscapeKey = true,
+                };
+                DialogParameters parameters = new()
+                {
+                    ["BuildName"] = build.BuildName,
+                    ["ShipIndex"] = build.ShipIndex,
+                };
+                var result = await (await this.dialogService.ShowAsync<UpdateSavedBuildConfirmationDialog>(string.Empty, parameters, options)).Result;
+                if (!result.Canceled && (bool)result.Data)
+                {
+                    int index = this.savedBuilds.IndexOf(buildToUpdate);
+                    this.savedBuilds.Remove(buildToUpdate);
+                    this.savedBuilds.Insert(index, build);
+                    this.snackbar.Add(this.localizer.SimpleAppLocalization(nameof(Translation.UserDataService_BuildUpdated)), Severity.Success);
+                    buildsUpdated++;
+                }
+                else
+                {
+                    this.snackbar.Add(this.localizer.SimpleAppLocalization(nameof(Translation.UserDataService_BuildNotSaved)), Severity.Error);
+                    savingBuildCancelled++;
+                }
+            }
+            else
+            {
+                this.savedBuilds.Insert(0, build);
+            }
+        }
+
+        if (savingBuildCancelled == buildsList.Count)
+        {
+            return;
+        }
+
+        if (buildsUpdated != buildsList.Count)
+        {
+            this.snackbar.Add(this.localizer.SimpleAppLocalization(nameof(Translation.UserDataService_BuildSaved)), Severity.Success);
         }
 
         await this.SaveBuildsAsync(this.savedBuilds);

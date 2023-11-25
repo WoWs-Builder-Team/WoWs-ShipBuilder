@@ -4,7 +4,10 @@ using DynamicData;
 using Microsoft.JSInterop;
 using MudBlazor;
 using WoWsShipBuilder.Features.Builds;
+using WoWsShipBuilder.Features.Builds.Components;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
+using WoWsShipBuilder.Infrastructure.Localization;
+using WoWsShipBuilder.Infrastructure.Localization.Resources;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace WoWsShipBuilder.Web.Infrastructure.Data;
@@ -19,14 +22,22 @@ public sealed class WebUserDataService : IUserDataService, IAsyncDisposable
 
     private readonly ISnackbar snackbar;
 
+    private readonly IDialogService dialogService;
+
+    private readonly ILocalizer localizer;
+
     private IJSObjectReference? module;
 
     private List<Build>? savedBuilds;
 
-    public WebUserDataService(IJSRuntime runtime, ISnackbar snackbar)
+    private const int LocalStorageLimit = 1000;
+
+    public WebUserDataService(IJSRuntime runtime, ISnackbar snackbar, IDialogService dialogService, ILocalizer localizer)
     {
         this.snackbar = snackbar;
         this.runtime = runtime;
+        this.dialogService = dialogService;
+        this.localizer = localizer;
     }
 
     public async Task SaveBuildsAsync(IEnumerable<Build> builds)
@@ -82,7 +93,7 @@ public sealed class WebUserDataService : IUserDataService, IAsyncDisposable
                 }
                 if (counter > 0)
                 {
-                    this.snackbar.Add($"{counter} builds could not be loaded.", Severity.Warning);
+                    this.snackbar.Add($"{counter} {this.localizer.SimpleAppLocalization(nameof(Translation.UserDataService_BuildUpdated))}", Severity.Warning);
                 }
 
                 this.savedBuilds = builds.DistinctBy(x => x.Hash).ToList();
@@ -95,32 +106,74 @@ public sealed class WebUserDataService : IUserDataService, IAsyncDisposable
     public async Task ImportBuildsAsync(IEnumerable<Build> builds)
     {
         this.savedBuilds ??= (await this.LoadBuildsAsync()).ToList();
+        this.snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomEnd;
 
-        foreach (var build in builds)
+        var buildsList = builds.ToList();
+        var buildsUpdated = 0;
+        var savingBuildCancelled = 0;
+
+        foreach (var build in buildsList)
         {
             this.savedBuilds.RemoveAll(x => x.Equals(build));
-            this.savedBuilds.Insert(0, build);
+            var buildToUpdate = this.savedBuilds.Find(x => x.ShipIndex.Equals(build.ShipIndex, StringComparison.Ordinal) && x.BuildName.Equals(build.BuildName, StringComparison.Ordinal));
+            if (buildToUpdate != null)
+            {
+                DialogOptions options = new()
+                {
+                    NoHeader = true,
+                    CloseOnEscapeKey = true,
+                };
+                DialogParameters parameters = new()
+                {
+                    ["BuildName"] = build.BuildName,
+                    ["ShipIndex"] = build.ShipIndex,
+                };
+                var result = await (await this.dialogService.ShowAsync<UpdateSavedBuildConfirmationDialog>(string.Empty, parameters, options)).Result;
+                if (!result.Canceled && (bool)result.Data)
+                {
+                    int index = this.savedBuilds.IndexOf(buildToUpdate);
+                    this.savedBuilds.Remove(buildToUpdate);
+                    this.savedBuilds.Insert(index, build);
+                    this.snackbar.Add(this.localizer.SimpleAppLocalization(nameof(Translation.UserDataService_BuildUpdated)), Severity.Success);
+                    buildsUpdated++;
+                }
+                else
+                {
+                    this.snackbar.Add(this.localizer.SimpleAppLocalization(nameof(Translation.UserDataService_BuildNotSaved)), Severity.Error);
+                    savingBuildCancelled++;
+                }
+            }
+            else
+            {
+                this.savedBuilds.Insert(0, build);
+            }
         }
 
-        this.snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomEnd;
+        if (savingBuildCancelled == buildsList.Count)
+        {
+            return;
+        }
 
         // actual local storage limit is around 3700 builds but we limit it to 1000 for performance reasons
         switch (this.savedBuilds.Count)
         {
-            case < 1000:
+            case < LocalStorageLimit:
             {
-                this.snackbar.Add("Builds have been saved.", Severity.Success);
+                if (buildsUpdated != buildsList.Count)
+                {
+                    this.snackbar.Add(this.localizer.SimpleAppLocalization(nameof(Translation.UserDataService_BuildSaved)), Severity.Success);
+                }
                 break;
             }
-            case 1000:
+            case LocalStorageLimit:
             {
-                this.snackbar.Add("Builds storage limit reached. Next addition will replace the oldest saved build.", Severity.Warning);
+                this.snackbar.Add(this.localizer.SimpleAppLocalization(nameof(Translation.UserDataService_BuildLimitReached)), Severity.Warning);
                 break;
             }
-            case > 1000:
+            case > LocalStorageLimit:
             {
-                this.snackbar.Add("Builds storage is full. The oldest saved build has been replaced.", Severity.Error);
-                this.savedBuilds = this.savedBuilds.Take(1000).ToList();
+                this.snackbar.Add(this.localizer.SimpleAppLocalization(nameof(Translation.UserDataService_BuildStorageFull)), Severity.Error);
+                this.savedBuilds = this.savedBuilds.Take(LocalStorageLimit).ToList();
                 break;
             }
         }

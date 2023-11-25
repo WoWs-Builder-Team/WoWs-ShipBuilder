@@ -1,0 +1,47 @@
+﻿@using WoWsShipBuilder.Infrastructure.Localization.Resources
+@inject ILocalizer Localizer
+
+<MudDialog DefaultFocus="DefaultFocus.FirstChild">
+    <DialogContent>
+        <!--suppress CssUnresolvedCustomProperty -->
+        <MudCard Outlined Style="border-color: var(--mud-palette-primary); border-width: 2px;" Class="pa-3 mt-3">
+            <MudStack Row>
+                <MudText Typo="Typo.body2">@Localizer.SimpleAppLocalization(nameof(Translation.UpdateSavedBuildConfirmationDialog_WarningMessage))</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Primary">@BuildName</MudText>
+                <MudText Typo="Typo.body2">@Localizer.SimpleAppLocalization(nameof(Translation.UpdateSavedBuildConfirmationDialog_ForTheShip))</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Primary">@Localizer.SimpleGameLocalization(ShipIndex)</MudText>
+            </MudStack>
+            <MudText Typo="Typo.body2">@Localizer.SimpleAppLocalization(nameof(Translation.UpdateSavedBuildConfirmationDialog_OverwriteQuestion))</MudText>
+        </MudCard>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="@Cancel">
+            @Localizer.GetAppLocalization(nameof(Translation.Dialog_Cancel)).Localization
+        </MudButton>
+        <MudButton OnClick="@OnConfirm" Variant="Variant.Filled" Color="Color.Primary">
+            @Localizer.SimpleAppLocalization(nameof(Translation.UpdateSavedBuildConfirmationDialog_OverwriteBuild))
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = new();
+
+    [Parameter, EditorRequired]
+    public string ShipIndex { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public string BuildName { get; set; } = default!;
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private void OnConfirm()
+    {
+        MudDialog.Close(true);
+    }
+}

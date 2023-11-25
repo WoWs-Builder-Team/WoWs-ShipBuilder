@@ -2106,6 +2106,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add a ship....
+        /// </summary>
+        public static string ShipComparison_AddAShip {
+            get {
+                return ResourceManager.GetString("ShipComparison_AddAShip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aerial Torpedoes.
         /// </summary>
         public static string ShipComparison_AerialTorpedoes {
@@ -2892,6 +2901,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string ShipStats_ApSalvo {
             get {
                 return ResourceManager.GetString("ShipStats_ApSalvo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Archive Build.
+        /// </summary>
+        public static string ShipStats_ArchiveBuild {
+            get {
+                return ResourceManager.GetString("ShipStats_ArchiveBuild", resourceCulture);
             }
         }
         
@@ -4620,6 +4638,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Share / Save.
+        /// </summary>
+        public static string ShipStats_ShareOrSaveBuild {
+            get {
+                return ResourceManager.GetString("ShipStats_ShareOrSaveBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Single shell.
         /// </summary>
         public static string ShipStats_ShellFireChance {
@@ -5701,11 +5728,101 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to for the ship.
+        /// </summary>
+        public static string UpdateSavedBuildConfirmationDialog_ForTheShip {
+            get {
+                return ResourceManager.GetString("UpdateSavedBuildConfirmationDialog_ForTheShip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overwrite build.
+        /// </summary>
+        public static string UpdateSavedBuildConfirmationDialog_OverwriteBuild {
+            get {
+                return ResourceManager.GetString("UpdateSavedBuildConfirmationDialog_OverwriteBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you wish to overwrite it?.
+        /// </summary>
+        public static string UpdateSavedBuildConfirmationDialog_OverwriteQuestion {
+            get {
+                return ResourceManager.GetString("UpdateSavedBuildConfirmationDialog_OverwriteQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Archive already contains another build named.
+        /// </summary>
+        public static string UpdateSavedBuildConfirmationDialog_WarningMessage {
+            get {
+                return ResourceManager.GetString("UpdateSavedBuildConfirmationDialog_WarningMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to U.S.A..
         /// </summary>
         public static string Usa {
             get {
                 return ResourceManager.GetString("Usa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Builds storage limit reached. Next addition will replace the oldest saved build..
+        /// </summary>
+        public static string UserDataService_BuildLimitReached {
+            get {
+                return ResourceManager.GetString("UserDataService_BuildLimitReached", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to builds could not be loaded..
+        /// </summary>
+        public static string UserDataService_BuildNotLoaded {
+            get {
+                return ResourceManager.GetString("UserDataService_BuildNotLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Builds have not been saved..
+        /// </summary>
+        public static string UserDataService_BuildNotSaved {
+            get {
+                return ResourceManager.GetString("UserDataService_BuildNotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Builds have been saved..
+        /// </summary>
+        public static string UserDataService_BuildSaved {
+            get {
+                return ResourceManager.GetString("UserDataService_BuildSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Builds storage is full. The oldest saved build has been replaced..
+        /// </summary>
+        public static string UserDataService_BuildStorageFull {
+            get {
+                return ResourceManager.GetString("UserDataService_BuildStorageFull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build has been updated..
+        /// </summary>
+        public static string UserDataService_BuildUpdated {
+            get {
+                return ResourceManager.GetString("UserDataService_BuildUpdated", resourceCulture);
             }
         }
         
