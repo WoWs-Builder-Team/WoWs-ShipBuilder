@@ -313,3 +313,75 @@ div.default-label-background label {
     z-index: 10;
     top: 64px;
 }
+
+
+
+
+.parent {
+    display: block;
+    position: relative;
+    line-height: 2rem;
+    float: left;
+    background-color: var(--mud-palette-surface);
+    z-index: 1000;
+}
+
+.parent:hover > ul {
+    display: block;
+    position: absolute;
+    z-index: 1000;
+}
+
+.child {
+    display: none;
+    z-index: 1000;
+}
+
+.child li {
+    background-color: var(--mud-palette-surface);
+    color: var(--mud-palette-text-primary);
+    line-height: 2rem;
+    width: 100%;
+    z-index: 1000;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    min-width: fit-content;
+    border-width: 1px;
+    border-color: var(--mud-palette-lines-default);
+    background-color: var(--mud-palette-surface);
+    z-index: 1000;
+}
+
+ul ul {
+    left: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+li:hover {
+    background-color: var(--mud-palette-primary);
+    color: var(--mud-palette-primary-text);
+    z-index: 1000;
+}
+
+.parent li:hover {
+    background-color: var(--mud-palette-primary);
+    z-index: 1000;
+}
+
+.ft-selector-ship-name {
+    background-color: var(--mud-palette-surface);
+    color: var(--mud-palette-text-primary);
+    min-width: 10rem;
+    z-index: 1000;
+}
+
+.ft-selector-ship-name:hover {
+    background-color: var(--mud-palette-primary);
+    color: var(--mud-palette-primary-text);
+    z-index: 1000;
+}

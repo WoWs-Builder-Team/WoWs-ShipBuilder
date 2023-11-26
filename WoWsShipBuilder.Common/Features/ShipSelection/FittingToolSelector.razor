@@ -6,6 +6,57 @@
 
 @inject ILocalizer Localizer
 
+<aside style="position: absolute">
+    <ul style="width: fit-content; margin-top: 16px">
+        @foreach (var nation in treeStructure.OrderBy(nation => (int)nation.Key))
+        {
+            <li class="parent" style="float: none">
+                <MudText Class="pa-2" Style="white-space: nowrap; font-size: large">
+                    @Localizer.SimpleAppLocalization(nation.Key.ShipNationToString())
+                </MudText>
+                <ul class="child">
+                    @foreach (var category in nation.Value.OrderBy(category => (int)category.Key))
+                    {
+                        <li class="parent">
+                            <MudText Class="pa-2" Style="white-space: nowrap; font-size: large">
+                                @Localizer.SimpleAppLocalization(category.Key.ShipCategoryToString())
+                            </MudText>
+                            <ul class="child">
+                                @foreach (var shipClass in category.Value.OrderBy(shipClass => (int)shipClass.Key))
+                                {
+                                    <li class="parent">
+                                        <MudText Class="pa-2" Style="white-space: nowrap; font-size: large">
+                                            @Localizer.SimpleAppLocalization(shipClass.Key.ShipClassToString())
+                                        </MudText>
+                                        <ul class="child">
+                                            @foreach (KeyValuePair<int, List<string>> tier in shipClass.Value.OrderBy(x => x.Key))
+                                            {
+                                                <MudStack Row Spacing="0">
+                                                    @{
+                                                        var elementIndex = 0;
+                                                        foreach (var shipIndex in tier.Value.OrderBy(x => x[4]))
+                                                        {
+                                                            <div class="ft-selector-ship-name" style="@SetBorderStyle(tier.Value.Count, elementIndex++)">
+                                                                <MudText Class="pa-2" Style="white-space: nowrap; font-size: large">
+                                                                    @(tier.Key + " - " + Localizer.SimpleGameLocalization(shipIndex))
+                                                                </MudText>
+                                                            </div>
+                                                        }
+                                                    }
+                                                </MudStack>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </li>
+        }
+    </ul>
+</aside>
+@*
 <MudDrawerContainer Style="height: max-content">
     <MudDrawer Color="Color.Dark" ClipMode="DrawerClipMode.Always" PreserveOpenState Variant="DrawerVariant.Persistent" Elevation="1" Open="openDrawer">
         @foreach (var nation in treeStructure)
@@ -51,50 +102,50 @@
         <MudIconButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => openDrawer = !openDrawer)" Icon="@(openDrawer ? Icons.Material.Filled.ArrowBackIos : Icons.Material.Filled.ArrowForwardIos)"/>
     </div>
 </MudDrawerContainer>
+*@
 
 @code
 {
     private bool openDrawer = true;
     private Dictionary<Nation, Dictionary<ShipCategory, Dictionary<ShipClass, Dictionary<int, List<string>>>>> treeStructure = new();
+    Dictionary<string, List<string>> techTreeSplits = new();
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        foreach (var ship in AppData.ShipDictionary)
+        foreach (var ship in AppData.ShipSummaryMapper)
         {
-            if (!treeStructure.ContainsKey(ship.Value.ShipNation))
+            if (!treeStructure.ContainsKey(ship.Value.Nation))
             {
-                treeStructure.Add(ship.Value.ShipNation, new());
+                treeStructure.Add(ship.Value.Nation, new());
             }
-            else
+            var currentShipNation = treeStructure[ship.Value.Nation];
+            if (!currentShipNation.ContainsKey(ship.Value.Category))
             {
-                var currentShipNation = treeStructure[ship.Value.ShipNation];
-                if (!currentShipNation.ContainsKey(ship.Value.ShipCategory))
-                {
-                    currentShipNation.Add(ship.Value.ShipCategory, new());
-                }
-                else
-                {
-                    var currentShipCategory = currentShipNation[ship.Value.ShipCategory];
-                    if (!currentShipCategory.ContainsKey(ship.Value.ShipClass))
-                    {
-                        currentShipCategory.Add(ship.Value.ShipClass, new());
-                    }
-                    else
-                    {
-                        var currentShipClass = currentShipCategory[ship.Value.ShipClass];
-                        if (!currentShipClass.ContainsKey(ship.Value.Tier))
-                        {
-                            currentShipClass.Add(ship.Value.Tier, new());
-                        }
-                        else
-                        {
-                            var currentShipTier = currentShipClass[ship.Value.Tier];
-                            currentShipTier.Add(ship.Value.Index);
-                        }
-                    }
-                }
+                currentShipNation.Add(ship.Value.Category, new());
+            }
+            var currentShipCategory = currentShipNation[ship.Value.Category];
+            if (!currentShipCategory.ContainsKey(ship.Value.ShipClass))
+            {
+                currentShipCategory.Add(ship.Value.ShipClass, new());
+            }
+            var currentShipClass = currentShipCategory[ship.Value.ShipClass];
+            if (!currentShipClass.ContainsKey(ship.Value.Tier))
+            {
+                currentShipClass.Add(ship.Value.Tier, new());
+            }
+            var currentShipTier = currentShipClass[ship.Value.Tier];
+            currentShipTier.Add(ship.Value.Index);
+
+            if (ship.Value.NextShipsIndex is not null && ship.Value.NextShipsIndex.Count > 1 && ship.Value.NextShipsIndex.All(x => AppData.ShipSummaryMapper[x].ShipClass == ship.Value.ShipClass))
+            {
+                techTreeSplits.Add(ship.Value.Index, ship.Value.NextShipsIndex);
             }
         }
+    }
+
+    private string SetBorderStyle(int listSize, int elementIndex)
+    {
+        return listSize == 1 ? "border-right-width: 1px; border-right-color: var(--mud-palette-lines-default);" : elementIndex > 0 ? "border-left-width: 1px; border-left-color: var(--mud-palette-lines-default);" : "";
     }
 }
