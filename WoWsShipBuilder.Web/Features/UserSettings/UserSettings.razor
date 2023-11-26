@@ -24,6 +24,7 @@
 @inject IJSRuntime Runtime
 @inject MetricsService MetricsService
 @inject ExpanderStateCache ExpanderStateCache
+@inject IWebHostEnvironment HostEnvironment
 
 <PageTitle>@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Settings)).Localization</PageTitle>
 
@@ -51,6 +52,11 @@
                     <MudSelectItem Value="@culture">@culture.CultureInfo.DisplayName</MudSelectItem>
                 }
             </MudSelect>
+
+            @if (HostEnvironment.IsDevelopment())
+            {
+                <MudSwitch @bind-Checked="@enableLocalizationDebugMode" Label="Localization Debug Mode" Color="Color.Primary"/>
+            }
         </MudItem>
         <MudItem xs="12">
             <MudStack>
@@ -155,6 +161,8 @@
 
     private bool storeBuildOnShare = true;
 
+    private bool enableLocalizationDebugMode;
+
     private string CurrentCode
     {
         get => currentCode;
@@ -192,6 +200,7 @@
         openAmmoExpandersByDefault = AppSettings.OpenAllAmmoExpandersByDefault;
         openSecondariesAndAaExpandersByDefault = AppSettings.OpenSecondariesAndAaExpandersByDefault;
         storeBuildOnShare = AppSettings.StoreBuildOnShare;
+        enableLocalizationDebugMode = AppSettings.EnableLocalizationDebugMode;
 
         StateHasChanged();
     }
@@ -209,6 +218,9 @@
 
         settingsChanged = settingsChanged || openSecondariesAndAaExpandersByDefault != AppSettings.OpenSecondariesAndAaExpandersByDefault;
         AppSettings.OpenSecondariesAndAaExpandersByDefault = openSecondariesAndAaExpandersByDefault;
+
+        settingsChanged = settingsChanged || enableLocalizationDebugMode != AppSettings.EnableLocalizationDebugMode;
+        AppSettings.EnableLocalizationDebugMode = enableLocalizationDebugMode;
 
         AppSettings.StoreBuildOnShare = storeBuildOnShare;
 

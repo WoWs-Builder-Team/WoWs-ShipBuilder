@@ -57,6 +57,8 @@ public class AppSettings
 
     public string? ShipComparisonHiddenColumns { get; set; }
 
+    public bool EnableLocalizationDebugMode { get; set; }
+
     public void ClearSettings()
     {
         this.AutoUpdateEnabled = true;
@@ -80,6 +82,7 @@ public class AppSettings
         this.ShipComparisonUseUpgradedModules = true;
         this.ShipComparisonHideShipsWithoutSection = false;
         this.ShipComparisonHiddenColumns = default;
+        this.EnableLocalizationDebugMode = default;
     }
 
     public void UpdateFromSettings(AppSettings settings)
@@ -105,5 +108,6 @@ public class AppSettings
         this.ShipComparisonUseUpgradedModules = settings.ShipComparisonUseUpgradedModules;
         this.ShipComparisonHideShipsWithoutSection = settings.ShipComparisonHideShipsWithoutSection;
         this.ShipComparisonHiddenColumns = settings.ShipComparisonHiddenColumns;
+        this.EnableLocalizationDebugMode = settings.EnableLocalizationDebugMode;
     }
 }
