@@ -288,6 +288,8 @@
 
     private const string RangeUrlParameter = "r";
 
+    private const string SecondaryRangeUrlParameter = "sr";
+
     private const string HiddenColumnsUrlParameter = "hc";
 
     private Dictionary<string, bool> hiddenColumns = new();
@@ -312,6 +314,7 @@
         NavManager.TryGetQueryString(HideUnfittingShipsUrlParameter, out string hideUnfittingShips);
         NavManager.TryGetQueryString(SectionUrlParameter, out string section);
         NavManager.TryGetQueryString(RangeUrlParameter, out string range);
+        NavManager.TryGetQueryString(SecondaryRangeUrlParameter, out string secondaryRange);
         NavManager.TryGetQueryString(PinnedShipsUrlParameter, out string pinnedShips);
         NavManager.TryGetQueryString(PinnedShipsOnlyUrlParameter, out string pinnedShipsOnly);
 
@@ -362,7 +365,13 @@
         if (!string.IsNullOrEmpty(range))
         {
             applyFilters = true;
-            ViewModel!.UpdateRange(double.Parse(range));
+            ViewModel!.SetFiringRange(double.Parse(range), true);
+        }
+
+        if (!string.IsNullOrEmpty(secondaryRange))
+        {
+            applyFilters = true;
+            ViewModel!.SetFiringRange(double.Parse(secondaryRange), false);
         }
 
         if (!string.IsNullOrEmpty(pinnedShipsOnly))
@@ -813,6 +822,11 @@
         if (ViewModel!.MainBatteryFiringRange is > 10 or < 10)
         {
             url.Add(RangeUrlParameter, $"{ViewModel!.MainBatteryFiringRange}");
+        }
+
+        if (ViewModel!.SecondaryBatteryFiringRange is > 5 or < 5)
+        {
+            url.Add(SecondaryRangeUrlParameter, $"{ViewModel!.SecondaryBatteryFiringRange}");
         }
 
         if (!string.IsNullOrEmpty(hiddeColumnsUrlString))

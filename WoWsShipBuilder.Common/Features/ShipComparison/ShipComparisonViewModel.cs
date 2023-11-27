@@ -501,6 +501,18 @@ public partial class ShipComparisonViewModel : ReactiveObject
         }
     }
 
+    public void SetFiringRange(double value, bool isMainBattery)
+    {
+        if (isMainBattery)
+        {
+            this.MainBatteryFiringRange = value;
+        }
+        else
+        {
+            this.SecondaryBatteryFiringRange = value;
+        }
+    }
+
     private Dictionary<Guid, GridDataWrapper> GetShipsToBeDisplayed(bool disableHideShipsIfNoSelectedSection)
     {
         Dictionary<Guid, GridDataWrapper> list = this.ShowPinnedShipsOnly ? this.PinnedShipList : this.FilteredShipList;
