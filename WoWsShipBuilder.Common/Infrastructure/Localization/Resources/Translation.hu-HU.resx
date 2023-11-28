@@ -2072,10 +2072,52 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
   <data name="ShipStats_Overall" xml:space="preserve">
     <value>Összesen</value>
   </data>
+  <data name="ShipComparison_SplashDmgSubs" xml:space="preserve">
+    <value>Területi sebzés tengeralattjárók ellen</value>
+  </data>
   <data name="ShipComparison_OutOfRange" xml:space="preserve">
     <value>Tartományon kívüli</value>
   </data>
+  <data name="ShipComparison_OutOfRangeTooltip" xml:space="preserve">
+    <value>A lőtávolság nagyobb, mint a hajó maximális látótávja</value>
+  </data>
   <data name="UserDataService_BuildUpdated" xml:space="preserve">
     <value>A fájl frissítve lett.</value>
+  </data>
+  <data name="UserDataService_BuildSaved" xml:space="preserve">
+    <value>Build elmentve.</value>
+  </data>
+  <data name="UserDataService_BuildNotSaved" xml:space="preserve">
+    <value>A buildek nincsenek elmentve.</value>
+  </data>
+  <data name="UserDataService_BuildLimitReached" xml:space="preserve">
+    <value>A tárhely elérte a maximális kapacitását. A következő elmentett build felülírja a legrégebbit.</value>
+  </data>
+  <data name="UserDataService_BuildStorageFull" xml:space="preserve">
+    <value>A tárhely elérte a maximális kapacitását. A legrégebbi build felülírva.</value>
+  </data>
+  <data name="UserDataService_BuildNotLoaded" xml:space="preserve">
+    <value>a buildeket nem lehetett betölteni.</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_WarningMessage" xml:space="preserve">
+    <value>Már létezik egy ilyen buildnév az arhívumban</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_ForTheShip" xml:space="preserve">
+    <value>a hajóért</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_OverwriteQuestion" xml:space="preserve">
+    <value>Szeretné felülírni?</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_OverwriteBuild" xml:space="preserve">
+    <value>Build felülírása</value>
+  </data>
+  <data name="ShipStats_ArchiveBuild" xml:space="preserve">
+    <value>Build archiválása</value>
+  </data>
+  <data name="ShipStats_ShareOrSaveBuild" xml:space="preserve">
+    <value>Megoszt / elment</value>
+  </data>
+  <data name="ShipComparison_AddAShip" xml:space="preserve">
+    <value>Hajó hozzáadása...</value>
   </data>
 </root>
