@@ -2066,6 +2066,9 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
   <data name="ShipStats_FromSubsAtPeriscopeDepth" xml:space="preserve">
     <value>Periszkópmélységig merült tengeralattjárókról</value>
   </data>
+  <data name="ShipStats_ShellType" xml:space="preserve">
+    <value>Lőszertípus</value>
+  </data>
   <data name="ShipStats_Overall" xml:space="preserve">
     <value>Összesen</value>
   </data>
