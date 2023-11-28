@@ -1,13 +1,11 @@
 ﻿@using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.GameData
-@using WoWsShipBuilder.Infrastructure.Utility
-@using ReactiveUI
 
 @inject ILocalizer Localizer
 
 <aside style="position: absolute">
-    <ul style="width: fit-content; margin-top: 16px">
+    <ul style="width: fit-content; margin-top: 17px; margin-left: 8px">
         @foreach (var nation in treeStructure.OrderBy(nation => (int)nation.Key))
         {
             <li class="parent" style="float: none">
@@ -15,14 +13,14 @@
                     @Localizer.SimpleAppLocalization(nation.Key.ShipNationToString())
                 </MudText>
                 <ul class="child">
-                    @foreach (var category in nation.Value.OrderBy(category => (int)category.Key))
+                    @foreach (var category in nation.Value.OrderBy(category => (int) category.Key))
                     {
                         <li class="parent">
                             <MudText Class="pa-2" Style="white-space: nowrap; font-size: large">
                                 @Localizer.SimpleAppLocalization(category.Key.ShipCategoryToString())
                             </MudText>
                             <ul class="child">
-                                @foreach (var shipClass in category.Value.OrderBy(shipClass => (int)shipClass.Key))
+                                @foreach (var shipClass in category.Value.OrderBy(shipClass => (int) shipClass.Key))
                                 {
                                     <li class="parent">
                                         <MudText Class="pa-2" Style="white-space: nowrap; font-size: large">
@@ -36,7 +34,7 @@
                                                         var elementIndex = 0;
                                                         foreach (var shipIndex in tier.Value.OrderBy(x => x[4]))
                                                         {
-                                                            <div class="ft-selector-ship-name" style="@SetBorderStyle(tier.Value.Count, elementIndex++)">
+                                                            <div class="ft-selector-ship-name" style="@SetBorderStyle(tier.Value.Count, elementIndex++, shipClass.Value.Any(x => x.Value.Count > 1))">
                                                                 <MudText Class="pa-2" Style="white-space: nowrap; font-size: large">
                                                                     @(tier.Key + " - " + Localizer.SimpleGameLocalization(shipIndex))
                                                                 </MudText>
@@ -144,8 +142,18 @@
         }
     }
 
-    private string SetBorderStyle(int listSize, int elementIndex)
+    private string SetBorderStyle(int listSize, int elementIndex, bool hasMultipleColumns)
     {
-        return listSize == 1 ? "border-right-width: 1px; border-right-color: var(--mud-palette-lines-default);" : elementIndex > 0 ? "border-left-width: 1px; border-left-color: var(--mud-palette-lines-default);" : "";
+        if (!hasMultipleColumns)
+        {
+            return "";
+        }
+
+        if (listSize == 1 || elementIndex != listSize - 1)
+        {
+            return "border-right-width: 1px; border-right-color: var(--mud-palette-lines-default);";
+        }
+
+        return "";
     }
 }
