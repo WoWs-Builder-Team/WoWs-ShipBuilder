@@ -70,13 +70,15 @@ public partial record ConsumableDataContainer : DataContainerBase
 
         var iconName = string.IsNullOrEmpty(consumable.IconId) ? name : consumable.IconId;
         var localizationKey = string.IsNullOrEmpty(consumable.DescId) ? consumable.Name : consumable.DescId;
-        List<Modifier> consumableModifiers = consumable.Modifiers;
+        var consumableModifiers = consumable.Modifiers.ToList();
         int uses = consumable.NumConsumables;
         decimal cooldown = (decimal)consumable.ReloadTime;
         decimal workTime = (decimal)consumable.WorkTime;
         decimal prepTime = (decimal)consumable.PreparationTime;
         if (isCvPlanes && !consumableModifiers.Any(x => x.Name.Equals("error", StringComparison.Ordinal)))
         {
+            uses = modifiers.ApplyModifiers("ConsumableDataContainer.Uses.Planes", uses);
+
             workTime = modifiers.ApplyModifiers("ConsumableDataContainer.WorkTime.Plane", workTime);
 
             if (name.Contains("PCY036", StringComparison.InvariantCultureIgnoreCase))
@@ -99,17 +101,41 @@ public partial record ConsumableDataContainer : DataContainerBase
 
                 //TODO check display value kind and translation
                 var plane = AppData.FindAircraft(consumable.PlaneName.Substring(0, consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)));
+                var oldCruisingSpeed = consumableModifiers.Find(x => x.Name.Equals("cruisingSpeed", StringComparison.Ordinal));
+                if (oldCruisingSpeed is not null)
+                {
+                    consumableModifiers.Remove(oldCruisingSpeed);
+                }
+
                 consumableModifiers.Add(new("", "cruisingSpeed", plane.Speed, null, "ShipStats_CruisingSpeed", Unit.Knots, new(), DisplayValueProcessingKind.None, ValueProcessingKind.None ));
+
+                var oldConcealmentModifier = consumableModifiers.Find(x => x.Name.Equals("concealment", StringComparison.Ordinal));
+                if (oldConcealmentModifier is not null)
+                {
+                    consumableModifiers.Remove(oldConcealmentModifier);
+                }
+
                 consumableModifiers.Add(new("", "concealment", (float)plane.ConcealmentFromShips, null, "ShipStats_Concealment", Unit.KM, new(), DisplayValueProcessingKind.None, ValueProcessingKind.None ));
 
                 var fightersNum = consumableModifiers.First(x => x.Name.Equals("fightersNum", StringComparison.Ordinal)).Value;
+                var oldMaxKillModifier = consumableModifiers.Find(x => x.Name.Equals("maxKills", StringComparison.Ordinal));
+                if (oldMaxKillModifier is not null)
+                {
+                    consumableModifiers.Remove(oldMaxKillModifier);
+                }
+
                 consumableModifiers.Add(new("", "maxKills", fightersNum, null, "ModifierConverter_MaxKillsAmount", Unit.None, new(), DisplayValueProcessingKind.ToInt, ValueProcessingKind.None));
 
                 var baseMaxViewDistance = (decimal)plane.SpottingOnShips;
-                var maxViewDistanceModifier = consumableModifiers.Find(x => x.Name.Equals("maxViewDistance"))!;
                 var maxViewDistance = (float)modifiers.ApplyModifiers("ConsumableDataContainer.Interceptor", baseMaxViewDistance);
-                consumableModifiers.Remove(maxViewDistanceModifier);
-                consumableModifiers.Add(new (maxViewDistanceModifier.Name, maxViewDistance, "", maxViewDistanceModifier));
+                var maxViewDistanceModifier = consumableModifiers.Find(x => x.Name.Equals("maxViewDistance"));
+
+                if (maxViewDistanceModifier is not null)
+                {
+                    consumableModifiers.Remove(maxViewDistanceModifier);
+                }
+
+                consumableModifiers.Add(new ("", "maxViewDistance", maxViewDistance, "", "ShipStats_MaxViewDistance", Unit.KM, new(), DisplayValueProcessingKind.None, ValueProcessingKind.None));
 
                 if (maxViewDistance == 0)
                 {
@@ -158,14 +184,18 @@ public partial record ConsumableDataContainer : DataContainerBase
 
                 workTime = modifiers.ApplyModifiers("ConsumableDataContainer.WorkTime.PCY010", workTime);
 
-                consumableModifiers.UpdateConsumableModifierValue(modifiers, "ConsumableDataContainer.RegenerationHpSpeed.PCY010", "regenerationHPSpeed");
+                consumableModifiers.UpdateConsumableModifierValue(modifiers, "ConsumableDataContainer.RegenerationHpSpeed.PCY010", "consumable_regenerationHPSpeed");
 
-                consumableModifiers.UpdateConsumableModifierValue(modifiers, "ConsumableDataContainer.RegenerationHpSpeed.PCY010", "regenerationHPSpeed");
-
-                var regenSpeed = consumableModifiers.First(x => x.Name.Equals("regenerationHPSpeed", StringComparison.Ordinal))!.Value;
+                var regenSpeed = consumableModifiers.First(x => x.Name.Equals("consumable_regenerationHPSpeed", StringComparison.Ordinal))!.Value;
                 var hpPerHeal = (float)Math.Round(workTime * (decimal)(regenSpeed * shipHp));
 
-                consumableModifiers.Add(new("", "hpPerHeal", hpPerHeal, null, "Consumable_HpPerHeal", Unit.PercentPerS, new(), DisplayValueProcessingKind.DecimalRoundedPercentage, ValueProcessingKind.None));
+                var oldModifier = consumableModifiers.Find(x => x.Name.Equals("hpPerHeal"));
+                if (oldModifier is not null)
+                {
+                    consumableModifiers.Remove(oldModifier);
+                }
+
+                consumableModifiers.Add(new("", "hpPerHeal", hpPerHeal, null, "Consumable_HpPerHeal", Unit.None, new(), DisplayValueProcessingKind.None, ValueProcessingKind.None));
             }
             else if (name.Contains("PCY016", StringComparison.InvariantCultureIgnoreCase))
             {
@@ -224,17 +254,46 @@ public partial record ConsumableDataContainer : DataContainerBase
                 var maxKills = consumableModifiers.First(x => x.Name.Equals("fightersNum", StringComparison.Ordinal))!.Value;
 
                 var plane = AppData.FindAircraft(consumable.PlaneName[..consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)]);
-                consumableModifiers.Add(new("", "hpPerHeal", plane.Speed, null, "ShipStats_CruisingSpeed", Unit.Knots, new(), DisplayValueProcessingKind.ToInt, ValueProcessingKind.None));
-                consumableModifiers.Add(new("", "maxViewDistance", (float)plane.SpottingOnShips, null, "ShipStats_MaxViewDistance", Unit.KM, new(), DisplayValueProcessingKind.DecimalRoundedPercentage, ValueProcessingKind.None));
-                consumableModifiers.Add(new("", "maxKills", maxKills, null, "ModifierConverter_MaxKillsAmount", Unit.None, new(), DisplayValueProcessingKind.ToInt, ValueProcessingKind.None));
+
+                var oldCruisingModifier = consumableModifiers.Find(x => x.Name.Equals("cruisingSpeed"));
+                if (oldCruisingModifier is not null)
+                {
+                    consumableModifiers.Remove(oldCruisingModifier);
+                }
+
+                consumableModifiers.Add(new("", "cruisingSpeed", plane.Speed, null, "ShipStats_CruisingSpeed", Unit.Knots, new(), DisplayValueProcessingKind.None, ValueProcessingKind.None));
+
+                var oldMaxViewModifier = consumableModifiers.Find(x => x.Name.Equals("maxViewDistance"));
+                if (oldMaxViewModifier is not null)
+                {
+                    consumableModifiers.Remove(oldMaxViewModifier);
+                }
+
+                consumableModifiers.Add(new("", "maxViewDistance", (float)plane.SpottingOnShips, null, "ShipStats_MaxViewDistance", Unit.KM, new(), DisplayValueProcessingKind.MeterToKm, ValueProcessingKind.None));
+
+                var oldMaxKillsModifier = consumableModifiers.Find(x => x.Name.Equals("maxKills"));
+                if (oldMaxKillsModifier is not null)
+                {
+                    consumableModifiers.Remove(oldMaxKillsModifier);
+                }
+
+                consumableModifiers.Add(new("", "maxKills", maxKills, null, "ModifierConverter_MaxKillsAmount", Unit.None, new(), DisplayValueProcessingKind.None, ValueProcessingKind.None));
 
                 var concealment = (decimal)plane.ConcealmentFromShips;
                 var planesConcealment = (float)modifiers.ApplyModifiers("ConsumableDataContainer.Concealment.PCY012.PCY03", concealment);
-                consumableModifiers.Add(new("", "concealment", planesConcealment, null, "ShipStats_Concealment", Unit.KM, new(), DisplayValueProcessingKind.ToInt, ValueProcessingKind.None));
+                var oldConcealmentModifier = consumableModifiers.Find(x => x.Name.Equals("concealment"));
+                if (oldConcealmentModifier is not null)
+                {
+                    consumableModifiers.Remove(oldConcealmentModifier);
+                }
+
+                consumableModifiers.Add(new("", "concealment", planesConcealment, null, "ShipStats_Concealment", Unit.KM, new(), DisplayValueProcessingKind.None, ValueProcessingKind.None));
             }
             else if (name.Contains("PCY018", StringComparison.InvariantCultureIgnoreCase))
             {
                 // Torpedo Reload Booster
+                uses = modifiers.ApplyModifiers("ConsumableDataContainer.Uses.PCY018", uses);
+
                 cooldown = modifiers.ApplyModifiers("ConsumableDataContainer.Reload.PCY018", cooldown);
             }
             else if (name.Contains("PCY045", StringComparison.InvariantCultureIgnoreCase))
