@@ -113,22 +113,22 @@
         </MudBreakpointProvider>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@Cancel" Color="Color.Warning">
+        <MudButton OnClick="@Cancel" Color="Color.Default" Variant="Variant.Text">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
-        <MudButton OnClick="@OpenSettingsDialog" Color="Color.Tertiary">
+        <MudButton OnClick="@OpenSettingsDialog" Color="Color.Tertiary" Variant="Variant.Filled">
             @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Settings))
         </MudButton>
-        <MudButton OnClick="@OnConfirm" Color="Color.Info">
+        <MudButton OnClick="@OnConfirm" Color="Color.Success" Variant="Variant.Filled">
             @Localizer.SimpleAppLocalization(nameof(Translation.BuildImageRenderDialog_GetUrl))
         </MudButton>
         @if (!ShortLinkDisabled)
         {
-            <MudButton OnClick="@OnConfirmShortLink" Color="Color.Info">
+            <MudButton OnClick="@OnConfirmShortLink" Color="Color.Success" Variant="Variant.Filled">
                 @Localizer.SimpleAppLocalization(nameof(Translation.BuildImageRenderDialog_GetShortLink))
             </MudButton>
         }
-        <MudButton Color="Color.Success" OnClick="@SaveImage">
+        <MudButton Color="Color.Primary" OnClick="@SaveImage" Variant="Variant.Filled">
             @Localizer.SimpleAppLocalization(nameof(Translation.BuildImageRenderDialog_SaveImage))
         </MudButton>
     </DialogActions>

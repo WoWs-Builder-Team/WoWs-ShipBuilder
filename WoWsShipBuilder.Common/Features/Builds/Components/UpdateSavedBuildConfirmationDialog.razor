@@ -15,7 +15,7 @@
         </MudCard>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@Cancel">
+        <MudButton OnClick="@Cancel" Variant="Variant.Text" Color="Color.Default">
             @Localizer.GetAppLocalization(nameof(Translation.Dialog_Cancel)).Localization
         </MudButton>
         <MudButton OnClick="@OnConfirm" Variant="Variant.Filled" Color="Color.Primary">

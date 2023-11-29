@@ -2120,4 +2120,7 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipComparison_AddAShip" xml:space="preserve">
     <value>Add a ship...</value>
   </data>
+  <data name="ShipSelectionDialog_AddShips" xml:space="preserve">
+    <value>Add Ships</value>
+  </data>
 </root>

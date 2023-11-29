@@ -21,7 +21,7 @@
                 </MudItem>
                 <MudItem xs="6">
                    <MudSelect T="ShipClass" Variant="Variant.Outlined" @bind-Value="@selectedClass" Label="Ship Class" AnchorOrigin="Origin.BottomCenter">
-                       @foreach (ShipClass item in classList)
+                       @foreach (var item in classList)
                        {
                            <MudSelectItem Value="@item">
                                <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(item.ToString()).Localization</MudText>
@@ -60,10 +60,10 @@
         </MudStack>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@Cancel" Variant="Variant.Filled" Color="Color.Warning">
+        <MudButton OnClick="@Cancel" Variant="Variant.Text" Color="Color.Default">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
-        <MudButton Disabled="!ValidateCustomParameters()" OnClick="@ReturnShipBuildContainer" Variant="Variant.Filled" Color="Color.Success">
+        <MudButton Disabled="!ValidateCustomParameters()" OnClick="@ReturnShipBuildContainer" Variant="Variant.Filled" Color="Color.Primary">
             @Localizer.GetAppLocalization(nameof(Translation.Ok)).Localization
         </MudButton>
     </DialogActions>

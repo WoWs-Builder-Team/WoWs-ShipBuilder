@@ -2655,6 +2655,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Ships.
+        /// </summary>
+        public static string ShipSelectionDialog_AddShips {
+            get {
+                return ResourceManager.GetString("ShipSelectionDialog_AddShips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Class.
         /// </summary>
         public static string ShipSelectionWindow_ClassFilter {
