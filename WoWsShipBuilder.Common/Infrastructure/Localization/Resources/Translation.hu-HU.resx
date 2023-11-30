@@ -2120,4 +2120,7 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
   <data name="ShipComparison_AddAShip" xml:space="preserve">
     <value>Hajó hozzáadása...</value>
   </data>
+  <data name="ShipSelectionDialog_AddShips" xml:space="preserve">
+    <value>Hajók hozzáadása</value>
+  </data>
 </root>
