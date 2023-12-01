@@ -2141,4 +2141,13 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipStatsTab_ShareBuildImage" xml:space="preserve">
     <value>Share Build Image</value>
   </data>
+  <data name="ShipStats_SmokeSpeedLimit" xml:space="preserve">
+    <value>Max movement speed</value>
+  </data>
+  <data name="ShipStats_FirstGMShotDelay" xml:space="preserve">
+    <value>Main battery reload time (First)</value>
+  </data>
+  <data name="ShipStats_OtherGMShotDelay" xml:space="preserve">
+    <value>Main battery reload time (Second and Consecutive)</value>
+  </data>
 </root>

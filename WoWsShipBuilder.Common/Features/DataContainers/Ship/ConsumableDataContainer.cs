@@ -269,7 +269,7 @@ public partial record ConsumableDataContainer : DataContainerBase
                     consumableModifiers.Remove(oldMaxViewModifier);
                 }
 
-                consumableModifiers.Add(new("", "maxViewDistance", (float)plane.SpottingOnShips, null, "ShipStats_MaxViewDistance", Unit.KM, new(), DisplayValueProcessingKind.MeterToKm, ValueProcessingKind.None));
+                consumableModifiers.Add(new("", "maxViewDistance", (float)plane.SpottingOnShips, null, "ShipStats_MaxViewDistance", Unit.KM, new(), DisplayValueProcessingKind.None, ValueProcessingKind.None));
 
                 var oldMaxKillsModifier = consumableModifiers.Find(x => x.Name.Equals("maxKills"));
                 if (oldMaxKillsModifier is not null)
