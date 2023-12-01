@@ -2115,4 +2115,7 @@ C = 砲彈口徑 [m]
   <data name="ShipComparison_AddAShip" xml:space="preserve">
     <value>新增艦艇...</value>
   </data>
+  <data name="ShipSelectionDialog_AddShips" xml:space="preserve">
+    <value>新增艦艇</value>
+  </data>
 </root>
