@@ -3,16 +3,15 @@
 
 <MudDialog DefaultFocus="DefaultFocus.FirstChild">
     <DialogContent>
+        <MudStack Row>
+            <MudText Typo="Typo.body2">@Localizer.SimpleAppLocalization(nameof(Translation.UpdateSavedBuildConfirmationDialog_WarningMessage))</MudText>
+            <MudText Typo="Typo.body2" Color="Color.Primary">@BuildName</MudText>
+            <MudText Typo="Typo.body2">@Localizer.SimpleAppLocalization(nameof(Translation.UpdateSavedBuildConfirmationDialog_ForTheShip))</MudText>
+            <MudText Typo="Typo.body2" Color="Color.Primary">@Localizer.SimpleGameLocalization(ShipIndex)</MudText>
+        </MudStack>
+        <MudText Typo="Typo.body2">@Localizer.SimpleAppLocalization(nameof(Translation.UpdateSavedBuildConfirmationDialog_OverwriteQuestion))</MudText>
         <!--suppress CssUnresolvedCustomProperty -->
-        <MudCard Outlined Style="border-color: var(--mud-palette-primary); border-width: 2px;" Class="pa-3 mt-3">
-            <MudStack Row>
-                <MudText Typo="Typo.body2">@Localizer.SimpleAppLocalization(nameof(Translation.UpdateSavedBuildConfirmationDialog_WarningMessage))</MudText>
-                <MudText Typo="Typo.body2" Color="Color.Primary">@BuildName</MudText>
-                <MudText Typo="Typo.body2">@Localizer.SimpleAppLocalization(nameof(Translation.UpdateSavedBuildConfirmationDialog_ForTheShip))</MudText>
-                <MudText Typo="Typo.body2" Color="Color.Primary">@Localizer.SimpleGameLocalization(ShipIndex)</MudText>
-            </MudStack>
-            <MudText Typo="Typo.body2">@Localizer.SimpleAppLocalization(nameof(Translation.UpdateSavedBuildConfirmationDialog_OverwriteQuestion))</MudText>
-        </MudCard>
+        <MudDivider DividerType="DividerType.FullWidth" Style="border-color: var(--mud-palette-primary); border-width: 1px;" Class="mt-3"/>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="@Cancel" Variant="Variant.Text" Color="Color.Default">
