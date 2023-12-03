@@ -5350,7 +5350,7 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: Build must have a name!.
+        ///   Looks up a localized string similar to Error during build saving: Build must have a name!.
         /// </summary>
         public static string ShipStatsTab_BuildMustHaveName {
             get {

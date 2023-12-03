@@ -2124,7 +2124,7 @@ You can use the Change builds button to manage the builds of single ships. You c
     <value>Add Ships</value>
   </data>
   <data name="ShipStatsTab_BuildMustHaveName" xml:space="preserve">
-    <value>Error: Build must have a name!</value>
+    <value>Error during build saving: Build must have a name!</value>
   </data>
   <data name="ShipStatsTabs_LinkCopied" xml:space="preserve">
     <value>Build link copied to clipboard</value>
