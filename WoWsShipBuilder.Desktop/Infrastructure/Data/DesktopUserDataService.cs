@@ -9,8 +9,6 @@ using MudBlazor;
 using WoWsShipBuilder.Features.Builds;
 using WoWsShipBuilder.Features.Builds.Components;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
-using WoWsShipBuilder.Infrastructure.Localization;
-using WoWsShipBuilder.Infrastructure.Localization.Resources;
 
 namespace WoWsShipBuilder.Desktop.Infrastructure.Data;
 
@@ -22,22 +20,16 @@ public class DesktopUserDataService : IUserDataService
 
     private readonly IFileSystem fileSystem;
 
-    private readonly ISnackbar snackbar;
-
     private readonly IDialogService dialogService;
-
-    private readonly ILocalizer localizer;
 
     private List<Build>? savedBuilds;
 
-    public DesktopUserDataService(IDataService dataService, IAppDataService appDataService, IFileSystem fileSystem, ISnackbar snackbar, IDialogService dialogService, ILocalizer localizer)
+    public DesktopUserDataService(IDataService dataService, IAppDataService appDataService, IFileSystem fileSystem, IDialogService dialogService)
     {
         this.dataService = dataService;
         this.appDataService = appDataService;
         this.fileSystem = fileSystem;
-        this.snackbar = snackbar;
         this.dialogService = dialogService;
-        this.localizer = localizer;
     }
 
     public async Task SaveBuildsAsync(IEnumerable<Build> builds)
@@ -99,10 +91,8 @@ public class DesktopUserDataService : IUserDataService
     public async Task ImportBuildsAsync(IEnumerable<Build> builds)
     {
         this.savedBuilds ??= (await this.LoadBuildsAsync()).ToList();
-        this.snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomEnd;
 
         var buildsList = builds.ToList();
-        var buildsUpdated = 0;
         var savingBuildCancelled = 0;
 
         foreach (var build in buildsList.Where(x => AppData.ShipDictionary.ContainsKey(x.ShipIndex)))
@@ -127,12 +117,9 @@ public class DesktopUserDataService : IUserDataService
                     int index = this.savedBuilds.IndexOf(buildToUpdate);
                     this.savedBuilds.Remove(buildToUpdate);
                     this.savedBuilds.Insert(index, build);
-                    this.snackbar.Add(this.localizer.SimpleAppLocalization(nameof(Translation.UserDataService_BuildUpdated)), Severity.Success);
-                    buildsUpdated++;
                 }
                 else
                 {
-                    this.snackbar.Add(this.localizer.SimpleAppLocalization(nameof(Translation.UserDataService_BuildNotSaved)), Severity.Error);
                     savingBuildCancelled++;
                 }
             }
@@ -145,11 +132,6 @@ public class DesktopUserDataService : IUserDataService
         if (savingBuildCancelled == buildsList.Count)
         {
             return;
-        }
-
-        if (buildsUpdated != buildsList.Count)
-        {
-            this.snackbar.Add(this.localizer.SimpleAppLocalization(nameof(Translation.UserDataService_BuildSaved)), Severity.Success);
         }
 
         await this.SaveBuildsAsync(this.savedBuilds);

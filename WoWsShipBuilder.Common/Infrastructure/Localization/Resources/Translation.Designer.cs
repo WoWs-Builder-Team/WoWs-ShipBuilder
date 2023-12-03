@@ -5350,6 +5350,60 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error: Build must have a name!.
+        /// </summary>
+        public static string ShipStatsTab_BuildMustHaveName {
+            get {
+                return ResourceManager.GetString("ShipStatsTab_BuildMustHaveName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Build.
+        /// </summary>
+        public static string ShipStatsTab_SaveBuild {
+            get {
+                return ResourceManager.GetString("ShipStatsTab_SaveBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Share Build Image.
+        /// </summary>
+        public static string ShipStatsTab_ShareBuildImage {
+            get {
+                return ResourceManager.GetString("ShipStatsTab_ShareBuildImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Share Link.
+        /// </summary>
+        public static string ShipStatsTab_ShareLink {
+            get {
+                return ResourceManager.GetString("ShipStatsTab_ShareLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build image has been saved and copied to clipboard!.
+        /// </summary>
+        public static string ShipStatsTabs_BuildImageSavedAndCopiedToClipboard {
+            get {
+                return ResourceManager.GetString("ShipStatsTabs_BuildImageSavedAndCopiedToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build link copied to clipboard.
+        /// </summary>
+        public static string ShipStatsTabs_LinkCopied {
+            get {
+                return ResourceManager.GetString("ShipStatsTabs_LinkCopied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Flags .
         /// </summary>
         public static string SignalSelector_Flags {

@@ -2123,4 +2123,22 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipSelectionDialog_AddShips" xml:space="preserve">
     <value>Add Ships</value>
   </data>
+  <data name="ShipStatsTab_BuildMustHaveName" xml:space="preserve">
+    <value>Error: Build must have a name!</value>
+  </data>
+  <data name="ShipStatsTabs_LinkCopied" xml:space="preserve">
+    <value>Build link copied to clipboard</value>
+  </data>
+  <data name="ShipStatsTabs_BuildImageSavedAndCopiedToClipboard" xml:space="preserve">
+    <value>Build image has been saved and copied to clipboard!</value>
+  </data>
+  <data name="ShipStatsTab_ShareLink" xml:space="preserve">
+    <value>Share Link</value>
+  </data>
+  <data name="ShipStatsTab_SaveBuild" xml:space="preserve">
+    <value>Save Build</value>
+  </data>
+  <data name="ShipStatsTab_ShareBuildImage" xml:space="preserve">
+    <value>Share Build Image</value>
+  </data>
 </root>

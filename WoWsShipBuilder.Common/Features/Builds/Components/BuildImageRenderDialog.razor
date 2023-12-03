@@ -4,7 +4,6 @@
 @using WoWsShipBuilder.Features.ShipStats.ViewModels
 @using WoWsShipBuilder.Features.Settings
 @using WoWsShipBuilder.Infrastructure.ApplicationData
-@using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.GameData
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
@@ -119,15 +118,6 @@
         <MudButton OnClick="@OpenSettingsDialog" Color="Color.Tertiary" Variant="Variant.Filled">
             @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Settings))
         </MudButton>
-        <MudButton OnClick="@OnConfirm" Color="Color.Success" Variant="Variant.Filled">
-            @Localizer.SimpleAppLocalization(nameof(Translation.BuildImageRenderDialog_GetUrl))
-        </MudButton>
-        @if (!ShortLinkDisabled)
-        {
-            <MudButton OnClick="@OnConfirmShortLink" Color="Color.Success" Variant="Variant.Filled">
-                @Localizer.SimpleAppLocalization(nameof(Translation.BuildImageRenderDialog_GetShortLink))
-            </MudButton>
-        }
         <MudButton Color="Color.Primary" OnClick="@SaveImage" Variant="Variant.Filled">
             @Localizer.SimpleAppLocalization(nameof(Translation.BuildImageRenderDialog_SaveImage))
         </MudButton>
@@ -158,8 +148,6 @@
 
     [Parameter]
     public Breakpoint Breakpoint { get; set; }
-    [Parameter]
-    public bool ShortLinkDisabled { get; set; }
 
     private IJSObjectReference? module;
 
@@ -225,34 +213,6 @@
             module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/Features/Builds/Components/BuildImageRenderDialog.razor.js");
             await module.InvokeVoidAsync("downloadBuildImage", "image", $"{Localizer.GetGameLocalization(Ship.Index + "_FULL").Localization}_{BuildName}", BuildString[..(BuildString.LastIndexOf(';') + 1)] + BuildName);
             MudDialog.Close(BuildName);
-        }
-    }
-
-    private async Task OnConfirm()
-    {
-        if (string.IsNullOrWhiteSpace(BuildName))
-        {
-            await EditBuildName();
-        }
-
-        if (!string.IsNullOrWhiteSpace(BuildName))
-        {
-            MetricsService.SharedBuilds.WithLabels("url-long").Inc();
-            MudDialog.Close(new BuildShareResult(BuildName));
-        }
-    }
-
-    private async Task OnConfirmShortLink()
-    {
-        if (string.IsNullOrWhiteSpace(BuildName))
-        {
-            await EditBuildName();
-        }
-
-        if (!string.IsNullOrWhiteSpace(BuildName))
-        {
-            MetricsService.SharedBuilds.WithLabels("url-short").Inc();
-            MudDialog.Close(new BuildShareResult(BuildName, true));
         }
     }
 
