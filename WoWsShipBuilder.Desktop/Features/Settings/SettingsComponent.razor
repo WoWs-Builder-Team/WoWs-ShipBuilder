@@ -327,9 +327,9 @@
     private async Task OnImageFolderSelectClicked(MouseEventArgs obj)
     {
         var mainWindow = (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow!;
-        var startLocation = await mainWindow.StorageProvider.TryGetWellKnownFolderAsync(WellKnownFolder.Pictures);
+        var startLocation = await mainWindow.StorageProvider.TryGetFolderFromPathAsync(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures));
         var selectionResult = await Dispatcher.UIThread.InvokeAsync(async () => await mainWindow.StorageProvider.OpenFolderPickerAsync(new() { SuggestedStartLocation = startLocation, AllowMultiple = false }));
-        var path = selectionResult.Single().TryGetLocalPath();
+        var path = selectionResult.SingleOrDefault()?.TryGetLocalPath() ?? null;
         if (path is not null)
         {
             customBuildImagePath = path;
@@ -339,8 +339,8 @@
     private async Task ExportSavedBuilds()
     {
         var mainWindow = (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow!;
-        var selectionResult = await Dispatcher.UIThread.InvokeAsync(async () => await mainWindow.StorageProvider.OpenFolderPickerAsync(new() { AllowMultiple = false }));
-        var path = selectionResult.Single().TryGetLocalPath();
+        IReadOnlyList<IStorageFolder> selectionResult = await Dispatcher.UIThread.InvokeAsync(async () => await mainWindow.StorageProvider.OpenFolderPickerAsync(new() { AllowMultiple = false }));
+        var path = selectionResult.SingleOrDefault()?.TryGetLocalPath() ?? null;
         if (path is not null)
         {
             var buildStrings = savedBuilds.Select(x => x.CreateShortStringFromBuild()).ToList();
