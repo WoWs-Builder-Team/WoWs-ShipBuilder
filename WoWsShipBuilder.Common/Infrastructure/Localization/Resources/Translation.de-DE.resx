@@ -2056,4 +2056,7 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="ShipStats_SecondConsecutive" xml:space="preserve">
     <value>Zweite und Folgende</value>
   </data>
+  <data name="ShipStatsTab_ShareLink" xml:space="preserve">
+    <value>Link teilen</value>
+  </data>
 </root>
