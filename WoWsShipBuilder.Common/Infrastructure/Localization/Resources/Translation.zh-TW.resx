@@ -2118,4 +2118,16 @@ C = 砲彈口徑 [m]
   <data name="ShipSelectionDialog_AddShips" xml:space="preserve">
     <value>新增艦艇</value>
   </data>
+  <data name="ShipStatsTab_BuildMustHaveName" xml:space="preserve">
+    <value>儲存配置時發生錯誤：配置必須要有名稱</value>
+  </data>
+  <data name="ShipStatsTabs_LinkCopied" xml:space="preserve">
+    <value>配置連結已複製到剪貼簿</value>
+  </data>
+  <data name="ShipStatsTabs_BuildImageSavedAndCopiedToClipboard" xml:space="preserve">
+    <value>配置圖片已被儲存且已被複製到剪貼簿</value>
+  </data>
+  <data name="ShipStatsTab_SaveBuild" xml:space="preserve">
+    <value>儲存配置</value>
+  </data>
 </root>
