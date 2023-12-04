@@ -2123,4 +2123,19 @@ Você pode usar o botão de Mudar builds para gerenciar as builds de navios. Voc
   <data name="ShipSelectionDialog_AddShips" xml:space="preserve">
     <value>Adicionar navios</value>
   </data>
+  <data name="ShipStatsTabs_LinkCopied" xml:space="preserve">
+    <value>Link da Build copiado para a área de transferência</value>
+  </data>
+  <data name="ShipStatsTabs_BuildImageSavedAndCopiedToClipboard" xml:space="preserve">
+    <value>Imagem da build foi salva e copiada para a área de transferência!</value>
+  </data>
+  <data name="ShipStatsTab_ShareLink" xml:space="preserve">
+    <value>Compartilhar Link</value>
+  </data>
+  <data name="ShipStatsTab_SaveBuild" xml:space="preserve">
+    <value>Salvar Build</value>
+  </data>
+  <data name="ShipStatsTab_ShareBuildImage" xml:space="preserve">
+    <value>Compartilhar Imagem da Build</value>
+  </data>
 </root>
