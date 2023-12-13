@@ -78,7 +78,7 @@ public partial record ConsumableDataContainer : DataContainerBase
         if (isCvPlanes && !consumableModifiers.Any(x => x.Name.Equals("error", StringComparison.Ordinal)))
         {
             uses = modifiers.ApplyModifiers("ConsumableDataContainer.Uses.Planes", uses);
-
+            cooldown = modifiers.ApplyModifiers("ConsumableDataContainer.Reload.Plane", cooldown);
             workTime = modifiers.ApplyModifiers("ConsumableDataContainer.WorkTime.Plane", workTime);
 
             if (name.Contains("PCY036", StringComparison.InvariantCultureIgnoreCase))
@@ -148,6 +148,11 @@ public partial record ConsumableDataContainer : DataContainerBase
             else if (name.Contains("PCY034", StringComparison.InvariantCultureIgnoreCase))
             {
                 cooldown = modifiers.ApplyModifiers("ConsumableDataContainer.PCY035.Reload", cooldown);
+            }
+            else if (name.Contains("PCY049", StringComparison.OrdinalIgnoreCase))
+            {
+                // Plane smoke generator
+                workTime = modifiers.ApplyModifiers("ConsumableDataContainer.WorkTime.PCY049", workTime);
             }
         }
         else if (!consumableModifiers.Any(x => x.Name.Equals("error", StringComparison.Ordinal)))
