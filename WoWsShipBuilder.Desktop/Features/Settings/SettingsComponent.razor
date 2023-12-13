@@ -115,10 +115,20 @@
             </MudStack>
         </MudItem>
 
+        <MudText Typo="Typo.h6">
+            @($"Saved builds ({savedBuilds.Count}/1000)")
+        </MudText>
+
         <MudItem xs="12">
-            <MudStack AlignItems="AlignItems.Start">
-                <MudCheckBox @bind-Checked="@storeBuildOnShare" LabelPosition="LabelPosition.Start" Label="Save build on share" Color="Color.Primary"/>
-            </MudStack>
+            <MudCheckBox @bind-Checked="@storeBuildOnShare" LabelPosition="LabelPosition.End" Label="Save build on share" Color="Color.Primary"/>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudText Typo="Typo.h6">
+                Fitting-tool ship selector
+            </MudText>
+            <MudCheckBox @bind-Checked="@AppSettings.FittingToolSelectorClosedByDefault" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="Closed by default"/>
+            <MudCheckBox @bind-Checked="@AppSettings.FittingToolSelectorClosedByDefault" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="Allow multi-selection"/>
         </MudItem>
 
         <MudItem xs="12">

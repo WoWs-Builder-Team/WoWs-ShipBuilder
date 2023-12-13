@@ -55,6 +55,10 @@ public class AppSettings
 
     public string? ShipComparisonHiddenColumns { get; set; }
 
+    public bool FittingToolSelectorClosedByDefault { get; set; }
+
+    public bool FittingToolSelectorMultiSelection { get; set; }
+
     public void ClearSettings()
     {
         this.AutoUpdateEnabled = true;
@@ -77,6 +81,8 @@ public class AppSettings
         this.ShipComparisonUseUpgradedModules = true;
         this.ShipComparisonHideShipsWithoutSection = false;
         this.ShipComparisonHiddenColumns = default;
+        this.FittingToolSelectorClosedByDefault = false;
+        this.FittingToolSelectorMultiSelection = false;
     }
 
     public void UpdateFromSettings(AppSettings settings)
@@ -101,5 +107,7 @@ public class AppSettings
         this.ShipComparisonUseUpgradedModules = settings.ShipComparisonUseUpgradedModules;
         this.ShipComparisonHideShipsWithoutSection = settings.ShipComparisonHideShipsWithoutSection;
         this.ShipComparisonHiddenColumns = settings.ShipComparisonHiddenColumns;
+        this.FittingToolSelectorClosedByDefault = settings.FittingToolSelectorClosedByDefault;
+        this.FittingToolSelectorMultiSelection = settings.FittingToolSelectorMultiSelection;
     }
 }

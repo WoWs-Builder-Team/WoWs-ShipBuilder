@@ -86,9 +86,14 @@
             </MudText>
         </MudItem>
         <MudItem xs="12">
-            <MudStack AlignItems="AlignItems.Start">
-                <MudCheckBox @bind-Checked="@storeBuildOnShare" LabelPosition="LabelPosition.Start" Color="Color.Primary" Label="Save build on share"/>
-            </MudStack>
+           <MudCheckBox @bind-Checked="@storeBuildOnShare" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="Save build on share"/>
+        </MudItem>
+        <MudItem xs="12">
+            <MudText Typo="Typo.h6">
+                Fitting-tool ship selector
+            </MudText>
+            <MudCheckBox @bind-Checked="@AppSettings.FittingToolSelectorClosedByDefault" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="Closed by default"/>
+            <MudCheckBox @bind-Checked="@AppSettings.FittingToolSelectorMultiSelection" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="Allow multi-selection"/>
         </MudItem>
         <MudItem xs="12">
             <MudText Typo="Typo.h6">@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Heading))</MudText>

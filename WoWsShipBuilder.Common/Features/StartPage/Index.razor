@@ -14,7 +14,9 @@
     WoWs ShipBuilder
 </PageTitle>
 
-<FittingToolSelector/>
+<MudHidden Breakpoint="Breakpoint.MdAndDown">
+    <FittingToolSelector SelectedShips="@selectedShips"/>
+</MudHidden>
 <MudContainer>
     <MudGrid Justify="Justify.Center">
         <MudItem xs="12" Class="py-2"/>
