@@ -7,7 +7,6 @@ using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
-using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.DataContainers;
 
@@ -122,28 +121,28 @@ public partial record CvAircraftDataContainer : DataContainerBase
         var rocketConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.Fighter);
         if (rocketConfiguration != null)
         {
-            List<string> skipModule = ship.CvPlanes[rocketConfiguration.Components[ComponentType.Fighter][0]];
+            var skipModule = ship.CvPlanes[rocketConfiguration.Components[ComponentType.Fighter][0]];
             planes.AddRange(skipModule);
         }
 
         var torpConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.TorpedoBomber);
         if (torpConfiguration != null)
         {
-            List<string> skipModule = ship.CvPlanes[torpConfiguration.Components[ComponentType.TorpedoBomber][0]];
+            var skipModule = ship.CvPlanes[torpConfiguration.Components[ComponentType.TorpedoBomber][0]];
             planes.AddRange(skipModule);
         }
 
         var diveConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.DiveBomber);
         if (diveConfiguration != null)
         {
-            List<string> diveModule = ship.CvPlanes[diveConfiguration.Components[ComponentType.DiveBomber][0]];
+            var diveModule = ship.CvPlanes[diveConfiguration.Components[ComponentType.DiveBomber][0]];
             planes.AddRange(diveModule);
         }
 
         var skipConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.SkipBomber);
         if (skipConfiguration != null)
         {
-            List<string> skipModule = ship.CvPlanes[skipConfiguration.Components[ComponentType.SkipBomber][0]];
+            var skipModule = ship.CvPlanes[skipConfiguration.Components[ComponentType.SkipBomber][0]];
             planes.AddRange(skipModule);
         }
 
@@ -221,6 +220,7 @@ public partial record CvAircraftDataContainer : DataContainerBase
 
         var finalPlaneHp = (int)Math.Round(modifiers.ApplyModifiers("CvAircraftDataContainer.Hp", planeHp));
         var additionalPlaneHp = modifiers.ApplyModifiers("CvAircraftDataContainer.HpPerTier", shipTier);
+
         // if the value is less than 15, then the modifier was not found and the value is the tier, so we don't add it to hp.
         if (additionalPlaneHp > 15)
         {
@@ -296,9 +296,9 @@ public partial record CvAircraftDataContainer : DataContainerBase
             MaxNumberOnDeck = maxOnDeck,
             RestorationTime = Math.Round(restorationTime, 2),
             CruisingSpeed = finalCruisingSpeed,
-            MaxSpeed = Math.Round(finalCruisingSpeed * (decimal)maxSpeedMultiplier, 0),
-            MinSpeed = Math.Round(finalCruisingSpeed * (decimal)minSpeedMultiplier, 0),
-            MaxEngineBoostDuration = (decimal)maxEngineBoostDuration,
+            MaxSpeed = Math.Round(finalCruisingSpeed * maxSpeedMultiplier, 0),
+            MinSpeed = Math.Round(finalCruisingSpeed * minSpeedMultiplier, 0),
+            MaxEngineBoostDuration = maxEngineBoostDuration,
             InnerBombPercentage = bombInnerEllipse,
             NumberDuringAttack = plane.AttackData.AttackerSize,
             AmmoPerAttack = plane.AttackData.AttackCount,
@@ -315,8 +315,8 @@ public partial record CvAircraftDataContainer : DataContainerBase
             AimingRateMoving = (aimingRateMoving * 100).ToString(stringFormat, CultureInfo.InvariantCulture),
             AimingPreparationRateMoving = (preparationAimingRateMoving * 100).ToString(stringFormat, CultureInfo.InvariantCulture),
             TimeToFullyAimed = Math.Round(fullAimTime, 1),
-            ConcealmentFromShips = (decimal)planesConcealmentFromShips,
-            ConcealmentFromPlanes = (decimal)planesConcealmentFromPlanes,
+            ConcealmentFromShips = planesConcealmentFromShips,
+            ConcealmentFromPlanes = planesConcealmentFromPlanes,
             MaxViewDistance = (decimal)plane.SpottingOnShips,
         };
 

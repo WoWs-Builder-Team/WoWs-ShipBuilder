@@ -27,7 +27,7 @@ public class SkillItemViewModel : ReactiveObject
         this.Modifiers = skill.Modifiers.Where(x => !x.Name.Contains('_') || x.Name.StartsWith("repeatable_", StringComparison.Ordinal) || x.Name.Contains("_" + shipClass)).ToList();
 
         // TODO: fix modifiers not being filtered per class. do the same of the normal modifiers basically.
-        this.ConditionalModifierGroups = skill.ConditionalModifierGroups;
+        this.ConditionalModifierGroups = skill.ConditionalModifierGroups.ToList();
 
         this.shipClass = shipClass;
         this.parent = parent;

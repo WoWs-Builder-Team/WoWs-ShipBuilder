@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
@@ -56,7 +57,7 @@ public partial record PingerGunDataContainer : DataContainerBase
         }
 
         // Safe approach is necessary because data up until 0.11.9#1 does not include this data due to an issue in the data converter
-        if (pingerUpgrade.Components.TryGetValue(ComponentType.Sonar, out string[]? pingerGunInfo))
+        if (pingerUpgrade.Components.TryGetValue(ComponentType.Sonar, out ImmutableArray<string> pingerGunInfo))
         {
             pingerGun = ship.PingerGunList[pingerGunInfo[0]];
         }

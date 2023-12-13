@@ -1,4 +1,5 @@
-﻿using System.IO.Abstractions.TestingHelpers;
+﻿using System.Collections.Immutable;
+using System.IO.Abstractions.TestingHelpers;
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
@@ -46,11 +47,11 @@ public partial class LocalDataUpdaterTest
         var versionCode = 1;
         var checksum = CreateHashForContent("test");
         var versionInfo = new VersionInfo(
-            new()
+            new Dictionary<string, ImmutableList<FileVersion>>
             {
-                { "Ability", new() { new("Common.json", versionCode, checksum) } },
-                { "Ship", new() { new("Japan.json", versionCode, checksum), new("Germany.json", versionCode, checksum) } },
-            },
+                { "Ability", ImmutableList.Create(new FileVersion("Common.json", versionCode, checksum)) },
+                { "Ship", ImmutableList.Create<FileVersion>(new("Japan.json", versionCode, checksum), new("Germany.json", versionCode, checksum)) },
+            }.ToImmutableDictionary(),
             versionCode,
             GameVersion.Default);
         this.appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(versionInfo);

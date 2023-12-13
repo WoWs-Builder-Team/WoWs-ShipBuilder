@@ -82,7 +82,7 @@ public partial record ShellDataContainer : DataContainerBase
 
     public bool ShowBlastPenetration { get; private set; }
 
-    public static List<ShellDataContainer> FromShellName(List<string> shellNames, List<Modifier> modifiers, int barrelCount, bool isMainGunShell)
+    public static List<ShellDataContainer> FromShellName(IEnumerable<string> shellNames, List<Modifier> modifiers, int barrelCount, bool isMainGunShell)
     {
         var shells = shellNames.Select(shellName => ProcessShell(modifiers, barrelCount, isMainGunShell, shellName)).ToList();
         shells[^1].IsLastEntry = true;
@@ -171,7 +171,7 @@ public partial record ShellDataContainer : DataContainerBase
             ArmingThreshold = armingThreshold,
             FuseTimer = fuseTimer,
             ShowBlastPenetration = showBlastPenetration,
-            SplashRadius = Math.Round((decimal)splashRadius, 1),
+            SplashRadius = Math.Round(splashRadius, 1),
             SplashDmg = Math.Round(shellDamage * (decimal)shell.SplashDamageCoefficient),
             Krupp = (decimal)shell.Krupp,
         };

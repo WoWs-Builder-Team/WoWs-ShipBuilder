@@ -92,7 +92,7 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
         this.InitializeData(ship, summary.PrevShipIndex, summary.NextShipsIndex);
     }
 
-    private void InitializeData(Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
+    private void InitializeData(Ship ship, string? previousIndex, IEnumerable<string>? nextShipsIndexes, Build? build = null)
     {
         this.logger.LogInformation("Loading data for ship {Index}", ship.Index);
         this.logger.LogDebug("Build is null: {BuildIsNull}", build is null);

@@ -6,7 +6,7 @@
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer, double firingRange, Dictionary<Guid, DispersionContainer> dispersionCache)> MainBatteryDataFragment = element => __builder =>
+    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer, double firingRange, Dictionary<Guid, DispersionValue> dispersionCache)> MainBatteryDataFragment = element => __builder =>
     {
         string dataSectionString = ShipComparisonDataSections.MainBattery.AsString();
 

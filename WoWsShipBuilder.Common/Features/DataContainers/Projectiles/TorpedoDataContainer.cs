@@ -118,7 +118,7 @@ public partial record TorpedoDataContainer : ProjectileDataContainer
 
     public bool IsFromPlane { get; set; }
 
-    public static List<TorpedoDataContainer> FromTorpedoName(List<string> torpedoNames, List<Modifier> modifiers, bool fromPlane)
+    public static List<TorpedoDataContainer> FromTorpedoName(IEnumerable<string> torpedoNames, List<Modifier> modifiers, bool fromPlane)
     {
         var list = new List<TorpedoDataContainer>();
         foreach (string name in torpedoNames)
@@ -156,7 +156,7 @@ public partial record TorpedoDataContainer : ProjectileDataContainer
 
             if (torp.TorpedoType == DataStructures.TorpedoType.Magnetic)
             {
-                torpedoDataContainer.MaxTurningSpeedFirstPing = Math.Round((decimal)torp.MagneticTorpedoParams.MaxTurningSpeed[0], 1);
+                torpedoDataContainer.MaxTurningSpeedFirstPing = Math.Round((decimal)torp.MagneticTorpedoParams!.MaxTurningSpeed[0], 1);
                 torpedoDataContainer.MaxTurningSpeedSecondPing = Math.Round((decimal)torp.MagneticTorpedoParams.MaxTurningSpeed[^1], 1);
                 torpedoDataContainer.TurningAccelerationFirstPing = Math.Round((decimal)torp.MagneticTorpedoParams.TurningAcceleration[0], 1);
                 torpedoDataContainer.TurningAccelerationSecondPing = Math.Round((decimal)torp.MagneticTorpedoParams.TurningAcceleration[^1], 1);

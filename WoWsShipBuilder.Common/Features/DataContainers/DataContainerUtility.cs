@@ -6,7 +6,7 @@ namespace WoWsShipBuilder.Features.DataContainers;
 
 public static class DataContainerUtility
 {
-    public static ShipDataContainer GetShipDataContainerFromBuild(Ship ship, IEnumerable<string> selectedModules, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static ShipDataContainer GetShipDataContainerFromBuild(Ship ship, IEnumerable<string> selectedModules, IEnumerable<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
         return ShipDataContainer.CreateFromShip(ship, Helpers.GetShipConfigurationFromBuild(selectedModules, shipConfiguration), modifiers);
     }

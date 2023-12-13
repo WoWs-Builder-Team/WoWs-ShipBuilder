@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Globalization;
 using System.Text;
 using WoWsShipBuilder.DataElements;
@@ -5,7 +6,6 @@ using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.DataContainers;
 
@@ -65,8 +65,8 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
             return null;
         }
 
-        string[] torpedoOptions = torpConfiguration.Components[ComponentType.Torpedoes];
-        string[] supportedModules = torpConfiguration.Components[ComponentType.Torpedoes];
+        ImmutableArray<string> torpedoOptions = torpConfiguration.Components[ComponentType.Torpedoes];
+        ImmutableArray<string> supportedModules = torpConfiguration.Components[ComponentType.Torpedoes];
 
         TorpedoModule? torpedoModule;
         if (torpedoOptions.Length == 1)
@@ -140,17 +140,14 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
             AltTorpFullSalvoDmg = altTorpFullSalvoDmg,
         };
 
-        torpedoModule.TorpedoLoaders.TryGetValue(SubTorpLauncherLoaderPosition.BowLoaders, out List<string>? bowLoaders);
-        torpedoModule.TorpedoLoaders.TryGetValue(SubTorpLauncherLoaderPosition.SternLoaders, out List<string>? sternLoaders);
-
         var loadersSum = 0;
-        if (bowLoaders is not null)
+        if (torpedoModule.TorpedoLoaders.TryGetValue(SubmarineTorpedoLauncherLoaderPosition.BowLoaders, out var bowLoaders))
         {
             torpedoArmamentDataContainer.BowLoaders = string.Join(" + ", bowLoaders);
             loadersSum += bowLoaders.Select(x => x.Split('x').Select(int.Parse).First()).Sum();
         }
 
-        if (sternLoaders is not null)
+        if (torpedoModule.TorpedoLoaders.TryGetValue(SubmarineTorpedoLauncherLoaderPosition.SternLoaders, out var sternLoaders))
         {
             torpedoArmamentDataContainer.SternLoaders = string.Join(" + ", sternLoaders);
             loadersSum += sternLoaders.Select(x => x.Split('x').Select(int.Parse).First()).Sum();

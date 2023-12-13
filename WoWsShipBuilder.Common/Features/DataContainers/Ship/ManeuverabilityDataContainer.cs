@@ -3,7 +3,6 @@ using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.DataContainers;
 
@@ -105,8 +104,8 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
         var timeForward = AccelerationCalculator.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, forward, accelerationModifiers, speedBoostAccelerationModifiers).TimeForGear.Single();
         var timeBackward = AccelerationCalculator.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, reverse, accelerationModifiers, speedBoostAccelerationModifiers).TimeForGear.Single();
 
-        hull.MaxSpeedAtBuoyancyStateCoeff.TryGetValue(SubsBuoyancyStates.Periscope, out decimal speedAtPeriscopeCoeff);
-        hull.MaxSpeedAtBuoyancyStateCoeff.TryGetValue(SubsBuoyancyStates.DeepWater, out decimal speedAtMaxDepthCoeff);
+        hull.MaxSpeedAtBuoyancyStateCoeff.TryGetValue(SubmarineBuoyancyStates.Periscope, out decimal speedAtPeriscopeCoeff);
+        hull.MaxSpeedAtBuoyancyStateCoeff.TryGetValue(SubmarineBuoyancyStates.DeepWater, out decimal speedAtMaxDepthCoeff);
 
         decimal baseShipSpeed = hull.MaxSpeed * (engine.SpeedCoef + 1);
         decimal maxSpeed = baseShipSpeed * maxSpeedModifier;

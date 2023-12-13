@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using DynamicData;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -93,11 +94,11 @@ public class ConsumableViewModel : ReactiveObject, IBuildComponentProvider
             var consumable = this.ConsumableSlots[slot].SelectedConsumable;
             if (consumable.Name.Contains("PCY015"))
             {
-                modifiers.AddRange(consumable.Modifiers.Select(entry => new Modifier("", "speedBoost_" + entry.Name, entry.Value, entry.GameLocalizationKey, entry.AppLocalizationKey, entry.Unit, entry.AffectedProperties.Select(x => x + ".SpeedBoost").ToHashSet(), entry.DisplayedValueProcessingKind, entry.ValueProcessingKind)));
+                modifiers.AddRange(consumable.Modifiers.Select(entry => new Modifier("speedBoost_" + entry.Name, entry.Value, entry.GameLocalizationKey, entry.AppLocalizationKey, entry.Unit, entry.AffectedProperties.Select(x => x + ".SpeedBoost").ToImmutableHashSet(), entry.DisplayedValueProcessingKind, entry.ValueProcessingKind)));
             }
             else if (consumable.Name.Contains("PCY010"))
             {
-                modifiers.AddRange(consumable.Modifiers.Select(entry => new Modifier("", "heal_" + entry.Name, entry.Value, entry.GameLocalizationKey, entry.AppLocalizationKey, entry.Unit, entry.AffectedProperties.Select(x => x + ".Heal").ToHashSet(), entry.DisplayedValueProcessingKind, entry.ValueProcessingKind)));
+                modifiers.AddRange(consumable.Modifiers.Select(entry => new Modifier("heal_" + entry.Name, entry.Value, entry.GameLocalizationKey, entry.AppLocalizationKey, entry.Unit, entry.AffectedProperties.Select(x => x + ".Heal").ToImmutableHashSet(), entry.DisplayedValueProcessingKind, entry.ValueProcessingKind)));
             }
             else
             {

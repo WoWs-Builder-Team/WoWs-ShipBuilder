@@ -3,7 +3,6 @@ using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.DataContainers;
 
@@ -48,7 +47,7 @@ public partial record ConcealmentDataContainer : DataContainerBase
         var artilleryConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.Artillery);
         if (artilleryConfiguration != null)
         {
-            string[] artilleryOptions = artilleryConfiguration.Components[ComponentType.Artillery];
+            var artilleryOptions = artilleryConfiguration.Components[ComponentType.Artillery];
             TurretModule? mainBattery;
             if (artilleryOptions.Length == 1)
             {

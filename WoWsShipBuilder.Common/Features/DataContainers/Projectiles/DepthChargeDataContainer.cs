@@ -52,7 +52,7 @@ public partial record DepthChargeDataContainer : ProjectileDataContainer
             SinkSpeed = $"{Math.Round(minSpeed, 1)} ~ {Math.Round(maxSpeed, 1)}",
             DetonationTimer = $"{Math.Round(minTimer, 1)} ~ {Math.Round(maxTimer, 1)}",
             DetonationDepth = $"{Math.Round(minDetDepth)} ~ {Math.Round(maxDetDepth)}",
-            PointsOfDmg = depthCharge.PointsOfDamage,
+            PointsOfDmg = depthCharge.PointsOfDamage.ToDictionary(x => x.Key, x => x.Value.ToList()),
         };
 
         depthChargeDataContainer.UpdateDataElements();

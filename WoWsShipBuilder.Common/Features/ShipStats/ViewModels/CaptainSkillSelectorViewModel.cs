@@ -67,10 +67,8 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         this.logger = Logging.LoggerFactory.CreateLogger<CaptainSkillSelectorViewModel>();
         this.currentClass = shipClass;
 
-        var defaultCaptain = vmParams.defaultCaptain;
-
         // Rename Default Captain
-        defaultCaptain.Name = Translation.CaptainSkillSelector_StandardCaptain;
+        var defaultCaptain = vmParams.defaultCaptain.CopyCaptainWithName(Translation.CaptainSkillSelector_StandardCaptain);
         var capList = new Dictionary<string, Captain> { { Translation.CaptainSkillSelector_StandardCaptain, defaultCaptain } };
 
         var nationCaptains = vmParams.captainList;
@@ -186,6 +184,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         var defaultCaptain = AppData.CaptainCache[Nation.Common].Single().Value;
         var nationCaptains = AppData.CaptainCache[nation];
 
+        // TODO: is this still necessary with blazor and immutable data?
         // Copy the default captain object to trigger an update on the ComboBox selection.
         // Necessary because it only updates when the item itself is changed.
         return (ShallowCopyCaptain(defaultCaptain), nationCaptains);
@@ -223,7 +222,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
                 this.ShowArHpSelection = false;
             }
 
-            if (skill.ConditionalModifierGroups is { Count: > 0 })
+            if (skill.ConditionalModifierGroups is { Length: > 0 })
             {
                 var skillName = this.SkillList!.Single(x => x.Value.Skill.Equals(skill)).Key;
                 this.ConditionalModifiersList.RemoveRange(this.ConditionalModifiersList.Where(x => x.SkillName.Equals(skillName, StringComparison.Ordinal)));
@@ -242,7 +241,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
                 this.ShowArHpSelection = true;
             }
 
-            if (skill.ConditionalModifierGroups is { Count: > 0 })
+            if (skill.ConditionalModifierGroups is { Length: > 0 })
             {
                 this.ConditionalModifiersList.AddRange(this.CreateItemViewModelForSkill(skill));
             }
@@ -270,16 +269,14 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
 
         if (this.SkillOrderList.Any(skill => skill.SkillNumber == 14))
         {
-            var affectedProp = new HashSet<string>();
-            affectedProp.Add("SurvivabilityDataContainer.FireResistance");
-            modifiers.Add(new ("", "fireResistanceEnabled", -1, null, null, Unit.None, affectedProp, DisplayValueProcessingKind.None, ValueProcessingKind.DirectAdd));
+            var affectedProp = ImmutableHashSet.Create("SurvivabilityDataContainer.FireResistance");
+            modifiers.Add(new ("fireResistanceEnabled", -1, null, null, Unit.None, affectedProp, DisplayValueProcessingKind.None, ValueProcessingKind.DirectAdd));
         }
 
         if (this.SkillOrderList.Any(skill => skill.SkillNumber == 22))
         {
-            var affectedProp = new HashSet<string>();
-            affectedProp.Add("ConsumableDataContainer.Interceptor");
-            modifiers.Add(new("", "interceptorSelected", 0, null, null, Unit.None, affectedProp, DisplayValueProcessingKind.None, ValueProcessingKind.Multiplier));
+            var affectedProp = ImmutableHashSet.Create("ConsumableDataContainer.Interceptor");
+            modifiers.Add(new("interceptorSelected", 0, null, null, Unit.None, affectedProp, DisplayValueProcessingKind.None, ValueProcessingKind.Multiplier));
         }
 
         if (this.ConditionalModifiersList.Count > 0)
@@ -290,9 +287,9 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         var arSkill = this.SkillOrderList.SingleOrDefault(skill => skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs);
         if (arSkill is not null)
         {
-            var arModifier = arSkill.Modifiers.First(x => x.Name.Equals("lastChanceReloadCoefficient"));
+            var arModifier = arSkill.Modifiers.First(x => x.Name.Equals("lastChanceReloadCoefficient", StringComparison.Ordinal));
             var value = arModifier.Value * (100 - this.ArHpPercentage);
-            modifiers.Add(new Modifier(arModifier.Name, value, arModifier.Location, arModifier));
+            modifiers.Add(new(arModifier.Name, value, string.Empty, arModifier));
         }
 
         if (this.CaptainTalentsList.Count > 0)

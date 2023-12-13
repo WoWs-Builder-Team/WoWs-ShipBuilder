@@ -79,7 +79,7 @@ public partial record RocketDataContainer : ProjectileDataContainer
         }
         else
         {
-            fireChance = modifiers.ApplyModifiers("RocketDataContainer.FireChance", (decimal) rocket.FireChance);
+            fireChance = modifiers.ApplyModifiers("RocketDataContainer.FireChance", (decimal)rocket.FireChance);
             penetrationHe = (int)Math.Truncate(rocket.Penetration);
         }
 

@@ -1,10 +1,10 @@
+using System.Collections.Immutable;
 using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
-using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.DataContainers;
 
@@ -53,7 +53,7 @@ public partial record AirstrikeDataContainer : DataContainerBase
     public static AirstrikeDataContainer? FromShip(Ship ship, List<Modifier> modifiers, bool isAsw)
     {
         string header = isAsw ? "ShipStats_AswAirstrike" : "ShipStats_Airstrike";
-        Dictionary<string, AirStrike> airstrikes = ship.AirStrikes;
+        ImmutableDictionary<string, AirStrike> airstrikes = ship.AirStrikes;
         if (ship.AirStrikes.Count == 0)
         {
             return null;

@@ -6,7 +6,6 @@ using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.GameData;
-using WoWsShipBuilder.Infrastructure.Utility;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace WoWsShipBuilder.Features.DataContainers;
@@ -109,8 +108,8 @@ public partial record MainBatteryDataContainer : DataContainerBase
             return null;
         }
 
-        string[] artilleryOptions = artilleryConfiguration.Components[ComponentType.Artillery];
-        string[] supportedModules = artilleryConfiguration.Components[ComponentType.Artillery];
+        var artilleryOptions = artilleryConfiguration.Components[ComponentType.Artillery];
+        var supportedModules = artilleryConfiguration.Components[ComponentType.Artillery];
 
         TurretModule? mainBattery;
         if (artilleryOptions.Length == 1)
