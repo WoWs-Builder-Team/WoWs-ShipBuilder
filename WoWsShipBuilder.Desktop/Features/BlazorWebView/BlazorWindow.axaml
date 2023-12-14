@@ -17,6 +17,6 @@
                                       RootComponents="{DynamicResource rootComponents}"
                                       Services="{DynamicResource services}"
                                       DefaultDownloadFolderPath="{DynamicResource downloadPath}"
-                                      Margin="1 1 1 1"/>
+                                      Margin="2 2 2 2"/>
     </Grid>
 </Window>
