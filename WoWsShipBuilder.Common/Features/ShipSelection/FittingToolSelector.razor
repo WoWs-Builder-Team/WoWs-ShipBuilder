@@ -4,8 +4,6 @@
 @using WoWsShipBuilder.Infrastructure.Utility
 @using Microsoft.Extensions.Hosting
 @using Microsoft.Extensions.Options
-@using ReactiveUI
-@using DynamicData
 @using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.Features.Settings
 @using WoWsShipBuilder.Infrastructure.DataTransfer
@@ -17,14 +15,12 @@
 @inject SessionStateCache SessionStateCache
 @inject AppSettings AppSettings
 
-<aside style="position: absolute; display: flex; justify-content: space-around; flex-wrap: nowrap; margin-top: 22px; margin-left: 8px;">
-    @if (openDrawer)
-    {
-        <ul style="width: fit-content; min-height: 531px;">
+<aside class="ft-selector-aside-container @(openDrawer ? "ft-selector-aside-container-expanded" : "ft-selector-aside-container-collapsed")">
+    <ul style="min-height: 531px;">
         @foreach (var nation in treeStructure.OrderBy(nation => (int)nation.Key))
         {
-            <li class="parent" style="float: none" @key="nation">
-                <MudStack Row Class="ml-1" AlignItems="AlignItems.Center">
+            <li class="parent" style="float: none" @key="nation.Key">
+                <MudStack Row Class="ml-1" AlignItems="AlignItems.Center" Style="overflow: hidden">
                     <MudImage Src="@(Helpers.GetNationFlag(Environment, nation.Key, string.Empty))" Height="30" Class="mt-1 mb-n1" ObjectPosition="ObjectPosition.Center"/>
                     <MudText Class="pa-2" Style="white-space: nowrap; font-size: 1rem">
                         @Localizer.SimpleAppLocalization(nation.Key.ShipNationToString())
@@ -33,14 +29,14 @@
                 <ul class="child">
                     @foreach (var category in nation.Value.OrderBy(category => (int)category.Key))
                     {
-                        <li class="parent" @key="category">
+                        <li class="parent" @key="category.Key">
                             <MudText Class="pa-2" Style="white-space: nowrap; font-size: 1rem">
                                 @Localizer.SimpleAppLocalization(category.Key.ShipCategoryToString())
                             </MudText>
                             <ul class="child">
                                 @foreach (var shipClass in category.Value.OrderBy(shipClass => (int)shipClass.Key))
                                 {
-                                    <li class="parent" @key="shipClass">
+                                    <li class="parent" @key="shipClass.Key">
                                         <MudStack Row Class="ml-3" AlignItems="AlignItems.Center">
                                             <MudIcon Icon="@(Helpers.GetIconFromClass(shipClass.Key, category.Key))" Size="Size.Medium" ViewBox="0 0 24 10"/>
                                             <MudText Class="pa-2" Style="white-space: nowrap; font-size: 1rem">
@@ -78,7 +74,7 @@
                                                         <MudStack Spacing="0" Justify="Justify.FlexStart">
                                                             @foreach (var chunk in chunks)
                                                             {
-                                                                <MudStack Row Spacing="0" Justify="Justify.FlexStart">
+                                                                <MudStack Row Spacing="0" Justify="Justify.FlexStart" @key="chunk">
                                                                     @foreach (var ship in chunk)
                                                                     {
                                                                         <div class="ft-selector-ship-name-grid" @key="ship.Index" @onclick="@(_ => SelectShip(ship))">
@@ -108,7 +104,6 @@
             </li>
         }
     </ul>
-    }
     <MudButton Style="z-index: 900; min-height: 531px; min-width: 20px;" Color="Color.Primary" Variant="Variant.Outlined" Class="px-0" Size="Size.Small" OnClick="@(() => openDrawer = !openDrawer)">
         @(openDrawer ? "<" : ">")
     </MudButton>

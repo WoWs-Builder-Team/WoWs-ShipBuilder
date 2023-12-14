@@ -1791,6 +1791,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Closed by default.
+        /// </summary>
+        public static string SettingsWindow_ClosedByDefault {
+            get {
+                return ResourceManager.GetString("SettingsWindow_ClosedByDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy versions.
         /// </summary>
         public static string SettingsWindow_CopyVersions {
@@ -1881,6 +1890,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fitting-Tool style ship selector.
+        /// </summary>
+        public static string SettingsWindow_FittingToolSelector {
+            get {
+                return ResourceManager.GetString("SettingsWindow_FittingToolSelector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Info.
         /// </summary>
         public static string SettingsWindow_Info {
@@ -1962,6 +1980,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allow multi-selection.
+        /// </summary>
+        public static string SettingsWindow_MultiSelect {
+            get {
+                return ResourceManager.GetString("SettingsWindow_MultiSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open explorer when saving a build image.
         /// </summary>
         public static string SettingsWindow_OpenExplorerAfterImageSave {
@@ -1994,6 +2021,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string SettingsWindow_Save {
             get {
                 return ResourceManager.GetString("SettingsWindow_Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save build on share.
+        /// </summary>
+        public static string SettingsWindow_SaveBuildOnShare {
+            get {
+                return ResourceManager.GetString("SettingsWindow_SaveBuildOnShare", resourceCulture);
             }
         }
         

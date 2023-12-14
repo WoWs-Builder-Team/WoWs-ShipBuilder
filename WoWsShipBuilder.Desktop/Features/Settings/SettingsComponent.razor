@@ -120,15 +120,15 @@
         </MudText>
 
         <MudItem xs="12">
-            <MudCheckBox @bind-Checked="@storeBuildOnShare" LabelPosition="LabelPosition.End" Label="Save build on share" Color="Color.Primary"/>
+            <MudCheckBox @bind-Checked="@storeBuildOnShare" LabelPosition="LabelPosition.End" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_SaveBuildOnShare))" Color="Color.Primary"/>
         </MudItem>
 
         <MudItem xs="12">
             <MudText Typo="Typo.h6">
                 Fitting-tool ship selector
             </MudText>
-            <MudCheckBox @bind-Checked="@AppSettings.FittingToolSelectorClosedByDefault" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="Closed by default"/>
-            <MudCheckBox @bind-Checked="@AppSettings.FittingToolSelectorClosedByDefault" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="Allow multi-selection"/>
+            <MudCheckBox @bind-Checked="@AppSettings.FittingToolSelectorClosedByDefault" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_ClosedByDefault))"/>
+            <MudCheckBox @bind-Checked="@AppSettings.FittingToolSelectorClosedByDefault" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_MultiSelect))"/>
         </MudItem>
 
         <MudItem xs="12">

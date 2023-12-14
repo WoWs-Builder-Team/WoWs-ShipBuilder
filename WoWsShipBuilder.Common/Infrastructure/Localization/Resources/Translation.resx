@@ -2066,4 +2066,16 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipStats_FromSubsAtPeriscopeDepth" xml:space="preserve">
     <value>From subs at periscope depth</value>
   </data>
+  <data name="SettingsWindow_SaveBuildOnShare" xml:space="preserve">
+    <value>Save build on share</value>
+  </data>
+  <data name="SettingsWindow_FittingToolSelector" xml:space="preserve">
+    <value>Fitting-Tool style ship selector</value>
+  </data>
+  <data name="SettingsWindow_ClosedByDefault" xml:space="preserve">
+    <value>Closed by default</value>
+  </data>
+  <data name="SettingsWindow_MultiSelect" xml:space="preserve">
+    <value>Allow multi-selection</value>
+  </data>
 </root>

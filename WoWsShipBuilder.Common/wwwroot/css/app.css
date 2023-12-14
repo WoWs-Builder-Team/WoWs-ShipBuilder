@@ -352,7 +352,7 @@ ul {
     list-style: none;
     margin: 0;
     padding: 0;
-    min-width: fit-content;
+    min-width: 0;
     border-width: 1px;
     border-color: var(--mud-palette-lines-default);
     background-color: var(--mud-palette-surface);
@@ -428,4 +428,22 @@ li:hover {
     align-items: center;
     flex-wrap: nowrap;
     z-index: 1000;
+}
+
+.ft-selector-aside-container {
+    position: absolute;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: nowrap;
+    margin-top: 22px;
+    margin-left: 8px;
+    transition: max-width 1s cubic-bezier(.25,.8,.5,1);
+}
+
+.ft-selector-aside-container-expanded {
+    max-width: 500px;
+}
+
+.ft-selector-aside-container-collapsed {
+    max-width: 0;
 }
