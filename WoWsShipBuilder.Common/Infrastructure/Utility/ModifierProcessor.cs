@@ -20,49 +20,49 @@ public static class ModifierProcessor
         {
             case Unit.None:
                 break;
-            case Unit.MPS:
+            case Unit.MetersPerSecond:
                 displayValue += $" {localizer.GetAppLocalization(nameof(Translation.Unit_MPS)).Localization}";
                 break;
-            case Unit.KG:
+            case Unit.Kilograms:
                 displayValue += $" {localizer.GetAppLocalization(nameof(Translation.Unit_KG)).Localization}";
                 break;
-            case Unit.MM:
+            case Unit.Millimeters:
                 displayValue += $" {localizer.GetAppLocalization(nameof(Translation.Unit_MM)).Localization}";
                 break;
             case Unit.Percent:
                 displayValue += $" {localizer.GetAppLocalization(nameof(Translation.Unit_PerCent)).Localization}";
                 break;
-            case Unit.Degree:
+            case Unit.Degrees:
                 displayValue += $" {localizer.GetAppLocalization(nameof(Translation.Unit_Degree)).Localization}";
                 break;
-            case Unit.S:
+            case Unit.Seconds:
                 displayValue += $" {localizer.GetAppLocalization(nameof(Translation.Unit_S)).Localization}";
                 break;
-            case Unit.PercentPerS:
+            case Unit.PercentPerSecond:
                 displayValue += $" {localizer.GetAppLocalization(nameof(Translation.Unit_PerCent)).Localization}/{localizer.GetAppLocalization(nameof(Translation.Unit_S)).Localization}";
                 break;
-            case Unit.KM:
+            case Unit.Kilometers:
                 displayValue += $" {localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization}";
                 break;
-            case Unit.DegreePerSecond:
+            case Unit.DegreesPerSecond:
                 displayValue += $" {localizer.GetAppLocalization(nameof(Translation.Unit_DegreePerSecond)).Localization}";
                 break;
-            case Unit.DPS:
+            case Unit.DamagePerSecond:
                 displayValue += $" {localizer.GetAppLocalization(nameof(Translation.Unit_DPS)).Localization}";
                 break;
-            case Unit.HP:
+            case Unit.Hitpoints:
                 displayValue += $" {localizer.GetAppLocalization(nameof(Translation.Unit_HP)).Localization}";
                 break;
             case Unit.Knots:
                 displayValue += $" {localizer.GetAppLocalization(nameof(Translation.Unit_Knots)).Localization}";
                 break;
-            case Unit.M:
+            case Unit.Meters:
                 displayValue += $" {localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization}";
                 break;
             case Unit.ShotsPerMinute:
                 displayValue += $" {localizer.GetAppLocalization(nameof(Translation.Unit_ShotsPerMinute)).Localization}";
                 break;
-            case Unit.FPM:
+            case Unit.FiresPerMinute:
                 displayValue += $" {localizer.GetAppLocalization(nameof(Translation.Unit_FPM)).Localization}";
                 break;
             default:

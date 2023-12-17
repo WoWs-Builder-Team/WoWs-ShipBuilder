@@ -270,13 +270,13 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         if (this.SkillOrderList.Any(skill => skill.SkillNumber == 14))
         {
             var affectedProp = ImmutableHashSet.Create("SurvivabilityDataContainer.FireResistance");
-            modifiers.Add(new ("fireResistanceEnabled", -1, null, null, Unit.None, affectedProp, DisplayValueProcessingKind.None, ValueProcessingKind.DirectAdd));
+            modifiers.Add(new ("fireResistanceEnabled", -1, null, null, Unit.None, affectedProp, DisplayValueProcessingKind.Raw, ValueProcessingKind.RawAdd));
         }
 
         if (this.SkillOrderList.Any(skill => skill.SkillNumber == 22))
         {
             var affectedProp = ImmutableHashSet.Create("ConsumableDataContainer.Interceptor");
-            modifiers.Add(new("interceptorSelected", 0, null, null, Unit.None, affectedProp, DisplayValueProcessingKind.None, ValueProcessingKind.Multiplier));
+            modifiers.Add(new("interceptorSelected", 0, null, null, Unit.None, affectedProp, DisplayValueProcessingKind.Raw, ValueProcessingKind.Multiplier));
         }
 
         if (this.ConditionalModifiersList.Count > 0)
@@ -385,11 +385,11 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     private IEnumerable<Modifier> CollectTalentModifiers()
     {
         var modifiers = new List<Modifier>();
-        var talentModifiers = this.CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: <= 1 } && !talent.Modifiers.Any(modifier => modifier.Name.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
+        var talentModifiers = this.CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: <= 1 } && !talent.Modifiers.Exists(modifier => modifier.Name.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
             .SelectMany(skill => skill.Modifiers);
         modifiers.AddRange(talentModifiers);
 
-        var talentMultipleActivationModifiers = this.CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: > 1 } && !talent.Modifiers.Any(modifier => modifier.Name.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
+        var talentMultipleActivationModifiers = this.CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: > 1 } && !talent.Modifiers.Exists(modifier => modifier.Name.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
             .SelectMany(talent => talent.Modifiers.Select(modifier => new Modifier(modifier.Name, float.Pow(modifier.Value, talent.ActivationNumbers), "", modifier)));
         modifiers.AddRange(talentMultipleActivationModifiers);
 
