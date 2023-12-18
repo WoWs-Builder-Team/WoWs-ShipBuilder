@@ -1,6 +1,7 @@
 ﻿@page "/ship"
 
 @using DynamicData
+@using WoWsShipBuilder.DataStructures.Modifiers
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.DataContainers
 @using WoWsShipBuilder.Features.ShipStats.Components
@@ -274,10 +275,10 @@
         {
             using var viewModel = ShipStatsTab.CreateViewModel(container.Ship.Index, container.Build);
 
-            List<(string, float)> modifiers = viewModel.UpgradePanelViewModel.GetModifierList();
+            List<Modifier> modifiers = viewModel.UpgradePanelViewModel.GetModifierList();
             modifiers.AddRange(viewModel.ConsumableViewModel.GetModifiersList());
-            modifiers.AddRange(viewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
-            modifiers.AddRange(viewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
+            modifiers.AddRange(viewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<Modifier>());
+            modifiers.AddRange(viewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<Modifier>());
 
             var newDataContainer = calculateShipDataContainer ? DataContainerUtility.GetShipDataContainerFromBuild(container.Ship, container.Build.Modules, container.Ship.ShipUpgradeInfo.ShipUpgrades, modifiers) : container.ShipDataContainer;
             return container with { Modifiers = modifiers, ShipDataContainer = newDataContainer };

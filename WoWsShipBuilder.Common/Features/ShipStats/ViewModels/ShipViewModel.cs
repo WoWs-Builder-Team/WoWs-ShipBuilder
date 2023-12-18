@@ -4,6 +4,7 @@ using DynamicData.Binding;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Features.Builds;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
@@ -76,7 +77,7 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
 
     public void InitializeData(ShipViewModelParams viewModelParams)
     {
-        this.InitializeData(viewModelParams.Ship, viewModelParams.ShipSummary.PrevShipIndex, viewModelParams.ShipSummary.NextShipsIndex, viewModelParams.Build);
+        this.InitializeData(viewModelParams.Ship, viewModelParams.ShipSummary.PrevShipIndex, viewModelParams.ShipSummary.NextShipIndexes, viewModelParams.Build);
     }
 
     public Build CreateBuild(string buildName)
@@ -88,10 +89,10 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
     {
         this.disposables.Clear();
         var ship = AppData.FindShipFromSummary(summary);
-        this.InitializeData(ship, summary.PrevShipIndex, summary.NextShipsIndex);
+        this.InitializeData(ship, summary.PrevShipIndex, summary.NextShipIndexes);
     }
 
-    private void InitializeData(Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
+    private void InitializeData(Ship ship, string? previousIndex, IEnumerable<string>? nextShipsIndexes, Build? build = null)
     {
         this.logger.LogInformation("Loading data for ship {Index}", ship.Index);
         this.logger.LogDebug("Build is null: {BuildIsNull}", build is null);
@@ -172,7 +173,7 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
                         await this.semaphore.WaitAsync(token);
                         try
                         {
-                            List<(string, float)> modifiers = this.GenerateModifierList();
+                            List<Modifier> modifiers = this.GenerateModifierList();
                             if (this.ShipStatsControlViewModel != null)
                             {
                                 this.logger.LogDebug("Updating ship stats");
@@ -195,9 +196,9 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
             token);
     }
 
-    private List<(string, float)> GenerateModifierList()
+    private List<Modifier> GenerateModifierList()
     {
-        var modifiers = new List<(string, float)>();
+        var modifiers = new List<Modifier>();
 
         modifiers.AddRange(this.UpgradePanelViewModel.GetModifierList());
         modifiers.AddRange(this.SignalSelectorViewModel!.GetModifierList());

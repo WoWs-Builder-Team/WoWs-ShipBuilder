@@ -1,4 +1,5 @@
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.Utility;
 
@@ -18,7 +19,7 @@ public record AntiAirDataContainer
 
     public AuraDataDataContainer? ShortRangeAura { get; set; }
 
-    public static AntiAirDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Name, float Value)> modifiers)
+    public static AntiAirDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
         if (ship.ShipClass.Equals(ShipClass.Submarine))
         {
@@ -32,14 +33,9 @@ public record AntiAirDataContainer
             guns = ship.MainBatteryModuleList[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Artillery).Components[ComponentType.Artillery][0]];
         }
 
-        decimal flakDamageBonus = modifiers.FindModifiers("AABubbleDamage").Aggregate(1M, (current, value) => current * (decimal)value);
-        flakDamageBonus = modifiers.FindModifiers("bubbleDamageMultiplier").Aggregate(flakDamageBonus, (current, modifier) => current * (decimal)modifier);
+        decimal flakDamageBonus = modifiers.ApplyModifiers("AntiAirDataContainer.FlakDamage", 1M);
 
-        decimal constantDamageBonus = modifiers.FindModifiers("AAAuraDamage").Aggregate(1M, (current, value) => current * (decimal)value);
-        constantDamageBonus = modifiers.FindModifiers("areaDamageMultiplier").Aggregate(constantDamageBonus, (current, value) => current * (decimal)value);
-
-        IEnumerable<float> constantDamageBonusModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
-        constantDamageBonus = constantDamageBonusModifiers.Aggregate(constantDamageBonus, (current, arModifier) => current * (1 + ((decimal)arModifier / 100)));
+        decimal constantDamageBonus = modifiers.ApplyModifiers("AntiAirDataContainer.ConstantDamage", 1M);
 
         var aaUI = new AntiAirDataContainer();
 
@@ -58,9 +54,7 @@ public record AntiAirDataContainer
         var flakAmount = 0;
         if (longRange != null)
         {
-            IEnumerable<float> extraFlak = modifiers.FindModifiers("AAExtraBubbles"); // extra flak explosions from captain skill
-            IEnumerable<float> extraFlakInner = modifiers.FindModifiers("AAInnerExtraBubbles"); // extra flak explosions from auxiliary armament mod 2
-            flakAmount = extraFlak.Concat(extraFlakInner).Aggregate(longRange.FlakCloudsNumber, (current, modifier) => current + (int)modifier);
+            flakAmount = modifiers.ApplyModifiers("AntiAirDataContainer.FlakAmount", longRange.FlakCloudsNumber);
         }
 
         aaUI.LongRangeAura = FromAura(longRange, flakDamageBonus, constantDamageBonus, flakAmount);

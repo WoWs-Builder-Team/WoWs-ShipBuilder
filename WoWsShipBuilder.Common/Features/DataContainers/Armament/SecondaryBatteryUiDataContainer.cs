@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.Features.DataContainers;
@@ -23,7 +24,7 @@ public partial record SecondaryBatteryUiDataContainer(List<SecondaryBatteryDataC
     [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Overall", UnitKey = "FPM", LocalizationKeyOverride = "PotentialFpm")]
     public decimal TotalFpm { get; } = Secondaries?.Sum(x => x.PotentialFpm) ?? 0;
 
-    public static SecondaryBatteryUiDataContainer FromShip(Ship ship, IEnumerable<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers)
+    public static SecondaryBatteryUiDataContainer FromShip(Ship ship, IEnumerable<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
         var secondaryBatteryUiDataContainer = new SecondaryBatteryUiDataContainer(SecondaryBatteryDataContainer.FromShip(ship, shipConfiguration, modifiers));
         secondaryBatteryUiDataContainer.UpdateDataElements();

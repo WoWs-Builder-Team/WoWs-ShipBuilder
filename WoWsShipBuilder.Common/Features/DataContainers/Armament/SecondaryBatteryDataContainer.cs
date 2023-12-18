@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
@@ -64,7 +65,7 @@ public partial record SecondaryBatteryDataContainer : DataContainerBase
 
     public double DispersionModifier { get; set; }
 
-    public static List<SecondaryBatteryDataContainer>? FromShip(Ship ship, IEnumerable<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers)
+    public static List<SecondaryBatteryDataContainer>? FromShip(Ship ship, IEnumerable<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
         var secondary = ship.Hulls[shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Hull][0]].SecondaryModule;
         if (secondary == null)
@@ -85,24 +86,16 @@ public partial record SecondaryBatteryDataContainer : DataContainerBase
             string arrangementString = $"{secondaryGroup.Count} x {secondaryGun.NumBarrels} {{0}}";
             List<string> turretName = new() { secondaryGun.Name };
 
-            var reloadModifiers = modifiers.FindModifiers("GSShotDelay");
-            float reload = reloadModifiers.Aggregate((float)secondaryGun.Reload, (current, reloadModifier) => current * reloadModifier);
+            decimal reload = modifiers.ApplyModifiers("SecondaryBatteryDataContainer.Reload", secondaryGun.Reload);
 
-            var arModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
-            reload = arModifiers.Aggregate(reload, (current, arModifier) => current * (1 - (arModifier / 100)));
-
-            var otherReloadModifiers = modifiers.FindModifiers("ATBAReloadCoeff");
-            reload = otherReloadModifiers.Aggregate(reload, (current, modifier) => current * modifier);
-
-            var rangeModifiers = modifiers.FindModifiers("GSMaxDist");
-            decimal range = rangeModifiers.Aggregate(secondary.MaxRange, (current, rangeModifier) => current * (decimal)rangeModifier) / 1000;
+            decimal range = modifiers.ApplyModifiers("SecondaryBatteryDataContainer.Range", secondary.MaxRange) / 1000;
 
             // Consider dispersion modifiers
-            var dispersionModifier = modifiers.FindModifiers("GSIdealRadius").Aggregate(1f, (current, modifier) => current * modifier);
+            var dispersionModifier = (float)modifiers.ApplyModifiers("SecondaryBatteryDataContainer.Dispersion.IdealRadius", 1m);
             var dispersion = secondaryGun.Dispersion;
             var dispersionContainer = dispersion.CalculateDispersion((double)range * 1000, dispersionModifier);
 
-            decimal rof = 60 / (decimal)reload;
+            decimal rof = 60 / reload;
 
             var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
             nfi.NumberGroupSeparator = "'";

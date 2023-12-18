@@ -1,7 +1,9 @@
+using System.Collections.Immutable;
 using System.Text.Json.Serialization;
 using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 
 // ReSharper disable InconsistentNaming
@@ -45,11 +47,11 @@ public partial record SpecialAbilityDataContainer : DataContainerBase
 
     // This is in common
     [JsonIgnore]
-    public Dictionary<string, float> Modifiers { get; set; } = null!;
+    public List<Modifier> Modifiers { get; set; } = null!;
 
     public bool IsBurstMode { get; set; }
 
-    public static SpecialAbilityDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
+    public static SpecialAbilityDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
         SpecialAbilityDataContainer specialDataContainer;
 
@@ -67,7 +69,7 @@ public partial record SpecialAbilityDataContainer : DataContainerBase
                 InactivityDelay = (decimal)specialAbility.DecrementDelay,
                 ProgressLossInterval = (decimal)specialAbility.DecrementPeriod,
                 ProgressLossPerInterval = (decimal)specialAbility.DecrementCount,
-                Modifiers = specialAbility.Modifiers,
+                Modifiers = specialAbility.Modifiers.ToList(),
             };
 
             specialDataContainer.UpdateDataElements();
@@ -80,8 +82,8 @@ public partial record SpecialAbilityDataContainer : DataContainerBase
                 return null;
             }
 
-            string[] artilleryOptions = artilleryConfiguration.Components[ComponentType.Artillery];
-            string[] supportedModules = artilleryConfiguration.Components[ComponentType.Artillery];
+            ImmutableArray<string> artilleryOptions = artilleryConfiguration.Components[ComponentType.Artillery];
+            ImmutableArray<string> supportedModules = artilleryConfiguration.Components[ComponentType.Artillery];
 
             TurretModule? mainBattery;
             if (artilleryOptions.Length == 1)
@@ -107,7 +109,7 @@ public partial record SpecialAbilityDataContainer : DataContainerBase
                 ReloadDuringBurst = burstMode.ReloadDuringBurst,
                 ReloadAfterBurst = burstMode.ReloadAfterBurst,
                 ShotInBurst = burstMode.ShotInBurst,
-                Modifiers = burstMode.Modifiers,
+                Modifiers = burstMode.Modifiers.ToList(),
                 IsBurstMode = true,
             };
 

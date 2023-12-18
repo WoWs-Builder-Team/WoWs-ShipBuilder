@@ -28,10 +28,10 @@
                                         @Localizer.GetGameLocalization(signal.Signal.Name).Localization
                                     </MudText>
                                     <MudDivider Light="true" Class="ma-1"/>
-                                    @foreach ((string? modifierName, double modifierValue) in signal.Signal.Modifiers)
+                                    @foreach (var modifier in signal.Signal.Modifiers)
                                     {
                                         // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
-                                        string modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
+                                        string modifierString = ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.All, Localizer);
                                         if (!string.IsNullOrWhiteSpace(modifierString))
                                         {
                                             <MudText Align="Align.Left" Typo="Typo.body2" Style="white-space: break-spaces">

@@ -24,7 +24,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="WoWsShipBuilder.DataStructures" Version="4.1.0" />
+        <PackageReference Include="WoWsShipBuilder.DataStructures" Version="5.0.0" />
         <PackageReference Include="ReactiveUI" Version="18.4.44" />
     </ItemGroup>
 

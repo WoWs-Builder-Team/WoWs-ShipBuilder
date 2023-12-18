@@ -1,3 +1,4 @@
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.Features.DataContainers;
@@ -32,7 +33,7 @@ public record ShipDataContainer(string Index)
 
     public SpecialAbilityDataContainer? SpecialAbilityDataContainer { get; set; }
 
-    public static ShipDataContainer CreateFromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers)
+    public static ShipDataContainer CreateFromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
         var shipDataContainer = new ShipDataContainer(ship.Index)
         {

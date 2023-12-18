@@ -7,7 +7,7 @@
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer, double firingRange, Dictionary<Guid, List<DispersionContainer>> dispersionCache)> SecondaryBatteryDataFragment = element => __builder =>
+    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer, double firingRange, Dictionary<Guid, List<DispersionValue>> dispersionCache)> SecondaryBatteryDataFragment = element => __builder =>
     {
         string dataSectionString = ShipComparisonDataSections.SecondaryBattery.AsString();
 
@@ -198,7 +198,7 @@
                 {
                     @UtilityFragments.OutOfRangeFragment((element.localizer, element.firingRange, context.Item.Secondary.Range.Value))
                 }
-                else if (element.dispersionCache.TryGetValue(context.Item.Id, out List<DispersionContainer>? value))
+                else if (element.dispersionCache.TryGetValue(context.Item.Id, out var value))
                 {
                     for (var i = 0; i < value.Count; i++)
                     {
@@ -225,7 +225,7 @@
                 {
                     @UtilityFragments.OutOfRangeFragment((element.localizer, element.firingRange, context.Item.Secondary.Range.Value))
                 }
-                else if (element.dispersionCache.TryGetValue(context.Item.Id, out List<DispersionContainer>? value))
+                else if (element.dispersionCache.TryGetValue(context.Item.Id, out var value))
                 {
                     for (var i = 0; i < value.Count; i++)
                     {

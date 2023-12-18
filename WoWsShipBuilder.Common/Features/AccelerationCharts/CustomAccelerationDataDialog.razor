@@ -2,6 +2,7 @@
 @using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
+@using System.Collections.Immutable
 @inject ILocalizer Localizer
 
 <MudDialog>
@@ -105,15 +106,6 @@
 
     private void ReturnShipBuildContainer()
     {
-        var ship = new Ship
-        {
-            ShipClass = selectedClass,
-            Name = "customShip",
-            Index = name,
-            ShipNation = Nation.Common,
-            Tier = 10,
-        };
-
         var hull = new Hull
         {
             MaxSpeed = maxSpeed,
@@ -121,7 +113,6 @@
             Tonnage = tonnage,
             AntiAir = new(),
         };
-        ship.Hulls = new() {{"Custom hull", hull}};
 
         var engine = new Engine
         {
@@ -133,32 +124,37 @@
             BackwardEngineForsagMaxSpeed = backwardEngineForsagMaxSpeed,
         };
 
-        ship.Engines = new() {{"Custom engine", engine}};
-
-        var upgradeInfo = new UpgradeInfo()
-        {
-            ShipUpgrades = new(),
-        };
-
         var engineUpgrade = new ShipUpgrade
         {
             Name = "Custom engine",
-            Components = new() { { ComponentType.Engine, new[] {"Custom engine"} } },
+            Components = new Dictionary<ComponentType, ImmutableArray<string>> { { ComponentType.Engine, ImmutableArray.Create("Custom engine") } }.ToImmutableDictionary(),
             UcType = ComponentType.Engine,
         };
 
         var hullUpgrade = new ShipUpgrade
         {
             Name = "Custom hull",
-            Components = new() { { ComponentType.Hull, new[] {"Custom hull"} } },
+            Components = new Dictionary<ComponentType, ImmutableArray<string>> { { ComponentType.Hull, ImmutableArray.Create("Custom hull") } }.ToImmutableDictionary(),
             UcType = ComponentType.Hull,
         };
 
-        upgradeInfo.ShipUpgrades.Add(engineUpgrade);
-        upgradeInfo.ShipUpgrades.Add(hullUpgrade);
+        var upgradeInfo = new UpgradeInfo
+        {
+            ShipUpgrades = ImmutableList.Create(engineUpgrade, hullUpgrade),
+        };
 
-        ship.ShipUpgradeInfo = upgradeInfo;
-        ship.ShipConsumable = new();
+        var ship = new Ship
+        {
+            ShipClass = selectedClass,
+            Name = "customShip",
+            Index = name,
+            ShipNation = Nation.Common,
+            Tier = 10,
+            Hulls = new Dictionary<string, Hull> { {"Custom hull", hull} }.ToImmutableDictionary(),
+            Engines = new Dictionary<string, Engine> { {"Custom engine", engine} }.ToImmutableDictionary(),
+            ShipUpgradeInfo = upgradeInfo,
+            ShipConsumable = ImmutableList<ShipConsumable>.Empty,
+        };
 
         var container = ShipBuildContainer.CreateNew(ship, null, null);
         MudDialog.Close(DialogResult.Ok(container));

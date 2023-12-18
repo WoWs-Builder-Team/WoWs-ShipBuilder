@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using ReactiveUI;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
@@ -15,7 +16,7 @@ public partial class SkillActivationItemViewModel : ReactiveObject
     [Observable]
     private bool status;
 
-    public SkillActivationItemViewModel(string name, int skillId, ImmutableDictionary<string, float> modifiers, bool activationStatus, int maximumActivations = 0, int activationNumbers = 1, string description = "")
+    public SkillActivationItemViewModel(string name, int skillId, ImmutableList<Modifier> modifiers, bool activationStatus, int maximumActivations = 0, int activationNumbers = 1, string description = "")
     {
         this.SkillName = name;
         this.Status = activationStatus;
@@ -26,7 +27,7 @@ public partial class SkillActivationItemViewModel : ReactiveObject
         this.Description = description;
     }
 
-    public ImmutableDictionary<string, float> Modifiers { get; }
+    public ImmutableList<Modifier> Modifiers { get; }
 
     public int SkillId { get; }
 

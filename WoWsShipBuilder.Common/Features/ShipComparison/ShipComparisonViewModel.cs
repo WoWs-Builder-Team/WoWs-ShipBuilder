@@ -91,9 +91,9 @@ public partial class ShipComparisonViewModel : ReactiveObject
 
     public List<Ship> SearchedShips { get; } = new();
 
-    public Dictionary<Guid, DispersionContainer> MainBatteryDispersionCache { get; } = new();
+    public Dictionary<Guid, DispersionValue> MainBatteryDispersionCache { get; } = new();
 
-    public Dictionary<Guid, List<DispersionContainer>> SecondaryBatteryDispersionCache { get; } = new();
+    public Dictionary<Guid, List<DispersionValue>> SecondaryBatteryDispersionCache { get; } = new();
 
     public double MainBatteryFiringRange { get; private set; }
 

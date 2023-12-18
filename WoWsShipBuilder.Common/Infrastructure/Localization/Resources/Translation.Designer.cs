@@ -3601,6 +3601,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Main battery reload time (First).
+        /// </summary>
+        public static string ShipStats_FirstGMShotDelay {
+            get {
+                return ResourceManager.GetString("ShipStats_FirstGMShotDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Option 1.
         /// </summary>
         public static string ShipStats_FirstOption {
@@ -4278,6 +4287,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Main battery reload time (Second and Consecutive).
+        /// </summary>
+        public static string ShipStats_OtherGMShotDelay {
+            get {
+                return ResourceManager.GetString("ShipStats_OtherGMShotDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Overall.
         /// </summary>
         public static string ShipStats_Overall {
@@ -4841,6 +4859,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string ShipStats_SkipBomber {
             get {
                 return ResourceManager.GetString("ShipStats_SkipBomber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max movement speed.
+        /// </summary>
+        public static string ShipStats_SmokeSpeedLimit {
+            get {
+                return ResourceManager.GetString("ShipStats_SmokeSpeedLimit", resourceCulture);
             }
         }
         

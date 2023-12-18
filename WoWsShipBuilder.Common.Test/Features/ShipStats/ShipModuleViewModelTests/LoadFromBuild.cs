@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Immutable;
+using FluentAssertions;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Features.ShipStats.ViewModels;
@@ -33,20 +34,18 @@ public class LoadFromBuild
 
     private static UpgradeInfo CreateBasicUpgradeInfo() => new()
     {
-        ShipUpgrades = new()
-        {
+        ShipUpgrades = ImmutableList.Create<ShipUpgrade>(
             new()
             {
-                Components = new() { { ComponentType.Artillery, new[] { "A_Artillery" } } },
+                Components = new Dictionary<ComponentType, ImmutableArray<string>> { { ComponentType.Artillery, ImmutableArray.Create("A_Artillery") } }.ToImmutableDictionary(),
                 Name = FirstUpgradeName,
                 UcType = ComponentType.Artillery,
             },
             new()
             {
-                Components = new() { { ComponentType.Artillery, new[] { "B_Artillery" } } },
+                Components = new Dictionary<ComponentType, ImmutableArray<string>> { { ComponentType.Artillery, ImmutableArray.Create("B_Artillery") } }.ToImmutableDictionary(),
                 Name = SecondUpgradeName,
                 UcType = ComponentType.Artillery,
-            },
-        },
+            }),
     };
 }
