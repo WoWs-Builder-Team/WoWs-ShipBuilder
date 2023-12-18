@@ -2081,4 +2081,7 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="SettingsWindow_FtImgWarning" xml:space="preserve">
     <value>WARNING: Use only with very good internet connection.</value>
   </data>
+  <data name="SettingsWindow_FittingToolShowImages" xml:space="preserve">
+    <value>Show ships images</value>
+  </data>
 </root>

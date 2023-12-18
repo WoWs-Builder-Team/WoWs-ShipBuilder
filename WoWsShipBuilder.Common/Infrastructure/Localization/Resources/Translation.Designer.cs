@@ -1899,6 +1899,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show ships images.
+        /// </summary>
+        public static string SettingsWindow_FittingToolShowImages {
+            get {
+                return ResourceManager.GetString("SettingsWindow_FittingToolShowImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to WARNING: Use only with very good internet connection..
         /// </summary>
         public static string SettingsWindow_FtImgWarning {
