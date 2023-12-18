@@ -369,6 +369,7 @@ ul ul {
 li:hover {
     background-color: var(--mud-palette-primary);
     color: var(--mud-palette-primary-text);
+    cursor: pointer;
     z-index: 1000;
 }
 
@@ -394,6 +395,7 @@ li:hover {
 .ft-selector-tech-tree-ship-name:hover {
     background-color: var(--mud-palette-primary);
     color: var(--mud-palette-primary-text);
+    cursor: pointer;
     z-index: 1000;
 }
 
@@ -413,6 +415,7 @@ li:hover {
 .ft-selector-ship-name-grid:hover {
     background-color: var(--mud-palette-primary);
     color: var(--mud-palette-primary-text);
+    cursor: pointer;
     z-index: 1000;
 }
 

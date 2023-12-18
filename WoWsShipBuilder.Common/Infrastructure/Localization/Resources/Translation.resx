@@ -2078,4 +2078,7 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="SettingsWindow_MultiSelect" xml:space="preserve">
     <value>Allow multi-selection</value>
   </data>
+  <data name="SettingsWindow_FtImgWarning" xml:space="preserve">
+    <value>WARNING: Use only with very good internet connection.</value>
+  </data>
 </root>

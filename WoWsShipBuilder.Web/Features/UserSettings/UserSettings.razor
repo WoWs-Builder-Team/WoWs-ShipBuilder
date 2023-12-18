@@ -90,10 +90,14 @@
         </MudItem>
         <MudItem xs="12">
             <MudText Typo="Typo.h6">
-                Fitting-tool style ship selector
+                @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_FittingToolSelector))
             </MudText>
             <MudCheckBox @bind-Checked="@AppSettings.FittingToolSelectorClosedByDefault" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_ClosedByDefault))"/>
             <MudCheckBox @bind-Checked="@AppSettings.FittingToolSelectorMultiSelection" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_MultiSelect))"/>
+            <MudCheckBox @bind-Checked="@AppSettings.FittingToolSelectorShowShipImages" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="Show ship images" Class="mb-n3"/>
+            <MudText Typo="Typo.caption" Class="mt-0 ml-12 pa-0">
+                @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_FtImgWarning))
+            </MudText>
         </MudItem>
         <MudItem xs="12">
             <MudText Typo="Typo.h6">@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Heading))</MudText>

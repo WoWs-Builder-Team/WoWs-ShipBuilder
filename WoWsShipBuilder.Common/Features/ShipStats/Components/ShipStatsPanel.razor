@@ -374,7 +374,8 @@
                             </MudExpansionPanel>
                         }
 
-                        <!--ASW Airstrike-->@if (ViewModel.CurrentShipStats?.AswAirstrikeDataContainer is not null)
+                        <!--ASW Airstrike-->
+                        @if (ViewModel.CurrentShipStats?.AswAirstrikeDataContainer is not null)
                         {
                             var dcDataContext = ViewModel.CurrentShipStats.AswAirstrikeDataContainer.Weapon as DepthChargeDataContainer ?? throw new InvalidOperationException("Expected DepthChargeDataContainer but found another type.");
                             <MudExpansionPanel Text="@Localizer.GetAppLocalization(ViewModel.CurrentShipStats.AswAirstrikeDataContainer.Header).Localization" @bind-IsExpanded="@ExpanderStateCache["main-asw-airstrike"]" Style="border-bottom: initial" Class="custom-expansion-panel-header header-border border border-solid  my-4">

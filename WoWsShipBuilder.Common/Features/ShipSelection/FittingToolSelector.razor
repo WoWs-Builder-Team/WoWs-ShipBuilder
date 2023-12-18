@@ -61,7 +61,10 @@
                                                         foreach (var ship in tier.Value.OrderBy(x => x.Index[4]))
                                                         {
                                                             <div class="ft-selector-tech-tree-ship-name" @key="ship.Index" @onclick="@(_ => SelectShip(ship))">
-                                                                <MudImage Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{ship.Index}.png")" Height="30" ObjectPosition="ObjectPosition.Center"/>
+                                                                @if (AppSettings.FittingToolSelectorShowShipImages)
+                                                                {
+                                                                    <MudImage Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{ship.Index}.png")" Height="30" ObjectPosition="ObjectPosition.Center"/>
+                                                                }
                                                                 <MudText Class="pa-2" Style="white-space: nowrap; font-size: 1rem">
                                                                     @Localizer.SimpleGameLocalization(ship.Index)
                                                                 </MudText>
@@ -78,7 +81,10 @@
                                                                     @foreach (var ship in chunk)
                                                                     {
                                                                         <div class="ft-selector-ship-name-grid" @key="ship.Index" @onclick="@(_ => SelectShip(ship))">
-                                                                            <MudImage Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{ship.Index}.png")" Height="30" ObjectPosition="ObjectPosition.Center"/>
+                                                                            @if (AppSettings.FittingToolSelectorShowShipImages)
+                                                                            {
+                                                                                <MudImage Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{ship.Index}.png")" Height="30" ObjectPosition="ObjectPosition.Center"/>
+                                                                            }
                                                                             <MudText Class="pa-2" Style="white-space: nowrap; font-size: 1rem">
                                                                                 @Localizer.SimpleGameLocalization(ship.Index)
                                                                             </MudText>

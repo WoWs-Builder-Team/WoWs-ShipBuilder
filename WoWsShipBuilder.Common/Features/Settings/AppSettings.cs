@@ -59,6 +59,8 @@ public class AppSettings
 
     public bool FittingToolSelectorMultiSelection { get; set; }
 
+    public bool FittingToolSelectorShowShipImages { get; set; }
+
     public void ClearSettings()
     {
         this.AutoUpdateEnabled = true;
@@ -83,6 +85,7 @@ public class AppSettings
         this.ShipComparisonHiddenColumns = default;
         this.FittingToolSelectorClosedByDefault = false;
         this.FittingToolSelectorMultiSelection = false;
+        this.FittingToolSelectorShowShipImages = false;
     }
 
     public void UpdateFromSettings(AppSettings settings)
@@ -109,5 +112,6 @@ public class AppSettings
         this.ShipComparisonHiddenColumns = settings.ShipComparisonHiddenColumns;
         this.FittingToolSelectorClosedByDefault = settings.FittingToolSelectorClosedByDefault;
         this.FittingToolSelectorMultiSelection = settings.FittingToolSelectorMultiSelection;
+        this.FittingToolSelectorShowShipImages = settings.FittingToolSelectorShowShipImages;
     }
 }
