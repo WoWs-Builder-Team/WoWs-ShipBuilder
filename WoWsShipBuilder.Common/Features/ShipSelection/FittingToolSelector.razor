@@ -58,7 +58,7 @@
                                                     </div>
                                                     @if (category.Key == ShipCategory.TechTree)
                                                     {
-                                                        foreach (var ship in tier.Value.OrderBy(x => x.Index[4]))
+                                                        foreach (var ship in tier.Value.OrderBy(x => x.TechTreePosition))
                                                         {
                                                             <div class="ft-selector-tech-tree-ship-name" @key="ship.Index" @onclick="@(_ => SelectShip(ship))">
                                                                 @if (AppSettings.FittingToolSelectorShowShipImages)
