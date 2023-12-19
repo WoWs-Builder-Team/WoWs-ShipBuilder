@@ -2141,4 +2141,13 @@ Az összeállítások módosítása gombbal kezelheti az egyes hajók kiosztás�
   <data name="ShipStatsTab_ShareBuildImage" xml:space="preserve">
     <value>Összeállítási-kép megosztása</value>
   </data>
+  <data name="ShipStats_SmokeSpeedLimit" xml:space="preserve">
+    <value>Maximum füstbeni sebesség</value>
+  </data>
+  <data name="ShipStats_FirstGMShotDelay" xml:space="preserve">
+    <value>Főlöveg újratöltési idő (Első szalvó)</value>
+  </data>
+  <data name="ShipStats_OtherGMShotDelay" xml:space="preserve">
+    <value>Főlöveg újratöltési idő (Második és minden további szalvó)</value>
+  </data>
 </root>
