@@ -42,7 +42,7 @@
                                 <MudText Typo="Typo.body2">
                                     @Localizer.GetAppLocalization(nameof(Translation.ShipStats_DispersionAtMaxRange)).Localization
                                 </MudText>
-                                <MudTooltip Inline="false" Placement="Placement.Bottom" Color="Color.Transparent" RootStyle="width: 100%">
+                                <MudTooltip Inline="false" Placement="Placement.Bottom" Color="Color.Transparent" RootStyle="width: 100%" Arrow>
                                     <ChildContent>
                                         <div class="ml-3 d-flex justify-space-between">
                                             <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">
@@ -65,7 +65,7 @@
                                         </MudPaper>
                                     </TooltipContent>
                                 </MudTooltip>
-                                <MudTooltip Inline="false" Placement="Placement.Bottom" Color="Color.Transparent" RootStyle="width: 100%">
+                                <MudTooltip Inline="false" Placement="Placement.Bottom" Color="Color.Transparent" RootStyle="width: 100%" Arrow>
                                     <ChildContent>
                                         <div class="ml-3 d-flex justify-space-between">
                                             <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_VerticalDisp)).Localization</MudText>
@@ -274,12 +274,14 @@
                         @if (ViewModel.CurrentShipStats?.SecondaryBatteryUiDataContainer.Secondaries is not null)
                         {
                             <MudExpansionPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_SecondaryBattery)).Localization" @bind-IsExpanded="@ExpanderStateCache["main-secondary"]" Style="border-bottom: initial" Class="custom-expansion-panel-header header-border border border-solid my-4">
-                                <div class="d-flex justify-space-between expander-content-padding">
-                                    <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@Localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Range))</MudText>
-                                    <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@($"{ViewModel.CurrentShipStats?.SecondaryBatteryUiDataContainer.Range} {Localizer.SimpleAppLocalization(nameof(Translation.Unit_KM))}")</MudText>
-                                </div>
+                                <MudStack Spacing="1" Class="expander-content-padding">
+                                    @foreach (var data in ViewModel.CurrentShipStats.SecondaryBatteryUiDataContainer.DataElements)
+                                    {
+                                        @DataElementFragment((data,Localizer))
+                                    }
+                                </MudStack>
                                 <MudExpansionPanels MultiExpansion Dense DisableGutters Class="expander-content-padding my-n2">
-                                    @for(var i = 0; i < ViewModel.CurrentShipStats.SecondaryBatteryUiDataContainer.Secondaries.Count; i++)
+                                    @for (var i = 0; i < ViewModel.CurrentShipStats.SecondaryBatteryUiDataContainer.Secondaries.Count; i++)
                                     {
                                         var secondary = ViewModel.CurrentShipStats.SecondaryBatteryUiDataContainer.Secondaries[i];
                                         var currentIndex = i;
@@ -501,8 +503,8 @@
                                 @foreach (var modifier in ViewModel.CurrentShipStats.SpecialAbilityDataContainer.Modifiers ?? new())
                                 {
                                     <div class="d-flex justify-space-between">
-                                        <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@ModifierProcessor.GetUiModifierString(modifier.Key, modifier.Value, ReturnFilter.Description, Localizer)</MudText>
-                                        <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@ModifierProcessor.GetUiModifierString(modifier.Key, modifier.Value, ReturnFilter.Value, Localizer)</MudText>
+                                        <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.Description, Localizer)</MudText>
+                                        <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.Value, Localizer)</MudText>
                                     </div>
                                 }
                             </MudStack>

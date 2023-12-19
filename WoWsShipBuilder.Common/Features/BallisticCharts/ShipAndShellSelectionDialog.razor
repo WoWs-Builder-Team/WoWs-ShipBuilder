@@ -72,7 +72,7 @@
         </MudContainer>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@Cancel" Variant="Variant.Filled" Color="Color.Warning">
+        <MudButton OnClick="@Cancel" Variant="Variant.Text" Color="Color.Default">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
         <MudButton Color="Color.Tertiary" OnClick="@(() => ReturnSelectedShells(true))" Variant="Variant.Filled" Disabled="@(processing || !dataWrappers.Exists(wrapper => wrapper.SelectedShells.Any()))">
@@ -91,7 +91,7 @@
             }
         </MudButton>
         <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
-            <MudButton Color="Color.Success" OnClick="@(() => ReturnSelectedShells(false))" Variant="Variant.Filled" Disabled="processing">
+            <MudButton Color="Color.Primary" OnClick="@(() => ReturnSelectedShells(false))" Variant="Variant.Filled" Disabled="processing">
                 @if (processing)
                 {
                     <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>

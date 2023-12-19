@@ -5,9 +5,9 @@ namespace WoWsShipBuilder.Infrastructure.GameData;
 
 public static class ShipModuleHelper
 {
-    public static Dictionary<ComponentType, List<ShipUpgrade>> GroupAndSortUpgrades(List<ShipUpgrade> unsortedUpgrades)
+    public static Dictionary<ComponentType, List<ShipUpgrade>> GroupAndSortUpgrades(IEnumerable<ShipUpgrade> unsortedUpgrades)
     {
-        Dictionary<ComponentType, List<ShipUpgrade>> upgradeDict = unsortedUpgrades
+        var upgradeDict = unsortedUpgrades
             .GroupBy(upgrade => upgrade.UcType)
             .Select(entry => (Type: entry.Key, Value: entry.OrderBy(item => item, UpgradeComparer.Instance).ToList()))
             .ToDictionary(pair => pair.Type, pair => pair.Value);

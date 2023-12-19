@@ -40,7 +40,7 @@ public static class Helpers
             .ToList();
     }
 
-    public static List<ShipUpgrade> GetShipConfigurationFromBuild(IEnumerable<string> storedData, List<ShipUpgrade> upgrades)
+    public static List<ShipUpgrade> GetShipConfigurationFromBuild(IEnumerable<string> storedData, IEnumerable<ShipUpgrade> upgrades)
     {
         var results = new List<ShipUpgrade>();
         var shipUpgrades = ShipModuleHelper.GroupAndSortUpgrades(upgrades).OrderBy(entry => entry.Key).Select(entry => entry.Value).ToList();

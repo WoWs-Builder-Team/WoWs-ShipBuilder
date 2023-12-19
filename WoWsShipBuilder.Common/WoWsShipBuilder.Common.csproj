@@ -13,7 +13,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.5" />
         <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
-        <PackageReference Include="MudBlazor" Version="6.10.0" />
+        <PackageReference Include="MudBlazor" Version="6.11.1" />
         <PackageReference Include="prometheus-net.AspNetCore" Version="8.0.0" />
         <PackageReference Include="ReactiveUI.Blazor" Version="18.4.44" />
         <PackageReference Include="Roslyn.System.IO.Abstractions.Analyzers" Version="12.2.19">
@@ -24,7 +24,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="WoWsShipBuilder.DataStructures" Version="4.0.0" />
+        <PackageReference Include="WoWsShipBuilder.DataStructures" Version="5.0.0" />
         <PackageReference Include="ReactiveUI" Version="18.4.44" />
     </ItemGroup>
 

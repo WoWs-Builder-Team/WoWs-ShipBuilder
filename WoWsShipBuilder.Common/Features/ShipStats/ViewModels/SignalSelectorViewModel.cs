@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Exterior;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Utility;
 
@@ -60,9 +61,9 @@ public class SignalSelectorViewModel : ReactiveObject
         }
     }
 
-    public List<(string, float)> GetModifierList()
+    public List<Modifier> GetModifierList()
     {
-        return this.SelectedSignals.SelectMany(m => m.Modifiers.Select(effect => (effect.Key, (float)effect.Value))).ToList();
+        return this.SelectedSignals.SelectMany(m => m.Modifiers).ToList();
     }
 
     public List<string> GetFlagList()

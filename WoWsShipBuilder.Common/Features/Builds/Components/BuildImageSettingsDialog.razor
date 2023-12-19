@@ -16,8 +16,8 @@
         <MudSwitch @bind-Checked="@ShowSignals" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildImageSettingsDialog_Signals))" LabelPosition="LabelPosition.Start" Color="Color.Primary" Disabled="TwoColumns"/>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel" Variant="Variant.Text" Color="Color.Warning">@Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization</MudButton>
-        <MudButton OnClick="Confirm" Variant="Variant.Text" Color="Color.Success">
+        <MudButton OnClick="@Cancel" Variant="Variant.Text" Color="Color.Default">@Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization</MudButton>
+        <MudButton OnClick="@Confirm" Variant="Variant.Filled" Color="Color.Primary">
             <MudText Typo="Typo.button">@Localizer.GetAppLocalization(nameof(Translation.Dialog_Save)).Localization</MudText>
         </MudButton>
     </DialogActions>

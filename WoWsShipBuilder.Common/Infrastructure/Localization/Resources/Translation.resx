@@ -2066,6 +2066,90 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipStats_FromSubsAtPeriscopeDepth" xml:space="preserve">
     <value>From subs at periscope depth</value>
   </data>
+  <data name="ShipStats_ShellType" xml:space="preserve">
+    <value>Shell type</value>
+  </data>
+  <data name="ShipStats_Overall" xml:space="preserve">
+    <value>Overall</value>
+  </data>
+  <data name="ShipComparison_SplashDmgSubs" xml:space="preserve">
+    <value>Splash damage vs Subs</value>
+  </data>
+  <data name="ShipComparison_OutOfRange" xml:space="preserve">
+    <value>Out of Range</value>
+  </data>
+  <data name="ShipComparison_OutOfRangeTooltip" xml:space="preserve">
+    <value>Firing range is greater than this ship max range</value>
+  </data>
+  <data name="UserDataService_BuildUpdated" xml:space="preserve">
+    <value>Build has been updated.</value>
+  </data>
+  <data name="UserDataService_BuildSaved" xml:space="preserve">
+    <value>Builds have been saved.</value>
+  </data>
+  <data name="UserDataService_BuildNotSaved" xml:space="preserve">
+    <value>Builds have not been saved.</value>
+  </data>
+  <data name="UserDataService_BuildLimitReached" xml:space="preserve">
+    <value>Builds storage limit reached. Next addition will replace the oldest saved build.</value>
+  </data>
+  <data name="UserDataService_BuildStorageFull" xml:space="preserve">
+    <value>Builds storage is full. The oldest saved build has been replaced.</value>
+  </data>
+  <data name="UserDataService_BuildNotLoaded" xml:space="preserve">
+    <value>builds could not be loaded.</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_WarningMessage" xml:space="preserve">
+    <value>Archive already contains another build named</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_ForTheShip" xml:space="preserve">
+    <value>for the ship</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_OverwriteQuestion" xml:space="preserve">
+    <value>Do you wish to overwrite it?</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_OverwriteBuild" xml:space="preserve">
+    <value>Overwrite build</value>
+  </data>
+  <data name="ShipStats_ArchiveBuild" xml:space="preserve">
+    <value>Archive Build</value>
+  </data>
+  <data name="ShipStats_ShareOrSaveBuild" xml:space="preserve">
+    <value>Share / Save</value>
+  </data>
+  <data name="ShipComparison_AddAShip" xml:space="preserve">
+    <value>Add a ship...</value>
+  </data>
+  <data name="ShipSelectionDialog_AddShips" xml:space="preserve">
+    <value>Add Ships</value>
+  </data>
+  <data name="ShipStatsTab_BuildMustHaveName" xml:space="preserve">
+    <value>Error during build saving: Build must have a name!</value>
+  </data>
+  <data name="ShipStatsTabs_LinkCopied" xml:space="preserve">
+    <value>Build link copied to clipboard</value>
+  </data>
+  <data name="ShipStatsTabs_BuildImageSavedAndCopiedToClipboard" xml:space="preserve">
+    <value>Build image has been saved and copied to clipboard!</value>
+  </data>
+  <data name="ShipStatsTab_ShareLink" xml:space="preserve">
+    <value>Share Link</value>
+  </data>
+  <data name="ShipStatsTab_SaveBuild" xml:space="preserve">
+    <value>Save Build</value>
+  </data>
+  <data name="ShipStatsTab_ShareBuildImage" xml:space="preserve">
+    <value>Share Build Image</value>
+  </data>
+  <data name="ShipStats_SmokeSpeedLimit" xml:space="preserve">
+    <value>Max movement speed</value>
+  </data>
+  <data name="ShipStats_FirstGMShotDelay" xml:space="preserve">
+    <value>Main battery reload time (First)</value>
+  </data>
+  <data name="ShipStats_OtherGMShotDelay" xml:space="preserve">
+    <value>Main battery reload time (Second and Consecutive)</value>
+  </data>
   <data name="SettingsWindow_SaveBuildOnShare" xml:space="preserve">
     <value>Save build on share</value>
   </data>

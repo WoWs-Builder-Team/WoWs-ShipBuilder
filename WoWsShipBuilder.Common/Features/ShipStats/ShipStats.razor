@@ -1,6 +1,7 @@
 ﻿@page "/ship"
 
 @using DynamicData
+@using WoWsShipBuilder.DataStructures.Modifiers
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.DataContainers
 @using WoWsShipBuilder.Features.ShipStats.Components
@@ -33,22 +34,41 @@
             }
         </ChildContent>
         <Header>
-            <MudStack Row>
+            <MudStack Row Spacing="0">
                 <MudDivider Vertical/>
                 <MudTooltip Text="@Localizer.GetAppLocalization(Translation.DispersionGraphWindow_AddShip).Localization" Arrow Delay="350">
                     <MudIconButton Icon="@Icons.Material.Filled.Add" OnClick="@OpenAddDialogAsync" Color="Color.Primary"/>
                 </MudTooltip>
-                <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInBallisticCharts).Localization" Arrow Delay="350">
-                    <MudIconButton OnClick="@OpenBallisticCharts" Color="Color.Primary" Style="width: 48px; height: 48px">
-                        <MudIcon Icon="@DispersionAndBallisticChartsPath" ViewBox="-4 -7 24 24"/>
-                    </MudIconButton>
-                </MudTooltip>
-                <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInAccelerationCharts).Localization" Arrow Delay="350">
-                    <MudIconButton Icon="@Icons.Material.Filled.Speed" OnClick="@OpenAccelerationCharts" Color="Color.Primary"/>
-                </MudTooltip>
-                <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInShipComparison).Localization" Arrow Delay="350">
-                    <MudIconButton Icon="@Icons.Material.Filled.FormatListBulleted" OnClick="@OpenShipComparison" Color="Color.Primary"/>
-                </MudTooltip>
+                <MudHidden Invert Breakpoint="Breakpoint.SmAndDown">
+                    <MudMenu Icon="@Icons.Material.Filled.Menu" Dense Color="Color.Primary" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.BottomLeft" DisableElevation>
+                        <MudStack Spacing="0" AlignItems="AlignItems.Center" Justify="Justify.Center">
+                            <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInBallisticCharts).Localization" Arrow Delay="350">
+                                <MudIconButton OnClick="@OpenBallisticCharts" Color="Color.Primary" Style="width: 48px; height: 48px">
+                                    <MudIcon Icon="@DispersionAndBallisticChartsPath" ViewBox="-4 -7 24 24"/>
+                                </MudIconButton>
+                            </MudTooltip>
+                            <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInAccelerationCharts).Localization" Arrow Delay="350">
+                                <MudIconButton Icon="@Icons.Material.Filled.Speed" OnClick="@OpenAccelerationCharts" Color="Color.Primary"/>
+                            </MudTooltip>
+                            <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInShipComparison).Localization" Arrow Delay="350">
+                                <MudIconButton Icon="@Icons.Material.Filled.FormatListBulleted" OnClick="@OpenShipComparison" Color="Color.Primary"/>
+                            </MudTooltip>
+                        </MudStack>
+                    </MudMenu>
+                </MudHidden>
+                <MudHidden Invert Breakpoint="Breakpoint.MdAndUp">
+                    <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInBallisticCharts).Localization" Arrow Delay="350">
+                        <MudIconButton OnClick="@OpenBallisticCharts" Color="Color.Primary" Style="width: 48px; height: 48px">
+                            <MudIcon Icon="@DispersionAndBallisticChartsPath" ViewBox="-4 -7 24 24"/>
+                        </MudIconButton>
+                    </MudTooltip>
+                    <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInAccelerationCharts).Localization" Arrow Delay="350">
+                        <MudIconButton Icon="@Icons.Material.Filled.Speed" OnClick="@OpenAccelerationCharts" Color="Color.Primary"/>
+                    </MudTooltip>
+                    <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInShipComparison).Localization" Arrow Delay="350">
+                        <MudIconButton Icon="@Icons.Material.Filled.FormatListBulleted" OnClick="@OpenShipComparison" Color="Color.Primary"/>
+                    </MudTooltip>
+                </MudHidden>
             </MudStack>
         </Header>
     </MudDynamicTabs>
@@ -255,10 +275,10 @@
         {
             using var viewModel = ShipStatsTab.CreateViewModel(container.Ship.Index, container.Build);
 
-            List<(string, float)> modifiers = viewModel.UpgradePanelViewModel.GetModifierList();
+            List<Modifier> modifiers = viewModel.UpgradePanelViewModel.GetModifierList();
             modifiers.AddRange(viewModel.ConsumableViewModel.GetModifiersList());
-            modifiers.AddRange(viewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
-            modifiers.AddRange(viewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
+            modifiers.AddRange(viewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<Modifier>());
+            modifiers.AddRange(viewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<Modifier>());
 
             var newDataContainer = calculateShipDataContainer ? DataContainerUtility.GetShipDataContainerFromBuild(container.Ship, container.Build.Modules, container.Ship.ShipUpgradeInfo.ShipUpgrades, modifiers) : container.ShipDataContainer;
             return container with { Modifiers = modifiers, ShipDataContainer = newDataContainer };

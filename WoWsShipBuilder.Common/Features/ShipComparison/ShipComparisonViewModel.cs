@@ -57,7 +57,8 @@ public partial class ShipComparisonViewModel : ReactiveObject
 
         this.useUpgradedModules = appSettings.ShipComparisonUseUpgradedModules;
         this.hideShipsWithoutSelectedSection = appSettings.ShipComparisonHideShipsWithoutSection;
-        this.Range = appSettings.ShipComparisonFiringRange;
+        this.MainBatteryFiringRange = appSettings.ShipComparisonMainBatteryFiringRange;
+        this.SecondaryBatteryFiringRange = appSettings.ShipComparisonSecondaryBatteryFiringRange;
     }
 
     private Dictionary<Guid, GridDataWrapper> FilteredShipList
@@ -90,9 +91,13 @@ public partial class ShipComparisonViewModel : ReactiveObject
 
     public List<Ship> SearchedShips { get; } = new();
 
-    public Dictionary<Guid, DispersionContainer> DispersionCache { get; } = new();
+    public Dictionary<Guid, DispersionValue> MainBatteryDispersionCache { get; } = new();
 
-    public double Range { get; private set; }
+    public Dictionary<Guid, List<DispersionValue>> SecondaryBatteryDispersionCache { get; } = new();
+
+    public double MainBatteryFiringRange { get; private set; }
+
+    public double SecondaryBatteryFiringRange { get; private set; }
 
     public string ResearchedShip
     {
@@ -299,7 +304,8 @@ public partial class ShipComparisonViewModel : ReactiveObject
                     this.wrappersCache[wrapper.Key] = wrapper.Value;
                 }
 
-                this.DispersionCache.Remove(wrapper.Key);
+                this.MainBatteryDispersionCache.Remove(wrapper.Key);
+                this.SecondaryBatteryDispersionCache.Remove(wrapper.Key);
             }
             else
             {
@@ -432,9 +438,14 @@ public partial class ShipComparisonViewModel : ReactiveObject
                 this.PinnedShipList.Add(newWrapper.Id, newWrapper);
             }
 
-            if (this.DispersionCache.ContainsKey(selectedShip.Key))
+            if (this.MainBatteryDispersionCache.ContainsKey(selectedShip.Key))
             {
-                this.DispersionCache[newWrapper.Id] = this.DispersionCache[selectedShip.Key];
+                this.MainBatteryDispersionCache[newWrapper.Id] = this.MainBatteryDispersionCache[selectedShip.Key];
+            }
+
+            if (this.SecondaryBatteryDispersionCache.ContainsKey(selectedShip.Key))
+            {
+                this.SecondaryBatteryDispersionCache[newWrapper.Id] = this.SecondaryBatteryDispersionCache[selectedShip.Key];
             }
         }
 
@@ -479,7 +490,27 @@ public partial class ShipComparisonViewModel : ReactiveObject
 
     public void UpdateRange(double selectedValue)
     {
-        this.Range = selectedValue;
+        switch (this.SelectedDataSection)
+        {
+            case ShipComparisonDataSections.MainBattery:
+                this.MainBatteryFiringRange = selectedValue;
+                break;
+            case ShipComparisonDataSections.SecondaryBattery:
+                this.SecondaryBatteryFiringRange = selectedValue;
+                break;
+        }
+    }
+
+    public void SetFiringRange(double value, bool isMainBattery)
+    {
+        if (isMainBattery)
+        {
+            this.MainBatteryFiringRange = value;
+        }
+        else
+        {
+            this.SecondaryBatteryFiringRange = value;
+        }
     }
 
     private Dictionary<Guid, GridDataWrapper> GetShipsToBeDisplayed(bool disableHideShipsIfNoSelectedSection)
@@ -704,7 +735,12 @@ public partial class ShipComparisonViewModel : ReactiveObject
         {
             if (wrapper.MainBattery?.DispersionData is not null && wrapper.MainBattery?.DispersionModifier is not null && wrapper.MainBattery?.Range is not null)
             {
-                this.DispersionCache[wrapper.Id] = wrapper.MainBattery.DispersionData.CalculateDispersion(decimal.ToDouble(wrapper.MainBattery.Range * 1000), wrapper.MainBattery.DispersionModifier, this.Range * 1000);
+                this.MainBatteryDispersionCache[wrapper.Id] = wrapper.MainBattery.DispersionData.CalculateDispersion(decimal.ToDouble(wrapper.MainBattery.Range * 1000), wrapper.MainBattery.DispersionModifier, this.MainBatteryFiringRange * 1000);
+            }
+
+            if (wrapper.Secondary.Range is not null)
+            {
+                this.SecondaryBatteryDispersionCache[wrapper.Id] = wrapper.Secondary.DispersionData.Select((d, i) => d.CalculateDispersion(decimal.ToDouble((wrapper.Secondary.Range ?? 0) * 1000), wrapper.Secondary.DispersionModifier[i], this.SecondaryBatteryFiringRange * 1000)).ToList();
             }
         }
     }

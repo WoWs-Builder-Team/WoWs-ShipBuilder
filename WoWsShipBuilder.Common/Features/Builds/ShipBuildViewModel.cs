@@ -1,4 +1,5 @@
 ﻿using ReactiveUI;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Features.DataContainers;
 using WoWsShipBuilder.Features.ShipStats.ViewModels;
@@ -80,7 +81,7 @@ public partial class ShipBuildViewModel : ReactiveObject
     {
         var build = this.DumpToBuild();
         List<int>? activatedConsumables = this.ConsumableViewModel.ActivatedSlots.Any() ? this.ConsumableViewModel.ActivatedSlots.ToList() : null;
-        List<(string, float)> modifiers = this.GenerateModifierList();
+        List<Modifier> modifiers = this.GenerateModifierList();
         return baseContainer with
         {
             Build = build,
@@ -91,14 +92,14 @@ public partial class ShipBuildViewModel : ReactiveObject
         };
     }
 
-    private ShipDataContainer CreateDataContainer(List<(string, float)> modifiers)
+    private ShipDataContainer CreateDataContainer(List<Modifier> modifiers)
     {
         return ShipDataContainer.CreateFromShip(this.CurrentShip, this.ShipModuleViewModel.SelectedModules.ToList(), modifiers);
     }
 
-    private List<(string, float)> GenerateModifierList()
+    private List<Modifier> GenerateModifierList()
     {
-        var modifiers = new List<(string, float)>();
+        var modifiers = new List<Modifier>();
 
         modifiers.AddRange(this.UpgradePanelViewModel.GetModifierList());
         modifiers.AddRange(this.SignalSelectorViewModel.GetModifierList());

@@ -1,7 +1,9 @@
+using System.Collections.Immutable;
 using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.Utility;
 
@@ -34,7 +36,7 @@ public partial record PingerGunDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MPS")]
     public decimal PingSpeed { get; set; }
 
-    public static PingerGunDataContainer? FromShip(Ship ship, IEnumerable<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
+    public static PingerGunDataContainer? FromShip(Ship ship, IEnumerable<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
         if (!ship.PingerGunList.Any())
         {
@@ -55,7 +57,7 @@ public partial record PingerGunDataContainer : DataContainerBase
         }
 
         // Safe approach is necessary because data up until 0.11.9#1 does not include this data due to an issue in the data converter
-        if (pingerUpgrade.Components.TryGetValue(ComponentType.Sonar, out string[]? pingerGunInfo))
+        if (pingerUpgrade.Components.TryGetValue(ComponentType.Sonar, out ImmutableArray<string> pingerGunInfo))
         {
             pingerGun = ship.PingerGunList[pingerGunInfo[0]];
         }
@@ -66,23 +68,17 @@ public partial record PingerGunDataContainer : DataContainerBase
         }
 
         var pingSpeed = pingerGun.WaveParams[0].WaveSpeed[0];
-        var pingSpeedModifiers = modifiers.FindModifiers("pingerWaveSpeedCoeff");
-        pingSpeed = pingSpeedModifiers.Aggregate(pingSpeed, (current, pingSpeedModifier) => current * (decimal)pingSpeedModifier);
+        pingSpeed = modifiers.ApplyModifiers("PingerGunDataContainer.WaveSpeed", pingSpeed);
 
         var firstPingDuration = pingerGun.SectorParams[0].Lifetime;
-        var firstPingDurationModifiers = modifiers.FindModifiers("firstSectorTimeCoeff");
-        firstPingDuration = firstPingDurationModifiers.Aggregate(firstPingDuration, (current, firstPingDurationModifier) => current * (decimal)firstPingDurationModifier);
+        firstPingDuration = modifiers.ApplyModifiers("PingerGunDataContainer.PingDuration.First", firstPingDuration);
 
         var secondPingDuration = pingerGun.SectorParams[1].Lifetime;
-        var secondPingDurationModifiers = modifiers.FindModifiers("secondSectorTimeCoeff");
-        secondPingDuration = secondPingDurationModifiers.Aggregate(secondPingDuration, (current, secondPingDurationModifiersModifier) => current * (decimal)secondPingDurationModifiersModifier);
+        secondPingDuration = modifiers.ApplyModifiers("PingerGunDataContainer.PingDuration.Second", secondPingDuration);
 
         var traverseSpeed = pingerGun.RotationSpeed[0];
 
-        var arModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
-        var reload = arModifiers.Aggregate(pingerGun.WaveReloadTime, (current, arModifier) => current * (1 - ((decimal)arModifier / 100)));
-        var pingReloadModifiers = modifiers.FindModifiers("pingerReloadCoeff");
-        reload = pingReloadModifiers.Aggregate(reload, (current, pingReloadModifier) => current * (decimal)pingReloadModifier);
+        var reload = modifiers.ApplyModifiers("PingerGunDataContainer.Reload", pingerGun.WaveReloadTime);
 
         var pingerGunDataContainer = new PingerGunDataContainer
         {

@@ -13,6 +13,14 @@
     }).then(function (canvas) {
         encodeBuildString(canvas, buildString);
         img = canvas.toDataURL("image/png", 1.0);
+        if (navigator.clipboard && window.ClipboardItem) {
+            canvas.toBlob(blob => {
+                const item = new ClipboardItem({ 'image/png': blob });
+                navigator.clipboard.write([item]).catch(err => console.log(err));
+            });
+        } else {
+            console.log("Copy to clipboard function is disabled or not yet available in your browser. If you are using Firefox go into about:config page and set this property dom.events.asyncClipboard.clipboardItem to true.");
+        }
     });
     let d = document.createElement("a");
     d.href = img;

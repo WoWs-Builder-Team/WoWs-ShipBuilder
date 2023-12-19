@@ -6,7 +6,7 @@
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer, double range, Dictionary<Guid, DispersionContainer> dispersionCache)> MainBatteryDataFragment = element => __builder =>
+    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer, double firingRange, Dictionary<Guid, DispersionValue> dispersionCache)> MainBatteryDataFragment = element => __builder =>
     {
         string dataSectionString = ShipComparisonDataSections.MainBattery.AsString();
 
@@ -75,36 +75,6 @@
                 {
                     <MudText Typo="Typo.body2">
                         @(context.Item.MainBattery.Range + unitKm)
-                    </MudText>
-                }
-                else
-                {
-                    @UtilityFragments.DataNotAvailableFragment
-                }
-            </CellTemplate>
-        </TemplateColumn>
-
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleHorizontalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHorizontalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Horizontal : 0)" T="GridDataWrapper" Title="@columnTitleHorizontalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @if (element.dispersionCache.TryGetValue(context.Item.Id, out var value))
-                {
-                    <MudText Typo="Typo.body2">
-                        @(Math.Round(value.Horizontal, 2) + unitM)
-                    </MudText>
-                }
-                else
-                {
-                    @UtilityFragments.DataNotAvailableFragment
-                }
-            </CellTemplate>
-        </TemplateColumn>
-
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleVerticalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleVerticalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Vertical : 0)" T="GridDataWrapper" Title="@columnTitleVerticalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @if (element.dispersionCache.TryGetValue(context.Item.Id, out var value))
-                {
-                    <MudText Typo="Typo.body2">
-                        @(Math.Round(value.Vertical, 2) + unitM)
                     </MudText>
                 }
                 else
@@ -271,6 +241,44 @@
                 {
                     <MudText Typo="Typo.body2">
                         @(context.Item.MainBattery.PotentialFpm + unitFpm)
+                    </MudText>
+                }
+                else
+                {
+                    @UtilityFragments.DataNotAvailableFragment
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleHorizontalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHorizontalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Horizontal : 0)" T="GridDataWrapper" Title="@columnTitleHorizontalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.MainBattery is not null && context.Item.MainBattery.Range < (decimal)element.firingRange)
+                {
+                    @UtilityFragments.OutOfRangeFragment((element.localizer, element.firingRange, context.Item.MainBattery.Range))
+                }
+                else if (element.dispersionCache.TryGetValue(context.Item.Id, out var value))
+                {
+                    <MudText Typo="Typo.body2">
+                        @(Math.Round(value.Horizontal, 2) + unitM)
+                    </MudText>
+                }
+                else
+                {
+                    @UtilityFragments.DataNotAvailableFragment
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleVerticalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleVerticalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Vertical : 0)" T="GridDataWrapper" Title="@columnTitleVerticalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.MainBattery is not null && context.Item.MainBattery.Range < (decimal)element.firingRange)
+                {
+                    @UtilityFragments.OutOfRangeFragment((element.localizer, element.firingRange, context.Item.MainBattery.Range))
+                }
+                else if (element.dispersionCache.TryGetValue(context.Item.Id, out var value) && context.Item.MainBattery is not null && context.Item.MainBattery.Range > (decimal)element.firingRange)
+                {
+                    <MudText Typo="Typo.body2">
+                        @(Math.Round(value.Vertical, 2) + unitM)
                     </MudText>
                 }
                 else

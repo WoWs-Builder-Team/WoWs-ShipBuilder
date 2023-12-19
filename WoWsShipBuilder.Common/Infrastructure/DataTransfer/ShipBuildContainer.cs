@@ -1,10 +1,11 @@
-﻿using WoWsShipBuilder.DataStructures.Ship;
+﻿using WoWsShipBuilder.DataStructures.Modifiers;
+using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Features.Builds;
 using WoWsShipBuilder.Features.DataContainers;
 
 namespace WoWsShipBuilder.Infrastructure.DataTransfer;
 
-public sealed record ShipBuildContainer(Ship Ship, Build? Build, Guid Id, IEnumerable<int>? ActivatedConsumableSlots, bool SpecialAbilityActive, ShipDataContainer? ShipDataContainer, List<(string, float)>? Modifiers)
+public sealed record ShipBuildContainer(Ship Ship, Build? Build, Guid Id, IEnumerable<int>? ActivatedConsumableSlots, bool SpecialAbilityActive, ShipDataContainer? ShipDataContainer, List<Modifier>? Modifiers)
 {
     public static ShipBuildContainer CreateNew(Ship ship, Build? build, IEnumerable<int>? activatedConsumableSlots, bool specialAbilityActive = false)
     {

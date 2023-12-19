@@ -1,4 +1,5 @@
 using WoWsShipBuilder.DataElements.DataElementAttributes;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.Features.BallisticCharts;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
@@ -58,7 +59,7 @@ public partial record BombDataContainer : ProjectileDataContainer
 
     public bool ShowBlastPenetration { get; private set; }
 
-    public static BombDataContainer FromBombName(string name, List<(string name, float value)> modifiers)
+    public static BombDataContainer FromBombName(string name, List<Modifier> modifiers)
     {
         var bomb = AppData.FindProjectile<Bomb>(name);
 
@@ -73,8 +74,7 @@ public partial record BombDataContainer : ProjectileDataContainer
 
         if (bomb.BombType.Equals(DataStructures.BombType.AP))
         {
-            List<float> bombDamageModifiers = modifiers.FindModifiers("bombApAlphaDamageMultiplier").ToList();
-            bombDamage = (decimal)bombDamageModifiers.Aggregate(bomb.Damage, (current, modifier) => current * modifier);
+            bombDamage = modifiers.ApplyModifiers("BombDataContainer.Damage.Ap", (decimal)bomb.Damage);
             ricochetAngle = $"{bomb.RicochetAngle}-{bomb.AlwaysRicochetAngle}";
             armingThreshold = (int)bomb.ArmingThreshold;
             fuseTimer = (decimal)bomb.FuseTimer;
@@ -83,12 +83,8 @@ public partial record BombDataContainer : ProjectileDataContainer
         }
         else
         {
-            List<float> bombDamageModifiers = modifiers.FindModifiers("bombAlphaDamageMultiplier").ToList();
-            bombDamage = (decimal)bombDamageModifiers.Aggregate(bomb.Damage, (current, modifier) => current * modifier);
-            var fireChanceModifiers = modifiers.FindModifiers("bombBurnChanceBonus");
-            fireChance = (decimal)fireChanceModifiers.Aggregate(bomb.FireChance, (current, modifier) => current + modifier);
-            var fireChanceModifiersBombs = modifiers.FindModifiers("burnChanceFactorBig");
-            fireChance = fireChanceModifiersBombs.Aggregate(fireChance, (current, modifier) => current + (decimal)modifier);
+            bombDamage = modifiers.ApplyModifiers("BombDataContainer.Damage.He", (decimal)bomb.Damage);
+            fireChance = modifiers.ApplyModifiers("BombDataContainer.FireChance", (decimal)bomb.FireChance);
             penetrationHe = (int)Math.Truncate(bomb.Penetration);
         }
 

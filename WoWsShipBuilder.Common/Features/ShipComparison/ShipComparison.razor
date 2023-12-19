@@ -57,7 +57,7 @@
 {
     <div style="margin: 8px 0;"></div>
     <MudPaper>
-        <MudTextField AutoFocus T="string" Margin="Margin.Dense" Adornment="Adornment.Start" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_TypeName))" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Label="@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SearchAndPin))" @bind-Text="@ViewModel.ResearchedShip" Immediate DebounceInterval="150"/>
+        <MudTextField AutoFocus T="string" Margin="Margin.Dense" Adornment="Adornment.Start" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_AddAShip))" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Label="@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SearchAndPin))" @bind-Text="@ViewModel.ResearchedShip" Immediate DebounceInterval="150"/>
     </MudPaper>
     if (!string.IsNullOrEmpty(ViewModel.ResearchedShip))
     {
@@ -143,7 +143,14 @@
             <MudButton OnClick="@(async () => await OpenHideColumnsDialog())" DisableElevation="true" Variant="Variant.Text" StartIcon="@Icons.Material.Outlined.Settings" Size="Size.Small" Color="Color.Secondary" Style="margin-top: -13px" Class="mx-auto">
                 @($"{Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_HideColumns))} : {hiddenColumns.Count(x => x.Value)}")
             </MudButton>
-            <MudNumericField Value="@ViewModel.Range" ValueChanged="@(async range => await UpdateRange(range))" Label="@($"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization} ({Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization})")" Class="mud-data-grid-range-selector" Variant="Variant.Text" Immediate="true" T="double" DebounceInterval="500" Margin="Margin.Dense" Min="1" Max="50" Step="0.5"/>
+            @if (ViewModel.SelectedDataSection is not (ShipComparisonDataSections.MainBattery or ShipComparisonDataSections.SecondaryBattery))
+            {
+                <div style="margin: 0 10px 10px auto; width: 100px" class="mud-input-control mud-input-control-margin-dense mud-input-input-control mud-input-number-control mud-input-showspin mud-data-grid-range-selector"></div>
+            }
+            else
+            {
+                <MudNumericField Value="@(ViewModel.SelectedDataSection == ShipComparisonDataSections.SecondaryBattery ? ViewModel.SecondaryBatteryFiringRange : ViewModel.MainBatteryFiringRange)" ValueChanged="@(async range => await UpdateRange(range))" Label="@($"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization} ({Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization})")" Class="mud-data-grid-range-selector" Variant="Variant.Text" Immediate="true" T="double" DebounceInterval="500" Margin="Margin.Dense" Min="1" Max="50" Step="0.5"/>
+            }
         </ToolBarContent>
         <Columns>
             <TemplateColumn T="GridDataWrapper" ShowColumnOptions="false" Hideable="false" Filterable="false" DragAndDropEnabled="false" StickyLeft SortBy="@(x => !ViewModel.SelectedShipList.ContainsKey(x.Id))" HeaderStyle="width:70px; background-clip: padding-box; background-color: var(--mud-palette-surface);" CellStyle="@($"width:70px; {StickyColumnsBackgroundColor}")" Resizable="false" HeaderClass="column-text-center" CellClass="column-text-center">
@@ -165,37 +172,43 @@
             </TemplateColumn>
             <TemplateColumn ID="@($"{ShipComparisonDataSections.General.AsString()}_{Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Image))}")" T="GridDataWrapper" Title="@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Image))" Hidden="@GetColumnDisplayStatus($"{ShipComparisonDataSections.General.AsString()}_{Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Image))}")" SortBy="@(x => LocalizeShipName(x.Ship.Index))" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
-                    <MudTooltip Arrow Delay="350">
+                    <MudTooltip Arrow Delay="350" Color="Color.Transparent">
                         <ChildContent>
                             <MudImage Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{context.Item.ShipIndex}.png")" Height="37" ObjectPosition="ObjectPosition.Center"/>
                         </ChildContent>
                         <TooltipContent>
-                            <MudText>@LocalizeShipName(context.Item.ShipIndex)</MudText>
+                            <MudPaper Outlined Class="pa-2">
+                                <MudText>@LocalizeShipName(context.Item.ShipIndex)</MudText>
+                            </MudPaper>
                         </TooltipContent>
                     </MudTooltip>
                 </CellTemplate>
             </TemplateColumn>
-            <PropertyColumn ID="@($"{ShipComparisonDataSections.General.AsString()}_{Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_TierFilter))}")" T="GridDataWrapper" TProperty="string" Title="@Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_TierFilter))" Property="@(x => x.ShipTier.ToTierString())" Hidden="@GetColumnDisplayStatus($"{ShipComparisonDataSections.General.AsString()}_{Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_TierFilter))}")" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center"/>
+            <PropertyColumn ID="@($"{ShipComparisonDataSections.General.AsString()}_{Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_TierFilter))}")" T="GridDataWrapper" TProperty="string" Title="@Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_TierFilter))" Property="@(x => x.ShipTier.ToTierString())" SortBy="@(x => x.ShipTier)" Hidden="@GetColumnDisplayStatus($"{ShipComparisonDataSections.General.AsString()}_{Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_TierFilter))}")" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center"/>
             <TemplateColumn ID="@($"{ShipComparisonDataSections.General.AsString()}_{Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_ClassFilter))}")" T="GridDataWrapper" TProperty="string" Title="@Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_ClassFilter))" Hidden="@GetColumnDisplayStatus($"{ShipComparisonDataSections.General.AsString()}_{Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_ClassFilter))}")" SortBy="@(x => x.Ship.ShipClass.ShipClassToString())" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
-                    <MudTooltip Arrow Delay="350">
+                    <MudTooltip Arrow Delay="350" Color="Color.Transparent">
                         <ChildContent>
                             <MudIcon Icon="@(Helpers.GetIconFromClass(context.Item.ShipClass, context.Item.ShipCategory))" Size="Size.Medium" ViewBox="-1 -3 24 10"/>
                         </ChildContent>
                         <TooltipContent>
-                            <MudText>@($"{Localizer.SimpleAppLocalization(context.Item.ShipCategory.ShipCategoryToString())} {Localizer.SimpleAppLocalization(context.Item.ShipClass.ShipClassToString())}")</MudText>
+                            <MudPaper Outlined Class="pa-2">
+                                <MudText>@($"{Localizer.SimpleAppLocalization(context.Item.ShipCategory.ShipCategoryToString())} {Localizer.SimpleAppLocalization(context.Item.ShipClass.ShipClassToString())}")</MudText>
+                            </MudPaper>
                         </TooltipContent>
                     </MudTooltip>
                 </CellTemplate>
             </TemplateColumn>
             <TemplateColumn ID="@($"{ShipComparisonDataSections.General.AsString()}_{Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_NationFilter))}")" T="GridDataWrapper" TProperty="string" Title="@Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_NationFilter))" Hidden="@GetColumnDisplayStatus($"{ShipComparisonDataSections.General.AsString()}_{Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_NationFilter))}")" SortBy="@(x => x.Ship.ShipNation.ShipNationToString())" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
-                    <MudTooltip Arrow Delay="350">
+                    <MudTooltip Arrow Delay="350" Color="Color.Transparent">
                         <ChildContent>
                             <MudImage Src="@(Helpers.GetNationFlag(Environment, context.Item.ShipNation, context.Item.ShipIndex))" Height="37" Class="mt-1 mb-n1" ObjectPosition="ObjectPosition.Center"/>
                         </ChildContent>
                         <TooltipContent>
-                            <MudText>@Localizer.SimpleAppLocalization(context.Item.ShipNation.ShipNationToString())</MudText>
+                            <MudPaper Outlined Class="pa-2">
+                                <MudText>@Localizer.SimpleAppLocalization(context.Item.ShipNation.ShipNationToString())</MudText>
+                            </MudPaper>
                         </TooltipContent>
                     </MudTooltip>
                 </CellTemplate>
@@ -216,12 +229,12 @@
                     }
                 </CellTemplate>
             </TemplateColumn>
-            @MainBatteryDataFragment((IsColumnHidden, Localizer, ViewModel.Range, ViewModel.DispersionCache))
+            @MainBatteryDataFragment((IsColumnHidden, Localizer, ViewModel.MainBatteryFiringRange, ViewModel.MainBatteryDispersionCache))
             @HeShellDataFragment((IsColumnHidden, Localizer))
             @ApShellDataFragment((IsColumnHidden, Localizer))
             @SapShellDataFragment((IsColumnHidden, Localizer))
             @TorpedoDataFragment((IsColumnHidden, Localizer))
-            @SecondaryBatteryDataFragment((IsColumnHidden, Localizer))
+            @SecondaryBatteryDataFragment((IsColumnHidden, Localizer, ViewModel.SecondaryBatteryFiringRange, ViewModel.SecondaryBatteryDispersionCache))
             @SecondaryBatteryShellsDataFragment((IsColumnHidden, Localizer))
             @AaDefenseDataFragment((IsColumnHidden, Localizer))
             @AswDataFragment((IsColumnHidden, Localizer))
@@ -275,6 +288,8 @@
 
     private const string RangeUrlParameter = "r";
 
+    private const string SecondaryRangeUrlParameter = "sr";
+
     private const string HiddenColumnsUrlParameter = "hc";
 
     private Dictionary<string, bool> hiddenColumns = new();
@@ -299,6 +314,7 @@
         NavManager.TryGetQueryString(HideUnfittingShipsUrlParameter, out string hideUnfittingShips);
         NavManager.TryGetQueryString(SectionUrlParameter, out string section);
         NavManager.TryGetQueryString(RangeUrlParameter, out string range);
+        NavManager.TryGetQueryString(SecondaryRangeUrlParameter, out string secondaryRange);
         NavManager.TryGetQueryString(PinnedShipsUrlParameter, out string pinnedShips);
         NavManager.TryGetQueryString(PinnedShipsOnlyUrlParameter, out string pinnedShipsOnly);
 
@@ -349,7 +365,13 @@
         if (!string.IsNullOrEmpty(range))
         {
             applyFilters = true;
-            ViewModel!.UpdateRange(double.Parse(range));
+            ViewModel!.SetFiringRange(double.Parse(range), true);
+        }
+
+        if (!string.IsNullOrEmpty(secondaryRange))
+        {
+            applyFilters = true;
+            ViewModel!.SetFiringRange(double.Parse(secondaryRange), false);
         }
 
         if (!string.IsNullOrEmpty(pinnedShipsOnly))
@@ -528,7 +550,8 @@
     private async Task UpdateRange(double range)
     {
         ViewModel!.UpdateRange(range);
-        AppSettings.ShipComparisonFiringRange = ViewModel.Range;
+        AppSettings.ShipComparisonMainBatteryFiringRange = ViewModel.MainBatteryFiringRange;
+        AppSettings.ShipComparisonSecondaryBatteryFiringRange = ViewModel.SecondaryBatteryFiringRange;
         await UpdateUrl();
         await SettingsAccessor.SaveSettings(AppSettings);
     }
@@ -796,9 +819,14 @@
             url.Add(SectionUrlParameter, $"{(int)ViewModel!.SelectedDataSection}");
         }
 
-        if (ViewModel!.Range is > 10 or < 10)
+        if (ViewModel!.MainBatteryFiringRange is > 10 or < 10)
         {
-            url.Add(RangeUrlParameter, $"{ViewModel!.Range}");
+            url.Add(RangeUrlParameter, $"{ViewModel!.MainBatteryFiringRange}");
+        }
+
+        if (ViewModel!.SecondaryBatteryFiringRange is > 5 or < 5)
+        {
+            url.Add(SecondaryRangeUrlParameter, $"{ViewModel!.SecondaryBatteryFiringRange}");
         }
 
         if (!string.IsNullOrEmpty(hiddeColumnsUrlString))
