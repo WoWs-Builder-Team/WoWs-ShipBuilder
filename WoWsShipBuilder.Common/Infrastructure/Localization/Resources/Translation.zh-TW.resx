@@ -2127,7 +2127,16 @@ C = 砲彈口徑 [m]
   <data name="ShipStatsTabs_BuildImageSavedAndCopiedToClipboard" xml:space="preserve">
     <value>配置圖片已被儲存且已被複製到剪貼簿</value>
   </data>
+  <data name="ShipStatsTab_ShareLink" xml:space="preserve">
+    <value>分享連結</value>
+  </data>
   <data name="ShipStatsTab_SaveBuild" xml:space="preserve">
     <value>儲存配置</value>
+  </data>
+  <data name="ShipStatsTab_ShareBuildImage" xml:space="preserve">
+    <value>分享配置圖片</value>
+  </data>
+  <data name="ShipStats_SmokeSpeedLimit" xml:space="preserve">
+    <value>煙霧內移動速度上限</value>
   </data>
 </root>
