@@ -80,7 +80,7 @@
                     }
                     if (loaders.EndsWith(" + "))
                     {
-                        loaders = loaders.TrimEnd().TrimEnd('+').TrimEnd();
+                        loaders = loaders[..^3];
                     }
 
                     if (!string.IsNullOrEmpty(loaders))
