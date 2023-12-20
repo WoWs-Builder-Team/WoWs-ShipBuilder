@@ -62,17 +62,25 @@
                 @if (context.Item.TorpedoLauncher is not null)
                 {
                     string loaders = default!;
-                    if (!string.IsNullOrEmpty(context.Item.TorpedoLauncher.BowLoaders) && string.IsNullOrEmpty(context.Item.TorpedoLauncher.SternLoaders))
+                    if (!string.IsNullOrEmpty(context.Item.TorpedoLauncher.BowLoaders))
                     {
-                        loaders = context.Item.TorpedoLauncher.BowLoaders;
+                        loaders += context.Item.TorpedoLauncher.BowLoaders + " + ";
                     }
-                    else if (string.IsNullOrEmpty(context.Item.TorpedoLauncher.BowLoaders) && !string.IsNullOrEmpty(context.Item.TorpedoLauncher.SternLoaders))
+                    if (!string.IsNullOrEmpty(context.Item.TorpedoLauncher.SternLoaders))
                     {
-                        loaders = context.Item.TorpedoLauncher.SternLoaders;
+                        loaders += context.Item.TorpedoLauncher.SternLoaders + " + ";
                     }
-                    else if (!string.IsNullOrEmpty(context.Item.TorpedoLauncher.BowLoaders) && !string.IsNullOrEmpty(context.Item.TorpedoLauncher.SternLoaders))
+                    if (!string.IsNullOrEmpty(context.Item.TorpedoLauncher.LeftSideLoaders))
                     {
-                        loaders = string.Join(" + ", context.Item.TorpedoLauncher.BowLoaders, context.Item.TorpedoLauncher.SternLoaders);
+                        loaders += context.Item.TorpedoLauncher.LeftSideLoaders + " + ";
+                    }
+                    if (!string.IsNullOrEmpty(context.Item.TorpedoLauncher.RightSideLoaders))
+                    {
+                        loaders += context.Item.TorpedoLauncher.RightSideLoaders;
+                    }
+                    if (loaders.EndsWith(" + "))
+                    {
+                        loaders = loaders.TrimEnd().TrimEnd('+').TrimEnd();
                     }
 
                     if (!string.IsNullOrEmpty(loaders))

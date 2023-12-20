@@ -23,6 +23,12 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "Loaders")]
     public string SternLoaders { get; set; } = default!;
 
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "Loaders")]
+    public string LeftSideLoaders { get; set; } = default!;
+
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "Loaders")]
+    public string RightSideLoaders { get; set; } = default!;
+
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
     public decimal TurnTime { get; set; }
 
@@ -141,16 +147,28 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
         };
 
         var loadersSum = 0;
-        if (torpedoModule.TorpedoLoaders.TryGetValue(SubmarineTorpedoLauncherLoaderPosition.BowLoaders, out var bowLoaders))
+        if (torpedoModule.TorpedoLoaders.TryGetValue(TorpedoLauncherLoaderPosition.BowLoaders, out var bowLoaders))
         {
             torpedoArmamentDataContainer.BowLoaders = string.Join(" + ", bowLoaders);
             loadersSum += bowLoaders.Select(x => x.Split('x').Select(int.Parse).First()).Sum();
         }
 
-        if (torpedoModule.TorpedoLoaders.TryGetValue(SubmarineTorpedoLauncherLoaderPosition.SternLoaders, out var sternLoaders))
+        if (torpedoModule.TorpedoLoaders.TryGetValue(TorpedoLauncherLoaderPosition.SternLoaders, out var sternLoaders))
         {
             torpedoArmamentDataContainer.SternLoaders = string.Join(" + ", sternLoaders);
             loadersSum += sternLoaders.Select(x => x.Split('x').Select(int.Parse).First()).Sum();
+        }
+
+        if (torpedoModule.TorpedoLoaders.TryGetValue(TorpedoLauncherLoaderPosition.LeftSideLoaders, out var leftSideLoaders))
+        {
+            torpedoArmamentDataContainer.LeftSideLoaders = string.Join(" + ", leftSideLoaders);
+            loadersSum += leftSideLoaders.Select(x => x.Split('x').Select(int.Parse).First()).Sum();
+        }
+
+        if (torpedoModule.TorpedoLoaders.TryGetValue(TorpedoLauncherLoaderPosition.RightSideLoaders, out var rightSideLoaders))
+        {
+            torpedoArmamentDataContainer.RightSideLoaders = string.Join(" + ", rightSideLoaders);
+            loadersSum += rightSideLoaders.Select(x => x.Split('x').Select(int.Parse).First()).Sum();
         }
 
         torpedoArmamentDataContainer.LoadersCount = loadersSum;

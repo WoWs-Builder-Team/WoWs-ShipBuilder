@@ -3954,6 +3954,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Left side.
+        /// </summary>
+        public static string ShipStats_LeftSideLoaders {
+            get {
+                return ResourceManager.GetString("ShipStats_LeftSideLoaders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loaders.
         /// </summary>
         public static string ShipStats_Loaders {
@@ -4535,6 +4544,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string ShipStats_RicochetAngles {
             get {
                 return ResourceManager.GetString("ShipStats_RicochetAngles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Right side.
+        /// </summary>
+        public static string ShipStats_RightSideLoaders {
+            get {
+                return ResourceManager.GetString("ShipStats_RightSideLoaders", resourceCulture);
             }
         }
         
