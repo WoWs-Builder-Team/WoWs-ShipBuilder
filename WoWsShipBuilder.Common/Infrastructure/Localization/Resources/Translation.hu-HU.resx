@@ -2150,4 +2150,10 @@ Az összeállítások módosítása gombbal kezelheti az egyes hajók kiosztás�
   <data name="ShipStats_OtherGMShotDelay" xml:space="preserve">
     <value>Főlöveg újratöltési idő (Második és minden további szalvó)</value>
   </data>
+  <data name="ShipStats_LeftSideLoaders" xml:space="preserve">
+    <value>Bal oldal</value>
+  </data>
+  <data name="ShipStats_RightSideLoaders" xml:space="preserve">
+    <value>Jobb oldal</value>
+  </data>
 </root>
