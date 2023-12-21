@@ -2139,4 +2139,10 @@ C = 砲彈口徑 [m]
   <data name="ShipStats_SmokeSpeedLimit" xml:space="preserve">
     <value>煙霧內移動速度上限</value>
   </data>
+  <data name="ShipStats_LeftSideLoaders" xml:space="preserve">
+    <value>左側裝填手數量</value>
+  </data>
+  <data name="ShipStats_RightSideLoaders" xml:space="preserve">
+    <value>右側裝填手數量</value>
+  </data>
 </root>
