@@ -2150,6 +2150,12 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipStats_OtherGMShotDelay" xml:space="preserve">
     <value>Main battery reload time (Second and Consecutive)</value>
   </data>
+  <data name="ShipStats_LeftSideLoaders" xml:space="preserve">
+    <value>Left side</value>
+  </data>
+  <data name="ShipStats_RightSideLoaders" xml:space="preserve">
+    <value>Right side</value>
+  </data>
   <data name="SettingsWindow_SaveBuildOnShare" xml:space="preserve">
     <value>Save build on share</value>
   </data>
