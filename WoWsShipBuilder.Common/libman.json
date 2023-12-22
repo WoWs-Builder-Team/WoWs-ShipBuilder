@@ -22,6 +22,14 @@
       "files":[
         "dist/html2canvas.min.js"
       ]
+    },
+    {
+      "library": "https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js",
+      "destination": "wwwroot/lib/tableToExcel/",
+      "provider": "filesystem",
+      "files":[
+        "dist/tableToExcel.js"
+      ]
     }
   ]
 }
