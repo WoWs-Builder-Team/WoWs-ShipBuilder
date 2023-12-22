@@ -61,7 +61,7 @@
             <CellTemplate>
                 @if (context.Item.TorpedoLauncher is not null)
                 {
-                    string loaders = default!;
+                    string loaders = string.Empty;
                     if (!string.IsNullOrEmpty(context.Item.TorpedoLauncher.BowLoaders))
                     {
                         loaders += context.Item.TorpedoLauncher.BowLoaders + " + ";
