@@ -1746,6 +1746,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Autormatic updates.
+        /// </summary>
+        public static string SettingsWindow_AutoUpdates {
+            get {
+                return ResourceManager.GetString("SettingsWindow_AutoUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Custom build image path.
         /// </summary>
         public static string SettingsWindow_BuildImagePath {
@@ -2030,6 +2039,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string SettingsWindow_ResetSettings {
             get {
                 return ResourceManager.GetString("SettingsWindow_ResetSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A restart is required for this option to take effect..
+        /// </summary>
+        public static string SettingsWindow_RestartRequired {
+            get {
+                return ResourceManager.GetString("SettingsWindow_RestartRequired", resourceCulture);
             }
         }
         

@@ -2174,4 +2174,10 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="SettingsWindow_FittingToolShowImages" xml:space="preserve">
     <value>Show ships images</value>
   </data>
+  <data name="SettingsWindow_AutoUpdates" xml:space="preserve">
+    <value>Autormatic updates</value>
+  </data>
+  <data name="SettingsWindow_RestartRequired" xml:space="preserve">
+    <value>A restart is required for this option to take effect.</value>
+  </data>
 </root>
