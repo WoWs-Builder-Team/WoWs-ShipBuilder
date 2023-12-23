@@ -84,8 +84,8 @@
         <Content Remove="Settings\ApplicationOptions.json" />
     </ItemGroup>
     <ItemGroup>
-        <Content Include="..\docs\Third-Party-Licenses.txt">
-            <Link>Third-Party-Licenses.txt</Link>
+        <Content Include="..\docs\Third-Party-Dependencies.txt">
+            <Link>Third-Party-Dependencies.txt</Link>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
             <CopyToPublishDirectory>Always</CopyToPublishDirectory>
         </Content>

@@ -9,11 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{0F12
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
-		ResharperFileLayout.xml = ResharperFileLayout.xml
 		stylecop.json = stylecop.json
 		WoWsShipBuilder.sln.DotSettings = WoWsShipBuilder.sln.DotSettings
 		global.json = global.json
-		dirs.proj = dirs.proj
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
