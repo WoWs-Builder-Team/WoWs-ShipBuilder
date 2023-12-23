@@ -20,7 +20,7 @@
 {
  <aside class="ft-selector-aside-container @(openDrawer ? "ft-selector-aside-container-expanded" : "ft-selector-aside-container-collapsed")">
     <ul style="min-height: 531px;">
-        @foreach (var nation in dataStructure.OrderBy(nation => (int)nation.Key))
+        @foreach (var nation in AppData.FittingToolShipSelectorDataStructure.OrderBy(nation => (int)nation.Key))
         {
             <li class="parent" style="float: none" @key="nation.Key">
                 <MudStack Row Class="ml-1" AlignItems="AlignItems.Center" Style="overflow: hidden">
@@ -123,8 +123,6 @@
 {
     [Parameter]
     public IList<ShipBuildContainer> SelectedShips { get; set; } = default!;
-
-    private readonly ImmutableDictionary<Nation, ImmutableDictionary<ShipCategory, ImmutableDictionary<ShipClass, ImmutableDictionary<int, ImmutableList<Ship>>>>> dataStructure = AppData.FittingToolShipSelectorDataStructure;
     private bool openDrawer = true;
 
     protected override void OnInitialized()
