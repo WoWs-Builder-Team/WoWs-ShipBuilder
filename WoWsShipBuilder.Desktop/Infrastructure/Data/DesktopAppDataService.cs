@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO.Abstractions;
 using System.Linq;
@@ -117,6 +118,7 @@ public class DesktopAppDataService : IAppDataService
             }
         });
 
+        InitializeShipSelectorDataStructure();
         sw.Stop();
         Logging.Logger.LogDebug("Loaded local files in {}", sw.Elapsed);
     }
@@ -135,5 +137,24 @@ public class DesktopAppDataService : IAppDataService
         }
 
         return await this.dataService.LoadAsync<T>(filePath);
+    }
+
+    private static void InitializeShipSelectorDataStructure()
+    {
+        var result = AppData.ShipDictionary.GroupBy(x => x.Value.ShipNation)
+            .ToImmutableDictionary(
+                nationGrouping => nationGrouping.Key,
+                nationGrouping => nationGrouping.GroupBy(nationShip => nationShip.Value.ShipCategory)
+                    .ToImmutableDictionary(
+                        categoryGrouping => categoryGrouping.Key,
+                        categoryGrouping => categoryGrouping.GroupBy(categoryShip => categoryShip.Value.ShipClass)
+                            .ToImmutableDictionary(
+                                shipClassGrouping => shipClassGrouping.Key,
+                                shipClassGrouping => shipClassGrouping.GroupBy(shipClassShip => shipClassShip.Value.Tier)
+                                    .ToImmutableDictionary(
+                                        tierGrouping => tierGrouping.Key,
+                                        tierGrouping => tierGrouping.Select(tierShip => tierShip.Value).ToImmutableList()))));
+
+        AppData.FittingToolShipSelectorDataStructure = result;
     }
 }
