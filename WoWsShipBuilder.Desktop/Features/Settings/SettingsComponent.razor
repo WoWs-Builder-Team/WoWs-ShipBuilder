@@ -62,7 +62,7 @@
         </MudItem>
 
         <MudItem xs="12">
-            <MudSelect @bind-Value="selectedCulture" Style="max-width: 500px;" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_SelectedLanguage)).Localization" HelperText="We recommend restarting the app after changing the language.">
+            <MudSelect @bind-Value="selectedCulture" Style="max-width: 500px;" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_SelectedLanguage)).Localization" HelperText="@Localizer.SimpleAppLocalization(nameof(Translation.Settingswindow_LanguageChanged))">
                 @foreach (var culture in AppConstants.SupportedLanguages)
                 {
                     <MudSelectItem Value="@culture">@culture.CultureInfo.DisplayName</MudSelectItem>
@@ -102,6 +102,7 @@
                     @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_DeleteAll))
                 </MudButton>
             </MudStack>
+            <MudCheckBox @bind-Checked="@storeBuildOnShare" LabelPosition="LabelPosition.End" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_SaveBuildOnShare))" Color="Color.Primary"/>
         </MudItem>
 
         <MudItem xs="12">
@@ -116,21 +117,31 @@
         </MudItem>
 
         <MudItem xs="12">
+            <MudText Typo="Typo.h6">
+                @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_FittingToolSelector))
+            </MudText>
+            <MudCheckBox @bind-Checked="@fittingToolSelectorDisabled" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_FittingToolSelectorDisabled))"/>
+            <MudCheckBox @bind-Checked="@fittingToolSelectorClosedByDefault" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_ClosedByDefault))" Disabled="fittingToolSelectorDisabled"/>
+            <MudCheckBox @bind-Checked="@fittingToolSelectorMultiSelection" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_MultiSelect))" Disabled="fittingToolSelectorDisabled"/>
+            <MudCheckBox @bind-Checked="@fittingToolSelectorShowShipImages" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_FittingToolShowImages))" Class="mb-n3" Disabled="fittingToolSelectorDisabled"/>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudText Typo="Typo.h6">
+                @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_AutoUpdates))
+            </MudText>
             <MudStack AlignItems="AlignItems.Start">
-                <MudCheckBox @bind-Checked="@storeBuildOnShare" LabelPosition="LabelPosition.Start" Label="Save build on share" Color="Color.Primary"/>
+                <MudCheckBox @bind-Checked="@autoUpdateEnabled" LabelPosition="LabelPosition.End" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_AutoUpdate))" Color="Color.Primary"/>
             </MudStack>
         </MudItem>
 
         <MudItem xs="12">
-            <MudStack AlignItems="AlignItems.Start">
-                <MudCheckBox @bind-Checked="@autoUpdateEnabled" LabelPosition="LabelPosition.Start" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_AutoUpdate))" Color="Color.Primary"/>
-            </MudStack>
-        </MudItem>
-
-        <MudItem xs="12">
+            <MudText Typo="Typo.h6">
+                @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_BuildImagePath))
+            </MudText>
             <MudStack AlignItems="AlignItems.Start" Spacing="0">
-                <MudCheckBox @bind-Checked="@customBuildImagePathEnabled" LabelPosition="LabelPosition.Start" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_BuildImagePath))" Color="Color.Primary"/>
-                <MudTextField @bind-Value="@customBuildImagePath" FullWidth HelperText="A restart is required for this option to take effect" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_BuildImagePath))" Adornment="Adornment.End" OnAdornmentClick="OnImageFolderSelectClicked" AdornmentIcon="@Icons.Material.Filled.Folder" Disabled="@(!customBuildImagePathEnabled)"/>
+                <MudCheckBox @bind-Checked="@customBuildImagePathEnabled" LabelPosition="LabelPosition.End" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_EnableBuildImagePath))" Color="Color.Primary"/>
+                <MudTextField @bind-Value="@customBuildImagePath" FullWidth HelperText="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_RestartRequired))" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_BuildImagePath))" Adornment="Adornment.End" OnAdornmentClick="OnImageFolderSelectClicked" AdornmentIcon="@Icons.Material.Filled.Folder" Disabled="@(!customBuildImagePathEnabled)"/>
             </MudStack>
         </MudItem>
     </MudGrid>
@@ -175,6 +186,14 @@
     private bool autoUpdateEnabled = true;
 
     private bool storeBuildOnShare = true;
+
+    private bool fittingToolSelectorMultiSelection;
+
+    private bool fittingToolSelectorShowShipImages;
+
+    private bool fittingToolSelectorClosedByDefault;
+
+    private bool fittingToolSelectorDisabled;
 
     private string appVersion = "Undefined";
 
@@ -223,6 +242,10 @@
         customBuildImagePath = AppSettings.CustomImagePath;
         autoUpdateEnabled = AppSettings.AutoUpdateEnabled;
         storeBuildOnShare = AppSettings.StoreBuildOnShare;
+        fittingToolSelectorMultiSelection = AppSettings.FittingToolSelectorMultiSelection;
+        fittingToolSelectorShowShipImages = AppSettings.FittingToolSelectorShowShipImages;
+        fittingToolSelectorClosedByDefault = AppSettings.FittingToolSelectorClosedByDefault;
+        fittingToolSelectorDisabled = AppSettings.FittingToolSelectorDisabled;
 
         StateHasChanged();
     }
@@ -262,6 +285,14 @@
 
         settingsChanged = settingsChanged || storeBuildOnShare != AppSettings.StoreBuildOnShare;
         AppSettings.StoreBuildOnShare = storeBuildOnShare;
+
+        AppSettings.FittingToolSelectorMultiSelection = fittingToolSelectorMultiSelection;
+        settingsChanged = settingsChanged || fittingToolSelectorShowShipImages != AppSettings.FittingToolSelectorShowShipImages;
+        AppSettings.FittingToolSelectorShowShipImages = fittingToolSelectorShowShipImages;
+        settingsChanged = settingsChanged || fittingToolSelectorClosedByDefault != AppSettings.FittingToolSelectorClosedByDefault;
+        AppSettings.FittingToolSelectorClosedByDefault = fittingToolSelectorClosedByDefault;
+        settingsChanged = settingsChanged || fittingToolSelectorDisabled != AppSettings.FittingToolSelectorDisabled;
+        AppSettings.FittingToolSelectorDisabled = fittingToolSelectorDisabled;
 
         await SettingsAccessor.SaveSettings(AppSettings);
 

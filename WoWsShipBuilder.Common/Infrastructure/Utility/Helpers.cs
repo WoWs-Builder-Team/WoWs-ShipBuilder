@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using System.Collections.Immutable;
+using Microsoft.Extensions.Hosting;
 using MudBlazor;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 
 namespace WoWsShipBuilder.Infrastructure.Utility;
@@ -104,5 +106,24 @@ public static class Helpers
                 Tooltip = 4000,
             },
         };
+    }
+
+    public static void InitializeShipSelectorDataStructure()
+    {
+        var result = AppData.ShipDictionary.GroupBy(x => x.Value.ShipNation)
+            .ToImmutableDictionary(
+                nationGrouping => nationGrouping.Key,
+                nationGrouping => nationGrouping.GroupBy(nationShip => nationShip.Value.ShipCategory)
+                    .ToImmutableDictionary(
+                        categoryGrouping => categoryGrouping.Key,
+                        categoryGrouping => categoryGrouping.GroupBy(categoryShip => categoryShip.Value.ShipClass)
+                            .ToImmutableDictionary(
+                                shipClassGrouping => shipClassGrouping.Key,
+                                shipClassGrouping => shipClassGrouping.GroupBy(shipClassShip => shipClassShip.Value.Tier)
+                                    .ToImmutableDictionary(
+                                        tierGrouping => tierGrouping.Key,
+                                        tierGrouping => tierGrouping.Select(tierShip => tierShip.Value).ToImmutableList()))));
+
+        AppData.FittingToolShipSelectorDataStructure = result;
     }
 }

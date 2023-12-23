@@ -2156,4 +2156,31 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipStats_RightSideLoaders" xml:space="preserve">
     <value>Right side</value>
   </data>
+  <data name="SettingsWindow_SaveBuildOnShare" xml:space="preserve">
+    <value>Save build on share</value>
+  </data>
+  <data name="SettingsWindow_FittingToolSelector" xml:space="preserve">
+    <value>Fitting-Tool style ship selector</value>
+  </data>
+  <data name="SettingsWindow_ClosedByDefault" xml:space="preserve">
+    <value>Closed by default</value>
+  </data>
+  <data name="SettingsWindow_MultiSelect" xml:space="preserve">
+    <value>Allow multi-selection</value>
+  </data>
+  <data name="SettingsWindow_FtImgWarning" xml:space="preserve">
+    <value>WARNING: Use only with very good internet connection.</value>
+  </data>
+  <data name="SettingsWindow_FittingToolShowImages" xml:space="preserve">
+    <value>Show ships images</value>
+  </data>
+  <data name="SettingsWindow_AutoUpdates" xml:space="preserve">
+    <value>Autormatic updates</value>
+  </data>
+  <data name="SettingsWindow_RestartRequired" xml:space="preserve">
+    <value>A restart is required for this option to take effect.</value>
+  </data>
+  <data name="SettingsWindow_FittingToolSelectorDisabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
 </root>

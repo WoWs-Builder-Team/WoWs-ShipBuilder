@@ -1746,6 +1746,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Autormatic updates.
+        /// </summary>
+        public static string SettingsWindow_AutoUpdates {
+            get {
+                return ResourceManager.GetString("SettingsWindow_AutoUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Custom build image path.
         /// </summary>
         public static string SettingsWindow_BuildImagePath {
@@ -1787,6 +1796,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string SettingsWindow_CleanAppData {
             get {
                 return ResourceManager.GetString("SettingsWindow_CleanAppData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Closed by default.
+        /// </summary>
+        public static string SettingsWindow_ClosedByDefault {
+            get {
+                return ResourceManager.GetString("SettingsWindow_ClosedByDefault", resourceCulture);
             }
         }
         
@@ -1881,6 +1899,42 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fitting-Tool style ship selector.
+        /// </summary>
+        public static string SettingsWindow_FittingToolSelector {
+            get {
+                return ResourceManager.GetString("SettingsWindow_FittingToolSelector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disabled.
+        /// </summary>
+        public static string SettingsWindow_FittingToolSelectorDisabled {
+            get {
+                return ResourceManager.GetString("SettingsWindow_FittingToolSelectorDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show ships images.
+        /// </summary>
+        public static string SettingsWindow_FittingToolShowImages {
+            get {
+                return ResourceManager.GetString("SettingsWindow_FittingToolShowImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WARNING: Use only with very good internet connection..
+        /// </summary>
+        public static string SettingsWindow_FtImgWarning {
+            get {
+                return ResourceManager.GetString("SettingsWindow_FtImgWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Info.
         /// </summary>
         public static string SettingsWindow_Info {
@@ -1962,6 +2016,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allow multi-selection.
+        /// </summary>
+        public static string SettingsWindow_MultiSelect {
+            get {
+                return ResourceManager.GetString("SettingsWindow_MultiSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open explorer when saving a build image.
         /// </summary>
         public static string SettingsWindow_OpenExplorerAfterImageSave {
@@ -1989,11 +2052,29 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A restart is required for this option to take effect..
+        /// </summary>
+        public static string SettingsWindow_RestartRequired {
+            get {
+                return ResourceManager.GetString("SettingsWindow_RestartRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string SettingsWindow_Save {
             get {
                 return ResourceManager.GetString("SettingsWindow_Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save build on share.
+        /// </summary>
+        public static string SettingsWindow_SaveBuildOnShare {
+            get {
+                return ResourceManager.GetString("SettingsWindow_SaveBuildOnShare", resourceCulture);
             }
         }
         

@@ -59,6 +59,14 @@ public class AppSettings
 
     public bool EnableLocalizationDebugMode { get; set; }
 
+    public bool FittingToolSelectorDisabled { get; set; }
+
+    public bool FittingToolSelectorClosedByDefault { get; set; }
+
+    public bool FittingToolSelectorMultiSelection { get; set; }
+
+    public bool FittingToolSelectorShowShipImages { get; set; }
+
     public void ClearSettings()
     {
         this.AutoUpdateEnabled = true;
@@ -83,6 +91,10 @@ public class AppSettings
         this.ShipComparisonHideShipsWithoutSection = false;
         this.ShipComparisonHiddenColumns = default;
         this.EnableLocalizationDebugMode = default;
+        this.FittingToolSelectorClosedByDefault = false;
+        this.FittingToolSelectorMultiSelection = false;
+        this.FittingToolSelectorShowShipImages = false;
+        this.FittingToolSelectorDisabled = false;
     }
 
     public void UpdateFromSettings(AppSettings settings)
@@ -109,5 +121,9 @@ public class AppSettings
         this.ShipComparisonHideShipsWithoutSection = settings.ShipComparisonHideShipsWithoutSection;
         this.ShipComparisonHiddenColumns = settings.ShipComparisonHiddenColumns;
         this.EnableLocalizationDebugMode = settings.EnableLocalizationDebugMode;
+        this.FittingToolSelectorClosedByDefault = settings.FittingToolSelectorClosedByDefault;
+        this.FittingToolSelectorMultiSelection = settings.FittingToolSelectorMultiSelection;
+        this.FittingToolSelectorShowShipImages = settings.FittingToolSelectorShowShipImages;
+        this.FittingToolSelectorDisabled = settings.FittingToolSelectorDisabled;
     }
 }
