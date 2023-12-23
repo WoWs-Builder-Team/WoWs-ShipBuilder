@@ -6,6 +6,7 @@
         <ProjectReference Include="../**/*.csproj" />
     </ItemGroup>
     <ItemGroup Condition="$([MSBuild]::IsOsPlatform('WINDOWS')) == false">
-        <ProjectReference Remove="../WoWsShipBuilder.Desktop*/*.csproj" />
+        <ProjectReference Remove="../WoWsShipBuilder.Desktop/*.csproj" />
+        <ProjectReference Remove="../WoWsShipBuilder.Desktop.Test/*.csproj" />
     </ItemGroup>
 </Project>
