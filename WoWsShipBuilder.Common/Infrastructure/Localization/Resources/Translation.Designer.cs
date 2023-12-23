@@ -1908,6 +1908,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disabled.
+        /// </summary>
+        public static string SettingsWindow_FittingToolSelectorDisabled {
+            get {
+                return ResourceManager.GetString("SettingsWindow_FittingToolSelectorDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show ships images.
         /// </summary>
         public static string SettingsWindow_FittingToolShowImages {

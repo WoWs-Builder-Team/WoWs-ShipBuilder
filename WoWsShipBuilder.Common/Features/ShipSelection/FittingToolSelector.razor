@@ -16,7 +16,9 @@
 @inject SessionStateCache SessionStateCache
 @inject AppSettings AppSettings
 
-<aside class="ft-selector-aside-container @(openDrawer ? "ft-selector-aside-container-expanded" : "ft-selector-aside-container-collapsed")">
+@if (!AppSettings.FittingToolSelectorDisabled)
+{
+ <aside class="ft-selector-aside-container @(openDrawer ? "ft-selector-aside-container-expanded" : "ft-selector-aside-container-collapsed")">
     <ul style="min-height: 531px;">
         @foreach (var nation in dataStructure.OrderBy(nation => (int)nation.Key))
         {
@@ -115,6 +117,7 @@
         @(openDrawer ? "<" : ">")
     </MudButton>
 </aside>
+}
 
 @code
 {

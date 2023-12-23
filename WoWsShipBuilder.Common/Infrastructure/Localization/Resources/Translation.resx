@@ -2180,4 +2180,7 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="SettingsWindow_RestartRequired" xml:space="preserve">
     <value>A restart is required for this option to take effect.</value>
   </data>
+  <data name="SettingsWindow_FittingToolSelectorDisabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
 </root>
