@@ -76,7 +76,6 @@ public static class DataCacheHelper
                     foreach (var ship in ships)
                     {
                         AppData.ShipDictionary.Add(ship.Key, ship.Value);
-                        AddShipToFittingToolSelectorDataStructure(ship.Value);
                     }
                 }
 
@@ -94,60 +93,5 @@ public static class DataCacheHelper
         }
 
         Semaphore.Release();
-    }
-
-    private static void AddShipToFittingToolSelectorDataStructure(Ship ship)
-    {
-        var originalDictionary = AppData.FittingToolShipSelectorDataStructure;
-        var nation = ship.ShipNation;
-        var category = ship.ShipCategory;
-        var shipClass = ship.ShipClass;
-        int shipTier = ship.Tier;
-
-        if (originalDictionary.TryGetValue(nation, out var shipCategoryDict))
-        {
-            if (shipCategoryDict.TryGetValue(category, out var shipClassDict))
-            {
-                if (shipClassDict.TryGetValue(shipClass, out var shipTierDict))
-                {
-                    if (shipTierDict.TryGetValue(shipTier, out var shipList))
-                    {
-                        var newShipList = shipList.Add(ship);
-                        shipTierDict = shipTierDict.SetItem(shipTier, newShipList);
-                        shipClassDict = shipClassDict.SetItem(shipClass, shipTierDict);
-                        shipCategoryDict = shipCategoryDict.SetItem(category, shipClassDict);
-                        originalDictionary = originalDictionary.SetItem(nation, shipCategoryDict);
-                    }
-                    else
-                    {
-                        var newShipList = ImmutableList.Create(ship);
-                        shipTierDict = shipTierDict.SetItem(shipTier, newShipList);
-                        shipClassDict = shipClassDict.SetItem(shipClass, shipTierDict);
-                        shipCategoryDict = shipCategoryDict.SetItem(category, shipClassDict);
-                        originalDictionary = originalDictionary.SetItem(nation, shipCategoryDict);
-                    }
-                }
-                else
-                {
-                    var newShipTierDict = ImmutableDictionary<int, ImmutableList<Ship>>.Empty.Add(shipTier, ImmutableList.Create(ship));
-                    shipClassDict = shipClassDict.SetItem(shipClass, newShipTierDict);
-                    shipCategoryDict = shipCategoryDict.SetItem(category, shipClassDict);
-                    originalDictionary = originalDictionary.SetItem(nation, shipCategoryDict);
-                }
-            }
-            else
-            {
-                var newShipClassDict = ImmutableDictionary<ShipClass, ImmutableDictionary<int, ImmutableList<Ship>>>.Empty.Add(shipClass, ImmutableDictionary<int, ImmutableList<Ship>>.Empty.Add(shipTier, ImmutableList.Create(ship)));
-                shipCategoryDict = shipCategoryDict.SetItem(category, newShipClassDict);
-                originalDictionary = originalDictionary.SetItem(nation, shipCategoryDict);
-            }
-        }
-        else
-        {
-            var newNationDict = ImmutableDictionary<ShipCategory, ImmutableDictionary<ShipClass, ImmutableDictionary<int, ImmutableList<Ship>>>>.Empty.Add(category, ImmutableDictionary<ShipClass, ImmutableDictionary<int, ImmutableList<Ship>>>.Empty.Add(shipClass, ImmutableDictionary<int, ImmutableList<Ship>>.Empty.Add(shipTier, ImmutableList.Create(ship))));
-            originalDictionary = originalDictionary.Add(nation, newNationDict);
-        }
-
-        AppData.FittingToolShipSelectorDataStructure = originalDictionary;
     }
 }

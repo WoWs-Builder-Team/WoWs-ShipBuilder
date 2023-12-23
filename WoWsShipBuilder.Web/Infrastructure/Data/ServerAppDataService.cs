@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text.Json;
 using Microsoft.Extensions.Options;
 using Sentry;
@@ -9,6 +8,7 @@ using WoWsShipBuilder.DataStructures.Versioning;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.HttpClients;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Web.Infrastructure.Data;
 
@@ -64,7 +64,7 @@ public class ServerAppDataService : IAppDataService
         });
         var files = onlineVersionInfo.Categories.SelectMany(category => category.Value.Select(file => (category.Key, file.FileName))).ToList();
         await this.awsClient.DownloadFiles(this.options.Server, files);
-        InitializeShipSelectorDataStructure();
+        Helpers.InitializeShipSelectorDataStructure();
         this.logger.LogInformation("Finished fetching data");
     }
 
@@ -93,7 +93,7 @@ public class ServerAppDataService : IAppDataService
             }
         }
 
-        InitializeShipSelectorDataStructure();
+        Helpers.InitializeShipSelectorDataStructure();
     }
 
     public async Task<VersionInfo?> GetCurrentVersionInfo(ServerType serverType)
@@ -138,24 +138,5 @@ public class ServerAppDataService : IAppDataService
     public Task<List<string>> GetInstalledLocales(ServerType serverType, bool includeFileType = true)
     {
         return Task.FromResult(AppConstants.SupportedLanguages.Select(language => language.LocalizationFileName).ToList());
-    }
-
-    private static void InitializeShipSelectorDataStructure()
-    {
-        var result = AppData.ShipDictionary.GroupBy(x => x.Value.ShipNation)
-            .ToImmutableDictionary(
-                nationGrouping => nationGrouping.Key,
-                nationGrouping => nationGrouping.GroupBy(nationShip => nationShip.Value.ShipCategory)
-                    .ToImmutableDictionary(
-                        categoryGrouping => categoryGrouping.Key,
-                        categoryGrouping => categoryGrouping.GroupBy(categoryShip => categoryShip.Value.ShipClass)
-                            .ToImmutableDictionary(
-                                shipClassGrouping => shipClassGrouping.Key,
-                                shipClassGrouping => shipClassGrouping.GroupBy(shipClassShip => shipClassShip.Value.Tier)
-                                    .ToImmutableDictionary(
-                                        tierGrouping => tierGrouping.Key,
-                                        tierGrouping => tierGrouping.Select(tierShip => tierShip.Value).ToImmutableList()))));
-
-        AppData.FittingToolShipSelectorDataStructure = result;
     }
 }
