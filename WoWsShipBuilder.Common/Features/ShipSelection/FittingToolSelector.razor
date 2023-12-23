@@ -7,6 +7,7 @@
 @using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.Features.Settings
 @using WoWsShipBuilder.Infrastructure.DataTransfer
+@using System.Collections.Immutable
 
 @inject ILocalizer Localizer
 @inject IHostEnvironment Environment
@@ -17,7 +18,7 @@
 
 <aside class="ft-selector-aside-container @(openDrawer ? "ft-selector-aside-container-expanded" : "ft-selector-aside-container-collapsed")">
     <ul style="min-height: 531px;">
-        @foreach (var nation in treeStructure.OrderBy(nation => (int)nation.Key))
+        @foreach (var nation in dataStructure.OrderBy(nation => (int)nation.Key))
         {
             <li class="parent" style="float: none" @key="nation.Key">
                 <MudStack Row Class="ml-1" AlignItems="AlignItems.Center" Style="overflow: hidden">
@@ -44,7 +45,7 @@
                                             </MudText>
                                         </MudStack>
                                         <ul class="child">
-                                            @foreach (KeyValuePair<int, List<Ship>> tier in shipClass.Value.OrderBy(x => x.Key))
+                                            @foreach (var tier in shipClass.Value.OrderBy(x => x.Key))
                                             {
                                                 if (tier.Key != shipClass.Value.MinBy(x => x.Key).Key)
                                                 {
@@ -120,43 +121,13 @@
     [Parameter]
     public IList<ShipBuildContainer> SelectedShips { get; set; } = default!;
 
-    private Dictionary<Nation, Dictionary<ShipCategory, Dictionary<ShipClass, Dictionary<int, List<Ship>>>>> treeStructure = new();
+    private readonly ImmutableDictionary<Nation, ImmutableDictionary<ShipCategory, ImmutableDictionary<ShipClass, ImmutableDictionary<int, ImmutableList<Ship>>>>> dataStructure = AppData.FittingToolShipSelectorDataStructure;
     private bool openDrawer = true;
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-
         openDrawer = !AppSettings.FittingToolSelectorClosedByDefault;
-
-        foreach (var ship in AppData.ShipDictionary)
-        {
-            if (!treeStructure.ContainsKey(ship.Value.ShipNation))
-            {
-                treeStructure.Add(ship.Value.ShipNation, new());
-            }
-
-            var currentShipNation = treeStructure[ship.Value.ShipNation];
-            if (!currentShipNation.ContainsKey(ship.Value.ShipCategory))
-            {
-                currentShipNation.Add(ship.Value.ShipCategory, new());
-            }
-
-            var currentShipCategory = currentShipNation[ship.Value.ShipCategory];
-            if (!currentShipCategory.ContainsKey(ship.Value.ShipClass))
-            {
-                currentShipCategory.Add(ship.Value.ShipClass, new());
-            }
-
-            var currentShipClass = currentShipCategory[ship.Value.ShipClass];
-            if (!currentShipClass.ContainsKey(ship.Value.Tier))
-            {
-                currentShipClass.Add(ship.Value.Tier, new());
-            }
-
-            var currentShipTier = currentShipClass[ship.Value.Tier];
-            currentShipTier.Add(ship.Value);
-        }
     }
 
     private void SelectShip(Ship ship)
