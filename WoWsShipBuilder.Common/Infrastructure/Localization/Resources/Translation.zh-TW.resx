@@ -331,7 +331,7 @@
     <value>未找到符合篩選條件的艦艇。</value>
   </data>
   <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-      <value>搜尋艦艇名稱...</value>
+    <value>搜尋艦艇名稱...</value>
   </data>
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>180° 轉向時間</value>
@@ -451,7 +451,7 @@
     <value>每個火災的秒傷</value>
   </data>
   <data name="ShipStats_FireDuration" xml:space="preserve">
-      <value>持續時間</value>
+    <value>持續時間</value>
   </data>
   <data name="ShipStats_FireReduction" xml:space="preserve">
     <value>起火機率減免</value>
@@ -463,7 +463,7 @@
     <value>每個進水的秒傷</value>
   </data>
   <data name="ShipStats_FloodDuration" xml:space="preserve">
-      <value>持續時間</value>
+    <value>持續時間</value>
   </data>
   <data name="ShipStats_FloodProbability" xml:space="preserve">
     <value>進水機率</value>
@@ -535,13 +535,13 @@
     <value>隱蔽性</value>
   </data>
   <data name="ShipStats_ConcealmentByAir" xml:space="preserve">
-      <value>基礎</value>
+    <value>基礎</value>
   </data>
   <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
     <value>著火時</value>
   </data>
   <data name="ShipStats_ConcealmentBySea" xml:space="preserve">
-      <value>基礎</value>
+    <value>基礎</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
     <value>著火時</value>
@@ -550,19 +550,19 @@
     <value>於煙霧中開火後</value>
   </data>
   <data name="ShipStats_FireAmount" xml:space="preserve">
-      <value>上限數量</value>
+    <value>上限數量</value>
   </data>
   <data name="ShipStats_FireTotalDamage" xml:space="preserve">
-      <value>每個火災可造成的最大傷害</value>
+    <value>每個火災可造成的最大傷害</value>
   </data>
   <data name="ShipStats_FloodAmount" xml:space="preserve">
-      <value>上限數量</value>
+    <value>上限數量</value>
   </data>
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
     <value>魚雷保護</value>
   </data>
   <data name="ShipStats_FloodTotalDamage" xml:space="preserve">
-      <value>每個進水可造成的最大傷害</value>
+    <value>每個進水可造成的最大傷害</value>
   </data>
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>外圈</value>
@@ -598,7 +598,7 @@
     <value>速度</value>
   </data>
   <data name="ShipStats_Weapon" xml:space="preserve">
-      <value>武器</value>
+    <value>武器</value>
   </data>
   <data name="SkipBomb" xml:space="preserve">
     <value>跳彈炸彈</value>
@@ -613,13 +613,13 @@
     <value>攻擊冷卻</value>
   </data>
   <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-      <value>巡航</value>
+    <value>巡航</value>
   </data>
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>落彈於內圈的機率</value>
   </data>
   <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-      <value>甲板上的最大機數</value>
+    <value>甲板上的最大機數</value>
   </data>
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>最高速度</value>
@@ -628,13 +628,13 @@
     <value>最低速度</value>
   </data>
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-      <value>每次攻擊</value>
+    <value>每次攻擊</value>
   </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
-      <value>中隊編制</value>
+    <value>中隊編制</value>
   </data>
   <data name="ShipStats_PlaneHp" xml:space="preserve">
-      <value>每架飛機的生命值</value>
+    <value>每架飛機的生命值</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>整備時間</value>
@@ -646,19 +646,19 @@
     <value>酬載炸彈</value>
   </data>
   <data name="ShipStats_DropTime" xml:space="preserve">
-      <value>落下時間</value>
+    <value>落下時間</value>
   </data>
   <data name="ShipStats_FlyAwayTime" xml:space="preserve">
-      <value>到達時間</value>
+    <value>到達時間</value>
   </data>
   <data name="ShipStats_MaximumDistance" xml:space="preserve">
-      <value>最大</value>
+    <value>最大</value>
   </data>
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
     <value>投彈區長度</value>
   </data>
   <data name="ShipStats_MinimumDistance" xml:space="preserve">
-      <value>最小</value>
+    <value>最小</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
     <value>可投深彈次數</value>
@@ -751,10 +751,10 @@
     <value>載入配置時發生錯誤</value>
   </data>
   <data name="ShipStats_JatoDuration" xml:space="preserve">
-      <value>持續時間</value>
+    <value>持續時間</value>
   </data>
   <data name="ShipStats_JatoSpeedMultiplier" xml:space="preserve">
-      <value>加速</value>
+    <value>加速</value>
   </data>
   <data name="ShipStats_TimeToSwitch" xml:space="preserve">
     <value>切彈時間</value>
@@ -790,13 +790,13 @@
     <value>攻擊狀態中所承受的傷害</value>
   </data>
   <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-      <value>攻擊後無敵時間</value>
+    <value>攻擊後無敵時間</value>
   </data>
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>攻擊準備時間</value>
   </data>
   <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-      <value>完全縮圈時間</value>
+    <value>完全縮圈時間</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>魚雷發射管</value>
@@ -841,7 +841,7 @@
     <value>選擇的自定義數據路徑無效。</value>
   </data>
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
-      <value>選擇彈藥類型</value>
+    <value>選擇彈藥類型</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>有多種彈藥可供選擇。選擇你想要的彈藥。如果口徑相同，則彈藥順序為HE -&gt; SAP -&gt; AP。</value>
@@ -859,10 +859,10 @@
     <value>複製版本</value>
   </data>
   <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
-      <value>潛望鏡深度</value>
+    <value>潛望鏡深度</value>
   </data>
   <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
-      <value>最大深度</value>
+    <value>最大深度</value>
   </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
     <value>顯示散佈和彈道圖表</value>
@@ -889,13 +889,13 @@
     <value>顯示散佈平面圖</value>
   </data>
   <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-      <value>距離X</value>
+    <value>距離X</value>
   </data>
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>X公里時的水平散佈</value>
   </data>
   <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-      <value>射擊距離 (公里)</value>
+    <value>射擊距離 (公里)</value>
   </data>
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>彈道圖表</value>
@@ -984,19 +984,19 @@
     <value>每分鐘點火期望值 </value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
-      <value>齊射</value>
+    <value>齊射</value>
   </data>
   <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-      <value>半徑</value>
+    <value>半徑</value>
   </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-      <value>穿甲能力</value>
+    <value>穿甲能力</value>
   </data>
   <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
-      <value>引擎</value>
+    <value>引擎</value>
   </data>
   <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
-      <value>方向舵</value>
+    <value>方向舵</value>
   </data>
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
     <value>如果“配件防爆抗性” + “火炮防爆穿透力”&gt; 0，
@@ -1083,7 +1083,7 @@
     <value>所選圖片路徑無效。</value>
   </data>
   <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
-      <value>技能與天賦</value>
+    <value>技能與天賦</value>
   </data>
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>透過調整以下的滑動條和開關，您可以啟用或停用某些技能效果。您也可以選擇觸發天賦效果的次數(如果可以)。 請注意，並非所有的技能/天賦都會影響艦艇數據。</value>
@@ -1110,7 +1110,7 @@
     <value>伺服器端的裝填時間</value>
   </data>
   <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
-      <value>伺服器只會每0.142857142857秒更新一次。這意味著落在這個倍數之間的裝填將會被移動到下一個刻度。此處顯示的數值代表您所獲得的真實裝填時間，可能會與以上的理論裝填時間不同。</value>
+    <value>伺服器只會每0.142857142857秒更新一次。這意味著落在這個倍數之間的裝填將會被移動到下一個刻度。此處顯示的數值代表您所獲得的真實裝填時間，可能會與以上的理論裝填時間不同。</value>
   </data>
   <data name="ShipStats_TheoreticalTrueDpm" xml:space="preserve">
     <value>伺服器端DPM</value>
@@ -1119,10 +1119,10 @@
     <value>伺服器RoF</value>
   </data>
   <data name="Validation_BuildName" xml:space="preserve">
-      <value>配置名稱包含無效字符。僅允許使用字母、數字、空格、連字符和底線。</value>
+    <value>配置名稱包含無效字符。僅允許使用字母、數字、空格、連字符和底線。</value>
   </data>
   <data name="Teststring" xml:space="preserve">
-      <value>只是一個測試值</value>
+    <value>只是一個測試值</value>
   </data>
   <data name="Unit_MPS" xml:space="preserve">
     <value>公尺/秒</value>
@@ -1176,868 +1176,862 @@
     <value>半穿甲彈</value>
   </data>
   <data name="ChartsWeb_AddRemoveShips" xml:space="preserve">
-      <value>添加/移除船艦/彈藥</value>
+    <value>添加/移除船艦/彈藥</value>
   </data>
   <data name="ChartsWeb_DispersionCharts" xml:space="preserve">
-      <value>散佈圖表</value>
+    <value>散佈圖表</value>
   </data>
   <data name="ChartsWeb_BallisticCharts" xml:space="preserve">
-      <value>彈道圖表</value>
+    <value>彈道圖表</value>
   </data>
   <data name="ShipAndShellSelectionDialogWeb_SelectShipsAndShells" xml:space="preserve">
-      <value>選擇艦艇和彈藥</value>
+    <value>選擇艦艇和彈藥</value>
   </data>
   <data name="ShipAndShellSelectionDialogWeb_Loading" xml:space="preserve">
-      <value>載入中...</value>
+    <value>載入中...</value>
   </data>
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
-      <value>標準</value>
+    <value>標準</value>
   </data>
   <data name="ShipStats_TorpedoMagnetic" xml:space="preserve">
-      <value>聲導</value>
+    <value>聲導</value>
   </data>
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
-      <value>深水</value>
+    <value>深水</value>
   </data>
   <data name="Consumable_HpPerHeal" xml:space="preserve">
-      <value>每次治療的最大生命值恢復量</value>
+    <value>每次治療的最大生命值恢復量</value>
   </data>
   <data name="DispersionGraphWindow_Range" xml:space="preserve">
-      <value>射程 [km]</value>
+    <value>射程 [km]</value>
   </data>
   <data name="DispersionGrapghWindow_Height" xml:space="preserve">
-      <value>高度</value>
+    <value>高度</value>
   </data>
   <data name="ShipStats_ShowShellTrajectoryGraph" xml:space="preserve">
-      <value>顯示拋物線彈道圖表</value>
+    <value>顯示拋物線彈道圖表</value>
   </data>
   <data name="ShipStats_ConcealmentFromShips" xml:space="preserve">
-      <value>被艦艇偵測</value>
+    <value>被艦艇偵測</value>
   </data>
   <data name="ShipStats_ConcealmentFromPlanes" xml:space="preserve">
-      <value>被飛機偵測</value>
+    <value>被飛機偵測</value>
   </data>
   <data name="ShipStats_SpottingOnShips" xml:space="preserve">
-      <value>在船上</value>
+    <value>在船上</value>
   </data>
   <data name="ShipStats_SpottingOnPlanes" xml:space="preserve">
-      <value>對於飛機</value>
+    <value>對於飛機</value>
   </data>
   <data name="ShipStats_SpottingOnTorps" xml:space="preserve">
-      <value>對於魚雷</value>
+    <value>對於魚雷</value>
   </data>
   <data name="ShipStats_MaxViewDistance" xml:space="preserve">
-      <value>最大水面視距</value>
+    <value>最大水面視距</value>
   </data>
   <data name="ShipStats_Consumables" xml:space="preserve">
-      <value>消耗品</value>
+    <value>消耗品</value>
   </data>
   <data name="ShipStats_AircraftAmount" xml:space="preserve">
-      <value>飛機數量</value>
+    <value>飛機數量</value>
   </data>
   <data name="ShipStats_AircraftInAttackGroup" xml:space="preserve">
-      <value>攻擊編隊內</value>
+    <value>攻擊編隊內</value>
   </data>
   <data name="ShipStats_SquadronHp" xml:space="preserve">
-      <value>中隊</value>
+    <value>中隊</value>
   </data>
   <data name="ShipStats_AttackGroupHp" xml:space="preserve">
-      <value>攻擊小隊</value>
+    <value>攻擊小隊</value>
   </data>
   <data name="ShipStats_Max" xml:space="preserve">
-      <value>最大</value>
+    <value>最大</value>
   </data>
   <data name="ShipStats_Min" xml:space="preserve">
-      <value>最小</value>
+    <value>最小</value>
   </data>
   <data name="ShipStats_AttackTimings" xml:space="preserve">
-      <value>攻擊狀態時間表</value>
+    <value>攻擊狀態時間表</value>
   </data>
   <data name="ShipStats_Aiming" xml:space="preserve">
-      <value>瞄準中</value>
+    <value>瞄準中</value>
   </data>
   <data name="ShipStats_Preparation" xml:space="preserve">
-      <value>準備中</value>
+    <value>準備中</value>
   </data>
   <data name="ShipStats_InitialBoost" xml:space="preserve">
-      <value>起飛助推器</value>
+    <value>起飛助推器</value>
   </data>
   <data name="ShipStats_SpeedBoost" xml:space="preserve">
-      <value>速度增益</value>
+    <value>速度增益</value>
   </data>
   <data name="ModifierConverter_MaxEngagementDuration" xml:space="preserve">
-      <value>最大交戰時間</value>
+    <value>最大交戰時間</value>
   </data>
   <data name="ModifierConverter_MaxKillsAmount" xml:space="preserve">
-      <value>最高擊殺數</value>
+    <value>最高擊殺數</value>
   </data>
   <data name="CaptainSkillSelector_CurrentArBonus" xml:space="preserve">
-      <value>腎上腺素當前HP: </value>
+    <value>腎上腺素當前HP: </value>
   </data>
   <data name="ShipStats_Fire" xml:space="preserve">
-      <value>火力</value>
+    <value>火力</value>
   </data>
   <data name="ShipStats_Flooding" xml:space="preserve">
-      <value>進水</value>
+    <value>進水</value>
   </data>
   <data name="ShipStats_BlastProtection" xml:space="preserve">
-      <value>保護</value>
+    <value>保護</value>
   </data>
   <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
-      <value>上限數量</value>
+    <value>上限數量</value>
   </data>
   <data name="ShipStats_FromSubs" xml:space="preserve">
-      <value>被潛艇偵測</value>
+    <value>被潛艇偵測</value>
   </data>
   <data name="ShipStats_Sea" xml:space="preserve">
-      <value>海面</value>
+    <value>海面</value>
   </data>
   <data name="ShipStats_Air" xml:space="preserve">
-      <value>航空</value>
+    <value>航空</value>
   </data>
   <data name="ShipStats_Timings" xml:space="preserve">
-      <value>時間點</value>
+    <value>時間點</value>
   </data>
   <data name="ShipStats_ReloadTime" xml:space="preserve">
-      <value>裝填</value>
+    <value>裝填</value>
   </data>
   <data name="ShipStats_ShellFireChance" xml:space="preserve">
-      <value>單發砲彈</value>
+    <value>單發砲彈</value>
   </data>
   <data name="ShipStats_TheoreticalHeDpm" xml:space="preserve">
-      <value>高爆彈</value>
+    <value>高爆彈</value>
   </data>
   <data name="ShipStats_TheoreticalApDpm" xml:space="preserve">
-      <value>穿甲彈</value>
+    <value>穿甲彈</value>
   </data>
   <data name="ShipStats_TheoreticalSapDpm" xml:space="preserve">
-      <value>半穿甲彈</value>
+    <value>半穿甲彈</value>
   </data>
   <data name="ShipStats_TheoreticalTrueHeDpm" xml:space="preserve">
-      <value>高爆彈</value>
+    <value>高爆彈</value>
   </data>
   <data name="ShipStats_TheoreticalTrueApDpm" xml:space="preserve">
-      <value>穿甲彈</value>
+    <value>穿甲彈</value>
   </data>
   <data name="ShipStats_TheoreticalTrueSapDpm" xml:space="preserve">
-      <value>半穿甲彈</value>
+    <value>半穿甲彈</value>
   </data>
   <data name="ShipStats_HP" xml:space="preserve">
-      <value>生命值</value>
+    <value>生命值</value>
   </data>
   <data name="ShipStats_RocketType" xml:space="preserve">
-      <value>火箭類型</value>
+    <value>火箭類型</value>
   </data>
   <data name="ShipStats_TorpedoType" xml:space="preserve">
-      <value>魚雷類型</value>
+    <value>魚雷類型</value>
   </data>
   <data name="DataUpdate_ErrorDescription" xml:space="preserve">
-      <value>數據更新過程中出現錯誤。此可能導致數據無效或不是最新的。請重新啟動應用程序以再次嘗試。要了解更多信息，請查看應用程序日誌。</value>
+    <value>數據更新過程中出現錯誤。此可能導致數據無效或不是最新的。請重新啟動應用程序以再次嘗試。要了解更多信息，請查看應用程序日誌。</value>
   </data>
   <data name="DataUpdate_ErrorTitle" xml:space="preserve">
-      <value>數據更新錯誤</value>
+    <value>數據更新錯誤</value>
   </data>
   <data name="NotificationService_UpdateActive" xml:space="preserve">
-      <value>應用程式正在背景更新中...</value>
+    <value>應用程式正在背景更新中...</value>
   </data>
   <data name="NotificationService_ErrorMessage" xml:space="preserve">
-      <value>應用程式更新時發生錯誤，請查看日誌檔案以獲得更多詳細資訊。</value>
+    <value>應用程式更新時發生錯誤，請查看日誌檔案以獲得更多詳細資訊。</value>
   </data>
   <data name="NotificationService_UpdateCompleted" xml:space="preserve">
-      <value>應用程式已在背景更新。需要重新啟動才能應用更新。點按重新啟動。</value>
+    <value>應用程式已在背景更新。需要重新啟動才能應用更新。點按重新啟動。</value>
   </data>
   <data name="UpdateMessageBox_Description" xml:space="preserve">
-      <value>應用程式已更新，是否重新啟動以應用更改？</value>
+    <value>應用程式已更新，是否重新啟動以應用更改？</value>
   </data>
   <data name="UpdateMessageBox_Title" xml:space="preserve">
-      <value>應用已更新</value>
+    <value>應用已更新</value>
   </data>
   <data name="Placeholder" xml:space="preserve">
-      <value>---</value>
+    <value>---</value>
   </data>
   <data name="ShipStats_Splash" xml:space="preserve">
-      <value>砲彈對潛艇濺射</value>
+    <value>砲彈對潛艇濺射</value>
   </data>
   <data name="ShipStats_SplashRadius" xml:space="preserve">
-      <value>半徑</value>
+    <value>半徑</value>
   </data>
   <data name="ShipStats_SplashDmg" xml:space="preserve">
-      <value>傷害</value>
+    <value>傷害</value>
   </data>
   <data name="ShipStats_SplashExplanation" xml:space="preserve">
-      <value>這些參數僅影響潛艇。</value>
+    <value>這些參數僅影響潛艇。</value>
   </data>
   <data name="ShipStats_DcSplashRadius" xml:space="preserve">
-      <value>爆炸半徑</value>
+    <value>爆炸半徑</value>
   </data>
   <data name="ShipStats_DetonationTimer" xml:space="preserve">
-      <value>引爆時長</value>
+    <value>引爆時長</value>
   </data>
   <data name="ShipStats_SinkSpeed" xml:space="preserve">
-      <value>下沉速度</value>
+    <value>下沉速度</value>
   </data>
   <data name="ShipStats_DetonationDepth" xml:space="preserve">
-      <value>引爆深度</value>
+    <value>引爆深度</value>
   </data>
   <data name="ShipStats_Blast" xml:space="preserve">
-      <value>爆風</value>
+    <value>爆風</value>
   </data>
   <data name="ShipStats_ShowDcDamageDistribution" xml:space="preserve">
-      <value>顯示深彈傷害分布圖</value>
+    <value>顯示深彈傷害分布圖</value>
   </data>
   <data name="ShipStats_Citadel" xml:space="preserve">
-      <value>裝甲區部分</value>
+    <value>裝甲區部分</value>
   </data>
   <data name="ShipStats_Bow" xml:space="preserve">
-      <value>艦首</value>
+    <value>艦首</value>
   </data>
   <data name="ShipStats_RegenRatio" xml:space="preserve">
-      <value>可回復比例</value>
+    <value>可回復比例</value>
   </data>
   <data name="ShipStats_Stern" xml:space="preserve">
-      <value>艦尾</value>
+    <value>艦尾</value>
   </data>
   <data name="ShipStats_Superstructure" xml:space="preserve">
-      <value>上層結構</value>
+    <value>上層結構</value>
   </data>
   <data name="ShipStats_Casemate" xml:space="preserve">
-      <value>炮座區域</value>
+    <value>炮座區域</value>
   </data>
   <data name="ShipStats_Hull" xml:space="preserve">
-      <value>船身區域</value>
+    <value>船身區域</value>
   </data>
   <data name="ShipStats_AuxiliaryRooms" xml:space="preserve">
-      <value>輔助艙區</value>
+    <value>輔助艙區</value>
   </data>
   <data name="ShipStats_ShipHp" xml:space="preserve">
-      <value>艦艇血量</value>
+    <value>艦艇血量</value>
   </data>
   <data name="Consumable_RightClickToggle" xml:space="preserve">
-      <value>右鍵點擊圖示可切換效果</value>
+    <value>右鍵點擊圖示可切換效果</value>
   </data>
   <data name="ChartsWeb_ShellTrajectoryChart" xml:space="preserve">
-      <value>拋物線彈道圖表</value>
+    <value>拋物線彈道圖表</value>
   </data>
   <data name="ChartsWeb_Height" xml:space="preserve">
-      <value>高度</value>
+    <value>高度</value>
   </data>
   <data name="ChartsWeb_ShowCharts" xml:space="preserve">
-      <value>顯示散佈和彈道圖表</value>
+    <value>顯示散佈和彈道圖表</value>
   </data>
   <data name="WebApp_ApplicationInfo" xml:space="preserve">
-      <value>程式資訊</value>
+    <value>程式資訊</value>
   </data>
   <data name="WebApp_CurrentVersion" xml:space="preserve">
-      <value>當前數據版本︰</value>
+    <value>當前數據版本︰</value>
   </data>
   <data name="WebApp_SelectedLanguage" xml:space="preserve">
-      <value>選擇語言</value>
+    <value>選擇語言</value>
   </data>
   <data name="WebApp_AmmoExpanderSetting" xml:space="preserve">
-      <value>預設展開炮彈、魚雷和艦載機的詳細資訊</value>
+    <value>預設展開炮彈、魚雷和艦載機的詳細資訊</value>
   </data>
   <data name="WebApp_SettingsSaved" xml:space="preserve">
-      <value>設定已儲存</value>
+    <value>設定已儲存</value>
   </data>
   <data name="Consumable_HoldToggle" xml:space="preserve">
-      <value>長按圖標切換效果</value>
+    <value>長按圖標切換效果</value>
   </data>
   <data name="DispersionPlot_Hits" xml:space="preserve">
-      <value>擊中數</value>
+    <value>擊中數</value>
   </data>
   <data name="WebApp_ArtilleryAngleExplanation" xml:space="preserve">
-      <value>0°角位於頂部。順時針為正，逆時針為負。紅色區域表示射擊死角(可以旋轉但無法射擊)。
+    <value>0°角位於頂部。順時針為正，逆時針為負。紅色區域表示射擊死角(可以旋轉但無法射擊)。
       </value>
   </data>
   <data name="Build_CopyUrl" xml:space="preserve">
-      <value>複製配置網址</value>
+    <value>複製配置網址</value>
   </data>
   <data name="WebApp_ExpanderSetting" xml:space="preserve">
-      <value>預設展開所有主擴展項</value>
+    <value>預設展開所有主擴展項</value>
   </data>
   <data name="WebApp_SecondariesAndAAExpanderSetting" xml:space="preserve">
-      <value>預設展開所有副炮、艦載機武器和防空炮詳細資訊</value>
+    <value>預設展開所有副炮、艦載機武器和防空炮詳細資訊</value>
   </data>
   <data name="WebApp_ExpanderSettingHeader" xml:space="preserve">
-      <value>展開設定</value>
+    <value>展開設定</value>
   </data>
   <data name="ShipStats_ShipSectionsHp" xml:space="preserve">
-      <value>船艦各部位血量</value>
+    <value>船艦各部位血量</value>
   </data>
   <data name="ShipStats_HideDcDamageDistribution" xml:space="preserve">
-      <value>隱藏深彈傷害分布圖</value>
+    <value>隱藏深彈傷害分布圖</value>
   </data>
   <data name="ShipStats_ShowLaunchersAngles" xml:space="preserve">
-      <value>顯示魚雷發射角度</value>
+    <value>顯示魚雷發射角度</value>
   </data>
   <data name="ShipStats_MaxEngineBoostDuration" xml:space="preserve">
-      <value>最大增壓持續時間</value>
+    <value>最大增壓持續時間</value>
   </data>
   <data name="Build_CopyShortUrl" xml:space="preserve">
-      <value>複製短網址</value>
+    <value>複製短網址</value>
   </data>
   <data name="Build_EnterBuildName" xml:space="preserve">
-      <value>請輸入版本名稱。艦名將自動顯示在最後。</value>
+    <value>請輸入版本名稱。艦名將自動顯示在最後。</value>
   </data>
   <data name="BETA_ShipComparison" xml:space="preserve">
-      <value>加速度圖表beta版</value>
+    <value>加速度圖表beta版</value>
   </data>
   <data name="BETA_AccelerationCharts" xml:space="preserve">
-      <value>艦艇比較(測試版)</value>
+    <value>艦艇比較(測試版)</value>
   </data>
   <data name="BetaAccess_Heading" xml:space="preserve">
-      <value>測試版訪問</value>
+    <value>測試版訪問</value>
   </data>
   <data name="BetaAccess_Code" xml:space="preserve">
-      <value>代碼</value>
+    <value>代碼</value>
   </data>
   <data name="BetaAccess_AddCode" xml:space="preserve">
-      <value>增加代碼</value>
+    <value>增加代碼</value>
   </data>
   <data name="BetaAccess_Feature" xml:space="preserve">
-      <value>功能</value>
+    <value>功能</value>
   </data>
   <data name="BetaAccess_Remove" xml:space="preserve">
-      <value>刪除</value>
+    <value>刪除</value>
   </data>
   <data name="BetaAccess_Invalid" xml:space="preserve">
-      <value>無效代碼</value>
+    <value>無效代碼</value>
   </data>
   <data name="BetaAccess_CodeEnabled" xml:space="preserve">
-      <value>已啟用。</value>
+    <value>已啟用。</value>
   </data>
   <data name="BetaAccess_Duplicate" xml:space="preserve">
-      <value>已經啟用。</value>
+    <value>已經啟用。</value>
   </data>
   <data name="ShipStats_MaxSpeedTime" xml:space="preserve">
-      <value>到達最大速度的時間</value>
+    <value>到達最大速度的時間</value>
   </data>
   <data name="ShipStats_ForwardMaxSpeedTime" xml:space="preserve">
-      <value>全速航行</value>
+    <value>全速航行</value>
   </data>
   <data name="ShipStats_ReverseMaxSpeedTime" xml:space="preserve">
-      <value>倒退</value>
+    <value>倒退</value>
   </data>
   <data name="AccelerationChart_Acceleration" xml:space="preserve">
-      <value>加速</value>
+    <value>加速</value>
   </data>
   <data name="AccelerationChart_Time" xml:space="preserve">
-      <value>時間</value>
+    <value>時間</value>
   </data>
   <data name="AccelerationChart_AddRemoveShip" xml:space="preserve">
-      <value>添加/移除艦艇</value>
+    <value>添加/移除艦艇</value>
   </data>
   <data name="Charts_ChangeBuilds" xml:space="preserve">
-      <value>改變配置</value>
-  </data>
-  <data name="AccelerationChart_ExplanationText" xml:space="preserve">
-      <value>在選擇一艘船後，你可以選擇將3個檔位放入圖表中。
-圖表會依照設定的檔位加減速，到達了當前檔位的滿速時即切換至下一個檔位。
-將兩個相鄰的檔位設成同一個檔位會把他們併成一個。
-你可以使用「編輯配置」來調整單一艦艇的配備。你也可以增加同一艘船好幾次，以便你去比較不同配置的表現。</value>
+    <value>改變配置</value>
   </data>
   <data name="AccelerationChart_Explanation" xml:space="preserve">
-      <value>加速圖表說明</value>
+    <value>加速圖表說明</value>
   </data>
   <data name="AccelerationChart_CustomDataTitle" xml:space="preserve">
-      <value>添加自訂資料</value>
+    <value>添加自訂資料</value>
   </data>
   <data name="ShipStats_EnginePower" xml:space="preserve">
-      <value>引擎動力</value>
+    <value>引擎動力</value>
   </data>
   <data name="ShipStats_Tonnage" xml:space="preserve">
-      <value>噸位</value>
+    <value>噸位</value>
   </data>
   <data name="ShipStats_ForwardEngineUpTime" xml:space="preserve">
-      <value>前進時引擎起動時間</value>
+    <value>前進時引擎起動時間</value>
   </data>
   <data name="ShipStats_BackwardEngineUpTime" xml:space="preserve">
-      <value>倒退引擎啟動時間</value>
+    <value>倒退引擎啟動時間</value>
   </data>
   <data name="ShipStats_ForwardEngineForsag" xml:space="preserve">
-      <value>發動機前推增壓</value>
+    <value>發動機前推增壓</value>
   </data>
   <data name="ShipStats_BackwardEngineForsag" xml:space="preserve">
-      <value>引擎後退加速</value>
+    <value>引擎後退加速</value>
   </data>
   <data name="ShipStats_ForwardEngineForsagMaxSpeed" xml:space="preserve">
-      <value>前進時最大速度加速</value>
+    <value>前進時最大速度加速</value>
   </data>
   <data name="ShipStats_BackwardEngineForsagMaxSpeed" xml:space="preserve">
-      <value>後退推力最大速度</value>
+    <value>後退推力最大速度</value>
   </data>
   <data name="ShipStats_HeSalvo" xml:space="preserve">
-      <value>高爆彈</value>
+    <value>高爆彈</value>
   </data>
   <data name="ShipStats_ApSalvo" xml:space="preserve">
-      <value>穿甲彈</value>
+    <value>穿甲彈</value>
   </data>
   <data name="ShipStats_SapSalvo" xml:space="preserve">
-      <value>半穿甲彈</value>
+    <value>半穿甲彈</value>
   </data>
   <data name="ShipStats_FullSalvoDamage" xml:space="preserve">
-      <value>齊射傷害</value>
+    <value>齊射傷害</value>
   </data>
   <data name="ShipStats_FirstOption" xml:space="preserve">
-      <value>選項1</value>
+    <value>選項1</value>
   </data>
   <data name="ShipStats_SecondOption" xml:space="preserve">
-      <value>選項2</value>
+    <value>選項2</value>
   </data>
   <data name="ShipStats_DispersionAtMaxRange" xml:space="preserve">
-      <value>最大射程散布範圍</value>
+    <value>最大射程散布範圍</value>
   </data>
   <data name="ShipStats_ManeuverabilitySubsMaxSpeedOnSurface" xml:space="preserve">
-      <value>於水面上</value>
+    <value>於水面上</value>
   </data>
   <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth" xml:space="preserve">
-      <value>在最大深度</value>
+    <value>在最大深度</value>
   </data>
   <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope" xml:space="preserve">
-      <value>在潛望鏡深度</value>
+    <value>在潛望鏡深度</value>
   </data>
   <data name="ShipStats_Fighter" xml:space="preserve">
-      <value>火箭</value>
+    <value>火箭</value>
   </data>
   <data name="ShipStats_TacticalFighter" xml:space="preserve">
-      <value>戰術火箭</value>
+    <value>戰術火箭</value>
   </data>
   <data name="ShipStats_DiveBomber" xml:space="preserve">
-      <value>轟炸機</value>
+    <value>轟炸機</value>
   </data>
   <data name="ShipStats_TacticalDiveBomber" xml:space="preserve">
-      <value>戰術轟炸機</value>
+    <value>戰術轟炸機</value>
   </data>
   <data name="ShipStats_TorpedoBomber" xml:space="preserve">
-      <value>魚雷轟炸機</value>
+    <value>魚雷轟炸機</value>
   </data>
   <data name="ShipStats_TacticalTorpedoBomber" xml:space="preserve">
-      <value>戰術魚雷轟炸機</value>
+    <value>戰術魚雷轟炸機</value>
   </data>
   <data name="ShipStats_SkipBomber" xml:space="preserve">
-      <value>彈跳轟炸機</value>
+    <value>彈跳轟炸機</value>
   </data>
   <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
-      <value>戰術彈跳轟炸機</value>
+    <value>戰術彈跳轟炸機</value>
   </data>
   <data name="ChartsWeb_Build" xml:space="preserve">
-      <value>配置</value>
+    <value>配置</value>
   </data>
   <data name="ShipSelectionWindow_EditBuilds" xml:space="preserve">
-      <value>編輯配置</value>
+    <value>編輯配置</value>
   </data>
   <data name="ShipAndShellsSelectionDialog_NoShipSelected" xml:space="preserve">
-      <value>未選擇艦艇</value>
+    <value>未選擇艦艇</value>
   </data>
   <data name="ShipStats_TargetAreaRadius" xml:space="preserve">
-      <value>目標區域半徑</value>
+    <value>目標區域半徑</value>
   </data>
   <data name="ShipStats_ProgressPerAction" xml:space="preserve">
-      <value>每次進度增加</value>
+    <value>每次進度增加</value>
   </data>
   <data name="ShipStats_InactivityDelay" xml:space="preserve">
-      <value>損失進度前的不活躍時間</value>
+    <value>損失進度前的不活躍時間</value>
   </data>
   <data name="ShipStats_ProgressLossInterval" xml:space="preserve">
-      <value>進度損失間隔</value>
+    <value>進度損失間隔</value>
   </data>
   <data name="ShipStats_ProgressLossPerInterval" xml:space="preserve">
-      <value>每個間隔所損失的進度</value>
+    <value>每個間隔所損失的進度</value>
   </data>
   <data name="ShipStats_ShowAccelerationCharts" xml:space="preserve">
-      <value>顯示加速圖表</value>
+    <value>顯示加速圖表</value>
   </data>
   <data name="BuildStringInputDialog_EnterBuildStringOrLink" xml:space="preserve">
-      <value>輸入配置資料或連結</value>
+    <value>輸入配置資料或連結</value>
   </data>
   <data name="WebApp_LoadBuild" xml:space="preserve">
-      <value>載入配置</value>
+    <value>載入配置</value>
   </data>
   <data name="WebApp_GoToShipsPage" xml:space="preserve">
-      <value>查看艦艇詳細資料</value>
+    <value>查看艦艇詳細資料</value>
   </data>
   <data name="ShipStats_ShowInBallisticCharts" xml:space="preserve">
-      <value>顯示所有船的彈道圖表</value>
+    <value>顯示所有船的彈道圖表</value>
   </data>
   <data name="ShipStats_ShowInAccelerationCharts" xml:space="preserve">
-      <value>顯示所有船的加速圖表</value>
+    <value>顯示所有船的加速圖表</value>
   </data>
   <data name="Validation_InvalidBuild" xml:space="preserve">
-      <value>不可用的配置</value>
+    <value>不可用的配置</value>
   </data>
   <data name="Validation_Incompatibility" xml:space="preserve">
-      <value>不相容性</value>
+    <value>不相容性</value>
   </data>
   <data name="Validation_SelectedShip" xml:space="preserve">
-      <value>已選艦艇</value>
+    <value>已選艦艇</value>
   </data>
   <data name="Validation_ShipInBuild" xml:space="preserve">
-      <value>在配置中的船艦</value>
+    <value>在配置中的船艦</value>
   </data>
   <data name="ShipStats_Loaders" xml:space="preserve">
-      <value>裝填手</value>
+    <value>裝填手</value>
   </data>
   <data name="ShipStats_BowLoaders" xml:space="preserve">
-      <value>船首</value>
+    <value>船首</value>
   </data>
   <data name="ShipStats_SternLoaders" xml:space="preserve">
-      <value>船尾</value>
+    <value>船尾</value>
   </data>
   <data name="ShipStats_First" xml:space="preserve">
-      <value>第一次</value>
+    <value>第一次</value>
   </data>
   <data name="ShipStats_Second" xml:space="preserve">
-      <value>第二次</value>
+    <value>第二次</value>
   </data>
   <data name="Unit_U" xml:space="preserve">
-      <value>單位</value>
+    <value>單位</value>
   </data>
   <data name="Unit_UPS" xml:space="preserve">
-      <value>單位/秒</value>
+    <value>單位/秒</value>
   </data>
   <data name="ShipStats_ManeuverabilitySubsMaxDiveSpeed" xml:space="preserve">
-      <value>最大下潛速度</value>
+    <value>最大下潛速度</value>
   </data>
   <data name="ShipStats_ManeuverabilitySubsDivingPlaneShiftTime" xml:space="preserve">
-      <value>潛鰭板換檔時間</value>
+    <value>潛鰭板換檔時間</value>
   </data>
   <data name="ShipStats_DiveCapacity" xml:space="preserve">
-      <value>容量</value>
+    <value>容量</value>
   </data>
   <data name="ShipStats_DiveCapacityRechargeRate" xml:space="preserve">
-      <value>充電速度</value>
+    <value>充電速度</value>
   </data>
   <data name="ShipStats_Battery" xml:space="preserve">
-      <value>電池</value>
+    <value>電池</value>
   </data>
   <data name="ShipStats_FirstPing" xml:space="preserve">
-      <value>單 ping</value>
+    <value>單 ping</value>
   </data>
   <data name="ShipStats_SecondPing" xml:space="preserve">
-      <value>雙 ping</value>
+    <value>雙 ping</value>
   </data>
   <data name="Unit_MPS2" xml:space="preserve">
-      <value>公尺/秒²</value>
+    <value>公尺/秒²</value>
   </data>
   <data name="ShipStats_MaxTurningSpeed" xml:space="preserve">
-      <value>最大轉向速度</value>
+    <value>最大轉向速度</value>
   </data>
   <data name="ShipStats_TurningAcceleration" xml:space="preserve">
-      <value>轉向加速度</value>
+    <value>轉向加速度</value>
   </data>
   <data name="ShipStats_MaxVerticalSpeed" xml:space="preserve">
-      <value>最大上下浮速度</value>
+    <value>最大上下浮速度</value>
   </data>
   <data name="ShipStats_VerticalAcceleration" xml:space="preserve">
-      <value>上下浮加速度</value>
+    <value>上下浮加速度</value>
   </data>
   <data name="ShipStats_SearchRadius" xml:space="preserve">
-      <value>有效導引半徑</value>
+    <value>有效導引半徑</value>
   </data>
   <data name="ShipStats_SearchAngle" xml:space="preserve">
-      <value>有效導引角度</value>
+    <value>有效導引角度</value>
   </data>
   <data name="ShipStats_AirCarrier" xml:space="preserve">
-      <value>航空母艦</value>
+    <value>航空母艦</value>
   </data>
   <data name="ShipStats_Submarine" xml:space="preserve">
-      <value>潛水艇</value>
+    <value>潛水艇</value>
   </data>
   <data name="ShipStats_Cruiser" xml:space="preserve">
-      <value>巡洋艦</value>
+    <value>巡洋艦</value>
   </data>
   <data name="ShipStats_Battleship" xml:space="preserve">
-      <value>主力艦</value>
+    <value>主力艦</value>
   </data>
   <data name="ShipStats_Destroyer" xml:space="preserve">
-      <value>驅逐艦</value>
+    <value>驅逐艦</value>
   </data>
   <data name="ShipStats_MoreDetails" xml:space="preserve">
-      <value>更多細節</value>
+    <value>更多細節</value>
   </data>
   <data name="ShipStats_CutOffDistances" xml:space="preserve">
-      <value>停止導引距離</value>
+    <value>停止導引距離</value>
   </data>
   <data name="Unit_DegreePerSecond2" xml:space="preserve">
-      <value>度/秒²</value>
+    <value>度/秒²</value>
   </data>
   <data name="BuildImageSettingsDialog_Modules" xml:space="preserve">
-      <value>配件</value>
+    <value>配件</value>
   </data>
   <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
-      <value>艦長技能</value>
+    <value>艦長技能</value>
   </data>
   <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
-      <value>信號旗</value>
+    <value>信號旗</value>
   </data>
   <data name="BuildImageSettingsDialog_Consumables" xml:space="preserve">
-      <value>消耗品</value>
+    <value>消耗品</value>
   </data>
   <data name="BuildImageSettingsDialog_Upgrades" xml:space="preserve">
-      <value>升級品</value>
+    <value>升級品</value>
   </data>
   <data name="BuildImageSettingsDialog_TwoColumns" xml:space="preserve">
-      <value>兩欄顯示</value>
+    <value>兩欄顯示</value>
   </data>
   <data name="BuildImageSettingsDialog_Layout" xml:space="preserve">
-      <value>版面設定</value>
+    <value>版面設定</value>
   </data>
   <data name="BuildImageSettingsDialog_Elements" xml:space="preserve">
-      <value>顯示內容</value>
+    <value>顯示內容</value>
   </data>
   <data name="BuildImageSettingsDialog_TwoColumnsTooltip" xml:space="preserve">
-      <value>兩欄顯示內容(將不能隱藏艦長技能與信號旗)</value>
+    <value>兩欄顯示內容(將不能隱藏艦長技能與信號旗)</value>
   </data>
   <data name="BuildNameDialog_BuildName" xml:space="preserve">
-      <value>配置名稱</value>
+    <value>配置名稱</value>
   </data>
   <data name="BuildNameDialog_EnterBuildName" xml:space="preserve">
-      <value>輸入配置名稱</value>
+    <value>輸入配置名稱</value>
   </data>
   <data name="BuildImageRenderDialog_SaveImage" xml:space="preserve">
-      <value>保存圖片</value>
+    <value>保存圖片</value>
   </data>
   <data name="BuildImageRenderDialog_GetUrl" xml:space="preserve">
-      <value>獲取網址</value>
+    <value>獲取網址</value>
   </data>
   <data name="BuildImageRenderDialog_GetShortLink" xml:space="preserve">
-      <value>獲取短網址</value>
+    <value>獲取短網址</value>
   </data>
   <data name="ServerTypeLive" xml:space="preserve">
-      <value>在線</value>
+    <value>在線</value>
   </data>
   <data name="ServerTypePts" xml:space="preserve">
-      <value>公共測試服</value>
+    <value>公共測試服</value>
   </data>
   <data name="NavigationCharts" xml:space="preserve">
-      <value>散布和彈道圖表</value>
+    <value>散布和彈道圖表</value>
   </data>
   <data name="NavigationAccelerationCharts" xml:space="preserve">
-      <value>加速圖表</value>
+    <value>加速圖表</value>
   </data>
   <data name="NavigationComparison" xml:space="preserve">
-      <value>艦艇對比</value>
+    <value>艦艇對比</value>
   </data>
   <data name="NavigationHome" xml:space="preserve">
-      <value>開始頁面</value>
+    <value>開始頁面</value>
   </data>
   <data name="ShipComparison_Image" xml:space="preserve">
-      <value>圖片</value>
+    <value>圖片</value>
   </data>
   <data name="ShipComparison_NoMatchingShipsFound" xml:space="preserve">
-      <value>沒有找到相對應的艦艇</value>
+    <value>沒有找到相對應的艦艇</value>
   </data>
   <data name="ShipComparison_ActiveColumns" xml:space="preserve">
-      <value>設定對比數據</value>
+    <value>設定對比數據</value>
   </data>
   <data name="ShipComparison_Section" xml:space="preserve">
-      <value>區塊</value>
+    <value>區塊</value>
   </data>
   <data name="ShipComparison_Filters" xml:space="preserve">
-      <value>篩選器</value>
+    <value>篩選器</value>
   </data>
   <data name="ShipComparison_All" xml:space="preserve">
-      <value>全選</value>
+    <value>全選</value>
   </data>
   <data name="ShipComparison_None" xml:space="preserve">
-      <value>清除</value>
+    <value>清除</value>
   </data>
   <data name="ShipComparison_ResetAll" xml:space="preserve">
-      <value>全部重置</value>
+    <value>全部重置</value>
   </data>
   <data name="ShipComparison_Duplicate" xml:space="preserve">
-      <value>複製</value>
+    <value>複製</value>
   </data>
   <data name="ShipComparison_RemoveBuilds" xml:space="preserve">
-      <value>清除選擇的配置</value>
+    <value>清除選擇的配置</value>
   </data>
   <data name="ShipComparison_ViewStats" xml:space="preserve">
-      <value>顯示艦船數據</value>
+    <value>顯示艦船數據</value>
   </data>
   <data name="ShipComparison_ViewBallistic" xml:space="preserve">
-      <value>顯示彈道</value>
+    <value>顯示彈道</value>
   </data>
   <data name="ShipComparison_ViewAcceleration" xml:space="preserve">
-      <value>顯示艦船加速圖</value>
+    <value>顯示艦船加速圖</value>
   </data>
   <data name="ShipComparison_DisplayOnlyPinnedShips" xml:space="preserve">
-      <value>只顯示釘選船隻</value>
+    <value>只顯示釘選船隻</value>
   </data>
   <data name="ShipComparison_UseUpgradedModules" xml:space="preserve">
-      <value>如果沒有配置，使用升級後的船體</value>
+    <value>如果沒有配置，使用升級後的船體</value>
   </data>
   <data name="ShipComparison_HideIfNoSection" xml:space="preserve">
-      <value>隱藏沒有選擇的船</value>
+    <value>隱藏沒有選擇的船</value>
   </data>
   <data name="ShipComparison_SelectAll" xml:space="preserve">
-      <value>全部選取</value>
+    <value>全部選取</value>
   </data>
   <data name="ShipComparison_UnselectAll" xml:space="preserve">
-      <value>全部清除</value>
+    <value>全部清除</value>
   </data>
   <data name="ShipComparison_PinAll" xml:space="preserve">
-      <value>全部釘選</value>
+    <value>全部釘選</value>
   </data>
   <data name="ShipComparison_UnpinAll" xml:space="preserve">
-      <value>全部取消釘選</value>
+    <value>全部取消釘選</value>
   </data>
   <data name="ShipStats_ShowInShipComparison" xml:space="preserve">
-      <value>全部顯示在艦船比對</value>
+    <value>全部顯示在艦船比對</value>
   </data>
   <data name="ShipComparison_General" xml:space="preserve">
-      <value>概觀</value>
+    <value>概觀</value>
   </data>
   <data name="ShipComparison_SecondaryBatteryShells" xml:space="preserve">
-      <value>副炮砲彈</value>
+    <value>副炮砲彈</value>
   </data>
   <data name="ShipComparison_Asw" xml:space="preserve">
-      <value>反潛武器</value>
+    <value>反潛武器</value>
   </data>
   <data name="ShipComparison_RocketPlanes" xml:space="preserve">
-      <value>火箭攻擊機</value>
+    <value>火箭攻擊機</value>
   </data>
   <data name="ShipComparison_AerialTorpedoes" xml:space="preserve">
-      <value>航空魚雷</value>
+    <value>航空魚雷</value>
   </data>
   <data name="ShipComparison_Bombers" xml:space="preserve">
-      <value>轟炸機</value>
+    <value>轟炸機</value>
   </data>
   <data name="ShipComparison_Bombs" xml:space="preserve">
-      <value>炸彈</value>
+    <value>炸彈</value>
   </data>
   <data name="ShipComparison_Caliber" xml:space="preserve">
-      <value>口徑</value>
+    <value>口徑</value>
   </data>
   <data name="ShipComparison_Barrels" xml:space="preserve">
-      <value>炮管數</value>
+    <value>炮管數</value>
   </data>
   <data name="ShipComparison_MaxRange" xml:space="preserve">
-      <value>最大射程</value>
+    <value>最大射程</value>
   </data>
   <data name="ShipStats_Dpm" xml:space="preserve">
-      <value>每分鐘傷害</value>
+    <value>每分鐘傷害</value>
   </data>
   <data name="ShipStats_Salvo" xml:space="preserve">
-      <value>齊射</value>
+    <value>齊射</value>
   </data>
   <data name="ShipComparison_Fpm" xml:space="preserve">
-      <value>每分鐘點火期望</value>
+    <value>每分鐘點火期望</value>
   </data>
   <data name="ShipComparison_1st" xml:space="preserve">
-      <value>單</value>
+    <value>單</value>
   </data>
   <data name="ShipComparison_2nd" xml:space="preserve">
-      <value>雙</value>
+    <value>雙</value>
   </data>
   <data name="ShipComparison_Amount" xml:space="preserve">
-      <value>數量</value>
+    <value>數量</value>
   </data>
   <data name="ShipComparison_OnFire" xml:space="preserve">
-      <value>著火隱蔽</value>
+    <value>著火隱蔽</value>
   </data>
   <data name="ShipComparison_SmokeFiring" xml:space="preserve">
-      <value>煙懲隱蔽</value>
+    <value>煙懲隱蔽</value>
   </data>
   <data name="ShipComparison_FullReverseTime" xml:space="preserve">
-      <value>全速倒船需要時間</value>
+    <value>全速倒船需要時間</value>
   </data>
   <data name="ShipComparison_Charges" xml:space="preserve">
-      <value>可投擲次數</value>
+    <value>可投擲次數</value>
   </data>
   <data name="ShipComparison_DropRange" xml:space="preserve">
-      <value>反潛機範圍</value>
+    <value>反潛機範圍</value>
   </data>
   <data name="ShipComparison_PlanesInSquadron" xml:space="preserve">
-      <value>中隊大小</value>
+    <value>中隊大小</value>
   </data>
   <data name="ShipComparison_SplashRadius" xml:space="preserve">
-      <value>濺射範圍</value>
+    <value>濺射範圍</value>
   </data>
   <data name="ShipComparison_InitialSpeed" xml:space="preserve">
-      <value>砲彈初速</value>
+    <value>砲彈初速</value>
   </data>
   <data name="ShipComparison_PlaneHp" xml:space="preserve">
-      <value>飛機血量</value>
+    <value>飛機血量</value>
   </data>
   <data name="ShipComparison_Spread" xml:space="preserve">
-      <value>魚雷擴散角度</value>
+    <value>魚雷擴散角度</value>
   </data>
   <data name="ShipComparison_SwitchTime" xml:space="preserve">
-      <value>切彈時間</value>
+    <value>切彈時間</value>
   </data>
   <data name="ShipComparison_Plane" xml:space="preserve">
-      <value>飛機</value>
+    <value>飛機</value>
   </data>
   <data name="ShipComparison_Planes" xml:space="preserve">
-      <value>飛機</value>
+    <value>飛機</value>
   </data>
   <data name="ShipComparison_OnDeck" xml:space="preserve">
-      <value>甲板上飛機數</value>
+    <value>甲板上飛機數</value>
   </data>
   <data name="ShipComparison_EngineBoostDuration" xml:space="preserve">
-      <value>增壓時間</value>
+    <value>增壓時間</value>
   </data>
   <data name="ShipComparison_Invulnerability" xml:space="preserve">
-      <value>無敵</value>
+    <value>無敵</value>
   </data>
   <data name="ShipComparison_ViewDistance" xml:space="preserve">
-      <value>視距</value>
+    <value>視距</value>
   </data>
   <data name="ShipComparison_AreaChange" xml:space="preserve">
-      <value>縮圈速度</value>
+    <value>縮圈速度</value>
   </data>
   <data name="ShipComparison_PerPlane" xml:space="preserve">
-      <value>每架飛機</value>
+    <value>每架飛機</value>
   </data>
   <data name="ShipComparison_TorpsPerPlane" xml:space="preserve">
-      <value>酬載魚雷</value>
+    <value>酬載魚雷</value>
   </data>
   <data name="ShipStats_MaxReverseSpeed" xml:space="preserve">
-      <value>最大倒船速度</value>
+    <value>最大倒船速度</value>
   </data>
   <data name="ShipComparison_TypeName" xml:space="preserve">
-      <value>輸入艦船名稱...</value>
+    <value>輸入艦船名稱...</value>
   </data>
   <data name="ShipComparison_SearchAndPin" xml:space="preserve">
-      <value>搜尋&amp;釘選船隻</value>
+    <value>搜尋&amp;釘選船隻</value>
   </data>
   <data name="ShipComparison_DispersionAt" xml:space="preserve">
-      <value>散步在</value>
+    <value>散步在</value>
   </data>
   <data name="ShipComparison_FiringRange" xml:space="preserve">
-      <value>射程</value>
+    <value>射程</value>
   </data>
   <data name="ShipSelectionWindow_SearchShipOrBuild" xml:space="preserve">
-      <value>搜尋艦船或配置</value>
+    <value>搜尋艦船或配置</value>
   </data>
   <data name="SettingsWindow_Export" xml:space="preserve">
-      <value>匯出</value>
+    <value>匯出</value>
   </data>
   <data name="SettingsWindow_DeleteAll" xml:space="preserve">
-      <value>全部刪除</value>
+    <value>全部刪除</value>
   </data>
   <data name="BuildConfigurationDialog_Load" xml:space="preserve">
-      <value>加載檔案</value>
+    <value>加載檔案</value>
   </data>
   <data name="SettingsWindow_InvalidJsonFileError" xml:space="preserve">
-      <value>無法讀取檔案。只支援 .json 檔案。</value>
+    <value>無法讀取檔案。只支援 .json 檔案。</value>
   </data>
   <data name="ShipSelector_InvalidPngFileError" xml:space="preserve">
-      <value>無法讀取檔案。只支援 .png 檔案。</value>
+    <value>無法讀取檔案。只支援 .png 檔案。</value>
   </data>
   <data name="SettingsWindow_LocalStorageWarning" xml:space="preserve">
-      <value>配置將會存在你的瀏覽器的本地儲存。清除瀏覽器的緩存很可能將本地儲存的所有檔案清除。我們強烈建議你定時把你的配置匯出，或是在你清除緩存之前匯出。</value>
+    <value>配置將會存在你的瀏覽器的本地儲存。清除瀏覽器的緩存很可能將本地儲存的所有檔案清除。我們強烈建議你定時把你的配置匯出，或是在你清除緩存之前匯出。</value>
   </data>
   <data name="ShipStats_Krupp" xml:space="preserve">
-      <value>Krupp係數</value>
+    <value>Krupp係數</value>
   </data>
   <data name="ShipStats_KruppExplanation" xml:space="preserve">
-      <value>一個用來調整砲彈擊穿能力的係數
+    <value>一個用來調整砲彈擊穿能力的係數
         用來表示砲彈有多堅固
         係數越高擊穿能力越高</value>
   </data>
   <data name="ShipStats_ApPenetrationFormula" xml:space="preserve">
-      <value>K = 砲彈的krupp係數
+    <value>K = 砲彈的krupp係數
 M = 砲彈質量 [kg]
 S = 砲彈擊中速度 [m/s]
 C = 砲彈口徑 [m]
@@ -2047,13 +2041,13 @@ C = 砲彈口徑 [m]
 由 TTaro_ 逆向分析/研究得來</value>
   </data>
   <data name="ShipStats_PenetrationAp" xml:space="preserve">
-      <value>穿深</value>
+    <value>穿深</value>
   </data>
   <data name="BETA_UserAuth" xml:space="preserve">
-      <value>登入</value>
+    <value>登入</value>
   </data>
   <data name="ShipStats_DcDetonationDepthExplanation" xml:space="preserve">
-      <value>在遊戲中，潛艇的下潛深度單位為ship_meter。潛艇可潛至60[ship_m]=120[m]</value>
+    <value>在遊戲中，潛艇的下潛深度單位為ship_meter。潛艇可潛至60[ship_m]=120[m]</value>
   </data>
   <data name="ShipComparison_ShipsPerPage" xml:space="preserve">
     <value>每頁顯示的艦艇數量:</value>
