@@ -447,9 +447,6 @@
   <data name="ShipStats_TorpedoArea" xml:space="preserve">
     <value>Espacement de torpilles</value>
   </data>
-  <data name="ShipStats_Aircraft" xml:space="preserve">
-    <value>Avions</value>
-  </data>
   <data name="Bomb" xml:space="preserve">
     <value>Bombe</value>
   </data>
