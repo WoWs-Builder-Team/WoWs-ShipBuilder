@@ -585,9 +585,6 @@
   <data name="ShipStats_TorpedoArea" xml:space="preserve">
     <value>Torpido Dağılımı</value>
   </data>
-  <data name="ShipStats_Aircraft" xml:space="preserve">
-    <value>Uçaklar</value>
-  </data>
   <data name="Bomb" xml:space="preserve">
     <value>Bomba</value>
   </data>
