@@ -493,7 +493,7 @@
     <value>Longueur de largage max</value>
   </data>
   <data name="ShipStats_MinimumDistance" xml:space="preserve">
-      <value>Portée minimale</value>
+    <value>Portée minimale</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
     <value>Nombre de charges</value>
@@ -760,7 +760,7 @@ HE-&gt;SAP-&gt;AP.</value>
     <value>Masse</value>
   </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-      <value>Pénétration</value>
+    <value>Pénétration</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
     <value>Redémarrage nécessaire</value>
@@ -865,10 +865,10 @@ HE-&gt;SAP-&gt;AP.</value>
     <value>Cadence de tir côté serveur</value>
   </data>
   <data name="Validation_BuildName" xml:space="preserve">
-      <value>Le nom de la composition contient des caractères invalides. Seuls les lettres, chiffres, espaces, tirets et tirets bas sont autorisés.</value>
+    <value>Le nom de la composition contient des caractères invalides. Seuls les lettres, chiffres, espaces, tirets et tirets bas sont autorisés.</value>
   </data>
   <data name="Teststring" xml:space="preserve">
-      <value>Juste une valeur pour le test</value>
+    <value>Juste une valeur pour le test</value>
   </data>
   <data name="Unit_MPS" xml:space="preserve">
     <value>m/s</value>
@@ -922,51 +922,51 @@ HE-&gt;SAP-&gt;AP.</value>
     <value>SAP</value>
   </data>
   <data name="ShipStats_Min" xml:space="preserve">
-      <value>Portée minimale</value>
+    <value>Portée minimale</value>
   </data>
   <data name="ShipStats_TheoreticalHeDpm" xml:space="preserve">
-      <value>HE</value>
+    <value>HE</value>
   </data>
   <data name="ShipStats_TheoreticalApDpm" xml:space="preserve">
-      <value>AP</value>
+    <value>AP</value>
   </data>
   <data name="ShipStats_TheoreticalSapDpm" xml:space="preserve">
-      <value>SAP</value>
+    <value>SAP</value>
   </data>
   <data name="ShipStats_TheoreticalTrueHeDpm" xml:space="preserve">
-      <value>HE</value>
+    <value>HE</value>
   </data>
   <data name="ShipStats_TheoreticalTrueApDpm" xml:space="preserve">
-      <value>AP</value>
+    <value>AP</value>
   </data>
   <data name="ShipStats_TheoreticalTrueSapDpm" xml:space="preserve">
-      <value>SAP</value>
+    <value>SAP</value>
   </data>
   <data name="ShipStats_HP" xml:space="preserve">
-      <value>PV</value>
+    <value>PV</value>
   </data>
   <data name="ShipStats_SplashDmg" xml:space="preserve">
-      <value>Dégâts</value>
+    <value>Dégâts</value>
   </data>
   <data name="ShipStats_HeSalvo" xml:space="preserve">
-      <value>HE</value>
+    <value>HE</value>
   </data>
   <data name="ShipStats_ApSalvo" xml:space="preserve">
-      <value>AP</value>
+    <value>AP</value>
   </data>
   <data name="ShipStats_SapSalvo" xml:space="preserve">
-      <value>SAP</value>
+    <value>SAP</value>
   </data>
   <data name="ShipStats_Destroyer" xml:space="preserve">
-      <value>Destroyer</value>
+    <value>Destroyer</value>
   </data>
   <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
-      <value>Compétences du Capitaine</value>
+    <value>Compétences du Capitaine</value>
   </data>
   <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
-      <value>Pavillons</value>
+    <value>Pavillons</value>
   </data>
   <data name="ShipStats_PenetrationAp" xml:space="preserve">
-      <value>Pénétration</value>
+    <value>Pénétration</value>
   </data>
 </root>
