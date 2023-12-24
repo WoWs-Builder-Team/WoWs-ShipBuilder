@@ -568,7 +568,7 @@
     <value>Velocidad</value>
   </data>
   <data name="ShipStats_Weapon" xml:space="preserve">
-      <value>Armamento</value>
+    <value>Armamento</value>
   </data>
   <data name="SkipBomb" xml:space="preserve">
     <value>Bombas de salto</value>
@@ -865,7 +865,7 @@
     <value>Masa</value>
   </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-      <value>Penetración</value>
+    <value>Penetración</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
     <value>Reinicio requerido</value>
@@ -973,10 +973,10 @@
     <value>Tasa de disparo en Servidor</value>
   </data>
   <data name="Validation_BuildName" xml:space="preserve">
-      <value>El nombre de configuración contiene caracteres no válidos. Sólo se permiten letras, números, espacios en blanco, guiones y guiones bajos.</value>
+    <value>El nombre de configuración contiene caracteres no válidos. Sólo se permiten letras, números, espacios en blanco, guiones y guiones bajos.</value>
   </data>
   <data name="Teststring" xml:space="preserve">
-      <value>Sólo un valor para pruebas</value>
+    <value>Sólo un valor para pruebas</value>
   </data>
   <data name="Unit_MPS" xml:space="preserve">
     <value>m/s</value>
@@ -1030,69 +1030,69 @@
     <value>SAP</value>
   </data>
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
-      <value>Estándar</value>
+    <value>Estándar</value>
   </data>
   <data name="ShipStats_TorpedoMagnetic" xml:space="preserve">
-      <value>Magnético</value>
+    <value>Magnético</value>
   </data>
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
-      <value>Aguas profundas</value>
+    <value>Aguas profundas</value>
   </data>
   <data name="ShipStats_TheoreticalHeDpm" xml:space="preserve">
-      <value>AE</value>
+    <value>AE</value>
   </data>
   <data name="ShipStats_TheoreticalApDpm" xml:space="preserve">
-      <value>AP</value>
+    <value>AP</value>
   </data>
   <data name="ShipStats_TheoreticalSapDpm" xml:space="preserve">
-      <value>SAP</value>
+    <value>SAP</value>
   </data>
   <data name="ShipStats_TheoreticalTrueHeDpm" xml:space="preserve">
-      <value>AE</value>
+    <value>AE</value>
   </data>
   <data name="ShipStats_TheoreticalTrueApDpm" xml:space="preserve">
-      <value>AP</value>
+    <value>AP</value>
   </data>
   <data name="ShipStats_TheoreticalTrueSapDpm" xml:space="preserve">
-      <value>SAP</value>
+    <value>SAP</value>
   </data>
   <data name="ShipStats_HP" xml:space="preserve">
-      <value>PV</value>
+    <value>PV</value>
   </data>
   <data name="ShipStats_SplashDmg" xml:space="preserve">
-      <value>Daño</value>
+    <value>Daño</value>
   </data>
   <data name="ShipStats_HeSalvo" xml:space="preserve">
-      <value>AE</value>
+    <value>AE</value>
   </data>
   <data name="ShipStats_ApSalvo" xml:space="preserve">
-      <value>AP</value>
+    <value>AP</value>
   </data>
   <data name="ShipStats_SapSalvo" xml:space="preserve">
-      <value>SAP</value>
+    <value>SAP</value>
   </data>
   <data name="ShipStats_AirCarrier" xml:space="preserve">
-      <value>Portaaviones</value>
+    <value>Portaaviones</value>
   </data>
   <data name="ShipStats_Submarine" xml:space="preserve">
-      <value>Submarino</value>
+    <value>Submarino</value>
   </data>
   <data name="ShipStats_Cruiser" xml:space="preserve">
-      <value>Crucero</value>
+    <value>Crucero</value>
   </data>
   <data name="ShipStats_Battleship" xml:space="preserve">
-      <value>Acorazado</value>
+    <value>Acorazado</value>
   </data>
   <data name="ShipStats_Destroyer" xml:space="preserve">
-      <value>Destructor</value>
+    <value>Destructor</value>
   </data>
   <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
-      <value>Habilidades de capitán</value>
+    <value>Habilidades de capitán</value>
   </data>
   <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
-      <value>Señales</value>
+    <value>Señales</value>
   </data>
   <data name="ShipStats_PenetrationAp" xml:space="preserve">
-      <value>Penetración</value>
+    <value>Penetración</value>
   </data>
 </root>
