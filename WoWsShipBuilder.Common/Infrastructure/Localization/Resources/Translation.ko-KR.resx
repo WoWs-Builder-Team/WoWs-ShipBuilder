@@ -534,9 +534,6 @@
   <data name="ShipStats_TorpedoArea" xml:space="preserve">
     <value>어뢰 분산</value>
   </data>
-  <data name="ShipStats_Aircraft" xml:space="preserve">
-    <value>항공기</value>
-  </data>
   <data name="Bomb" xml:space="preserve">
     <value>폭탄</value>
   </data>
