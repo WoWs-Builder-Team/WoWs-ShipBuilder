@@ -568,7 +568,7 @@
     <value>Snelheid</value>
   </data>
   <data name="ShipStats_Weapon" xml:space="preserve">
-      <value>Wapen</value>
+    <value>Wapen</value>
   </data>
   <data name="SkipBomb" xml:space="preserve">
     <value>Kets bom</value>
@@ -805,7 +805,7 @@
     <value>Toon verspreidingsplot</value>
   </data>
   <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-      <value>Formule op afstand X(km)</value>
+    <value>Formule op afstand X(km)</value>
   </data>
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Horizontale verspreiding[X]</value>
@@ -868,7 +868,7 @@
     <value>Massa</value>
   </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-      <value>Penetratie</value>
+    <value>Penetratie</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
     <value>Herstart vereist</value>
@@ -976,10 +976,10 @@
     <value>Server-side Schiet ratio</value>
   </data>
   <data name="Validation_BuildName" xml:space="preserve">
-      <value>De naam van de build bevat ongeldige tekens. Alleen letters, cijfers, witruimte, koppeltekens en onderstrepingstekens zijn toegestaan.</value>
+    <value>De naam van de build bevat ongeldige tekens. Alleen letters, cijfers, witruimte, koppeltekens en onderstrepingstekens zijn toegestaan.</value>
   </data>
   <data name="Teststring" xml:space="preserve">
-      <value>Gewoon een waarde voor het testen</value>
+    <value>Gewoon een waarde voor het testen</value>
   </data>
   <data name="Unit_MPS" xml:space="preserve">
     <value>m/s</value>
@@ -1033,69 +1033,69 @@
     <value>SPD</value>
   </data>
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
-      <value>Standaard</value>
+    <value>Standaard</value>
   </data>
   <data name="ShipStats_TorpedoMagnetic" xml:space="preserve">
-      <value>Magnetisch</value>
+    <value>Magnetisch</value>
   </data>
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
-      <value>Diepwater</value>
+    <value>Diepwater</value>
   </data>
   <data name="ShipStats_TheoreticalHeDpm" xml:space="preserve">
-      <value>BR</value>
+    <value>BR</value>
   </data>
   <data name="ShipStats_TheoreticalApDpm" xml:space="preserve">
-      <value>PD</value>
+    <value>PD</value>
   </data>
   <data name="ShipStats_TheoreticalSapDpm" xml:space="preserve">
-      <value>SPD</value>
+    <value>SPD</value>
   </data>
   <data name="ShipStats_TheoreticalTrueHeDpm" xml:space="preserve">
-      <value>BR</value>
+    <value>BR</value>
   </data>
   <data name="ShipStats_TheoreticalTrueApDpm" xml:space="preserve">
-      <value>PD</value>
+    <value>PD</value>
   </data>
   <data name="ShipStats_TheoreticalTrueSapDpm" xml:space="preserve">
-      <value>SPD</value>
+    <value>SPD</value>
   </data>
   <data name="ShipStats_HP" xml:space="preserve">
-      <value>HP</value>
+    <value>HP</value>
   </data>
   <data name="ShipStats_SplashDmg" xml:space="preserve">
-      <value>Schade</value>
+    <value>Schade</value>
   </data>
   <data name="ShipStats_HeSalvo" xml:space="preserve">
-      <value>BR</value>
+    <value>BR</value>
   </data>
   <data name="ShipStats_ApSalvo" xml:space="preserve">
-      <value>PD</value>
+    <value>PD</value>
   </data>
   <data name="ShipStats_SapSalvo" xml:space="preserve">
-      <value>SPD</value>
+    <value>SPD</value>
   </data>
   <data name="ShipStats_AirCarrier" xml:space="preserve">
-      <value>Vliegdekschip</value>
+    <value>Vliegdekschip</value>
   </data>
   <data name="ShipStats_Submarine" xml:space="preserve">
-      <value>Duikboot</value>
+    <value>Duikboot</value>
   </data>
   <data name="ShipStats_Cruiser" xml:space="preserve">
-      <value>Kruiser</value>
+    <value>Kruiser</value>
   </data>
   <data name="ShipStats_Battleship" xml:space="preserve">
-      <value>Slagschip</value>
+    <value>Slagschip</value>
   </data>
   <data name="ShipStats_Destroyer" xml:space="preserve">
-      <value>Torpedobootjager</value>
+    <value>Torpedobootjager</value>
   </data>
   <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
-      <value>Kapitein vaardigheden</value>
+    <value>Kapitein vaardigheden</value>
   </data>
   <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
-      <value>Signalen</value>
+    <value>Signalen</value>
   </data>
   <data name="ShipStats_PenetrationAp" xml:space="preserve">
-      <value>Penetratie</value>
+    <value>Penetratie</value>
   </data>
 </root>
