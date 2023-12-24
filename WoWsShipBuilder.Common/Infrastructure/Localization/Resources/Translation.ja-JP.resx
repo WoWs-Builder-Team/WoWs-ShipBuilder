@@ -585,9 +585,6 @@
   <data name="ShipStats_TorpedoArea" xml:space="preserve">
     <value>魚雷散布</value>
   </data>
-  <data name="ShipStats_Aircraft" xml:space="preserve">
-    <value>航空機</value>
-  </data>
   <data name="Bomb" xml:space="preserve">
     <value>爆弾</value>
   </data>
