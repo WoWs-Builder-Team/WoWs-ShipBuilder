@@ -1746,7 +1746,7 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Autormatic updates.
+        ///   Looks up a localized string similar to Automatic updates.
         /// </summary>
         public static string SettingsWindow_AutoUpdates {
             get {
@@ -2907,7 +2907,7 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aircrafts.
+        ///   Looks up a localized string similar to Aircraft.
         /// </summary>
         public static string ShipStats_Aircraft {
             get {

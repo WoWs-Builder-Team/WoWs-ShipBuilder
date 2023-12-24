@@ -586,7 +586,7 @@
     <value>Torpedo spread</value>
   </data>
   <data name="ShipStats_Aircraft" xml:space="preserve">
-    <value>Aircrafts</value>
+    <value>Aircraft</value>
   </data>
   <data name="Bomb" xml:space="preserve">
     <value>Bomb</value>
@@ -2175,7 +2175,7 @@ You can use the Change builds button to manage the builds of single ships. You c
     <value>Show ships images</value>
   </data>
   <data name="SettingsWindow_AutoUpdates" xml:space="preserve">
-    <value>Autormatic updates</value>
+    <value>Automatic updates</value>
   </data>
   <data name="SettingsWindow_RestartRequired" xml:space="preserve">
     <value>A restart is required for this option to take effect.</value>
