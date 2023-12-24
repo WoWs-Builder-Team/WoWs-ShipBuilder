@@ -280,7 +280,7 @@
     <value>泛亞</value>
   </data>
   <data name="Premium" xml:space="preserve">
-    <value>加值</value>
+    <value>金幣線</value>
   </data>
   <data name="Russia" xml:space="preserve">
     <value>蘇聯</value>
@@ -289,16 +289,16 @@
     <value>西班牙</value>
   </data>
   <data name="Special" xml:space="preserve">
-    <value>特別</value>
+    <value>特殊艦艇</value>
   </data>
   <data name="Submarine" xml:space="preserve">
     <value>潛水艇</value>
   </data>
   <data name="TechTree" xml:space="preserve">
-    <value>科技樹</value>
+    <value>銀幣線</value>
   </data>
   <data name="TestShip" xml:space="preserve">
-    <value>測試艦艇</value>
+    <value>測試船</value>
   </data>
   <data name="UnitedKingdom" xml:space="preserve">
     <value>英國</value>
@@ -1885,13 +1885,13 @@
       <value>全部顯示在艦船比對</value>
   </data>
   <data name="ShipComparison_General" xml:space="preserve">
-      <value>一般數據</value>
+      <value>概觀</value>
   </data>
   <data name="ShipComparison_SecondaryBatteryShells" xml:space="preserve">
       <value>副炮砲彈</value>
   </data>
   <data name="ShipComparison_Asw" xml:space="preserve">
-      <value>反潛</value>
+      <value>反潛武器</value>
   </data>
   <data name="ShipComparison_RocketPlanes" xml:space="preserve">
       <value>火箭攻擊機</value>
@@ -2100,8 +2100,14 @@ C = 砲彈口徑 [m]
   <data name="UserDataService_BuildNotLoaded" xml:space="preserve">
     <value>無法載入配置。</value>
   </data>
+  <data name="UpdateSavedBuildConfirmationDialog_WarningMessage" xml:space="preserve">
+    <value>在儲存資料中已存在一個名為</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_ForTheShip" xml:space="preserve">
+    <value>的配置，屬於</value>
+  </data>
   <data name="UpdateSavedBuildConfirmationDialog_OverwriteQuestion" xml:space="preserve">
-    <value>您要覆蓋它嗎?</value>
+    <value>你是否要覆蓋?</value>
   </data>
   <data name="UpdateSavedBuildConfirmationDialog_OverwriteBuild" xml:space="preserve">
     <value>覆蓋配置</value>
@@ -2139,10 +2145,43 @@ C = 砲彈口徑 [m]
   <data name="ShipStats_SmokeSpeedLimit" xml:space="preserve">
     <value>煙霧內移動速度上限</value>
   </data>
+  <data name="ShipStats_FirstGMShotDelay" xml:space="preserve">
+    <value>主砲裝填時間減少(一個火災/進水)</value>
+  </data>
+  <data name="ShipStats_OtherGMShotDelay" xml:space="preserve">
+    <value>主砲裝填時間減少(兩個火災/進水及以上)</value>
+  </data>
   <data name="ShipStats_LeftSideLoaders" xml:space="preserve">
     <value>左側裝填手數量</value>
   </data>
   <data name="ShipStats_RightSideLoaders" xml:space="preserve">
     <value>右側裝填手數量</value>
+  </data>
+  <data name="SettingsWindow_SaveBuildOnShare" xml:space="preserve">
+    <value>分享配置時自動儲存</value>
+  </data>
+  <data name="SettingsWindow_FittingToolSelector" xml:space="preserve">
+    <value>Fitting-Tool 風格的船艦選擇器</value>
+  </data>
+  <data name="SettingsWindow_ClosedByDefault" xml:space="preserve">
+    <value>預設不展開選擇器</value>
+  </data>
+  <data name="SettingsWindow_MultiSelect" xml:space="preserve">
+    <value>重複選擇</value>
+  </data>
+  <data name="SettingsWindow_FtImgWarning" xml:space="preserve">
+    <value>警告 : 請在網路良好的環境下使用</value>
+  </data>
+  <data name="SettingsWindow_FittingToolShowImages" xml:space="preserve">
+    <value>顯示船艦圖片</value>
+  </data>
+  <data name="SettingsWindow_AutoUpdates" xml:space="preserve">
+    <value>自動更新</value>
+  </data>
+  <data name="SettingsWindow_RestartRequired" xml:space="preserve">
+    <value>需重新啟動後方能生效。</value>
+  </data>
+  <data name="SettingsWindow_FittingToolSelectorDisabled" xml:space="preserve">
+    <value>停用</value>
   </data>
 </root>
