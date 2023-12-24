@@ -121,10 +121,10 @@
     <value>Vissza a menübe</value>
   </data>
   <data name="MainWindow_ResetBuild" xml:space="preserve">
-    <value>Felépítés törlése</value>
+    <value>Összeállítás törlése</value>
   </data>
   <data name="MainWindow_ShareBuild" xml:space="preserve">
-    <value>Felépítés megosztása</value>
+    <value>Összeállítás megosztása</value>
   </data>
   <data name="SettingsWindow_AutoUpdate" xml:space="preserve">
     <value>Automatikus frissítés engedélyezése</value>
@@ -157,13 +157,13 @@
     <value>Verzió:</value>
   </data>
   <data name="StartMenu_LoadBuild" xml:space="preserve">
-    <value>Felépítés betöltése</value>
+    <value>Összeállítás betöltése</value>
   </data>
   <data name="StartMenu_NewBuild" xml:space="preserve">
-    <value>Új felépítés létrehozása</value>
+    <value>Új összeállítás létrehozása</value>
   </data>
   <data name="StartMenu_ImportBuild" xml:space="preserve">
-    <value>Felépítés importálása...</value>
+    <value>Összeállítás importálása...</value>
   </data>
   <data name="StartMenu_Settings" xml:space="preserve">
     <value>Beállítások és információ</value>
@@ -175,7 +175,7 @@
     <value>Zászlók </value>
   </data>
   <data name="BuildCreationWindow_InsertBuildName" xml:space="preserve">
-    <value>A felépítés nevének megadása. A hajónév automatikusan hozzá lesz adva.</value>
+    <value>Az összeállítás nevének megadása. A hajónév automatikusan hozzá lesz adva.</value>
   </data>
   <data name="MainWindow_NewShipSelection" xml:space="preserve">
     <value>Új hajó kiválasztása</value>
@@ -343,7 +343,7 @@
     <value>Hatótáv</value>
   </data>
   <data name="ShipStats_RoF" xml:space="preserve">
-    <value>Tüzelési gyorsaság</value>
+    <value>Tüzgyorsaság</value>
   </data>
   <data name="ShipStats_Reload" xml:space="preserve">
     <value>Újratöltési idő</value>
@@ -367,7 +367,7 @@
     <value>Elméleti percenkénti sebzés</value>
   </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
-    <value>Élesedési küszöb</value>
+    <value>Élesítési küszöb</value>
   </data>
   <data name="ShipStats_DepthExplosion" xml:space="preserve">
     <value>Robbanási mélység</value>
@@ -496,7 +496,7 @@
     <value>Típus</value>
   </data>
   <data name="ShipStats_TurretAngles" xml:space="preserve">
-    <value>Ágyúfogathatóság szögei</value>
+    <value>A toronyszögek megjelenítése</value>
   </data>
   <data name="FiringAngleWindow_AngleExplanation" xml:space="preserve">
     <value>A használt referenciaszög, az orrból indul, (a kép tetején) 0°-tól kezdődik, és az óramutató járásával megegyező irányban halad</value>
@@ -584,9 +584,6 @@
   </data>
   <data name="ShipStats_TorpedoArea" xml:space="preserve">
     <value>Torpedó szórás</value>
-  </data>
-  <data name="ShipStats_Aircraft" xml:space="preserve">
-    <value>Repülőgépek</value>
   </data>
   <data name="Bomb" xml:space="preserve">
     <value>Bomba</value>
@@ -718,13 +715,13 @@
     <value>Néhány torony tájolása hibás. A WG adatai nem tartalmazzák ezeket, ezért olyan megoldást alkalmazunk, amely a legtöbb esetben működik. Ha úgy találja, hogy a torony tájolása és/vagy szöge hibás, jelentse a Githubon vagy az alábbi Discord szerveren.</value>
   </data>
   <data name="BuildCreationWindow_BuildSaved" xml:space="preserve">
-    <value>Felépítés elmentve</value>
+    <value>Összeállítás elmentve</value>
   </data>
   <data name="BuildCreationWindow_SavedClipboard" xml:space="preserve">
-    <value>A build karakterlánc a vágólapra van másolva</value>
+    <value>Az összeállítás karakterlánca a vágólapra van másolva</value>
   </data>
   <data name="StartMenu_DeleteBuild" xml:space="preserve">
-    <value>Felépítés törlése</value>
+    <value>Összeállítás törlése</value>
   </data>
   <data name="BuildImport_Import" xml:space="preserve">
     <value>Importálás</value>
@@ -736,10 +733,10 @@
     <value>Importálás és mentés</value>
   </data>
   <data name="BuildImport_InsertBuild" xml:space="preserve">
-    <value>Build karakterlánc beillesztés ide</value>
+    <value>Illessze be ide a összeállítási karakterláncot</value>
   </data>
   <data name="BuildImport_Title" xml:space="preserve">
-    <value>Felépítés importálása</value>
+    <value>Összeállítás importálása</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Mégse</value>
@@ -748,7 +745,7 @@
     <value>Ok</value>
   </data>
   <data name="StartMenu_BuildLoadingError" xml:space="preserve">
-    <value>Hiba a felépítés betöltése közben</value>
+    <value>Hiba az összeállítás betöltése közben</value>
   </data>
   <data name="ShipStats_JatoDuration" xml:space="preserve">
       <value>Időtartam</value>
@@ -937,18 +934,18 @@
     <value>Fusō mint célpont</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
-    <value>A FEHÉR ellipszis a maximális szóródási területet mutatja a kiválasztott célzási távolságban.
+    <value>A FEHÉR ellipszis a maximális szóródási területet mutatja a kiválasztott távolságban.
 A PIROS ellipszis azt a területet mutatja, ahol a lövedékek 50%-a landol.
 A FEKETE ellipszis a Fuso méretét mutatja, referenciaként.
 
 Ábranézetek:
 1) VÍZSZINTES:
-     megmutatja a lövedékek becsapódási pontját a vízzel;
-     ennek a síknak a kiválasztásával a szórást felülről látod;
+     megmutatja a lövedékek becsapódási pontját a vizen;
+     ez a sík a szórást felülnézetből ábrázolja;
      ez az a nézet, amelyet elsősorban a hajók szórásának összehasonlításakor ajánlott használni;
-     az ellipszis ezen a síkon függőlegesen meg van feszítve a lövedékek sebessége miatt.
+     az ellipszis ezen a síkon függőlegesen meg van feszítve a lövedékek haladási sebessége miatt.
 2) FÜGGŐLEGES:
-     ezzel a nézettel mutatja a lövedékek becsapódási pontját egy függőleges felülettel;
+     ezzel a nézettel mutatja a lövedékek becsapódási pontját egy függőleges felületen;
      ennek a síknak a kiválasztásával szemből látod a szórást;
      nagyon precíz függőleges pontosság elemzéshez hasznos.
 3) BECSAPÓDÁSI SZÖG:
@@ -956,9 +953,9 @@ A FEKETE ellipszis a Fuso méretét mutatja, referenciaként.
      ennek a síknak a kiválasztásával képet kapunk a lövedék becsapódási szögéből;
      ez az a sík, ahol a játék ténylegesen megrajzolja a szórási ellipszist a csaták során;
      az ellipszist ezen a síkon nem befolyásolja a lövedék sebessége;
-     hasznos, ha összehasonlítani szeretné a hajók diszperzióját anélkül, hogy figyelembe venné a lövedékek sebességét.
+     hasznos, ha szeretné összehasonlítani a hajók szórását anélkül, hogy figyelembe kéne venni a lövedékek sebességét.
 
-A játékban lévő hajók kétszer akkorák, mint a környezet, így egy 200 méter hosszú hajó 400 métert foglal el.</value>
+A játékban lévő hajók kétszer akkorák, mint a valóságban, így egy 200 méter hosszú hajó 400 métert foglal el.</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
     <value>Szóráskép magyarázat</value>
@@ -1039,7 +1036,7 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
     <value>Importálás képről</value>
   </data>
   <data name="SettingsWindow_OpenExplorerAfterImageSave" xml:space="preserve">
-    <value>Böngésző megnyitása a felépítési kép mentése után</value>
+    <value>Böngésző megnyitása a összeállítási kép mentése után</value>
   </data>
   <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
     <value>Kép mentése és másolása</value>
@@ -1069,13 +1066,13 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
     <value>Karakterlánc elmentése és másolása</value>
   </data>
   <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
-    <value>Felépítés képe a vágólapra lett másolva</value>
+    <value>Az összeállítás képe a vágólapra lett másolva</value>
   </data>
   <data name="SettingsWindow_EnableBuildImagePath" xml:space="preserve">
     <value>Egyéni elérési útvonal engedélyezése</value>
   </data>
   <data name="SettingsWindow_BuildImagePath" xml:space="preserve">
-    <value>Egyéni elérési útvonal</value>
+    <value>Egyéni összeállítási kép -útvonal</value>
   </data>
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
     <value>A kiválasztott képútvonal hibás.</value>
@@ -1117,7 +1114,7 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
     <value>Szerver-oldali tűzgyorsaság</value>
   </data>
   <data name="Validation_BuildName" xml:space="preserve">
-      <value>A felépítés neve nem engedélyezett karaktereket tartalmaz. Csak betű, számok, szóközök és kötőjelek engedélyezettek.</value>
+      <value>Az összeállítás neve nem engedélyezett karaktereket tartalmaz. Csak betűk, számok, szóközök és kötőjelek engedélyezettek.</value>
   </data>
   <data name="Teststring" xml:space="preserve">
       <value>Csak egy tesztérték</value>
@@ -1364,14 +1361,14 @@ Bővebb információ a logfájlokban található.</value>
       <value>Sebzés</value>
   </data>
   <data name="ShipStats_SplashExplanation" xml:space="preserve">
-      <value>Ezek a paraméterek csak tengeralattjáróra hatnak.
+      <value>Ezek a paraméterek csak tengeralattjárókra hatnak.
 Felszini hajókra nincs hatásuk.</value>
   </data>
   <data name="ShipStats_DcSplashRadius" xml:space="preserve">
       <value>Robbanás hatósugara</value>
   </data>
   <data name="ShipStats_DetonationTimer" xml:space="preserve">
-      <value>Robbantás időzítő</value>
+      <value>Robbantási időzítő</value>
   </data>
   <data name="ShipStats_SinkSpeed" xml:space="preserve">
       <value>Süllyedési sebesség</value>
@@ -1446,10 +1443,10 @@ Felszini hajókra nincs hatásuk.</value>
       <value>Találatok</value>
   </data>
   <data name="WebApp_ArtilleryAngleExplanation" xml:space="preserve">
-      <value>A 0°fent van. Az óramutató járásával megegyező irány a pozitív az azzal ellentétes a negatív. A vörös szögek a halott zónák (ahova a löveg csak forogni tud, de lőni nem).      </value>
+      <value>A 0° fent van. Az óramutató járásával megegyező irány a pozitív az azzal ellentétes a negatív. A vörös szögek a halott zónák (ahol a löveg csak forogni tud, de lőni nem).      </value>
   </data>
   <data name="Build_CopyUrl" xml:space="preserve">
-      <value>Build URL másolása</value>
+      <value>Összeállítási URL másolása</value>
   </data>
   <data name="WebApp_ExpanderSetting" xml:space="preserve">
       <value>Alapbeállításból nyitva legyenek a fő fülek</value>
@@ -1467,7 +1464,7 @@ Felszini hajókra nincs hatásuk.</value>
       <value>Sebzési szóráskép elrejtése</value>
   </data>
   <data name="ShipStats_ShowLaunchersAngles" xml:space="preserve">
-      <value>Kivetők szögének mutatása</value>
+      <value>Vetőcsövek megjelenítése</value>
   </data>
   <data name="ShipStats_MaxEngineBoostDuration" xml:space="preserve">
       <value>Maximális motorerősítési idő</value>
@@ -1476,7 +1473,7 @@ Felszini hajókra nincs hatásuk.</value>
       <value>Gyorslink másolása</value>
   </data>
   <data name="Build_EnterBuildName" xml:space="preserve">
-      <value>Kérjük, adja meg a build nevét. A hajó neve automatikusan megjelenik a végén.</value>
+      <value>Kérjük, adja meg az összeállítás nevét. A hajó neve automatikusan megjelenik a végén.</value>
   </data>
   <data name="BETA_ShipComparison" xml:space="preserve">
       <value>Gyorsulási ábrák - béta</value>
@@ -1527,13 +1524,7 @@ Felszini hajókra nincs hatásuk.</value>
       <value>Hajót hozzáad / eltávolít</value>
   </data>
   <data name="Charts_ChangeBuilds" xml:space="preserve">
-      <value>Build megváltoztatása</value>
-  </data>
-  <data name="AccelerationChart_ExplanationText" xml:space="preserve">
-      <value>A hajó kiválasztása után lehetősége van kiválasztani azt a 3 sebességfokozatot, amelyet használni fog az ábra.
-A táblázat a következő sorrendben fog haladni: Kezdő fokozat --&gt; kozépső fokozat --&gt; végső fokozat, csak az aktuális fokozat maximális sebességének elérése után vált a következőre.
-Ha két sebességfokozatot azonos értékre állít be, azok egybeolvadnak.
-A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többször is hozzáadhat egy hajót, ha össze szeretné hasonlítani a különböző buildeket.</value>
+      <value>Összeállítások megváltoztatása</value>
   </data>
   <data name="AccelerationChart_Explanation" xml:space="preserve">
       <value>Gyorsulási ábra magyarázat</value>
@@ -1620,10 +1611,10 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
       <value>Taktikai pattogóbomba-vetők</value>
   </data>
   <data name="ChartsWeb_Build" xml:space="preserve">
-      <value>Build</value>
+      <value>Összeállítás</value>
   </data>
   <data name="ShipSelectionWindow_EditBuilds" xml:space="preserve">
-      <value>Build szerkesztése</value>
+      <value>Összeállítás szerkesztése</value>
   </data>
   <data name="ShipAndShellsSelectionDialog_NoShipSelected" xml:space="preserve">
       <value>Nincs kiválasztott hajó</value>
@@ -1647,10 +1638,10 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
       <value>Gyorsulási diagram megjelenítése</value>
   </data>
   <data name="BuildStringInputDialog_EnterBuildStringOrLink" xml:space="preserve">
-      <value>Felépítési leírás vagy link beszúrása</value>
+      <value>Írja be az összeállítás karakterláncát vagy hivatkozását</value>
   </data>
   <data name="WebApp_LoadBuild" xml:space="preserve">
-      <value>Felépítés betöltése</value>
+      <value>Összeállítás betöltése</value>
   </data>
   <data name="WebApp_GoToShipsPage" xml:space="preserve">
       <value>Ugrás a hajók oldalra</value>
@@ -1662,7 +1653,7 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
       <value>Gyorsulási diagram megjelenítése</value>
   </data>
   <data name="Validation_InvalidBuild" xml:space="preserve">
-      <value>Helytelen build</value>
+      <value>Helytelen összeállítás</value>
   </data>
   <data name="Validation_Incompatibility" xml:space="preserve">
       <value>Inkompatibilitás</value>
@@ -1812,10 +1803,10 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
       <value>Szórási kép és ballisztikus ábrák mutatása</value>
   </data>
   <data name="NavigationAccelerationCharts" xml:space="preserve">
-      <value>Gyorsulási ábra</value>
+      <value>Gyorsulási ábrák</value>
   </data>
   <data name="NavigationComparison" xml:space="preserve">
-      <value>Hajó összehasonlítás</value>
+      <value>Hajók összehasonlítása</value>
   </data>
   <data name="NavigationHome" xml:space="preserve">
       <value>Kezdőlap</value>
@@ -1848,7 +1839,7 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
       <value>Másolás</value>
   </data>
   <data name="ShipComparison_RemoveBuilds" xml:space="preserve">
-      <value>Buildek eltávolítása</value>
+      <value>Összeállítások eltávolítása</value>
   </data>
   <data name="ShipComparison_ViewStats" xml:space="preserve">
       <value>Statisztikák megtekintése</value>
@@ -1863,7 +1854,7 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
       <value>Csak kitűzött hajók megjelenítése</value>
   </data>
   <data name="ShipComparison_UseUpgradedModules" xml:space="preserve">
-      <value>Fejlesztett modulok használata ha nincs build</value>
+      <value>Fejlesztett modulok használata ha nincs mentett összeállítás</value>
   </data>
   <data name="ShipComparison_HideIfNoSection" xml:space="preserve">
       <value>A kiválasztott szekció nélküli hajók elrejtése</value>
@@ -2007,7 +1998,7 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
       <value>Lőtávolság</value>
   </data>
   <data name="ShipSelectionWindow_SearchShipOrBuild" xml:space="preserve">
-      <value>Hajó vagy build keresése</value>
+      <value>Hajó vagy összeállítás keresése</value>
   </data>
   <data name="SettingsWindow_Export" xml:space="preserve">
       <value>Exportálás</value>
@@ -2025,7 +2016,7 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
       <value>Érvénytelen fájl, csak .png engedélyezett.</value>
   </data>
   <data name="SettingsWindow_LocalStorageWarning" xml:space="preserve">
-      <value>A buildek a böngésző helyi tárhelyére kerülnek mentésre. Az olyan műveletek, mint például a böngésző gyorsítótárának törlése, nagy valószínűséggel törli a helyi tárhelyen tárolt összes adatot. Erősen javasoljuk, hogy rendszeresen, vagy legalább az ilyen műveletek végrehajtása előtt exportálja a buildjeit.</value>
+      <value>Az összeállítások (Buildek) a böngésző helyi tárhelyére kerülnek mentésre. Az olyan műveletek, mint például a böngésző gyorsítótárának törlése, nagy valószínűséggel törli a helyi tárhelyen tárolt összes adatot. Erősen javasoljuk, hogy rendszeresen, vagy legalább az ilyen műveletek végrehajtása előtt exportálja a buildjeit.</value>
   </data>
   <data name="ShipStats_Krupp" xml:space="preserve">
       <value>Krupp</value>
@@ -2059,5 +2050,128 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
   </data>
   <data name="ShipComparison_HideColumns" xml:space="preserve">
     <value>Oszlopok elrejtése</value>
+  </data>
+  <data name="ShipStats_SecondConsecutive" xml:space="preserve">
+    <value>A második és az után következők</value>
+  </data>
+  <data name="ShipStats_FromSubsAtPeriscopeDepth" xml:space="preserve">
+    <value>Periszkópmélységig merült tengeralattjárókról</value>
+  </data>
+  <data name="ShipStats_ShellType" xml:space="preserve">
+    <value>Lőszertípus</value>
+  </data>
+  <data name="ShipStats_Overall" xml:space="preserve">
+    <value>Összesen</value>
+  </data>
+  <data name="ShipComparison_SplashDmgSubs" xml:space="preserve">
+    <value>Területi sebzés tengeralattjárók ellen</value>
+  </data>
+  <data name="ShipComparison_OutOfRange" xml:space="preserve">
+    <value>Tartományon kívüli</value>
+  </data>
+  <data name="ShipComparison_OutOfRangeTooltip" xml:space="preserve">
+    <value>A lőtávolság nagyobb, mint a hajó maximális látótávja</value>
+  </data>
+  <data name="UserDataService_BuildUpdated" xml:space="preserve">
+    <value>Az összeállítás frissítve lett.</value>
+  </data>
+  <data name="UserDataService_BuildSaved" xml:space="preserve">
+    <value>Összeállítások elmentve.</value>
+  </data>
+  <data name="UserDataService_BuildNotSaved" xml:space="preserve">
+    <value>Az összeállítások nincsenek elmentve.</value>
+  </data>
+  <data name="UserDataService_BuildLimitReached" xml:space="preserve">
+    <value>A tárhely elérte a maximális kapacitását. A következő elmentett összeállítás felülírja a legrégebbit.</value>
+  </data>
+  <data name="UserDataService_BuildStorageFull" xml:space="preserve">
+    <value>A tárhely elérte a maximális kapacitását. A legrégebbi összeállítás felülírva.</value>
+  </data>
+  <data name="UserDataService_BuildNotLoaded" xml:space="preserve">
+    <value>az összeállításokat nem lehetett betölteni.</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_WarningMessage" xml:space="preserve">
+    <value>Már létezik egy ilyen nevű build/összeállítás az arhívumban</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_ForTheShip" xml:space="preserve">
+    <value>a hajóért</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_OverwriteQuestion" xml:space="preserve">
+    <value>Szeretné felülírni?</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_OverwriteBuild" xml:space="preserve">
+    <value>Összeállítás felülírása</value>
+  </data>
+  <data name="ShipStats_ArchiveBuild" xml:space="preserve">
+    <value>Összeállítás archiválása</value>
+  </data>
+  <data name="ShipStats_ShareOrSaveBuild" xml:space="preserve">
+    <value>Megoszt / elment</value>
+  </data>
+  <data name="ShipComparison_AddAShip" xml:space="preserve">
+    <value>Hajó hozzáadása...</value>
+  </data>
+  <data name="ShipSelectionDialog_AddShips" xml:space="preserve">
+    <value>Hajók hozzáadása</value>
+  </data>
+  <data name="ShipStatsTab_BuildMustHaveName" xml:space="preserve">
+    <value>Hiba az összeállítás mentése közben: nincs név!</value>
+  </data>
+  <data name="ShipStatsTabs_LinkCopied" xml:space="preserve">
+    <value>Az összeállítás hivatkozása a vágólapra lett másolva</value>
+  </data>
+  <data name="ShipStatsTabs_BuildImageSavedAndCopiedToClipboard" xml:space="preserve">
+    <value>Az összeállítás képét elmentettük és a vágólapra másoltuk!</value>
+  </data>
+  <data name="ShipStatsTab_ShareLink" xml:space="preserve">
+    <value>Hivatkozás megosztása</value>
+  </data>
+  <data name="ShipStatsTab_SaveBuild" xml:space="preserve">
+    <value>Összeállítás elmentése</value>
+  </data>
+  <data name="ShipStatsTab_ShareBuildImage" xml:space="preserve">
+    <value>Összeállítási-kép megosztása</value>
+  </data>
+  <data name="ShipStats_SmokeSpeedLimit" xml:space="preserve">
+    <value>Maximum füstbeni sebesség</value>
+  </data>
+  <data name="ShipStats_FirstGMShotDelay" xml:space="preserve">
+    <value>Főlöveg újratöltési idő (Első szalvó)</value>
+  </data>
+  <data name="ShipStats_OtherGMShotDelay" xml:space="preserve">
+    <value>Főlöveg újratöltési idő (Második és minden további szalvó)</value>
+  </data>
+  <data name="ShipStats_LeftSideLoaders" xml:space="preserve">
+    <value>Bal oldal</value>
+  </data>
+  <data name="ShipStats_RightSideLoaders" xml:space="preserve">
+    <value>Jobb oldal</value>
+  </data>
+  <data name="SettingsWindow_SaveBuildOnShare" xml:space="preserve">
+    <value>Összeállítás elmentése, megosztás után</value>
+  </data>
+  <data name="SettingsWindow_FittingToolSelector" xml:space="preserve">
+    <value>Fitting-Tool - féle hajóválasztó</value>
+  </data>
+  <data name="SettingsWindow_ClosedByDefault" xml:space="preserve">
+    <value>Alapból bezárva</value>
+  </data>
+  <data name="SettingsWindow_MultiSelect" xml:space="preserve">
+    <value>Többszörös kijelölés engedélyezése</value>
+  </data>
+  <data name="SettingsWindow_FtImgWarning" xml:space="preserve">
+    <value>FIGYELEM: Csak jó internetkapcsolat mellett használja.</value>
+  </data>
+  <data name="SettingsWindow_FittingToolShowImages" xml:space="preserve">
+    <value>Hajóképek mutatása</value>
+  </data>
+  <data name="SettingsWindow_AutoUpdates" xml:space="preserve">
+    <value>Automatikus frissítések</value>
+  </data>
+  <data name="SettingsWindow_RestartRequired" xml:space="preserve">
+    <value>Az opció érvénybe léptetéséhez újraindítás szükséges.</value>
+  </data>
+  <data name="SettingsWindow_FittingToolSelectorDisabled" xml:space="preserve">
+    <value>Letiltva</value>
   </data>
 </root>
