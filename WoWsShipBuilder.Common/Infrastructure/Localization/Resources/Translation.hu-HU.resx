@@ -2156,4 +2156,31 @@ Az összeállítások módosítása gombbal kezelheti az egyes hajók kiosztás�
   <data name="ShipStats_RightSideLoaders" xml:space="preserve">
     <value>Jobb oldal</value>
   </data>
+  <data name="SettingsWindow_SaveBuildOnShare" xml:space="preserve">
+    <value>Összeállítás elmentése, megosztás után</value>
+  </data>
+  <data name="SettingsWindow_FittingToolSelector" xml:space="preserve">
+    <value>Fitting-Tool - féle hajóválasztó</value>
+  </data>
+  <data name="SettingsWindow_ClosedByDefault" xml:space="preserve">
+    <value>Alapból bezárva</value>
+  </data>
+  <data name="SettingsWindow_MultiSelect" xml:space="preserve">
+    <value>Többszörös kijelölés engedélyezése</value>
+  </data>
+  <data name="SettingsWindow_FtImgWarning" xml:space="preserve">
+    <value>FIGYELEM: Csak jó internetkapcsolat mellett használja.</value>
+  </data>
+  <data name="SettingsWindow_FittingToolShowImages" xml:space="preserve">
+    <value>Hajóképek mutatása</value>
+  </data>
+  <data name="SettingsWindow_AutoUpdates" xml:space="preserve">
+    <value>Automatikus frissítések</value>
+  </data>
+  <data name="SettingsWindow_RestartRequired" xml:space="preserve">
+    <value>Az opció érvénybe léptetéséhez újraindítás szükséges.</value>
+  </data>
+  <data name="SettingsWindow_FittingToolSelectorDisabled" xml:space="preserve">
+    <value>Letiltva</value>
+  </data>
 </root>
