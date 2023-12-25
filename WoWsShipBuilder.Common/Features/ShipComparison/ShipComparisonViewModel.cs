@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
@@ -462,7 +463,7 @@ public partial class ShipComparisonViewModel : ReactiveObject
         }
         else if (obj is ShipBuildContainer container)
         {
-            newWrapper = new(container);
+            newWrapper = new(container.Build is null && this.UseUpgradedModules ? container with { ShipDataContainer = this.GetShipDataContainer(container.Ship) } : container);
         }
         else if (obj is Ship ship)
         {
