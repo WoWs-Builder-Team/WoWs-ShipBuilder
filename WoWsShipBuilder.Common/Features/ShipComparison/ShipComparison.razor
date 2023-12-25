@@ -221,10 +221,16 @@
                             @(context.Item.BuildName)
                         </MudText>
                     }
+                    else if (context.Item.Build is not null)
+                    {
+                        <MudText Typo="Typo.body2" Style="cursor: pointer" @onclick="@(() => EditBuilds(context.Item))">
+                            @Build.DefaultBuildName
+                        </MudText>
+                    }
                     else
                     {
                         <MudText Typo="Typo.body2" Color="Color.Dark" Style="cursor: pointer" @onclick="@(() => EditBuilds(context.Item))">
-                            @Build.DefaultBuildName
+                            @ShipComparisonViewModel.DataNotAvailable
                         </MudText>
                     }
                 </CellTemplate>
