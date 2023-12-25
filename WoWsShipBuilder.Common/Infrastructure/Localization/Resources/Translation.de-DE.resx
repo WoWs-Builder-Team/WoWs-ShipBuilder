@@ -585,6 +585,9 @@
   <data name="ShipStats_TorpedoArea" xml:space="preserve">
     <value>Torpedostreuung</value>
   </data>
+  <data name="ShipStats_Aircraft" xml:space="preserve">
+    <value>Flugzeuge</value>
+  </data>
   <data name="Bomb" xml:space="preserve">
     <value>Bombe</value>
   </data>
