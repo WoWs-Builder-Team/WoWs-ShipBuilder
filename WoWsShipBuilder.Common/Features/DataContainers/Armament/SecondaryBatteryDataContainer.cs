@@ -111,7 +111,7 @@ public partial record SecondaryBatteryDataContainer : DataContainerBase
                 BarrelsCount = secondaryGroup.Count * secondaryGun.NumBarrels,
                 GunCaliber = Math.Round(secondaryGun.BarrelDiameter * 1000),
                 Range = Math.Round(range, 2),
-                Reload = Math.Round((decimal)reload, 2),
+                Reload = Math.Round(reload, 2),
                 RoF = Math.Round(rof * barrelCount, 1),
                 Sigma = secondary.Sigma,
                 DelimDist = (range * (decimal)dispersion.Delim) / 1000,
