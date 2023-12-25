@@ -1526,6 +1526,12 @@ Felszini hajókra nincs hatásuk.</value>
   <data name="Charts_ChangeBuilds" xml:space="preserve">
       <value>Összeállítások megváltoztatása</value>
   </data>
+  <data name="AccelerationChart_ExplanationText" xml:space="preserve">
+      <value>A hajó kiválasztása után lehetősége van kiválasztani azt a 3 sebességfokozatot, amelyet használni fog az ábra.
+A táblázat a következő sorrendben fog haladni: Kezdő fokozat --&gt; kozépső fokozat --&gt; végső fokozat. Csak az aktuális fokozat maximális sebességének elérése után vált a következőre.
+Ha két sebességfokozatot azonos értékre állít be, akkor azok egybeolvadnak.
+Az összeállítások módosítása gombbal kezelheti az egyes hajók kiosztását. Többször is hozzáadhat egy hajót, ha össze szeretné hasonlítani a különböző összeállításokat (buildeket).</value>
+  </data>
   <data name="AccelerationChart_Explanation" xml:space="preserve">
       <value>Gyorsulási ábra magyarázat</value>
   </data>
