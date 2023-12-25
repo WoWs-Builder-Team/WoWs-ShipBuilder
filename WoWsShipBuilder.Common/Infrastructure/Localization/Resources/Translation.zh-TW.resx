@@ -585,6 +585,9 @@
   <data name="ShipStats_TorpedoArea" xml:space="preserve">
     <value>魚雷散佈</value>
   </data>
+  <data name="ShipStats_Aircraft" xml:space="preserve">
+    <value>飛機</value>
+  </data>
   <data name="Bomb" xml:space="preserve">
     <value>炸彈</value>
   </data>
@@ -742,7 +745,7 @@
     <value>取消</value>
   </data>
   <data name="Ok" xml:space="preserve">
-    <value>好的</value>
+    <value>確定</value>
   </data>
   <data name="StartMenu_BuildLoadingError" xml:space="preserve">
     <value>載入配置時發生錯誤</value>
@@ -1056,7 +1059,7 @@
     <value>不</value>
   </data>
   <data name="Dialog_Ok" xml:space="preserve">
-    <value>好的</value>
+    <value>確定</value>
   </data>
   <data name="Dialog_SaveExit" xml:space="preserve">
     <value>保存並退出</value>
@@ -1527,6 +1530,12 @@
   <data name="Charts_ChangeBuilds" xml:space="preserve">
       <value>改變配置</value>
   </data>
+  <data name="AccelerationChart_ExplanationText" xml:space="preserve">
+      <value>在選擇一艘船後，你可以選擇在圖表當中會用到的3種檔位的數值。
+圖表會依序從 初始檔位(Initial gear) --&gt; 中間檔位(Middle gear) --&gt; 最終檔位(Final Gear) 進行加減速，到達了當前檔位的滿速時即切換至下一個檔位。
+將兩個相鄰的檔位設成同一個檔位會把他們併成一個。
+你可以使用「編輯配置」來調整單一艦艇的配備。你也可以增加同一艘船好幾次，以便你去比較不同配置的表現。</value>
+  </data>
   <data name="AccelerationChart_Explanation" xml:space="preserve">
       <value>加速圖表說明</value>
   </data>
@@ -1534,28 +1543,28 @@
       <value>添加自訂資料</value>
   </data>
   <data name="ShipStats_EnginePower" xml:space="preserve">
-      <value>引擎動力</value>
+      <value>Engine power</value>
   </data>
   <data name="ShipStats_Tonnage" xml:space="preserve">
       <value>噸位</value>
   </data>
   <data name="ShipStats_ForwardEngineUpTime" xml:space="preserve">
-      <value>前進時引擎起動時間</value>
+      <value>Engine forward up time</value>
   </data>
   <data name="ShipStats_BackwardEngineUpTime" xml:space="preserve">
-      <value>倒退引擎啟動時間</value>
+      <value>Engine backward up time</value>
   </data>
   <data name="ShipStats_ForwardEngineForsag" xml:space="preserve">
-      <value>發動機前推增壓</value>
+      <value>Engine forward forsage</value>
   </data>
   <data name="ShipStats_BackwardEngineForsag" xml:space="preserve">
-      <value>引擎後退加速</value>
+      <value>Engine backward forsage</value>
   </data>
   <data name="ShipStats_ForwardEngineForsagMaxSpeed" xml:space="preserve">
-      <value>前進時最大速度加速</value>
+      <value>Forward forsage max speed</value>
   </data>
   <data name="ShipStats_BackwardEngineForsagMaxSpeed" xml:space="preserve">
-      <value>後退推力最大速度</value>
+      <value>Backward forsage max speed</value>
   </data>
   <data name="ShipStats_HeSalvo" xml:space="preserve">
       <value>高爆彈</value>
