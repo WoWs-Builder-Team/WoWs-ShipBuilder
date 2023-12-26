@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using System.Collections.Immutable;
+using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Captain;
 using WoWsShipBuilder.DataStructures.Modifiers;
@@ -26,8 +27,11 @@ public class SkillItemViewModel : ReactiveObject
         this.canRemoveCache = canRemoveCache;
         this.Modifiers = skill.Modifiers.Where(x => !x.Name.Contains('_') || x.Name.StartsWith("repeatable_", StringComparison.Ordinal) || x.Name.Contains("_" + shipClass)).ToList();
 
-        // TODO: fix modifiers not being filtered per class. do the same of the normal modifiers basically.
-        this.ConditionalModifierGroups = skill.ConditionalModifierGroups.ToList();
+        this.ConditionalModifierGroups = new();
+        foreach (var group in skill.ConditionalModifierGroups)
+        {
+            this.ConditionalModifierGroups.Add(group with { Modifiers = group.Modifiers.Where(x => !x.Name.Contains('_') || x.Name.Contains("_" + shipClass)).ToImmutableList() });
+        }
 
         this.shipClass = shipClass;
         this.parent = parent;

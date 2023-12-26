@@ -99,8 +99,7 @@ public partial record ConsumableDataContainer : DataContainerBase
                 consumableModifiers.UpdateConsumableModifierValue(modifiers, "ConsumableDataContainer.TimeDelayAttack.PCY035", "timeDelayAttack");
                 consumableModifiers.UpdateConsumableModifierValue(modifiers, "ConsumableDataContainer.TimeDelayAppear.PCY035", "timeFromHeaven");
 
-                // TODO check display value kind and translation
-                var plane = AppData.FindAircraft(consumable.PlaneName.Substring(0, consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)));
+                var plane = AppData.FindAircraft(consumable.PlaneName[..consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)]);
                 var oldCruisingSpeed = consumableModifiers.Find(x => x.Name.Equals("cruisingSpeed", StringComparison.Ordinal));
                 if (oldCruisingSpeed is not null)
                 {
@@ -155,7 +154,7 @@ public partial record ConsumableDataContainer : DataContainerBase
                 workTime = modifiers.ApplyModifiers("ConsumableDataContainer.WorkTime.PCY049", workTime);
             }
         }
-        else if (!consumableModifiers.Any(x => x.Name.Equals("error", StringComparison.Ordinal)))
+        else if (!consumableModifiers.Exists(x => x.Name.Equals("error", StringComparison.Ordinal)))
         {
             uses = modifiers.ApplyModifiers("ConsumableDataContainer.Uses.Ship", uses);
 
@@ -191,10 +190,10 @@ public partial record ConsumableDataContainer : DataContainerBase
 
                 consumableModifiers.UpdateConsumableModifierValue(modifiers, "ConsumableDataContainer.RegenerationHpSpeed.PCY010", "consumable_regenerationHPSpeed");
 
-                var regenSpeed = consumableModifiers.First(x => x.Name.Equals("consumable_regenerationHPSpeed", StringComparison.Ordinal))!.Value;
+                var regenSpeed = consumableModifiers.First(x => x.Name.Equals("consumable_regenerationHPSpeed", StringComparison.Ordinal)).Value;
                 var hpPerHeal = (float)Math.Round(workTime * (decimal)(regenSpeed * shipHp));
 
-                var oldModifier = consumableModifiers.Find(x => x.Name.Equals("hpPerHeal"));
+                var oldModifier = consumableModifiers.Find(x => x.Name.Equals("hpPerHeal", StringComparison.Ordinal));
                 if (oldModifier is not null)
                 {
                     consumableModifiers.Remove(oldModifier);

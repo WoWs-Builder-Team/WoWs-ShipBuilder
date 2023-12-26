@@ -113,7 +113,7 @@ public partial record ShellDataContainer : DataContainerBase
                 showBlastPenetration = true;
 
                 // IFHE fire chance malus
-                shellFireChance = modifiers.ApplyModifiers(shell.Caliber > 0.139f ? "ShellDataContainer.FireChance.Big.Multiplier" : "ShellDataContainer.FireChance.Small.Multiplier", shellFireChance);
+                shellFireChance = modifiers.ApplyModifiers("ShellDataContainer.FireChance.Multiplier", shellFireChance);
 
                 // Victor Lima and India X-Ray signals
                 shellFireChance = modifiers.ApplyModifiers(shell.Caliber > 0.160f ? "ShellDataContainer.FireChance.Big.Additive" : "ShellDataContainer.FireChance.Small.Additive", shellFireChance);
