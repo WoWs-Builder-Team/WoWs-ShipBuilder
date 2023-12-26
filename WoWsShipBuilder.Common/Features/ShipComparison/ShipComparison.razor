@@ -65,7 +65,7 @@
             <MudList Clickable="true" SelectedValueChanged="AddSearchedShip">
                 <MudVirtualize IsEnabled="true" Items="@ViewModel.SearchedShips.OrderBy(x => LocalizeShipName(x.Index)).ToList()" Context="ship">
                     <MudListItem Value="@ship">
-                        <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center">
+                        <MudStack Row AlignItems="AlignItems.Center">
                             <MudImage Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{ship.Index}.png")" Height="35" ObjectPosition="ObjectPosition.Center"/>
                             <MudText Color="Color.Secondary" Class="mt-3">
                                 @LocalizeShipName(ship.Index)
