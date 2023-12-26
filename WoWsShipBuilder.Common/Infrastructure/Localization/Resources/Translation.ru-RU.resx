@@ -585,6 +585,9 @@
   <data name="ShipStats_TorpedoArea" xml:space="preserve">
     <value>Разброс торпед</value>
   </data>
+  <data name="ShipStats_Aircraft" xml:space="preserve">
+    <value>Самолеты</value>
+  </data>
   <data name="Bomb" xml:space="preserve">
     <value>Бомба</value>
   </data>
@@ -1525,6 +1528,12 @@
   <data name="Charts_ChangeBuilds" xml:space="preserve">
       <value>Изменить билды</value>
   </data>
+  <data name="AccelerationChart_ExplanationText" xml:space="preserve">
+      <value>После выбора корабля у вас есть возможность выбрать 3 варианта скорости, которые будут использоваться в графике.
+График будет идти в порядке Начальная передача --&gt; Средняя передача --&gt; Последняя передача, переключаясь на следующую только после достижения максимальной скорости текущей передачи.
+Установка двух передач на одно и то же значение приведет к их объединению в одну.
+Вы можете использовать кнопку "Изменить билд" для управления сборками отдельных кораблей. Вы также можете добавить корабль несколько раз, если хотите сравнить разные билды.</value>
+  </data>
   <data name="AccelerationChart_Explanation" xml:space="preserve">
       <value>Описание графика ускорения</value>
   </data>
@@ -2070,5 +2079,107 @@
   </data>
   <data name="ShipComparison_OutOfRangeTooltip" xml:space="preserve">
     <value>Дальность выстрела превышает максимальную дальность орудий корабля</value>
+  </data>
+  <data name="UserDataService_BuildUpdated" xml:space="preserve">
+    <value>Билд обновлен.</value>
+  </data>
+  <data name="UserDataService_BuildSaved" xml:space="preserve">
+    <value>Билды успешно сохранены.</value>
+  </data>
+  <data name="UserDataService_BuildNotSaved" xml:space="preserve">
+    <value>Билды не были сохранены.</value>
+  </data>
+  <data name="UserDataService_BuildLimitReached" xml:space="preserve">
+    <value>Достигнут лимит хранилища билдов. Следующий билд заменит старейшый сохраненный.</value>
+  </data>
+  <data name="UserDataService_BuildStorageFull" xml:space="preserve">
+    <value>Хранилище билдов переполнено. Старейший сохраненный билд был заменён.</value>
+  </data>
+  <data name="UserDataService_BuildNotLoaded" xml:space="preserve">
+    <value>билды не были загружены.</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_WarningMessage" xml:space="preserve">
+    <value>Архив уже содержит другой билд с именем</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_ForTheShip" xml:space="preserve">
+    <value>для корабля</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_OverwriteQuestion" xml:space="preserve">
+    <value>Хотите ли вы перезаписать билд?</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_OverwriteBuild" xml:space="preserve">
+    <value>Перезаписать билд</value>
+  </data>
+  <data name="ShipStats_ArchiveBuild" xml:space="preserve">
+    <value>Архивировать билд</value>
+  </data>
+  <data name="ShipStats_ShareOrSaveBuild" xml:space="preserve">
+    <value>Поделиться / Сохранить</value>
+  </data>
+  <data name="ShipComparison_AddAShip" xml:space="preserve">
+    <value>Добавить корабль...</value>
+  </data>
+  <data name="ShipSelectionDialog_AddShips" xml:space="preserve">
+    <value>Добавить корабли</value>
+  </data>
+  <data name="ShipStatsTab_BuildMustHaveName" xml:space="preserve">
+    <value>Ошибка при сохранении билда: сборка должна иметь название!</value>
+  </data>
+  <data name="ShipStatsTabs_LinkCopied" xml:space="preserve">
+    <value>Ссылка на билд скопирована в буфер обмена</value>
+  </data>
+  <data name="ShipStatsTabs_BuildImageSavedAndCopiedToClipboard" xml:space="preserve">
+    <value>Изображение билда сохранено и скопировано в буфер обмена!</value>
+  </data>
+  <data name="ShipStatsTab_ShareLink" xml:space="preserve">
+    <value>Поделиться ссылкой</value>
+  </data>
+  <data name="ShipStatsTab_SaveBuild" xml:space="preserve">
+    <value>Сохранить билд</value>
+  </data>
+  <data name="ShipStatsTab_ShareBuildImage" xml:space="preserve">
+    <value>Поделиться изображением билда</value>
+  </data>
+  <data name="ShipStats_SmokeSpeedLimit" xml:space="preserve">
+    <value>Макс. скорость передвижения</value>
+  </data>
+  <data name="ShipStats_FirstGMShotDelay" xml:space="preserve">
+    <value>Время перезарядки ГК (Первый)</value>
+  </data>
+  <data name="ShipStats_OtherGMShotDelay" xml:space="preserve">
+    <value>Время перезарядки ГК (Второй и последующие)</value>
+  </data>
+  <data name="ShipStats_LeftSideLoaders" xml:space="preserve">
+    <value>Левая сторона</value>
+  </data>
+  <data name="ShipStats_RightSideLoaders" xml:space="preserve">
+    <value>Правая сторона</value>
+  </data>
+  <data name="SettingsWindow_SaveBuildOnShare" xml:space="preserve">
+    <value>Сохранять билд при попытке поделиться</value>
+  </data>
+  <data name="SettingsWindow_FittingToolSelector" xml:space="preserve">
+    <value>Выбор кораблей в стиле Fitting-Tool</value>
+  </data>
+  <data name="SettingsWindow_ClosedByDefault" xml:space="preserve">
+    <value>Закрыто по умолчанию</value>
+  </data>
+  <data name="SettingsWindow_MultiSelect" xml:space="preserve">
+    <value>Разрешить множественный выбор</value>
+  </data>
+  <data name="SettingsWindow_FtImgWarning" xml:space="preserve">
+    <value>ВНИМАНИЕ: Используйте только с очень хорошим интернет-соединением.</value>
+  </data>
+  <data name="SettingsWindow_FittingToolShowImages" xml:space="preserve">
+    <value>Показывать изображения кораблей</value>
+  </data>
+  <data name="SettingsWindow_AutoUpdates" xml:space="preserve">
+    <value>Автоматические обновления</value>
+  </data>
+  <data name="SettingsWindow_RestartRequired" xml:space="preserve">
+    <value>Необходима перезагрузка, чтобы изменения вступили в силу.</value>
+  </data>
+  <data name="SettingsWindow_FittingToolSelectorDisabled" xml:space="preserve">
+    <value>Отключено</value>
   </data>
 </root>
