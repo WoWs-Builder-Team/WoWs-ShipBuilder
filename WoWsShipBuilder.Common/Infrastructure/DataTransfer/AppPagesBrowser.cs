@@ -115,7 +115,6 @@ public class AppPagesBrowser
 
     public void GoToShipStats(ShipBuildContainer container) => this.GoToShipStats(container, null, string.Empty);
 
-
     // to ballistic charts
     public void GoToBallisticCharts(ShipBuildContainer container, string? shellIndex, ISnackbar? userNotification, AppPage? leavingPage, string metricLabel) => this.GoToPage(BallisticChartsBaseUrl, new() { container }, shellIndex, userNotification, leavingPage, metricLabel);
 
@@ -141,7 +140,6 @@ public class AppPagesBrowser
 
     public void GoToBallisticCharts(IEnumerable<ShipBuildContainer> selectionList) => this.GoToBallisticCharts(selectionList, null);
 
-
     // to acceleration charts
     public void GoToAccelerationCharts(IEnumerable<ShipBuildContainer> containerList, ISnackbar? userNotification, AppPage? leavingPage, string metricLabel) => this.GoToPage(AccelerationChartsBaseUrl, containerList.ToList(), null, userNotification, leavingPage, metricLabel);
 
@@ -158,8 +156,6 @@ public class AppPagesBrowser
     public void GoToAccelerationCharts(ShipBuildContainer container, ISnackbar? userNotification) => this.GoToAccelerationCharts(container, userNotification, null, string.Empty);
 
     public void GoToAccelerationCharts(ShipBuildContainer container) => this.GoToAccelerationCharts(container, null);
-
-
 
     // to ship comparison
     public void GoToShipComparison(IEnumerable<ShipBuildContainer> selectionList, ISnackbar? userNotification, AppPage? leavingPage, string metricLabel) => this.GoToPage(ShipComparisonBaseUrl, selectionList.ToList(), null, userNotification, leavingPage, metricLabel);
