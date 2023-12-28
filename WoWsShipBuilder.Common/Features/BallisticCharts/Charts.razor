@@ -24,16 +24,25 @@
 @inject ISnackbar Snackbar
 
 <PageTitle>WoWs ShipBuilder: Charts</PageTitle>
-<MudTabs Elevation="2" PanelClass="pa-6" Centered Color="Color.Default" @ref="chartsTabs" Outlined Border KeepPanelsAlive ActivePanelIndexChanged="@ActivePanelChanged"  Class="sticky-tabs-header">
+<MudTabs Elevation="2" PanelClass="pa-6" Centered Color="Color.Default" @ref="chartsTabs" Outlined Border KeepPanelsAlive ActivePanelIndexChanged="@ActivePanelChanged"  Class="px-md-2 sticky-tabs-header">
     <Header>
-        <MudButton Variant="Variant.Outlined" Color="Color.Primary" Style="white-space: nowrap" OnClick="@(_ => AppPagesBrowser.GoToShipStats(displayedShips.Values.Select(x => x.ShipBuildContainer), Snackbar))">
-            @Localizer.SimpleAppLocalization(nameof(Translation.Charts_OpenShipsStats))
-        </MudButton>
+        <MudDivider Vertical FlexItem Light/>
+        <MudStack Spacing="0" Row>
+            <MudTooltip Text="@Localizer.SimpleAppLocalization(nameof(Translation.Charts_OpenShipsStats))" Arrow Delay="350">
+                <MudIconButton Icon="@Icons.Material.Filled.ViewComfy" OnClick="@(() => AppPagesBrowser.GoToShipStats(displayedShips.Values.Select(x => x.ShipBuildContainer), Snackbar, AppPagesBrowser.AppPage.BallisticCharts, "open-ship-stats"))" Color="Color.Primary"/>
+            </MudTooltip>
+            <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInAccelerationCharts).Localization" Arrow Delay="350">
+                <MudIconButton Icon="@Icons.Material.Filled.Speed" OnClick="@(() => AppPagesBrowser.GoToAccelerationCharts(displayedShips.Values.Select(x => x.ShipBuildContainer), Snackbar, AppPagesBrowser.AppPage.BallisticCharts, "open-acceleration-charts"))" Color="Color.Primary"/>
+            </MudTooltip>
+            <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInShipComparison).Localization" Arrow Delay="350">
+                <MudIconButton Icon="@Icons.Material.Filled.FormatListBulleted" OnClick="@(() => AppPagesBrowser.GoToShipComparison(displayedShips.Values.Select(x => x.ShipBuildContainer), Snackbar, AppPagesBrowser.AppPage.BallisticCharts, "open-ship-comparison"))" Color="Color.Primary"/>
+            </MudTooltip>
+        </MudStack>
     </Header>
     <ChildContent>
         <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_DispersionCharts)).Localization" ID="ChartsTabs.DispersionCharts">
             <MudStack Row Justify="Justify.Center" Spacing="4">
-                <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="processing">
+                <MudButton OnClick="@EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="processing">
                     @if (processing)
                     {
                         <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -48,7 +57,7 @@
                         </MudText>
                     }
                 </MudButton>
-                <MudButton OnClick="EditBuildAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="@(processing || displayedShips.Count == 0)">
+                <MudButton OnClick="@EditBuildAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="@(processing || displayedShips.Count == 0)">
                     @if (processing)
                     {
                         <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -106,7 +115,7 @@
                      </MudExpansionPanel>
                 </MudExpansionPanels>
                 <MudStack Row="true" Style="flex-wrap: wrap">
-                    <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing" DisableElevation FullWidth="@SetFullWidth()">
+                    <MudButton OnClick="@EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing" DisableElevation FullWidth="@SetFullWidth()">
                         @if (processing)
                         {
                             <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -121,7 +130,7 @@
                             </MudText>
                         }
                     </MudButton>
-                    <MudButton OnClick="EditBuildAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="@(processing || displayedShips.Count == 0)">
+                    <MudButton OnClick="@EditBuildAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="@(processing || displayedShips.Count == 0)">
                         @if (processing)
                         {
                             <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -172,7 +181,7 @@
         </MudTabPanel>
         <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_BallisticCharts)).Localization" ID="ChartsTabs.BallisticCharts">
             <MudStack Row Justify="Justify.Center" Spacing="4">
-                <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="processing">
+                <MudButton OnClick="@EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="processing">
                     @if (processing)
                     {
                         <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -187,7 +196,7 @@
                         </MudText>
                     }
                 </MudButton>
-                <MudButton OnClick="EditBuildAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="@(processing || displayedShips.Count == 0)">
+                <MudButton OnClick="@EditBuildAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="@(processing || displayedShips.Count == 0)">
                     @if (processing)
                     {
                         <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -218,7 +227,7 @@
         </MudTabPanel>
         <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_ShellTrajectoryChart)).Localization" ID="ChartsTabs.TrajectoryChart">
             <MudStack Row Justify="Justify.Center" Spacing="4">
-                <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="processing">
+                <MudButton OnClick="@EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="processing">
                     @if (processing)
                     {
                         <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -233,7 +242,7 @@
                         </MudText>
                     }
                 </MudButton>
-                <MudButton OnClick="EditBuildAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="@(processing || displayedShips.Count == 0)">
+                <MudButton OnClick="@EditBuildAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="@(processing || displayedShips.Count == 0)">
                     @if (processing)
                     {
                         <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -324,7 +333,7 @@
         {
             MetricsService.PageAccessCount.WithLabels("ballistic_charts").Inc();
             var panelId = chartsTabs.ActivePanel.ID.ToString() ?? "unknown";
-            MetricsService.ChartsTabUsage.WithLabels(panelId).Inc();
+            MetricsService.BallisticChartsTabUsage.WithLabels(panelId).Inc();
             SetProcessing(true);
             Breakpoint = await BreakpointService.GetCurrentBreakpointAsync();
             await SetupChartsAsync();
@@ -764,6 +773,6 @@
     private void ActivePanelChanged(int index)
     {
         var panelId = chartsTabs.ActivePanel.ID.ToString() ?? "unknown";
-        MetricsService.ChartsTabUsage.WithLabels(panelId).Inc();
+        MetricsService.BallisticChartsTabUsage.WithLabels(panelId).Inc();
     }
 }

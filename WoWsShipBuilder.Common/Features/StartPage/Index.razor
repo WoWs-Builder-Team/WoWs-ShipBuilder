@@ -23,7 +23,7 @@
             <ShipSelector SelectedShips="@selectedShips" AllowCopies EnableBuildImport EnableSavedBuildList/>
         </MudItem>
         <MudItem xs="12" Class="mt-n2">
-            <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@(_ =>AppPagesBrowser.GoToShipStats(selectedShips))" FullWidth="true">
+            <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@(_ => AppPagesBrowser.GoToShipStats(selectedShips))" FullWidth="true">
                 @Localizer.GetAppLocalization(nameof(Translation.WebApp_ViewShipsStats)).Localization
             </MudButton>
         </MudItem>

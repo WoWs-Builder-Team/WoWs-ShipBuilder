@@ -44,30 +44,30 @@
                     <MudMenu Icon="@Icons.Material.Filled.Menu" Dense Color="Color.Primary" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.BottomLeft" DisableElevation>
                         <MudStack Spacing="0" AlignItems="AlignItems.Center" Justify="Justify.Center">
                             <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInBallisticCharts).Localization" Arrow Delay="350">
-                                <MudIconButton OnClick="@OpenBallisticCharts" Color="Color.Primary" Style="width: 48px; height: 48px">
+                                <MudIconButton OnClick="@(() => AppPagesBrowser.GoToBallisticCharts(GetShipBuildContainers(false), AppPagesBrowser.AppPage.ShipStats, "open-ballistic"))" Color="Color.Primary" Style="width: 48px; height: 48px">
                                     <MudIcon Icon="@DispersionAndBallisticChartsPath" ViewBox="-4 -7 24 24"/>
                                 </MudIconButton>
                             </MudTooltip>
                             <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInAccelerationCharts).Localization" Arrow Delay="350">
-                                <MudIconButton Icon="@Icons.Material.Filled.Speed" OnClick="@OpenAccelerationCharts" Color="Color.Primary"/>
+                                <MudIconButton Icon="@Icons.Material.Filled.Speed" OnClick="@(() => AppPagesBrowser.GoToAccelerationCharts(GetShipBuildContainers(false), AppPagesBrowser.AppPage.ShipStats, "open-acceleration"))" Color="Color.Primary"/>
                             </MudTooltip>
                             <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInShipComparison).Localization" Arrow Delay="350">
-                                <MudIconButton Icon="@Icons.Material.Filled.FormatListBulleted" OnClick="@OpenShipComparison" Color="Color.Primary"/>
+                                <MudIconButton Icon="@Icons.Material.Filled.FormatListBulleted" OnClick="@(() => AppPagesBrowser.GoToShipComparison(GetShipBuildContainers(true), AppPagesBrowser.AppPage.ShipStats, "open-comparison"))" Color="Color.Primary"/>
                             </MudTooltip>
                         </MudStack>
                     </MudMenu>
                 </MudHidden>
                 <MudHidden Invert Breakpoint="Breakpoint.MdAndUp">
                     <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInBallisticCharts).Localization" Arrow Delay="350">
-                        <MudIconButton OnClick="@OpenBallisticCharts" Color="Color.Primary" Style="width: 48px; height: 48px">
+                        <MudIconButton OnClick="@(() => AppPagesBrowser.GoToBallisticCharts(GetShipBuildContainers(false), AppPagesBrowser.AppPage.ShipStats, "open-ballistic"))" Color="Color.Primary" Style="width: 48px; height: 48px">
                             <MudIcon Icon="@DispersionAndBallisticChartsPath" ViewBox="-4 -7 24 24"/>
                         </MudIconButton>
                     </MudTooltip>
                     <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInAccelerationCharts).Localization" Arrow Delay="350">
-                        <MudIconButton Icon="@Icons.Material.Filled.Speed" OnClick="@OpenAccelerationCharts" Color="Color.Primary"/>
+                        <MudIconButton Icon="@Icons.Material.Filled.Speed" OnClick="@(() => AppPagesBrowser.GoToAccelerationCharts(GetShipBuildContainers(false), AppPagesBrowser.AppPage.ShipStats, "open-acceleration"))" Color="Color.Primary"/>
                     </MudTooltip>
                     <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInShipComparison).Localization" Arrow Delay="350">
-                        <MudIconButton Icon="@Icons.Material.Filled.FormatListBulleted" OnClick="@OpenShipComparison" Color="Color.Primary"/>
+                        <MudIconButton Icon="@Icons.Material.Filled.FormatListBulleted" OnClick="@(() => AppPagesBrowser.GoToShipComparison(GetShipBuildContainers(true), AppPagesBrowser.AppPage.ShipStats, "open-comparison"))" Color="Color.Primary"/>
                     </MudTooltip>
                 </MudHidden>
             </MudStack>
@@ -282,24 +282,6 @@
         }
 
         return calculateShipDataContainer ? container with { ShipDataContainer = DataContainerUtility.GetStockShipDataContainer(container.Ship) } : container;
-    }
-
-    private void OpenBallisticCharts()
-    {
-        MetricsService.ShipStatsActions.WithLabels("open-ballistic").Inc();
-        AppPagesBrowser.GoToBallisticCharts(GetShipBuildContainers(false));
-    }
-
-    private void OpenAccelerationCharts()
-    {
-        MetricsService.ShipStatsActions.WithLabels("open-acceleration").Inc();
-        AppPagesBrowser.GoToAccelerationCharts(GetShipBuildContainers(false));
-    }
-
-    private void OpenShipComparison()
-    {
-        MetricsService.ShipStatsActions.WithLabels("open-comparison").Inc();
-        AppPagesBrowser.GoToShipComparison(GetShipBuildContainers(true));
     }
 
     private void UpdateUrl()
