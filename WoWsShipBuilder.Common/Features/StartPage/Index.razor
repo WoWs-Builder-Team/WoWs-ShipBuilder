@@ -4,10 +4,9 @@
 @using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Utility
-@inject NavigationManager NavManager
 @inject RefreshNotifierService NotifierService
 @inject ILocalizer Localizer
-@inject SessionStateCache SessionStateCache
+@inject AppPagesBrowser AppPagesBrowser
 @implements IDisposable
 
 <PageTitle>
@@ -24,8 +23,8 @@
             <ShipSelector SelectedShips="@selectedShips" AllowCopies EnableBuildImport EnableSavedBuildList/>
         </MudItem>
         <MudItem xs="12" Class="mt-n2">
-            <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@GoToShipPage" FullWidth="true">
-                @Localizer.GetAppLocalization(nameof(Translation.WebApp_GoToShipsPage)).Localization
+            <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@(_ =>AppPagesBrowser.GoToShipStats(selectedShips))" FullWidth="true">
+                @Localizer.GetAppLocalization(nameof(Translation.WebApp_ViewShipsStats)).Localization
             </MudButton>
         </MudItem>
     </MudGrid>
@@ -50,13 +49,6 @@
     private void OnRefresh()
     {
         StateHasChanged();
-    }
-
-    private void GoToShipPage()
-    {
-        string indexes = string.Join(",", selectedShips.Select(x => x.Ship.Index));
-        SessionStateCache.SetBuildTransferContainers(selectedShips.ToList());
-        NavManager.NavigateTo("/ship?shipIndexes=" + indexes);
     }
 
     public void Dispose()

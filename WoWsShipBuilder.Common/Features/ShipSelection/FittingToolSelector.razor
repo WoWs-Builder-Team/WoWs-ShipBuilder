@@ -15,6 +15,7 @@
 @inject NavigationManager NavManager
 @inject SessionStateCache SessionStateCache
 @inject AppSettings AppSettings
+@inject AppPagesBrowser AppPagesBrowser
 
 @if (!AppSettings.FittingToolSelectorDisabled)
 {
@@ -141,8 +142,7 @@
         }
         else
         {
-            SessionStateCache.SetBuildTransferContainers(shipBuildContainer);
-            NavManager.NavigateTo("/ship?shipIndexes=" + ship.Index);
+            AppPagesBrowser.GoToShipStats(shipBuildContainer);
         }
     }
 }

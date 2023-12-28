@@ -19,6 +19,7 @@
 @inject SessionStateCache SessionStateCache
 @inject ILogger<ShipStats> Logger
 @inject MetricsService MetricsService
+@inject AppPagesBrowser AppPagesBrowser
 
 <PageTitle>Ship stats</PageTitle>
 
@@ -246,10 +247,9 @@
         shipContainers.AddRange(buildContainers ?? indexList.Select(index => ShipBuildContainer.CreateNew(AppData.ShipDictionary[index], null, null)));
     }
 
-    private List<string> StoreBuildsForTransfer(bool calculateShipDataContainer)
+    private List<ShipBuildContainer> GetShipBuildContainers(bool calculateShipDataContainer)
     {
         List<ShipBuildContainer> buildContainers = new();
-        List<string> shipIndexes = new();
         foreach (var container in shipContainers)
         {
             var vmCacheEntry = cache.GetOrDefault(container.Id);
@@ -261,12 +261,9 @@
             {
                 buildContainers.Add(UpdateShipDataContainer(calculateShipDataContainer, container));
             }
-
-            shipIndexes.Add(container.Ship.Index);
         }
 
-        SessionStateCache.SetBuildTransferContainers(buildContainers);
-        return shipIndexes;
+        return buildContainers;
     }
 
     private ShipBuildContainer UpdateShipDataContainer(bool calculateShipDataContainer, ShipBuildContainer container)
@@ -290,22 +287,19 @@
     private void OpenBallisticCharts()
     {
         MetricsService.ShipStatsActions.WithLabels("open-ballistic").Inc();
-        var shipIndexes = StoreBuildsForTransfer(false);
-        NavManager.NavigateTo($"/charts?shipIndex={string.Join(",", shipIndexes)}");
+        AppPagesBrowser.GoToBallisticCharts(GetShipBuildContainers(false));
     }
 
     private void OpenAccelerationCharts()
     {
         MetricsService.ShipStatsActions.WithLabels("open-acceleration").Inc();
-        var shipIndexes = StoreBuildsForTransfer(false);
-        NavManager.NavigateTo($"/acceleration-charts?shipIndexes={string.Join(",", shipIndexes)}");
+        AppPagesBrowser.GoToAccelerationCharts(GetShipBuildContainers(false));
     }
 
     private void OpenShipComparison()
     {
         MetricsService.ShipStatsActions.WithLabels("open-comparison").Inc();
-        StoreBuildsForTransfer(true);
-        NavManager.NavigateTo("/comparison");
+        AppPagesBrowser.GoToShipComparison(GetShipBuildContainers(true));
     }
 
     private void UpdateUrl()

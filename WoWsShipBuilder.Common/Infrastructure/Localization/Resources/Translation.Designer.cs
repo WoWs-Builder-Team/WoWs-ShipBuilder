@@ -657,6 +657,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open ships stats.
+        /// </summary>
+        public static string Charts_OpenShipsStats {
+            get {
+                return ResourceManager.GetString("Charts_OpenShipsStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add/Remove Ships/Shells.
         /// </summary>
         public static string ChartsWeb_AddRemoveShips {
@@ -6166,6 +6175,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string WebApp_SettingsSaved {
             get {
                 return ResourceManager.GetString("WebApp_SettingsSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View ships stats.
+        /// </summary>
+        public static string WebApp_ViewShipsStats {
+            get {
+                return ResourceManager.GetString("WebApp_ViewShipsStats", resourceCulture);
             }
         }
     }

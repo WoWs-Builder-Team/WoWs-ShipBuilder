@@ -34,6 +34,7 @@
 @inject IOptions<ShipBuilderOptions> ShipBuilderOptions
 @inject IUserDataService UserDataService
 @inject ISnackbar Snackbar
+@inject AppPagesBrowser AppPagesBrowser
 
 @inherits ReactiveComponentBase<ShipViewModel>
 
@@ -348,9 +349,17 @@ else if (ViewModel is not null)
         }
     }
 
-    private void StoreBuildsForTransfer(bool calculateShipDataContainer)
+    private void StoreBuildsForTransfer(bool calculateShipDataContainer, string? shellIndex)
     {
-        SessionStateCache.SetBuildTransferContainers(GetBuildContainer(CurrentTabId, Cache[CurrentTabId]!, calculateShipDataContainer));
+        switch (shellIndex)
+        {
+            case not null:
+                AppPagesBrowser.GoToBallisticCharts(GetBuildContainer(CurrentTabId, Cache[CurrentTabId]!, calculateShipDataContainer), Snackbar, shellIndex);
+                break;
+            case null:
+                AppPagesBrowser.GoToAccelerationCharts(GetBuildContainer(CurrentTabId, Cache[CurrentTabId]!, calculateShipDataContainer), Snackbar);
+                break;
+        }
     }
 
     public static ShipBuildContainer GetBuildContainer(Guid containerId, VmCacheEntry cacheEntry, bool calculateShipDataContainer)

@@ -22,6 +22,8 @@
 @inject IBrowserViewportService BreakpointService
 @inject NavigationManager NavManager
 @inject SessionStateCache SessionStateCache
+@inject AppPagesBrowser AppPagesBrowser
+@inject ISnackbar Snackbar
 
 <PageTitle>WoWs ShipBuilder: Acceleration Charts</PageTitle>
 
@@ -71,6 +73,10 @@
         <MudSelectItem Value="AccelerationCalculator.ThreeQuarter"><MudText Color="Color.Default">3/4</MudText></MudSelectItem>
         <MudSelectItem Value="AccelerationCalculator.FullAhead"><MudText Color="Color.Default">4/4</MudText></MudSelectItem>
     </MudSelect>
+    <MudDivider Vertical FlexItem Light/>
+    <MudButton Variant="Variant.Outlined" Color="Color.Primary" Style="white-space: nowrap" OnClick="@(_ => AppPagesBrowser.GoToShipStats(shipBuildCache.Values, Snackbar))">
+        @Localizer.SimpleAppLocalization(nameof(Translation.Charts_OpenShipsStats))
+    </MudButton>
 </MudStack>
 
 <div>

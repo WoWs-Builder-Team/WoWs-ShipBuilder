@@ -500,7 +500,7 @@
                                 {
                                     @DataElementFragment((data, Localizer))
                                 }
-                                @foreach (var modifier in ViewModel.CurrentShipStats.SpecialAbilityDataContainer.Modifiers ?? new())
+                                @foreach (var modifier in ViewModel.CurrentShipStats.SpecialAbilityDataContainer.Modifiers)
                                 {
                                     <div class="d-flex justify-space-between">
                                         <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.Description, Localizer)</MudText>
@@ -519,14 +519,9 @@
 @code {
 
     [Parameter, EditorRequired]
-    public Action<bool> StoreBuildsForTransfer { get; set; } = default!;
+    public Action<bool, string?> StoreBuildsForTransfer { get; set; } = default!;
 
     private bool showDepthChargeDamageDistributionChart;
-
-    private void NavigateToGraph(string shipIndex, string shellIndex)
-    {
-        NavManager.NavigateTo($"/charts?shipIndex={shipIndex}&shellIndex={shellIndex}");
-    }
 
     private string GetIconFromClass(ShipClass shipClass)
     {
@@ -577,15 +572,13 @@
     private void SendBuildToBallisticCharts(string shellName, bool calculateShipDataContainer)
     {
         MetricsService.ShipStatsActions.WithLabels("open-ballistic-inline").Inc();
-        StoreBuildsForTransfer(calculateShipDataContainer);
-        NavManager.NavigateTo($"/charts?shipIndex={ViewModel!.CurrentShipStats!.Index}&shellIndex={shellName}");
+        StoreBuildsForTransfer(calculateShipDataContainer, shellName);
     }
 
     private void SendBuildToAccelerationCharts(bool calculateShipDataContainer)
     {
         MetricsService.ShipStatsActions.WithLabels("open-acceleration-inline").Inc();
-        StoreBuildsForTransfer(calculateShipDataContainer);
-        NavManager.NavigateTo($"/acceleration-charts?shipIndexes={ViewModel!.CurrentShipStats!.Index}");
+        StoreBuildsForTransfer(calculateShipDataContainer, null);
     }
 
     private static string FixSpecialAbilityDescription(string description)

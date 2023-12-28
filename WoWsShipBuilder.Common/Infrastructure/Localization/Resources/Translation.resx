@@ -2183,4 +2183,10 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="SettingsWindow_FittingToolSelectorDisabled" xml:space="preserve">
     <value>Disabled</value>
   </data>
+  <data name="Charts_OpenShipsStats" xml:space="preserve">
+    <value>Open ships stats</value>
+  </data>
+  <data name="WebApp_ViewShipsStats" xml:space="preserve">
+    <value>View ships stats</value>
+  </data>
 </root>
