@@ -90,7 +90,9 @@ h1:focus {
 /*noinspection CssUnresolvedCustomProperty*/
 .skill-special-icon-build-image {
     font-size: 17px !important;
-    padding: 0 0 0 0 !important;
+    display: flex !important;
+    padding: 0 0 0 4px !important;
+    align-items: center !important;
     color: var(--mud-palette-text-primary) !important;
     font-weight: bold !important;
 }
