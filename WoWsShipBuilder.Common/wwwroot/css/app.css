@@ -82,15 +82,9 @@ h1:focus {
 
 .skill-order-number
 {
-    border-radius: 0 !important;
+    border-radius: 4px !important;
     margin-bottom: -9px !important;
     margin-right: -9px !important;
-}
-
-.skill-special-icon {
-    border-radius: 0 !important;
-    margin-bottom: -9px !important;
-    margin-left: -9px !important;
 }
 
 /*noinspection CssUnresolvedCustomProperty*/

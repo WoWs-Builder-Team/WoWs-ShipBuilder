@@ -46,7 +46,7 @@
                 <MudItem @key="skill.Skill.SkillNumber" Class="d-flex justify-center mb-n3" xs="2" Style="@(GetOrder(skill.SkillPosition) + GetSubFix())">
                     <MudTooltip Placement="Placement.Right" Color="Color.Transparent" Delay="350">
                         <ChildContent>
-                            <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" Bordered BadgeClass="skill-special-icon" Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">
+                            <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" Bordered Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">
                                 <MudBadge Content="@(ViewModel.SkillOrderList.IndexOf(skill.Skill) + 1)" Color="Color.Error" Bordered Origin="Origin.TopLeft" Overlap="true" BadgeClass="skill-order-number" Visible="@ShouldShowBadge(skill.Skill)">
                                     <MudButton Class="pa-2" Variant="Variant.Outlined" Color="@(GetColorFromState(skill))" OnClick="@(() => OnSkillClick(skill))" Style="@GetImageBreakpointStyle()">
                                         <MudImage Width="@GetImageSize()" Height="@GetImageSize()" ObjectFit="ObjectFit.ScaleDown" Src="@("/_content/WoWsShipBuilder.Common/assets/Skills/" + ToSnakeCase(skillName) + ".png")"/>
