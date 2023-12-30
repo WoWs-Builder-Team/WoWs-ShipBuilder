@@ -95,9 +95,6 @@ h1:focus {
 
 /*noinspection CssUnresolvedCustomProperty*/
 .skill-special-icon-build-image {
-    border-radius: 0 !important;
-    margin-bottom: -9px !important;
-    margin-left: -9px !important;
     font-size: 17px !important;
     padding: 0 0 0 0 !important;
     color: var(--mud-palette-text-primary) !important;
