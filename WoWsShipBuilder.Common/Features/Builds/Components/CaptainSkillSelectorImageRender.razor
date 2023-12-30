@@ -24,8 +24,8 @@
                 <MudItem @key="skill.Skill.SkillNumber" Class="d-flex justify-center" xs="2" Style="@(GetOrder(skill.Skill.Tiers.Single(x => x.ShipClass == ShipClass)) + GetSubFix())">
                     <MudTooltip Placement="Placement.Right" Color="Color.Transparent" Delay="350">
                         <ChildContent>
-                            <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@SpecialIconPath" BadgeClass="skill-special-icon" Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">
-                                <MudBadge Content="@(ViewModel.SkillOrderList.IndexOf(skill.Skill) + 1)" Color="Color.Error" Origin="Origin.TopLeft" Overlap="true" BadgeClass="skill-order-number" Visible="@ShouldShowBadge(skill.Skill)">
+                            <MudBadge Origin="Origin.TopRight" Bordered Content="@("+")" Color="Color.Success" BadgeClass="skill-special-icon-build-image" Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">
+                                <MudBadge Content="@(ViewModel.SkillOrderList.IndexOf(skill.Skill) + 1)" Bordered Color="Color.Error" Origin="Origin.TopLeft" Overlap="true" BadgeClass="skill-order-number" Visible="@ShouldShowBadge(skill.Skill)">
                                     <MudPaper Outlined Elevation="0" Style="@(GetImageBreakpointStyle() + GetMudPaperBorderColor(skill))">
                                         <MudImage Width="@GetImageSize()" Height="@GetImageSize()" ObjectFit="ObjectFit.ScaleDown" Src="@("/_content/WoWsShipBuilder.Common/assets/Skills/" + ToSnakeCase(skillName) + ".png")" Style="@GetImageBreakpointStyle()" Class="pa-1"/>
                                     </MudPaper>

@@ -93,6 +93,16 @@ h1:focus {
     margin-left: -9px !important;
 }
 
+.skill-special-icon-build-image {
+    border-radius: 0 !important;
+    margin-bottom: -9px !important;
+    margin-left: -9px !important;
+    font-size: 17px !important;
+    padding: 0 0 0 0 !important;
+    color: var(--mud-palette-text-primary) !important;
+    font-weight: bold !important;
+}
+
 .expander-content-padding {
     padding: 0 12px 8px;
 }
