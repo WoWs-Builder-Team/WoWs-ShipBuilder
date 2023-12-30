@@ -3,7 +3,7 @@
     await html2canvas(document.querySelector("#" + id), {
         backgroundColor: "#282828",
         useCORS: true,
-        allowTaint: false,
+        allowTaint: true,
         scale: 1.8,
         ignoreElements: function (element) {
             if ('editBuildNameIcon' === element.id) {
