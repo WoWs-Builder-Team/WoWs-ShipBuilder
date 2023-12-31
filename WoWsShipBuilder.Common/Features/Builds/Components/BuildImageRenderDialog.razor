@@ -112,13 +112,18 @@
         </MudBreakpointProvider>
     </DialogContent>
     <DialogActions>
+        @if (imgGenerationInProgress)
+        {
+            <MudProgressLinear Color="Color.Primary" Indeterminate Style="@(twoColumns ? "width: 47%;" : "width: 30%;")" Class="ml-6" Size="Size.Medium"/>
+            <MudSpacer/>
+        }
         <MudButton OnClick="@Cancel" Color="Color.Default" Variant="Variant.Text">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
         <MudButton OnClick="@OpenSettingsDialog" Color="Color.Tertiary" Variant="Variant.Filled">
             @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Settings))
         </MudButton>
-        <MudButton Color="Color.Primary" OnClick="@SaveImage" Variant="Variant.Filled">
+        <MudButton Color="Color.Primary" OnClick="@SaveImage" Variant="Variant.Filled" Style="white-space: nowrap;">
             @Localizer.SimpleAppLocalization(nameof(Translation.BuildImageRenderDialog_SaveImage))
         </MudButton>
     </DialogActions>
@@ -150,6 +155,8 @@
     public Breakpoint Breakpoint { get; set; }
 
     private IJSObjectReference? module;
+
+    private bool imgGenerationInProgress;
 
     private bool twoColumns = true;
     private bool showModules;
@@ -209,9 +216,11 @@
 
         if (!string.IsNullOrWhiteSpace(BuildName))
         {
+            imgGenerationInProgress = true;
             MetricsService.SharedBuilds.WithLabels("image").Inc();
             module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/Features/Builds/Components/BuildImageRenderDialog.razor.js");
             await module.InvokeVoidAsync("downloadBuildImage", "image", $"{Localizer.GetGameLocalization(Ship.Index + "_FULL").Localization}_{BuildName}", BuildString[..(BuildString.LastIndexOf(';') + 1)] + BuildName);
+            imgGenerationInProgress = false;
             MudDialog.Close(BuildName);
         }
     }
