@@ -35,6 +35,19 @@ public class AppNavigator
         ShipComparison,
     }
 
+    private static string GenerateDestinationUrl(AppPage destinationPage, IEnumerable<ShipBuildContainer> containerList, string? shellIndex)
+    {
+        var shipIndexes = string.Join(',', containerList.Select(x => x.Ship.Index));
+        return destinationPage switch
+        {
+            AppPage.ShipStats => ShipStatsBaseUrl + shipIndexes,
+            AppPage.BallisticCharts => BallisticChartsBaseUrl + shipIndexes + (shellIndex is not null ? $"&shellIndex={shellIndex}" : string.Empty),
+            AppPage.AccelerationCharts => AccelerationChartsBaseUrl + shipIndexes,
+            AppPage.ShipComparison => ShipComparisonBaseUrl + shipIndexes,
+            _ => throw new InvalidEnumArgumentException(),
+        };
+    }
+
     private void GoToPage(AppPage destinationPage, List<ShipBuildContainer> containerList, string? shellIndex, AppPage? leavingPage, string? metricLabel)
     {
         int selectionCount = containerList.Count;
@@ -49,24 +62,11 @@ public class AppNavigator
             default:
                 this.LogMetrics(leavingPage, metricLabel);
                 this.sessionStateCache.SetBuildTransferContainers(containerList);
-                this.navManager.NavigateTo(this.GenerateDestinationUrl(destinationPage, containerList, shellIndex));
+                this.navManager.NavigateTo(GenerateDestinationUrl(destinationPage, containerList, shellIndex));
                 break;
         }
 
         // cant use await JsRuntime.InvokeAsync<object>("open", NavManager.BaseUri + url, "_blank"); to open in a new tab because builds are not carried over.
-    }
-
-    private string GenerateDestinationUrl(AppPage destinationPage, IEnumerable<ShipBuildContainer> containerList, string? shellIndex)
-    {
-        var shipIndexes = string.Join(',', containerList.Select(x => x.Ship.Index));
-        return destinationPage switch
-        {
-            AppPage.ShipStats => ShipStatsBaseUrl + shipIndexes,
-            AppPage.BallisticCharts => BallisticChartsBaseUrl + shipIndexes + (shellIndex is not null ? $"&shellIndex={shellIndex}" : string.Empty),
-            AppPage.AccelerationCharts => AccelerationChartsBaseUrl + shipIndexes,
-            AppPage.ShipComparison => ShipComparisonBaseUrl + shipIndexes,
-            _ => throw new InvalidEnumArgumentException(),
-        };
     }
 
     private void LogMetrics(AppPage? leavingPage, string? metricLabel)
