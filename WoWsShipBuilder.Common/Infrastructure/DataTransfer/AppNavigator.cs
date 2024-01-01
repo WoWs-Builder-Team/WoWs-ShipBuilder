@@ -95,9 +95,31 @@ public class AppNavigator
         }
     }
 
+    /// <summary>
+    /// Navigates to the specified destination page.
+    /// </summary>
+    /// <param name="destinationPage">The page to navigate to.</param>
+    /// <param name="containerList">The list of ship build containers to carry over.</param>
+    /// <param name="leavingPage">Optional. The page the user is leaving. Only needed for metrics.</param>
+    /// <param name="metricLabel">Optional.The label for the metric. Only needed for metrics.</param>
     public void NavigateTo(AppPage destinationPage, IEnumerable<ShipBuildContainer> containerList, AppPage? leavingPage = null, string? metricLabel = null) => this.GoToPage(destinationPage, containerList.ToList(), null, leavingPage, metricLabel);
 
+    /// <summary>
+    /// Navigates to the specified destination page.
+    /// </summary>
+    /// <param name="destinationPage">The destination page to navigate to.</param>
+    /// <param name="container">The ship build container to carry over.</param>
+    /// <param name="leavingPage">Optional. The page the user is leaving. Only needed for metrics.</param>
+    /// <param name="metricLabel">Optional.The label for the metric. Only needed for metrics.</param>
     public void NavigateTo(AppPage destinationPage, ShipBuildContainer container, AppPage? leavingPage = null, string? metricLabel = null) => this.GoToPage(destinationPage, new() { container }, null, leavingPage, metricLabel);
 
+    /// <summary>
+    /// Navigates to the specified destination page. Carrying over also the selected shell index.
+    /// </summary>
+    /// <param name="destinationPage">The destination page to navigate to.</param>
+    /// <param name="container">The ship build container to carry over.</param>
+    /// <param name="shellIndex">The shell index. Only needed when navigating to the ballistic charts.</param>
+    /// <param name="leavingPage">Optional. The page the user is leaving. Only needed for metrics.</param>
+    /// <param name="metricLabel">Optional.The label for the metric. Only needed for metrics.</param>
     public void NavigateTo(AppPage destinationPage, ShipBuildContainer container, string shellIndex, AppPage? leavingPage = null, string? metricLabel = null) => this.GoToPage(destinationPage, new() { container }, shellIndex, leavingPage, metricLabel);
 }
