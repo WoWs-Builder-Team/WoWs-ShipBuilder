@@ -15,7 +15,7 @@
 @inject NavigationManager NavManager
 @inject SessionStateCache SessionStateCache
 @inject AppSettings AppSettings
-@inject AppPagesBrowser AppPagesBrowser
+@inject AppNavigator AppNavigator
 
 @if (!AppSettings.FittingToolSelectorDisabled)
 {
@@ -142,7 +142,7 @@
         }
         else
         {
-            AppPagesBrowser.GoToShipStats(shipBuildContainer);
+            AppNavigator.NavigateTo(AppNavigator.AppPage.ShipStats, shipBuildContainer);
         }
     }
 }

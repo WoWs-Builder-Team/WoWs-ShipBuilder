@@ -46,7 +46,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<MouseEventInterop>();
         services.AddScoped<SessionStateCache>();
         services.AddScoped<ExpanderStateCache>();
-        services.AddScoped<AppPagesBrowser>();
+        services.AddScoped<AppNavigator>();
 
         return services;
     }

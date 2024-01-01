@@ -34,7 +34,7 @@
 @inject IOptions<ShipBuilderOptions> ShipBuilderOptions
 @inject IUserDataService UserDataService
 @inject ISnackbar Snackbar
-@inject AppPagesBrowser AppPagesBrowser
+@inject AppNavigator AppNavigator
 
 @inherits ReactiveComponentBase<ShipViewModel>
 
@@ -354,10 +354,10 @@ else if (ViewModel is not null)
         switch (shellIndex)
         {
             case not null:
-                AppPagesBrowser.GoToBallisticCharts(GetBuildContainer(CurrentTabId, Cache[CurrentTabId]!, calculateShipDataContainer), shellIndex, Snackbar, AppPagesBrowser.AppPage.ShipStats, "open-ballistic-inline");
+                AppNavigator.NavigateTo(AppNavigator.AppPage.BallisticCharts, GetBuildContainer(CurrentTabId, Cache[CurrentTabId]!, calculateShipDataContainer), shellIndex, AppNavigator.AppPage.ShipStats, "open-ballistic-inline");
                 break;
             case null:
-                AppPagesBrowser.GoToAccelerationCharts(GetBuildContainer(CurrentTabId, Cache[CurrentTabId]!, calculateShipDataContainer), Snackbar, AppPagesBrowser.AppPage.ShipStats, "open-acceleration-inline");
+                AppNavigator.NavigateTo(AppNavigator.AppPage.AccelerationCharts, GetBuildContainer(CurrentTabId, Cache[CurrentTabId]!, calculateShipDataContainer), AppNavigator.AppPage.ShipStats, "open-acceleration-inline");
                 break;
         }
     }
