@@ -3,7 +3,7 @@ using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Features.Builds;
 using WoWsShipBuilder.Features.DataContainers;
 
-namespace WoWsShipBuilder.Infrastructure.DataTransfer;
+namespace WoWsShipBuilder.Features.DataTransfer;
 
 public sealed record ShipBuildContainer(Ship Ship, Build? Build, Guid Id, IEnumerable<int>? ActivatedConsumableSlots, bool SpecialAbilityActive, ShipDataContainer? ShipDataContainer, List<Modifier>? Modifiers)
 {

@@ -1,6 +1,5 @@
 ﻿using Microsoft.JSInterop;
-using WoWsShipBuilder.Infrastructure;
-using WoWsShipBuilder.Infrastructure.DataTransfer;
+using WoWsShipBuilder.Features.DataTransfer;
 
 namespace WoWsShipBuilder.Web.Infrastructure;
 

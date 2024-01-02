@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using WoWsShipBuilder.Infrastructure.DataTransfer;
+using WoWsShipBuilder.Features.DataTransfer;
 
 namespace WoWsShipBuilder.Infrastructure.ApplicationData;
 

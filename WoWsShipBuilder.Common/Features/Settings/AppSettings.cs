@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
+using WoWsShipBuilder.Features.DataTransfer;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
-using WoWsShipBuilder.Infrastructure.DataTransfer;
 using ServerType = WoWsShipBuilder.Infrastructure.GameData.ServerType;
 
 namespace WoWsShipBuilder.Features.Settings;

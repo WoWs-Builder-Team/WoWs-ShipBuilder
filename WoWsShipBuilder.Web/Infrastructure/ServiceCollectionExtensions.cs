@@ -1,5 +1,5 @@
-﻿using WoWsShipBuilder.Infrastructure.ApplicationData;
-using WoWsShipBuilder.Infrastructure.DataTransfer;
+﻿using WoWsShipBuilder.Features.DataTransfer;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.HttpClients;
 using WoWsShipBuilder.Infrastructure.Utility;
 using WoWsShipBuilder.Web.Features.Authentication;

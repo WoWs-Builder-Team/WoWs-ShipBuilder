@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.Infrastructure.DataTransfer;
+﻿namespace WoWsShipBuilder.Features.DataTransfer;
 
 public interface IClipboardService
 {

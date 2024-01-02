@@ -3,10 +3,10 @@ using Microsoft.Extensions.DependencyInjection;
 using MudBlazor;
 using MudBlazor.Services;
 using WoWsShipBuilder.Features.BallisticCharts;
+using WoWsShipBuilder.Features.DataTransfer;
 using WoWsShipBuilder.Features.LinkShortening;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Features.ShipStats;
-using WoWsShipBuilder.Infrastructure.DataTransfer;
 using WoWsShipBuilder.Infrastructure.Localization;
 using WoWsShipBuilder.Infrastructure.Metrics;
 

@@ -1,9 +1,10 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Immutable;
+using System.ComponentModel;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using WoWsShipBuilder.Infrastructure.Metrics;
 
-namespace WoWsShipBuilder.Infrastructure.DataTransfer;
+namespace WoWsShipBuilder.Features.DataTransfer;
 
 public class AppNavigator
 {
@@ -35,6 +36,34 @@ public class AppNavigator
         ShipComparison,
     }
 
+    /// <summary>
+    /// Navigates to the specified destination page.
+    /// </summary>
+    /// <param name="destinationPage">The page to navigate to.</param>
+    /// <param name="containerList">The list of ship build containers to carry over.</param>
+    /// <param name="leavingPage">Optional. The page the user is leaving. Only needed for metrics.</param>
+    /// <param name="metricLabel">Optional.The label for the metric. Only needed for metrics.</param>
+    public void NavigateTo(AppPage destinationPage, IEnumerable<ShipBuildContainer> containerList, AppPage? leavingPage = null, string? metricLabel = null) => this.GoToPage(destinationPage, containerList.ToImmutableList(), null, leavingPage, metricLabel);
+
+    /// <summary>
+    /// Navigates to the specified destination page.
+    /// </summary>
+    /// <param name="destinationPage">The destination page to navigate to.</param>
+    /// <param name="container">The ship build container to carry over.</param>
+    /// <param name="leavingPage">Optional. The page the user is leaving. Only needed for metrics.</param>
+    /// <param name="metricLabel">Optional.The label for the metric. Only needed for metrics.</param>
+    public void NavigateTo(AppPage destinationPage, ShipBuildContainer container, AppPage? leavingPage = null, string? metricLabel = null) => this.GoToPage(destinationPage, ImmutableList.Create(container), null, leavingPage, metricLabel);
+
+    /// <summary>
+    /// Navigates to the specified destination page. Carrying over also the selected shell index.
+    /// </summary>
+    /// <param name="destinationPage">The destination page to navigate to.</param>
+    /// <param name="container">The ship build container to carry over.</param>
+    /// <param name="shellIndex">The shell index. Only needed when navigating to the ballistic charts.</param>
+    /// <param name="leavingPage">Optional. The page the user is leaving. Only needed for metrics.</param>
+    /// <param name="metricLabel">Optional.The label for the metric. Only needed for metrics.</param>
+    public void NavigateTo(AppPage destinationPage, ShipBuildContainer container, string shellIndex, AppPage? leavingPage = null, string? metricLabel = null) => this.GoToPage(destinationPage, ImmutableList.Create(container), shellIndex, leavingPage, metricLabel);
+
     private static string GenerateDestinationUrl(AppPage destinationPage, IEnumerable<ShipBuildContainer> containerList, string? shellIndex)
     {
         var shipIndexes = string.Join(',', containerList.Select(x => x.Ship.Index));
@@ -48,7 +77,7 @@ public class AppNavigator
         };
     }
 
-    private void GoToPage(AppPage destinationPage, List<ShipBuildContainer> containerList, string? shellIndex, AppPage? leavingPage, string? metricLabel)
+    private void GoToPage(AppPage destinationPage, ImmutableList<ShipBuildContainer> containerList, string? shellIndex, AppPage? leavingPage, string? metricLabel)
     {
         int selectionCount = containerList.Count;
         switch (selectionCount)
@@ -94,32 +123,4 @@ public class AppNavigator
                 return;
         }
     }
-
-    /// <summary>
-    /// Navigates to the specified destination page.
-    /// </summary>
-    /// <param name="destinationPage">The page to navigate to.</param>
-    /// <param name="containerList">The list of ship build containers to carry over.</param>
-    /// <param name="leavingPage">Optional. The page the user is leaving. Only needed for metrics.</param>
-    /// <param name="metricLabel">Optional.The label for the metric. Only needed for metrics.</param>
-    public void NavigateTo(AppPage destinationPage, IEnumerable<ShipBuildContainer> containerList, AppPage? leavingPage = null, string? metricLabel = null) => this.GoToPage(destinationPage, containerList.ToList(), null, leavingPage, metricLabel);
-
-    /// <summary>
-    /// Navigates to the specified destination page.
-    /// </summary>
-    /// <param name="destinationPage">The destination page to navigate to.</param>
-    /// <param name="container">The ship build container to carry over.</param>
-    /// <param name="leavingPage">Optional. The page the user is leaving. Only needed for metrics.</param>
-    /// <param name="metricLabel">Optional.The label for the metric. Only needed for metrics.</param>
-    public void NavigateTo(AppPage destinationPage, ShipBuildContainer container, AppPage? leavingPage = null, string? metricLabel = null) => this.GoToPage(destinationPage, new() { container }, null, leavingPage, metricLabel);
-
-    /// <summary>
-    /// Navigates to the specified destination page. Carrying over also the selected shell index.
-    /// </summary>
-    /// <param name="destinationPage">The destination page to navigate to.</param>
-    /// <param name="container">The ship build container to carry over.</param>
-    /// <param name="shellIndex">The shell index. Only needed when navigating to the ballistic charts.</param>
-    /// <param name="leavingPage">Optional. The page the user is leaving. Only needed for metrics.</param>
-    /// <param name="metricLabel">Optional.The label for the metric. Only needed for metrics.</param>
-    public void NavigateTo(AppPage destinationPage, ShipBuildContainer container, string shellIndex, AppPage? leavingPage = null, string? metricLabel = null) => this.GoToPage(destinationPage, new() { container }, shellIndex, leavingPage, metricLabel);
 }

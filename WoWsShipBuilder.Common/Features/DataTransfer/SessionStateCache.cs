@@ -1,4 +1,6 @@
-﻿namespace WoWsShipBuilder.Infrastructure.DataTransfer;
+﻿using System.Collections.Immutable;
+
+namespace WoWsShipBuilder.Features.DataTransfer;
 
 /**
  * <summary>
@@ -7,22 +9,22 @@
  */
 public class SessionStateCache
 {
-    private List<ShipBuildContainer>? buildTransferContainers;
+    private ImmutableList<ShipBuildContainer>? buildTransferContainers;
 
-    public List<ShipBuildContainer>? GetAndResetBuildTransferContainers()
+    public ImmutableList<ShipBuildContainer>? GetAndResetBuildTransferContainers()
     {
         var result = this.buildTransferContainers;
         this.buildTransferContainers = null;
         return result;
     }
 
-    public void SetBuildTransferContainers(List<ShipBuildContainer> containers)
+    public void SetBuildTransferContainers(ImmutableList<ShipBuildContainer> containers)
     {
         this.buildTransferContainers = containers;
     }
 
     public void SetBuildTransferContainers(ShipBuildContainer container)
     {
-        this.buildTransferContainers = new() { container };
+        this.buildTransferContainers = ImmutableList.Create(container);
     }
 }

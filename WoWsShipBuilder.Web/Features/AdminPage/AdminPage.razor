@@ -2,10 +2,10 @@
 @attribute [Authorize(Roles = AppConstants.AdminRoleName)]
 
 @using WoWsShipBuilder.Infrastructure.ApplicationData
-@using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using System.Security.Claims
+@using WoWsShipBuilder.Features.DataTransfer
 @using WoWsShipBuilder.Web.Features.BetaAccess
 
 @inject ILocalizer Localizer
