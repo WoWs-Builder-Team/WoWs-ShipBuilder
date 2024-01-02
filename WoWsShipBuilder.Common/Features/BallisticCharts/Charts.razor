@@ -6,8 +6,8 @@
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.Builds.Components
 @using WoWsShipBuilder.Features.DataContainers
+@using WoWsShipBuilder.Features.DataTransfer
 @using WoWsShipBuilder.Infrastructure.ApplicationData
-@using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.GameData
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
@@ -27,7 +27,7 @@
     <Header>
         <MudDivider Vertical FlexItem Light/>
         <MudStack Spacing="0" Row>
-            <MudTooltip Text="@Localizer.SimpleAppLocalization(nameof(Translation.Charts_OpenShipsStats))" Arrow Delay="350">
+            <MudTooltip Text="@Localizer.SimpleAppLocalization(nameof(Translation.Charts_OpenShipStats))" Arrow Delay="350">
                 <MudIconButton Icon="@Icons.Material.Filled.ViewComfy" OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.ShipStats, displayedShips.Values.Select(x => x.ShipBuildContainer), AppNavigator.AppPage.BallisticCharts, "open-ship-stats"))" Color="Color.Primary"/>
             </MudTooltip>
             <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInAccelerationCharts).Localization" Arrow Delay="350">
@@ -338,7 +338,7 @@
             await SetupChartsAsync();
             if (shipIndexesFromUrl.Any())
             {
-                var buildContainers = SessionStateCache.GetAndResetBuildTransferContainers() ?? (shipIndexesFromUrl.Any() ? shipIndexesFromUrl.Select(x =>  ShipBuildContainer.CreateNew(AppData.ShipDictionary[x], null, null) with { ShipDataContainer = DataContainerUtility.GetStockShipDataContainer(AppData.ShipDictionary[x]) }) : null);
+                IEnumerable<ShipBuildContainer>? buildContainers = SessionStateCache.GetAndResetBuildTransferContainers() ?? (shipIndexesFromUrl.Any() ? shipIndexesFromUrl.Select(x =>  ShipBuildContainer.CreateNew(AppData.ShipDictionary[x], null, null) with { ShipDataContainer = DataContainerUtility.GetStockShipDataContainer(AppData.ShipDictionary[x]) }) : null);
                 if (buildContainers is not null)
                 {
                     List<ChartsDataWrapper> shipsToAdd = new();

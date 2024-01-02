@@ -8,8 +8,8 @@
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.Builds.Components
 @using WoWsShipBuilder.Features.DataContainers
+@using WoWsShipBuilder.Features.DataTransfer
 @using WoWsShipBuilder.Infrastructure.ApplicationData
-@using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.GameData
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
@@ -74,7 +74,7 @@
     </MudSelect>
     <MudDivider Vertical FlexItem Light/>
     <MudStack Spacing="0" Row>
-        <MudTooltip Text="@Localizer.SimpleAppLocalization(nameof(Translation.Charts_OpenShipsStats))" Arrow Delay="350">
+        <MudTooltip Text="@Localizer.SimpleAppLocalization(nameof(Translation.Charts_OpenShipStats))" Arrow Delay="350">
             <MudIconButton Icon="@Icons.Material.Filled.ViewComfy" OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.ShipStats, shipBuildCache.Values, AppNavigator.AppPage.AccelerationCharts, "open-ship-stats"))" Color="Color.Primary"/>
         </MudTooltip>
         <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInBallisticCharts).Localization" Arrow Delay="350">
@@ -125,7 +125,7 @@
 
             NavManager.TryGetQueryString("shipIndexes", out string shipIndexesFromUrl);
 
-            var buildContainers = SessionStateCache.GetAndResetBuildTransferContainers() ?? (!string.IsNullOrWhiteSpace(shipIndexesFromUrl) ? shipIndexesFromUrl.Split(',').Select(x => ShipBuildContainer.CreateNew(AppData.ShipDictionary[x], null, null)) : null);
+            IEnumerable<ShipBuildContainer>? buildContainers = SessionStateCache.GetAndResetBuildTransferContainers() ?? (!string.IsNullOrWhiteSpace(shipIndexesFromUrl) ? shipIndexesFromUrl.Split(',').Select(x => ShipBuildContainer.CreateNew(AppData.ShipDictionary[x], null, null)) : null);
 
             if (buildContainers is not null)
             {

@@ -659,9 +659,9 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Open ships stats.
         /// </summary>
-        public static string Charts_OpenShipsStats {
+        public static string Charts_OpenShipStats {
             get {
-                return ResourceManager.GetString("Charts_OpenShipsStats", resourceCulture);
+                return ResourceManager.GetString("Charts_OpenShipStats", resourceCulture);
             }
         }
         

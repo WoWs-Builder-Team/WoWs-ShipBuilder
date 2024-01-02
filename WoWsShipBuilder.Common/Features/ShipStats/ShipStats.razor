@@ -6,10 +6,11 @@
 @using WoWsShipBuilder.Features.DataContainers
 @using WoWsShipBuilder.Features.ShipStats.Components
 @using WoWsShipBuilder.Infrastructure.ApplicationData
-@using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
+@using System.Collections.Immutable
+@using WoWsShipBuilder.Features.DataTransfer
 
 @implements IDisposable
 
@@ -155,7 +156,7 @@
             else if (buildContainers is not null)
             {
                 Logger.LogTrace("Ship configurations found in session state cache, initializing from them");
-                buildList = buildContainers;
+                buildList = buildContainers.ToList();
             }
             else
             {
@@ -179,7 +180,7 @@
         }
         else
         {
-            AddNewIndexes(new() { newShipIndex }, null);
+            AddNewIndexes(new[] { newShipIndex }, null);
             selectedTabId = shipContainers.Last().Id;
         }
 
@@ -232,9 +233,9 @@
         if (!result.Canceled && result.Data is List<ShipBuildContainer> { Count: > 0 } newShips)
         {
             Logger.LogTrace("Adding new ships");
-            AddNewIndexes(new() { newShips.First().Ship.Index }, new() { newShips.First() });
+            AddNewIndexes(new[] { newShips.First().Ship.Index }, new[] { newShips.First() });
             selectedTabId = shipContainers.Last().Id;
-            AddNewIndexes(newShips.Skip(1).Select(x => x.Ship.Index).ToList(), newShips.Skip(1).ToList());
+            AddNewIndexes(newShips.Skip(1).Select(x => x.Ship.Index).ToList(), newShips.Skip(1).ToImmutableList());
             updateTab = true;
 
             UpdateUrl();
@@ -242,12 +243,12 @@
         }
     }
 
-    private void AddNewIndexes(List<string> indexList, List<ShipBuildContainer>? buildContainers)
+    private void AddNewIndexes(IEnumerable<string> indexList, IEnumerable<ShipBuildContainer>? buildContainers)
     {
         shipContainers.AddRange(buildContainers ?? indexList.Select(index => ShipBuildContainer.CreateNew(AppData.ShipDictionary[index], null, null)));
     }
 
-    private List<ShipBuildContainer> GetShipBuildContainers(bool calculateShipDataContainer)
+    private ImmutableList<ShipBuildContainer> GetShipBuildContainers(bool calculateShipDataContainer)
     {
         List<ShipBuildContainer> buildContainers = new();
         foreach (var container in shipContainers)
@@ -263,7 +264,7 @@
             }
         }
 
-        return buildContainers;
+        return buildContainers.ToImmutableList();
     }
 
     private ShipBuildContainer UpdateShipDataContainer(bool calculateShipDataContainer, ShipBuildContainer container)

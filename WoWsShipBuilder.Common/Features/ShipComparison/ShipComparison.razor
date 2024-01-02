@@ -10,7 +10,6 @@
 @using WoWsShipBuilder.Features.Settings
 @using WoWsShipBuilder.Features.ShipComparison.GridData
 @using WoWsShipBuilder.Infrastructure.ApplicationData
-@using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.GameData
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
@@ -36,6 +35,8 @@
 @using static WoWsShipBuilder.Features.ShipComparison.GridSections.AerialTorpedoesFragment
 @using static WoWsShipBuilder.Features.ShipComparison.GridSections.BombersFragment
 @using static WoWsShipBuilder.Features.ShipComparison.GridSections.BombsFragment
+@using System.Collections.Immutable
+@using WoWsShipBuilder.Features.DataTransfer
 
 @inherits ReactiveComponentBase<ShipComparisonViewModel>
 
@@ -387,7 +388,7 @@
             ViewModel.ShowPinnedShipsOnly = true;
         }
 
-        List<ShipBuildContainer>? buildContainers = SessionStateCache.GetAndResetBuildTransferContainers();
+        ImmutableList<ShipBuildContainer>? buildContainers = SessionStateCache.GetAndResetBuildTransferContainers();
         if (buildContainers is not null)
         {
             await AddShip(buildContainers, false);
