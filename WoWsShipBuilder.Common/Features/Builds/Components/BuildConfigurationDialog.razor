@@ -1,5 +1,6 @@
 ﻿@using Prometheus
 @using System.Collections.Concurrent
+@using System.Collections.Immutable
 @using Microsoft.Extensions.Hosting
 @using Microsoft.Extensions.Options
 @using WoWsShipBuilder.DataStructures.Ship
@@ -125,6 +126,7 @@
 
     private readonly ConcurrentDictionary<Guid, ShipBuildViewModel> vmCache = new();
 
+    // ReSharper disable once NotAccessedField.Local - used in a parameter binding
     private string inputBuildString = string.Empty;
 
     private readonly ConcurrentDictionary<Guid, string> buildNameDictionary = new();
@@ -274,7 +276,7 @@
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
             var vm = ShipBuildViewModel.Create(shipBuildContainer);
-            foreach (int slot in shipBuildContainer.ActivatedConsumableSlots ?? Array.Empty<int>())
+            foreach (int slot in shipBuildContainer.ActivatedConsumableSlots)
             {
                 vm.ConsumableViewModel.ConsumableSlots[slot].ConsumableActivated = true;
             }
@@ -295,7 +297,7 @@
 
     private async Task ResetBuild()
     {
-        var vm = LoadShipViewModel(SelectedContainer with { Build = null, ActivatedConsumableSlots = null, SpecialAbilityActive = false });
+        var vm = LoadShipViewModel(SelectedContainer with { Build = null, ActivatedConsumableSlots = ImmutableArray<int>.Empty, SpecialAbilityActive = false });
         ViewModel = vm;
         vmCache[SelectedContainer.Id] = vm;
         await Task.Delay(1); // needed for the captain skill selector to rerender properly
@@ -317,7 +319,7 @@
                 throw new FormatException();
             }
 
-            ViewModel = LoadShipViewModel(ShipBuildContainer.CreateNew(ship, build, null));
+            ViewModel = LoadShipViewModel(ShipBuildContainer.CreateNew(ship, build, ImmutableArray<int>.Empty));
             inputBuildString = string.Empty;
             buildString = string.Empty;
             vmCache[SelectedContainer.Id] = ViewModel;

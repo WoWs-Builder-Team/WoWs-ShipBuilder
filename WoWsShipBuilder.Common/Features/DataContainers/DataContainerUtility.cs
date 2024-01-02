@@ -1,4 +1,5 @@
-﻿using WoWsShipBuilder.DataStructures.Modifiers;
+﻿using System.Collections.Immutable;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.Utility;
 
@@ -22,6 +23,16 @@ public static class DataContainerUtility
     }
 
     public static int ApplyModifiers(this List<Modifier> modifierList, string propertySelector, int initialValue)
+    {
+        return modifierList.FindAll(x => x.AffectedProperties.Contains(propertySelector)).Aggregate(initialValue, (total, current) => current.ApplyModifier(total));
+    }
+
+    public static decimal ApplyModifiers(this ImmutableList<Modifier> modifierList, string propertySelector, decimal initialValue)
+    {
+        return modifierList.FindAll(x => x.AffectedProperties.Contains(propertySelector)).Aggregate(initialValue, (total, current) => current.ApplyModifier(total));
+    }
+
+    public static int ApplyModifiers(this ImmutableList<Modifier> modifierList, string propertySelector, int initialValue)
     {
         return modifierList.FindAll(x => x.AffectedProperties.Contains(propertySelector)).Aggregate(initialValue, (total, current) => current.ApplyModifier(total));
     }

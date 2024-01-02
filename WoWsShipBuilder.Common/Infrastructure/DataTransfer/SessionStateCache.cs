@@ -1,10 +1,8 @@
 ﻿namespace WoWsShipBuilder.Infrastructure.DataTransfer;
 
-/**
- * <summary>
- * A caching service that stores <see cref="ShipBuildContainer"/> instances when navigating between pages.
- * </summary>
- */
+/// <summary>
+/// A caching service that stores ShipBuildContainer instances when navigating between pages.
+/// </summary>
 public class SessionStateCache
 {
     private List<ShipBuildContainer>? buildTransferContainers;

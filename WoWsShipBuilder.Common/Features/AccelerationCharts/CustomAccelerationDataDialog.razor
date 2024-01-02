@@ -156,7 +156,7 @@
             ShipConsumable = ImmutableList<ShipConsumable>.Empty,
         };
 
-        var container = ShipBuildContainer.CreateNew(ship, null, null);
+        var container = ShipBuildContainer.CreateNew(ship, null, ImmutableArray<int>.Empty);
         MudDialog.Close(DialogResult.Ok(container));
     }
 

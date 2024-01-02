@@ -19,6 +19,7 @@
 @using System.Diagnostics
 @using System.Collections.ObjectModel
 @using WoWsShipBuilder.DataStructures.Modifiers
+@using System.Collections.Immutable
 
 @inject IHostEnvironment Environment
 @inject ILocalizer Localizer
@@ -366,14 +367,14 @@ else if (ViewModel is not null)
 
         var ship = AppData.FindShipFromSummary(cacheEntry.ViewModel.CurrentShip);
         var build = isCustomBuild ? cacheEntry.ViewModel.CreateBuild(cacheEntry.BuildName) : null;
-        ObservableCollection<int>? activeConsumables = cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.Any() ? cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots : null;
+        ImmutableArray<int> activeConsumables = cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.Any() ? cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.ToImmutableArray() : ImmutableArray<int>.Empty;
         ShipDataContainer? shipDataContainer = null;
         if (calculateShipDataContainer)
         {
             shipDataContainer = build is null ? DataContainerUtility.GetStockShipDataContainer(ship) : DataContainerUtility.GetShipDataContainerFromBuild(ship, build.Modules, ship.ShipUpgradeInfo.ShipUpgrades, modifiers);
         }
 
-        return new(ship, build, containerId, activeConsumables, false, shipDataContainer, modifiers);
+        return new(ship, build, containerId, activeConsumables, false, shipDataContainer, modifiers.ToImmutableList());
     }
 
     public static ShipViewModel CreateViewModel(string shipIndex, Build? build)

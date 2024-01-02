@@ -135,7 +135,7 @@
 
     private void SelectShip(Ship ship)
     {
-        var shipBuildContainer = ShipBuildContainer.CreateNew(ship, null, null);
+        var shipBuildContainer = ShipBuildContainer.CreateNew(ship, null, ImmutableArray<int>.Empty);
 
         if (AppSettings.FittingToolSelectorMultiSelection)
         {

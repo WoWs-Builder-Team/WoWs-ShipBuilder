@@ -1,10 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Features.DataContainers;
 using WoWsShipBuilder.Features.Settings;
@@ -467,12 +468,12 @@ public partial class ShipComparisonViewModel : ReactiveObject
         }
         else if (obj is Ship ship)
         {
-            newWrapper = new(ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer = this.GetShipDataContainer(ship) });
+            newWrapper = new(ShipBuildContainer.CreateNew(ship, null, ImmutableArray<int>.Empty) with { ShipDataContainer = this.GetShipDataContainer(ship) });
         }
         else if (obj is string shipIndex)
         {
             var shipFromIndex = this.fullShipList.First(x => x.Index.Equals(shipIndex, StringComparison.Ordinal));
-            newWrapper = new(ShipBuildContainer.CreateNew(shipFromIndex, null, null) with { ShipDataContainer = this.GetShipDataContainer(shipFromIndex) });
+            newWrapper = new(ShipBuildContainer.CreateNew(shipFromIndex, null, ImmutableArray<int>.Empty) with { ShipDataContainer = this.GetShipDataContainer(shipFromIndex) });
         }
         else
         {
@@ -573,7 +574,7 @@ public partial class ShipComparisonViewModel : ReactiveObject
 
     private Dictionary<Guid, GridDataWrapper> InitialiseShipBuildContainers(IEnumerable<Ship> ships)
     {
-        return ships.Select(ship => new GridDataWrapper(ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer = this.GetShipDataContainer(ship) })).ToDictionary(x => x.Id, x => x);
+        return ships.Select(ship => new GridDataWrapper(ShipBuildContainer.CreateNew(ship, null, ImmutableArray<int>.Empty) with { ShipDataContainer = this.GetShipDataContainer(ship) })).ToDictionary(x => x.Id, x => x);
     }
 
     private void ChangeModulesBatch()
@@ -725,7 +726,7 @@ public partial class ShipComparisonViewModel : ReactiveObject
 
     private GridDataWrapper ResetBuild(GridDataWrapper wrapper)
     {
-        GridDataWrapper reset = new(wrapper.ShipBuildContainer with { Build = null, ActivatedConsumableSlots = null, SpecialAbilityActive = false, ShipDataContainer = this.GetShipDataContainer(wrapper.Ship), Modifiers = null });
+        GridDataWrapper reset = new(wrapper.ShipBuildContainer with { Build = null, ActivatedConsumableSlots = ImmutableArray<int>.Empty, SpecialAbilityActive = false, ShipDataContainer = this.GetShipDataContainer(wrapper.Ship), Modifiers = ImmutableList<Modifier>.Empty });
         return reset;
     }
 

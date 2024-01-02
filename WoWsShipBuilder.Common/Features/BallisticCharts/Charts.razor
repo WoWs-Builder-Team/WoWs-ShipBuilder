@@ -12,6 +12,7 @@
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
+@using System.Collections.Immutable
 
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
@@ -321,7 +322,7 @@
             await SetupChartsAsync();
             if (shipIndexesFromUrl.Any())
             {
-                var buildContainers = SessionStateCache.GetAndResetBuildTransferContainers() ?? (shipIndexesFromUrl.Any() ? shipIndexesFromUrl.Select(x =>  ShipBuildContainer.CreateNew(AppData.ShipDictionary[x], null, null) with { ShipDataContainer = DataContainerUtility.GetStockShipDataContainer(AppData.ShipDictionary[x]) }) : null);
+                var buildContainers = SessionStateCache.GetAndResetBuildTransferContainers() ?? (shipIndexesFromUrl.Any() ? shipIndexesFromUrl.Select(x =>  ShipBuildContainer.CreateNew(AppData.ShipDictionary[x], null, ImmutableArray<int>.Empty) with { ShipDataContainer = DataContainerUtility.GetStockShipDataContainer(AppData.ShipDictionary[x]) }) : null);
                 if (buildContainers is not null)
                 {
                     List<ChartsDataWrapper> shipsToAdd = new();

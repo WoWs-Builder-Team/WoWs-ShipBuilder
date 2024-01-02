@@ -13,6 +13,7 @@
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
+@using System.Collections.Immutable
 
 @inherits ReactiveComponentBase<WoWsShipBuilder.Features.ShipStats.ViewModels.ShipStatsControlViewModel>
 @inject ILocalizer Localizer
@@ -542,8 +543,8 @@
             .OrderBy(gun => gun, new TurretListComparer())
             .Select(gun =>
             {
-                var sector = gun.HorizontalSector.Select(a => a + gun.BaseAngle).ToArray();
-                var deadZones = gun.HorizontalDeadZones.Select(z => z.Select(a => a + gun.BaseAngle).ToArray()).ToArray();
+                var sector = gun.HorizontalSector.Select(a => a + gun.BaseAngle).ToImmutableArray();
+                var deadZones = gun.HorizontalDeadZones.Select(z => z.Select(a => a + gun.BaseAngle).ToImmutableArray()).ToImmutableArray();
                 return new GunDataContainer(gun.HorizontalPosition, gun.VerticalPosition, gun.BaseAngle, sector, deadZones);
             });
         var parameters = new DialogParameters

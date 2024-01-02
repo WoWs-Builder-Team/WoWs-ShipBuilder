@@ -10,6 +10,7 @@
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
+@using System.Collections.Immutable
 
 @implements IDisposable
 
@@ -149,7 +150,7 @@
                     Logger.LogTrace("Build could not be loaded from url because it was not in the correct format");
                 }
 
-                buildList = new() { ShipBuildContainer.CreateNew(AppData.ShipDictionary[shipIndexesFromUrl], build, null) };
+                buildList = new() { ShipBuildContainer.CreateNew(AppData.ShipDictionary[shipIndexesFromUrl], build, ImmutableArray<int>.Empty) };
             }
             else if (buildContainers is not null)
             {
@@ -172,7 +173,7 @@
         if (oldId is not null)
         {
             var ship = shipContainers.First(x => x.Id.Equals(oldId));
-            shipContainers.Replace(ship, ship with { Ship = AppData.ShipDictionary[newShipIndex], Build = null, ShipDataContainer = null, SpecialAbilityActive = false, ActivatedConsumableSlots = null, Modifiers = null });
+            shipContainers.Replace(ship, ship with { Ship = AppData.ShipDictionary[newShipIndex], Build = null, ShipDataContainer = null, SpecialAbilityActive = false, ActivatedConsumableSlots = ImmutableArray<int>.Empty, Modifiers = ImmutableList<Modifier>.Empty });
             selectedTabId = (Guid) oldId;
             update = true;
         }
@@ -243,7 +244,7 @@
 
     private void AddNewIndexes(List<string> indexList, List<ShipBuildContainer>? buildContainers)
     {
-        shipContainers.AddRange(buildContainers ?? indexList.Select(index => ShipBuildContainer.CreateNew(AppData.ShipDictionary[index], null, null)));
+        shipContainers.AddRange(buildContainers ?? indexList.Select(index => ShipBuildContainer.CreateNew(AppData.ShipDictionary[index], null, ImmutableArray<int>.Empty)));
     }
 
     private List<string> StoreBuildsForTransfer(bool calculateShipDataContainer)
@@ -281,7 +282,7 @@
             modifiers.AddRange(viewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<Modifier>());
 
             var newDataContainer = calculateShipDataContainer ? DataContainerUtility.GetShipDataContainerFromBuild(container.Ship, container.Build.Modules, container.Ship.ShipUpgradeInfo.ShipUpgrades, modifiers) : container.ShipDataContainer;
-            return container with { Modifiers = modifiers, ShipDataContainer = newDataContainer };
+            return container with { Modifiers = ImmutableList<Modifier>.Empty, ShipDataContainer = newDataContainer };
         }
 
         return calculateShipDataContainer ? container with { ShipDataContainer = DataContainerUtility.GetStockShipDataContainer(container.Ship) } : container;

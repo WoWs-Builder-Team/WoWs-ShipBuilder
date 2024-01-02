@@ -1,3 +1,5 @@
-﻿namespace WoWsShipBuilder.Infrastructure.DataTransfer;
+﻿using System.Collections.Immutable;
 
-public sealed record GunDataContainer(decimal HPos, decimal VPos, decimal BaseAngle, decimal[] Sector, decimal[][] DeadZones);
+namespace WoWsShipBuilder.Infrastructure.DataTransfer;
+
+public sealed record GunDataContainer(decimal HPos, decimal VPos, decimal BaseAngle, ImmutableArray<decimal> Sector, ImmutableArray<ImmutableArray<decimal>> DeadZones);
