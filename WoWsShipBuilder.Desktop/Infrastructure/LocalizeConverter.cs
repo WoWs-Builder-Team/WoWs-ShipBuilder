@@ -136,11 +136,7 @@ public class LocalizeConverter : IValueConverter
     {
         public LocalizationResult GetGameLocalization(string key) => new(true, key);
 
-        public LocalizationResult GetGameLocalization(string key, params object[] args) => this.GetGameLocalization(key);
-
         public LocalizationResult GetGameLocalization(string key, CultureDetails language) => new(true, key);
-
-        public LocalizationResult GetGameLocalization(string key, CultureDetails language, params object[] args) => this.GetGameLocalization(key, language);
 
         public LocalizationResult GetAppLocalization(string key) => new(true, key);
 

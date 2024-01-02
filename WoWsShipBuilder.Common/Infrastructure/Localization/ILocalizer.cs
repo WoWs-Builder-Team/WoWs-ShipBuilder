@@ -6,11 +6,7 @@ public interface ILocalizer
 {
     LocalizationResult GetGameLocalization(string key);
 
-    LocalizationResult GetGameLocalization(string key, params object[] args);
-
     LocalizationResult GetGameLocalization(string key, CultureDetails language);
-
-    LocalizationResult GetGameLocalization(string key, CultureDetails language, params object[] args);
 
     LocalizationResult GetAppLocalization(string key);
 
