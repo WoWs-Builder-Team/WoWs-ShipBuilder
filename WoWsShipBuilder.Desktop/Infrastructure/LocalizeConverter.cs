@@ -134,14 +134,16 @@ public class LocalizeConverter : IValueConverter
 
     private sealed class DemoLocalizerImpl : ILocalizer
     {
-        public LocalizationResult this[string key] => this.GetGameLocalization(key);
-
         public LocalizationResult GetGameLocalization(string key) => new(true, key);
 
         public LocalizationResult GetGameLocalization(string key, CultureDetails language) => new(true, key);
 
         public LocalizationResult GetAppLocalization(string key) => new(true, key);
 
+        public LocalizationResult GetAppLocalization(string key, params object[] args) => this.GetAppLocalization(key);
+
         public LocalizationResult GetAppLocalization(string key, CultureDetails language) => new(true, key);
+
+        public LocalizationResult GetAppLocalization(string key, CultureDetails language, params object[] args) => this.GetAppLocalization(key, language);
     }
 }

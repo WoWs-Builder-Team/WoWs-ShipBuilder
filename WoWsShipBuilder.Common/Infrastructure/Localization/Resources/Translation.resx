@@ -2195,4 +2195,7 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="BuildImageRenderDialog_CopyImage" xml:space="preserve">
     <value>Copy Image</value>
   </data>
+  <data name="OverwriteExistingBuildDialog_Message" xml:space="preserve">
+    <value>Archive already contains another build named '{0}' for ship '{1}'</value>
+  </data>
 </root>

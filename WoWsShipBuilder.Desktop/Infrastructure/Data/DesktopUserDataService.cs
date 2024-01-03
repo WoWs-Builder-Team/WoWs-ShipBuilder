@@ -141,7 +141,7 @@ public class DesktopUserDataService : IUserDataService
             ["BuildName"] = build.BuildName,
             ["ShipIndex"] = build.ShipIndex,
         };
-        var result = await (await this.dialogService.ShowAsync<UpdateSavedBuildConfirmationDialog>(string.Empty, parameters, options)).Result;
+        var result = await (await this.dialogService.ShowAsync<OverwriteExistingBuildConfirmationDialog>(string.Empty, parameters, options)).Result;
         return !result.Canceled && (bool)result.Data;
     }
 }

@@ -4,10 +4,7 @@
 <MudDialog DefaultFocus="DefaultFocus.FirstChild">
     <DialogContent>
         <MudStack Row>
-            <MudText Typo="Typo.body2">@Localizer.SimpleAppLocalization(nameof(Translation.UpdateSavedBuildConfirmationDialog_WarningMessage))</MudText>
-            <MudText Typo="Typo.body2" Color="Color.Primary">@BuildName</MudText>
-            <MudText Typo="Typo.body2">@Localizer.SimpleAppLocalization(nameof(Translation.UpdateSavedBuildConfirmationDialog_ForTheShip))</MudText>
-            <MudText Typo="Typo.body2" Color="Color.Primary">@Localizer.SimpleGameLocalization(ShipIndex)</MudText>
+            <MudText Typo="Typo.body2">@Localizer.SimpleAppLocalization(nameof(Translation.OverwriteExistingBuildDialog_Message), BuildName, Localizer.SimpleGameLocalization(ShipIndex))</MudText>
         </MudStack>
         <MudText Typo="Typo.body2">@Localizer.SimpleAppLocalization(nameof(Translation.UpdateSavedBuildConfirmationDialog_OverwriteQuestion))</MudText>
         <!--suppress CssUnresolvedCustomProperty -->

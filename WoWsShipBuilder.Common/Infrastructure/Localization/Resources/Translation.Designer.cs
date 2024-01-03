@@ -1647,6 +1647,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Archive already contains another build named &apos;{0}&apos; for ship &apos;{1}&apos;.
+        /// </summary>
+        public static string OverwriteExistingBuildDialog_Message {
+            get {
+                return ResourceManager.GetString("OverwriteExistingBuildDialog_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pan America.
         /// </summary>
         public static string PanAmerica {
