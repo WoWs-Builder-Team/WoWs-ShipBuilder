@@ -387,6 +387,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy Image.
+        /// </summary>
+        public static string BuildImageRenderDialog_CopyImage {
+            get {
+                return ResourceManager.GetString("BuildImageRenderDialog_CopyImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Get Short-Link.
         /// </summary>
         public static string BuildImageRenderDialog_GetShortLink {
@@ -5985,6 +5994,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string UserDataService_BuildNotSaved {
             get {
                 return ResourceManager.GetString("UserDataService_BuildNotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build has not been updated..
+        /// </summary>
+        public static string UserDataService_BuildNotUpdated {
+            get {
+                return ResourceManager.GetString("UserDataService_BuildNotUpdated", resourceCulture);
             }
         }
         
