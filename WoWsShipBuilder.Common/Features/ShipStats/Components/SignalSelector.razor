@@ -15,7 +15,6 @@
             </MudItem>
             @foreach (var (_, signal) in ViewModel.SignalList.Where(x => !string.IsNullOrEmpty(x.Key)))
             {
-
                 <MudItem xs="2" Class="d-flex justify-center mb-n3" Style="@GetOrder(signal.Signal.SortOrder)">
                     <MudTooltip Placement="Placement.Right" Color="Color.Transparent" Delay="350">
                         <ChildContent>
