@@ -151,6 +151,7 @@
             {
                 <MudNumericField Value="@(ViewModel.SelectedDataSection == ShipComparisonDataSections.SecondaryBattery ? ViewModel.SecondaryBatteryFiringRange : ViewModel.MainBatteryFiringRange)" ValueChanged="@(async range => await UpdateRange(range))" Label="@($"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization} ({Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization})")" Class="mud-data-grid-range-selector" Variant="Variant.Text" Immediate="true" T="double" DebounceInterval="500" Margin="Margin.Dense" Min="1" Max="50" Step="0.5"/>
             }
+            <MudDataGridPager T="GridDataWrapper" PageSizeOptions="GridPagination" Class="mr-n1" Style="margin-top: -14px" RowsPerPageString="Show:"/>
         </ToolBarContent>
         <Columns>
             <TemplateColumn T="GridDataWrapper" ShowColumnOptions="false" Hideable="false" Filterable="false" DragAndDropEnabled="false" StickyLeft SortBy="@(x => !ViewModel.SelectedShipList.ContainsKey(x.Id))" HeaderStyle="width:70px; background-clip: padding-box; background-color: var(--mud-palette-surface);" CellStyle="@($"width:70px; {StickyColumnsBackgroundColor}")" Resizable="false" HeaderClass="column-text-center" CellClass="column-text-center">
@@ -256,6 +257,9 @@
             @BombersDataFragment((IsColumnHidden, Localizer))
             @BombsDataFragment((IsColumnHidden, Localizer))
         </Columns>
+        <PagerContent>
+            <MudDataGridPager T="GridDataWrapper" PageSizeOptions="GridPagination" RowsPerPageString="Show:"/>
+        </PagerContent>
         <NoRecordsContent>
             <MudText>@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_NoMatchingShipsFound))</MudText>
         </NoRecordsContent>
@@ -271,6 +275,8 @@
 @code {
 
     private MudDataGrid<GridDataWrapper> dataGrid = default!;
+
+    private static readonly int[] GridPagination = { 50, 100, 150, 200, 250, 300 };
 
     private const string StickyColumnsBackgroundColor = "background-color: #262626";
 
@@ -714,7 +720,7 @@
             }
 
             MetricsService.ComparisonShipCount.Observe(data.Count);
-            return Task.FromResult<GridData<GridDataWrapper>>(new() { TotalItems = data.Count, Items = data });
+            return Task.FromResult<GridData<GridDataWrapper>>(new() { TotalItems = data.Count, Items = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToList() });
         }
     }
 
