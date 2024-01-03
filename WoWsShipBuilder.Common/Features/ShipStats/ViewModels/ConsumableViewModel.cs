@@ -71,7 +71,7 @@ public class ConsumableViewModel : ReactiveObject, IBuildComponentProvider
 
     public List<string> SaveBuild()
     {
-        return this.ConsumableSlots.Select(slot => slot.SelectedConsumable.IconName).ToList();
+        return this.ConsumableSlots.Select(slot => slot.SelectedConsumable.IconName.NameToIndex()).ToList();
     }
 
     /// <summary>

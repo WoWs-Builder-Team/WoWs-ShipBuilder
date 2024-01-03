@@ -2189,4 +2189,10 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="WebApp_ViewShipsStats" xml:space="preserve">
     <value>View ships stats</value>
   </data>
+  <data name="UserDataService_BuildNotUpdated" xml:space="preserve">
+    <value>Build has not been updated.</value>
+  </data>
+  <data name="BuildImageRenderDialog_CopyImage" xml:space="preserve">
+    <value>Copy Image</value>
+  </data>
 </root>

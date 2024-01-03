@@ -109,47 +109,9 @@ public sealed class WebUserDataService : IUserDataService, IAsyncDisposable
         this.snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomEnd;
 
         var buildsList = builds.ToList();
-        var buildsUpdated = 0;
-        var savingBuildCancelled = 0;
+        int buildsUpdated = await this.AddOrUpdateBuilds(buildsList);
 
-        foreach (var build in buildsList)
-        {
-            this.savedBuilds.RemoveAll(x => x.Equals(build));
-            var buildToUpdate = this.savedBuilds.Find(x => x.ShipIndex.Equals(build.ShipIndex, StringComparison.Ordinal) && x.BuildName.Equals(build.BuildName, StringComparison.Ordinal));
-            if (buildToUpdate != null)
-            {
-                DialogOptions options = new()
-                {
-                    NoHeader = true,
-                    CloseOnEscapeKey = true,
-                };
-                DialogParameters parameters = new()
-                {
-                    ["BuildName"] = build.BuildName,
-                    ["ShipIndex"] = build.ShipIndex,
-                };
-                var result = await (await this.dialogService.ShowAsync<UpdateSavedBuildConfirmationDialog>(string.Empty, parameters, options)).Result;
-                if (!result.Canceled && (bool)result.Data)
-                {
-                    int index = this.savedBuilds.IndexOf(buildToUpdate);
-                    this.savedBuilds.Remove(buildToUpdate);
-                    this.savedBuilds.Insert(index, build);
-                    this.snackbar.Add(this.localizer.SimpleAppLocalization(nameof(Translation.UserDataService_BuildUpdated)), Severity.Success);
-                    buildsUpdated++;
-                }
-                else
-                {
-                    this.snackbar.Add(this.localizer.SimpleAppLocalization(nameof(Translation.UserDataService_BuildNotSaved)), Severity.Error);
-                    savingBuildCancelled++;
-                }
-            }
-            else
-            {
-                this.savedBuilds.Insert(0, build);
-            }
-        }
-
-        if (savingBuildCancelled == buildsList.Count)
+        if (buildsUpdated == -1)
         {
             return;
         }
@@ -206,6 +168,57 @@ public sealed class WebUserDataService : IUserDataService, IAsyncDisposable
                 // Ignored
             }
         }
+    }
+
+    private async Task<int> AddOrUpdateBuilds(List<Build> buildsList)
+    {
+        this.savedBuilds ??= (await this.LoadBuildsAsync()).ToList();
+
+        var buildsUpdated = 0;
+        var buildsNotNeedingUpdate = 0;
+
+        foreach (var build in buildsList)
+        {
+            buildsNotNeedingUpdate += this.savedBuilds.RemoveAll(x => x.Equals(build));
+            var buildToUpdate = this.savedBuilds.Find(x => x.ShipIndex.Equals(build.ShipIndex, StringComparison.Ordinal) && x.BuildName.Equals(build.BuildName, StringComparison.Ordinal));
+            if (buildToUpdate != null)
+            {
+                DialogOptions options = new()
+                {
+                    NoHeader = true,
+                    CloseOnEscapeKey = true,
+                };
+                DialogParameters parameters = new()
+                {
+                    ["BuildName"] = build.BuildName,
+                    ["ShipIndex"] = build.ShipIndex,
+                };
+                var result = await (await this.dialogService.ShowAsync<UpdateSavedBuildConfirmationDialog>(string.Empty, parameters, options)).Result;
+                if (!result.Canceled && (bool)result.Data)
+                {
+                    int index = this.savedBuilds.IndexOf(buildToUpdate);
+                    this.savedBuilds.Remove(buildToUpdate);
+                    this.savedBuilds.Insert(index, build);
+                    this.snackbar.Add(this.localizer.SimpleAppLocalization(nameof(Translation.UserDataService_BuildUpdated)), Severity.Success);
+                    buildsUpdated++;
+                }
+                else
+                {
+                    this.snackbar.Add(this.localizer.SimpleAppLocalization(nameof(Translation.UserDataService_BuildNotUpdated)), Severity.Warning);
+                }
+            }
+            else
+            {
+                this.savedBuilds.Insert(0, build);
+            }
+        }
+
+        if (buildsUpdated == 0 || buildsNotNeedingUpdate == buildsList.Count)
+        {
+            return -1;
+        }
+
+        return buildsUpdated;
     }
 
     [MemberNotNull(nameof(module))]
