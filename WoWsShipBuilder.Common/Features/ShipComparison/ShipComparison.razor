@@ -114,13 +114,13 @@
                     <MudButton OnClick="@RemoveBuilds" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1">
                         @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_RemoveBuilds))
                     </MudButton>
-                    <MudButton OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.ShipStats, ViewModel!.SelectedShipList.Select(x => x.Value.ShipBuildContainer), AppNavigator.AppPage.ShipComparison, "open-ship-stats"))" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1">
+                    <MudButton OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.ShipStats, ViewModel!.SelectedShipList.Select(x => x.Value.ShipBuildContainer), AppNavigator.AppPage.ShipComparison))" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1">
                         @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_ViewStats))
                     </MudButton>
-                    <MudButton OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.BallisticCharts, ViewModel!.SelectedShipList.Select(x => x.Value.ShipBuildContainer), AppNavigator.AppPage.ShipComparison, "open-ballistic-charts"))" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1">
+                    <MudButton OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.BallisticCharts, ViewModel!.SelectedShipList.Select(x => x.Value.ShipBuildContainer), AppNavigator.AppPage.ShipComparison))" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1">
                         @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_ViewBallistic))
                     </MudButton>
-                    <MudButton OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.AccelerationCharts, ViewModel!.SelectedShipList.Select(x => x.Value.ShipBuildContainer), AppNavigator.AppPage.ShipComparison, "open-acceleration-charts"))" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1; white-space: nowrap">
+                    <MudButton OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.AccelerationCharts, ViewModel!.SelectedShipList.Select(x => x.Value.ShipBuildContainer), AppNavigator.AppPage.ShipComparison))" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1; white-space: nowrap">
                         @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_ViewAcceleration))
                     </MudButton>
                 </MudButtonGroup>
@@ -167,7 +167,7 @@
             </TemplateColumn>
             <TemplateColumn T="GridDataWrapper" TProperty="string" Title="@Localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Name))" Hideable="false" StickyLeft HeaderStyle="background-clip: padding-box; background-color: var(--mud-palette-surface);" CellStyle="@($"cursor: pointer; background-clip: padding-box; {StickyColumnsBackgroundColor}")" SortBy="@(x => LocalizeShipName(x.Ship.Index))" InitialDirection="SortDirection.Ascending" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
-                    <MudText Typo="Typo.body2" @onclick="@(_ => AppNavigator.NavigateTo(AppNavigator.AppPage.ShipStats, context.Item.ShipBuildContainer, AppNavigator.AppPage.ShipComparison, "open-ship-stats-inline"))">
+                    <MudText Typo="Typo.body2" @onclick="@(_ => AppNavigator.NavigateTo(AppNavigator.AppPage.ShipStats, context.Item.ShipBuildContainer, AppNavigator.AppPage.ShipComparison))">
                         @LocalizeShipName(context.Item.ShipIndex)
                     </MudText>
                 </CellTemplate>

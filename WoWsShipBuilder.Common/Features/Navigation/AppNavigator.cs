@@ -15,6 +15,11 @@ public class AppNavigator
     private const string AccelerationChartsBaseUrl = "acceleration-charts?shipIndexes=";
     private const string ShipComparisonBaseUrl = "comparison?p=";
 
+    private const string ShipStatsMetricLabel = "open-ship-stats";
+    private const string BallisticChartsMetricLabel = "open-ballistic-charts";
+    private const string AccelerationChartsMetricLabel = "open-acceleration-charts";
+    private const string ShipComparisonMetricLabel = "open-ship-comparison";
+
     private readonly SessionStateCache sessionStateCache;
     private readonly NavigationManager navManager;
     private readonly MetricsService metricsService;
@@ -42,8 +47,7 @@ public class AppNavigator
     /// <param name="destinationPage">The page to navigate to.</param>
     /// <param name="containerList">The list of ship build containers to carry over.</param>
     /// <param name="leavingPage">Optional. The page the user is leaving. Only needed for metrics.</param>
-    /// <param name="metricLabel">Optional.The label for the metric. Only needed for metrics.</param>
-    public void NavigateTo(AppPage destinationPage, IEnumerable<ShipBuildContainer> containerList, AppPage? leavingPage = null, string? metricLabel = null) => this.GoToPage(destinationPage, containerList.ToImmutableList(), null, leavingPage, metricLabel);
+    public void NavigateTo(AppPage destinationPage, IEnumerable<ShipBuildContainer> containerList, AppPage? leavingPage = null) => this.GoToPage(destinationPage, containerList.ToImmutableList(), null, leavingPage);
 
     /// <summary>
     /// Navigates to the specified destination page.
@@ -51,8 +55,7 @@ public class AppNavigator
     /// <param name="destinationPage">The destination page to navigate to.</param>
     /// <param name="container">The ship build container to carry over.</param>
     /// <param name="leavingPage">Optional. The page the user is leaving. Only needed for metrics.</param>
-    /// <param name="metricLabel">Optional.The label for the metric. Only needed for metrics.</param>
-    public void NavigateTo(AppPage destinationPage, ShipBuildContainer container, AppPage? leavingPage = null, string? metricLabel = null) => this.GoToPage(destinationPage, ImmutableList.Create(container), null, leavingPage, metricLabel);
+    public void NavigateTo(AppPage destinationPage, ShipBuildContainer container, AppPage? leavingPage = null) => this.GoToPage(destinationPage, ImmutableList.Create(container), null, leavingPage);
 
     /// <summary>
     /// Navigates to the specified destination page. Carrying over also the selected shell index.
@@ -61,8 +64,7 @@ public class AppNavigator
     /// <param name="container">The ship build container to carry over.</param>
     /// <param name="shellIndex">The shell index. Only needed when navigating to the ballistic charts.</param>
     /// <param name="leavingPage">Optional. The page the user is leaving. Only needed for metrics.</param>
-    /// <param name="metricLabel">Optional.The label for the metric. Only needed for metrics.</param>
-    public void NavigateTo(AppPage destinationPage, ShipBuildContainer container, string shellIndex, AppPage? leavingPage = null, string? metricLabel = null) => this.GoToPage(destinationPage, ImmutableList.Create(container), shellIndex, leavingPage, metricLabel);
+    public void NavigateTo(AppPage destinationPage, ShipBuildContainer container, string shellIndex, AppPage? leavingPage = null) => this.GoToPage(destinationPage, ImmutableList.Create(container), shellIndex, leavingPage);
 
     private static string GenerateDestinationUrl(AppPage destinationPage, IEnumerable<ShipBuildContainer> containerList, string? shellIndex)
     {
@@ -77,7 +79,7 @@ public class AppNavigator
         };
     }
 
-    private void GoToPage(AppPage destinationPage, ImmutableList<ShipBuildContainer> containerList, string? shellIndex, AppPage? leavingPage, string? metricLabel)
+    private void GoToPage(AppPage destinationPage, ImmutableList<ShipBuildContainer> containerList, string? shellIndex, AppPage? leavingPage)
     {
         int selectionCount = containerList.Count;
         switch (selectionCount)
@@ -89,7 +91,7 @@ public class AppNavigator
                 this.snackbar.Add($"No ships available. Eligible ships: {selectionCount}.", Severity.Error);
                 return;
             default:
-                this.LogMetrics(leavingPage, metricLabel);
+                this.LogMetrics(destinationPage, leavingPage);
                 this.sessionStateCache.SetBuildTransferContainers(containerList);
                 this.navManager.NavigateTo(GenerateDestinationUrl(destinationPage, containerList, shellIndex));
                 break;
@@ -98,12 +100,16 @@ public class AppNavigator
         // cant use await JsRuntime.InvokeAsync<object>("open", NavManager.BaseUri + url, "_blank"); to open in a new tab because builds are not carried over.
     }
 
-    private void LogMetrics(AppPage? leavingPage, string? metricLabel)
+    private void LogMetrics(AppPage destinationPage, AppPage? leavingPage)
     {
-        if (string.IsNullOrEmpty(metricLabel))
+        string metricLabel = destinationPage switch
         {
-            return;
-        }
+            AppPage.ShipStats => ShipStatsMetricLabel,
+            AppPage.BallisticCharts => BallisticChartsMetricLabel,
+            AppPage.AccelerationCharts => AccelerationChartsMetricLabel,
+            AppPage.ShipComparison => ShipComparisonMetricLabel,
+            _ => throw new InvalidEnumArgumentException(),
+        };
 
         switch (leavingPage)
         {
