@@ -2,7 +2,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using WoWsShipBuilder.Features.DataTransfer;
+using WoWsShipBuilder.Infrastructure.DataTransfer;
 
 namespace WoWsShipBuilder.Desktop.Infrastructure;
 

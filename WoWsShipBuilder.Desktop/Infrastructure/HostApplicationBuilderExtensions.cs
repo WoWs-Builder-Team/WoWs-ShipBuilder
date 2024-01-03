@@ -6,10 +6,10 @@ using WoWsShipBuilder.Desktop.Features.SplashScreen;
 using WoWsShipBuilder.Desktop.Features.Updater;
 using WoWsShipBuilder.Desktop.Infrastructure.AwsClient;
 using WoWsShipBuilder.Desktop.Infrastructure.Data;
-using WoWsShipBuilder.Features.DataTransfer;
 using WoWsShipBuilder.Features.LinkShortening;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
+using WoWsShipBuilder.Infrastructure.DataTransfer;
 using WoWsShipBuilder.Infrastructure.HttpClients;
 using WoWsShipBuilder.Infrastructure.Utility;
 

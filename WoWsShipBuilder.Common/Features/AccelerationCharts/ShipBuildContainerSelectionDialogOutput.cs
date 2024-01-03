@@ -1,4 +1,4 @@
-﻿using WoWsShipBuilder.Features.DataTransfer;
+﻿using WoWsShipBuilder.Features.Navigation;
 
 namespace WoWsShipBuilder.Features.AccelerationCharts;
 

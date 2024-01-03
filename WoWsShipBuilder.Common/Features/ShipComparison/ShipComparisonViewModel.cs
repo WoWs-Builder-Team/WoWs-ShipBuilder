@@ -1,13 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Features.DataContainers;
-using WoWsShipBuilder.Features.DataTransfer;
+using WoWsShipBuilder.Features.Navigation;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Features.ShipComparison.GridData;
 using WoWsShipBuilder.Infrastructure.ApplicationData;

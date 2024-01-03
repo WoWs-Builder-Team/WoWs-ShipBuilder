@@ -1,12 +1,10 @@
 ﻿using System.Collections.Immutable;
 
-namespace WoWsShipBuilder.Features.DataTransfer;
+namespace WoWsShipBuilder.Features.Navigation;
 
-/**
- * <summary>
- * A caching service that stores <see cref="ShipBuildContainer"/> instances when navigating between pages.
- * </summary>
- */
+/// <summary>
+/// A caching service that stores <see cref="ShipBuildContainer"/> instances when navigating between pages.
+/// </summary>
 public class SessionStateCache
 {
     private ImmutableList<ShipBuildContainer>? buildTransferContainers;

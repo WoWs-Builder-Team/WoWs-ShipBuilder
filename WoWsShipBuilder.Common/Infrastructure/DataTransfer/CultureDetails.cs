@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 using WoWsShipBuilder.Infrastructure.Utility;
 
-namespace WoWsShipBuilder.Features.DataTransfer;
+namespace WoWsShipBuilder.Infrastructure.DataTransfer;
 
 public sealed record CultureDetails(
     [property: JsonConverter(typeof(CultureInfoConverter))]

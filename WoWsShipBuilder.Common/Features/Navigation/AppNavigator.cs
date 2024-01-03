@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using WoWsShipBuilder.Infrastructure.Metrics;
 
-namespace WoWsShipBuilder.Features.DataTransfer;
+namespace WoWsShipBuilder.Features.Navigation;
 
 public class AppNavigator
 {
