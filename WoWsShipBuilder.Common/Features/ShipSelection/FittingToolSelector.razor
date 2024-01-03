@@ -6,8 +6,8 @@
 @using Microsoft.Extensions.Options
 @using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.Features.Settings
-@using WoWsShipBuilder.Infrastructure.DataTransfer
 @using System.Collections.Immutable
+@using WoWsShipBuilder.Features.Navigation
 
 @inject ILocalizer Localizer
 @inject IHostEnvironment Environment
@@ -15,6 +15,7 @@
 @inject NavigationManager NavManager
 @inject SessionStateCache SessionStateCache
 @inject AppSettings AppSettings
+@inject AppNavigator AppNavigator
 
 @if (!AppSettings.FittingToolSelectorDisabled)
 {
@@ -143,8 +144,7 @@
         }
         else
         {
-            SessionStateCache.SetBuildTransferContainers(shipBuildContainer);
-            NavManager.NavigateTo("/ship?shipIndexes=" + ship.Index);
+            AppNavigator.NavigateTo(AppNavigator.AppPage.ShipStats, shipBuildContainer);
         }
     }
 }

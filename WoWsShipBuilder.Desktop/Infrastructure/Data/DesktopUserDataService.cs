@@ -93,7 +93,6 @@ public class DesktopUserDataService : IUserDataService
         this.savedBuilds ??= (await this.LoadBuildsAsync()).ToList();
 
         var buildsList = builds.ToList();
-        var savingBuildCancelled = 0;
 
         foreach (var build in buildsList.Where(x => AppData.ShipDictionary.ContainsKey(x.ShipIndex)))
         {
@@ -101,37 +100,18 @@ public class DesktopUserDataService : IUserDataService
             var buildToUpdate = this.savedBuilds.Find(x => x.ShipIndex.Equals(build.ShipIndex, StringComparison.Ordinal) && x.BuildName.Equals(build.BuildName, StringComparison.Ordinal));
             if (buildToUpdate != null)
             {
-                DialogOptions options = new()
-                {
-                    NoHeader = true,
-                    CloseOnEscapeKey = true,
-                };
-                DialogParameters parameters = new()
-                {
-                    ["BuildName"] = build.BuildName,
-                    ["ShipIndex"] = build.ShipIndex,
-                };
-                var result = await (await this.dialogService.ShowAsync<UpdateSavedBuildConfirmationDialog>(string.Empty, parameters, options)).Result;
-                if (!result.Canceled && (bool)result.Data)
+                bool updateBuild = await this.OpenUpdateBuildConfirmationDialog(buildToUpdate);
+                if (updateBuild)
                 {
                     int index = this.savedBuilds.IndexOf(buildToUpdate);
                     this.savedBuilds.Remove(buildToUpdate);
                     this.savedBuilds.Insert(index, build);
-                }
-                else
-                {
-                    savingBuildCancelled++;
                 }
             }
             else
             {
                 this.savedBuilds.Insert(0, build);
             }
-        }
-
-        if (savingBuildCancelled == buildsList.Count)
-        {
-            return;
         }
 
         await this.SaveBuildsAsync(this.savedBuilds);
@@ -147,5 +127,21 @@ public class DesktopUserDataService : IUserDataService
         this.savedBuilds.RemoveMany(builds);
 
         await this.SaveBuildsAsync(this.savedBuilds);
+    }
+
+    private async Task<bool> OpenUpdateBuildConfirmationDialog(Build build)
+    {
+        DialogOptions options = new()
+        {
+            NoHeader = true,
+            CloseOnEscapeKey = true,
+        };
+        DialogParameters parameters = new()
+        {
+            ["BuildName"] = build.BuildName,
+            ["ShipIndex"] = build.ShipIndex,
+        };
+        var result = await (await this.dialogService.ShowAsync<UpdateSavedBuildConfirmationDialog>(string.Empty, parameters, options)).Result;
+        return !result.Canceled && (bool)result.Data;
     }
 }

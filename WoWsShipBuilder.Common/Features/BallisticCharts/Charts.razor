@@ -6,8 +6,8 @@
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.Builds.Components
 @using WoWsShipBuilder.Features.DataContainers
+@using WoWsShipBuilder.Features.Navigation
 @using WoWsShipBuilder.Infrastructure.ApplicationData
-@using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.GameData
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
@@ -20,85 +20,28 @@
 @inject MetricsService MetricsService
 @inject IBrowserViewportService BreakpointService
 @inject SessionStateCache SessionStateCache
+@inject AppNavigator AppNavigator
 
 <PageTitle>WoWs ShipBuilder: Charts</PageTitle>
-<MudTabs Elevation="2" PanelClass="pa-6" Centered Color="Color.Default" @ref="chartsTabs" Outlined Border KeepPanelsAlive ActivePanelIndexChanged="@ActivePanelChanged"  Class="sticky-tabs-header">
-    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_DispersionCharts)).Localization" ID="ChartsTabs.DispersionCharts">
-        <MudStack Row Justify="Justify.Center" Spacing="4">
-            <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="processing">
-                @if (processing)
-                {
-                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                    <MudText Class="ms-2" Typo="Typo.button">
-                        @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
-                    </MudText>
-                }
-                else
-                {
-                    <MudText Typo="Typo.button">
-                        @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_AddRemoveShips)).Localization
-                    </MudText>
-                }
-            </MudButton>
-            <MudButton OnClick="EditBuildAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="@(processing || displayedShips.Count == 0)">
-                @if (processing)
-                {
-                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                    <MudText Class="ms-2" Typo="Typo.button">
-                        @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
-                    </MudText>
-                }
-                else
-                {
-                    <MudText Typo="Typo.button">
-                        @Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_EditBuilds)).Localization
-                    </MudText>
-                }
-            </MudButton>
+<MudTabs Elevation="2" PanelClass="pa-6" Centered Color="Color.Default" @ref="chartsTabs" Outlined Border KeepPanelsAlive ActivePanelIndexChanged="@ActivePanelChanged"  Class="px-md-2 sticky-tabs-header">
+    <Header>
+        <MudDivider Vertical FlexItem Light/>
+        <MudStack Spacing="0" Row>
+            <MudTooltip Text="@Localizer.SimpleAppLocalization(nameof(Translation.Charts_OpenShipStats))" Arrow Delay="350">
+                <MudIconButton Icon="@Icons.Material.Filled.ViewComfy" OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.ShipStats, displayedShips.Values.Select(x => x.ShipBuildContainer), AppNavigator.AppPage.BallisticCharts))" Color="Color.Primary"/>
+            </MudTooltip>
+            <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInAccelerationCharts).Localization" Arrow Delay="350">
+                <MudIconButton Icon="@Icons.Material.Filled.Speed" OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.AccelerationCharts, displayedShips.Values.Select(x => x.ShipBuildContainer), AppNavigator.AppPage.BallisticCharts))" Color="Color.Primary"/>
+            </MudTooltip>
+            <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInShipComparison).Localization" Arrow Delay="350">
+                <MudIconButton Icon="@Icons.Material.Filled.FormatListBulleted" OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.ShipComparison, displayedShips.Values.Select(x => x.ShipBuildContainer), AppNavigator.AppPage.BallisticCharts))" Color="Color.Primary"/>
+            </MudTooltip>
         </MudStack>
-        <div>
-            <canvas id="@HorizontalDispersionId"></canvas>
-        </div>
-        <MudGrid Class="d-inline-flex" Style="flex-direction: column">
-            <MudItem Class="z-20 mt-1 ml-auto mr-11" xs="12" md="1" Style="@(GetPositionStyleForSelector() + "align-self: flex-end; min-width: 220px;")">
-                <MudSelect Style="min-width: 220px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotPlane)).Localization" @bind-Value="@selectedVertDispersionPlane" Variant="Variant.Outlined" SelectedValuesChanged="@(_ => ChangeVerticalDispPlaneAsync())" T="EllipsePlanes" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
-                    @foreach (var item in ellipsePlanesList)
-                    {
-                        <MudSelectItem Value="@item">
-                            <MudStack Row AlignItems="AlignItems.Center">
-                                <MudIcon Icon="@ChartsHelper.GetPlaneIcon(item)" Style="width: 20px; height: 20px; margin-bottom: 3px"/>
-                                <MudText Color="Color.Default">@Localizer.GetAppLocalization(Translation.ResourceManager.GetString(item.ToString())!).Localization</MudText>
-                            </MudStack>
-                        </MudSelectItem>
-                    }
-                </MudSelect>
-            </MudItem>
-            <MudItem Class="z-10" xs="12">
-                <div>
-                    <canvas id="@VerticalDispersionId"></canvas>
-                </div>
-            </MudItem>
-        </MudGrid>
-    </MudTabPanel>
-    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DispersionPlot)).Localization" ID="ChartsTabs.DispersionPlot">
-        <MudStack>
-             <MudExpansionPanels>
-                 <MudExpansionPanel Dense="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
-                     <TitleContent>
-                         <div class="d-flex">
-                             <MudIcon Icon="@Icons.Material.Filled.Info" class="mr-3"></MudIcon>
-                             <MudText Style="font-size: large">@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DispPlotExplanation)).Localization</MudText>
-                         </div>
-                     </TitleContent>
-                     <ChildContent>
-                         <div style="white-space: break-spaces">
-                             <MudText>@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DispPlotDescription)).Localization</MudText>
-                         </div>
-                     </ChildContent>
-                 </MudExpansionPanel>
-            </MudExpansionPanels>
-            <MudStack Row="true" Style="flex-wrap: wrap">
-                <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing" DisableElevation FullWidth="@SetFullWidth()">
+    </Header>
+    <ChildContent>
+        <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_DispersionCharts)).Localization" ID="ChartsTabs.DispersionCharts">
+            <MudStack Row Justify="Justify.Center" Spacing="4">
+                <MudButton OnClick="@EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="processing">
                     @if (processing)
                     {
                         <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -113,7 +56,7 @@
                         </MudText>
                     }
                 </MudButton>
-                <MudButton OnClick="EditBuildAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="@(processing || displayedShips.Count == 0)">
+                <MudButton OnClick="@EditBuildAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="@(processing || displayedShips.Count == 0)">
                     @if (processing)
                     {
                         <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -128,130 +71,204 @@
                         </MudText>
                     }
                 </MudButton>
-                <MudNumericField Value="aimingRange" Label="@($"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization} ({Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization})")" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateDispersionPlotRange" T="double" DebounceInterval="500" Disabled="processing" Margin="Margin.Dense" Min="1" Max="50" Step="0.5"/>
-                <MudNumericField Value="shotsNumber" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ShotsNumber)).Localization" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateDispersionPlotShotsNumber" T="int" DebounceInterval="500" Disabled="processing" Margin="Margin.Dense" Min="1" Max="500" Step="1"/>
-                <MudNumericField Value="dispPlotScaling" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotScaling)).Localization" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateDispersionPlotScaling" T="double" DebounceInterval="500" Disabled="processing" Margin="Margin.Dense" Min="0.1" Max="4" Step="0.1"/>
-                <MudSelect Style="min-width: 196px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotOrientation)).Localization" Variant="Variant.Outlined" T="bool" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="@(_ => SetVerticalDispersionPlot(!verticalDispPlot))">
-                    <MudSelectItem Value="@false">
-                        <MudText>@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Horizontal)).Localization</MudText>
-                    </MudSelectItem>
-                    <MudSelectItem Value="@true">
-                        <MudText>@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical)).Localization</MudText>
-                    </MudSelectItem>
-                </MudSelect>
-                <MudSelect Style="min-width: 254px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotPlane)).Localization" @bind-Value="@selectedDispPlotPlane" Variant="Variant.Outlined" T="EllipsePlanes" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
-                    @foreach (var item in ellipsePlanesList)
-                    {
-                        <MudSelectItem Value="@item">
-                            <MudStack Row AlignItems="AlignItems.Center">
-                                <MudIcon Icon="@ChartsHelper.GetPlaneIcon(item)" Style="width: 20px; height: 20px; margin-bottom: 3px"/>
-                                <MudText>@Localizer.GetAppLocalization(item.ToString()).Localization</MudText>
-                            </MudStack>
-                        </MudSelectItem>
-                    }
-                </MudSelect>
-                <MudSelect Style="min-width: 194px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DrawFusoReference)).Localization" @bind-Value="@selectedFusoPosition" Variant="Variant.Outlined" T="DispersionPlot.FusoPositions" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
-                    @foreach (var item in fusoPositionsList)
-                    {
-                        <MudSelectItem Value="@item">
-                            <MudText>@Localizer.GetAppLocalization(item.ToString()).Localization</MudText>
-                        </MudSelectItem>
-                    }
-                </MudSelect>
             </MudStack>
-            <DispersionPlot Ships="GetDataForDispersionPlot()" EllipsePlane="selectedDispPlotPlane" FusoPosition="selectedFusoPosition" IsVertical="verticalDispPlot" PlotScaling="dispPlotScaling" Tab="@((ChartsTabs)chartsTabs.ActivePanel.ID)"/>
-        </MudStack>
-    </MudTabPanel>
-    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_BallisticCharts)).Localization" ID="ChartsTabs.BallisticCharts">
-        <MudStack Row Justify="Justify.Center" Spacing="4">
-            <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="processing">
-                @if (processing)
-                {
-                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                    <MudText Class="ms-2" Typo="Typo.button">
-                        @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
-                    </MudText>
-                }
-                else
-                {
-                    <MudText Typo="Typo.button">
-                        @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_AddRemoveShips)).Localization
-                    </MudText>
-                }
-            </MudButton>
-            <MudButton OnClick="EditBuildAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="@(processing || displayedShips.Count == 0)">
-                @if (processing)
-                {
-                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                    <MudText Class="ms-2" Typo="Typo.button">
-                        @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
-                    </MudText>
-                }
-                else
-                {
-                    <MudText Typo="Typo.button">
-                        @Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_EditBuilds)).Localization
-                    </MudText>
-                }
-            </MudButton>
-        </MudStack>
-        <div>
-            <canvas id="@PenetrationId"></canvas>
-        </div>
-        <div>
-            <canvas id="@FlightTimeId"></canvas>
-        </div>
-        <div>
-            <canvas id="@ImpactVelocityId"></canvas>
-        </div>
-        <div>
-            <canvas id="@ImpactAngleId"></canvas>
-        </div>
-    </MudTabPanel>
-    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_ShellTrajectoryChart)).Localization" ID="ChartsTabs.TrajectoryChart">
-        <MudStack Row Justify="Justify.Center" Spacing="4">
-            <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="processing">
-                @if (processing)
-                {
-                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                    <MudText Class="ms-2" Typo="Typo.button">
-                        @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
-                    </MudText>
-                }
-                else
-                {
-                    <MudText Typo="Typo.button">
-                        @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_AddRemoveShips)).Localization
-                    </MudText>
-                }
-            </MudButton>
-            <MudButton OnClick="EditBuildAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="@(processing || displayedShips.Count == 0)">
-                @if (processing)
-                {
-                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                    <MudText Class="ms-2" Typo="Typo.button">
-                        @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
-                    </MudText>
-                }
-                else
-                {
-                    <MudText Typo="Typo.button">
-                        @Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_EditBuilds)).Localization
-                    </MudText>
-                }
-            </MudButton>
-        </MudStack>
-        <MudGrid Class="d-inline-flex" Style="flex-direction: column">
-            <MudItem Class="z-20 mt-1 ml-auto mr-5 d-inline-flex" xs="12" md="1" Style="@(GetPositionStyleForSelector() + "align-self: flex-end;")">
-                <MudNumericField Value="range" Label="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateTrajectoryAsync" T="double" DebounceInterval="250" Disabled="processing" Margin="Margin.Dense" Min="0"/>
-            </MudItem>
-            <MudItem Class="z-10" xs="12">
-                <div>
-                    <canvas id="@TrajectoryId"></canvas>
-                </div>
-            </MudItem>
-        </MudGrid>
-    </MudTabPanel>
+            <div>
+                <canvas id="@HorizontalDispersionId"></canvas>
+            </div>
+            <MudGrid Class="d-inline-flex" Style="flex-direction: column">
+                <MudItem Class="z-20 mt-1 ml-auto mr-11" xs="12" md="1" Style="@(GetPositionStyleForSelector() + "align-self: flex-end; min-width: 220px;")">
+                    <MudSelect Style="min-width: 220px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotPlane)).Localization" @bind-Value="@selectedVertDispersionPlane" Variant="Variant.Outlined" SelectedValuesChanged="@(_ => ChangeVerticalDispPlaneAsync())" T="EllipsePlanes" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
+                        @foreach (var item in ellipsePlanesList)
+                        {
+                            <MudSelectItem Value="@item">
+                                <MudStack Row AlignItems="AlignItems.Center">
+                                    <MudIcon Icon="@ChartsHelper.GetPlaneIcon(item)" Style="width: 20px; height: 20px; margin-bottom: 3px"/>
+                                    <MudText Color="Color.Default">@Localizer.GetAppLocalization(Translation.ResourceManager.GetString(item.ToString())!).Localization</MudText>
+                                </MudStack>
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem Class="z-10" xs="12">
+                    <div>
+                        <canvas id="@VerticalDispersionId"></canvas>
+                    </div>
+                </MudItem>
+            </MudGrid>
+        </MudTabPanel>
+        <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DispersionPlot)).Localization" ID="ChartsTabs.DispersionPlot">
+            <MudStack>
+                 <MudExpansionPanels>
+                     <MudExpansionPanel Dense="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
+                         <TitleContent>
+                             <div class="d-flex">
+                                 <MudIcon Icon="@Icons.Material.Filled.Info" class="mr-3"></MudIcon>
+                                 <MudText Style="font-size: large">@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DispPlotExplanation)).Localization</MudText>
+                             </div>
+                         </TitleContent>
+                         <ChildContent>
+                             <div style="white-space: break-spaces">
+                                 <MudText>@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DispPlotDescription)).Localization</MudText>
+                             </div>
+                         </ChildContent>
+                     </MudExpansionPanel>
+                </MudExpansionPanels>
+                <MudStack Row="true" Style="flex-wrap: wrap">
+                    <MudButton OnClick="@EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing" DisableElevation FullWidth="@SetFullWidth()">
+                        @if (processing)
+                        {
+                            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                            <MudText Class="ms-2" Typo="Typo.button">
+                                @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
+                            </MudText>
+                        }
+                        else
+                        {
+                            <MudText Typo="Typo.button">
+                                @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_AddRemoveShips)).Localization
+                            </MudText>
+                        }
+                    </MudButton>
+                    <MudButton OnClick="@EditBuildAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="@(processing || displayedShips.Count == 0)">
+                        @if (processing)
+                        {
+                            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                            <MudText Class="ms-2" Typo="Typo.button">
+                                @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
+                            </MudText>
+                        }
+                        else
+                        {
+                            <MudText Typo="Typo.button">
+                                @Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_EditBuilds)).Localization
+                            </MudText>
+                        }
+                    </MudButton>
+                    <MudNumericField Value="aimingRange" Label="@($"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization} ({Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization})")" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateDispersionPlotRange" T="double" DebounceInterval="500" Disabled="processing" Margin="Margin.Dense" Min="1" Max="50" Step="0.5"/>
+                    <MudNumericField Value="shotsNumber" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ShotsNumber)).Localization" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateDispersionPlotShotsNumber" T="int" DebounceInterval="500" Disabled="processing" Margin="Margin.Dense" Min="1" Max="500" Step="1"/>
+                    <MudNumericField Value="dispPlotScaling" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotScaling)).Localization" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateDispersionPlotScaling" T="double" DebounceInterval="500" Disabled="processing" Margin="Margin.Dense" Min="0.1" Max="4" Step="0.1"/>
+                    <MudSelect Style="min-width: 196px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotOrientation)).Localization" Variant="Variant.Outlined" T="bool" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="@(_ => SetVerticalDispersionPlot(!verticalDispPlot))">
+                        <MudSelectItem Value="@false">
+                            <MudText>@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Horizontal)).Localization</MudText>
+                        </MudSelectItem>
+                        <MudSelectItem Value="@true">
+                            <MudText>@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical)).Localization</MudText>
+                        </MudSelectItem>
+                    </MudSelect>
+                    <MudSelect Style="min-width: 254px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotPlane)).Localization" @bind-Value="@selectedDispPlotPlane" Variant="Variant.Outlined" T="EllipsePlanes" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
+                        @foreach (var item in ellipsePlanesList)
+                        {
+                            <MudSelectItem Value="@item">
+                                <MudStack Row AlignItems="AlignItems.Center">
+                                    <MudIcon Icon="@ChartsHelper.GetPlaneIcon(item)" Style="width: 20px; height: 20px; margin-bottom: 3px"/>
+                                    <MudText>@Localizer.GetAppLocalization(item.ToString()).Localization</MudText>
+                                </MudStack>
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                    <MudSelect Style="min-width: 194px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DrawFusoReference)).Localization" @bind-Value="@selectedFusoPosition" Variant="Variant.Outlined" T="DispersionPlot.FusoPositions" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
+                        @foreach (var item in fusoPositionsList)
+                        {
+                            <MudSelectItem Value="@item">
+                                <MudText>@Localizer.GetAppLocalization(item.ToString()).Localization</MudText>
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudStack>
+                <DispersionPlot Ships="GetDataForDispersionPlot()" EllipsePlane="selectedDispPlotPlane" FusoPosition="selectedFusoPosition" IsVertical="verticalDispPlot" PlotScaling="dispPlotScaling" Tab="@((ChartsTabs)chartsTabs.ActivePanel.ID)"/>
+            </MudStack>
+        </MudTabPanel>
+        <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_BallisticCharts)).Localization" ID="ChartsTabs.BallisticCharts">
+            <MudStack Row Justify="Justify.Center" Spacing="4">
+                <MudButton OnClick="@EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="processing">
+                    @if (processing)
+                    {
+                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                        <MudText Class="ms-2" Typo="Typo.button">
+                            @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
+                        </MudText>
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.button">
+                            @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_AddRemoveShips)).Localization
+                        </MudText>
+                    }
+                </MudButton>
+                <MudButton OnClick="@EditBuildAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="@(processing || displayedShips.Count == 0)">
+                    @if (processing)
+                    {
+                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                        <MudText Class="ms-2" Typo="Typo.button">
+                            @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
+                        </MudText>
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.button">
+                            @Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_EditBuilds)).Localization
+                        </MudText>
+                    }
+                </MudButton>
+            </MudStack>
+            <div>
+                <canvas id="@PenetrationId"></canvas>
+            </div>
+            <div>
+                <canvas id="@FlightTimeId"></canvas>
+            </div>
+            <div>
+                <canvas id="@ImpactVelocityId"></canvas>
+            </div>
+            <div>
+                <canvas id="@ImpactAngleId"></canvas>
+            </div>
+        </MudTabPanel>
+        <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_ShellTrajectoryChart)).Localization" ID="ChartsTabs.TrajectoryChart">
+            <MudStack Row Justify="Justify.Center" Spacing="4">
+                <MudButton OnClick="@EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="processing">
+                    @if (processing)
+                    {
+                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                        <MudText Class="ms-2" Typo="Typo.button">
+                            @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
+                        </MudText>
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.button">
+                            @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_AddRemoveShips)).Localization
+                        </MudText>
+                    }
+                </MudButton>
+                <MudButton OnClick="@EditBuildAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="@(processing || displayedShips.Count == 0)">
+                    @if (processing)
+                    {
+                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                        <MudText Class="ms-2" Typo="Typo.button">
+                            @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
+                        </MudText>
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.button">
+                            @Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_EditBuilds)).Localization
+                        </MudText>
+                    }
+                </MudButton>
+            </MudStack>
+            <MudGrid Class="d-inline-flex" Style="flex-direction: column">
+                <MudItem Class="z-20 mt-1 ml-auto mr-5 d-inline-flex" xs="12" md="1" Style="@(GetPositionStyleForSelector() + "align-self: flex-end;")">
+                    <MudNumericField Value="range" Label="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateTrajectoryAsync" T="double" DebounceInterval="250" Disabled="processing" Margin="Margin.Dense" Min="0"/>
+                </MudItem>
+                <MudItem Class="z-10" xs="12">
+                    <div>
+                        <canvas id="@TrajectoryId"></canvas>
+                    </div>
+                </MudItem>
+            </MudGrid>
+        </MudTabPanel>
+    </ChildContent>
 </MudTabs>
 <MudScrollToTop TopOffset="100" Style="z-index:2001">
     <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.KeyboardDoubleArrowUp"/>
@@ -315,13 +332,13 @@
         {
             MetricsService.PageAccessCount.WithLabels("ballistic_charts").Inc();
             var panelId = chartsTabs.ActivePanel.ID.ToString() ?? "unknown";
-            MetricsService.ChartsTabUsage.WithLabels(panelId).Inc();
+            MetricsService.BallisticChartsTabUsage.WithLabels(panelId).Inc();
             SetProcessing(true);
             Breakpoint = await BreakpointService.GetCurrentBreakpointAsync();
             await SetupChartsAsync();
             if (shipIndexesFromUrl.Any())
             {
-                var buildContainers = SessionStateCache.GetAndResetBuildTransferContainers() ?? (shipIndexesFromUrl.Any() ? shipIndexesFromUrl.Select(x =>  ShipBuildContainer.CreateNew(AppData.ShipDictionary[x], null, null) with { ShipDataContainer = DataContainerUtility.GetStockShipDataContainer(AppData.ShipDictionary[x]) }) : null);
+                IEnumerable<ShipBuildContainer>? buildContainers = SessionStateCache.GetAndResetBuildTransferContainers() ?? (shipIndexesFromUrl.Any() ? shipIndexesFromUrl.Select(x =>  ShipBuildContainer.CreateNew(AppData.ShipDictionary[x], null, null) with { ShipDataContainer = DataContainerUtility.GetStockShipDataContainer(AppData.ShipDictionary[x]) }) : null);
                 if (buildContainers is not null)
                 {
                     List<ChartsDataWrapper> shipsToAdd = new();
@@ -755,6 +772,6 @@
     private void ActivePanelChanged(int index)
     {
         var panelId = chartsTabs.ActivePanel.ID.ToString() ?? "unknown";
-        MetricsService.ChartsTabUsage.WithLabels(panelId).Inc();
+        MetricsService.BallisticChartsTabUsage.WithLabels(panelId).Inc();
     }
 }

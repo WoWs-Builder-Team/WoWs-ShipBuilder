@@ -100,7 +100,7 @@
                                                 {
                                                     @DataElementFragment((data, Localizer))
                                                 }
-                                                <MudText Typo="Typo.body2" Class="link-text" @onclick="@(_ => SendBuildToBallisticCharts(shell.Name, true))">
+                                                <MudText Typo="Typo.body2" Class="link-text" @onclick="@(_ => StoreBuildsForTransfer(true, shell.Name))">
                                                     @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_ShowCharts)).Localization
                                                 </MudText>
                                             </MudStack>
@@ -452,7 +452,7 @@
                                 @DataElementFragment((data, Localizer))
                             }
                         </MudStack>
-                        <MudText Typo="Typo.body2" Class="expander-content-padding mt-n1 link-text" @onclick="@(_ => SendBuildToAccelerationCharts(false))">
+                        <MudText Typo="Typo.body2" Class="expander-content-padding mt-n1 link-text" @onclick="@(_ => StoreBuildsForTransfer(false, null))">
                             @Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowAccelerationCharts)).Localization
                         </MudText>
                     </MudExpansionPanel>
@@ -500,7 +500,7 @@
                                 {
                                     @DataElementFragment((data, Localizer))
                                 }
-                                @foreach (var modifier in ViewModel.CurrentShipStats.SpecialAbilityDataContainer.Modifiers ?? new())
+                                @foreach (var modifier in ViewModel.CurrentShipStats.SpecialAbilityDataContainer.Modifiers)
                                 {
                                     <div class="d-flex justify-space-between">
                                         <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.Description, Localizer)</MudText>
@@ -519,14 +519,9 @@
 @code {
 
     [Parameter, EditorRequired]
-    public Action<bool> StoreBuildsForTransfer { get; set; } = default!;
+    public Action<bool, string?> StoreBuildsForTransfer { get; set; } = default!;
 
     private bool showDepthChargeDamageDistributionChart;
-
-    private void NavigateToGraph(string shipIndex, string shellIndex)
-    {
-        NavManager.NavigateTo($"/charts?shipIndex={shipIndex}&shellIndex={shellIndex}");
-    }
 
     private string GetIconFromClass(ShipClass shipClass)
     {
@@ -572,20 +567,6 @@
     private string GetDepthChargeDamageDistributionChartVisibility()
     {
         return showDepthChargeDamageDistributionChart ? "align-content: center; visibility: visible; height:100%; width:100%" : "height: 0px; visibility: hidden";
-    }
-
-    private void SendBuildToBallisticCharts(string shellName, bool calculateShipDataContainer)
-    {
-        MetricsService.ShipStatsActions.WithLabels("open-ballistic-inline").Inc();
-        StoreBuildsForTransfer(calculateShipDataContainer);
-        NavManager.NavigateTo($"/charts?shipIndex={ViewModel!.CurrentShipStats!.Index}&shellIndex={shellName}");
-    }
-
-    private void SendBuildToAccelerationCharts(bool calculateShipDataContainer)
-    {
-        MetricsService.ShipStatsActions.WithLabels("open-acceleration-inline").Inc();
-        StoreBuildsForTransfer(calculateShipDataContainer);
-        NavManager.NavigateTo($"/acceleration-charts?shipIndexes={ViewModel!.CurrentShipStats!.Index}");
     }
 
     private static string FixSpecialAbilityDescription(string description)

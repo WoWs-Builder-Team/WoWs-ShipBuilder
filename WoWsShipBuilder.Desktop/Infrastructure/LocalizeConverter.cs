@@ -6,144 +6,142 @@ using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.Desktop.Infrastructure.StaticConfiguration;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.DataTransfer;
 using WoWsShipBuilder.Infrastructure.Localization;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;
 using WoWsShipBuilder.Infrastructure.Utility;
 
-namespace WoWsShipBuilder.Desktop.Infrastructure
+namespace WoWsShipBuilder.Desktop.Infrastructure;
+
+/// <summary>
+/// An <see cref="IValueConverter"/> that allows to convert a string to its localized version.
+/// Accesses the localizations provided by <see cref="ILocalizer"/>.
+/// </summary>
+public class LocalizeConverter : IValueConverter
 {
+    private static ILocalizer localizer = new DemoLocalizerImpl();
+
     /// <summary>
-    /// An <see cref="IValueConverter"/> that allows to convert a string to its localized version.
-    /// Accesses the localizations provided by <see cref="ILocalizer"/>.
+    /// Converts a string to the localized string for the currently selected language.
     /// </summary>
-    public class LocalizeConverter : IValueConverter
+    /// <param name="value">The object to convert. Should be a string.</param>
+    /// <param name="targetType">The target type of the conversion. Should be of type string.</param>
+    /// <param name="parameter">The conversion parameter. Ignored by this converter.</param>
+    /// <param name="culture">The conversion culture. Ignored by this converter, use the selected locale of <see cref="ApplicationSettings"/> instead.</param>
+    /// <returns>The localized string or the provided value if there is no localization available.</returns>
+    /// <exception cref="NotSupportedException">Occurs if the provided value is not a string and the target type is not string either.</exception>
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        private static ILocalizer localizer = new DemoLocalizerImpl();
-
-        /// <summary>
-        /// Converts a string to the localized string for the currently selected language.
-        /// </summary>
-        /// <param name="value">The object to convert. Should be a string.</param>
-        /// <param name="targetType">The target type of the conversion. Should be of type string.</param>
-        /// <param name="parameter">The conversion parameter. Ignored by this converter.</param>
-        /// <param name="culture">The conversion culture. Ignored by this converter, use the selected locale of <see cref="ApplicationSettings"/> instead.</param>
-        /// <returns>The localized string or the provided value if there is no localization available.</returns>
-        /// <exception cref="NotSupportedException">Occurs if the provided value is not a string and the target type is not string either.</exception>
-        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        if (value is string localizerKey && targetType.IsAssignableFrom(typeof(string)))
         {
-            if (value is string localizerKey && targetType.IsAssignableFrom(typeof(string)))
+            if (parameter is not string stringParam)
             {
-                if (parameter is not string stringParam)
-                {
-                    string localization = localizer.GetGameLocalization(localizerKey).Localization.Trim();
-                    return !string.IsNullOrEmpty(localization) ? localization : "noName";
-                }
-
-                if (stringParam.Equals("RESX", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    string? localization = Translation.ResourceManager.GetString(localizerKey, culture);
-
-                    // TODO: fix properly by handling Unit property in TooltipDataElement generation
-                    if (localization == null && !string.IsNullOrWhiteSpace(localizerKey))
-                    {
-                        Logging.Logger.LogWarning("Missing localization for key {LocalizerKey}", localizerKey);
-                        Debug.WriteLine(localizerKey);
-                    }
-
-                    return localization ?? localizerKey;
-                }
-
-                if (localizerKey.Contains("Placeholder", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return Translation.ResourceManager.GetString($"{stringParam}_{localizerKey}", culture) ?? string.Empty;
-                }
-
-                if (stringParam.Equals("SKILL") || stringParam.Equals("SKILL_DESC"))
-                {
-                    localizerKey = ToSnakeCase(localizerKey);
-                }
-
-                LocalizationResult result;
-                if (stringParam.StartsWith('_'))
-                {
-                    result = localizer.GetGameLocalization(localizerKey + stringParam);
-                }
-                else
-                {
-                    if (!stringParam.EndsWith("_", StringComparison.OrdinalIgnoreCase))
-                    {
-                        stringParam += "_";
-                    }
-
-                    result = localizer.GetGameLocalization(stringParam + localizerKey);
-                }
-
-                return result.Localization.Trim();
+                string localization = localizer.GetGameLocalization(localizerKey).Localization.Trim();
+                return !string.IsNullOrEmpty(localization) ? localization : "noName";
             }
 
-            if (value is Enum enumValue)
+            if (stringParam.Equals("RESX", StringComparison.InvariantCultureIgnoreCase))
             {
-                var enumString = enumValue.ToString();
-                return Translation.ResourceManager.GetString(enumString, culture) ?? enumString;
-            }
+                string? localization = Translation.ResourceManager.GetString(localizerKey, culture);
 
-            return new BindingNotification(new NotSupportedException(), BindingErrorType.Error, value);
-        }
-
-        public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            return new BindingNotification(new NotSupportedException(), BindingErrorType.Error, value);
-        }
-
-        private static string ToSnakeCase(string camelCaseString)
-        {
-            if (camelCaseString == null)
-            {
-                throw new ArgumentNullException(nameof(camelCaseString));
-            }
-
-            if (camelCaseString.Length < 2)
-            {
-                return camelCaseString;
-            }
-
-            var sb = new StringBuilder();
-            sb.Append(char.ToLowerInvariant(camelCaseString[0]));
-            for (var i = 1; i < camelCaseString.Length; ++i)
-            {
-                char c = camelCaseString[i];
-                if (char.IsUpper(c))
+                // TODO: fix properly by handling Unit property in TooltipDataElement generation
+                if (localization == null && !string.IsNullOrWhiteSpace(localizerKey))
                 {
-                    sb.Append('_');
-                    sb.Append(char.ToLowerInvariant(c));
+                    Logging.Logger.LogWarning("Missing localization for key {LocalizerKey}", localizerKey);
+                    Debug.WriteLine(localizerKey);
                 }
-                else
-                {
-                    sb.Append(c);
-                }
+
+                return localization ?? localizerKey;
             }
 
-            return sb.ToString();
+            if (localizerKey.Contains("Placeholder", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return Translation.ResourceManager.GetString($"{stringParam}_{localizerKey}", culture) ?? string.Empty;
+            }
+
+            if (stringParam.Equals("SKILL") || stringParam.Equals("SKILL_DESC"))
+            {
+                localizerKey = ToSnakeCase(localizerKey);
+            }
+
+            LocalizationResult result;
+            if (stringParam.StartsWith('_'))
+            {
+                result = localizer.GetGameLocalization(localizerKey + stringParam);
+            }
+            else
+            {
+                if (!stringParam.EndsWith("_", StringComparison.OrdinalIgnoreCase))
+                {
+                    stringParam += "_";
+                }
+
+                result = localizer.GetGameLocalization(stringParam + localizerKey);
+            }
+
+            return result.Localization.Trim();
         }
 
-        public static void InitializeLocalizer(ILocalizer localizer)
+        if (value is Enum enumValue)
         {
-            LocalizeConverter.localizer = localizer;
+            var enumString = enumValue.ToString();
+            return Translation.ResourceManager.GetString(enumString, culture) ?? enumString;
         }
 
-        private sealed class DemoLocalizerImpl : ILocalizer
+        return new BindingNotification(new NotSupportedException(), BindingErrorType.Error, value);
+    }
+
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        return new BindingNotification(new NotSupportedException(), BindingErrorType.Error, value);
+    }
+
+    private static string ToSnakeCase(string camelCaseString)
+    {
+        if (camelCaseString == null)
         {
-            public LocalizationResult this[string key] => this.GetGameLocalization(key);
-
-            public LocalizationResult GetGameLocalization(string key) => new(true, key);
-
-            public LocalizationResult GetGameLocalization(string key, CultureDetails language) => new(true, key);
-
-            public LocalizationResult GetAppLocalization(string key) => new(true, key);
-
-            public LocalizationResult GetAppLocalization(string key, CultureDetails language) => new(true, key);
+            throw new ArgumentNullException(nameof(camelCaseString));
         }
+
+        if (camelCaseString.Length < 2)
+        {
+            return camelCaseString;
+        }
+
+        var sb = new StringBuilder();
+        sb.Append(char.ToLowerInvariant(camelCaseString[0]));
+        for (var i = 1; i < camelCaseString.Length; ++i)
+        {
+            char c = camelCaseString[i];
+            if (char.IsUpper(c))
+            {
+                sb.Append('_');
+                sb.Append(char.ToLowerInvariant(c));
+            }
+            else
+            {
+                sb.Append(c);
+            }
+        }
+
+        return sb.ToString();
+    }
+
+    public static void InitializeLocalizer(ILocalizer localizer)
+    {
+        LocalizeConverter.localizer = localizer;
+    }
+
+    private sealed class DemoLocalizerImpl : ILocalizer
+    {
+        public LocalizationResult this[string key] => this.GetGameLocalization(key);
+
+        public LocalizationResult GetGameLocalization(string key) => new(true, key);
+
+        public LocalizationResult GetGameLocalization(string key, CultureDetails language) => new(true, key);
+
+        public LocalizationResult GetAppLocalization(string key) => new(true, key);
+
+        public LocalizationResult GetAppLocalization(string key, CultureDetails language) => new(true, key);
     }
 }
