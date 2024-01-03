@@ -7,6 +7,8 @@ on:
       - 'deployment/**/*.*'
   pull_request:
     types: [opened, synchronize, reopened]
+    paths-ignore:
+      - '**/Localization/Resources/Translation.*.resx'
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
