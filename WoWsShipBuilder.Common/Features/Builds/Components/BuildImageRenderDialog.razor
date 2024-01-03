@@ -234,6 +234,7 @@
         {
             await EditBuildName();
             StateHasChanged();
+            await Task.Delay(5); // needed to allow the dom to update properly
         }
 
         if (!string.IsNullOrWhiteSpace(BuildName))
@@ -254,6 +255,7 @@
         {
             await EditBuildName();
             StateHasChanged();
+            await Task.Delay(5); // needed to allow the dom to update properly
         }
 
         if (!string.IsNullOrWhiteSpace(BuildName))
