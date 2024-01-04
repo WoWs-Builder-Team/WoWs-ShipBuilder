@@ -2189,4 +2189,7 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="BuildImageRenderDialog_CopyImage" xml:space="preserve">
     <value>Copy Image</value>
   </data>
+  <data name="ShipComparison_Display" xml:space="preserve">
+    <value>Display</value>
+  </data>
 </root>

@@ -2304,6 +2304,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Display.
+        /// </summary>
+        public static string ShipComparison_Display {
+            get {
+                return ResourceManager.GetString("ShipComparison_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Display only pinned ships.
         /// </summary>
         public static string ShipComparison_DisplayOnlyPinnedShips {

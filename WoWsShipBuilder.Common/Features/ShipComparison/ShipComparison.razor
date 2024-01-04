@@ -151,7 +151,7 @@
             {
                 <MudNumericField Value="@(ViewModel.SelectedDataSection == ShipComparisonDataSections.SecondaryBattery ? ViewModel.SecondaryBatteryFiringRange : ViewModel.MainBatteryFiringRange)" ValueChanged="@(async range => await UpdateRange(range))" Label="@($"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization} ({Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization})")" Class="mud-data-grid-range-selector" Variant="Variant.Outlined" Immediate="true" T="double" DebounceInterval="500" Margin="Margin.Dense" Min="1" Max="50" Step="0.5"/>
             }
-            <MudNumericField Value="@pageSize" ValueChanged="@(async size => await ChangePageSize(size))" Label="@("Display:")" Class="mud-data-grid-range-selector" Variant="Variant.Outlined" Immediate T="int" DebounceInterval="500" Margin="Margin.Dense" Min="@MinPageSize" Max="@MaxPageSize"/>
+            <MudNumericField Value="@pageSize" ValueChanged="@(async size => await ChangePageSize(size))" Label="@($"{Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Display))}:")" Class="mud-data-grid-range-selector" Variant="Variant.Outlined" Immediate T="int" DebounceInterval="500" Margin="Margin.Dense" Min="@MinPageSize" Max="@MaxPageSize"/>
             <MudDataGridPager T="GridDataWrapper" Class="mr-n1" Style="margin-top: -14px; height: 45px; border-top: hidden !important;" DisableRowsPerPage InfoFormat="@($"{(currentPage * pageSize) + 1} - {pageSize * (currentPage + 1)} / {totalShips}")"/>
         </ToolBarContent>
         <Columns>
@@ -260,7 +260,7 @@
         </Columns>
         <PagerContent>
             <MudStack Row Spacing="0" Style="margin: 0 0 0 0; padding: 0 0 0 0;" Class="mt-1">
-                <MudNumericField Value="@pageSize" ValueChanged="@(async size => await ChangePageSize(size))" Label="@("Display:")" Class="mud-data-grid-page-size-selector-bottom" Variant="Variant.Outlined" Immediate T="int" DebounceInterval="500" Margin="Margin.Dense" Min="@MinPageSize" Max="@MaxPageSize"/>
+                <MudNumericField Value="@pageSize" ValueChanged="@(async size => await ChangePageSize(size))" Label="@($"{Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Display))}:")" Class="mud-data-grid-page-size-selector-bottom" Variant="Variant.Outlined" Immediate T="int" DebounceInterval="500" Margin="Margin.Dense" Min="@MinPageSize" Max="@MaxPageSize"/>
                 <MudDataGridPager Style="height: 45px; border-top: hidden !important;" T="GridDataWrapper" DisableRowsPerPage InfoFormat="@($"{(currentPage * pageSize) + 1} - {pageSize * (currentPage + 1)} / {totalShips}")"/>
             </MudStack>
         </PagerContent>
