@@ -57,6 +57,8 @@ public class AppSettings
 
     public string? ShipComparisonHiddenColumns { get; set; }
 
+    public int ShipComparisonPageSize { get; set; } = 25;
+
     public bool EnableLocalizationDebugMode { get; set; }
 
     public bool FittingToolSelectorDisabled { get; set; }
@@ -90,6 +92,7 @@ public class AppSettings
         this.ShipComparisonUseUpgradedModules = true;
         this.ShipComparisonHideShipsWithoutSection = false;
         this.ShipComparisonHiddenColumns = default;
+        this.ShipComparisonPageSize = 25;
         this.EnableLocalizationDebugMode = default;
         this.FittingToolSelectorClosedByDefault = false;
         this.FittingToolSelectorMultiSelection = false;
@@ -120,6 +123,7 @@ public class AppSettings
         this.ShipComparisonUseUpgradedModules = settings.ShipComparisonUseUpgradedModules;
         this.ShipComparisonHideShipsWithoutSection = settings.ShipComparisonHideShipsWithoutSection;
         this.ShipComparisonHiddenColumns = settings.ShipComparisonHiddenColumns;
+        this.ShipComparisonPageSize = settings.ShipComparisonPageSize;
         this.EnableLocalizationDebugMode = settings.EnableLocalizationDebugMode;
         this.FittingToolSelectorClosedByDefault = settings.FittingToolSelectorClosedByDefault;
         this.FittingToolSelectorMultiSelection = settings.FittingToolSelectorMultiSelection;

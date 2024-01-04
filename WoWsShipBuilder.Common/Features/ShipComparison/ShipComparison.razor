@@ -149,9 +149,10 @@
             }
             else
             {
-                <MudNumericField Value="@(ViewModel.SelectedDataSection == ShipComparisonDataSections.SecondaryBattery ? ViewModel.SecondaryBatteryFiringRange : ViewModel.MainBatteryFiringRange)" ValueChanged="@(async range => await UpdateRange(range))" Label="@($"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization} ({Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization})")" Class="mud-data-grid-range-selector" Variant="Variant.Text" Immediate="true" T="double" DebounceInterval="500" Margin="Margin.Dense" Min="1" Max="50" Step="0.5"/>
+                <MudNumericField Value="@(ViewModel.SelectedDataSection == ShipComparisonDataSections.SecondaryBattery ? ViewModel.SecondaryBatteryFiringRange : ViewModel.MainBatteryFiringRange)" ValueChanged="@(async range => await UpdateRange(range))" Label="@($"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization} ({Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization})")" Class="mud-data-grid-range-selector" Variant="Variant.Outlined" Immediate="true" T="double" DebounceInterval="500" Margin="Margin.Dense" Min="1" Max="50" Step="0.5"/>
             }
-            <MudDataGridPager T="GridDataWrapper" PageSizeOptions="GridPagination" Class="mr-n1" Style="margin-top: -14px" RowsPerPageString="Show:"/>
+            <MudNumericField Value="@pageSize" ValueChanged="@(async size => await ChangePageSize(size))" Label="@("Display:")" Class="mud-data-grid-range-selector" Variant="Variant.Outlined" Immediate T="int" DebounceInterval="500" Margin="Margin.Dense" Min="@MinPageSize" Max="@MaxPageSize"/>
+            <MudDataGridPager T="GridDataWrapper" Class="mr-n1" Style="margin-top: -14px; height: 45px; border-top: hidden !important;" DisableRowsPerPage InfoFormat="@($"{(currentPage * pageSize) + 1} - {pageSize * (currentPage + 1)} / {totalShips}")"/>
         </ToolBarContent>
         <Columns>
             <TemplateColumn T="GridDataWrapper" ShowColumnOptions="false" Hideable="false" Filterable="false" DragAndDropEnabled="false" StickyLeft SortBy="@(x => !ViewModel.SelectedShipList.ContainsKey(x.Id))" HeaderStyle="width:70px; background-clip: padding-box; background-color: var(--mud-palette-surface);" CellStyle="@($"width:70px; {StickyColumnsBackgroundColor}")" Resizable="false" HeaderClass="column-text-center" CellClass="column-text-center">
@@ -258,7 +259,10 @@
             @BombsDataFragment((IsColumnHidden, Localizer))
         </Columns>
         <PagerContent>
-            <MudDataGridPager T="GridDataWrapper" PageSizeOptions="GridPagination" RowsPerPageString="Show:"/>
+            <MudStack Row Spacing="0" Style="margin: 0 0 0 0; padding: 0 0 0 0;" Class="mt-1">
+                <MudNumericField Value="@pageSize" ValueChanged="@(async size => await ChangePageSize(size))" Label="@("Display:")" Class="mud-data-grid-page-size-selector-bottom" Variant="Variant.Outlined" Immediate T="int" DebounceInterval="500" Margin="Margin.Dense" Min="@MinPageSize" Max="@MaxPageSize"/>
+                <MudDataGridPager Style="height: 45px; border-top: hidden !important;" T="GridDataWrapper" DisableRowsPerPage InfoFormat="@($"{(currentPage * pageSize) + 1} - {pageSize * (currentPage + 1)} / {totalShips}")"/>
+            </MudStack>
         </PagerContent>
         <NoRecordsContent>
             <MudText>@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_NoMatchingShipsFound))</MudText>
@@ -276,7 +280,15 @@
 
     private MudDataGrid<GridDataWrapper> dataGrid = default!;
 
-    private static readonly int[] GridPagination = { 50, 100, 150, 200, 250, 300 };
+    private int pageSize;
+
+    private int currentPage;
+
+    private int totalShips;
+
+    private const int MinPageSize = 1;
+
+    private const int MaxPageSize = 300;
 
     private const string StickyColumnsBackgroundColor = "background-color: #262626";
 
@@ -304,6 +316,8 @@
 
     private const string HiddenColumnsUrlParameter = "hc";
 
+    private const string PageSizeUrlParameter = "ps";
+
     private Dictionary<string, bool> hiddenColumns = new();
 
     private string hiddeColumnsUrlString = default!;
@@ -318,6 +332,8 @@
 
         ViewModel = new(Localizer, AppSettings);
 
+        pageSize = AppSettings.ShipComparisonPageSize;
+
         NavManager.TryGetQueryString(TiersUrlParameter, out string selectedTiers);
         NavManager.TryGetQueryString(ClassesUrlParameter, out string selectedClasses);
         NavManager.TryGetQueryString(NationsUrlParameter, out string selectedNations);
@@ -329,8 +345,14 @@
         NavManager.TryGetQueryString(SecondaryRangeUrlParameter, out string secondaryRange);
         NavManager.TryGetQueryString(PinnedShipsUrlParameter, out string pinnedShips);
         NavManager.TryGetQueryString(PinnedShipsOnlyUrlParameter, out string pinnedShipsOnly);
+        NavManager.TryGetQueryString(PageSizeUrlParameter, out string pageSizeString);
 
         var applyFilters = false;
+
+        if (!string.IsNullOrEmpty(pageSizeString))
+        {
+            pageSize = int.Parse(pageSizeString);
+        }
 
         if (!string.IsNullOrEmpty(selectedTiers))
         {
@@ -720,6 +742,10 @@
             }
 
             MetricsService.ComparisonShipCount.Observe(data.Count);
+            state.PageSize = pageSize;
+            currentPage = state.Page;
+            totalShips = data.Count;
+
             return Task.FromResult<GridData<GridDataWrapper>>(new() { TotalItems = data.Count, Items = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToList() });
         }
     }
@@ -793,6 +819,15 @@
         hiddeColumnsUrlString = string.Join(',', list);
     }
 
+    private async Task ChangePageSize(int size)
+    {
+        pageSize = size;
+        await dataGrid.ReloadServerData();
+        await UpdateUrl();
+        AppSettings.ShipComparisonPageSize = pageSize;
+        await SettingsAccessor.SaveSettings(AppSettings);
+    }
+
     private async Task UpdateUrl()
     {
         QueryBuilder url = new();
@@ -854,6 +889,11 @@
         if (ViewModel!.PinnedShipList.Any())
         {
             url.Add(PinnedShipsUrlParameter, string.Join(',', ViewModel!.PinnedShipList.Take(100).Select(x => x.Value.ShipIndex)));
+        }
+
+        if (pageSize != 25)
+        {
+            url.Add(PageSizeUrlParameter, $"{pageSize}");
         }
 
         // Required instead of NavManager.NavigateTo in order to keep scroll state of the current page

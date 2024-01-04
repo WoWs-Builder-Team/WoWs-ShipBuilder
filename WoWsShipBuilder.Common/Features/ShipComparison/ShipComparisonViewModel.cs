@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
