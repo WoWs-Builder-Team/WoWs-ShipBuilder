@@ -2182,4 +2182,23 @@
   <data name="SettingsWindow_FittingToolSelectorDisabled" xml:space="preserve">
     <value>Отключено</value>
   </data>
+  <data name="Charts_OpenShipStats" xml:space="preserve">
+    <value>Открыть характеристики кораблей</value>
+  </data>
+  <data name="WebApp_ViewShipsStats" xml:space="preserve">
+    <value>Посмотреть характеристики кораблей</value>
+  </data>
+  <data name="UserDataService_BuildNotUpdated" xml:space="preserve">
+    <value>Билд не был обновлен.</value>
+  </data>
+  <data name="BuildImageRenderDialog_CopyImage" xml:space="preserve">
+    <value>Скопировать изображение</value>
+  </data>
+  <data name="OverwriteExistingBuildDialog_Message" xml:space="preserve">
+    <value>Архив уже содержит билд с названием '{0}' для корабля '{1}'</value>
+    <comment>OverwriteExistingBuildDialog_Message
+
+{0}: Build name
+{1}: Ship name</comment>
+  </data>
 </root>
