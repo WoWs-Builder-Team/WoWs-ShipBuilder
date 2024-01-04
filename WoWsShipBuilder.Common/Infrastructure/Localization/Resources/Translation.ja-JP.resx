@@ -585,6 +585,9 @@
   <data name="ShipStats_TorpedoArea" xml:space="preserve">
     <value>魚雷散布</value>
   </data>
+  <data name="ShipStats_Aircraft" xml:space="preserve">
+    <value>航空機</value>
+  </data>
   <data name="Bomb" xml:space="preserve">
     <value>爆弾</value>
   </data>
@@ -932,6 +935,30 @@
   </data>
   <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
     <value>扶桑を基準にする</value>
+  </data>
+  <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
+    <value>白の楕円は、選択された射撃距離における最大散布界を示しています。
+赤の楕円は、平均50%の砲弾が着弾する面積を示しています。
+黒の楕円は、基準として扶桑の大きさを示しています。
+
+プロット平面:
+1) 水平方向: 
+    砲弾が水面と接触する点を表示します;
+    この面を選択すると、鉛直上方向からの視点に切り替わります;
+    他の船と散布界を比較する場合は、このプロットを使用するとよいでしょう;
+    この平面上の楕円は、砲弾速度の影響で引き伸ばされています。
+2) 垂直方向: 
+    海面に対して垂直な平面と砲弾が接触する点を表示します;
+    この面を選択すると、正面からの視点に切り替わります;
+    垂直散布界の精密な分析を行う際に有効です。
+3) 着弾角度方向: 
+    砲弾の着弾角度に対して垂直な平面と砲弾が接触する点を表示します;
+    この面を選択すると、砲弾の着弾角度からの視点に切り替わります;
+    戦闘において、ゲームが実際に使用する楕円です;
+    この楕円は砲弾速度の影響を受けません;
+    砲弾速度を考慮しない散布界の比較に有効です.
+
+ゲーム内の船は周辺環境の2倍に拡大されているため、200mの船が実際に占めるスペースは400mです。</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
     <value>プロットの説明</value>
@@ -1325,6 +1352,9 @@
   </data>
   <data name="Placeholder" xml:space="preserve">
     <value>---</value>
+  </data>
+  <data name="ShipStats_Splash" xml:space="preserve">
+    <value>対潜水艦の爆風</value>
   </data>
   <data name="ShipStats_SplashRadius" xml:space="preserve">
     <value>半径</value>
@@ -1759,8 +1789,14 @@
   <data name="BuildImageRenderDialog_GetUrl" xml:space="preserve">
     <value>URL を取得</value>
   </data>
+  <data name="BuildImageRenderDialog_GetShortLink" xml:space="preserve">
+    <value>短縮リンクを取得</value>
+  </data>
   <data name="ServerTypeLive" xml:space="preserve">
     <value>ライブ</value>
+  </data>
+  <data name="ServerTypePts" xml:space="preserve">
+    <value>PublicTestサーバー</value>
   </data>
   <data name="NavigationCharts" xml:space="preserve">
     <value>散布界と弾道のグラフ</value>
@@ -1774,13 +1810,365 @@
   <data name="NavigationHome" xml:space="preserve">
     <value>スタートページ</value>
   </data>
+  <data name="ShipComparison_Image" xml:space="preserve">
+    <value>画像</value>
+  </data>
+  <data name="ShipComparison_NoMatchingShipsFound" xml:space="preserve">
+    <value>一致する艦艇はありません</value>
+  </data>
+  <data name="ShipComparison_ActiveColumns" xml:space="preserve">
+    <value>アクティブな列</value>
+  </data>
+  <data name="ShipComparison_Section" xml:space="preserve">
+    <value>セクション</value>
+  </data>
+  <data name="ShipComparison_Filters" xml:space="preserve">
+    <value>フィルター</value>
+  </data>
+  <data name="ShipComparison_All" xml:space="preserve">
+    <value>すべて</value>
+  </data>
+  <data name="ShipComparison_None" xml:space="preserve">
+    <value>なし</value>
+  </data>
+  <data name="ShipComparison_ResetAll" xml:space="preserve">
+    <value>全てリセット</value>
+  </data>
+  <data name="ShipComparison_Duplicate" xml:space="preserve">
+    <value>複製</value>
+  </data>
+  <data name="ShipComparison_RemoveBuilds" xml:space="preserve">
+    <value>ビルドを削除</value>
+  </data>
+  <data name="ShipComparison_ViewStats" xml:space="preserve">
+    <value>性能を表示</value>
+  </data>
+  <data name="ShipComparison_ViewBallistic" xml:space="preserve">
+    <value>弾道を表示</value>
+  </data>
+  <data name="ShipComparison_ViewAcceleration" xml:space="preserve">
+    <value>加速グラフを表示</value>
+  </data>
+  <data name="ShipComparison_DisplayOnlyPinnedShips" xml:space="preserve">
+    <value>ピン留めされた艦艇のみ表示</value>
+  </data>
+  <data name="ShipComparison_UseUpgradedModules" xml:space="preserve">
+    <value>該当ビルドがない場合、アップグレードされたモジュールを使用</value>
+  </data>
+  <data name="ShipComparison_HideIfNoSection" xml:space="preserve">
+    <value>選択されたセクションのない艦艇を非表示</value>
+  </data>
+  <data name="ShipComparison_SelectAll" xml:space="preserve">
+    <value>すべて選択</value>
+  </data>
+  <data name="ShipComparison_UnselectAll" xml:space="preserve">
+    <value>すべて選択解除</value>
+  </data>
+  <data name="ShipComparison_PinAll" xml:space="preserve">
+    <value>すべてピン留めする</value>
+  </data>
+  <data name="ShipComparison_UnpinAll" xml:space="preserve">
+    <value>すべてのピン留めを解除</value>
+  </data>
+  <data name="ShipStats_ShowInShipComparison" xml:space="preserve">
+    <value>艦艇比較ですべて表示</value>
+  </data>
+  <data name="ShipComparison_General" xml:space="preserve">
+    <value>一般</value>
+  </data>
+  <data name="ShipComparison_SecondaryBatteryShells" xml:space="preserve">
+    <value>副砲弾</value>
+  </data>
+  <data name="ShipComparison_Asw" xml:space="preserve">
+    <value>対潜</value>
+  </data>
+  <data name="ShipComparison_RocketPlanes" xml:space="preserve">
+    <value>ロケット機</value>
+  </data>
+  <data name="ShipComparison_AerialTorpedoes" xml:space="preserve">
+    <value>航空魚雷</value>
+  </data>
+  <data name="ShipComparison_Bombers" xml:space="preserve">
+    <value>爆撃機</value>
+  </data>
+  <data name="ShipComparison_Bombs" xml:space="preserve">
+    <value>爆弾</value>
+  </data>
+  <data name="ShipComparison_Caliber" xml:space="preserve">
+    <value>口径</value>
+  </data>
+  <data name="ShipComparison_Barrels" xml:space="preserve">
+    <value>砲身数</value>
+  </data>
+  <data name="ShipComparison_MaxRange" xml:space="preserve">
+    <value>最大射程</value>
+  </data>
+  <data name="ShipStats_Dpm" xml:space="preserve">
+    <value>DPM</value>
+  </data>
+  <data name="ShipStats_Salvo" xml:space="preserve">
+    <value>斉射</value>
+  </data>
+  <data name="ShipComparison_Fpm" xml:space="preserve">
+    <value>FPM</value>
+  </data>
+  <data name="ShipComparison_1st" xml:space="preserve">
+    <value>1つ目</value>
+  </data>
+  <data name="ShipComparison_2nd" xml:space="preserve">
+    <value>2つ目</value>
+  </data>
+  <data name="ShipComparison_Amount" xml:space="preserve">
+    <value>量</value>
+  </data>
+  <data name="ShipComparison_OnFire" xml:space="preserve">
+    <value>炎上中</value>
+  </data>
+  <data name="ShipComparison_SmokeFiring" xml:space="preserve">
+    <value>煙幕内発砲</value>
+  </data>
+  <data name="ShipComparison_FullReverseTime" xml:space="preserve">
+    <value>全速後進時間</value>
+  </data>
+  <data name="ShipComparison_Charges" xml:space="preserve">
+    <value>数</value>
+  </data>
+  <data name="ShipComparison_DropRange" xml:space="preserve">
+    <value>投下距離</value>
+  </data>
+  <data name="ShipComparison_PlanesInSquadron" xml:space="preserve">
+    <value>中隊内の艦載機数</value>
+  </data>
+  <data name="ShipComparison_SplashRadius" xml:space="preserve">
+    <value>爆発半径</value>
+  </data>
+  <data name="ShipComparison_InitialSpeed" xml:space="preserve">
+    <value>初速度</value>
+  </data>
   <data name="ShipComparison_PlaneHp" xml:space="preserve">
     <value>航空機HP</value>
+  </data>
+  <data name="ShipComparison_Spread" xml:space="preserve">
+    <value>拡散</value>
   </data>
   <data name="ShipComparison_SwitchTime" xml:space="preserve">
     <value>切り替え時間</value>
   </data>
+  <data name="ShipComparison_Plane" xml:space="preserve">
+    <value>艦載機</value>
+  </data>
+  <data name="ShipComparison_Planes" xml:space="preserve">
+    <value>艦載機</value>
+  </data>
+  <data name="ShipComparison_OnDeck" xml:space="preserve">
+    <value>甲板上</value>
+  </data>
+  <data name="ShipComparison_EngineBoostDuration" xml:space="preserve">
+    <value>エンジンブースト時間</value>
+  </data>
+  <data name="ShipComparison_Invulnerability" xml:space="preserve">
+    <value>無敵</value>
+  </data>
+  <data name="ShipComparison_ViewDistance" xml:space="preserve">
+    <value>視認距離</value>
+  </data>
+  <data name="ShipComparison_AreaChange" xml:space="preserve">
+    <value>範囲の変更</value>
+  </data>
+  <data name="ShipComparison_PerPlane" xml:space="preserve">
+    <value>艦載機ごと</value>
+  </data>
+  <data name="ShipComparison_TorpsPerPlane" xml:space="preserve">
+    <value>艦載機あたりの魚雷数</value>
+  </data>
+  <data name="ShipStats_MaxReverseSpeed" xml:space="preserve">
+    <value>最大後進速度</value>
+  </data>
+  <data name="ShipComparison_TypeName" xml:space="preserve">
+    <value>名前を入力...</value>
+  </data>
+  <data name="ShipComparison_SearchAndPin" xml:space="preserve">
+    <value>艦艇を検索・ピン留めする</value>
+  </data>
+  <data name="ShipComparison_DispersionAt" xml:space="preserve">
+    <value>散布界</value>
+  </data>
+  <data name="ShipComparison_FiringRange" xml:space="preserve">
+    <value>射程</value>
+  </data>
+  <data name="ShipSelectionWindow_SearchShipOrBuild" xml:space="preserve">
+    <value>艦艇またはビルドを検索</value>
+  </data>
+  <data name="SettingsWindow_Export" xml:space="preserve">
+    <value>エクスポート</value>
+  </data>
+  <data name="SettingsWindow_DeleteAll" xml:space="preserve">
+    <value>すべて削除</value>
+  </data>
+  <data name="BuildConfigurationDialog_Load" xml:space="preserve">
+    <value>読み込む</value>
+  </data>
+  <data name="SettingsWindow_InvalidJsonFileError" xml:space="preserve">
+    <value>無効なファイルです。使用できるのは.jsonファイルのみです</value>
+  </data>
+  <data name="ShipSelector_InvalidPngFileError" xml:space="preserve">
+    <value>無効なファイルです。使用できるのは.pngファイルのみです</value>
+  </data>
+  <data name="ShipStats_Krupp" xml:space="preserve">
+    <value>クルップ値</value>
+  </data>
   <data name="ShipStats_PenetrationAp" xml:space="preserve">
     <value>貫通力</value>
+  </data>
+  <data name="BETA_UserAuth" xml:space="preserve">
+    <value>ユーザーログイン</value>
+  </data>
+  <data name="ShipComparison_ShipsPerPage" xml:space="preserve">
+    <value>1ページあたりの艦艇数:</value>
+  </data>
+  <data name="ShipComparison_HideColumns" xml:space="preserve">
+    <value>列を非表示</value>
+  </data>
+  <data name="ShipStats_SecondConsecutive" xml:space="preserve">
+    <value>2つ目以降</value>
+  </data>
+  <data name="ShipStats_FromSubsAtPeriscopeDepth" xml:space="preserve">
+    <value>潜望鏡深度の潜水艦から</value>
+  </data>
+  <data name="ShipStats_ShellType" xml:space="preserve">
+    <value>砲弾種類</value>
+  </data>
+  <data name="ShipStats_Overall" xml:space="preserve">
+    <value>全体</value>
+  </data>
+  <data name="ShipComparison_SplashDmgSubs" xml:space="preserve">
+    <value>対潜水艦の爆風</value>
+  </data>
+  <data name="ShipComparison_OutOfRange" xml:space="preserve">
+    <value>射程外</value>
+  </data>
+  <data name="ShipComparison_OutOfRangeTooltip" xml:space="preserve">
+    <value>射撃距離がこの船の最大射程を超えています</value>
+  </data>
+  <data name="UserDataService_BuildUpdated" xml:space="preserve">
+    <value>ビルドが更新されました。</value>
+  </data>
+  <data name="UserDataService_BuildSaved" xml:space="preserve">
+    <value>ビルドを保存しました。</value>
+  </data>
+  <data name="UserDataService_BuildNotSaved" xml:space="preserve">
+    <value>ビルドは保存されていません。</value>
+  </data>
+  <data name="UserDataService_BuildLimitReached" xml:space="preserve">
+    <value>ビルドの容量が上限に達しました。次の追加では、保存済みの最も古いビルドが置き換えられます。</value>
+  </data>
+  <data name="UserDataService_BuildStorageFull" xml:space="preserve">
+    <value>ビルド容量がいっぱいです。保存されている最も古いビルドを置き換えました。</value>
+  </data>
+  <data name="UserDataService_BuildNotLoaded" xml:space="preserve">
+    <value>ビルドを読み込めませんでした。</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_WarningMessage" xml:space="preserve">
+    <value>アーカイブには既に別のビルドが含まれています</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_ForTheShip" xml:space="preserve">
+    <value>艦艇用</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_OverwriteQuestion" xml:space="preserve">
+    <value>上書きしますか？</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_OverwriteBuild" xml:space="preserve">
+    <value>ビルドを上書き</value>
+  </data>
+  <data name="ShipStats_ArchiveBuild" xml:space="preserve">
+    <value>ビルドをアーカイブ</value>
+  </data>
+  <data name="ShipStats_ShareOrSaveBuild" xml:space="preserve">
+    <value>共有/保存</value>
+  </data>
+  <data name="ShipComparison_AddAShip" xml:space="preserve">
+    <value>艦艇を追加...</value>
+  </data>
+  <data name="ShipSelectionDialog_AddShips" xml:space="preserve">
+    <value>複数艦艇を追加</value>
+  </data>
+  <data name="ShipStatsTab_BuildMustHaveName" xml:space="preserve">
+    <value>保存中のエラー: ビルドには名前が必要です！</value>
+  </data>
+  <data name="ShipStatsTabs_LinkCopied" xml:space="preserve">
+    <value>ビルドへのリンクをクリップボードにコピーしました。</value>
+  </data>
+  <data name="ShipStatsTabs_BuildImageSavedAndCopiedToClipboard" xml:space="preserve">
+    <value>ビルド画像を保存し、クリップボードにコピーしました！</value>
+  </data>
+  <data name="ShipStatsTab_ShareLink" xml:space="preserve">
+    <value>リンクを共有</value>
+  </data>
+  <data name="ShipStatsTab_SaveBuild" xml:space="preserve">
+    <value>ビルドを保存</value>
+  </data>
+  <data name="ShipStatsTab_ShareBuildImage" xml:space="preserve">
+    <value>ビルド画像を共有</value>
+  </data>
+  <data name="ShipStats_SmokeSpeedLimit" xml:space="preserve">
+    <value>最大移動速度</value>
+  </data>
+  <data name="ShipStats_FirstGMShotDelay" xml:space="preserve">
+    <value>主砲装填時間(1箇所目)</value>
+  </data>
+  <data name="ShipStats_OtherGMShotDelay" xml:space="preserve">
+    <value>主砲装填時間(2箇所目以降)</value>
+  </data>
+  <data name="ShipStats_LeftSideLoaders" xml:space="preserve">
+    <value>左舷側</value>
+  </data>
+  <data name="ShipStats_RightSideLoaders" xml:space="preserve">
+    <value>右舷側</value>
+  </data>
+  <data name="SettingsWindow_SaveBuildOnShare" xml:space="preserve">
+    <value>共有時にビルドを保存</value>
+  </data>
+  <data name="SettingsWindow_FittingToolSelector" xml:space="preserve">
+    <value>Fitting-Toolスタイルの艦艇セレクタ</value>
+  </data>
+  <data name="SettingsWindow_ClosedByDefault" xml:space="preserve">
+    <value>デフォルトで閉じる</value>
+  </data>
+  <data name="SettingsWindow_MultiSelect" xml:space="preserve">
+    <value>複数選択を許可</value>
+  </data>
+  <data name="SettingsWindow_FtImgWarning" xml:space="preserve">
+    <value>警告: インターネット接続が良い場合にのみ使用してください。</value>
+  </data>
+  <data name="SettingsWindow_FittingToolShowImages" xml:space="preserve">
+    <value>艦艇画像を表示</value>
+  </data>
+  <data name="SettingsWindow_AutoUpdates" xml:space="preserve">
+    <value>自動更新</value>
+  </data>
+  <data name="SettingsWindow_RestartRequired" xml:space="preserve">
+    <value>このオプションを有効にするには、再起動が必要です。</value>
+  </data>
+  <data name="SettingsWindow_FittingToolSelectorDisabled" xml:space="preserve">
+    <value>無効</value>
+  </data>
+  <data name="Charts_OpenShipStats" xml:space="preserve">
+    <value>艦艇の性能情報を開く</value>
+  </data>
+  <data name="WebApp_ViewShipsStats" xml:space="preserve">
+    <value>艦艇の性能情報を見る</value>
+  </data>
+  <data name="UserDataService_BuildNotUpdated" xml:space="preserve">
+    <value>ビルドは更新されていません。</value>
+  </data>
+  <data name="BuildImageRenderDialog_CopyImage" xml:space="preserve">
+    <value>画像をコピー</value>
+  </data>
+  <data name="OverwriteExistingBuildDialog_Message" xml:space="preserve">
+    <value>アーカイブには、すでに'{0}'という名前の別のビルドが含まれています（艦艇: '{1}'）</value>
+    <comment>OverwriteExistingBuildDialog_Message
+
+{0}: Build name
+{1}: Ship name</comment>
   </data>
 </root>
