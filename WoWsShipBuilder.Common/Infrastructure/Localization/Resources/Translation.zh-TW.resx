@@ -2107,7 +2107,7 @@ C = 砲彈口徑 [m]
     <value>的配置，屬於</value>
   </data>
   <data name="UpdateSavedBuildConfirmationDialog_OverwriteQuestion" xml:space="preserve">
-    <value>你是否要覆蓋?</value>
+    <value>是否要覆蓋?</value>
   </data>
   <data name="UpdateSavedBuildConfirmationDialog_OverwriteBuild" xml:space="preserve">
     <value>覆蓋配置</value>
@@ -2183,5 +2183,24 @@ C = 砲彈口徑 [m]
   </data>
   <data name="SettingsWindow_FittingToolSelectorDisabled" xml:space="preserve">
     <value>停用</value>
+  </data>
+  <data name="Charts_OpenShipStats" xml:space="preserve">
+    <value>查看船艦數據</value>
+  </data>
+  <data name="WebApp_ViewShipsStats" xml:space="preserve">
+    <value>查看船艦數據</value>
+  </data>
+  <data name="UserDataService_BuildNotUpdated" xml:space="preserve">
+    <value>配置未被更新。</value>
+  </data>
+  <data name="BuildImageRenderDialog_CopyImage" xml:space="preserve">
+    <value>複製圖片</value>
+  </data>
+  <data name="OverwriteExistingBuildDialog_Message" xml:space="preserve">
+    <value>在船艦'{1}'已經有一個名為'{0}'的配置，</value>
+    <comment>OverwriteExistingBuildDialog_Message
+
+{0}: Build name
+{1}: Ship name</comment>
   </data>
 </root>
