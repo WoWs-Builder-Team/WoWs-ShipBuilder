@@ -245,7 +245,7 @@
             await module.InvokeVoidAsync("copyBuildImage", "image", BuildString[..(BuildString.LastIndexOf(';') + 1)] + BuildName);
             imgGenerationInProgress = false;
             MudDialog.Close(BuildName);
-            Snackbar.Add("Build image copied to clipboard!", Severity.Success);
+            Snackbar.Add(Localizer.SimpleAppLocalization(nameof(Translation.BuildCreationWindow_SavedImageToClipboard)), Severity.Success);
         }
     }
 

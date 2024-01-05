@@ -2183,11 +2183,20 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="SettingsWindow_FittingToolSelectorDisabled" xml:space="preserve">
     <value>Disabled</value>
   </data>
+  <data name="Charts_OpenShipStats" xml:space="preserve">
+    <value>Open ships stats</value>
+  </data>
+  <data name="WebApp_ViewShipsStats" xml:space="preserve">
+    <value>View ships stats</value>
+  </data>
   <data name="UserDataService_BuildNotUpdated" xml:space="preserve">
     <value>Build has not been updated.</value>
   </data>
   <data name="BuildImageRenderDialog_CopyImage" xml:space="preserve">
     <value>Copy Image</value>
+  </data>
+  <data name="OverwriteExistingBuildDialog_Message" xml:space="preserve">
+    <value>Archive already contains another build named '{0}' for ship '{1}'</value>
   </data>
   <data name="ShipComparison_Display" xml:space="preserve">
     <value>Display</value>

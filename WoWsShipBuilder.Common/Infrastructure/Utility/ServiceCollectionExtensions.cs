@@ -4,9 +4,9 @@ using MudBlazor;
 using MudBlazor.Services;
 using WoWsShipBuilder.Features.BallisticCharts;
 using WoWsShipBuilder.Features.LinkShortening;
+using WoWsShipBuilder.Features.Navigation;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Features.ShipStats;
-using WoWsShipBuilder.Infrastructure.DataTransfer;
 using WoWsShipBuilder.Infrastructure.Localization;
 using WoWsShipBuilder.Infrastructure.Metrics;
 
@@ -46,6 +46,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<MouseEventInterop>();
         services.AddScoped<SessionStateCache>();
         services.AddScoped<ExpanderStateCache>();
+        services.AddScoped<AppNavigator>();
 
         return services;
     }

@@ -16,8 +16,6 @@ public class Localizer : ILocalizer
         this.appSettings = appSettings;
     }
 
-    public LocalizationResult this[string key] => this.GetGameLocalization(key);
-
     public LocalizationResult GetGameLocalization(string key) => this.GetGameLocalization(key, this.appSettings.SelectedLanguage);
 
     public LocalizationResult GetGameLocalization(string key, CultureDetails language)
@@ -28,6 +26,12 @@ public class Localizer : ILocalizer
 
     public LocalizationResult GetAppLocalization(string key) => this.GetAppLocalization(key, this.appSettings.SelectedLanguage);
 
+    public LocalizationResult GetAppLocalization(string key, params object[] args)
+    {
+        var localization = this.GetAppLocalization(key);
+        return localization with { Localization = string.Format(this.appSettings.SelectedLanguage.CultureInfo, localization.Localization, args) };
+    }
+
     public LocalizationResult GetAppLocalization(string key, CultureDetails language)
     {
         if (this.appSettings.EnableLocalizationDebugMode)
@@ -37,5 +41,11 @@ public class Localizer : ILocalizer
 
         string? result = Translation.ResourceManager.GetString(key, language.CultureInfo);
         return new(result != null, result ?? key);
+    }
+
+    public LocalizationResult GetAppLocalization(string key, CultureDetails language, params object[] args)
+    {
+        var localization = this.GetAppLocalization(key, language);
+        return localization with { Localization = string.Format(language.CultureInfo, localization.Localization, args) };
     }
 }

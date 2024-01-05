@@ -42,7 +42,7 @@ function copyBuildImageToClipboard(canvas) {
             navigator.clipboard.write([item]).catch(err => console.log(err));
         });
     } else {
-        console.log("Copy to clipboard function is disabled or not yet available in your browser. If you are using Firefox go into about:config page and set this property dom.events.asyncClipboard.clipboardItem to true.");
+        console.log("Copy to clipboard function is disabled or not yet available in your browser. If you are using Firefox go into about:config page and set the property dom.events.asyncClipboard.clipboardItem to true.");
     }
 }
 

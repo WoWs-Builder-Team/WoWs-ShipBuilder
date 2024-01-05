@@ -7,7 +7,6 @@ using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
-using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.DataContainers;
 
@@ -105,6 +104,8 @@ public partial record ShellDataContainer : DataContainerBase
         float shellMass = shell.Mass;
         var showBlastPenetration = false;
 
+        var gunType = isMainGunShell ? "Main" : "Secondary";
+
         switch (shell.ShellType)
         {
             case ShellType.HE:
@@ -113,16 +114,15 @@ public partial record ShellDataContainer : DataContainerBase
                 showBlastPenetration = true;
 
                 // IFHE fire chance malus
-                shellFireChance = modifiers.ApplyModifiers("ShellDataContainer.FireChance.Multiplier", shellFireChance);
+                shellFireChance = modifiers.ApplyModifiers($"ShellDataContainer.FireChance.{gunType}.Multiplier", shellFireChance);
 
                 // Victor Lima and India X-Ray signals
-                shellFireChance = modifiers.ApplyModifiers(shell.Caliber > 0.160f ? "ShellDataContainer.FireChance.Big.Additive" : "ShellDataContainer.FireChance.Small.Additive", shellFireChance);
+                shellFireChance = modifiers.ApplyModifiers(shell.Caliber > 0.160f ? $"ShellDataContainer.FireChance.{gunType}.Big.Additive" : $"ShellDataContainer.FireChance.{gunType}.Small.Additive", shellFireChance);
 
                 // Demolition expert and talent
-                shellFireChance = modifiers.ApplyModifiers("ShellDataContainer.FireChance", shellFireChance);
+                shellFireChance = modifiers.ApplyModifiers($"ShellDataContainer.FireChance.{gunType}", shellFireChance);
 
                 // IFHE and possibly modifiers from supership abilities
-                var gunType = isMainGunShell ? "Primary" : "Secondary";
                 shellPenetration = modifiers.ApplyModifiers($"ShellDataContainer.Penetration.{gunType}", shellPenetration);
                 goto case ShellType.SAP;
             }
@@ -131,7 +131,7 @@ public partial record ShellDataContainer : DataContainerBase
             {
                 armingThreshold = 0;
                 fuseTimer = 0;
-                shellDamage = modifiers.ApplyModifiers("ShellDataContainer.Damage.HESAP", shellDamage);
+                shellDamage = modifiers.ApplyModifiers($"ShellDataContainer.Damage.HESAP.{gunType}", shellDamage);
                 break;
             }
 
@@ -150,9 +150,9 @@ public partial record ShellDataContainer : DataContainerBase
         decimal minRicochet = Math.Round((decimal)shell.RicochetAngle, 1);
         decimal maxRicochet = Math.Round((decimal)shell.AlwaysRicochetAngle, 1);
 
-        var fireChancePerSalvo = (decimal)(1 - Math.Pow((double)(1 - ((decimal)shellFireChance / 100)), barrelCount));
+        var fireChancePerSalvo = (decimal)(1 - Math.Pow((double)(1 - (shellFireChance / 100)), barrelCount));
 
-        var splashRadius = modifiers.ApplyModifiers("ShellDataContainer.UnderwaterSplash", (decimal)shell.DepthSplashRadius);
+        var splashRadius = modifiers.ApplyModifiers($"ShellDataContainer.UnderwaterSplash.{gunType}", (decimal)shell.DepthSplashRadius);
 
         var shellDataContainer = new ShellDataContainer
         {

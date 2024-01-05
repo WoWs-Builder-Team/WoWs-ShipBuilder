@@ -666,6 +666,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open ships stats.
+        /// </summary>
+        public static string Charts_OpenShipStats {
+            get {
+                return ResourceManager.GetString("Charts_OpenShipStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add/Remove Ships/Shells.
         /// </summary>
         public static string ChartsWeb_AddRemoveShips {
@@ -1634,6 +1643,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string Ok {
             get {
                 return ResourceManager.GetString("Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Archive already contains another build named &apos;{0}&apos; for ship &apos;{1}&apos;.
+        /// </summary>
+        public static string OverwriteExistingBuildDialog_Message {
+            get {
+                return ResourceManager.GetString("OverwriteExistingBuildDialog_Message", resourceCulture);
             }
         }
         
@@ -6193,6 +6211,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string WebApp_SettingsSaved {
             get {
                 return ResourceManager.GetString("WebApp_SettingsSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View ships stats.
+        /// </summary>
+        public static string WebApp_ViewShipsStats {
+            get {
+                return ResourceManager.GetString("WebApp_ViewShipsStats", resourceCulture);
             }
         }
     }

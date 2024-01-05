@@ -36,7 +36,7 @@ jobs:
         with:
           global-json-file: global.json
       - name: Run SquirrelBuildAndRelease
-        run: Tools\SquirrelBuildAndRelease.ps1
+        run: installer\Tools\SquirrelBuildAndRelease.ps1
         shell: powershell
       - name: Upload artifact
         uses: actions/upload-artifact@v2

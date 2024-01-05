@@ -10,7 +10,6 @@
 @using WoWsShipBuilder.Features.Settings
 @using WoWsShipBuilder.Features.ShipComparison.GridData
 @using WoWsShipBuilder.Infrastructure.ApplicationData
-@using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.GameData
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
@@ -36,6 +35,8 @@
 @using static WoWsShipBuilder.Features.ShipComparison.GridSections.AerialTorpedoesFragment
 @using static WoWsShipBuilder.Features.ShipComparison.GridSections.BombersFragment
 @using static WoWsShipBuilder.Features.ShipComparison.GridSections.BombsFragment
+@using System.Collections.Immutable
+@using WoWsShipBuilder.Features.Navigation
 
 @inherits ReactiveComponentBase<ShipComparisonViewModel>
 
@@ -50,6 +51,7 @@
 @inject MetricsService MetricsService
 @inject SessionStateCache SessionStateCache
 @inject IDialogService DialogService
+@inject AppNavigator AppNavigator
 
 <PageTitle>WoWs ShipBuilder: Ship Comparison</PageTitle>
 
@@ -112,13 +114,13 @@
                     <MudButton OnClick="@RemoveBuilds" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1">
                         @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_RemoveBuilds))
                     </MudButton>
-                    <MudButton OnClick="@OpenShipStats" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1">
+                    <MudButton OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.ShipStats, ViewModel!.SelectedShipList.Select(x => x.Value.ShipBuildContainer), AppNavigator.AppPage.ShipComparison))" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1">
                         @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_ViewStats))
                     </MudButton>
-                    <MudButton OnClick="@OpenBallisticCharts" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1">
+                    <MudButton OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.BallisticCharts, ViewModel!.SelectedShipList.Select(x => x.Value.ShipBuildContainer), AppNavigator.AppPage.ShipComparison))" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1">
                         @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_ViewBallistic))
                     </MudButton>
-                    <MudButton OnClick="@OpenAccelerationCharts" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1">
+                    <MudButton OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.AccelerationCharts, ViewModel!.SelectedShipList.Select(x => x.Value.ShipBuildContainer), AppNavigator.AppPage.ShipComparison))" Disabled="@(ViewModel.SelectedShipList.Count == 0)" Class="ma-auto" Style="flex: 1; white-space: nowrap">
                         @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_ViewAcceleration))
                     </MudButton>
                 </MudButtonGroup>
@@ -167,7 +169,7 @@
             </TemplateColumn>
             <TemplateColumn T="GridDataWrapper" TProperty="string" Title="@Localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Name))" Hideable="false" StickyLeft HeaderStyle="background-clip: padding-box; background-color: var(--mud-palette-surface);" CellStyle="@($"cursor: pointer; background-clip: padding-box; {StickyColumnsBackgroundColor}")" SortBy="@(x => LocalizeShipName(x.Ship.Index))" InitialDirection="SortDirection.Ascending" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
-                    <MudText Typo="Typo.body2" @onclick="@(() => ViewShipStats(context.Item.ShipBuildContainer))">
+                    <MudText Typo="Typo.body2" @onclick="@(_ => AppNavigator.NavigateTo(AppNavigator.AppPage.ShipStats, context.Item.ShipBuildContainer, AppNavigator.AppPage.ShipComparison))">
                         @LocalizeShipName(context.Item.ShipIndex)
                     </MudText>
                 </CellTemplate>
@@ -414,15 +416,14 @@
             ViewModel.ShowPinnedShipsOnly = true;
         }
 
-        if (!string.IsNullOrEmpty(pinnedShips))
-        {
-            await AddShip(pinnedShips.Split(','), false);
-        }
-
-        List<ShipBuildContainer>? buildContainers = SessionStateCache.GetAndResetBuildTransferContainers();
+        ImmutableList<ShipBuildContainer>? buildContainers = SessionStateCache.GetAndResetBuildTransferContainers();
         if (buildContainers is not null)
         {
             await AddShip(buildContainers, false);
+        }
+        else if (!string.IsNullOrEmpty(pinnedShips))
+        {
+            await AddShip(pinnedShips.Split(','), false);
         }
 
         if (applyFilters)
@@ -592,8 +593,11 @@
 
     private async Task AddSearchedShip(object? obj)
     {
-        ViewModel!.AddShip(obj);
-        await dataGrid.ReloadServerData();
+        if (obj is not null)
+        {
+            await AddShip(obj);
+            await dataGrid.ReloadServerData();
+        }
     }
 
     private async Task NotifySelectionChangedAsync()
@@ -748,54 +752,6 @@
 
             return Task.FromResult<GridData<GridDataWrapper>>(new() { TotalItems = data.Count, Items = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToList() });
         }
-    }
-
-    private bool CheckSelectionAmount()
-    {
-        return ViewModel!.SelectedShipList.Count <= 250;
-    }
-
-    private void StoreBuildsForTransfer()
-    {
-        SessionStateCache.SetBuildTransferContainers(ViewModel!.SelectedShipList.Values.Select(x => x.ShipBuildContainer).ToList());
-    }
-
-    private void SetupAndOpenNewTab(string url)
-    {
-        if (!CheckSelectionAmount())
-        {
-            Snackbar.Add($"Too many ships selected. Selected: {ViewModel!.SelectedShipList.Count}. Max limit is 250", Severity.Error);
-            return;
-        }
-
-        StoreBuildsForTransfer();
-        NavManager.NavigateTo(url);
-
-        // cant use await JsRuntime.InvokeAsync<object>("open", NavManager.BaseUri + url, "_blank"); to open in a new tab because builds are not carried over.
-    }
-
-    private void OpenShipStats()
-    {
-        MetricsService.ShipComparisonActions.WithLabels("open-ship-stats").Inc();
-        SetupAndOpenNewTab("ship?shipIndexes=" + string.Join(",", ViewModel!.SelectedShipList.Select(x => x.Value.Ship.Index)));
-    }
-
-    private void OpenBallisticCharts()
-    {
-        MetricsService.ShipComparisonActions.WithLabels("open-ballistic-charts").Inc();
-        SetupAndOpenNewTab("charts?shipIndex=" + string.Join(",", ViewModel!.SelectedShipList.Select(x => x.Value.Ship.Index)));
-    }
-
-    private void OpenAccelerationCharts()
-    {
-        MetricsService.ShipComparisonActions.WithLabels("open-acceleration-charts").Inc();
-        SetupAndOpenNewTab("acceleration-charts?shipIndexes=" + string.Join(",", ViewModel!.SelectedShipList.Select(x => x.Value.Ship.Index)));
-    }
-
-    private void ViewShipStats(ShipBuildContainer container)
-    {
-        SessionStateCache.SetBuildTransferContainers(container);
-        NavManager.NavigateTo("ship?shipIndexes=" + container.Ship.Index);
     }
 
     private bool IsColumnHidden(string section, string columnTitle)

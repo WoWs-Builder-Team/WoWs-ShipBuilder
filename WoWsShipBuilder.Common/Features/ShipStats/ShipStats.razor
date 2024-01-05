@@ -6,10 +6,11 @@
 @using WoWsShipBuilder.Features.DataContainers
 @using WoWsShipBuilder.Features.ShipStats.Components
 @using WoWsShipBuilder.Infrastructure.ApplicationData
-@using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
+@using System.Collections.Immutable
+@using WoWsShipBuilder.Features.Navigation
 
 @implements IDisposable
 
@@ -19,6 +20,7 @@
 @inject SessionStateCache SessionStateCache
 @inject ILogger<ShipStats> Logger
 @inject MetricsService MetricsService
+@inject AppNavigator AppNavigator
 
 <PageTitle>Ship stats</PageTitle>
 
@@ -43,30 +45,30 @@
                     <MudMenu Icon="@Icons.Material.Filled.Menu" Dense Color="Color.Primary" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.BottomLeft" DisableElevation>
                         <MudStack Spacing="0" AlignItems="AlignItems.Center" Justify="Justify.Center">
                             <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInBallisticCharts).Localization" Arrow Delay="350">
-                                <MudIconButton OnClick="@OpenBallisticCharts" Color="Color.Primary" Style="width: 48px; height: 48px">
+                                <MudIconButton OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.BallisticCharts, GetShipBuildContainers(false), AppNavigator.AppPage.ShipStats))" Color="Color.Primary" Style="width: 48px; height: 48px">
                                     <MudIcon Icon="@DispersionAndBallisticChartsPath" ViewBox="-4 -7 24 24"/>
                                 </MudIconButton>
                             </MudTooltip>
                             <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInAccelerationCharts).Localization" Arrow Delay="350">
-                                <MudIconButton Icon="@Icons.Material.Filled.Speed" OnClick="@OpenAccelerationCharts" Color="Color.Primary"/>
+                                <MudIconButton Icon="@Icons.Material.Filled.Speed" OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.AccelerationCharts, GetShipBuildContainers(false), AppNavigator.AppPage.ShipStats))" Color="Color.Primary"/>
                             </MudTooltip>
                             <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInShipComparison).Localization" Arrow Delay="350">
-                                <MudIconButton Icon="@Icons.Material.Filled.FormatListBulleted" OnClick="@OpenShipComparison" Color="Color.Primary"/>
+                                <MudIconButton Icon="@Icons.Material.Filled.FormatListBulleted" OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.ShipComparison, GetShipBuildContainers(true), AppNavigator.AppPage.ShipStats))" Color="Color.Primary"/>
                             </MudTooltip>
                         </MudStack>
                     </MudMenu>
                 </MudHidden>
                 <MudHidden Invert Breakpoint="Breakpoint.MdAndUp">
                     <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInBallisticCharts).Localization" Arrow Delay="350">
-                        <MudIconButton OnClick="@OpenBallisticCharts" Color="Color.Primary" Style="width: 48px; height: 48px">
+                        <MudIconButton OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.BallisticCharts, GetShipBuildContainers(false), AppNavigator.AppPage.ShipStats))" Color="Color.Primary" Style="width: 48px; height: 48px">
                             <MudIcon Icon="@DispersionAndBallisticChartsPath" ViewBox="-4 -7 24 24"/>
                         </MudIconButton>
                     </MudTooltip>
                     <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInAccelerationCharts).Localization" Arrow Delay="350">
-                        <MudIconButton Icon="@Icons.Material.Filled.Speed" OnClick="@OpenAccelerationCharts" Color="Color.Primary"/>
+                        <MudIconButton Icon="@Icons.Material.Filled.Speed" OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.AccelerationCharts, GetShipBuildContainers(false), AppNavigator.AppPage.ShipStats))" Color="Color.Primary"/>
                     </MudTooltip>
                     <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInShipComparison).Localization" Arrow Delay="350">
-                        <MudIconButton Icon="@Icons.Material.Filled.FormatListBulleted" OnClick="@OpenShipComparison" Color="Color.Primary"/>
+                        <MudIconButton Icon="@Icons.Material.Filled.FormatListBulleted" OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.ShipComparison, GetShipBuildContainers(true), AppNavigator.AppPage.ShipStats))" Color="Color.Primary"/>
                     </MudTooltip>
                 </MudHidden>
             </MudStack>
@@ -154,7 +156,7 @@
             else if (buildContainers is not null)
             {
                 Logger.LogTrace("Ship configurations found in session state cache, initializing from them");
-                buildList = buildContainers;
+                buildList = buildContainers.ToList();
             }
             else
             {
@@ -178,7 +180,7 @@
         }
         else
         {
-            AddNewIndexes(new() { newShipIndex }, null);
+            AddNewIndexes(new[] { newShipIndex }, null);
             selectedTabId = shipContainers.Last().Id;
         }
 
@@ -231,9 +233,9 @@
         if (!result.Canceled && result.Data is List<ShipBuildContainer> { Count: > 0 } newShips)
         {
             Logger.LogTrace("Adding new ships");
-            AddNewIndexes(new() { newShips.First().Ship.Index }, new() { newShips.First() });
+            AddNewIndexes(new[] { newShips.First().Ship.Index }, new[] { newShips.First() });
             selectedTabId = shipContainers.Last().Id;
-            AddNewIndexes(newShips.Skip(1).Select(x => x.Ship.Index).ToList(), newShips.Skip(1).ToList());
+            AddNewIndexes(newShips.Skip(1).Select(x => x.Ship.Index).ToList(), newShips.Skip(1).ToImmutableList());
             updateTab = true;
 
             UpdateUrl();
@@ -241,15 +243,14 @@
         }
     }
 
-    private void AddNewIndexes(List<string> indexList, List<ShipBuildContainer>? buildContainers)
+    private void AddNewIndexes(IEnumerable<string> indexList, IEnumerable<ShipBuildContainer>? buildContainers)
     {
         shipContainers.AddRange(buildContainers ?? indexList.Select(index => ShipBuildContainer.CreateNew(AppData.ShipDictionary[index], null, null)));
     }
 
-    private List<string> StoreBuildsForTransfer(bool calculateShipDataContainer)
+    private ImmutableList<ShipBuildContainer> GetShipBuildContainers(bool calculateShipDataContainer)
     {
         List<ShipBuildContainer> buildContainers = new();
-        List<string> shipIndexes = new();
         foreach (var container in shipContainers)
         {
             var vmCacheEntry = cache.GetOrDefault(container.Id);
@@ -261,12 +262,9 @@
             {
                 buildContainers.Add(UpdateShipDataContainer(calculateShipDataContainer, container));
             }
-
-            shipIndexes.Add(container.Ship.Index);
         }
 
-        SessionStateCache.SetBuildTransferContainers(buildContainers);
-        return shipIndexes;
+        return buildContainers.ToImmutableList();
     }
 
     private ShipBuildContainer UpdateShipDataContainer(bool calculateShipDataContainer, ShipBuildContainer container)
@@ -285,27 +283,6 @@
         }
 
         return calculateShipDataContainer ? container with { ShipDataContainer = DataContainerUtility.GetStockShipDataContainer(container.Ship) } : container;
-    }
-
-    private void OpenBallisticCharts()
-    {
-        MetricsService.ShipStatsActions.WithLabels("open-ballistic").Inc();
-        var shipIndexes = StoreBuildsForTransfer(false);
-        NavManager.NavigateTo($"/charts?shipIndex={string.Join(",", shipIndexes)}");
-    }
-
-    private void OpenAccelerationCharts()
-    {
-        MetricsService.ShipStatsActions.WithLabels("open-acceleration").Inc();
-        var shipIndexes = StoreBuildsForTransfer(false);
-        NavManager.NavigateTo($"/acceleration-charts?shipIndexes={string.Join(",", shipIndexes)}");
-    }
-
-    private void OpenShipComparison()
-    {
-        MetricsService.ShipStatsActions.WithLabels("open-comparison").Inc();
-        StoreBuildsForTransfer(true);
-        NavManager.NavigateTo("/comparison");
     }
 
     private void UpdateUrl()
