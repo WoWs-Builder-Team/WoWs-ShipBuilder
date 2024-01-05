@@ -891,7 +891,7 @@
             url.Add(PinnedShipsUrlParameter, string.Join(',', ViewModel!.PinnedShipList.Take(100).Select(x => x.Value.ShipIndex)));
         }
 
-        if (pageSize != 25)
+        if (pageSize != 50)
         {
             url.Add(PageSizeUrlParameter, $"{pageSize}");
         }
