@@ -57,7 +57,7 @@ public class AppSettings
 
     public string? ShipComparisonHiddenColumns { get; set; }
 
-    public int ShipComparisonPageSize { get; set; } = 25;
+    public int ShipComparisonPageSize { get; set; } = 50;
 
     public bool EnableLocalizationDebugMode { get; set; }
 
@@ -92,7 +92,7 @@ public class AppSettings
         this.ShipComparisonUseUpgradedModules = true;
         this.ShipComparisonHideShipsWithoutSection = false;
         this.ShipComparisonHiddenColumns = default;
-        this.ShipComparisonPageSize = 25;
+        this.ShipComparisonPageSize = 50;
         this.EnableLocalizationDebugMode = default;
         this.FittingToolSelectorClosedByDefault = false;
         this.FittingToolSelectorMultiSelection = false;
