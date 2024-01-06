@@ -922,7 +922,7 @@
     <value>這艘艦船無法到達所選的瞄準射程。</value>
   </data>
   <data name="DispersionGraphWindow_PlotPlane" xml:space="preserve">
-    <value>繪製種類</value>
+    <value>製圖平面</value>
   </data>
   <data name="HorizontalPlane" xml:space="preserve">
     <value>水平（水面）</value>
@@ -937,28 +937,28 @@
     <value>以扶桑為基準</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
-    <value>白圈顯示的是在瞄準距離的最大散步。
-紅圈顯示的是平均50%的砲彈的落彈區域
+    <value>白圈顯示的是在瞄準距離的最大散佈。
+紅圈顯示的是平均50%的砲彈的落彈區域。
 黑圈顯示的是一艘扶桑當依據。
 
 製圖平面
 1) 水平：
-顯示砲彈跟水面的接觸點；
-選擇這個平面你會獲得從上方觀看的視角；
-你在比較艦船的散步時主要會看這個圖；
-這個平面上的散步圈被垂直拉長是炮彈速度造成的。
+顯示砲彈跟水面的接觸點，
+選擇這個平面你會獲得從上方觀看的視角。
+你在比較艦船的散步時主要會看這個圖。
+這個平面上的散佈圈會因砲彈速度而被垂直拉長。
 
 2) 垂直：
 顯示砲彈跟一個垂直面的著彈點；
-選擇這個平面你會從目標正面觀看；
+選擇這個平面你會獲得從正面觀看目標的視角。
 很適合用來做垂直精度分析。
 
 3) 落彈角度：
-顯示砲彈在一個有角度的平面的落彈點；
-選擇這個平面你會獲得一個從擺角平面的視角；
-這是遊戲對戰時實際構的圖；
-這個散步圈不會被砲彈速度影響；
-在不考慮砲彈速度，比較船隻散步時很實用。
+顯示砲彈在落彈角度構成的平面上的落彈點，
+選擇這個平面你會獲得一個從砲彈看出去的視角。
+這是遊戲對戰時實際構成的圖。
+這個散佈圈不會被砲彈速度影響。
+在不考慮砲彈速度，比較船隻散佈時很實用。
 
 遊戲中的船是環境的兩倍，所以一艘200公尺長的船在遊戲中會400公尺長</value>
   </data>
@@ -1182,7 +1182,7 @@
     <value>散佈圖表</value>
   </data>
   <data name="ChartsWeb_BallisticCharts" xml:space="preserve">
-    <value>彈道圖表</value>
+    <value>砲彈數據圖表</value>
   </data>
   <data name="ShipAndShellSelectionDialogWeb_SelectShipsAndShells" xml:space="preserve">
     <value>選擇艦艇和彈藥</value>
@@ -1422,7 +1422,7 @@
     <value>高度</value>
   </data>
   <data name="ChartsWeb_ShowCharts" xml:space="preserve">
-    <value>顯示散佈和彈道圖表</value>
+    <value>顯示散佈和砲彈數據圖表</value>
   </data>
   <data name="WebApp_ApplicationInfo" xml:space="preserve">
     <value>程式資訊</value>
@@ -1657,7 +1657,7 @@
     <value>查看艦艇詳細資料</value>
   </data>
   <data name="ShipStats_ShowInBallisticCharts" xml:space="preserve">
-    <value>顯示所有船的彈道圖表</value>
+    <value>顯示所有船的砲彈數據圖表</value>
   </data>
   <data name="ShipStats_ShowInAccelerationCharts" xml:space="preserve">
     <value>顯示所有船的加速圖表</value>
@@ -1810,7 +1810,7 @@
     <value>公共測試服</value>
   </data>
   <data name="NavigationCharts" xml:space="preserve">
-    <value>散布和彈道圖表</value>
+    <value>散佈和砲彈數據圖表</value>
   </data>
   <data name="NavigationAccelerationCharts" xml:space="preserve">
     <value>加速圖表</value>
