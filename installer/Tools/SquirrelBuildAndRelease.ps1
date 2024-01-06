@@ -28,4 +28,4 @@ if ($signingCert) {
 
 installer\Tools\Squirrel.exe pack --releaseDir=".\releases" --icon="WoWsShipBuilder.Desktop\Assets\ShipBuilderIcon_bg.ico" --appIcon="WoWsShipBuilder.Desktop\Assets\ShipBuilderIcon_bg.ico" --noDelta --splashImage="installer\SplashScreen.gif" --packId="WoWsShipBuilder" --packVersion="$version" --packDir="$publishDir" --packTitle="WoWsShipBuilder" --includePdb $signingParams
 
-Write-Output "Local release test completed"
+Write-Output "Squirrel build complete"
