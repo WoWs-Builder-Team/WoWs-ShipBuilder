@@ -284,8 +284,6 @@
 
     private int pageSize;
 
-    private int currentPage;
-
     private int totalShips;
 
     private const int MinPageSize = 1;
@@ -747,7 +745,6 @@
             }
 
             MetricsService.ComparisonShipCount.Observe(data.Count);
-            currentPage = state.Page;
             totalShips = data.Count;
 
             return Task.FromResult<GridData<GridDataWrapper>>(new() { TotalItems = data.Count, Items = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToList() });
@@ -778,14 +775,15 @@
     private async Task ChangePageSize(int size)
     {
         pageSize = size;
+        AppSettings.ShipComparisonPageSize = pageSize;
         await dataGrid.SetRowsPerPageAsync(pageSize, false);
         await UpdateUrl();
-        AppSettings.ShipComparisonPageSize = pageSize;
         await SettingsAccessor.SaveSettings(AppSettings);
     }
 
     private string GetPagerInfoFormatString()
     {
+        int currentPage = dataGrid.CurrentPage;
         int firstItem = (currentPage * pageSize) + 1;
         int lastItem = pageSize * (currentPage + 1);
         return $"{(totalShips > 0 ? firstItem : 0)} - {(lastItem > totalShips ? totalShips : lastItem)} / {totalShips}";
