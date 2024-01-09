@@ -68,6 +68,7 @@ public partial record AirstrikeDataContainer : DataContainerBase
         }
 
         decimal reload = modifiers.ApplyModifiers("AirstrikeDataContainer.Reload", airstrike.ReloadTime);
+        var uses = modifiers.ApplyModifiers("AirstrikeDataContainer.Uses", airstrike.Charges);
 
         decimal planeHp = (decimal)plane.MaxHealth;
         var finalPlaneHp = modifiers.ApplyModifiers("AirstrikeDataContainer.PlaneHp", planeHp);
@@ -91,7 +92,7 @@ public partial record AirstrikeDataContainer : DataContainerBase
             Name = airstrike.PlaneName,
             PlaneHp = (int)Math.Round(finalPlaneHp, 0),
             ReloadTime = Math.Round(reload, 2),
-            NumberOfUses = airstrike.Charges,
+            NumberOfUses = uses,
             DropTime = airstrike.DropTime,
             FlyAwayTime = airstrike.FlyAwayTime,
             MaximumDistance = Math.Round((decimal)airstrike.MaximumDistance / 1000, 2),

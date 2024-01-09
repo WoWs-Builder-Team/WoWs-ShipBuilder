@@ -35,22 +35,7 @@
                                             }
                                             else
                                             {
-                                                <MudText Align="Align.Center" Typo="Typo.h6">@Localizer.GetGameLocalization("TITLE_" + currentMod.Name).Localization</MudText>
-                                                string desc = Localizer.GetGameLocalization("DESC_" + currentMod.Name).Localization;
-                                                if (!string.IsNullOrWhiteSpace(desc))
-                                                {
-                                                    <MudText Align="Align.Center" Typo="Typo.body2" Style="white-space: break-spaces">@Localizer.GetGameLocalization("DESC_" + currentMod.Name).Localization</MudText>
-                                                }
-                                                <MudDivider Light="true" Class="ma-1"/>
-                                                foreach (var modifier in currentMod.Modifiers)
-                                                {
-                                                    // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
-                                                    string modifierText = ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.All, Localizer);
-                                                    if (!string.IsNullOrWhiteSpace(modifierText))
-                                                    {
-                                                        <MudText Align="Align.Start" Typo="Typo.body2" Style="white-space: break-spaces" Class="flex-grow-0 flex-shrink-1">@modifierText</MudText>
-                                                    }
-                                                }
+                                                @upgradeTooltip((currentMod, Localizer))
                                             }
                                         }
                                     </MudStack>
@@ -76,24 +61,7 @@
                                                     }
                                                     else
                                                     {
-                                                        <MudText Align="Align.Center" Typo="Typo.h6">@Localizer.GetGameLocalization("TITLE_" + modernization.Name).Localization</MudText>
-                                                        string desc = Localizer.GetGameLocalization("DESC_" + modernization.Name).Localization;
-                                                        if (!string.IsNullOrWhiteSpace(desc))
-                                                        {
-                                                            <MudText Align="Align.Center" Typo="Typo.body2" Style="white-space: break-spaces">@Localizer.GetGameLocalization("DESC_" + modernization.Name).Localization</MudText>
-                                                        }
-                                                        <MudDivider Light="true" Class="ma-1"/>
-                                                        foreach (var modifier in modernization.Modifiers)
-                                                        {
-                                                            // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
-                                                            string modifierText = ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.All, Localizer);
-                                                            if (!string.IsNullOrWhiteSpace(modifierText))
-                                                            {
-                                                                <MudText Align="Align.Left" Typo="Typo.body2" Style="white-space: break-spaces" Class="flex-grow-0 flex-shrink-1">
-                                                                    @modifierText
-                                                                </MudText>
-                                                            }
-                                                        }
+                                                        @upgradeTooltip((modernization, Localizer))
                                                     }
                                                 </MudStack>
                                             </MudPaper>
@@ -114,6 +82,29 @@
 
     [CascadingParameter]
     private Breakpoint Breakpoint { get; set; }
+
+    // ReSharper disable once InconsistentNaming, UnusedParameter.Local
+    private readonly RenderFragment<(Modernization modernization, ILocalizer localizer)> upgradeTooltip = data => __builder =>
+    {
+        var localizer = data.localizer;
+        var modernization = data.modernization;
+        <MudText Align="Align.Center" Typo="Typo.h6">@localizer.GetGameLocalization("TITLE_" + modernization.Name).Localization</MudText>
+        string desc = localizer.GetGameLocalization("DESC_" + modernization.Name).Localization;
+        if (!string.IsNullOrWhiteSpace(desc))
+        {
+            <MudText Align="Align.Center" Typo="Typo.body2" Style="white-space: break-spaces">@localizer.GetGameLocalization("DESC_" + modernization.Name).Localization</MudText>
+        }
+        <MudDivider Light="true" Class="ma-1"/>
+        foreach (var modifier in modernization.Modifiers)
+        {
+            // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
+            string modifierText = ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.All, localizer);
+            if (!string.IsNullOrWhiteSpace(modifierText))
+            {
+                <MudText Align="Align.Start" Typo="Typo.body2" Style="white-space: break-spaces" Class="flex-grow-0 flex-shrink-1">@modifierText</MudText>
+            }
+        }
+    };
 
     private string GetSelectedUpgradeIcon(List<Modernization> modernizations, ObservableCollection<Modernization> selectedModernizations )
     {

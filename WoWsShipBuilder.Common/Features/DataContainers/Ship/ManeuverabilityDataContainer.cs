@@ -67,10 +67,10 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
 
         decimal maxSpeedModifier = modifiers.ApplyModifiers("ManeuverabilityDataContainer.Speed", 1m);
 
-        var speedBoostModifier = modifiers.ApplyModifiers("ManeuverabilityDataContainer.BoostCoeff.SpeedBoost", 0);
+        var speedBoostModifier = modifiers.ApplyModifiers("ManeuverabilityDataContainer.BoostCoeff.SpeedBoost", 0m);
         if (speedBoostModifier != 0)
         {
-            maxSpeedModifier += speedBoostModifier + modifiers.ApplyModifiers("ManeuverabilityDataContainer.SpeedBoostForsage", 0); // Speed boost is additive, Halland UU bonus only applies if regular speed boost is active
+            maxSpeedModifier += speedBoostModifier + modifiers.ApplyModifiers("ManeuverabilityDataContainer.SpeedBoostForsage", 0m); // Speed boost is additive, Halland UU bonus only applies if regular speed boost is active
         }
 
         decimal maxDiveSpeedModifier = modifiers.ApplyModifiers("ManeuverabilityDataContainer.MaxDiveSpeed", 1m);

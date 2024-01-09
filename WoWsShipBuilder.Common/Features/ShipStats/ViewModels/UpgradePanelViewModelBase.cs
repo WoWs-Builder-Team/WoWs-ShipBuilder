@@ -1,4 +1,5 @@
-﻿using DynamicData;
+﻿using System.Collections.Immutable;
+using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Modifiers;
@@ -22,6 +23,7 @@ public class UpgradePanelViewModelBase : ReactiveObject, IBuildComponentProvider
             .Where(m => ship.ShipNation == Nation.Common || m.AllowedNations.Contains(ship.ShipNation))
             .Where(m => m.ShipClasses.Contains(ship.ShipClass))
             .Union(upgradeData.Select(entry => entry.Value).Where(m => m.AdditionalShips.Contains(ship.Name)))
+            .Select(m => FilterModernizationModifiersForClass(m, ship.ShipClass))
             .ToList();
 
         List<List<Modernization>> groupedList = filteredModernizations.GroupBy(m => m.Slot)
@@ -95,5 +97,23 @@ public class UpgradePanelViewModelBase : ReactiveObject, IBuildComponentProvider
     public List<string> SaveBuild()
     {
         return this.SelectedModernizationList.Select(modernization => modernization.Index).ToList();
+    }
+
+    private static Modernization FilterModernizationModifiersForClass(Modernization modernization, ShipClass shipClass)
+    {
+        return new()
+        {
+            ShipClasses = modernization.ShipClasses,
+            ShipLevel = modernization.ShipLevel,
+            AllowedNations = modernization.AllowedNations,
+            AdditionalShips = modernization.AdditionalShips,
+            BlacklistedShips = modernization.BlacklistedShips,
+            Id = modernization.Id,
+            Index = modernization.Index,
+            Modifiers = modernization.Modifiers.Where(x => !x.Name.Contains('_') || x.Name.Contains("_" + shipClass)).ToImmutableList(),
+            Name = modernization.Name,
+            Slot = modernization.Slot,
+            Type = modernization.Type,
+        };
     }
 }
