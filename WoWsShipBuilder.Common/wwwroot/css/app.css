@@ -283,6 +283,15 @@ div.mud-expand-panel {
     display: ruby !important;
 }
 
+.mud-data-grid-page-size-selector-bottom div.mud-input-control-input-container {
+    margin: 0 10px 0 auto;
+    width: 100px
+}
+
+.mud-data-grid-page-size-selector-bottom label.mud-input-label-text {
+    display: ruby !important;
+}
+
 /*noinspection CssUnresolvedCustomProperty*/
 div.default-label-background label {
     background-color: var(--mud-palette-background) !important;
