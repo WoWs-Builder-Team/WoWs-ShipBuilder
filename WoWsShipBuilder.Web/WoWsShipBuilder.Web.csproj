@@ -10,13 +10,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="NLog.Targets.Loki" Version="1.4.6" />
-      <PackageReference Include="NLog.Web.AspNetCore" Version="5.2.3" />
-      <PackageReference Include="prometheus-net.AspNetCore" Version="8.0.0" />
+      <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.8" />
+      <PackageReference Include="prometheus-net.AspNetCore" Version="8.2.1" />
       <PackageReference Include="ReactiveUI.Blazor" Version="18.4.44" />
       <PackageReference Include="MudBlazor" Version="6.11.1" />
-      <PackageReference Include="Sentry.NLog" Version="3.33.0" />
-      <PackageReference Include="Nerdbank.GitVersioning" PrivateAssets="all" Version="3.6.132" />
+      <PackageReference Include="Sentry.NLog" Version="3.41.3" />
+      <PackageReference Include="Nerdbank.GitVersioning" PrivateAssets="all" Version="3.6.133" />
     </ItemGroup>
 
 </Project>

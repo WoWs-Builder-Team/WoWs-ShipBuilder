@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using NLog;
 using Splat;
 using Squirrel;
+using Squirrel.Sources;
 using WoWsShipBuilder.Desktop.Features.MessageBox;
 using WoWsShipBuilder.Desktop.Features.SplashScreen;
 using WoWsShipBuilder.Desktop.Infrastructure;
@@ -127,7 +128,7 @@ public class App : Application
     {
         this.logger.LogInformation("Current version: {Version}", Assembly.GetExecutingAssembly().GetName().Version);
 
-        using UpdateManager updateManager = new GithubUpdateManager("https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder");
+        using var updateManager = new UpdateManager(new GithubSource("https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder", null, false));
         if (!updateManager.IsInstalledApp)
         {
             this.logger.LogInformation("No update.exe found, aborting update check");

@@ -2201,4 +2201,7 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipComparison_Display" xml:space="preserve">
     <value>Display</value>
   </data>
+  <data name="ShipStats_Activate" xml:space="preserve">
+    <value>Activate</value>
+  </data>
 </root>
