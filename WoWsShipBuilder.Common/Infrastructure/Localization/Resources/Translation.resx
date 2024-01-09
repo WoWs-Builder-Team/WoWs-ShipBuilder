@@ -2198,4 +2198,7 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="OverwriteExistingBuildDialog_Message" xml:space="preserve">
     <value>Archive already contains another build named '{0}' for ship '{1}'</value>
   </data>
+  <data name="ShipStats_Activate" xml:space="preserve">
+    <value>Activate</value>
+  </data>
 </root>

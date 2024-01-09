@@ -2871,6 +2871,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Activate.
+        /// </summary>
+        public static string ShipStats_Activate {
+            get {
+                return ResourceManager.GetString("ShipStats_Activate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aiming.
         /// </summary>
         public static string ShipStats_Aiming {

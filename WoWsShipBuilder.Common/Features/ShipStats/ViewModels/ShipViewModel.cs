@@ -1,5 +1,7 @@
+using System.Diagnostics;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Runtime.Versioning;
 using DynamicData.Binding;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
@@ -139,6 +141,7 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
         this.SignalSelectorViewModel?.SelectedSignals.ToObservableChangeSet().Do(_ => this.UpdateStatsViewModel()).Subscribe().DisposeWith(this.disposables);
         this.CaptainSkillSelectorViewModel?.SkillOrderList.ToObservableChangeSet().Do(_ => this.UpdateStatsViewModel()).Subscribe().DisposeWith(this.disposables);
         this.ConsumableViewModel.ActivatedSlots.ToObservableChangeSet().Do(_ => this.UpdateStatsViewModel()).Subscribe().DisposeWith(this.disposables);
+        this.ShipStatsControlViewModel.WhenAnyValue(x => x.IsSpecialAbilityActive).Subscribe(_ => this.UpdateStatsViewModel()).DisposeWith(this.disposables);
 
         this.CaptainSkillSelectorViewModel.WhenAnyValue(x => x.SkillActivationPopupOpen).Subscribe(this.HandleCaptainParamsChange).DisposeWith(this.disposables);
         this.CaptainSkillSelectorViewModel.WhenAnyValue(x => x.CaptainWithTalents).Subscribe(this.HandleCaptainParamsChange).DisposeWith(this.disposables);
@@ -204,6 +207,7 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
         modifiers.AddRange(this.SignalSelectorViewModel!.GetModifierList());
         modifiers.AddRange(this.CaptainSkillSelectorViewModel!.GetModifiersList());
         modifiers.AddRange(this.ConsumableViewModel.GetModifiersList());
+        modifiers.AddRange(this.ShipStatsControlViewModel!.GetSpecialAbilityModifiers());
         return modifiers;
     }
 
