@@ -1,7 +1,5 @@
-using System.Diagnostics;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Runtime.Versioning;
 using DynamicData.Binding;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
