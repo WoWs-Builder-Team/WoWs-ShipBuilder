@@ -17,7 +17,6 @@ public partial class ShipStatsControlViewModel : ReactiveObject
         this.BaseShipStats = ship;
     }
 
-
     public ShipDataContainer? CurrentShipStats
     {
         get => this.currentShipStats;
