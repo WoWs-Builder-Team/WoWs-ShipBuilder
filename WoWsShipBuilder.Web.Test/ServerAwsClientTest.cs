@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
@@ -33,7 +34,7 @@ public class ServerAwsClientTest
     [Test]
     public async Task DownloadFiles()
     {
-        var testVersionInfo = new VersionInfo(new() { { "Ship", new() { new("Germany.json", 1) } } }, 0, GameVersion.Default);
+        var testVersionInfo = new VersionInfo(new Dictionary<string, ImmutableList<FileVersion>> { { "Ship", ImmutableList.Create(new FileVersion("Germany.json", 1)) } }.ToImmutableDictionary(), 0, GameVersion.Default);
         const string testShipKey = "PGSA001";
         var shipDictionary = new Dictionary<string, Ship> { { testShipKey, new Ship { Index = testShipKey, Id = 1234 } } };
 
@@ -50,7 +51,7 @@ public class ServerAwsClientTest
                 ItExpr.IsAny<CancellationToken>())
             .ReturnsAsync(new HttpResponseMessage { Content = new StringContent(JsonSerializer.Serialize(shipDictionary, AppConstants.JsonSerializerOptions)) });
 
-        var cdnOptions = new CdnOptions { Host = "https://example.com"};
+        var cdnOptions = new CdnOptions { Host = "https://example.com" };
         IOptions<CdnOptions> options = Options.Create(cdnOptions);
         var client = new ServerAwsClient(new(this.messageHandlerMock.Object), options, NullLogger<ServerAwsClient>.Instance);
 

@@ -61,18 +61,26 @@
             <CellTemplate>
                 @if (context.Item.TorpedoLauncher is not null)
                 {
-                    string loaders = default!;
-                    if (!string.IsNullOrEmpty(context.Item.TorpedoLauncher.BowLoaders) && string.IsNullOrEmpty(context.Item.TorpedoLauncher.SternLoaders))
+                    string loaders = string.Empty;
+                    if (!string.IsNullOrEmpty(context.Item.TorpedoLauncher.BowLoaders))
                     {
-                        loaders = context.Item.TorpedoLauncher.BowLoaders;
+                        loaders += context.Item.TorpedoLauncher.BowLoaders + " + ";
                     }
-                    else if (string.IsNullOrEmpty(context.Item.TorpedoLauncher.BowLoaders) && !string.IsNullOrEmpty(context.Item.TorpedoLauncher.SternLoaders))
+                    if (!string.IsNullOrEmpty(context.Item.TorpedoLauncher.SternLoaders))
                     {
-                        loaders = context.Item.TorpedoLauncher.SternLoaders;
+                        loaders += context.Item.TorpedoLauncher.SternLoaders + " + ";
                     }
-                    else if (!string.IsNullOrEmpty(context.Item.TorpedoLauncher.BowLoaders) && !string.IsNullOrEmpty(context.Item.TorpedoLauncher.SternLoaders))
+                    if (!string.IsNullOrEmpty(context.Item.TorpedoLauncher.LeftSideLoaders))
                     {
-                        loaders = string.Join(" + ", context.Item.TorpedoLauncher.BowLoaders, context.Item.TorpedoLauncher.SternLoaders);
+                        loaders += context.Item.TorpedoLauncher.LeftSideLoaders + " + ";
+                    }
+                    if (!string.IsNullOrEmpty(context.Item.TorpedoLauncher.RightSideLoaders))
+                    {
+                        loaders += context.Item.TorpedoLauncher.RightSideLoaders;
+                    }
+                    if (loaders.EndsWith(" + "))
+                    {
+                        loaders = loaders[..^3];
                     }
 
                     if (!string.IsNullOrEmpty(loaders))
@@ -216,7 +224,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSalvoDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSalvoDamage)" T="GridDataWrapper" Title="@columnTitleSalvoDamage" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.Torpedo.FullSalvoDamage.Where(y => !string.IsNullOrEmpty(y)).Select(z => int.Parse(z ?? "0", NumberStyles.AllowThousands, nfi)).ToList())">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSalvoDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSalvoDamage)" T="GridDataWrapper" Title="@columnTitleSalvoDamage" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.Torpedo.FullSalvoDamage.Where(y => !string.IsNullOrEmpty(y)).Select(z => int.Parse(z ?? "0", NumberStyles.AllowThousands, nfi)).ToNoSortList())">
             <CellTemplate>
                 @{
                    List<string?> torps = context.Item.Torpedo.FullSalvoDamage.Where(x => !string.IsNullOrEmpty(x)).ToList();

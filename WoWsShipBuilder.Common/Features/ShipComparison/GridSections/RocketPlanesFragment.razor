@@ -591,7 +591,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAreaChangeWhileAiming}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAreaChangeWhileAiming)" T="GridDataWrapper" Title="@columnTitleAreaChangeWhileAiming" SortBy="@(x => !x.RocketPlanes.AreaChangeAiming.Any() ? double.MinValue : x.RocketPlanes.AreaChangeAiming.Select(decimal.Parse).ToList())" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAreaChangeWhileAiming}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAreaChangeWhileAiming)" T="GridDataWrapper" Title="@columnTitleAreaChangeWhileAiming" SortBy="@(x => !x.RocketPlanes.AreaChangeAiming.Any() ? double.MinValue : x.RocketPlanes.AreaChangeAiming.Select(decimal.Parse).ToNoSortList())" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanes.AreaChangeAiming.Any())
                 {
@@ -615,7 +615,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAreaChangeDuringPreparation}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAreaChangeDuringPreparation)" T="GridDataWrapper" Title="@columnTitleAreaChangeDuringPreparation" SortBy="@(x => !x.RocketPlanes.AreaChangePreparation.Any() ? double.MinValue : x.RocketPlanes.AreaChangePreparation.Select(decimal.Parse).ToList())" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAreaChangeDuringPreparation}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAreaChangeDuringPreparation)" T="GridDataWrapper" Title="@columnTitleAreaChangeDuringPreparation" SortBy="@(x => !x.RocketPlanes.AreaChangePreparation.Any() ? double.MinValue : x.RocketPlanes.AreaChangePreparation.Select(decimal.Parse).ToNoSortList())" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanes.AreaChangePreparation.Any())
                 {

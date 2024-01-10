@@ -19,7 +19,7 @@ public static class AppConstants
 
     public static CultureDetails DefaultCultureDetails { get; } = new(new("en-GB"), "en");
 
-    public static IEnumerable<CultureDetails> SupportedLanguages { get; } = ImmutableArray.Create(
+    public static ImmutableArray<CultureDetails> SupportedLanguages { get; } = ImmutableArray.Create(
         DefaultCultureDetails,
         new(new("zh-CN"), "zh"),
         new(new("zh-TW"), "zh_tw"),

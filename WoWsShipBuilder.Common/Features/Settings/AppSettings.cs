@@ -51,9 +51,23 @@ public class AppSettings
 
     public bool ShipComparisonHideShipsWithoutSection { get; set; }
 
-    public double ShipComparisonFiringRange { get; set; } = 10;
+    public double ShipComparisonMainBatteryFiringRange { get; set; } = 10;
+
+    public double ShipComparisonSecondaryBatteryFiringRange { get; set; } = 5;
 
     public string? ShipComparisonHiddenColumns { get; set; }
+
+    public int ShipComparisonPageSize { get; set; } = 50;
+
+    public bool EnableLocalizationDebugMode { get; set; }
+
+    public bool FittingToolSelectorDisabled { get; set; }
+
+    public bool FittingToolSelectorClosedByDefault { get; set; }
+
+    public bool FittingToolSelectorMultiSelection { get; set; }
+
+    public bool FittingToolSelectorShowShipImages { get; set; }
 
     public void ClearSettings()
     {
@@ -73,10 +87,17 @@ public class AppSettings
         this.OpenSecondariesAndAaExpandersByDefault = false;
         this.BetaAccessCodes = new();
         this.BuildImageLayoutSettings = new[] { true, false, true, true, true, true };
-        this.ShipComparisonFiringRange = 10;
+        this.ShipComparisonMainBatteryFiringRange = 10;
+        this.ShipComparisonSecondaryBatteryFiringRange = 5;
         this.ShipComparisonUseUpgradedModules = true;
         this.ShipComparisonHideShipsWithoutSection = false;
         this.ShipComparisonHiddenColumns = default;
+        this.ShipComparisonPageSize = 50;
+        this.EnableLocalizationDebugMode = default;
+        this.FittingToolSelectorClosedByDefault = false;
+        this.FittingToolSelectorMultiSelection = false;
+        this.FittingToolSelectorShowShipImages = false;
+        this.FittingToolSelectorDisabled = false;
     }
 
     public void UpdateFromSettings(AppSettings settings)
@@ -97,9 +118,16 @@ public class AppSettings
         this.OpenSecondariesAndAaExpandersByDefault = settings.OpenSecondariesAndAaExpandersByDefault;
         this.BetaAccessCodes = settings.BetaAccessCodes;
         this.BuildImageLayoutSettings = settings.BuildImageLayoutSettings;
-        this.ShipComparisonFiringRange = settings.ShipComparisonFiringRange;
+        this.ShipComparisonMainBatteryFiringRange = settings.ShipComparisonMainBatteryFiringRange;
+        this.ShipComparisonSecondaryBatteryFiringRange = settings.ShipComparisonSecondaryBatteryFiringRange;
         this.ShipComparisonUseUpgradedModules = settings.ShipComparisonUseUpgradedModules;
         this.ShipComparisonHideShipsWithoutSection = settings.ShipComparisonHideShipsWithoutSection;
         this.ShipComparisonHiddenColumns = settings.ShipComparisonHiddenColumns;
+        this.ShipComparisonPageSize = settings.ShipComparisonPageSize;
+        this.EnableLocalizationDebugMode = settings.EnableLocalizationDebugMode;
+        this.FittingToolSelectorClosedByDefault = settings.FittingToolSelectorClosedByDefault;
+        this.FittingToolSelectorMultiSelection = settings.FittingToolSelectorMultiSelection;
+        this.FittingToolSelectorShowShipImages = settings.FittingToolSelectorShowShipImages;
+        this.FittingToolSelectorDisabled = settings.FittingToolSelectorDisabled;
     }
 }

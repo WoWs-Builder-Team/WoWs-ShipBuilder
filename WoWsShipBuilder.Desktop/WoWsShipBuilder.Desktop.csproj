@@ -34,24 +34,24 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebView.WindowsForms" Version="7.0.92" />
-        <PackageReference Include="Avalonia" Version="11.0.4" />
-        <PackageReference Include="Avalonia.Desktop" Version="11.0.4" />
-        <PackageReference Include="Avalonia.Diagnostics" Version="11.0.4" />
-        <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.4" />
-        <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.4" />
-        <PackageReference Include="Clowd.Squirrel" Version="2.9.42" />
-        <PackageReference Include="NLog.Extensions.Logging" Version="5.2.3" />
-        <PackageReference Include="Roslyn.System.IO.Abstractions.Analyzers" Version="12.2.19">
+        <PackageReference Include="Avalonia" Version="11.0.6" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.0.6" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="11.0.6" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.6" />
+        <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.6" />
+        <PackageReference Include="Clowd.Squirrel" Version="2.11.1" />
+        <PackageReference Include="NLog.Extensions.Logging" Version="5.3.8" />
+        <PackageReference Include="Sentry.NLog" Version="3.41.3" />
+        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Sentry.NLog" Version="3.33.0" />
-        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        <PackageReference Include="Nerdbank.GitVersioning" PrivateAssets="all" Version="3.6.133" />
+        <PackageReference Include="TestableIO.System.IO.Abstractions.Analyzers" Version="2022.0.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="System.IO.Abstractions" Version="19.2.29" />
-        <PackageReference Include="Nerdbank.GitVersioning" PrivateAssets="all" Version="3.6.132" />
+        <PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="20.0.4" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\WoWsShipBuilder.Common\WoWsShipBuilder.Common.csproj" />
@@ -84,8 +84,8 @@
         <Content Remove="Settings\ApplicationOptions.json" />
     </ItemGroup>
     <ItemGroup>
-        <Content Include="..\docs\Third-Party-Licenses.txt">
-            <Link>Third-Party-Licenses.txt</Link>
+        <Content Include="..\docs\Third-Party-Dependencies.txt">
+            <Link>Third-Party-Dependencies.txt</Link>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
             <CopyToPublishDirectory>Always</CopyToPublishDirectory>
         </Content>

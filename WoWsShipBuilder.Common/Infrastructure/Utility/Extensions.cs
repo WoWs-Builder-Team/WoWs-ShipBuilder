@@ -1,4 +1,5 @@
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Captain;
 
 namespace WoWsShipBuilder.Infrastructure.Utility;
 
@@ -78,4 +79,18 @@ public static class Extensions
     }
 
     public static string NameToIndex(this string name) => name.Split('_')[0];
+
+    public static Captain CopyCaptainWithName(this Captain captain, string name)
+    {
+        return new()
+        {
+            Id = captain.Id,
+            Index = captain.Index,
+            Name = name,
+            HasSpecialSkills = captain.HasSpecialSkills,
+            Skills = captain.Skills,
+            UniqueSkills = captain.UniqueSkills,
+            Nation = captain.Nation,
+        };
+    }
 }

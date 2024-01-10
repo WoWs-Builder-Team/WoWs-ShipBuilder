@@ -117,6 +117,7 @@ public class DesktopAppDataService : IAppDataService
             }
         });
 
+        Helpers.InitializeShipSelectorDataStructure();
         sw.Stop();
         Logging.Logger.LogDebug("Loaded local files in {}", sw.Elapsed);
     }

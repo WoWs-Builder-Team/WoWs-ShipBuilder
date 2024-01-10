@@ -1,8 +1,8 @@
 using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.DataContainers;
 
@@ -59,43 +59,44 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
     [DataElementFiltering(false)]
     public decimal EngineBlastProtection { get; set; }
 
-    public static ManeuverabilityDataContainer FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)
+    public static ManeuverabilityDataContainer FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
         var hull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull][0]];
 
         var engine = ship.Engines[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Engine).Components[ComponentType.Engine][0]];
 
-        decimal maxSpeedModifier = modifiers.FindModifiers("speedCoef", true).Aggregate(1m, (current, modifier) => current * (decimal)modifier);
-        maxSpeedModifier = modifiers.FindModifiers("shipSpeedCoeff", true).Aggregate(maxSpeedModifier, (current, modifier) => current * (decimal)modifier);
+        decimal maxSpeedModifier = modifiers.ApplyModifiers("ManeuverabilityDataContainer.Speed", 1m);
 
-        var speedBoostModifier = modifiers.FindModifiers("speedBoost_boostCoeff", true).Sum();
+        var speedBoostModifier = modifiers.ApplyModifiers("ManeuverabilityDataContainer.BoostCoeff.SpeedBoost", 0m);
         if (speedBoostModifier != 0)
         {
-            maxSpeedModifier += (decimal)(speedBoostModifier + modifiers.FindModifiers("boostCoeffForsage").Sum()); // Speed boost is additive, Halland UU bonus only applies if regular speed boost is active
+            maxSpeedModifier += speedBoostModifier + modifiers.ApplyModifiers("ManeuverabilityDataContainer.SpeedBoostForsage", 0m); // Speed boost is additive, Halland UU bonus only applies if regular speed boost is active
         }
 
-        decimal maxDiveSpeedModifier = modifiers.FindModifiers("maxBuoyancySpeedCoeff", true).Aggregate(1m, (current, modifier) => current * (decimal)modifier);
+        decimal maxDiveSpeedModifier = modifiers.ApplyModifiers("ManeuverabilityDataContainer.MaxDiveSpeed", 1m);
 
-        decimal divingPlaneShiftTimeModifier = modifiers.FindModifiers("buoyancyRudderTimeCoeff", true).Aggregate(1m, (current, modifier) => current * (decimal)modifier);
+        decimal divingPlaneShiftTimeModifier = modifiers.ApplyModifiers("ManeuverabilityDataContainer.DivingPlaneShiftTime", 1m);
 
-        decimal enlargedPropellerShaftSpeedModifier = modifiers.FindModifiers("speedCoefBattery", true).Aggregate(1m, (current, modifier) => current * (decimal)modifier);
+        decimal enlargedPropellerShaftSpeedModifier = modifiers.ApplyModifiers("ManeuverabilityDataContainer.PropellerShaftSpeed", 1m);
 
-        decimal rudderShiftModifier = modifiers.FindModifiers("SGRudderTime").Aggregate(1m, (current, modifier) => current * (decimal)modifier);
+        decimal rudderShiftModifier = modifiers.ApplyModifiers("ManeuverabilityDataContainer.RudderShiftTime", 1m);
 
-        var engineForwardUpTimeModifiers = modifiers.Where(x => x.Key.Equals("engineForwardUpTime")).Aggregate(1d, (current, modifier) => current * modifier.Value);
-        var engineBackwardUpTimeModifiers = modifiers.Where(x => x.Key.Equals("engineBackwardUpTime")).Aggregate(1d, (current, modifier) => current * modifier.Value);
-        var engineForwardForsageMaxSpeedModifier = modifiers.Where(x => x.Key.Equals("engineForwardForsageMaxSpeed")).Aggregate(1d, (current, modifier) => current * modifier.Value);
-        var engineBackwardForsageMaxSpeedModifier = modifiers.Where(x => x.Key.Equals("engineBackwardForsageMaxSpeed")).Aggregate(1d, (current, modifier) => current * modifier.Value);
-        var engineForwardForsagePowerModifier = modifiers.Where(x => x.Key.Equals("engineForwardForsagePower")).Aggregate(1d, (current, modifier) => current * modifier.Value);
-        var engineBackwardForsagePowerModifier = modifiers.Where(x => x.Key.Equals("engineBackwardForsagePower")).Aggregate(1d, (current, modifier) => current * modifier.Value);
-        var accelerationModifiers = new AccelerationCalculator.AccelerationModifiers((double)maxSpeedModifier, engineForwardUpTimeModifiers, engineBackwardUpTimeModifiers, engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier);
+        double engineForwardUpTimeModifiers = (double)modifiers.ApplyModifiers("ManeuverabilityDataContainer.EngineForwardUpTime", 1m);
+        double engineBackwardUpTimeModifiers = (double)modifiers.ApplyModifiers("ManeuverabilityDataContainer.EngineBackwardUpTime", 1m);
+        double engineForwardForsageMaxSpeedModifier = (double)modifiers.ApplyModifiers("ManeuverabilityDataContainer.EngineForwardForsageMaxSpeed", 1m);
+        double engineBackwardForsageMaxSpeedModifier = (double)modifiers.ApplyModifiers("ManeuverabilityDataContainer.EngineBackwardForsageMaxSpeed", 1m);
+        double engineForwardForsagePowerModifier = (double)modifiers.ApplyModifiers("ManeuverabilityDataContainer.EngineForwardForsagePower", 1m);
+        double engineBackwardForsagePowerModifier = (double)modifiers.ApplyModifiers("ManeuverabilityDataContainer.EngineBackwardForsagePower", 1m);
+
+        var accelerationModifiers = new AccelerationCalculator.AccelerationModifiers((double)(maxSpeedModifier * enlargedPropellerShaftSpeedModifier), engineForwardUpTimeModifiers, engineBackwardUpTimeModifiers, engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier);
 
         // speed boost overrides
-        var speedBoostEngineForwardForsageMaxSpeedOverride = modifiers.FindModifiers("speedBoost_engineForwardForsageMaxSpeed", true).FirstOrDefault(0);
-        var speedBoostEngineBackwardEngineForsagOverride = modifiers.FindModifiers("speedBoost_backwardEngineForsagMaxSpeed", true).FirstOrDefault(0);
-        var speedBoostForwardEngineForsagOverride = modifiers.FindModifiers("speedBoost_forwardEngineForsag", true).FirstOrDefault(0);
-        var speedBoostBackwardEngineForsag = modifiers.FindModifiers("speedBoost_backwardEngineForsag", true).FirstOrDefault(0);
-        var speedBoostAccelerationModifiers = new AccelerationCalculator.SpeedBoostAccelerationModifiers(speedBoostEngineForwardForsageMaxSpeedOverride, speedBoostEngineBackwardEngineForsagOverride, speedBoostForwardEngineForsagOverride, speedBoostBackwardEngineForsag);
+        var speedBoostForwardEngineForsagMaxSpeedOverride = (double)modifiers.ApplyModifiers("ManeuverabilityDataContainer.ForwardEngineForsagMaxSpeed.SpeedBoost", 0m);
+        var speedBoostBackwardEngineForsagMaxSpeedOverride = (double)modifiers.ApplyModifiers("ManeuverabilityDataContainer.BackwardEngineForsagMaxSpeed.SpeedBoost", 0m);
+        var speedBoostForwardEngineForsagOverride = (double)modifiers.ApplyModifiers("ManeuverabilityDataContainer.ForwardEngineForsag.SpeedBoost", 0m);
+        var speedBoostBackwardEngineForsagOverride = (double)modifiers.ApplyModifiers("ManeuverabilityDataContainer.BackwardEngineForsag.SpeedBoost", 0m);
+
+        var speedBoostAccelerationModifiers = new AccelerationCalculator.SpeedBoostAccelerationModifiers(speedBoostForwardEngineForsagMaxSpeedOverride, speedBoostBackwardEngineForsagMaxSpeedOverride, speedBoostForwardEngineForsagOverride, speedBoostBackwardEngineForsagOverride);
 
         List<int> forward = new() { AccelerationCalculator.Zero, AccelerationCalculator.FullAhead };
         List<int> reverse = new() { AccelerationCalculator.Zero, AccelerationCalculator.FullReverse };
@@ -103,8 +104,8 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
         var timeForward = AccelerationCalculator.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, forward, accelerationModifiers, speedBoostAccelerationModifiers).TimeForGear.Single();
         var timeBackward = AccelerationCalculator.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, reverse, accelerationModifiers, speedBoostAccelerationModifiers).TimeForGear.Single();
 
-        hull.MaxSpeedAtBuoyancyStateCoeff.TryGetValue(SubsBuoyancyStates.Periscope, out decimal speedAtPeriscopeCoeff);
-        hull.MaxSpeedAtBuoyancyStateCoeff.TryGetValue(SubsBuoyancyStates.DeepWater, out decimal speedAtMaxDepthCoeff);
+        hull.MaxSpeedAtBuoyancyStateCoeff.TryGetValue(SubmarineBuoyancyStates.Periscope, out decimal speedAtPeriscopeCoeff);
+        hull.MaxSpeedAtBuoyancyStateCoeff.TryGetValue(SubmarineBuoyancyStates.DeepWater, out decimal speedAtMaxDepthCoeff);
 
         decimal baseShipSpeed = hull.MaxSpeed * (engine.SpeedCoef + 1);
         decimal maxSpeed = baseShipSpeed * maxSpeedModifier;

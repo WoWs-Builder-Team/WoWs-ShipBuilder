@@ -1,0 +1,150 @@
+﻿@using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.Infrastructure.ApplicationData
+@using WoWsShipBuilder.Infrastructure.GameData
+@using WoWsShipBuilder.Infrastructure.Utility
+@using Microsoft.Extensions.Hosting
+@using Microsoft.Extensions.Options
+@using WoWsShipBuilder.DataStructures.Ship
+@using WoWsShipBuilder.Features.Settings
+@using System.Collections.Immutable
+@using WoWsShipBuilder.Features.Navigation
+
+@inject ILocalizer Localizer
+@inject IHostEnvironment Environment
+@inject IOptions<CdnOptions> CdnOptions
+@inject NavigationManager NavManager
+@inject SessionStateCache SessionStateCache
+@inject AppSettings AppSettings
+@inject AppNavigator AppNavigator
+
+@if (!AppSettings.FittingToolSelectorDisabled)
+{
+    <aside class="ft-selector-aside-container @(openDrawer ? "ft-selector-aside-container-expanded" : "ft-selector-aside-container-collapsed")">
+        <ul style="min-height: 531px;">
+            @foreach (var nation in AppData.FittingToolShipSelectorDataStructure.OrderBy(nation => (int)nation.Key))
+            {
+                <li class="parent" style="float: none" @key="nation.Key">
+                    <MudStack Row Class="ml-1" AlignItems="AlignItems.Center" Style="overflow: hidden">
+                        <MudImage Src="@(Helpers.GetNationFlag(Environment, nation.Key, string.Empty))" Height="30" Class="mt-1 mb-n1" ObjectPosition="ObjectPosition.Center"/>
+                        <MudText Class="pa-2" Style="white-space: nowrap; font-size: 1rem">
+                            @Localizer.SimpleAppLocalization(nation.Key.ShipNationToString())
+                        </MudText>
+                    </MudStack>
+                    <ul class="child">
+                        @foreach (var category in nation.Value.OrderBy(category => (int)category.Key))
+                        {
+                            <li class="parent" @key="category.Key">
+                                <MudText Class="pa-2" Style="white-space: nowrap; font-size: 1rem">
+                                    @Localizer.SimpleAppLocalization(category.Key.ShipCategoryToString())
+                                </MudText>
+                                <ul class="child">
+                                    @foreach (var shipClass in category.Value.OrderBy(shipClass => (int)shipClass.Key))
+                                    {
+                                        <li class="parent" @key="shipClass.Key">
+                                            <MudStack Row Class="ml-3" AlignItems="AlignItems.Center">
+                                                <MudIcon Icon="@(Helpers.GetIconFromClass(shipClass.Key, category.Key))" Size="Size.Medium" ViewBox="0 0 24 10"/>
+                                                <MudText Class="pa-2" Style="white-space: nowrap; font-size: 1rem">
+                                                    @Localizer.SimpleAppLocalization(shipClass.Key.ShipClassToString())
+                                                </MudText>
+                                            </MudStack>
+                                            <ul class="child">
+                                                @foreach (var tier in shipClass.Value.OrderBy(x => x.Key))
+                                                {
+                                                    if (tier.Key != shipClass.Value.MinBy(x => x.Key).Key)
+                                                    {
+                                                        <MudDivider Light="false" DividerType="DividerType.FullWidth"/>
+                                                    }
+
+                                                    <MudStack Row Spacing="0" Justify="Justify.FlexStart" @key="tier">
+                                                        <div class="ft-selector-ship-tier">
+                                                            <MudText Class="pa-2" Style="white-space: nowrap; font-size: 1rem">
+                                                                @tier.Key.ToTierString()
+                                                            </MudText>
+                                                        </div>
+                                                        @if (category.Key == ShipCategory.TechTree)
+                                                        {
+                                                            foreach (var ship in tier.Value.OrderBy(x => x.TechTreePosition))
+                                                            {
+                                                                <div class="ft-selector-tech-tree-ship-name" @key="ship.Index" @onclick="@(_ => SelectShip(ship))">
+                                                                    @if (AppSettings.FittingToolSelectorShowShipImages)
+                                                                    {
+                                                                        <MudImage Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{ship.Index}.png")" Height="30" ObjectPosition="ObjectPosition.Center"/>
+                                                                    }
+                                                                    <MudText Class="pa-2" Style="white-space: nowrap; font-size: 1rem">
+                                                                        @Localizer.SimpleGameLocalization(ship.Index)
+                                                                    </MudText>
+                                                                </div>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            IEnumerable<Ship[]> chunks = tier.Value.OrderBy(x => x.Index[4]).Chunk(5);
+                                                            <MudStack Spacing="0" Justify="Justify.FlexStart">
+                                                                @foreach (var chunk in chunks)
+                                                                {
+                                                                    <MudStack Row Spacing="0" Justify="Justify.FlexStart" @key="chunk">
+                                                                        @foreach (var ship in chunk)
+                                                                        {
+                                                                            <div class="ft-selector-ship-name-grid" @key="ship.Index" @onclick="@(_ => SelectShip(ship))">
+                                                                                @if (AppSettings.FittingToolSelectorShowShipImages)
+                                                                                {
+                                                                                    <MudImage Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{ship.Index}.png")" Height="30" ObjectPosition="ObjectPosition.Center"/>
+                                                                                }
+                                                                                <MudText Class="pa-2" Style="white-space: nowrap; font-size: 1rem">
+                                                                                    @Localizer.SimpleGameLocalization(ship.Index)
+                                                                                </MudText>
+                                                                            </div>
+                                                                        }
+                                                                    </MudStack>
+                                                                }
+                                                            </MudStack>
+                                                        }
+                                                    </MudStack>
+                                                    if (tier.Key != shipClass.Value.MaxBy(x => x.Key).Key)
+                                                    {
+                                                        <MudDivider Light="false" DividerType="DividerType.FullWidth"/>
+                                                    }
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+                </li>
+            }
+        </ul>
+        <MudButton Style="z-index: 900; min-height: 531px; min-width: 20px;" Color="Color.Secondary" Variant="Variant.Outlined" Class="px-0" Size="Size.Small" OnClick="@(() => openDrawer = !openDrawer)">
+            @(openDrawer ? "<" : ">")
+        </MudButton>
+    </aside>
+}
+
+@code
+{
+    [Parameter]
+    public IList<ShipBuildContainer> SelectedShips { get; set; } = default!;
+
+    private bool openDrawer = true;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        openDrawer = !AppSettings.FittingToolSelectorClosedByDefault;
+    }
+
+    private void SelectShip(Ship ship)
+    {
+        var shipBuildContainer = ShipBuildContainer.CreateNew(ship, null, null);
+
+        if (AppSettings.FittingToolSelectorMultiSelection)
+        {
+            SelectedShips.Add(shipBuildContainer);
+        }
+        else
+        {
+            AppNavigator.NavigateTo(AppNavigator.AppPage.ShipStats, shipBuildContainer);
+        }
+    }
+}

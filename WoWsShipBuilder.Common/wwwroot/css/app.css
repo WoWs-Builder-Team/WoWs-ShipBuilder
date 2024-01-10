@@ -82,15 +82,19 @@ h1:focus {
 
 .skill-order-number
 {
-    border-radius: 0 !important;
+    border-radius: 4px !important;
     margin-bottom: -9px !important;
     margin-right: -9px !important;
 }
 
-.skill-special-icon {
-    border-radius: 0 !important;
-    margin-bottom: -9px !important;
-    margin-left: -9px !important;
+/*noinspection CssUnresolvedCustomProperty*/
+.skill-special-icon-build-image {
+    font-size: 17px !important;
+    display: flex !important;
+    padding: 0 0 0 0 !important;
+    align-items: center !important;
+    color: var(--mud-palette-text-primary) !important;
+    font-weight: bold !important;
 }
 
 .expander-content-padding {
@@ -279,6 +283,15 @@ div.mud-expand-panel {
     display: ruby !important;
 }
 
+.mud-data-grid-page-size-selector-bottom div.mud-input-control-input-container {
+    margin: 0 10px 0 auto;
+    width: 100px
+}
+
+.mud-data-grid-page-size-selector-bottom label.mud-input-label-text {
+    display: ruby !important;
+}
+
 /*noinspection CssUnresolvedCustomProperty*/
 div.default-label-background label {
     background-color: var(--mud-palette-background) !important;
@@ -307,9 +320,8 @@ div.default-label-background label {
     background-color: var(--mud-palette-background);
 }
 
-
 .sticky-tabs-header .mud-tabs-toolbar {
     position: sticky;
-    z-index: 10;
+    z-index: 100;
     top: 64px;
 }

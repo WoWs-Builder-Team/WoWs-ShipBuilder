@@ -6,10 +6,10 @@
         <MudTextField @onkeydown="@OnKeyDown" @bind-Value="BuildName" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_BuildName))" Immediate Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))"/>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@Cancel">
+        <MudButton OnClick="@Cancel" Color="Color.Default" Variant="Variant.Text">
             @Localizer.GetAppLocalization(nameof(Translation.Dialog_Cancel)).Localization
         </MudButton>
-        <MudButton OnClick="@OnConfirm" Disabled="@(string.IsNullOrWhiteSpace(BuildName) || BuildName.Intersect(Path.GetInvalidFileNameChars()).Any() || BuildName.Contains(';'))">
+        <MudButton OnClick="@OnConfirm" Color="Color.Primary" Variant="Variant.Filled" Disabled="@(string.IsNullOrWhiteSpace(BuildName) || BuildName.Intersect(Path.GetInvalidFileNameChars()).Any() || BuildName.Contains(';'))">
             @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_ConfirmButton))
         </MudButton>
     </DialogActions>

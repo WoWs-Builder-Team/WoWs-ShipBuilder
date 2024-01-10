@@ -1,14 +1,15 @@
 @page "/acceleration-charts"
 
 @using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.DataStructures.Modifiers
 @using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.Features.BallisticCharts
 @using WoWsShipBuilder.Features.BallisticCharts.Data
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.Builds.Components
 @using WoWsShipBuilder.Features.DataContainers
+@using WoWsShipBuilder.Features.Navigation
 @using WoWsShipBuilder.Infrastructure.ApplicationData
-@using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.GameData
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
@@ -21,6 +22,7 @@
 @inject IBrowserViewportService BreakpointService
 @inject NavigationManager NavManager
 @inject SessionStateCache SessionStateCache
+@inject AppNavigator AppNavigator
 
 <PageTitle>WoWs ShipBuilder: Acceleration Charts</PageTitle>
 
@@ -36,13 +38,13 @@
     </ChildContent>
 </MudExpansionPanel>
 <MudStack Row Class="mt-2 mx-4">
-    <MudButton OnClick="AddAndRemoveShips" Variant="Variant.Filled" Color="Color.Primary">
+    <MudButton OnClick="@AddAndRemoveShips" Variant="Variant.Filled" Color="Color.Primary">
         @Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_AddRemoveShip)).Localization
     </MudButton>
-    <MudButton Disabled="@(shipBuildCache.Count == 0)" OnClick="ConfigureBuilds" Variant="Variant.Filled" Color="Color.Primary">
+    <MudButton Disabled="@(shipBuildCache.Count == 0)" OnClick="@ConfigureBuilds" Variant="Variant.Filled" Color="Color.Primary">
         @Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_EditBuilds)).Localization
     </MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="AddCustomShip">
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@AddCustomShip">
         @Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_CustomDataTitle)).Localization
     </MudButton>
     <MudDivider Vertical FlexItem Light/>
@@ -70,6 +72,20 @@
         <MudSelectItem Value="AccelerationCalculator.ThreeQuarter"><MudText Color="Color.Default">3/4</MudText></MudSelectItem>
         <MudSelectItem Value="AccelerationCalculator.FullAhead"><MudText Color="Color.Default">4/4</MudText></MudSelectItem>
     </MudSelect>
+    <MudDivider Vertical FlexItem Light/>
+    <MudStack Spacing="0" Row>
+        <MudTooltip Text="@Localizer.SimpleAppLocalization(nameof(Translation.Charts_OpenShipStats))" Arrow Delay="350">
+            <MudIconButton Icon="@Icons.Material.Filled.ViewComfy" OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.ShipStats, shipBuildCache.Values, AppNavigator.AppPage.AccelerationCharts))" Color="Color.Primary"/>
+        </MudTooltip>
+        <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInBallisticCharts).Localization" Arrow Delay="350">
+            <MudIconButton OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.BallisticCharts, shipBuildCache.Values, AppNavigator.AppPage.AccelerationCharts))" Color="Color.Primary" Style="width: 48px; height: 48px">
+                <MudIcon ViewBox="-4 -7 24 24" Icon="@(@"<path d=""M1.5 1.75V13.5h13.75a.75.75 0 0 1 0 1.5H.75a.75.75 0 0 1-.75-.75V1.75a.75.75 0 0 1 1.5 0Zm14.28 2.53-5.25 5.25a.75.75 0 0 1-1.06 0L7 7.06 4.28 9.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.25-3.25a.75.75 0 0 1 1.06 0L10 7.94l4.72-4.72a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"" stroke-width="".053058""/>")"/>
+            </MudIconButton>
+        </MudTooltip>
+        <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInShipComparison).Localization" Arrow Delay="350">
+            <MudIconButton Icon="@Icons.Material.Filled.FormatListBulleted" OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.ShipComparison, shipBuildCache.Values, AppNavigator.AppPage.AccelerationCharts))" Color="Color.Primary"/>
+        </MudTooltip>
+    </MudStack>
 </MudStack>
 
 <div>
@@ -109,7 +125,7 @@
 
             NavManager.TryGetQueryString("shipIndexes", out string shipIndexesFromUrl);
 
-            var buildContainers = SessionStateCache.GetAndResetBuildTransferContainers() ?? (!string.IsNullOrWhiteSpace(shipIndexesFromUrl) ? shipIndexesFromUrl.Split(',').Select(x => ShipBuildContainer.CreateNew(AppData.ShipDictionary[x], null, null)) : null);
+            IEnumerable<ShipBuildContainer>? buildContainers = SessionStateCache.GetAndResetBuildTransferContainers() ?? (!string.IsNullOrWhiteSpace(shipIndexesFromUrl) ? shipIndexesFromUrl.Split(',').Select(x => ShipBuildContainer.CreateNew(AppData.ShipDictionary[x], null, null)) : null);
 
             if (buildContainers is not null)
             {
@@ -217,31 +233,35 @@
         await ChartJsInterop.CreateChartAsync(AccelerationId, Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_Acceleration)).Localization, Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_Time)).Localization, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Speed)).Localization, s, knots);
     }
 
-    private static IEnumerable<ChartsHelper.Point> GetAccelerationData(Ship ship, Hull hull, Engine engine, IReadOnlyCollection<(string modifierName, float ModifierValue)> modifiers, List<int> throttles)
+    private static IEnumerable<ChartsHelper.Point> GetAccelerationData(Ship ship, Hull hull, Engine engine, List<Modifier> modifiers, List<int> throttles)
     {
-        var speedMultiplier = modifiers.FindModifiers("speedCoef", true).Aggregate(1d, (current, modifier) => current * modifier);
-        speedMultiplier = modifiers.FindModifiers("shipSpeedCoeff", true).Aggregate(speedMultiplier, (current, modifier) => current * modifier);
-        speedMultiplier = modifiers.FindModifiers("boostCoeff").Aggregate(speedMultiplier, (current, modifier) => current + modifier);
+        decimal maxSpeedModifier = modifiers.ApplyModifiers("ManeuverabilityDataContainer.Speed", 1m);
 
-        if (ship.ShipClass == ShipClass.Submarine)
+        var speedBoostModifier = modifiers.ApplyModifiers("ManeuverabilityDataContainer.BoostCoeff.SpeedBoost", 0);
+        if (speedBoostModifier != 0)
         {
-            speedMultiplier = modifiers.FindModifiers("speedCoefBattery", true).Aggregate(speedMultiplier, (current, modifier) => current * modifier);
+            maxSpeedModifier += speedBoostModifier + modifiers.ApplyModifiers("ManeuverabilityDataContainer.SpeedBoostForsage", 0); // Speed boost is additive, Halland UU bonus only applies if regular speed boost is active
         }
 
-        var engineForwardUpTimeModifiers = modifiers.Where(x => x.modifierName.Equals("engineForwardUpTime")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
-        var engineBackwardUpTimeModifiers = modifiers.Where(x => x.modifierName.Equals("engineBackwardUpTime")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
-        var engineForwardForsageMaxSpeedModifier = modifiers.Where(x => x.modifierName.Equals("engineForwardForsageMaxSpeed")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
-        var engineBackwardForsageMaxSpeedModifier = modifiers.Where(x => x.modifierName.Equals("engineBackwardForsageMaxSpeed")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
-        var engineForwardForsagePowerModifier = modifiers.Where(x => x.modifierName.Equals("engineForwardForsagePower")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
-        var engineBackwardForsagePowerModifier = modifiers.Where(x => x.modifierName.Equals("engineBackwardForsagePower")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
-        var accelerationModifiers = new AccelerationCalculator.AccelerationModifiers(speedMultiplier, engineForwardUpTimeModifiers, engineBackwardUpTimeModifiers, engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier);
+        decimal enlargedPropellerShaftSpeedModifier = modifiers.ApplyModifiers("ManeuverabilityDataContainer.PropellerShaftSpeed", 1m);
 
-        //speed boost overrides
-        var speedBoostEngineForwardForsageMaxSpeedOverride = modifiers.FindModifiers("speedBoost_forwardEngineForsagMaxSpeed", true).FirstOrDefault(0);
-        var speedBoostEngineBackwardEngineForsagOverride = modifiers.FindModifiers("speedBoost_backwardEngineForsagMaxSpeed", true).FirstOrDefault(0);
-        var speedBoostForwardEngineForsagOverride = modifiers.FindModifiers("speedBoost_forwardEngineForsag", true).FirstOrDefault(0);
-        var speedBoostBackwardEngineForsag = modifiers.FindModifiers("speedBoost_backwardEngineForsag", true).FirstOrDefault(0);
-        var speedBoostAccelerationModifiers = new AccelerationCalculator.SpeedBoostAccelerationModifiers(speedBoostEngineForwardForsageMaxSpeedOverride, speedBoostEngineBackwardEngineForsagOverride, speedBoostForwardEngineForsagOverride, speedBoostBackwardEngineForsag);
+
+        double engineForwardUpTimeModifiers = (double)modifiers.ApplyModifiers("ManeuverabilityDataContainer.EngineForwardUpTime", 1m);
+        double engineBackwardUpTimeModifiers = (double)modifiers.ApplyModifiers("ManeuverabilityDataContainer.EngineBackwardUpTime", 1m);
+        double engineForwardForsageMaxSpeedModifier = (double)modifiers.ApplyModifiers("ManeuverabilityDataContainer.EngineForwardForsageMaxSpeed", 1m);
+        double engineBackwardForsageMaxSpeedModifier = (double)modifiers.ApplyModifiers("ManeuverabilityDataContainer.EngineBackwardForsageMaxSpeed", 1m);
+        double engineForwardForsagePowerModifier = (double)modifiers.ApplyModifiers("ManeuverabilityDataContainer.EngineForwardForsagePower", 1m);
+        double engineBackwardForsagePowerModifier = (double)modifiers.ApplyModifiers("ManeuverabilityDataContainer.EngineBackwardForsagePower", 1m);
+
+        var accelerationModifiers = new AccelerationCalculator.AccelerationModifiers((double)(maxSpeedModifier * enlargedPropellerShaftSpeedModifier), engineForwardUpTimeModifiers, engineBackwardUpTimeModifiers, engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier);
+
+        // speed boost overrides
+        var speedBoostForwardEngineForsagMaxSpeedOverride = (double)modifiers.ApplyModifiers("ManeuverabilityDataContainer.ForwardEngineForsagMaxSpeed.SpeedBoost", 0m);
+        var speedBoostBackwardEngineForsagMaxSpeedOverride = (double)modifiers.ApplyModifiers("ManeuverabilityDataContainer.BackwardEngineForsagMaxSpeed.SpeedBoost", 0m);
+        var speedBoostForwardEngineForsagOverride = (double)modifiers.ApplyModifiers("ManeuverabilityDataContainer.ForwardEngineForsag.SpeedBoost", 0m);
+        var speedBoostBackwardEngineForsagOverride = (double)modifiers.ApplyModifiers("ManeuverabilityDataContainer.BackwardEngineForsag.SpeedBoost", 0m);
+
+        var speedBoostAccelerationModifiers = new AccelerationCalculator.SpeedBoostAccelerationModifiers(speedBoostForwardEngineForsagMaxSpeedOverride, speedBoostBackwardEngineForsagMaxSpeedOverride, speedBoostForwardEngineForsagOverride, speedBoostBackwardEngineForsagOverride);
 
         var accelerationPointsList = AccelerationCalculator.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, throttles, accelerationModifiers , speedBoostAccelerationModifiers).AccelerationPointsList;
         return accelerationPointsList.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList();

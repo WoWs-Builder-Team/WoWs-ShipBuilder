@@ -20,10 +20,10 @@ Please do not contact us for game issues, we are only responsible for issues dir
 
 ## Getting started
 
-The project consists of three main components: The WoWs-ShipBuilder application itself, the DataConverter project used to convert extracted game data from Wargaming into a format we can use and the gameparam-extractor.
-The main application and the data converter are written in C# with .NET 5 while the gameparam-extractor is written in Python.
+The project consists of two main components: The WoWs-ShipBuilder application and the DataConverter project used to extract and convert game data from Wargaming into a format we can use.
+Both projects are implemented in C# and currently use .NET 7 as target framework.
 
-To start contributing to this repo (the main application), make sure you have a C# IDE and the .NET 5 SDK set up on your machine. 
+To start contributing to this repo (the main application), make sure you have a C# IDE and the .NET 7 SDK set up on your machine.
 If you do not have any of this, it might be best to check out the docs from Microsoft on how to set up the .NET SDK.
 Dependencies are managed using the nuget package manager.
 
@@ -48,7 +48,7 @@ When reporting a bug, please consider the following steps:
 
 1. Check the list of existing issues and ensure that your bug has not been reported yet. If it was reported already, it might be better to comment on that issue instead of opening a new one.
 2. Check whether you can reproduce the bug. What steps are necessary to trigger it?
-3. Get your log files. The application writes logs to `%APPDATA%\WoWsShipBuilder\logs`. 
+3. Get your log files. The application writes logs to `%APPDATA%\WoWsShipBuilder\logs`.
 In case of an application crash or an error message, please attach the corresponding log file or send us the log file using discord in a PM if you do not want it to be public.
 You may also just search the section that is related to your issue, we will ask for additional details if necessary.
 4. Report the bug using the correct issue template.
@@ -61,7 +61,7 @@ When proposing a new feature, please check the following list:
 
 1. Does it provide additional value to users?
 2. How does it impact the application's UI/UX and performance?
-3. Does it fit to the application's profile? We do not want to show player statistics or create toxicity. 
+3. Does it fit to the application's profile? We do not want to show player statistics or create toxicity.
 The application is meant to help evaluating and visualizing various ship and captain builds as well as provide utilities related to this.
 
 ### Code Contribution
@@ -109,9 +109,6 @@ If your IDE supports editorconfig files, make sure that feature is turned on. So
 Other style rules:
 
 - Try to avoid hardcoded references to specific instances of objects. You may use them as fallback but there should be a way to substitute the reference in unit tests.
-- ViewModels must expose a parameterless constructor in order for the Avalonia XAML previewer to work.
-  - If you need custom constructor parameters, call that constructor from the parameterless one with default values that work with your code.
-  - For the ShipBuilder UI project, you can access the DataHelper class to retrieve example data. Modify that class if you need complex example data that cannot be created with a single method or constructor call.
 - There is a "soft" line length limit of 160 characters. This limit is not enforced but it is preferred to add line breaks if it improves readability.
   - For chained method calls, place each method call on a new line if you add a line break.
 
@@ -119,4 +116,4 @@ Other style rules:
 
 If you need additional nuget dependencies, please contact the repository maintainers first before adding them.
 We want to keep the application as small as possible. If you add dependencies, ensure that they work in a trimmed release.
-To test the release-compatibility of your local changes, run the local release test script `Tools\LocalReleaseTest.ps1`, specify a version (needs to be in format X.X.X) and install the created executable locally.
+To test the release-compatibility of your local changes, run the local release test script `installer\Tools\SquirrelBuildAndRelease.ps1` and install the created executable locally.

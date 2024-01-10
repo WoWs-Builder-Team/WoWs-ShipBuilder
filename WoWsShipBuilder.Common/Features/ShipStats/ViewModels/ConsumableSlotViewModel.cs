@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging.Abstractions;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Features.DataContainers;
 
@@ -75,7 +76,7 @@ public class ConsumableSlotViewModel : ReactiveObject
         return vm;
     }
 
-    public void UpdateDataContainers(List<(string, float)> modifiers, int shipHp, ShipClass shipClass)
+    public void UpdateDataContainers(List<Modifier> modifiers, int shipHp, ShipClass shipClass)
     {
         var dataContainers = this.shipConsumables.Select(c => ConsumableDataContainer.FromTypeAndVariant(c, modifiers, false, shipHp, shipClass));
         this.ConsumableData = dataContainers.ToList();

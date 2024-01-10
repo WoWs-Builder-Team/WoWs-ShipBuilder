@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Captain;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;
 using WoWsShipBuilder.Infrastructure.Utility;
@@ -20,6 +21,12 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     private const int FuriousSkillNumber = 81;
 
     private const int ImprovedRepairPartyReadinessSkillNumber = 44;
+
+    private const int ManualSecondaryBatteryAimingSkillNumber = 26;
+
+    private const int InterceptorSkillNumber = 22;
+
+    private const int FirePreventionSkillNumber = 14;
 
     private readonly Dictionary<int, bool> canAddSkillCache = new();
 
@@ -66,10 +73,8 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         this.logger = Logging.LoggerFactory.CreateLogger<CaptainSkillSelectorViewModel>();
         this.currentClass = shipClass;
 
-        var defaultCaptain = vmParams.defaultCaptain;
-
         // Rename Default Captain
-        defaultCaptain.Name = Translation.CaptainSkillSelector_StandardCaptain;
+        var defaultCaptain = vmParams.defaultCaptain.CopyCaptainWithName(Translation.CaptainSkillSelector_StandardCaptain);
         var capList = new Dictionary<string, Captain> { { Translation.CaptainSkillSelector_StandardCaptain, defaultCaptain } };
 
         var nationCaptains = vmParams.captainList;
@@ -108,7 +113,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
                     SkillActivationItemViewModel talentModel;
 
                     // get all the modifiers from the talents. workTime is excluded because it's for talents that automatically trigger a consumable, so it's not an effect we can show.
-                    var modifiers = talent.SkillEffects.SelectMany(effect => effect.Value.Modifiers.Where(modifier => !modifier.Key.Equals("workTime", StringComparison.Ordinal))).ToImmutableDictionary(x => x.Key, x => x.Value);
+                    var modifiers = talent.SkillEffects.SelectMany(effect => effect.Value.Modifiers.Where(modifier => !modifier.Name.Equals("workTime", StringComparison.Ordinal))).ToImmutableList();
                     if (talent.MaxTriggerNum <= 1)
                     {
                         talentModel = new(talent.TranslationId, -1, modifiers, false, description: talent.TranslationId + "_DESCRIPTION");
@@ -185,6 +190,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         var defaultCaptain = AppData.CaptainCache[Nation.Common].Single().Value;
         var nationCaptains = AppData.CaptainCache[nation];
 
+        // TODO: is this still necessary with blazor and immutable data?
         // Copy the default captain object to trigger an update on the ComboBox selection.
         // Necessary because it only updates when the item itself is changed.
         return (ShallowCopyCaptain(defaultCaptain), nationCaptains);
@@ -217,12 +223,12 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
             this.ReorderSkillList();
             int pointCost = skill.Tiers.First(x => x.ShipClass == this.currentClass).Tier + 1;
             this.AssignedPoints -= pointCost;
-            if (skill.SkillNumber == ArSkillNumber || skill.SkillNumber == ArSkillNumberSubs)
+            if (skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs)
             {
                 this.ShowArHpSelection = false;
             }
 
-            if (skill.ConditionalModifierGroups is { Count: > 0 })
+            if (skill.ConditionalModifierGroups is { Length: > 0 })
             {
                 var skillName = this.SkillList!.Single(x => x.Value.Skill.Equals(skill)).Key;
                 this.ConditionalModifiersList.RemoveRange(this.ConditionalModifiersList.Where(x => x.SkillName.Equals(skillName, StringComparison.Ordinal)));
@@ -241,7 +247,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
                 this.ShowArHpSelection = true;
             }
 
-            if (skill.ConditionalModifierGroups is { Count: > 0 })
+            if (skill.ConditionalModifierGroups is { Length: > 0 })
             {
                 this.ConditionalModifiersList.AddRange(this.CreateItemViewModelForSkill(skill));
             }
@@ -256,27 +262,27 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     /// Create a list of modifiers in a tuple format (name, value) from the currently selected skill.
     /// </summary>
     /// <returns>The List of modifiers of the currently selected skill.</returns>
-    public List<(string, float)> GetModifiersList()
+    public List<Modifier> GetModifiersList()
     {
         var modifiers = this.SkillOrderList.ToList()
-            .Where(skill => skill.Modifiers.Any() && skill.SkillNumber != ArSkillNumber && skill.SkillNumber != ArSkillNumberSubs && skill.SkillNumber != FuriousSkillNumber && skill.SkillNumber != ImprovedRepairPartyReadinessSkillNumber)
+            .Where(skill => skill.Modifiers.Any() && skill.SkillNumber != ArSkillNumber && skill.SkillNumber != ArSkillNumberSubs && skill.SkillNumber != FuriousSkillNumber && skill.SkillNumber != ImprovedRepairPartyReadinessSkillNumber && skill.SkillNumber != ManualSecondaryBatteryAimingSkillNumber)
             .SelectMany(m => m.Modifiers)
-            .Select(effect => (effect.Key, effect.Value))
             .ToList();
 
         // filter out modifiers that are class specific
-        modifiers = modifiers.Where(x => !x.Key.Contains('_') || x.Key.Contains("_" + this.currentClass) || x.Key.Contains("invisible_"))
-            .Select(effect => (effect.Key, effect.Value))
+        modifiers = modifiers.Where(x => !x.Name.Contains('_') || x.Name.Contains("_" + this.currentClass) || x.Name.Contains("invisible_"))
             .ToList();
 
-        if (this.SkillOrderList.Any(skill => skill.SkillNumber == 14))
+        if (this.SkillOrderList.Any(skill => skill.SkillNumber == FirePreventionSkillNumber))
         {
-            modifiers.Add(("fireResistanceEnabled", 1));
+            var affectedProp = ImmutableHashSet.Create("SurvivabilityDataContainer.FireResistance");
+            modifiers.Add(new ("fireResistanceEnabled", -1, null, null, Unit.None, affectedProp, DisplayValueProcessingKind.Raw, ValueProcessingKind.RawAdd));
         }
 
-        if (this.SkillOrderList.Any(skill => skill.SkillNumber == 22))
+        if (this.SkillOrderList.Any(skill => skill.SkillNumber == InterceptorSkillNumber))
         {
-            modifiers.Add(("interceptorSelected", 0));
+            var affectedProp = ImmutableHashSet.Create("ConsumableDataContainer.Interceptor");
+            modifiers.Add(new("interceptorSelected", 0, null, null, Unit.None, affectedProp, DisplayValueProcessingKind.Raw, ValueProcessingKind.Multiplier));
         }
 
         if (this.ConditionalModifiersList.Count > 0)
@@ -287,7 +293,9 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         var arSkill = this.SkillOrderList.SingleOrDefault(skill => skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs);
         if (arSkill is not null)
         {
-            modifiers.Add(("lastChanceReloadCoefficient", arSkill.Modifiers["lastChanceReloadCoefficient"] * (100 - this.ArHpPercentage)));
+            var arModifier = arSkill.Modifiers.First(x => x.Name.Equals("lastChanceReloadCoefficient", StringComparison.Ordinal));
+            var value = arModifier.Value * (100 - this.ArHpPercentage);
+            modifiers.Add(new(arModifier.Name, value, string.Empty, arModifier));
         }
 
         if (this.CaptainTalentsList.Count > 0)
@@ -302,7 +310,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     /// Create a list of skill numbers from the currently selected list.
     /// </summary>
     /// <returns>The list of currently selected skill numbers.</returns>
-    public List<int> GetSkillNumberList() => this.SkillOrderList.Select(skill => skill.SkillNumber).ToList();
+    public IEnumerable<int> GetSkillNumberList() => this.SkillOrderList.Select(skill => skill.SkillNumber).ToList();
 
     /// <summary>
     /// Return the index of the selected captain.
@@ -342,12 +350,11 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         this.SkillActivationButtonEnabled = this.CaptainTalentsList.Count > 0 || this.ConditionalModifiersList.Count > 0 || this.ShowArHpSelection;
     }
 
-    private IEnumerable<(string, float)> CollectConditionalModifiers()
+    private IEnumerable<Modifier> CollectConditionalModifiers()
     {
-        var modifiers = new List<(string, float)>();
-        var conditionalModifiers = this.ConditionalModifiersList.Where(skill => skill.Status && skill.SkillId != FuriousSkillNumber && skill.MaximumActivations <= 1)
-            .SelectMany(skill => skill.Modifiers)
-            .Select(x => (x.Key, x.Value));
+        var modifiers = new List<Modifier>();
+        var conditionalModifiers = this.ConditionalModifiersList.Where(skill => skill.Status && skill.SkillId != FuriousSkillNumber && skill.MaximumActivations <= 1 && skill.SkillId != ManualSecondaryBatteryAimingSkillNumber)
+            .SelectMany(skill => skill.Modifiers);
 
         modifiers.AddRange(conditionalModifiers);
 
@@ -357,43 +364,58 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         if (furiousSkill is not null && furiousSkillModifier is not null && furiousSkillModifier.Status)
         {
             var furiousModifiers = furiousSkill.ConditionalModifierGroups[0].Modifiers;
-            double multiplier = furiousModifiers["repeatable_first_GMShotDelay"];
+            var repeatableFirstModifier = furiousModifiers.First(x => x.Name.Equals("repeatable_first_GMShotDelay", StringComparison.Ordinal));
+            var multiplier = repeatableFirstModifier.Value;
             if (furiousSkillModifier.ActivationNumbers > 1)
             {
-                multiplier *= Math.Pow(furiousModifiers["repeatable_other_GMShotDelay"], furiousSkillModifier.ActivationNumbers - 1);
+                multiplier *= float.Pow(furiousModifiers.First(x => x.Name.Equals("repeatable_other_GMShotDelay", StringComparison.Ordinal)).Value, furiousSkillModifier.ActivationNumbers - 1);
             }
 
-            modifiers.Add(("GMShotDelay", (float)Math.Round(multiplier, 2)));
+            modifiers.Add(new("repeatableTotalGMShotDelay", multiplier, "", repeatableFirstModifier));
         }
 
         // Custom handling for Improved Repair Party Readiness Skill
         var irprModifierGroups = this.ConditionalModifiersList.Where(skill => skill.SkillId is ImprovedRepairPartyReadinessSkillNumber);
         foreach (var modifierGroup in irprModifierGroups.Where(vm => vm.Status && vm.MaximumActivations != 1))
         {
-            float skillFactor = modifierGroup.Modifiers["regenCrewReloadCoeff"];
-            double multiplier = Math.Pow(skillFactor, modifierGroup.ActivationNumbers);
-            modifiers.Add(("regenCrewReloadCoeff", Convert.ToSingle(multiplier)));
+            var modifier = modifierGroup.Modifiers.First(x => x.Name.Equals("regenCrewReloadCoeff", StringComparison.Ordinal));
+            var skillFactor = modifier.Value;
+            var multiplier = float.Pow(skillFactor, modifierGroup.ActivationNumbers);
+
+            modifiers.Add(new(modifier.Name, multiplier, "", modifier));
+        }
+
+        var manualSecondaryBatteryAimingSkill = this.SkillOrderList.SingleOrDefault(skill => skill.SkillNumber is ManualSecondaryBatteryAimingSkillNumber);
+        var manualSecondaryBatteryAimingConditionalModifiers = this.ConditionalModifiersList.SingleOrDefault(skill => skill.SkillId is ManualSecondaryBatteryAimingSkillNumber);
+        if (manualSecondaryBatteryAimingSkill is not null && manualSecondaryBatteryAimingConditionalModifiers is not null)
+        {
+            modifiers.AddRange(manualSecondaryBatteryAimingSkill.Modifiers.Where(x => !x.Name.Equals("GSIdealRadius", StringComparison.Ordinal) && !x.Name.Equals("GSPriorityTargetIdealRadius", StringComparison.Ordinal)));
+            if (manualSecondaryBatteryAimingConditionalModifiers.Status)
+            {
+                modifiers.Add(manualSecondaryBatteryAimingConditionalModifiers.Modifiers.First(x => x.Name.Equals("GSPriorityTargetIdealRadius", StringComparison.Ordinal)));
+            }
+            else
+            {
+                modifiers.Add(manualSecondaryBatteryAimingSkill.Modifiers.First(x => x.Name.Equals("GSIdealRadius", StringComparison.Ordinal)));
+            }
         }
 
         return modifiers;
     }
 
-    private IEnumerable<(string, float)> CollectTalentModifiers()
+    private IEnumerable<Modifier> CollectTalentModifiers()
     {
-        var modifiers = new List<(string, float)>();
-        var talentModifiers = this.CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: <= 1 } && !talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
-            .SelectMany(skill => skill.Modifiers)
-            .Select(x => (x.Key, x.Value));
+        var modifiers = new List<Modifier>();
+        var talentModifiers = this.CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: <= 1 } && !talent.Modifiers.Exists(modifier => modifier.Name.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
+            .SelectMany(skill => skill.Modifiers);
         modifiers.AddRange(talentModifiers);
 
-        var talentMultipleActivationModifiers = this.CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: > 1 } && !talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
-            .SelectMany(talent => talent.Modifiers.Select(modifier => (modifier.Key, Value: Math.Pow(modifier.Value, talent.ActivationNumbers))))
-            .Select(x => (x.Key, (float)x.Value));
+        var talentMultipleActivationModifiers = this.CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: > 1 } && !talent.Modifiers.Exists(modifier => modifier.Name.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
+            .SelectMany(talent => talent.Modifiers.Select(modifier => new Modifier(modifier.Name, float.Pow(modifier.Value, talent.ActivationNumbers), "", modifier)));
         modifiers.AddRange(talentMultipleActivationModifiers);
 
-        var talentFireChanceModifier = this.CaptainTalentsList.Where(talent => talent.Status && talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
-            .SelectMany(talent => talent.Modifiers.Select(modifier => (modifier.Key, Value: Math.Round(modifier.Value * talent.ActivationNumbers, 2))))
-            .Select(x => (x.Key, (float)x.Value));
+        var talentFireChanceModifier = this.CaptainTalentsList.Where(talent => talent.Status && talent.Modifiers.Any(modifier => modifier.Name.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
+            .SelectMany(talent => talent.Modifiers.Select(modifier => new Modifier(modifier.Name, float.Round(modifier.Value * talent.ActivationNumbers, 2), "", modifier)));
         modifiers.AddRange(talentFireChanceModifier);
 
         return modifiers;

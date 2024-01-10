@@ -1,4 +1,5 @@
-﻿using DynamicData;
+﻿using System.Collections.Immutable;
+using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
@@ -13,20 +14,19 @@ namespace WoWsShipBuilder.Features.ShipStats.ViewModels
 
         private static readonly UpgradeInfo TestUpgradeInfo = new()
         {
-            ShipUpgrades = new()
-            {
+            ShipUpgrades = ImmutableList.Create<ShipUpgrade>(
                 new() { UcType = ComponentType.Artillery, Name = "3", Prev = "2" },
                 new() { UcType = ComponentType.Artillery, Name = "1", Prev = "" },
                 new() { UcType = ComponentType.Artillery, Name = "2", Prev = "1" },
                 new() { UcType = ComponentType.Hull, Name = "2", Prev = "1" },
-                new() { UcType = ComponentType.Hull, Name = "1", Prev = "" },
-            },
+                new() { UcType = ComponentType.Hull, Name = "1", Prev = "" }),
         };
 
         #endregion
 
         private List<List<ShipUpgrade>> shipUpgrades = null!;
 
+        // TODO: remove this constructor
         public ShipModuleViewModel()
             : this(TestUpgradeInfo)
         {

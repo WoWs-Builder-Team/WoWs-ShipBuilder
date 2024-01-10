@@ -1,6 +1,8 @@
-﻿using ReactiveUI;
+﻿using System.Collections.Immutable;
+using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Captain;
+using WoWsShipBuilder.DataStructures.Modifiers;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
@@ -23,8 +25,13 @@ public class SkillItemViewModel : ReactiveObject
         this.SkillTier = this.SkillPosition.Tier;
         this.canAddCache = canAddCache;
         this.canRemoveCache = canRemoveCache;
-        this.Modifiers = skill.Modifiers.Where(x => !x.Key.Contains('_') || x.Key.StartsWith("repeatable_", StringComparison.Ordinal) || x.Key.Contains("_" + shipClass)).ToDictionary(x => x.Key, x => x.Value);
-        this.ConditionalModifierGroups = skill.ConditionalModifierGroups;
+        this.Modifiers = skill.Modifiers.Where(x => !x.Name.Contains('_') || x.Name.StartsWith("repeatable_", StringComparison.Ordinal) || x.Name.Contains("_" + shipClass)).ToList();
+
+        this.ConditionalModifierGroups = new();
+        foreach (var group in skill.ConditionalModifierGroups)
+        {
+            this.ConditionalModifierGroups.Add(group with { Modifiers = group.Modifiers.Where(x => !x.Name.Contains('_') || x.Name.Contains("_" + shipClass)).ToImmutableList() });
+        }
 
         this.shipClass = shipClass;
         this.parent = parent;
@@ -37,7 +44,7 @@ public class SkillItemViewModel : ReactiveObject
 
     public SkillPosition SkillPosition { get; }
 
-    public Dictionary<string, float> Modifiers { get; }
+    public List<Modifier> Modifiers { get; }
 
     public List<ConditionalModifierGroup> ConditionalModifierGroups { get; }
 
