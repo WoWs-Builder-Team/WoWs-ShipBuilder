@@ -60,7 +60,7 @@ public partial class ManeuverabilityDataContainer : DataContainerBase
     [DataElementFiltering(false)]
     public decimal EngineBlastProtection { get; set; }
 
-    public static ManeuverabilityDataContainer FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static ManeuverabilityDataContainer FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, ImmutableList<Modifier> modifiers)
     {
         var hull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull][0]];
 

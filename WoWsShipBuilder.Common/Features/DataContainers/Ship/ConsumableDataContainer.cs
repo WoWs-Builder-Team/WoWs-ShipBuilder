@@ -38,17 +38,17 @@ public partial class ConsumableDataContainer : DataContainerBase
 
     public List<Modifier> Modifiers { get; set; } = null!;
 
-    public static ConsumableDataContainer FromTypeAndVariant(ShipConsumable consumable, List<Modifier> modifiers, bool isCvPlanes, int shipHp, ShipClass shipClass)
+    public static ConsumableDataContainer FromTypeAndVariant(ShipConsumable consumable, ImmutableList<Modifier> modifiers, bool isCvPlanes, int shipHp, ShipClass shipClass)
     {
         return FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, isCvPlanes, shipHp, shipClass);
     }
 
-    public static ConsumableDataContainer FromTypeAndVariant(AircraftConsumable consumable, List<Modifier> modifiers, bool isCvPlanes, int shipHp, ShipClass shipClass)
+    public static ConsumableDataContainer FromTypeAndVariant(AircraftConsumable consumable, ImmutableList<Modifier> modifiers, bool isCvPlanes, int shipHp, ShipClass shipClass)
     {
         return FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, isCvPlanes, shipHp, shipClass);
     }
 
-    private static ConsumableDataContainer FromTypeAndVariant(string name, string variant, int slot, List<Modifier> modifiers, bool isCvPlanes, int shipHp, ShipClass shipClass)
+    private static ConsumableDataContainer FromTypeAndVariant(string name, string variant, int slot, ImmutableList<Modifier> modifiers, bool isCvPlanes, int shipHp, ShipClass shipClass)
     {
         var consumableIdentifier = $"{name} {variant}";
         var usingFallback = false;

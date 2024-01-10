@@ -308,7 +308,7 @@ else if (ViewModel is not null)
                 var oldCacheEntry = Cache[CurrentTabId]!;
                 Cache[CurrentTabId] = oldCacheEntry with { ViewModel = ViewModel };
                 oldCacheEntry.ViewModel.Dispose();
-                await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToImmutableList(), new());
+                await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToImmutableList(), ImmutableList<Modifier>.Empty);
                 StateHasChanged();
             }
         }
@@ -364,10 +364,11 @@ else if (ViewModel is not null)
 
     public static ShipBuildContainer GetBuildContainer(Guid containerId, VmCacheEntry cacheEntry, bool calculateShipDataContainer)
     {
-        List<Modifier> modifiers = cacheEntry.ViewModel.UpgradePanelViewModel.GetModifierList();
-        modifiers.AddRange(cacheEntry.ViewModel.ConsumableViewModel.GetModifiersList());
-        modifiers.AddRange(cacheEntry.ViewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<Modifier>());
-        modifiers.AddRange(cacheEntry.ViewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<Modifier>());
+        List<Modifier> modifierBuilder = cacheEntry.ViewModel.UpgradePanelViewModel.GetModifierList();
+        modifierBuilder.AddRange(cacheEntry.ViewModel.ConsumableViewModel.GetModifiersList());
+        modifierBuilder.AddRange(cacheEntry.ViewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<Modifier>());
+        modifierBuilder.AddRange(cacheEntry.ViewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<Modifier>());
+        var modifiers = modifierBuilder.ToImmutableList();
 
         bool isCustomBuild = !string.IsNullOrWhiteSpace(cacheEntry.BuildName) || cacheEntry.ViewModel.ShipModuleViewModel.SelectedModules.Any(m => !string.IsNullOrEmpty(m.Prev)) ||
                              cacheEntry.ViewModel.UpgradePanelViewModel.SelectedModernizationList.Any() || cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.Any() ||
@@ -375,7 +376,7 @@ else if (ViewModel is not null)
 
         var ship = AppData.FindShipFromSummary(cacheEntry.ViewModel.CurrentShip);
         var build = isCustomBuild ? cacheEntry.ViewModel.CreateBuild(cacheEntry.BuildName) : null;
-        ObservableCollection<int>? activeConsumables = cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.Any() ? cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots : null;
+        var activeConsumables = cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.Any() ? cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.ToImmutableArray() : ImmutableArray<int>.Empty;
         ShipDataContainer? shipDataContainer = null;
         if (calculateShipDataContainer)
         {

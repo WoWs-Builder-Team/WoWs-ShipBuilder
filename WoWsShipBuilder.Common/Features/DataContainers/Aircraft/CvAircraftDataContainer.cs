@@ -109,7 +109,7 @@ public partial class CvAircraftDataContainer : DataContainerBase
 
     public decimal BoostReloadTime { get; set; }
 
-    public static List<CvAircraftDataContainer>? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static List<CvAircraftDataContainer>? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, ImmutableList<Modifier> modifiers)
     {
         if (ship.CvPlanes.IsEmpty)
         {
@@ -159,7 +159,7 @@ public partial class CvAircraftDataContainer : DataContainerBase
         return list;
     }
 
-    private static CvAircraftDataContainer ProcessCvPlane(Aircraft plane, int shipTier, List<Modifier> modifiers)
+    private static CvAircraftDataContainer ProcessCvPlane(Aircraft plane, int shipTier, ImmutableList<Modifier> modifiers)
     {
         int maxOnDeck = modifiers.ApplyModifiers("CvAircraftDataContainer.MaxOnDeck", plane.MaxPlaneInHangar);
 

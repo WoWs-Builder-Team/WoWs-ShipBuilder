@@ -81,8 +81,8 @@ public partial class ShipBuildViewModel : ReactiveObject
     public ShipBuildContainer CreateShipBuildContainer(ShipBuildContainer baseContainer)
     {
         var build = this.DumpToBuild();
-        List<int>? activatedConsumables = this.ConsumableViewModel.ActivatedSlots.Any() ? this.ConsumableViewModel.ActivatedSlots.ToList() : null;
-        List<Modifier> modifiers = this.GenerateModifierList();
+        var activatedConsumables = this.ConsumableViewModel.ActivatedSlots.Any() ? this.ConsumableViewModel.ActivatedSlots.ToImmutableArray() : ImmutableArray<int>.Empty;
+        ImmutableList<Modifier> modifiers = this.GenerateModifierList();
         return baseContainer with
         {
             Build = build,
@@ -93,12 +93,12 @@ public partial class ShipBuildViewModel : ReactiveObject
         };
     }
 
-    private ShipDataContainer CreateDataContainer(List<Modifier> modifiers)
+    private ShipDataContainer CreateDataContainer(ImmutableList<Modifier> modifiers)
     {
         return ShipDataContainer.CreateFromShip(this.CurrentShip, this.ShipModuleViewModel.SelectedModules.ToImmutableList(), modifiers);
     }
 
-    private List<Modifier> GenerateModifierList()
+    private ImmutableList<Modifier> GenerateModifierList()
     {
         var modifiers = new List<Modifier>();
 
@@ -106,6 +106,6 @@ public partial class ShipBuildViewModel : ReactiveObject
         modifiers.AddRange(this.SignalSelectorViewModel.GetModifierList());
         modifiers.AddRange(this.CaptainSkillSelectorViewModel.GetModifiersList());
         modifiers.AddRange(this.ConsumableViewModel.GetModifiersList());
-        return modifiers;
+        return modifiers.ToImmutableList();
     }
 }

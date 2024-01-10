@@ -1,15 +1,16 @@
-﻿using WoWsShipBuilder.DataStructures.Modifiers;
+﻿using System.Collections.Immutable;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Features.Builds;
 using WoWsShipBuilder.Features.DataContainers;
 
 namespace WoWsShipBuilder.Features.Navigation;
 
-public sealed record ShipBuildContainer(Ship Ship, Build? Build, Guid Id, IEnumerable<int>? ActivatedConsumableSlots, bool SpecialAbilityActive, ShipDataContainer? ShipDataContainer, List<Modifier>? Modifiers)
+public sealed record ShipBuildContainer(Ship Ship, Build? Build, Guid Id, ImmutableArray<int> ActivatedConsumableSlots, bool SpecialAbilityActive, ShipDataContainer? ShipDataContainer, ImmutableList<Modifier> Modifiers)
 {
-    public static ShipBuildContainer CreateNew(Ship ship, Build? build, IEnumerable<int>? activatedConsumableSlots, bool specialAbilityActive = false)
+    public static ShipBuildContainer CreateNew(Ship ship, Build? build, ImmutableArray<int> activatedConsumableSlots, bool specialAbilityActive = false)
     {
-        return new(ship, build, Guid.NewGuid(), activatedConsumableSlots, specialAbilityActive, null, null);
+        return new(ship, build, Guid.NewGuid(), activatedConsumableSlots, specialAbilityActive, null, ImmutableList<Modifier>.Empty);
     }
 
     /// <summary>
@@ -45,13 +46,13 @@ public sealed record ShipBuildContainer(Ship Ship, Build? Build, Guid Id, IEnume
             return false;
         }
 
-        if ((this.ActivatedConsumableSlots is null && newContainer.ActivatedConsumableSlots is not null) || (this.ActivatedConsumableSlots is not null && newContainer.ActivatedConsumableSlots is null))
+        if ((this.ActivatedConsumableSlots.IsEmpty && !newContainer.ActivatedConsumableSlots.IsEmpty) || (!this.ActivatedConsumableSlots.IsEmpty && newContainer.ActivatedConsumableSlots.IsEmpty))
         {
             return false;
         }
 
-        IOrderedEnumerable<int> oldConsumables = (this.ActivatedConsumableSlots ?? Enumerable.Empty<int>()).OrderBy(i => i);
-        IOrderedEnumerable<int> newConsumables = (newContainer.ActivatedConsumableSlots ?? Enumerable.Empty<int>()).OrderBy(i => i);
+        IOrderedEnumerable<int> oldConsumables = this.ActivatedConsumableSlots.OrderBy(i => i);
+        IOrderedEnumerable<int> newConsumables = newContainer.ActivatedConsumableSlots.OrderBy(i => i);
         return oldConsumables.SequenceEqual(newConsumables);
     }
 }

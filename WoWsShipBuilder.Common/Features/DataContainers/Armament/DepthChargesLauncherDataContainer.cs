@@ -21,7 +21,7 @@ public partial class DepthChargesLauncherDataContainer : DataContainerBase
 
     public DepthChargeDataContainer? DepthCharge { get; set; }
 
-    public static DepthChargesLauncherDataContainer? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static DepthChargesLauncherDataContainer? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, ImmutableList<Modifier> modifiers)
     {
         var shipHull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull][0]];
 

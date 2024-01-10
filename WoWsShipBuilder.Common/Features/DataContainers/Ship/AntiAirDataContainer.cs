@@ -19,7 +19,7 @@ public class AntiAirDataContainer
 
     public AuraDataDataContainer? ShortRangeAura { get; set; }
 
-    public static AntiAirDataContainer? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static AntiAirDataContainer? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, ImmutableList<Modifier> modifiers)
     {
         if (ship.ShipClass.Equals(ShipClass.Submarine))
         {
