@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using System.Collections.Immutable;
+using ReactiveUI;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Features.DataContainers;
@@ -94,7 +95,7 @@ public partial class ShipBuildViewModel : ReactiveObject
 
     private ShipDataContainer CreateDataContainer(List<Modifier> modifiers)
     {
-        return ShipDataContainer.CreateFromShip(this.CurrentShip, this.ShipModuleViewModel.SelectedModules.ToList(), modifiers);
+        return ShipDataContainer.CreateFromShip(this.CurrentShip, this.ShipModuleViewModel.SelectedModules.ToImmutableList(), modifiers);
     }
 
     private List<Modifier> GenerateModifierList()

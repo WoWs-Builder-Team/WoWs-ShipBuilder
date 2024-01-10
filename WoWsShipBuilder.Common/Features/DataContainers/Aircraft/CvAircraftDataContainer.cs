@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Globalization;
 using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
@@ -108,7 +109,7 @@ public partial class CvAircraftDataContainer : DataContainerBase
 
     public decimal BoostReloadTime { get; set; }
 
-    public static List<CvAircraftDataContainer>? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static List<CvAircraftDataContainer>? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
         if (ship.CvPlanes.IsEmpty)
         {

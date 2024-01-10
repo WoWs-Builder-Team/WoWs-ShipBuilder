@@ -51,7 +51,7 @@ public partial class SpecialAbilityDataContainer : DataContainerBase
 
     public bool IsBurstMode { get; set; }
 
-    public static SpecialAbilityDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static SpecialAbilityDataContainer? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
         SpecialAbilityDataContainer specialDataContainer;
 

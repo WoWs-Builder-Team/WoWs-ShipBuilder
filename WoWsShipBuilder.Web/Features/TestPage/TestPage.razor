@@ -10,6 +10,7 @@
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Utility
 @using MainBatteryDataContainer = WoWsShipBuilder.Features.DataContainers.MainBatteryDataContainer
+@using System.Collections.Immutable
 @inject ISettingsAccessor SettingsAccessor
 @inject AppSettings AppSettings
 @inject ILocalizer Localizer
@@ -58,7 +59,7 @@
         return (ship, configuration);
     }
 
-    private (Ship Ship, List<ShipUpgrade> Configuration) LoadPreviewShip(ShipClass shipClass, int tier, Nation nation)
+    private (Ship Ship, ImmutableList<ShipUpgrade> Configuration) LoadPreviewShip(ShipClass shipClass, int tier, Nation nation)
     {
         var ship = AppData.FindShipFromSummary(AppData.ShipSummaryMapper.Values.First(s => s.ShipClass == shipClass && s.Nation == nation && s.Tier == tier));
 
@@ -66,7 +67,7 @@
             .Select(entry => entry.Value.FirstOrDefault())
             .Where(item => item != null)
             .Cast<ShipUpgrade>()
-            .ToList();
+            .ToImmutableList();
 
         return (ship, configuration);
     }

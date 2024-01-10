@@ -20,6 +20,7 @@
 @using WoWsShipBuilder.DataStructures.Modifiers
 @using WoWsShipBuilder.Features.Navigation
 @using WoWsShipBuilder.Infrastructure.DataTransfer
+@using System.Collections.Immutable
 
 @inject IHostEnvironment Environment
 @inject ILocalizer Localizer
@@ -307,7 +308,7 @@ else if (ViewModel is not null)
                 var oldCacheEntry = Cache[CurrentTabId]!;
                 Cache[CurrentTabId] = oldCacheEntry with { ViewModel = ViewModel };
                 oldCacheEntry.ViewModel.Dispose();
-                await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
+                await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToImmutableList(), new());
                 StateHasChanged();
             }
         }
