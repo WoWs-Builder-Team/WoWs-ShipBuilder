@@ -8,7 +8,7 @@ using WoWsShipBuilder.Infrastructure.Utility;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record DepthChargesLauncherDataContainer : DataContainerBase
+public partial class DepthChargesLauncherDataContainer : DataContainerBase
 {
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
     public decimal Reload { get; set; }

@@ -11,7 +11,7 @@ using WoWsShipBuilder.Infrastructure.GameData;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record MainBatteryDataContainer : DataContainerBase
+public partial class MainBatteryDataContainer : DataContainerBase
 {
     [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = "TurretNames", ArgumentsTextKind = TextKind.LocalizationKey)]
     public string Name { get; set; } = default!;

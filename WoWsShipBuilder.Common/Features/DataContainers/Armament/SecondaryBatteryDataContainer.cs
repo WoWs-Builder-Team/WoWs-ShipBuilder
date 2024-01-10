@@ -11,7 +11,7 @@ using WoWsShipBuilder.Infrastructure.Utility;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record SecondaryBatteryDataContainer : DataContainerBase
+public partial class SecondaryBatteryDataContainer : DataContainerBase
 {
     public string Name { get; set; } = default!;
 

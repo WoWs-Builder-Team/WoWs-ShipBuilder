@@ -7,7 +7,7 @@ using WoWsShipBuilder.DataStructures.Ship;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record ConcealmentDataContainer : DataContainerBase
+public partial class ConcealmentDataContainer : DataContainerBase
 {
     [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Sea", UnitKey = "KM")]
     public decimal ConcealmentBySea { get; set; }

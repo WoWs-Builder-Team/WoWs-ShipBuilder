@@ -10,7 +10,7 @@ using WoWsShipBuilder.Infrastructure.Utility;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record SurvivabilityDataContainer : DataContainerBase
+public partial class SurvivabilityDataContainer : DataContainerBase
 {
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "HP", LocalizationKeyOverride = "ShipHp")]
     public int HitPoints { get; set; }

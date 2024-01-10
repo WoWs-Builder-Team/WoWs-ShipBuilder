@@ -11,7 +11,7 @@ using WoWsShipBuilder.Infrastructure.GameData;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record ShellDataContainer : DataContainerBase
+public partial class ShellDataContainer : DataContainerBase
 {
     public string Name { get; set; } = default!;
 

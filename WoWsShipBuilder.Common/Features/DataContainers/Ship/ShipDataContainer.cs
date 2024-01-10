@@ -67,7 +67,7 @@ public record ShipDataContainer(string Index)
             .Cast<object>()
             .ToList();
 
-        if (shipDataContainer.SecondaryBatteryUiDataContainer.Secondaries != null)
+        if (!shipDataContainer.SecondaryBatteryUiDataContainer.Secondaries.IsEmpty)
         {
             shipDataContainer.SecondColumnContent.Insert(0, shipDataContainer.SecondaryBatteryUiDataContainer);
         }
