@@ -36,7 +36,7 @@ public partial class PingerGunDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MPS")]
     public decimal PingSpeed { get; set; }
 
-    public static PingerGunDataContainer? FromShip(Ship ship, IEnumerable<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static PingerGunDataContainer? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
         if (ship.PingerGunList.IsEmpty)
         {

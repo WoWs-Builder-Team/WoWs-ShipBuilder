@@ -63,7 +63,7 @@ public partial class TorpedoArmamentDataContainer : DataContainerBase
 
     public IEnumerable<TorpedoLauncher> TorpedoLaunchers { get; private set; } = default!;
 
-    public static TorpedoArmamentDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static TorpedoArmamentDataContainer? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
         var torpConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.Torpedoes);
         if (torpConfiguration == null)

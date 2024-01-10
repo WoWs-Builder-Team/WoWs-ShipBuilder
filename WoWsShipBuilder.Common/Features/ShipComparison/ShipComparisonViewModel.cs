@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using DynamicData;
@@ -556,19 +557,19 @@ public partial class ShipComparisonViewModel : ReactiveObject
         this.EditBuilds(this.FilteredShipList.Where(x => x.Value.Build is null).ToDictionary(x => x.Key, x => this.ResetBuild(x.Value)));
     }
 
-    private List<ShipUpgrade> GetShipConfiguration(Ship ship)
+    private ImmutableList<ShipUpgrade> GetShipConfiguration(Ship ship)
     {
         var shipConfiguration = this.UseUpgradedModules
             ? ShipModuleHelper.GroupAndSortUpgrades(ship.ShipUpgradeInfo.ShipUpgrades)
                 .OrderBy(entry => entry.Key)
                 .Select(entry => entry.Value)
                 .Select(module => module[^1])
-                .ToList()
+                .ToImmutableList()
             : ShipModuleHelper.GroupAndSortUpgrades(ship.ShipUpgradeInfo.ShipUpgrades)
                 .OrderBy(entry => entry.Key)
                 .Select(entry => entry.Value)
                 .Select(module => module[0])
-                .ToList();
+                .ToImmutableList();
         return shipConfiguration;
     }
 

@@ -1,4 +1,5 @@
-﻿using WoWsShipBuilder.DataStructures.Modifiers;
+﻿using System.Collections.Immutable;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.Utility;
 
@@ -8,12 +9,12 @@ public static class DataContainerUtility
 {
     public static ShipDataContainer GetShipDataContainerFromBuild(Ship ship, IEnumerable<string> selectedModules, IEnumerable<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
-        return ShipDataContainer.CreateFromShip(ship, Helpers.GetShipConfigurationFromBuild(selectedModules, shipConfiguration), modifiers);
+        return ShipDataContainer.CreateFromShip(ship, Helpers.GetShipConfigurationFromBuild(selectedModules, shipConfiguration).ToImmutableList(), modifiers);
     }
 
     public static ShipDataContainer GetStockShipDataContainer(Ship ship)
     {
-        return ShipDataContainer.CreateFromShip(ship, Helpers.GetStockShipConfiguration(ship), new());
+        return ShipDataContainer.CreateFromShip(ship, Helpers.GetStockShipConfiguration(ship).ToImmutableList(), new());
     }
 
     public static decimal ApplyModifiers(this List<Modifier> modifierList, string propertySelector, decimal initialValue)

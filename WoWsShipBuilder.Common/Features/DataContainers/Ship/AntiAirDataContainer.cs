@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
@@ -18,7 +19,7 @@ public class AntiAirDataContainer
 
     public AuraDataDataContainer? ShortRangeAura { get; set; }
 
-    public static AntiAirDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static AntiAirDataContainer? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
         if (ship.ShipClass.Equals(ShipClass.Submarine))
         {

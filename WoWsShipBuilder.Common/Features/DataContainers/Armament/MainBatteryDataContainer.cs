@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections.Immutable;
+using System.Globalization;
 using System.Text;
 using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
@@ -100,7 +101,7 @@ public partial class MainBatteryDataContainer : DataContainerBase
 
     public string BarrelsLayout { get; set; } = default!;
 
-    public static MainBatteryDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static MainBatteryDataContainer? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
         var artilleryConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.Artillery);
         if (artilleryConfiguration == null)

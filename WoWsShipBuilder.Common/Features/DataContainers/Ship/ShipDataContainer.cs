@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 
@@ -33,7 +34,7 @@ public record ShipDataContainer(string Index)
 
     public SpecialAbilityDataContainer? SpecialAbilityDataContainer { get; set; }
 
-    public static ShipDataContainer CreateFromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static ShipDataContainer CreateFromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
         var shipDataContainer = new ShipDataContainer(ship.Index)
         {
