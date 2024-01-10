@@ -2195,4 +2195,13 @@ Az összeállítások módosítása gombbal kezelheti az egyes hajók kiosztás�
   <data name="BuildImageRenderDialog_CopyImage" xml:space="preserve">
     <value>Kép másolása</value>
   </data>
+  <data name="OverwriteExistingBuildDialog_Message" xml:space="preserve">
+    <value>Az archívum már tartalmaz egy másik „{0}” nevű összeállítást a(z) „{1}” hajóhoz</value>
+  </data>
+  <data name="ShipComparison_Display" xml:space="preserve">
+    <value>Megjelenítés</value>
+  </data>
+  <data name="ShipStats_Activate" xml:space="preserve">
+    <value>Aktiválás</value>
+  </data>
 </root>
