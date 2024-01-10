@@ -3,10 +3,10 @@ using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Aircraft;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
-using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.DataContainers;
 
@@ -108,7 +108,7 @@ public partial record CvAircraftDataContainer : DataContainerBase
 
     public decimal BoostReloadTime { get; set; }
 
-    public static List<CvAircraftDataContainer>? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
+    public static List<CvAircraftDataContainer>? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
         if (!ship.CvPlanes.Any())
         {
@@ -121,28 +121,28 @@ public partial record CvAircraftDataContainer : DataContainerBase
         var rocketConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.Fighter);
         if (rocketConfiguration != null)
         {
-            List<string> skipModule = ship.CvPlanes[rocketConfiguration.Components[ComponentType.Fighter][0]];
+            var skipModule = ship.CvPlanes[rocketConfiguration.Components[ComponentType.Fighter][0]];
             planes.AddRange(skipModule);
         }
 
         var torpConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.TorpedoBomber);
         if (torpConfiguration != null)
         {
-            List<string> skipModule = ship.CvPlanes[torpConfiguration.Components[ComponentType.TorpedoBomber][0]];
+            var skipModule = ship.CvPlanes[torpConfiguration.Components[ComponentType.TorpedoBomber][0]];
             planes.AddRange(skipModule);
         }
 
         var diveConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.DiveBomber);
         if (diveConfiguration != null)
         {
-            List<string> diveModule = ship.CvPlanes[diveConfiguration.Components[ComponentType.DiveBomber][0]];
+            var diveModule = ship.CvPlanes[diveConfiguration.Components[ComponentType.DiveBomber][0]];
             planes.AddRange(diveModule);
         }
 
         var skipConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.SkipBomber);
         if (skipConfiguration != null)
         {
-            List<string> skipModule = ship.CvPlanes[skipConfiguration.Components[ComponentType.SkipBomber][0]];
+            var skipModule = ship.CvPlanes[skipConfiguration.Components[ComponentType.SkipBomber][0]];
             planes.AddRange(skipModule);
         }
 
@@ -158,111 +158,83 @@ public partial record CvAircraftDataContainer : DataContainerBase
         return list;
     }
 
-    private static CvAircraftDataContainer ProcessCvPlane(Aircraft plane, int shipTier, List<(string name, float value)> modifiers)
+    private static CvAircraftDataContainer ProcessCvPlane(Aircraft plane, int shipTier, List<Modifier> modifiers)
     {
-        var maxOnDeckModifiers = modifiers.FindModifiers("planeExtraHangarSize");
-        int maxOnDeck = maxOnDeckModifiers.Aggregate(plane.MaxPlaneInHangar, (current, modifier) => (int)(current + modifier));
+        int maxOnDeck = modifiers.ApplyModifiers("CvAircraftDataContainer.MaxOnDeck", plane.MaxPlaneInHangar);
 
-        var restorationTimeModifiers = modifiers.FindModifiers("planeSpawnTime");
-        decimal restorationTime = (decimal)restorationTimeModifiers.Aggregate(plane.RestorationTime, (current, modifier) => current * modifier);
+        decimal restorationTime = modifiers.ApplyModifiers("CvAircraftDataContainer.RestorationTime", (decimal)plane.RestorationTime);
 
-        var talentRestorationModifiers = modifiers.FindModifiers("airplaneReloadCoeff");
-        restorationTime = talentRestorationModifiers.Aggregate(restorationTime, (current, modifier) => current * (decimal)modifier);
-
-        float planeHp = 0;
-        float cruisingSpeed = plane.Speed;
-        float minSpeedMultiplier = plane.SpeedMinModifier;
-        float maxSpeedMultiplier = plane.SpeedMaxModifier;
-        var planesConcealmentFromShips = (float)plane.ConcealmentFromShips;
-        var planesConcealmentFromPlanes = (float)plane.ConcealmentFromPlanes;
+        decimal planeHp = 0;
+        decimal cruisingSpeed = (decimal)plane.Speed;
+        decimal minSpeedMultiplier = (decimal)plane.SpeedMinModifier;
+        decimal maxSpeedMultiplier = (decimal)plane.SpeedMaxModifier;
+        var planesConcealmentFromShips = (decimal)plane.ConcealmentFromShips;
+        var planesConcealmentFromPlanes = (decimal)plane.ConcealmentFromPlanes;
         decimal aimRateModifier = 1;
         decimal aimingTime = 0;
         switch (plane.PlaneType)
         {
             case PlaneType.TacticalFighter:
             case PlaneType.Fighter:
-                var rocketPlaneHpModifiers = modifiers.FindModifiers("fighterHealth");
-                planeHp = rocketPlaneHpModifiers.Aggregate(plane.MaxHealth, (current, modifier) => current * modifier);
+                planeHp = modifiers.ApplyModifiers("CvAircraftDataContainer.Hp.Rocket", (decimal)plane.MaxHealth);
 
-                var rocketAimingTimeModifiers = modifiers.FindModifiers("fighterAimingTime");
-                aimingTime = rocketAimingTimeModifiers.Aggregate(plane.AimingTime, (current, modifier) => current + (decimal)modifier);
+                aimingTime = modifiers.ApplyModifiers("CvAircraftDataContainer.AimingTime.Rocket", plane.AimingTime);
 
-                var aimModifiersRocket = modifiers.FindModifiers("fighterAccuracyIncRateCoeff");
-                aimRateModifier = aimModifiersRocket.Aggregate(aimRateModifier, (current, modifier) => current * (decimal)modifier);
+                aimRateModifier = modifiers.ApplyModifiers("CvAircraftDataContainer.AimRate.Rocket", aimRateModifier);
 
                 break;
             case PlaneType.TacticalDiveBomber:
             case PlaneType.DiveBomber:
-                var divePlaneHpModifiers = modifiers.FindModifiers("diveBomberHealth");
-                planeHp = divePlaneHpModifiers.Aggregate(plane.MaxHealth, (current, modifier) => current * modifier);
+                planeHp = modifiers.ApplyModifiers("CvAircraftDataContainer.Hp.DiveBomber", (decimal)plane.MaxHealth);
 
-                var divePlaneSpeedModifiers = modifiers.FindModifiers("diveBomberSpeedMultiplier");
-                cruisingSpeed = divePlaneSpeedModifiers.Aggregate(cruisingSpeed, (current, modifier) => current * modifier);
+                cruisingSpeed = modifiers.ApplyModifiers("CvAircraftDataContainer.CruisingSpeed.DiveBomber", cruisingSpeed);
 
-                var minSpeedMultiplierModifiers = modifiers.FindModifiers("diveBomberMinSpeedMultiplier");
-                minSpeedMultiplier = minSpeedMultiplierModifiers.Aggregate(minSpeedMultiplier, (current, modifier) => current * modifier);
+                minSpeedMultiplier = modifiers.ApplyModifiers("CvAircraftDataContainer.MinSpeed.DiveBomber", minSpeedMultiplier);
 
-                var maxSpeedMultiplierModifiers = modifiers.FindModifiers("diveBomberMaxSpeedMultiplier");
-                maxSpeedMultiplier = maxSpeedMultiplierModifiers.Aggregate(maxSpeedMultiplier, (current, modifier) => current * modifier);
+                maxSpeedMultiplier = modifiers.ApplyModifiers("CvAircraftDataContainer.MaxSpeed.DiveBomber", maxSpeedMultiplier);
 
-                var aimModifiersBomber = modifiers.FindModifiers("diveBomberAccuracyIncRateCoeff");
-                aimRateModifier = aimModifiersBomber.Aggregate(aimRateModifier, (current, modifier) => current * (decimal)modifier);
+                aimRateModifier = modifiers.ApplyModifiers("CvAircraftDataContainer.AimRate.DiveBomber", aimRateModifier);
 
                 break;
             case PlaneType.TacticalTorpedoBomber:
             case PlaneType.TorpedoBomber:
-                var torpPlaneHpModifiers = modifiers.FindModifiers("torpedoBomberHealth");
-                planeHp = torpPlaneHpModifiers.Aggregate(plane.MaxHealth, (current, modifier) => current * modifier);
+                planeHp = modifiers.ApplyModifiers("CvAircraftDataContainer.Hp.TorpedoBomber", (decimal)plane.MaxHealth);
 
-                var torpAimingTimeModifiers = modifiers.FindModifiers("torpedoBomberAimingTime");
-                aimingTime = torpAimingTimeModifiers.Aggregate(plane.AimingTime, (current, modifier) => current + (decimal)modifier);
+                aimingTime = modifiers.ApplyModifiers("CvAircraftDataContainer.AimingTime.TorpedoBomber", plane.AimingTime);
 
-                var aimModifiersTorpedo = modifiers.FindModifiers("torpedoBomberAccuracyIncRateCoeff");
-                aimRateModifier = aimModifiersTorpedo.Aggregate(aimRateModifier, (current, modifier) => current * (decimal)modifier);
+                aimRateModifier = modifiers.ApplyModifiers("CvAircraftDataContainer.AimRate.TorpedoBomber", aimRateModifier);
 
                 break;
             case PlaneType.TacticalSkipBomber:
             case PlaneType.SkipBomber:
-                var skipPlaneHpModifiers = modifiers.FindModifiers("skipBomberHealth");
-                planeHp = skipPlaneHpModifiers.Aggregate(plane.MaxHealth, (current, modifier) => current * modifier);
+                planeHp = modifiers.ApplyModifiers("CvAircraftDataContainer.Hp.SkipBomber", (decimal)plane.MaxHealth);
 
-                var skipPlaneSpeedModifiers = modifiers.FindModifiers("skipBomberSpeedMultiplier");
-                cruisingSpeed = skipPlaneSpeedModifiers.Aggregate(cruisingSpeed, (current, modifier) => current * modifier);
+                cruisingSpeed = modifiers.ApplyModifiers("CvAircraftDataContainer.CruisingSpeed.SkipBomber", cruisingSpeed);
 
-                var skipAimingTimeModifiers = modifiers.FindModifiers("skipBomberAimingTime");
-                aimingTime = skipAimingTimeModifiers.Aggregate(plane.AimingTime, (current, modifier) => current * (decimal)modifier);
+                aimingTime = modifiers.ApplyModifiers("CvAircraftDataContainer.AimingTime.SkipBomber", plane.AimingTime);
 
-                var aimModifiersSkip = modifiers.FindModifiers("skipBomberAccuracyIncRateCoeff");
-                aimRateModifier = aimModifiersSkip.Aggregate(aimRateModifier, (current, modifier) => current * (decimal)modifier);
+                aimRateModifier = modifiers.ApplyModifiers("CvAircraftDataContainer.AimRate.SkipBomber", aimRateModifier);
 
                 break;
         }
 
-        var allPlaneHpModifiers = modifiers.FindModifiers("planeHealthCoeff", true);
-        var finalPlaneHp = (int)Math.Round(allPlaneHpModifiers.Aggregate(planeHp, (current, modifier) => current * modifier), 0);
+        var finalPlaneHp = (int)Math.Round(modifiers.ApplyModifiers("CvAircraftDataContainer.Hp", planeHp));
+        var additionalPlaneHp = modifiers.ApplyModifiers("CvAircraftDataContainer.HpPerTier", shipTier);
 
-        int planeHpPerTierIndex = modifiers.FindModifierIndex("planeHealthPerLevel");
-        if (planeHpPerTierIndex > 0)
+        // if the value is less than 15, then the modifier was not found and the value is the tier, so we don't add it to hp.
+        if (additionalPlaneHp > 15)
         {
-            int additionalHp = (int)modifiers[planeHpPerTierIndex].value * shipTier;
-            finalPlaneHp += additionalHp;
+            finalPlaneHp += additionalPlaneHp;
         }
 
-        var cruisingSpeedModifiers = modifiers.FindModifiers("planeSpeed");
-        decimal finalCruisingSpeed = (decimal)cruisingSpeedModifiers.Aggregate(cruisingSpeed, (current, modifier) => current * modifier);
+        decimal finalCruisingSpeed = modifiers.ApplyModifiers("CvAircraftDataContainer.Speed", cruisingSpeed);
 
-        var talentCruisingSpeedModifiers = modifiers.FindModifiers("squadronSpeedCoeff");
-        finalCruisingSpeed = talentCruisingSpeedModifiers.Aggregate(finalCruisingSpeed, (current, modifier) => current * (decimal)modifier);
+        maxSpeedMultiplier = modifiers.ApplyModifiers("CvAircraftDataContainer.MaxSpeed", maxSpeedMultiplier);
 
-        var maxSpeedModifiers = modifiers.FindModifiers("planeMaxSpeedMultiplier");
-        maxSpeedMultiplier = maxSpeedModifiers.Aggregate(maxSpeedMultiplier, (current, modifier) => current * modifier);
+        var maxEngineBoostDuration = modifiers.ApplyModifiers("CvAircraftDataContainer.BoostTime", (decimal)plane.MaxEngineBoostDuration);
 
-        var maxEngineBoostDurationModifiers = modifiers.FindModifiers("planeForsageTimeCoeff");
-        var maxEngineBoostDuration = maxEngineBoostDurationModifiers.Aggregate(plane.MaxEngineBoostDuration, (current, modifier) => current * modifier);
-
-        var planesConcealmentModifiers = modifiers.FindModifiers("planeVisibilityFactor").ToList();
-        planesConcealmentFromShips = planesConcealmentModifiers.Aggregate(planesConcealmentFromShips, (current, modifier) => current * modifier);
-        planesConcealmentFromPlanes = planesConcealmentModifiers.Aggregate(planesConcealmentFromPlanes, (current, modifier) => current * modifier);
+        planesConcealmentFromShips = modifiers.ApplyModifiers("CvAircraftDataContainer.Concealment", planesConcealmentFromShips);
+        planesConcealmentFromPlanes = modifiers.ApplyModifiers("CvAircraftDataContainer.Concealment", planesConcealmentFromPlanes);
 
         var jatoDuration = (decimal)plane.JatoData.JatoDuration;
         var jatoMultiplier = (decimal)plane.JatoData.JatoSpeedMultiplier;
@@ -324,9 +296,9 @@ public partial record CvAircraftDataContainer : DataContainerBase
             MaxNumberOnDeck = maxOnDeck,
             RestorationTime = Math.Round(restorationTime, 2),
             CruisingSpeed = finalCruisingSpeed,
-            MaxSpeed = Math.Round(finalCruisingSpeed * (decimal)maxSpeedMultiplier, 0),
-            MinSpeed = Math.Round(finalCruisingSpeed * (decimal)minSpeedMultiplier, 0),
-            MaxEngineBoostDuration = (decimal)maxEngineBoostDuration,
+            MaxSpeed = Math.Round(finalCruisingSpeed * maxSpeedMultiplier, 0),
+            MinSpeed = Math.Round(finalCruisingSpeed * minSpeedMultiplier, 0),
+            MaxEngineBoostDuration = maxEngineBoostDuration,
             InnerBombPercentage = bombInnerEllipse,
             NumberDuringAttack = plane.AttackData.AttackerSize,
             AmmoPerAttack = plane.AttackData.AttackCount,
@@ -343,8 +315,8 @@ public partial record CvAircraftDataContainer : DataContainerBase
             AimingRateMoving = (aimingRateMoving * 100).ToString(stringFormat, CultureInfo.InvariantCulture),
             AimingPreparationRateMoving = (preparationAimingRateMoving * 100).ToString(stringFormat, CultureInfo.InvariantCulture),
             TimeToFullyAimed = Math.Round(fullAimTime, 1),
-            ConcealmentFromShips = (decimal)planesConcealmentFromShips,
-            ConcealmentFromPlanes = (decimal)planesConcealmentFromPlanes,
+            ConcealmentFromShips = planesConcealmentFromShips,
+            ConcealmentFromPlanes = planesConcealmentFromPlanes,
             MaxViewDistance = (decimal)plane.SpottingOnShips,
         };
 

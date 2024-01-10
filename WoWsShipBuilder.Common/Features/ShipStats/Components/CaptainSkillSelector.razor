@@ -46,8 +46,8 @@
                 <MudItem @key="skill.Skill.SkillNumber" Class="d-flex justify-center mb-n3" xs="2" Style="@(GetOrder(skill.SkillPosition) + GetSubFix())">
                     <MudTooltip Placement="Placement.Right" Color="Color.Transparent" Delay="350">
                         <ChildContent>
-                            <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" BadgeClass="skill-special-icon" Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">
-                                <MudBadge Content="@(ViewModel.SkillOrderList.IndexOf(skill.Skill) + 1)" Color="Color.Error" Origin="Origin.TopLeft" Overlap="true" BadgeClass="skill-order-number" Visible="@ShouldShowBadge(skill.Skill)">
+                            <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" Bordered Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">
+                                <MudBadge Content="@(ViewModel.SkillOrderList.IndexOf(skill.Skill) + 1)" Color="Color.Error" Bordered Origin="Origin.TopLeft" Overlap="true" BadgeClass="skill-order-number" Visible="@ShouldShowBadge(skill.Skill)">
                                     <MudButton Class="pa-2" Variant="Variant.Outlined" Color="@(GetColorFromState(skill))" OnClick="@(() => OnSkillClick(skill))" Style="@GetImageBreakpointStyle()">
                                         <MudImage Width="@GetImageSize()" Height="@GetImageSize()" ObjectFit="ObjectFit.ScaleDown" Src="@("/_content/WoWsShipBuilder.Common/assets/Skills/" + ToSnakeCase(skillName) + ".png")"/>
                                     </MudButton>
@@ -73,10 +73,10 @@
                                     @if (skill.Modifiers is { Count: > 0 })
                                     {
                                         <MudDivider Light="true" Class="ma-1"/>
-                                        foreach ((string modifierName, float modifierValue) in skill.Modifiers)
+                                        foreach (var modifier in skill.Modifiers)
                                         {
                                             // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
-                                            string modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
+                                            string modifierString = ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.All, Localizer);
                                             if (!string.IsNullOrWhiteSpace(modifierString))
                                             {
                                                 <MudText Align="Align.Left" Typo="Typo.body2">
@@ -98,10 +98,10 @@
                                                 @Localizer.GetGameLocalization(!string.IsNullOrWhiteSpace(modifierGroup.TriggerDescription) ? modifierGroup.TriggerDescription : "SKILL_TRIGGER_" + modifierGroup.TriggerType).Localization
                                             }
                                         </MudText>
-                                        foreach ((string modifierName, float modifierValue) in modifierGroup.Modifiers)
+                                        foreach (var modifier in modifierGroup.Modifiers)
                                         {
                                             // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
-                                            string modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
+                                            string modifierString = ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.All, Localizer);
                                             if (!string.IsNullOrWhiteSpace(modifierString))
                                             {
                                                 <MudText Align="Align.Left" Typo="Typo.body2">

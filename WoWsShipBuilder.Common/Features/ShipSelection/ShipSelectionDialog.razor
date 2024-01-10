@@ -1,6 +1,9 @@
 ﻿@using System.Collections.Specialized
 @using System.Collections.ObjectModel
-@using WoWsShipBuilder.Infrastructure.DataTransfer
+@using WoWsShipBuilder.Features.Navigation
+@using WoWsShipBuilder.Infrastructure.Localization.Resources
+
+@inject ILocalizer Localizer
 
 @implements IDisposable
 
@@ -11,9 +14,9 @@
         </MudContainer>
     </DialogContent>
     <DialogActions>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@Cancel">Cancel</MudButton>
+        <MudButton Variant="Variant.Text" Color="Color.Default" DisableElevation="true" OnClick="@Cancel">@Localizer.SimpleAppLocalization(nameof(Translation.Cancel))</MudButton>
         <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@SubmitShips">
-            Add ships
+            @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionDialog_AddShips))
         </MudButton>
     </DialogActions>
 </MudDialog>

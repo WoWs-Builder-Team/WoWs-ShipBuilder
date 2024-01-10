@@ -5,9 +5,9 @@
 @using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.LinkShortening
+@using WoWsShipBuilder.Features.Navigation
 @using WoWsShipBuilder.Features.ShipStats.Components
 @using WoWsShipBuilder.Infrastructure.ApplicationData
-@using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.GameData
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
@@ -79,7 +79,7 @@
         </MudBreakpointProvider>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@Cancel" Variant="Variant.Filled" Color="Color.Warning">
+        <MudButton OnClick="@Cancel" Variant="Variant.Text" Color="Color.Default">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
         <MudButton Color="Color.Tertiary" OnClick="@ResetBuild" Variant="Variant.Filled">
@@ -87,7 +87,7 @@
                  @Localizer.GetAppLocalization(nameof(Translation.MainWindow_ResetBuild)).Localization
             </MudText>
         </MudButton>
-        <MudButton Color="Color.Success" OnClick="@SaveBuilds" Variant="Variant.Filled" Disabled="@(ViewModel!.BuildName.Intersect(Path.GetInvalidFileNameChars()).Any() || ViewModel!.BuildName.Contains(';'))">
+        <MudButton Color="Color.Primary" OnClick="@SaveBuilds" Variant="Variant.Filled" Disabled="@(ViewModel!.BuildName.Intersect(Path.GetInvalidFileNameChars()).Any() || ViewModel!.BuildName.Contains(';'))">
             <MudText Typo="Typo.button">
                  @Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_ConfirmButton)).Localization
             </MudText>
@@ -207,7 +207,7 @@
                                 </MudStack>
                             </MudItem>
                             <MudItem xs="12" md="6">
-                                <MudTextField @bind-Value="ViewModel.BuildName" Immediate Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))" DebounceInterval="150" Clearable FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-n2 mb-0 default-label-background"/>
+                                <MudTextField @bind-Value="ViewModel.BuildName" AutoFocus Immediate Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))" DebounceInterval="150" Clearable FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-n2 mb-0 default-label-background"/>
                             </MudItem>
                         }
                         else

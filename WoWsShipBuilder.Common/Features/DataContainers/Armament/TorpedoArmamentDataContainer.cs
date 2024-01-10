@@ -1,10 +1,11 @@
+using System.Collections.Immutable;
 using System.Globalization;
 using System.Text;
 using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.DataContainers;
 
@@ -21,6 +22,12 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
 
     [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "Loaders")]
     public string SternLoaders { get; set; } = default!;
+
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "Loaders")]
+    public string LeftSideLoaders { get; set; } = default!;
+
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "Loaders")]
+    public string RightSideLoaders { get; set; } = default!;
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
     public decimal TurnTime { get; set; }
@@ -56,7 +63,7 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
 
     public IEnumerable<TorpedoLauncher> TorpedoLaunchers { get; private set; } = default!;
 
-    public static TorpedoArmamentDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
+    public static TorpedoArmamentDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
         var torpConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.Torpedoes);
         if (torpConfiguration == null)
@@ -64,8 +71,8 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
             return null;
         }
 
-        string[] torpedoOptions = torpConfiguration.Components[ComponentType.Torpedoes];
-        string[] supportedModules = torpConfiguration.Components[ComponentType.Torpedoes];
+        ImmutableArray<string> torpedoOptions = torpConfiguration.Components[ComponentType.Torpedoes];
+        ImmutableArray<string> supportedModules = torpConfiguration.Components[ComponentType.Torpedoes];
 
         TorpedoModule? torpedoModule;
         if (torpedoOptions.Length == 1)
@@ -100,17 +107,9 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
             torpCount += current.LauncherCount * current.BarrelCount;
         }
 
-        var turnSpeedModifiers = modifiers.FindModifiers("GTRotationSpeed");
-        decimal traverseSpeed = turnSpeedModifiers.Aggregate(launcher.HorizontalRotationSpeed, (current, modifier) => current * (decimal)modifier);
+        decimal traverseSpeed = modifiers.ApplyModifiers("TorpedoArmamentDataContainer.TraverseSpeed", launcher.HorizontalRotationSpeed);
 
-        var reloadSpeedModifiers = modifiers.FindModifiers("GTShotDelay");
-        decimal reloadSpeed = reloadSpeedModifiers.Aggregate(launcher.Reload, (current, modifier) => current * (decimal)modifier);
-
-        var arModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
-        reloadSpeed = arModifiers.Aggregate(reloadSpeed, (current, arModifier) => current * (1 - ((decimal)arModifier / 100)));
-
-        var talentModifiers = modifiers.FindModifiers("torpedoReloadCoeff");
-        reloadSpeed = talentModifiers.Aggregate(reloadSpeed, (current, modifier) => current * (decimal)modifier);
+        decimal reloadSpeed = modifiers.ApplyModifiers("TorpedoArmamentDataContainer.Reload", launcher.Reload);
 
         string torpedoArea = $"{launcher.TorpedoAngles[0]} - {Math.Round(launcher.TorpedoAngles[1], 1)}"; // only the second one needs rounding
 
@@ -138,7 +137,7 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
             Reload = Math.Round(reloadSpeed, 2),
             TorpedoArea = torpedoArea,
             Torpedoes = torpedoes,
-            TimeToSwitch = Math.Round(torpedoModule.TimeToChangeAmmo,  1),
+            TimeToSwitch = Math.Round(reloadSpeed * launcher.AmmoSwitchCoeff, 1),
             TorpedoLaunchers = torpedoModule.TorpedoLaunchers,
             TorpLayout = string.Join(" + ", torpLayout),
             TorpCount = torpCount,
@@ -147,20 +146,29 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
             AltTorpFullSalvoDmg = altTorpFullSalvoDmg,
         };
 
-        torpedoModule.TorpedoLoaders.TryGetValue(SubTorpLauncherLoaderPosition.BowLoaders, out List<string>? bowLoaders);
-        torpedoModule.TorpedoLoaders.TryGetValue(SubTorpLauncherLoaderPosition.SternLoaders, out List<string>? sternLoaders);
-
         var loadersSum = 0;
-        if (bowLoaders is not null)
+        if (torpedoModule.TorpedoLoaders.TryGetValue(TorpedoLauncherLoaderPosition.BowLoaders, out var bowLoaders))
         {
             torpedoArmamentDataContainer.BowLoaders = string.Join(" + ", bowLoaders);
             loadersSum += bowLoaders.Select(x => x.Split('x').Select(int.Parse).First()).Sum();
         }
 
-        if (sternLoaders is not null)
+        if (torpedoModule.TorpedoLoaders.TryGetValue(TorpedoLauncherLoaderPosition.SternLoaders, out var sternLoaders))
         {
             torpedoArmamentDataContainer.SternLoaders = string.Join(" + ", sternLoaders);
             loadersSum += sternLoaders.Select(x => x.Split('x').Select(int.Parse).First()).Sum();
+        }
+
+        if (torpedoModule.TorpedoLoaders.TryGetValue(TorpedoLauncherLoaderPosition.LeftSideLoaders, out var leftSideLoaders))
+        {
+            torpedoArmamentDataContainer.LeftSideLoaders = string.Join(" + ", leftSideLoaders);
+            loadersSum += leftSideLoaders.Select(x => x.Split('x').Select(int.Parse).First()).Sum();
+        }
+
+        if (torpedoModule.TorpedoLoaders.TryGetValue(TorpedoLauncherLoaderPosition.RightSideLoaders, out var rightSideLoaders))
+        {
+            torpedoArmamentDataContainer.RightSideLoaders = string.Join(" + ", rightSideLoaders);
+            loadersSum += rightSideLoaders.Select(x => x.Split('x').Select(int.Parse).First()).Sum();
         }
 
         torpedoArmamentDataContainer.LoadersCount = loadersSum;

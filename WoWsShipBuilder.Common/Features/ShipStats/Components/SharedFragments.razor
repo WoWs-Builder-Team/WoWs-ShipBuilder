@@ -32,7 +32,7 @@
                 </div>
                 break;
             case TooltipDataElement element:
-                <MudTooltip Inline="false" Placement="Placement.Right" Color="Color.Transparent" RootStyle="width: 100%" Delay="300">
+                <MudTooltip Inline="false" Placement="Placement.Bottom" Color="Color.Transparent" RootStyle="width: 100%" Delay="300" Arrow>
                     <ChildContent>
                         <div class="d-flex justify-space-between">
                             <MudText Class="flex-grow-0 flex-shrink-1" Typo="Typo.body2">
@@ -43,7 +43,7 @@
                         </div>
                     </ChildContent>
                     <TooltipContent>
-                        <MudPaper Outlined="true" Class="pa-2">
+                        <MudPaper Outlined Class="pa-2">
                             <MudText Style="max-width: 500px" Typo="Typo.body2">
                                 <MultilineString InputString="@group.localizer.GetAppLocalization(element.Tooltip).Localization"/>
                             </MudText>

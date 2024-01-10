@@ -1,7 +1,7 @@
 ﻿@using System.Collections.Specialized
 @using System.Collections.ObjectModel
 @using DynamicData
-@using WoWsShipBuilder.Infrastructure.DataTransfer
+@using WoWsShipBuilder.Features.Navigation
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 
 @implements IDisposable
@@ -12,7 +12,7 @@
         <ShipSelector SelectedShips="@selectedShips" MultiSelect AllowCopies EnableBuildImport EnableSavedBuildList DisableSelectedShipBuildEditing/>
     </DialogContent>
     <DialogActions>
-        <MudButton Variant="Variant.Filled" Color="Color.Warning" DisableElevation="true" OnClick="@Cancel">
+        <MudButton Variant="Variant.Text" Color="Color.Default" DisableElevation="true" OnClick="@Cancel">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
         <MudButton Variant="Variant.Filled" Color="Color.Tertiary" DisableElevation="true" Disabled="@(ShipList != null && ShipList!.Count == 0)" OnClick="@(() => SubmitShips(true))">
@@ -30,7 +30,7 @@
                 </MudText>
             }
         </MudButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Success" DisableElevation="true" OnClick="@(() => SubmitShips(false))">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@(() => SubmitShips(false))">
             @if (processing)
             {
                 <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>

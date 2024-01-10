@@ -11,12 +11,15 @@
 @using WoWsShipBuilder.Features.Settings
 @using WoWsShipBuilder.Infrastructure
 @using WoWsShipBuilder.Infrastructure.ApplicationData
-@using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.GameData
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
 @using System.Diagnostics
+@using System.Collections.ObjectModel
+@using WoWsShipBuilder.DataStructures.Modifiers
+@using WoWsShipBuilder.Features.Navigation
+@using WoWsShipBuilder.Infrastructure.DataTransfer
 
 @inject IHostEnvironment Environment
 @inject ILocalizer Localizer
@@ -31,6 +34,8 @@
 @inject IOptions<CdnOptions> CdnOptions
 @inject IOptions<ShipBuilderOptions> ShipBuilderOptions
 @inject IUserDataService UserDataService
+@inject ISnackbar Snackbar
+@inject AppNavigator AppNavigator
 
 @inherits ReactiveComponentBase<ShipViewModel>
 
@@ -57,12 +62,12 @@ else if (ViewModel is not null)
 {
     <MudGrid>
         <MudItem xs="12">
-            <MudPaper Outlined="true" Class="py-2 px-15">
+            <MudPaper Outlined="true" Class="@("py-2 px-" + GetShipCarouselPadding())">
                 <MudGrid Justify="Justify.Center">
-                    <MudItem xs="12" md="2" Class="align-self-center d-flex justify-center">
-                        <MudTextField @bind-Value="BuildName" Label="@($"{Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_Build))}:")" Immediate DebounceInterval="100" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Variant="Variant.Outlined" Margin="Margin.Dense" Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))"/>
+                    <MudItem xs="12" md="3" xl="2" Class="align-self-center d-flex justify-center">
+                        <MudTextField @bind-Value="BuildName" Label="@($"{Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_Build))}:")" AutoFocus Immediate DebounceInterval="100" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Variant="Variant.Outlined" Margin="Margin.Dense" Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))"/>
                     </MudItem>
-                    <MudItem xs="12" md="8" Class="@(GetShipAlign() + " d-flex justify-center")">
+                    <MudItem xs="12" md="6" xl="8" Class="@(GetShipAlign() + " d-flex justify-center")">
                         @if (ViewModel.PreviousShip is not null)
                         {
                             <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, CurrentTabId, ViewModel.PreviousShip))" AlignItems="AlignItems.Center" id="@(CurrentTabId + "_" + ViewModel.PreviousShip.Index)" @oncontextmenu:preventDefault="true">
@@ -94,15 +99,18 @@ else if (ViewModel is not null)
                             }
                         }
                     </MudItem>
-                    <MudItem xs="12" md="2" Class="align-self-center d-flex justify-center">
-                        <MudStack>
-                            <MudButton Size="Size.Large" Variant="Variant.Outlined" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Share" OnClick="@OnShareBuildClicked">
-                                @Localizer.GetAppLocalization(nameof(Translation.MainWindow_ShareBuild)).Localization
+                    <MudItem xs="12" md="3" xl="2" Class="align-self-center d-flex justify-center">
+                        <MudButtonGroup OverrideStyles="false" Class="gap-2" VerticalAlign Style="width: 100%">
+                            <MudButton Class="py-1" Size="Size.Small" Variant="Variant.Outlined" Color="Color.Primary" FullWidth OnClick="@(async () => await GetBuildLink())" StartIcon="@Icons.Material.Filled.Share">
+                                @Localizer.SimpleAppLocalization(nameof(Translation.ShipStatsTab_ShareLink))
                             </MudButton>
-                            <MudButton Size="Size.Large" Variant="Variant.Outlined" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Save" OnClick="@OnBuildSaveClicked">
-                                @Localizer.SimpleAppLocalization(nameof(Translation.Dialog_Save))
+                            <MudButton Class="py-1" Size="Size.Small" Variant="Variant.Outlined" Color="Color.Primary" FullWidth OnClick="@SaveBuildImage" StartIcon="@Icons.Material.Filled.Image">
+                                @Localizer.SimpleAppLocalization(nameof(Translation.ShipStatsTab_ShareBuildImage))
                             </MudButton>
-                        </MudStack>
+                            <MudButton Class="py-1" Size="Size.Small" Variant="Variant.Outlined" Color="Color.Primary" FullWidth OnClick="@OnBuildSaveClicked" StartIcon="@Icons.Material.Filled.Save">
+                                @Localizer.SimpleAppLocalization(nameof(Translation.ShipStatsTab_SaveBuild))
+                            </MudButton>
+                        </MudButtonGroup>
                     </MudItem>
                 </MudGrid>
             </MudPaper>
@@ -245,6 +253,18 @@ else if (ViewModel is not null)
         }
     }
 
+    private string GetShipCarouselPadding()
+    {
+        switch (Breakpoint)
+        {
+            case Breakpoint.Xs:
+            case Breakpoint.Sm:
+                return "2";
+            default:
+                return "15";
+        }
+    }
+
     private string GetShipAlign()
     {
         return Breakpoint is Breakpoint.Xs or Breakpoint.Sm ? "align-start" : "align-end";
@@ -293,7 +313,7 @@ else if (ViewModel is not null)
         }
     }
 
-    private async Task OnShareBuildClicked()
+    private async Task SaveBuildImage()
     {
         DialogOptions options = new()
         {
@@ -311,75 +331,42 @@ else if (ViewModel is not null)
             ["UpgradePanelViewModel"] = ViewModel!.UpgradePanelViewModel,
             ["ConsumableViewModel"] = ViewModel!.ConsumableViewModel,
             ["SignalSelectorViewModel"] = ViewModel!.SignalSelectorViewModel,
-            ["ShortLinkDisabled"] = !LinkShortener.IsAvailable,
             ["Breakpoint"] = Breakpoint,
         };
 
         var dialog = await DialogService.ShowAsync<BuildImageRenderDialog>(string.Empty , parameters, options);
         var result = await dialog.Result;
 
-        if (result is { Canceled: false, Data: BuildShareResult shareResult })
-        {
-            await ProcessBuildShareResult(shareResult);
-        }
-
         if (result is { Canceled: false, Data: string name })
         {
-            await ProcessBuildNameChanged(name);
-        }
-    }
-
-    private async Task ProcessBuildShareResult(BuildShareResult shareResult)
-    {
-        BuildName = shareResult.BuildName;
-        var build = ViewModel!.CreateBuild(shareResult.BuildName);
-        var buildString = build.CreateShortStringFromBuild();
-        string urlBase;
-        if (NavManager.BaseUri.Contains("0.0.0.0"))
-        {
-            urlBase = AppSettings.SelectedServerType switch
+            BuildName = name;
+            if (AppSettings.StoreBuildOnShare)
             {
-                ServerType.Live => $"{ShipBuilderOptions.Value.LiveServerUrl}/",
-                ServerType.Pts => $"{ShipBuilderOptions.Value.PtsServerUrl}/",
-                _ => $"{ShipBuilderOptions.Value.LiveServerUrl}/",
-                };
-        }
-        else
-        {
-            urlBase = NavManager.BaseUri;
-        }
-
-        var buildUrl = $"{urlBase}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}";
-        await ClipboardService.SetTextAsync(shareResult.CreateShortLink
-            ? (await LinkShortener.CreateShortLink(buildUrl)).Link
-            : buildUrl);
-        if (AppSettings.StoreBuildOnShare)
-        {
-            await UserDataService.SaveBuildAsync(build);
+                var build = ViewModel!.CreateBuild(BuildName);
+                await UserDataService.SaveBuildAsync(build);
+            }
         }
     }
 
-    private async Task ProcessBuildNameChanged(string name)
+    private void StoreBuildsForTransfer(bool calculateShipDataContainer, string? shellIndex)
     {
-        BuildName = name;
-        if (AppSettings.StoreBuildOnShare)
+        switch (shellIndex)
         {
-            var build = ViewModel!.CreateBuild(BuildName);
-            await UserDataService.SaveBuildAsync(build);
+            case not null:
+                AppNavigator.NavigateTo(AppNavigator.AppPage.BallisticCharts, GetBuildContainer(CurrentTabId, Cache[CurrentTabId]!, calculateShipDataContainer), shellIndex, AppNavigator.AppPage.ShipStats);
+                break;
+            case null:
+                AppNavigator.NavigateTo(AppNavigator.AppPage.AccelerationCharts, GetBuildContainer(CurrentTabId, Cache[CurrentTabId]!, calculateShipDataContainer), AppNavigator.AppPage.ShipStats);
+                break;
         }
-    }
-
-    private void StoreBuildsForTransfer(bool calculateShipDataContainer)
-    {
-        SessionStateCache.SetBuildTransferContainers(GetBuildContainer(CurrentTabId, Cache[CurrentTabId]!, calculateShipDataContainer));
     }
 
     public static ShipBuildContainer GetBuildContainer(Guid containerId, VmCacheEntry cacheEntry, bool calculateShipDataContainer)
     {
-        List<(string, float)> modifiers = cacheEntry.ViewModel.UpgradePanelViewModel.GetModifierList();
+        List<Modifier> modifiers = cacheEntry.ViewModel.UpgradePanelViewModel.GetModifierList();
         modifiers.AddRange(cacheEntry.ViewModel.ConsumableViewModel.GetModifiersList());
-        modifiers.AddRange(cacheEntry.ViewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
-        modifiers.AddRange(cacheEntry.ViewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
+        modifiers.AddRange(cacheEntry.ViewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<Modifier>());
+        modifiers.AddRange(cacheEntry.ViewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<Modifier>());
 
         bool isCustomBuild = !string.IsNullOrWhiteSpace(cacheEntry.BuildName) || cacheEntry.ViewModel.ShipModuleViewModel.SelectedModules.Any(m => !string.IsNullOrEmpty(m.Prev)) ||
                              cacheEntry.ViewModel.UpgradePanelViewModel.SelectedModernizationList.Any() || cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.Any() ||
@@ -387,7 +374,7 @@ else if (ViewModel is not null)
 
         var ship = AppData.FindShipFromSummary(cacheEntry.ViewModel.CurrentShip);
         var build = isCustomBuild ? cacheEntry.ViewModel.CreateBuild(cacheEntry.BuildName) : null;
-        var activeConsumables = cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.Any() ? cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots : null;
+        ObservableCollection<int>? activeConsumables = cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.Any() ? cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots : null;
         ShipDataContainer? shipDataContainer = null;
         if (calculateShipDataContainer)
         {
@@ -413,28 +400,88 @@ else if (ViewModel is not null)
     {
         if (string.IsNullOrEmpty(BuildName))
         {
-            DialogOptions options = new()
+            await EditBuildName();
+        }
+
+        if (!string.IsNullOrWhiteSpace(BuildName))
+        {
+            await UserDataService.SaveBuildAsync(ViewModel!.CreateBuild(BuildName));
+        }
+        else
+        {
+            Snackbar.Add(Localizer.SimpleAppLocalization(nameof(Translation.ShipStatsTab_BuildMustHaveName)), Severity.Error);
+        }
+    }
+
+    private async Task EditBuildName()
+    {
+        DialogOptions options = new()
+        {
+            NoHeader = true,
+            CloseOnEscapeKey = true,
+        };
+        DialogParameters parameters = new()
+        {
+            ["BuildName"] = BuildName,
+        };
+        var result = await (await DialogService.ShowAsync<BuildNameDialog>(string.Empty, parameters, options)).Result;
+        if (!result.Canceled && result.Data is string buildName)
+        {
+            BuildName = buildName;
+        }
+    }
+
+    private async Task GetBuildLink()
+    {
+        if (string.IsNullOrWhiteSpace(BuildName))
+        {
+            await EditBuildName();
+        }
+
+        if (!string.IsNullOrWhiteSpace(BuildName))
+        {
+            string urlBase;
+            if (NavManager.BaseUri.Contains("0.0.0.0"))
             {
-                NoHeader = true,
-                CloseOnEscapeKey = true,
-            };
-            DialogParameters parameters = new()
-            {
-                ["BuildName"] = BuildName,
-            };
-            var result = await (await DialogService.ShowAsync<BuildNameDialog>(string.Empty, parameters, options)).Result;
-            if (!result.Canceled && result.Data is string buildName)
-            {
-                BuildName = buildName;
+                urlBase = AppSettings.SelectedServerType switch
+                {
+                    ServerType.Live => $"{ShipBuilderOptions.Value.LiveServerUrl}/",
+                    ServerType.Pts => $"{ShipBuilderOptions.Value.PtsServerUrl}/",
+                    _ => $"{ShipBuilderOptions.Value.LiveServerUrl}/",
+                };
             }
             else
             {
-                return;
+                urlBase = NavManager.BaseUri;
             }
+
+            var metricServiceLabel = "url-long";
+            var build = ViewModel!.CreateBuild(BuildName);
+            var buildUrl = $"{urlBase}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(build.CreateShortStringFromBuild())}";
+            if (LinkShortener.IsAvailable)
+            {
+                var shorteningResult = await LinkShortener.CreateShortLink(buildUrl);
+                if (shorteningResult.Shortened)
+                {
+                    buildUrl = shorteningResult.Link;
+                    metricServiceLabel = "url-short";
+                }
+            }
+
+            await ClipboardService.SetTextAsync(buildUrl);
+
+            Snackbar.Add(Localizer.SimpleAppLocalization(nameof(Translation.ShipStatsTabs_LinkCopied)), Severity.Success);
+
+            if (AppSettings.StoreBuildOnShare)
+            {
+                await UserDataService.SaveBuildAsync(build);
+            }
+
+            MetricsService.SharedBuilds.WithLabels(metricServiceLabel).Inc();
         }
-
-        var build = ViewModel!.CreateBuild(BuildName);
-        await UserDataService.SaveBuildAsync(build);
+        else
+        {
+            Snackbar.Add(Localizer.SimpleAppLocalization(nameof(Translation.ShipStatsTab_BuildMustHaveName)), Severity.Error);
+        }
     }
-
 }

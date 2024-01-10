@@ -1,8 +1,8 @@
 ﻿using Microsoft.JSInterop;
-using WoWsShipBuilder.Infrastructure;
-using WoWsShipBuilder.Infrastructure.DataTransfer;
 
 namespace WoWsShipBuilder.Web.Infrastructure;
+
+using WoWsShipBuilder.Infrastructure.DataTransfer;
 
 /// <summary>
 /// Implementation of the clipboard service for the web app.

@@ -3,9 +3,9 @@ using System.Text;
 using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.GameData;
-using WoWsShipBuilder.Infrastructure.Utility;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace WoWsShipBuilder.Features.DataContainers;
@@ -100,7 +100,7 @@ public partial record MainBatteryDataContainer : DataContainerBase
 
     public string BarrelsLayout { get; set; } = default!;
 
-    public static MainBatteryDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
+    public static MainBatteryDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
         var artilleryConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.Artillery);
         if (artilleryConfiguration == null)
@@ -108,8 +108,8 @@ public partial record MainBatteryDataContainer : DataContainerBase
             return null;
         }
 
-        string[] artilleryOptions = artilleryConfiguration.Components[ComponentType.Artillery];
-        string[] supportedModules = artilleryConfiguration.Components[ComponentType.Artillery];
+        var artilleryOptions = artilleryConfiguration.Components[ComponentType.Artillery];
+        var supportedModules = artilleryConfiguration.Components[ComponentType.Artillery];
 
         TurretModule? mainBattery;
         if (artilleryOptions.Length == 1)
@@ -125,7 +125,7 @@ public partial record MainBatteryDataContainer : DataContainerBase
         var suoName = shipConfiguration.Find(c => c.UcType == ComponentType.Suo)?.Components[ComponentType.Suo][0];
         var suoConfiguration = suoName is not null ? ship.FireControlList[suoName] : null;
 
-        List<(int BarrelCount, int TurretCount, string GunName)> arrangementList = mainBattery.Guns
+        var arrangementList = mainBattery.Guns
             .GroupBy(gun => gun.NumBarrels)
             .Select(group => (BarrelCount: group.Key, TurretCount: group.Count(), GunName: group.First().Name))
             .OrderBy(item => item.TurretCount)
@@ -148,42 +148,28 @@ public partial record MainBatteryDataContainer : DataContainerBase
         var gun = mainBattery.Guns[0];
 
         // Calculate main battery reload
-        var reloadModifiers = modifiers.FindModifiers("GMShotDelay");
-        decimal reload = reloadModifiers.Aggregate(gun.Reload, (current, reloadModifier) => current * (decimal)reloadModifier);
-
-        var arModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
-        reload = arModifiers.Aggregate(reload, (current, arModifier) => current * (1 - ((decimal)arModifier / 100)));
-
-        var artilleryReloadCoeffModifiers = modifiers.FindModifiers("artilleryReloadCoeff");
-        reload = artilleryReloadCoeffModifiers.Aggregate(reload, (current, artilleryReloadCoeff) => current * (decimal)artilleryReloadCoeff);
+        decimal reload = modifiers.ApplyModifiers("MainBatteryDataContainer.Reload", gun.Reload);
 
         // Rotation speed modifiers
-        var turnSpeedModifiers = modifiers.FindModifiers("GMRotationSpeed");
-        decimal traverseSpeed = turnSpeedModifiers.Aggregate(gun.HorizontalRotationSpeed, (current, modifier) => current * (decimal)modifier);
+        decimal traverseSpeed = modifiers.ApplyModifiers("MainBatteryDataContainer.TraverseSpeed", gun.HorizontalRotationSpeed);
 
         // Range modifiers
-        var rangeModifiers = modifiers.FindModifiers("GMMaxDist");
         decimal gunRange = mainBattery.MaxRange * (suoConfiguration?.MaxRangeModifier ?? 1);
-        decimal range = rangeModifiers.Aggregate(gunRange, (current, modifier) => current * (decimal)modifier);
-        var consumableRangeModifiers = modifiers.FindModifiers("artilleryDistCoeff");
-        range = consumableRangeModifiers.Aggregate(range, (current, modifier) => current * (decimal)modifier);
-
-        var talentRangeModifiers = modifiers.FindModifiers("talentMaxDistGM");
-        range = talentRangeModifiers.Aggregate(range, (current, modifier) => current * (decimal)modifier) / 1000;
+        decimal range = modifiers.ApplyModifiers("MainBatteryDataContainer.Range", gunRange) / 1000;
 
         // Consider dispersion modifiers
-        var dispersionModifier = modifiers.FindModifiers("GMIdealRadius").Aggregate(1f, (current, modifier) => current * modifier);
-        var dispersion = mainBattery.DispersionValues;
+        var dispersionModifier = (float)modifiers.ApplyModifiers("MainBatteryDataContainer.Dispersion.IdealRadius", 1m);
+        var dispersion = gun.Dispersion;
 
         decimal rateOfFire = 60 / reload;
 
-        var maxRangeBw = (double)(mainBattery.MaxRange / 30);
+        var maxRangeBw = (double)(range / 30);
         double vRadiusCoeff = (dispersion.RadiusOnMax - dispersion.RadiusOnDelim) / (maxRangeBw * (1 - dispersion.Delim));
 
         var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
         nfi.NumberGroupSeparator = "'";
 
-        var shellData = ShellDataContainer.FromShellName(mainBattery.Guns[0].AmmoList, modifiers, barrelCount, true);
+        var shellData = ShellDataContainer.FromShellName(gun.AmmoList, modifiers, barrelCount, true);
 
         var (horizontalDispersion, verticalDispersion) = dispersion.CalculateDispersion((double)range * 1000, dispersionModifier);
 
@@ -198,14 +184,14 @@ public partial record MainBatteryDataContainer : DataContainerBase
             TurnTime = Math.Round(180 / traverseSpeed, 1),
             TraverseSpeed = Math.Round(traverseSpeed, 2),
             Sigma = mainBattery.Sigma,
-            DelimDist = mainBattery.MaxRange * (decimal)dispersion.Delim / 1000,
+            DelimDist = (range * (decimal)dispersion.Delim) / 1000,
             TaperDist = (decimal)dispersion.TaperDist / 1000,
             HorizontalDisp = Math.Round((decimal)horizontalDispersion, 2),
             VerticalDisp = Math.Round((decimal)verticalDispersion, 2),
-            HorizontalDispFormula = $"X * {Math.Round((dispersion.IdealRadius - dispersion.MinRadius) / dispersion.IdealDistance * 1000, 4)} + {30 * dispersion.MinRadius}",
-            VerticalCoeffFormula = $"(X * {(decimal)Math.Round(vRadiusCoeff / 30 * 1000, 4)} + {((-maxRangeBw * dispersion.Delim) * vRadiusCoeff) + dispersion.RadiusOnDelim})",
-            HorizontalDispFormulaAtShortRange = $"X * {Math.Round(((dispersion.IdealRadius - dispersion.MinRadius) / dispersion.IdealDistance * 1000) + (dispersion.MinRadius / (dispersion.TaperDist / 30)), 4)}",
-            VerticalCoeffFormulaAtShortRange = $"(X * {(decimal)Math.Round(((dispersion.RadiusOnDelim - dispersion.RadiusOnZero) / (maxRangeBw * dispersion.Delim)) / 30 * 1000, 4)} + {dispersion.RadiusOnZero})",
+            HorizontalDispFormula = $"X * {Math.Round(((dispersion.IdealRadius - dispersion.MinRadius) / dispersion.IdealDistance) * 1000, 4)} + {30 * dispersion.MinRadius}",
+            VerticalCoeffFormula = $"(X * {(decimal)Math.Round((vRadiusCoeff / 30) * 1000, 4)} + {(-maxRangeBw * dispersion.Delim * vRadiusCoeff) + dispersion.RadiusOnDelim})",
+            HorizontalDispFormulaAtShortRange = $"X * {Math.Round((((dispersion.IdealRadius - dispersion.MinRadius) / dispersion.IdealDistance) * 1000) + (dispersion.MinRadius / (dispersion.TaperDist / 30)), 4)}",
+            VerticalCoeffFormulaAtShortRange = $"(X * {(decimal)Math.Round(((dispersion.RadiusOnDelim - dispersion.RadiusOnZero) / (maxRangeBw * dispersion.Delim) / 30) * 1000, 4)} + {dispersion.RadiusOnZero})",
             DispersionData = dispersion,
             DispersionModifier = dispersionModifier,
             OriginalMainBatteryData = mainBattery,

@@ -8,6 +8,7 @@ using WoWsShipBuilder.DataStructures.Versioning;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.HttpClients;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Web.Infrastructure.Data;
 
@@ -63,6 +64,7 @@ public class ServerAppDataService : IAppDataService
         });
         var files = onlineVersionInfo.Categories.SelectMany(category => category.Value.Select(file => (category.Key, file.FileName))).ToList();
         await this.awsClient.DownloadFiles(this.options.Server, files);
+        Helpers.InitializeShipSelectorDataStructure();
         this.logger.LogInformation("Finished fetching data");
     }
 
@@ -90,6 +92,8 @@ public class ServerAppDataService : IAppDataService
                 await DataCacheHelper.AddToCache(file.Name, category.Name, content);
             }
         }
+
+        Helpers.InitializeShipSelectorDataStructure();
     }
 
     public async Task<VersionInfo?> GetCurrentVersionInfo(ServerType serverType)

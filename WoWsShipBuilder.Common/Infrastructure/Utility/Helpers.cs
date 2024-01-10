@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using System.Collections.Immutable;
+using Microsoft.Extensions.Hosting;
 using MudBlazor;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 
 namespace WoWsShipBuilder.Infrastructure.Utility;
@@ -40,7 +42,7 @@ public static class Helpers
             .ToList();
     }
 
-    public static List<ShipUpgrade> GetShipConfigurationFromBuild(IEnumerable<string> storedData, List<ShipUpgrade> upgrades)
+    public static List<ShipUpgrade> GetShipConfigurationFromBuild(IEnumerable<string> storedData, IEnumerable<ShipUpgrade> upgrades)
     {
         var results = new List<ShipUpgrade>();
         var shipUpgrades = ShipModuleHelper.GroupAndSortUpgrades(upgrades).OrderBy(entry => entry.Key).Select(entry => entry.Value).ToList();
@@ -104,5 +106,24 @@ public static class Helpers
                 Tooltip = 4000,
             },
         };
+    }
+
+    public static void InitializeShipSelectorDataStructure()
+    {
+        var result = AppData.ShipDictionary.GroupBy(x => x.Value.ShipNation)
+            .ToImmutableDictionary(
+                nationGrouping => nationGrouping.Key,
+                nationGrouping => nationGrouping.GroupBy(nationShip => nationShip.Value.ShipCategory)
+                    .ToImmutableDictionary(
+                        categoryGrouping => categoryGrouping.Key,
+                        categoryGrouping => categoryGrouping.GroupBy(categoryShip => categoryShip.Value.ShipClass)
+                            .ToImmutableDictionary(
+                                shipClassGrouping => shipClassGrouping.Key,
+                                shipClassGrouping => shipClassGrouping.GroupBy(shipClassShip => shipClassShip.Value.Tier)
+                                    .ToImmutableDictionary(
+                                        tierGrouping => tierGrouping.Key,
+                                        tierGrouping => tierGrouping.Select(tierShip => tierShip.Value).ToImmutableList()))));
+
+        AppData.FittingToolShipSelectorDataStructure = result;
     }
 }

@@ -4,7 +4,6 @@
 @using WoWsShipBuilder.Features.ShipStats.ViewModels
 @using WoWsShipBuilder.Features.Settings
 @using WoWsShipBuilder.Infrastructure.ApplicationData
-@using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.GameData
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
@@ -21,6 +20,7 @@
 @inject AppSettings AppSettings
 @inject ISettingsAccessor SettingsAccessor
 @inject MetricsService MetricsService
+@inject ISnackbar Snackbar
 
 <MudDialog Style="max-height: 100vh;  max-width: 1000px" DefaultFocus="DefaultFocus.Element">
     <DialogContent>
@@ -113,22 +113,28 @@
         </MudBreakpointProvider>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@Cancel" Color="Color.Warning">
+        @if (imgGenerationInProgress)
+        {
+            if (twoColumns)
+            {
+                <MudProgressLinear Color="Color.Primary" Indeterminate Style="width: 47%;" Class="ml-6" Size="Size.Medium"/>
+            }
+            else
+            {
+                <MudProgressCircular Color="Color.Primary" Indeterminate Class="ml-6" Size="Size.Small"/>
+            }
+            <MudSpacer/>
+        }
+        <MudButton OnClick="@Cancel" Color="Color.Default" Variant="Variant.Text">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
-        <MudButton OnClick="@OpenSettingsDialog" Color="Color.Tertiary">
+        <MudButton OnClick="@OpenSettingsDialog" Color="Color.Tertiary" Variant="Variant.Filled">
             @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Settings))
         </MudButton>
-        <MudButton OnClick="@OnConfirm" Color="Color.Info">
-            @Localizer.SimpleAppLocalization(nameof(Translation.BuildImageRenderDialog_GetUrl))
+        <MudButton OnClick="@CopyToClipboard" Color="Color.Success" Variant="Variant.Filled" Disabled="@(!isClipboardAvailable)">
+            @Localizer.SimpleAppLocalization(nameof(Translation.BuildImageRenderDialog_CopyImage))
         </MudButton>
-        @if (!ShortLinkDisabled)
-        {
-            <MudButton OnClick="@OnConfirmShortLink" Color="Color.Info">
-                @Localizer.SimpleAppLocalization(nameof(Translation.BuildImageRenderDialog_GetShortLink))
-            </MudButton>
-        }
-        <MudButton Color="Color.Success" OnClick="@SaveImage">
+        <MudButton Color="Color.Primary" OnClick="@SaveImage" Variant="Variant.Filled" Style="white-space: nowrap;">
             @Localizer.SimpleAppLocalization(nameof(Translation.BuildImageRenderDialog_SaveImage))
         </MudButton>
     </DialogActions>
@@ -158,10 +164,11 @@
 
     [Parameter]
     public Breakpoint Breakpoint { get; set; }
-    [Parameter]
-    public bool ShortLinkDisabled { get; set; }
 
     private IJSObjectReference? module;
+
+    private bool imgGenerationInProgress;
+    private bool isClipboardAvailable;
 
     private bool twoColumns = true;
     private bool showModules;
@@ -175,6 +182,17 @@
         base.OnInitialized();
         CheckScreenSize();
         LoadDialogSettings();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/Features/Builds/Components/BuildImageRenderDialog.razor.js");
+        isClipboardAvailable = await module.InvokeAsync<bool>("isClipboardAvailable");
+        if (isClipboardAvailable)
+        {
+            StateHasChanged();
+        }
     }
 
     private string GetBackgroundFlag(Nation shipNation, string shipIndex)
@@ -210,49 +228,45 @@
         }
     }
 
+    private async Task CopyToClipboard()
+    {
+        if (string.IsNullOrWhiteSpace(BuildName))
+        {
+            await EditBuildName();
+            StateHasChanged();
+            await Task.Delay(5); // needed to allow the dom to update properly
+        }
+
+        if (!string.IsNullOrWhiteSpace(BuildName))
+        {
+            imgGenerationInProgress = true;
+            MetricsService.SharedBuilds.WithLabels("image").Inc();
+            module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/Features/Builds/Components/BuildImageRenderDialog.razor.js");
+            await module.InvokeVoidAsync("copyBuildImage", "image", BuildString[..(BuildString.LastIndexOf(';') + 1)] + BuildName);
+            imgGenerationInProgress = false;
+            MudDialog.Close(BuildName);
+            Snackbar.Add(Localizer.SimpleAppLocalization(nameof(Translation.BuildCreationWindow_SavedImageToClipboard)), Severity.Success);
+        }
+    }
+
     private async Task SaveImage()
     {
         if (string.IsNullOrWhiteSpace(BuildName))
         {
             await EditBuildName();
+            StateHasChanged();
+            await Task.Delay(5); // needed to allow the dom to update properly
         }
-
-        StateHasChanged();
 
         if (!string.IsNullOrWhiteSpace(BuildName))
         {
+            imgGenerationInProgress = true;
             MetricsService.SharedBuilds.WithLabels("image").Inc();
             module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/Features/Builds/Components/BuildImageRenderDialog.razor.js");
             await module.InvokeVoidAsync("downloadBuildImage", "image", $"{Localizer.GetGameLocalization(Ship.Index + "_FULL").Localization}_{BuildName}", BuildString[..(BuildString.LastIndexOf(';') + 1)] + BuildName);
+            imgGenerationInProgress = false;
             MudDialog.Close(BuildName);
-        }
-    }
-
-    private async Task OnConfirm()
-    {
-        if (string.IsNullOrWhiteSpace(BuildName))
-        {
-            await EditBuildName();
-        }
-
-        if (!string.IsNullOrWhiteSpace(BuildName))
-        {
-            MetricsService.SharedBuilds.WithLabels("url-long").Inc();
-            MudDialog.Close(new BuildShareResult(BuildName));
-        }
-    }
-
-    private async Task OnConfirmShortLink()
-    {
-        if (string.IsNullOrWhiteSpace(BuildName))
-        {
-            await EditBuildName();
-        }
-
-        if (!string.IsNullOrWhiteSpace(BuildName))
-        {
-            MetricsService.SharedBuilds.WithLabels("url-short").Inc();
-            MudDialog.Close(new BuildShareResult(BuildName, true));
+            Snackbar.Add(Localizer.SimpleAppLocalization(nameof(Translation.ShipStatsTabs_BuildImageSavedAndCopiedToClipboard)), Severity.Success);
         }
     }
 
