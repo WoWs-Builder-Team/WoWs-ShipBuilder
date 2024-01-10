@@ -34,7 +34,7 @@ public record ShipDataContainer(string Index)
 
     public SpecialAbilityDataContainer? SpecialAbilityDataContainer { get; set; }
 
-    public static ShipDataContainer CreateFromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static ShipDataContainer CreateFromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, ImmutableList<Modifier> modifiers)
     {
         var shipDataContainer = new ShipDataContainer(ship.Index)
         {
@@ -55,7 +55,7 @@ public record ShipDataContainer(string Index)
             ManeuverabilityDataContainer = ManeuverabilityDataContainer.FromShip(ship, shipConfiguration, modifiers),
             ConcealmentDataContainer = ConcealmentDataContainer.FromShip(ship, shipConfiguration, modifiers),
             SurvivabilityDataContainer = SurvivabilityDataContainer.FromShip(ship, shipConfiguration, modifiers),
-            SpecialAbilityDataContainer = SpecialAbilityDataContainer.FromShip(ship, shipConfiguration, modifiers),
+            SpecialAbilityDataContainer = SpecialAbilityDataContainer.FromShip(ship, shipConfiguration),
         };
 
         shipDataContainer.SecondColumnContent = new List<object?>

@@ -36,7 +36,7 @@ public partial class PingerGunDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MPS")]
     public decimal PingSpeed { get; set; }
 
-    public static PingerGunDataContainer? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static PingerGunDataContainer? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, ImmutableList<Modifier> modifiers)
     {
         if (ship.PingerGunList.IsEmpty)
         {
@@ -44,7 +44,7 @@ public partial class PingerGunDataContainer : DataContainerBase
         }
 
         PingerGun pingerGun;
-        var pingerUpgrade = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Sonar);
+        var pingerUpgrade = shipConfiguration.Find(c => c.UcType == ComponentType.Sonar);
         if (pingerUpgrade is null && ship.PingerGunList.Count is 1)
         {
             Logging.Logger.LogWarning("No sonar upgrade information found for ship {ShipName} even though there is one sonar module available", ship.Name);

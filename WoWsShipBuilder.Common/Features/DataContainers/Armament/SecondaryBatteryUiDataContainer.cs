@@ -31,7 +31,7 @@ public partial class SecondaryBatteryUiDataContainer : DataContainerBase
 
     public required ImmutableList<SecondaryBatteryDataContainer> Secondaries { get; init; }
 
-    public static SecondaryBatteryUiDataContainer FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static SecondaryBatteryUiDataContainer FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, ImmutableList<Modifier> modifiers)
     {
         var secondaries = SecondaryBatteryDataContainer.FromShip(ship, shipConfiguration, modifiers);
         var secondaryBatteryUiDataContainer = new SecondaryBatteryUiDataContainer

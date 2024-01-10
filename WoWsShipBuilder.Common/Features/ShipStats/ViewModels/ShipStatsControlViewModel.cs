@@ -32,7 +32,7 @@ public partial class ShipStatsControlViewModel : ReactiveObject
     // this is the ship base stats. do not modify after creation
     private Ship BaseShipStats { get; set; }
 
-    public async Task UpdateShipStats(ImmutableList<ShipUpgrade> selectedConfiguration, List<Modifier> modifiers)
+    public async Task UpdateShipStats(ImmutableList<ShipUpgrade> selectedConfiguration, ImmutableList<Modifier> modifiers)
     {
         var shipStats = await Task.Run(() => ShipDataContainer.CreateFromShip(this.BaseShipStats, selectedConfiguration, modifiers));
         this.CurrentShipStats = shipStats;

@@ -175,7 +175,7 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
                         await this.semaphore.WaitAsync(token);
                         try
                         {
-                            List<Modifier> modifiers = this.GenerateModifierList();
+                            ImmutableList<Modifier> modifiers = this.GenerateModifierList();
                             if (this.ShipStatsControlViewModel != null)
                             {
                                 this.logger.LogDebug("Updating ship stats");
@@ -198,7 +198,7 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
             token);
     }
 
-    private List<Modifier> GenerateModifierList()
+    private ImmutableList<Modifier> GenerateModifierList()
     {
         var modifiers = new List<Modifier>();
 
@@ -207,7 +207,7 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
         modifiers.AddRange(this.CaptainSkillSelectorViewModel!.GetModifiersList());
         modifiers.AddRange(this.ConsumableViewModel.GetModifiersList());
         modifiers.AddRange(this.ShipStatsControlViewModel!.GetSpecialAbilityModifiers());
-        return modifiers;
+        return modifiers.ToImmutableList();
     }
 
     public void Dispose()

@@ -1,10 +1,10 @@
+using System.Collections.Immutable;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
-using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.DataContainers;
 
@@ -118,7 +118,7 @@ public partial class TorpedoDataContainer : ProjectileDataContainer
 
     public bool IsFromPlane { get; set; }
 
-    public static List<TorpedoDataContainer> FromTorpedoName(IEnumerable<string> torpedoNames, List<Modifier> modifiers, bool fromPlane)
+    public static List<TorpedoDataContainer> FromTorpedoName(IEnumerable<string> torpedoNames, ImmutableList<Modifier> modifiers, bool fromPlane)
     {
         var list = new List<TorpedoDataContainer>();
         foreach (string name in torpedoNames)

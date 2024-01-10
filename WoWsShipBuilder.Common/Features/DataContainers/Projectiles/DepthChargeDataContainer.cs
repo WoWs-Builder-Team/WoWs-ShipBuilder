@@ -1,8 +1,8 @@
+using System.Collections.Immutable;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
-using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.DataContainers;
 
@@ -32,7 +32,7 @@ public partial class DepthChargeDataContainer : ProjectileDataContainer
 
     public Dictionary<float, List<float>> PointsOfDmg { get; set; } = default!;
 
-    public static DepthChargeDataContainer FromChargesName(string name, List<Modifier> modifiers)
+    public static DepthChargeDataContainer FromChargesName(string name, ImmutableList<Modifier> modifiers)
     {
         var depthCharge = AppData.FindProjectile<DepthCharge>(name);
         decimal damage = modifiers.ApplyModifiers("DepthChargeDataContainer.Damage", (decimal)depthCharge.Damage);
