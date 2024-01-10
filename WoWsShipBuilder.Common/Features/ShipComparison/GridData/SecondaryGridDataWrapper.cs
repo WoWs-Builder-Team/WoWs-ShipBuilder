@@ -5,37 +5,37 @@ namespace WoWsShipBuilder.Features.ShipComparison.GridData;
 
 public class SecondaryGridDataWrapper
 {
-    public SecondaryGridDataWrapper(IReadOnlyCollection<SecondaryBatteryDataContainer>? secondaryBattery)
+    public SecondaryGridDataWrapper(IReadOnlyCollection<SecondaryBatteryDataContainer> secondaryBattery)
     {
         // Secondaries
-        this.Caliber = secondaryBattery?.Select(x => x.GunCaliber).ToNoSortList() ?? new();
-        this.BarrelCount = secondaryBattery?.Select(x => x.BarrelsCount).ToNoSortList() ?? new();
-        this.BarrelsLayout = secondaryBattery?.Select(x => x.BarrelsLayout).ToNoSortList() ?? new();
-        this.Range = secondaryBattery?.Select(x => x.Range).First();
-        this.Reload = secondaryBattery?.Select(x => x.Reload).ToNoSortList() ?? new();
-        this.RoF = secondaryBattery?.Select(x => x.RoF).ToNoSortList() ?? new();
-        this.Dpm = secondaryBattery?.Select(x => x.TheoreticalDpm).ToNoSortList() ?? new();
-        this.Fpm = secondaryBattery?.Select(x => x.PotentialFpm).ToNoSortList() ?? new();
-        this.Sigma = secondaryBattery?.Select(x => x.Sigma).First();
-        this.DispersionData = secondaryBattery?.Select(x => x.DispersionData).ToList() ?? new();
-        this.DispersionModifier = secondaryBattery?.Select(x => x.DispersionModifier).ToList() ?? new();
+        this.Caliber = secondaryBattery.Select(x => x.GunCaliber).ToNoSortList();
+        this.BarrelCount = secondaryBattery.Select(x => x.BarrelsCount).ToNoSortList();
+        this.BarrelsLayout = secondaryBattery.Select(x => x.BarrelsLayout).ToNoSortList();
+        this.Range = secondaryBattery.Select(x => x.Range).FirstOrDefault();
+        this.Reload = secondaryBattery.Select(x => x.Reload).ToNoSortList();
+        this.RoF = secondaryBattery.Select(x => x.RoF).ToNoSortList();
+        this.Dpm = secondaryBattery.Select(x => x.TheoreticalDpm).ToNoSortList();
+        this.Fpm = secondaryBattery.Select(x => x.PotentialFpm).ToNoSortList();
+        this.Sigma = secondaryBattery.Select(x => x.Sigma).FirstOrDefault();
+        this.DispersionData = secondaryBattery.Select(x => x.DispersionData).ToList();
+        this.DispersionModifier = secondaryBattery.Select(x => x.DispersionModifier).ToList();
 
         // Secondary shells
-        var secondaryShellData = secondaryBattery?.Select(x => x.Shell).ToList();
+        var secondaryShellData = secondaryBattery.Select(x => x.Shell).ToList();
 
-        this.Type = secondaryShellData?.Select(x => x?.Type).First();
-        this.Mass = secondaryShellData?.Select(x => x?.Mass ?? 0).ToNoSortList() ?? new();
-        this.Damage = secondaryShellData?.Select(x => x?.Damage ?? 0).ToNoSortList() ?? new();
-        this.SplashRadius = secondaryShellData?.Select(x => x?.SplashRadius ?? 0).ToNoSortList() ?? new();
-        this.SplashDamage = secondaryShellData?.Select(x => x?.SplashDmg ?? 0).ToNoSortList() ?? new();
-        this.Penetration = secondaryShellData?.Select(x => x?.Penetration ?? 0).ToNoSortList() ?? new();
-        this.Speed = secondaryShellData?.Select(x => x?.ShellVelocity ?? 0).ToNoSortList() ?? new();
-        this.AirDrag = secondaryShellData?.Select(x => x?.AirDrag ?? 0).ToNoSortList() ?? new();
-        this.HeShellFireChance = secondaryShellData?.Select(x => x?.ShellFireChance ?? 0).ToNoSortList() ?? new();
-        this.HeBlastRadius = secondaryShellData?.Select(x => x?.ExplosionRadius ?? 0).ToNoSortList() ?? new();
-        this.HeBlastPenetration = secondaryShellData?.Select(x => x?.SplashCoeff ?? 0).ToNoSortList() ?? new();
-        this.SapOvermatch = secondaryShellData?.Select(x => x?.Overmatch ?? 0).ToNoSortList() ?? new();
-        this.SapRicochet = secondaryShellData?.Select(x => x?.RicochetAngles ?? default!).ToNoSortList() ?? new();
+        this.Type = secondaryShellData.Select(x => x?.Type).FirstOrDefault();
+        this.Mass = secondaryShellData.Select(x => x?.Mass ?? 0).ToNoSortList();
+        this.Damage = secondaryShellData.Select(x => x?.Damage ?? 0).ToNoSortList();
+        this.SplashRadius = secondaryShellData.Select(x => x?.SplashRadius ?? 0).ToNoSortList();
+        this.SplashDamage = secondaryShellData.Select(x => x?.SplashDmg ?? 0).ToNoSortList();
+        this.Penetration = secondaryShellData.Select(x => x?.Penetration ?? 0).ToNoSortList();
+        this.Speed = secondaryShellData.Select(x => x?.ShellVelocity ?? 0).ToNoSortList();
+        this.AirDrag = secondaryShellData.Select(x => x?.AirDrag ?? 0).ToNoSortList();
+        this.HeShellFireChance = secondaryShellData.Select(x => x?.ShellFireChance ?? 0).ToNoSortList();
+        this.HeBlastRadius = secondaryShellData.Select(x => x?.ExplosionRadius ?? 0).ToNoSortList();
+        this.HeBlastPenetration = secondaryShellData.Select(x => x?.SplashCoeff ?? 0).ToNoSortList();
+        this.SapOvermatch = secondaryShellData.Select(x => x?.Overmatch ?? 0).ToNoSortList();
+        this.SapRicochet = secondaryShellData.Select(x => x?.RicochetAngles ?? default!).ToNoSortList();
     }
 
     public NoSortList<decimal> Caliber { get; }

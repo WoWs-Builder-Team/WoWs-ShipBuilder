@@ -10,7 +10,7 @@ using WoWsShipBuilder.DataStructures.Ship;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record SpecialAbilityDataContainer : DataContainerBase
+public partial class SpecialAbilityDataContainer : DataContainerBase
 {
     public string Name { get; set; } = default!;
 

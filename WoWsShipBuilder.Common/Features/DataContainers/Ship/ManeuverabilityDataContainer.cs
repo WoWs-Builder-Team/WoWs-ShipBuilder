@@ -7,7 +7,7 @@ using WoWsShipBuilder.DataStructures.Ship;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record ManeuverabilityDataContainer : DataContainerBase
+public partial class ManeuverabilityDataContainer : DataContainerBase
 {
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Knots")]
     public decimal ManeuverabilityMaxSpeed { get; set; }

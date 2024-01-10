@@ -598,8 +598,8 @@ public partial class ShipComparisonViewModel : ReactiveObject
             ShipComparisonDataSections.Bombers => list.Where(x => x.Value.Bombers.Type.Any()).ToDictionary(x => x.Key, x => x.Value),
             ShipComparisonDataSections.Bombs => list.Where(x => x.Value.Bombers.WeaponType.Any()).ToDictionary(x => x.Key, x => x.Value),
             ShipComparisonDataSections.Sonar => list.Where(x => x.Value.ShipDataContainer.PingerGunDataContainer is not null).ToDictionary(x => x.Key, x => x.Value),
-            ShipComparisonDataSections.SecondaryBattery => list.Where(x => x.Value.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries is not null).ToDictionary(x => x.Key, x => x.Value),
-            ShipComparisonDataSections.SecondaryBatteryShells => list.Where(x => x.Value.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries is not null).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.SecondaryBattery => list.Where(x => !x.Value.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries.IsEmpty).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.SecondaryBatteryShells => list.Where(x => !x.Value.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries.IsEmpty).ToDictionary(x => x.Key, x => x.Value),
             ShipComparisonDataSections.AntiAir => list.Where(x => x.Value.ShipDataContainer.AntiAirDataContainer is not null).ToDictionary(x => x.Key, x => x.Value),
             ShipComparisonDataSections.AirStrike => list.Where(x => x.Value.ShipDataContainer.AirstrikeDataContainer is not null).ToDictionary(x => x.Key, x => x.Value),
             ShipComparisonDataSections.Asw => list.Where(x => x.Value.ShipDataContainer.AswAirstrikeDataContainer is not null || x.Value.ShipDataContainer.DepthChargeLauncherDataContainer is not null).ToDictionary(x => x.Key, x => x.Value),
@@ -639,8 +639,8 @@ public partial class ShipComparisonViewModel : ReactiveObject
                 case ShipComparisonDataSections.Torpedo when !displayedShips.Any(x => x.Value.ShipDataContainer.TorpedoArmamentDataContainer is not null):
                     dataSections.Remove(dataSection);
                     break;
-                case ShipComparisonDataSections.SecondaryBattery when !displayedShips.Any(x => x.Value.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries is not null):
-                case ShipComparisonDataSections.SecondaryBatteryShells when !displayedShips.Any(x => x.Value.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries is not null):
+                case ShipComparisonDataSections.SecondaryBattery when displayedShips.All(x => x.Value.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries.IsEmpty):
+                case ShipComparisonDataSections.SecondaryBatteryShells when displayedShips.All(x => x.Value.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries.IsEmpty):
                     dataSections.Remove(dataSection);
                     break;
                 case ShipComparisonDataSections.AntiAir when !displayedShips.Any(x => x.Value.ShipDataContainer.AntiAirDataContainer is not null):

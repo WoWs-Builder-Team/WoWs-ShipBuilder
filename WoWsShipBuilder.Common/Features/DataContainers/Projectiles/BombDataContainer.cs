@@ -9,7 +9,7 @@ using WoWsShipBuilder.Infrastructure.Utility;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record BombDataContainer : ProjectileDataContainer
+public partial class BombDataContainer : ProjectileDataContainer
 {
     [DataElementType(DataElementTypes.KeyValue, ValueTextKind = TextKind.AppLocalizationKey)]
     public string BombType { get; set; } = default!;

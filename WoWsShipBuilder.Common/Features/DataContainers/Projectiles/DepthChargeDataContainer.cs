@@ -7,7 +7,7 @@ using WoWsShipBuilder.Infrastructure.Utility;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record DepthChargeDataContainer : ProjectileDataContainer
+public partial class DepthChargeDataContainer : ProjectileDataContainer
 {
     [DataElementType(DataElementTypes.KeyValue)]
     public int Damage { get; set; }

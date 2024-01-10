@@ -11,7 +11,7 @@ using WoWsShipBuilder.Infrastructure.GameData;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record CvAircraftDataContainer : DataContainerBase
+public partial class CvAircraftDataContainer : DataContainerBase
 {
     public string Name { get; set; } = default!;
 

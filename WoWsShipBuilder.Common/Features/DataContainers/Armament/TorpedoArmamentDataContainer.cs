@@ -10,7 +10,7 @@ using WoWsShipBuilder.DataStructures.Ship;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record TorpedoArmamentDataContainer : DataContainerBase
+public partial class TorpedoArmamentDataContainer : DataContainerBase
 {
     [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = "LauncherNames", ArgumentsTextKind = TextKind.LocalizationKey)]
     public string Name { get; set; } = default!;

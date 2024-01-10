@@ -271,7 +271,7 @@
                 <MudItem xs="12" lg="4">
                     <MudExpansionPanels MultiExpansion Dense DisableGutters Class="my-n4">
                         <!--Secondaries-->
-                        @if (ViewModel.CurrentShipStats?.SecondaryBatteryUiDataContainer.Secondaries is not null)
+                        @if (ViewModel.CurrentShipStats is not null && !ViewModel.CurrentShipStats.SecondaryBatteryUiDataContainer.Secondaries.IsEmpty)
                         {
                             <MudExpansionPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_SecondaryBattery)).Localization" @bind-IsExpanded="@ExpanderStateCache["main-secondary"]" Style="border-bottom: initial" Class="custom-expansion-panel-header header-border border border-solid my-4">
                                 <MudStack Spacing="1" Class="expander-content-padding">

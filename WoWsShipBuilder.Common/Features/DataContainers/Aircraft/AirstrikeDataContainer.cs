@@ -9,7 +9,7 @@ using WoWsShipBuilder.Infrastructure.ApplicationData;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record AirstrikeDataContainer : DataContainerBase
+public partial class AirstrikeDataContainer : DataContainerBase
 {
     public string Header { get; set; } = default!;
 

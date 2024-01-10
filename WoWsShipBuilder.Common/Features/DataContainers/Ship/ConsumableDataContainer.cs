@@ -14,7 +14,7 @@ using WoWsShipBuilder.Infrastructure.Utility;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record ConsumableDataContainer : DataContainerBase
+public partial class ConsumableDataContainer : DataContainerBase
 {
     public string Name { get; set; } = default!;
 
