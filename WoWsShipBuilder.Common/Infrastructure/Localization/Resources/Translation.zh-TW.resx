@@ -1804,7 +1804,7 @@
       <value>獲取短網址</value>
   </data>
   <data name="ServerTypeLive" xml:space="preserve">
-      <value>在線</value>
+      <value>當前版本</value>
   </data>
   <data name="ServerTypePts" xml:space="preserve">
       <value>公共測試服</value>
