@@ -79,7 +79,7 @@ public partial record RocketDataContainer : ProjectileDataContainer
         }
         else
         {
-            fireChance = modifiers.ApplyModifiers("RocketDataContainer.FireChance", (decimal)rocket.FireChance);
+            fireChance = modifiers.ApplyModifiers("RocketDataContainer.FireChance", (decimal)rocket.FireChance * 100);
             penetrationHe = (int)Math.Truncate(rocket.Penetration);
         }
 
@@ -93,7 +93,7 @@ public partial record RocketDataContainer : ProjectileDataContainer
             FuseTimer = fuseTimer,
             ArmingThreshold = armingThreshold,
             RicochetAngles = ricochetAngle,
-            FireChance = Math.Round(fireChance * 100, 1),
+            FireChance = Math.Round(fireChance, 1),
             ExplosionRadius = (decimal)rocket.ExplosionRadius,
             SplashCoeff = (decimal)rocket.SplashCoeff,
             ShowBlastPenetration = showBlastPenetration,
