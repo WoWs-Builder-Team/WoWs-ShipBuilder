@@ -15,7 +15,7 @@
                             </MudText>
                             @foreach (var column in columns)
                             {
-                                <MudSwitch @bind-Checked="@(switchesLayout[section][column.Key])" Label="@column.Key" LabelPosition="LabelPosition.End" Size="Size.Medium" Color="Color.Primary" @key="@($"{section}_{column}")" Style="width: 100%;" Class="ml-1"/>
+                                <MudSwitch @bind-Checked="@(switchesLayout[section][column.Key])" Label="@column.Key" LabelPosition="LabelPosition.End" Size="Size.Medium" Color="Color.Primary" @key="@($"{section}_{column}")" Style="width: 100%; white-space: nowrap" Class="ml-1"/>
                             }
                         </MudStack>
                     </MudPaper>

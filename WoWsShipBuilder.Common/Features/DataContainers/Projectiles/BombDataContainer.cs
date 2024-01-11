@@ -84,7 +84,7 @@ public partial record BombDataContainer : ProjectileDataContainer
         else
         {
             bombDamage = modifiers.ApplyModifiers("BombDataContainer.Damage.He", (decimal)bomb.Damage);
-            fireChance = modifiers.ApplyModifiers("BombDataContainer.FireChance", (decimal)bomb.FireChance);
+            fireChance = modifiers.ApplyModifiers("BombDataContainer.FireChance", (decimal)bomb.FireChance * 100);
             penetrationHe = (int)Math.Truncate(bomb.Penetration);
         }
 
@@ -98,7 +98,7 @@ public partial record BombDataContainer : ProjectileDataContainer
             FuseTimer = fuseTimer,
             ArmingThreshold = armingThreshold,
             RicochetAngles = ricochetAngle,
-            FireChance = Math.Round(fireChance * 100, 1),
+            FireChance = Math.Round(fireChance, 1),
             ExplosionRadius = (decimal)bomb.ExplosionRadius,
             SplashCoeff = (decimal)bomb.SplashCoeff,
             ShowBlastPenetration = showBlastPenetration,
