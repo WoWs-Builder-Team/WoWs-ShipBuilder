@@ -280,7 +280,7 @@
     <value>泛亞</value>
   </data>
   <data name="Premium" xml:space="preserve">
-    <value>金幣線</value>
+    <value>金幣船</value>
   </data>
   <data name="Russia" xml:space="preserve">
     <value>蘇聯</value>
@@ -352,7 +352,7 @@
     <value>Sigma</value>
   </data>
   <data name="ShipStats_TraverseSpeed" xml:space="preserve">
-    <value>砲塔轉速</value>
+    <value>旋轉速度</value>
   </data>
   <data name="ShipStats_VerticalDisp" xml:space="preserve">
     <value>垂直</value>
@@ -412,7 +412,7 @@
     <value>延遲</value>
   </data>
   <data name="ShipStats_Detectability" xml:space="preserve">
-    <value>偵察範圍</value>
+    <value>隱蔽</value>
   </data>
   <data name="ShipStats_Flak" xml:space="preserve">
     <value>黑雲數量</value>
@@ -559,7 +559,7 @@
       <value>上限數量</value>
   </data>
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
-    <value>魚雷保護</value>
+    <value>魚雷防護</value>
   </data>
   <data name="ShipStats_FloodTotalDamage" xml:space="preserve">
       <value>每個進水可造成的最大傷害</value>
@@ -661,10 +661,10 @@
       <value>最小</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
-    <value>可投深彈次數</value>
+    <value>可用次數</value>
   </data>
   <data name="ShipStats_AswAirstrike" xml:space="preserve">
-    <value>反潛機空襲</value>
+    <value>反潛機</value>
   </data>
   <data name="DepthCharge" xml:space="preserve">
     <value>深水炸彈</value>
@@ -796,7 +796,7 @@
     <value>攻擊準備時間</value>
   </data>
   <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-      <value>完全縮圈時間</value>
+      <value>完全縮圈</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>魚雷發射管</value>
@@ -981,7 +981,7 @@
     <value>質量</value>
   </data>
   <data name="ShipStats_PotentialFpm" xml:space="preserve">
-    <value>每分鐘點火期望值 </value>
+    <value>每分鐘點火期望 </value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
       <value>齊射</value>
@@ -990,7 +990,7 @@
       <value>半徑</value>
   </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-      <value>穿甲能力</value>
+      <value>防爆穿透力</value>
   </data>
   <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
       <value>引擎</value>
@@ -999,9 +999,9 @@
       <value>方向舵</value>
   </data>
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
-    <value>如果“配件防爆抗性” + “火炮防爆穿透力”&gt; 0，
+    <value>如果“配件防爆抗性” + “防爆穿透力”&gt; 0，
      則該配件會受到傷害。
-如果“配件防爆抗性” + “火炮防爆穿透力”&lt;= 0，
+如果“配件防爆抗性” + “防爆穿透力”&lt;= 0，
      則該配件不會受到傷害。</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
@@ -1275,13 +1275,13 @@
       <value>腎上腺素當前HP: </value>
   </data>
   <data name="ShipStats_Fire" xml:space="preserve">
-      <value>火力</value>
+      <value>火災</value>
   </data>
   <data name="ShipStats_Flooding" xml:space="preserve">
       <value>進水</value>
   </data>
   <data name="ShipStats_BlastProtection" xml:space="preserve">
-      <value>保護</value>
+      <value>防爆抗性</value>
   </data>
   <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
       <value>上限數量</value>
@@ -1290,10 +1290,10 @@
       <value>被潛艇偵測</value>
   </data>
   <data name="ShipStats_Sea" xml:space="preserve">
-      <value>海面</value>
+      <value>水面</value>
   </data>
   <data name="ShipStats_Air" xml:space="preserve">
-      <value>航空</value>
+      <value>空中</value>
   </data>
   <data name="ShipStats_Timings" xml:space="preserve">
       <value>時間點</value>
@@ -1513,7 +1513,7 @@
       <value>到達最大速度的時間</value>
   </data>
   <data name="ShipStats_ForwardMaxSpeedTime" xml:space="preserve">
-      <value>全速航行</value>
+      <value>全速前進</value>
   </data>
   <data name="ShipStats_ReverseMaxSpeedTime" xml:space="preserve">
       <value>倒退</value>
@@ -1684,10 +1684,10 @@
       <value>船尾</value>
   </data>
   <data name="ShipStats_First" xml:space="preserve">
-      <value>第一次</value>
+      <value>單 ping</value>
   </data>
   <data name="ShipStats_Second" xml:space="preserve">
-      <value>第二次</value>
+      <value>雙 ping</value>
   </data>
   <data name="Unit_U" xml:space="preserve">
       <value>單位</value>
@@ -1855,10 +1855,10 @@
       <value>顯示艦船數據</value>
   </data>
   <data name="ShipComparison_ViewBallistic" xml:space="preserve">
-      <value>顯示彈道</value>
+      <value>顯示彈道圖表</value>
   </data>
   <data name="ShipComparison_ViewAcceleration" xml:space="preserve">
-      <value>顯示艦船加速圖</value>
+      <value>顯示艦船加速圖表</value>
   </data>
   <data name="ShipComparison_DisplayOnlyPinnedShips" xml:space="preserve">
       <value>只顯示釘選船隻</value>
@@ -1951,7 +1951,7 @@
       <value>中隊大小</value>
   </data>
   <data name="ShipComparison_SplashRadius" xml:space="preserve">
-      <value>濺射範圍</value>
+      <value>對潛艇的濺射範圍</value>
   </data>
   <data name="ShipComparison_InitialSpeed" xml:space="preserve">
       <value>砲彈初速</value>
@@ -1984,7 +1984,7 @@
       <value>視距</value>
   </data>
   <data name="ShipComparison_AreaChange" xml:space="preserve">
-      <value>縮圈速度</value>
+      <value>縮圈懲罰</value>
   </data>
   <data name="ShipComparison_PerPlane" xml:space="preserve">
       <value>每架飛機</value>
@@ -2198,5 +2198,11 @@ C = 砲彈口徑 [m]
   </data>
   <data name="OverwriteExistingBuildDialog_Message" xml:space="preserve">
     <value>在船艦'{1}'已經有一個名為'{0}'的配置，</value>
+  </data>
+  <data name="ShipComparison_Display" xml:space="preserve">
+    <value>顯示個數</value>
+  </data>
+  <data name="ShipStats_Activate" xml:space="preserve">
+    <value>啟用</value>
   </data>
 </root>
