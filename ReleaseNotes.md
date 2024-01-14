@@ -30,6 +30,7 @@ Download [**WoWsShipBuilderSetup.exe**](https://github.com/WoWs-Builder-Team/WoW
 - Ship Comparison sorting by tier now works as expected
 - Kitakami should now show the correct loader configuration for her torpedoes
 - Exported build images will now render all elements correctly
+- (Desktop) App crashes when trying to export a build image
 - various other bug fixes
 
 </details>
