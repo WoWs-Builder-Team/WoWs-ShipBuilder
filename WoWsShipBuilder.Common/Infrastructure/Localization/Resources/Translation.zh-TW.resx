@@ -1852,13 +1852,13 @@
       <value>清除選擇的配置</value>
   </data>
   <data name="ShipComparison_ViewStats" xml:space="preserve">
-      <value>顯示艦船數據</value>
+      <value>查看艦船數據</value>
   </data>
   <data name="ShipComparison_ViewBallistic" xml:space="preserve">
-      <value>顯示彈道圖表</value>
+      <value>查看彈道圖表</value>
   </data>
   <data name="ShipComparison_ViewAcceleration" xml:space="preserve">
-      <value>顯示艦船加速圖表</value>
+      <value>查看艦船加速圖表</value>
   </data>
   <data name="ShipComparison_DisplayOnlyPinnedShips" xml:space="preserve">
       <value>只顯示釘選船隻</value>
@@ -2185,7 +2185,7 @@ C = 砲彈口徑 [m]
     <value>停用</value>
   </data>
   <data name="Charts_OpenShipStats" xml:space="preserve">
-    <value>查看船艦數據</value>
+    <value>查看所有船艦的詳細數據</value>
   </data>
   <data name="WebApp_ViewShipsStats" xml:space="preserve">
     <value>查看船艦數據</value>
