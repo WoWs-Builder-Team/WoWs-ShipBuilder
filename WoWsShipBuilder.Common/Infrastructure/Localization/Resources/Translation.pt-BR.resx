@@ -585,6 +585,9 @@
   <data name="ShipStats_TorpedoArea" xml:space="preserve">
     <value>Dispersão do torpedo</value>
   </data>
+  <data name="ShipStats_Aircraft" xml:space="preserve">
+    <value>Aeronaves</value>
+  </data>
   <data name="Bomb" xml:space="preserve">
     <value>Bomba</value>
   </data>
@@ -1526,6 +1529,12 @@ Eles não têm qualquer efeito sobre navios de superfície.</value>
   <data name="Charts_ChangeBuilds" xml:space="preserve">
       <value>Mudar builds</value>
   </data>
+  <data name="AccelerationChart_ExplanationText" xml:space="preserve">
+      <value>Após selecionar um navio, você tem a opção de selecionar as 3 "marchas" que serão usadas no gráfico.
+O gráfico aparecerá na ordem "Marcha" inicial --&gt; "Marcha" média --&gt; "Marcha" final, mudando para a próxima somente depois de atingir a velocidade máxima da marcha atual.
+Definir duas marchas com o mesmo valor irá mesclá-las em uma.
+Você pode usar o botão de Mudar builds para gerenciar as builds dos navios. Você também pode adicionar um navio mais de uma vez, caso queira comparar builds diferentes.</value>
+  </data>
   <data name="AccelerationChart_Explanation" xml:space="preserve">
       <value>Explicação do gráfico de aceleração</value>
   </data>
@@ -2114,6 +2123,9 @@ Eles não têm qualquer efeito sobre navios de superfície.</value>
   <data name="ShipSelectionDialog_AddShips" xml:space="preserve">
     <value>Adicionar navios</value>
   </data>
+  <data name="ShipStatsTab_BuildMustHaveName" xml:space="preserve">
+    <value>Erro ao salvar a build: A build deve ter um nome!</value>
+  </data>
   <data name="ShipStatsTabs_LinkCopied" xml:space="preserve">
     <value>Link da Build copiado para a área de transferência</value>
   </data>
@@ -2128,5 +2140,68 @@ Eles não têm qualquer efeito sobre navios de superfície.</value>
   </data>
   <data name="ShipStatsTab_ShareBuildImage" xml:space="preserve">
     <value>Compartilhar Imagem da Build</value>
+  </data>
+  <data name="ShipStats_SmokeSpeedLimit" xml:space="preserve">
+    <value>Velocidade máxima de movimento</value>
+  </data>
+  <data name="ShipStats_FirstGMShotDelay" xml:space="preserve">
+    <value>Tempo de recarga da bateria principal (primeiro)</value>
+  </data>
+  <data name="ShipStats_OtherGMShotDelay" xml:space="preserve">
+    <value>Tempo de recarga da bateria principal (segundo e consecutivo)</value>
+  </data>
+  <data name="ShipStats_LeftSideLoaders" xml:space="preserve">
+    <value>Lado esquerdo</value>
+  </data>
+  <data name="ShipStats_RightSideLoaders" xml:space="preserve">
+    <value>Lado direito</value>
+  </data>
+  <data name="SettingsWindow_SaveBuildOnShare" xml:space="preserve">
+    <value>Salvar build ao compartilhar</value>
+  </data>
+  <data name="SettingsWindow_FittingToolSelector" xml:space="preserve">
+    <value>Seletor de navio no formato da Fitting-Tool</value>
+  </data>
+  <data name="SettingsWindow_ClosedByDefault" xml:space="preserve">
+    <value>Fechado por padrão</value>
+  </data>
+  <data name="SettingsWindow_MultiSelect" xml:space="preserve">
+    <value>Permitir seleção múltipla</value>
+  </data>
+  <data name="SettingsWindow_FtImgWarning" xml:space="preserve">
+    <value>ATENÇÃO: Use apenas com uma conexão de Internet muito boa.</value>
+  </data>
+  <data name="SettingsWindow_FittingToolShowImages" xml:space="preserve">
+    <value>Mostrar imagens dos navios</value>
+  </data>
+  <data name="SettingsWindow_AutoUpdates" xml:space="preserve">
+    <value>Atualizações automáticas</value>
+  </data>
+  <data name="SettingsWindow_RestartRequired" xml:space="preserve">
+    <value>Uma reinicialização é necessária para que essa alteração tenha efeito.</value>
+  </data>
+  <data name="SettingsWindow_FittingToolSelectorDisabled" xml:space="preserve">
+    <value>Desabilitado</value>
+  </data>
+  <data name="Charts_OpenShipStats" xml:space="preserve">
+    <value>Abrir estatísticas dos navios</value>
+  </data>
+  <data name="WebApp_ViewShipsStats" xml:space="preserve">
+    <value>Ver estatísticas dos navios</value>
+  </data>
+  <data name="UserDataService_BuildNotUpdated" xml:space="preserve">
+    <value>A build não foi atualizada.</value>
+  </data>
+  <data name="BuildImageRenderDialog_CopyImage" xml:space="preserve">
+    <value>Copiar Imagem</value>
+  </data>
+  <data name="OverwriteExistingBuildDialog_Message" xml:space="preserve">
+    <value>O arquivo já contém outra build de nome '{0}' para o navio '{1}'</value>
+  </data>
+  <data name="ShipComparison_Display" xml:space="preserve">
+    <value>Exibição</value>
+  </data>
+  <data name="ShipStats_Activate" xml:space="preserve">
+    <value>Ativar</value>
   </data>
 </root>
