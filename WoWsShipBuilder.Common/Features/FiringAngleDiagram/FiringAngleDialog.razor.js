@@ -4,15 +4,32 @@ const artilleryIconHeight = 10.58333;
 const torpedoIconWidth = 8.73125;
 const torpedoIconHeight = 10.38521;
 
+const turretIndicatorScalingFactor = 0.065;
+const sliceIndicatorScalingFactor = 8;
+
+const mouseOffsetScalingFactor = 2;
+
 /**
  * @type {Array.<{hPos: number, vPos: number, baseAngle: number, sector: Array.<number>, deadZones: Array.<Array.<number>>}>}
  */
 let gunContainerCache;
-let isArtilleryCache;
+/**
+ * @type {Array<TurretData>}
+ */
+let turretDataCache = [];
 /**
  * @type {HTMLCanvasElement} The canvas element to draw on.
  */
 let canvas;
+
+let ratio;
+let isMouseInside;
+let mouseX;
+let mouseY;
+/**
+ * @type {DOMRect}
+ */
+let shipRect;
 
 /**
  * Function to draw firing angles on the canvas.
@@ -22,47 +39,69 @@ let canvas;
  */
 export function drawVisualizer(gunContainers, isArtillery) {
     gunContainerCache = gunContainers;
-    isArtilleryCache = isArtillery;
+    ratio = window.devicePixelRatio;
     canvas = document.getElementById("visualizer");
-    window.removeEventListener("resize", redraw, false);
-    window.addEventListener("resize", redraw, false);
+    window.removeEventListener("resize", resize, false);
+    window.addEventListener("resize", resize, false);
 
     let myFont = new FontFace('RobotoBold', 'url(/_content/WoWsShipBuilder.Common/assets/font/roboto/roboto-v29-latin_cyrillic-700.woff2)');
 
     myFont.load().then(function(font) {
         document.fonts.add(font);
+        canvas.addEventListener("mouseenter", mouseEnter, false)
+        canvas.addEventListener("mousemove", mouseMove, false);
+        canvas.addEventListener("mouseleave", mouseLeave, false)
         redraw();
     });
 }
 
+
 export function cleanSubscriptions() {
-    window.removeEventListener("resize", redraw, false);
+    window.removeEventListener("resize", resize, false);
+    canvas.removeEventListener("mouseenter", mouseEnter, false)
+    canvas.removeEventListener("mousemove", mouseMove, false);
+    canvas.removeEventListener("mouseleave", mouseLeave, false)
     canvas = null;
     gunContainerCache = null;
+    turretDataCache = [];
 }
 
-function redraw() {
-    const ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    let ratio = window.devicePixelRatio;
-    configureCanvas(canvas, ratio);
-    const shipRect = drawBasics(ctx);
-    const radius = shipRect.width * 0.225;
-    const scale = radius * 0.8 * 2 / (isArtilleryCache ? artilleryIconWidth : torpedoIconWidth);
-    let texts = [];
-    let data = [];
+function resize() {
+    turretDataCache = [];
+    redraw();
+}
+
+/**
+ * @param {MouseEvent} event
+ */
+function mouseMove(event) {
+    mouseX = event.offsetX;
+    mouseY = event.offsetY;
+    redraw();
+}
+
+function mouseEnter() {
+    isMouseInside = true
+}
+
+function mouseLeave() {
+    isMouseInside = false
+    redraw();
+}
+
+function processTurretData(radius)
+{
+    const data = [];
     gunContainerCache.forEach(gun => {
-        const maxHeight = shipRect.height - (2 * radius);
-        const verticalPosition = ((maxHeight / 8) * (gun.vPos + 1.5)) + verticalOffset + radius;
+
+        // we add 1.6 because that's the minimum Y value from game data. How the fuck the minimum is not 0, i don't know. Wg is weird
+        // we add radius because the position needs to be the center of the circle, and we add the vertical offset so the origin is the canvas, not the ship rectangle.
+        const verticalPosition =  (gun.vPos + 1.6) * (shipRect.height / 8) + radius + verticalOffset;
+
         let horizontalPosition = calculateHorizontalBorderCoordinate(verticalPosition, shipRect, gun.hPos);
         if (gun.hPos === 1) {
             horizontalPosition = shipRect.left + (shipRect.width / 2);
         }
-
-        drawSlice(ctx, gun.sector[0], gun.sector[1], horizontalPosition, verticalPosition, radius, gun.baseAngle, scale, false);
-        gun.deadZones.forEach(deadZone => {
-            drawSlice(ctx, deadZone[0], deadZone[1], horizontalPosition, verticalPosition, radius, gun.baseAngle, scale, true);
-        });
 
         let startDegrees = gun.sector[0];
         let endDegrees = gun.sector[1];
@@ -72,23 +111,115 @@ function redraw() {
         if (endDegrees > 180) {
             endDegrees -= 360;
         }
-        texts.push({text: `${parseFloat(startDegrees.toFixed(2))}° to ${parseFloat(endDegrees.toFixed(2))}°`, x: horizontalPosition, y: verticalPosition})
-        data.push({x: horizontalPosition, y: verticalPosition, gunBaseAngle: gun.baseAngle})
+        const text = `${parseFloat(startDegrees.toFixed(2))}° to ${parseFloat(endDegrees.toFixed(2))}°`;
+        const turretData = new TurretData(horizontalPosition, verticalPosition, gun.baseAngle, gun.sector, gun.deadZones, text);
+        data.push(turretData)
+    });
+    return data;
+}
+function redraw()
+{
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    configureCanvas(canvas, ratio);
+    shipRect = drawBasics(ctx);
+    const radius = shipRect.width * turretIndicatorScalingFactor;
+
+    if (turretDataCache.length === 0) {
+        turretDataCache = processTurretData(radius);
+    }
+
+    let selectedTurrets = turretDataCache;
+
+    if (isMouseInside)
+    {
+        let closeTurrets = turretDataCache.filter(turret => IsMouseInRadius(turret.hPos, turret.vPos, radius));
+        if (closeTurrets.length > 0)
+        {
+            selectedTurrets = closeTurrets;
+        }
+    }
+
+    selectedTurrets.forEach(turretData => {
+        //draw the angle slices
+        drawSlice(ctx, turretData.sector[0], turretData.sector[1], turretData.hPos, turretData.vPos, radius, turretData.baseAngle, false);
+        turretData.deadZones.forEach(deadZone => {
+            drawSlice(ctx, deadZone[0], deadZone[1], turretData.hPos, turretData.vPos, radius, turretData.baseAngle, true);
+        });
+    })
+
+    turretDataCache.forEach(turretData => {
+        drawGun(ctx, turretData, radius, ratio);
     });
 
-    data.forEach(gun => {
-        drawGun(ctx, scale, gun.x, gun.y, degreeToRadian(gun.gunBaseAngle), isArtilleryCache);
-    });
+    selectedTurrets.forEach(TurretData => {
+        drawAngleText(ctx, TurretData)
+    })
+}
 
+/**
+ * @param {CanvasRenderingContext2D} context
+ * @param {TurretData} turretData
+ * @param {number} radius
+ */
+function drawGun(context, turretData, radius, ratio) {
+
+    // draw the circle representing the
+    context.fillStyle = "gray";
+    context.strokeStyle = "black";
+    context.lineWidth = 1;
+
+    context.beginPath()
+    context.arc(turretData.hPos, turretData.vPos, radius , 0, 2 * Math.PI);
+    context.closePath()
+    context.stroke();
+    context.fill()
+
+    context.resetTransform();
+}
+
+/**
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {number} startDegrees
+ * @param {number} endDegrees
+ * @param {number} x
+ * @param {number} y
+ * @param {number} radius
+ * @param {number} baseAngle
+ * @param {boolean} isDeadZone
+ */
+function drawSlice(ctx, startDegrees, endDegrees, x, y, radius, baseAngle, isDeadZone) {
+    ctx.rotate(degreeToRadian(baseAngle));
+    ctx.translate(0, 1.2);
+    ctx.rotate(degreeToRadian(-baseAngle));
+
+    ctx.beginPath();
+    ctx.fillStyle = !isDeadZone ? "rgba(180,180,180,0.65)" : "rgba(220, 0, 0, 0.50)";
+
+    ctx.moveTo(x, y);
+
+    if (startDegrees === endDegrees) {
+        startDegrees = 0;
+        endDegrees = 360;
+    }
+    ctx.arc(x, y, radius * sliceIndicatorScalingFactor, degreeToRadian(startDegrees - 90), degreeToRadian(endDegrees - 90), false);
+    ctx.closePath();
+    ctx.fill();
     ctx.resetTransform();
+}
+
+/**
+ *
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {TurretData} turretData
+ */
+function drawAngleText(ctx, turretData){
     ctx.scale(ratio,ratio)
     ctx.font = "18px RobotoBold";
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
     ctx.fillStyle = "black";
-    texts.forEach(txt => {
-        ctx.fillText(txt.text, txt.x / ratio, txt.y / ratio);
-    });
+    ctx.fillText(turretData.angleText, turretData.hPos / ratio, turretData.vPos / ratio);
     ctx.resetTransform();
 }
 
@@ -153,86 +284,33 @@ function calculateHorizontalBorderCoordinate(y, shipRect, hPos) {
     return result;
 }
 
-/**
- *
- * @return {Path2D}
- */
-function getTurretPath() {
-    return new Path2D("M 9.5250002,9.6572912 8.5989582,10.451041 H 2.5135415 l -0.79375,-0.7937498 h -1.5875 v -1.322916 h 0.79375 V 6.7468749 c 0,-0.5291667 0.3002661,-1.3683176 0.9634748," +
-        "-1.6052961 0.449291,-0.1888714 0.8886086,-0.2467873 1.4177752,-0.2467873 v -4.7625 h 1.5875 v 4.7625 h 1.5875 v -4.7625 h 1.5875 v 4.7625 c 0.5291667,0 1.2930047,0.095838 1.8008907," +
-        "0.4810755 0.4023848,0.3919374 0.5803588,1.1064245 0.5803588,1.5319045 v 1.4266037 h 0.79375 v 1.322916 z");
-}
-
-function getTurretGunsPath() {
-    return new Path2D("m 6.4822914,4.8947915 v 1.0583334 h 1.5875 V 4.8947915 m -4.7624999,0 v 1.0583334 h 1.5875 V 4.8947915");
-}
-
-function getTorpedoLauncherPath() {
-    return new Path2D("M 0,9.7895832 H 8.4666666 M 0,8.2020833 H 8.4666666 M 0,4.4979166 c 0.52916666,0 8.4666666,0 " +
-        "8.4666666,0 M 0,1.5875 H 8.4666666 M 6.4771355,9.926714 V 1.6184604 c 0.2645833,-1.71052293 1.8520833,-1.71052293 " +
-        "2.1166667,0 V 9.926714 c -0.7804407,0.807197 -1.4665162,0.597218 -2.1166667,0 z m -2.1166667,0 V 1.6184604 c " +
-        "0.2645833,-1.71052293 1.8520833,-1.71052293 2.1166667,0 V 9.926714 c -0.6966683,0.689771 -1.4018189,0.721197 " +
-        "-2.1166667,0 z m -2.1166667,0 V 1.6184604 c 0.2645833,-1.71052293 1.8520833,-1.71052293 2.1166667,0 V 9.926714 " +
-        "c -0.6925275,0.682249 -1.3971989,0.728549 -2.1166667,0 z m -2.1166666,0 V 1.6184604 c 0.26458333,-1.71052296 " +
-        "1.8520833,-1.71052296 2.1166667,0 V 9.926714 c -0.6978745,0.691941 -1.40312901,0.719063 -2.1166667,0 z");
-}
-
 function degreeToRadian(degrees) {
     return degrees * Math.PI / 180;
 }
 
+
+//@param {Array.<{hPos: number, vPos: number, baseAngle: number, sector: Array.<number>, deadZones: Array.<Array.<number>>}>} gunContainers The list of gun data containers.
 /**
- * @param {CanvasRenderingContext2D} context
- * @param {number} scale
- * @param x
- * @param y
- * @param radians
- * @param {boolean} isArtillery
+ * @param {number} hPos
+ * @param {number} vPos
+ * @param {number} baseAngle
+ * @param {Array<number>} sector
+ * @param {Array<Array.<number>>} deadZones
+ * @param {string} angleText
+ * @constructor
  */
-function drawGun(context, scale, x, y, radians, isArtillery) {
-    const turret = isArtillery ? getTurretPath() : getTorpedoLauncherPath();
-    const turretWidth = isArtillery ? artilleryIconWidth : torpedoIconWidth;
-    const turretHeight = isArtillery ? artilleryIconHeight : torpedoIconHeight;
-
-    context.fillStyle = "gray";
-    context.strokeStyle = "black";
-    context.lineWidth = 1 / scale;
-
-    const xTranslation = x - (turretWidth * 0.5 * scale);
-    const yTranslation = y - (turretHeight * 0.5 * scale);
-
-    context.translate(xTranslation, yTranslation);
-    context.scale(scale, scale);
-    context.translate(turretWidth * 0.5, turretWidth * 0.5);
-    context.rotate(radians);
-    context.translate(-turretWidth * 0.5, -turretWidth * 0.5);
-
-    context.fill(turret);
-
-    context.stroke(turret);
-    if (isArtillery) {
-        context.stroke(getTurretGunsPath());
-    }
-    context.resetTransform();
+function TurretData(hPos, vPos, baseAngle, sector, deadZones, angleText)
+{
+    this.hPos = hPos;
+    this.vPos = vPos;
+    this.baseAngle = baseAngle;
+    this.sector = sector;
+    this.deadZones = deadZones;
+    this.angleText = angleText;
 }
 
-
-function drawSlice(ctx, startDegrees, endDegrees, x, y, radius, baseAngle, scaling, isDeadZone) {
-    ctx.rotate(degreeToRadian(baseAngle));
-    ctx.translate(0, 1.2 * scaling);
-    ctx.rotate(degreeToRadian(-baseAngle));
-
-    ctx.beginPath();
-    ctx.fillStyle = !isDeadZone ? "rgba(180,180,180,0.65)" : "rgba(220, 0, 0, 0.50)";
-
-    ctx.moveTo(x, y);
-
-    if (startDegrees === endDegrees) {
-        startDegrees = 0;
-        endDegrees = 360;
-    }
-    ctx.arc(x, y, radius * 2, degreeToRadian(startDegrees - 90), degreeToRadian(endDegrees - 90), false);
-    ctx.closePath();
-    ctx.fill();
-    ctx.resetTransform();
+function IsMouseInRadius(x, y, radius)
+{
+    const mouseOffset = radius * mouseOffsetScalingFactor;
+    return Math.abs(x - (mouseX *  window.devicePixelRatio)) < mouseOffset && Math.abs(y - (mouseY *  window.devicePixelRatio)) < mouseOffset
 }
