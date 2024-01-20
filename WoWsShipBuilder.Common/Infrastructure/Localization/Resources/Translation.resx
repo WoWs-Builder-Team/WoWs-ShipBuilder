@@ -2204,4 +2204,31 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipStats_Activate" xml:space="preserve">
     <value>Activate</value>
   </data>
+  <data name="AccelerationChart_InitialGear" xml:space="preserve">
+    <value>Initial Gear</value>
+  </data>
+  <data name="AccelerationChart_MiddleGear" xml:space="preserve">
+    <value>Middle Gear</value>
+  </data>
+  <data name="AccelerationChart_FinalGear" xml:space="preserve">
+    <value>Final Gear</value>
+  </data>
+  <data name="SettingsWindow_SavedBuilds" xml:space="preserve">
+    <value>Saved builds</value>
+  </data>
+  <data name="BuildConfigurationDialog_ActivateSpecialAbility" xml:space="preserve">
+    <value>Activate special ability</value>
+  </data>
+  <data name="BuildConfigurationDialog_Alternative" xml:space="preserve">
+    <value>Alternative</value>
+  </data>
+  <data name="AppNavigator_NoEligibleShips" xml:space="preserve">
+    <value>No ships available. Eligible ships</value>
+  </data>
+  <data name="AppNavigator_TooManyShips" xml:space="preserve">
+    <value>Too many ships. Eligible ships</value>
+  </data>
+  <data name="AppNavigator_MaxLimit" xml:space="preserve">
+    <value>Max limit is</value>
+  </data>
 </root>

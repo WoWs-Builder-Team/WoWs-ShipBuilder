@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using WoWsShipBuilder.Infrastructure.Localization;
+using WoWsShipBuilder.Infrastructure.Localization.Resources;
 using WoWsShipBuilder.Infrastructure.Metrics;
 
 namespace WoWsShipBuilder.Features.Navigation;
@@ -24,13 +26,15 @@ public class AppNavigator
     private readonly NavigationManager navManager;
     private readonly MetricsService metricsService;
     private readonly ISnackbar snackbar;
+    private readonly ILocalizer localizer;
 
-    public AppNavigator(SessionStateCache sessionStateCache, NavigationManager navManager, MetricsService metricsService, ISnackbar snackbar)
+    public AppNavigator(SessionStateCache sessionStateCache, NavigationManager navManager, MetricsService metricsService, ISnackbar snackbar, ILocalizer localizer)
     {
         this.sessionStateCache = sessionStateCache;
         this.navManager = navManager;
         this.metricsService = metricsService;
         this.snackbar = snackbar;
+        this.localizer = localizer;
     }
 
     public enum AppPage
@@ -85,10 +89,10 @@ public class AppNavigator
         switch (selectionCount)
         {
             case > TransferLimit:
-                this.snackbar.Add($"Too many ships. Eligible ships: {selectionCount}. Max limit is {TransferLimit}.", Severity.Error);
+                this.snackbar.Add($"{this.localizer.SimpleAppLocalization(nameof(Translation.AppNavigator_TooManyShips))}: {selectionCount}. {this.localizer.SimpleAppLocalization(nameof(Translation.AppNavigator_MaxLimit))} {TransferLimit}", Severity.Error);
                 return;
             case 0:
-                this.snackbar.Add($"No ships available. Eligible ships: {selectionCount}.", Severity.Error);
+                this.snackbar.Add($"{this.localizer.SimpleAppLocalization(nameof(Translation.AppNavigator_NoEligibleShips))}: {selectionCount}", Severity.Error);
                 return;
             default:
                 this.LogMetrics(destinationPage, leavingPage);

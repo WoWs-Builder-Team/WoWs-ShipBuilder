@@ -48,7 +48,7 @@
         @Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_CustomDataTitle)).Localization
     </MudButton>
     <MudDivider Vertical FlexItem Light/>
-    <MudSelect Class="default-label-background" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" T="int" Value="@firstGear" Label="Initial Gear" ValueChanged="@(value => UpdateThrottle(0, value))">
+    <MudSelect Class="default-label-background" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" T="int" Value="@firstGear" Label="@Localizer.SimpleAppLocalization(nameof(Translation.AccelerationChart_InitialGear))" ValueChanged="@(value => UpdateThrottle(0, value))">
         <MudSelectItem Value="AccelerationCalculator.FullReverse"> <MudText Color="Color.Default">-1</MudText></MudSelectItem>
         <MudSelectItem Value="AccelerationCalculator.Zero"><MudText Color="Color.Default">0</MudText></MudSelectItem>
         <MudSelectItem Value="AccelerationCalculator.OneQuarter"><MudText Color="Color.Default">1/4</MudText></MudSelectItem>
@@ -56,7 +56,7 @@
         <MudSelectItem Value="AccelerationCalculator.ThreeQuarter"><MudText Color="Color.Default">3/4</MudText></MudSelectItem>
         <MudSelectItem Value="AccelerationCalculator.FullAhead"><MudText Color="Color.Default">4/4</MudText></MudSelectItem>
     </MudSelect>
-    <MudSelect Class="default-label-background" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" T="int" Value="@secondGear" Label="Middle Gear" ValueChanged="@(value => UpdateThrottle(1, value))">
+    <MudSelect Class="default-label-background" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" T="int" Value="@secondGear" Label="@Localizer.SimpleAppLocalization(nameof(Translation.AccelerationChart_MiddleGear))" ValueChanged="@(value => UpdateThrottle(1, value))">
        <MudSelectItem Value="AccelerationCalculator.FullReverse"> <MudText Color="Color.Default">-1</MudText></MudSelectItem>
        <MudSelectItem Value="AccelerationCalculator.Zero"><MudText Color="Color.Default">0</MudText></MudSelectItem>
        <MudSelectItem Value="AccelerationCalculator.OneQuarter"><MudText Color="Color.Default">1/4</MudText></MudSelectItem>
@@ -64,7 +64,7 @@
        <MudSelectItem Value="AccelerationCalculator.ThreeQuarter"><MudText Color="Color.Default">3/4</MudText></MudSelectItem>
        <MudSelectItem Value="AccelerationCalculator.FullAhead"><MudText Color="Color.Default">4/4</MudText></MudSelectItem>
     </MudSelect>
-    <MudSelect Class="default-label-background" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" T="int" Value="@thirdGear" Label="Final Gear" ValueChanged="@(value => UpdateThrottle(2, value))">
+    <MudSelect Class="default-label-background" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" T="int" Value="@thirdGear" Label="@Localizer.SimpleAppLocalization(nameof(Translation.AccelerationChart_FinalGear))" ValueChanged="@(value => UpdateThrottle(2, value))">
         <MudSelectItem Value="AccelerationCalculator.FullReverse"> <MudText Color="Color.Default">-1</MudText></MudSelectItem>
         <MudSelectItem Value="AccelerationCalculator.Zero"><MudText Color="Color.Default">0</MudText></MudSelectItem>
         <MudSelectItem Value="AccelerationCalculator.OneQuarter"><MudText Color="Color.Default">1/4</MudText></MudSelectItem>
@@ -281,7 +281,7 @@
             { nameof(ShipBuildContainerSelectionDialog.ShipList), shipBuildCache.Select(x => x.Value).ToList() },
         };
 
-        var result = await (await DialogService.ShowAsync<ShipBuildContainerSelectionDialog>("Add and remove ships", parameters, options)).Result;
+        var result = await (await DialogService.ShowAsync<ShipBuildContainerSelectionDialog>(@Localizer.SimpleAppLocalization(nameof(Translation.AccelerationChart_AddRemoveShip)), parameters, options)).Result;
 
         if (!result.Canceled && result.Data is ShipBuildContainerSelectionDialogOutput dialogOutput)
         {

@@ -86,7 +86,7 @@
         <MudItem xs="12">
             <MudStack Row Class="mb-1" AlignItems="AlignItems.Center">
                 <MudText Typo="Typo.h6">
-                    @($"Saved builds ({savedBuilds.Count})")
+                    @($"{Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_SavedBuilds))} ({savedBuilds.Count})")
                 </MudText>
                 <MudButton Class="rounded-4" Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Download" OnClick="@(async () => await ExportSavedBuilds())">
                     @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Export))
