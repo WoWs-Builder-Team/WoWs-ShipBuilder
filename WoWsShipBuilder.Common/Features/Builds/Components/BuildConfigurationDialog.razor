@@ -183,7 +183,7 @@
                                     }
                                     @if (!SpecialAbilityDisabled && (shipData.Ship.SpecialAbility is not null || shipData.Ship.MainBatteryModuleList.Any(x => x.Value.BurstModeAbility is not null)))
                                     {
-                                        <MudSwitch T="bool" @bind-Checked="ViewModel.SpecialAbilityActive" Color="Color.Primary" Label="Activate special ability"/>
+                                        <MudSwitch T="bool" @bind-Checked="ViewModel.SpecialAbilityActive" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildConfigurationDialog_ActivateSpecialAbility))"/>
                                     }
                                 </MudStack>
                             </MudItem>
@@ -195,19 +195,19 @@
                             </MudItem>
                             <MudItem xs="12" md="6">
                                 <MudStack Row="true" Justify="Justify.Center" Style="margin-top: -14px">
-                                    <MudTextField @bind-Value="inputBuildString" Class="default-label-background" Immediate DebounceInterval="150" Validation="@(new Func<string, Task<string?>>(ValidateBuildString))" Clearable FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Alternative" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink))" Variant="Variant.Outlined"/>
+                                    <MudTextField @bind-Value="inputBuildString" Class="default-label-background" Immediate DebounceInterval="150" Validation="@(new Func<string, Task<string?>>(ValidateBuildString))" Clearable FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildConfigurationDialog_Alternative))" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink))" Variant="Variant.Outlined"/>
                                     <MudButton Disabled="@(string.IsNullOrWhiteSpace(buildString))" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" Style="margin-top: 6px" OnClick="@ImportBuildFromString">
                                         @Localizer.GetAppLocalization(Translation.BuildConfigurationDialog_Load).Localization
                                     </MudButton>
                                     <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Class="file-upload-full-height" Accept=".png">
                                         <ButtonTemplate>
-                                            <MudButton HtmlTag="label" Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Image" Style="height: 100%;" for="@context">Import</MudButton>
+                                            <MudButton HtmlTag="label" Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Image" Style="height: 100%;" for="@context">@Localizer.SimpleAppLocalization(nameof(Translation.BuildImport_Import))</MudButton>
                                         </ButtonTemplate>
                                     </MudFileUpload>
                                 </MudStack>
                             </MudItem>
                             <MudItem xs="12" md="6">
-                                <MudTextField @bind-Value="ViewModel.BuildName" AutoFocus Immediate Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))" DebounceInterval="150" Clearable FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-n2 mb-0 default-label-background"/>
+                                <MudTextField @bind-Value="ViewModel.BuildName" AutoFocus Immediate Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))" DebounceInterval="150" Clearable FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_BuildName))" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Variant="Variant.Outlined" Class="mt-n2 mb-0 default-label-background"/>
                             </MudItem>
                         }
                         else

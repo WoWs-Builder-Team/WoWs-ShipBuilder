@@ -40,7 +40,7 @@
                 </MudButton>
                 <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Style="margin-top: 0;" Class="file-upload-full-height" Accept=".png">
                     <ButtonTemplate>
-                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Image" Style="height: 100%;" for="@context">Import from image</MudButton>
+                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Image" Style="height: 100%;" for="@context">@Localizer.SimpleAppLocalization(nameof(Translation.BuildImport_ImportFromImage))</MudButton>
                     </ButtonTemplate>
                 </MudFileUpload>
             </MudStack>

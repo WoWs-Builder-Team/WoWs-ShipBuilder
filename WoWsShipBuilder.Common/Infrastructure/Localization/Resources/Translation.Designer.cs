@@ -108,6 +108,33 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Final Gear.
+        /// </summary>
+        public static string AccelerationChart_FinalGear {
+            get {
+                return ResourceManager.GetString("AccelerationChart_FinalGear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initial Gear.
+        /// </summary>
+        public static string AccelerationChart_InitialGear {
+            get {
+                return ResourceManager.GetString("AccelerationChart_InitialGear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Middle Gear.
+        /// </summary>
+        public static string AccelerationChart_MiddleGear {
+            get {
+                return ResourceManager.GetString("AccelerationChart_MiddleGear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Time.
         /// </summary>
         public static string AccelerationChart_Time {
@@ -122,6 +149,33 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string AirCarrier {
             get {
                 return ResourceManager.GetString("AirCarrier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max limit is.
+        /// </summary>
+        public static string AppNavigator_MaxLimit {
+            get {
+                return ResourceManager.GetString("AppNavigator_MaxLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ships available. Eligible ships.
+        /// </summary>
+        public static string AppNavigator_NoEligibleShips {
+            get {
+                return ResourceManager.GetString("AppNavigator_NoEligibleShips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Too many ships. Eligible ships.
+        /// </summary>
+        public static string AppNavigator_TooManyShips {
+            get {
+                return ResourceManager.GetString("AppNavigator_TooManyShips", resourceCulture);
             }
         }
         
@@ -311,6 +365,24 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string Build_EnterBuildName {
             get {
                 return ResourceManager.GetString("Build_EnterBuildName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activate special ability.
+        /// </summary>
+        public static string BuildConfigurationDialog_ActivateSpecialAbility {
+            get {
+                return ResourceManager.GetString("BuildConfigurationDialog_ActivateSpecialAbility", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alternative.
+        /// </summary>
+        public static string BuildConfigurationDialog_Alternative {
+            get {
+                return ResourceManager.GetString("BuildConfigurationDialog_Alternative", resourceCulture);
             }
         }
         
@@ -2102,6 +2174,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string SettingsWindow_SaveBuildOnShare {
             get {
                 return ResourceManager.GetString("SettingsWindow_SaveBuildOnShare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saved builds.
+        /// </summary>
+        public static string SettingsWindow_SavedBuilds {
+            get {
+                return ResourceManager.GetString("SettingsWindow_SavedBuilds", resourceCulture);
             }
         }
         
