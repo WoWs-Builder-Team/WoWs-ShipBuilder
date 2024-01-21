@@ -2167,4 +2167,37 @@
   <data name="OverwriteExistingBuildDialog_Message" xml:space="preserve">
     <value>アーカイブには、すでに'{0}'という名前の別のビルドが含まれています（艦艇: '{1}'）</value>
   </data>
+  <data name="ShipComparison_Display" xml:space="preserve">
+    <value>表示</value>
+  </data>
+  <data name="ShipStats_Activate" xml:space="preserve">
+    <value>有効にする</value>
+  </data>
+  <data name="AccelerationChart_InitialGear" xml:space="preserve">
+    <value>初期装備</value>
+  </data>
+  <data name="AccelerationChart_MiddleGear" xml:space="preserve">
+    <value>中間装備</value>
+  </data>
+  <data name="AccelerationChart_FinalGear" xml:space="preserve">
+    <value>最終装備</value>
+  </data>
+  <data name="SettingsWindow_SavedBuilds" xml:space="preserve">
+    <value>保存されたビルド</value>
+  </data>
+  <data name="BuildConfigurationDialog_ActivateSpecialAbility" xml:space="preserve">
+    <value>特殊スキルを有効にする</value>
+  </data>
+  <data name="BuildConfigurationDialog_Alternative" xml:space="preserve">
+    <value>代替</value>
+  </data>
+  <data name="AppNavigator_NoEligibleShips" xml:space="preserve">
+    <value>利用可能な艦艇はありません。</value>
+  </data>
+  <data name="AppNavigator_TooManyShips" xml:space="preserve">
+    <value>艦艇が多すぎます。</value>
+  </data>
+  <data name="AppNavigator_MaxLimit" xml:space="preserve">
+    <value>上限</value>
+  </data>
 </root>
