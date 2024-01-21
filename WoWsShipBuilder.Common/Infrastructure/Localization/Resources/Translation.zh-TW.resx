@@ -1023,13 +1023,13 @@
     <value>副砲</value>
   </data>
   <data name="DispersionGraphWindow_Horizontal" xml:space="preserve">
-    <value>橫向</value>
+    <value>橫向散佈</value>
   </data>
   <data name="DispersionGraphWindow_PlotOrientation" xml:space="preserve">
     <value>平面圖方向</value>
   </data>
   <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
-    <value>垂直</value>
+    <value>垂直散佈</value>
   </data>
   <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
     <value>拋物線彈道</value>
@@ -1519,7 +1519,7 @@
       <value>倒退</value>
   </data>
   <data name="AccelerationChart_Acceleration" xml:space="preserve">
-      <value>加速</value>
+      <value>加速圖表</value>
   </data>
   <data name="AccelerationChart_Time" xml:space="preserve">
       <value>時間</value>
@@ -2204,5 +2204,32 @@ C = 砲彈口徑 [m]
   </data>
   <data name="ShipStats_Activate" xml:space="preserve">
     <value>啟用</value>
+  </data>
+  <data name="AccelerationChart_InitialGear" xml:space="preserve">
+    <value>初始檔位</value>
+  </data>
+  <data name="AccelerationChart_MiddleGear" xml:space="preserve">
+    <value>中間檔位</value>
+  </data>
+  <data name="AccelerationChart_FinalGear" xml:space="preserve">
+    <value>最終檔位</value>
+  </data>
+  <data name="SettingsWindow_SavedBuilds" xml:space="preserve">
+    <value>已儲存的配置</value>
+  </data>
+  <data name="BuildConfigurationDialog_ActivateSpecialAbility" xml:space="preserve">
+    <value>特殊能力啟用</value>
+  </data>
+  <data name="BuildConfigurationDialog_Alternative" xml:space="preserve">
+    <value>替換配置</value>
+  </data>
+  <data name="AppNavigator_NoEligibleShips" xml:space="preserve">
+    <value>尚未選擇任何船艦。已選擇的船艦數量</value>
+  </data>
+  <data name="AppNavigator_TooManyShips" xml:space="preserve">
+    <value>選擇太多船艦。已選擇的船艦數量</value>
+  </data>
+  <data name="AppNavigator_MaxLimit" xml:space="preserve">
+    <value>最大限制為</value>
   </data>
 </root>
