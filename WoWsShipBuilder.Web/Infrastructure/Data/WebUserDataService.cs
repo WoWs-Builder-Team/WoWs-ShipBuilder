@@ -176,6 +176,7 @@ public sealed class WebUserDataService : IUserDataService, IAsyncDisposable
 
         var buildsUpdated = 0;
         var buildsNotNeedingUpdate = 0;
+        var buildAdded = false;
 
         foreach (var build in buildsList)
         {
@@ -210,10 +211,11 @@ public sealed class WebUserDataService : IUserDataService, IAsyncDisposable
             else
             {
                 this.savedBuilds.Insert(0, build);
+                buildAdded = true;
             }
         }
 
-        if (buildsUpdated == 0 || buildsNotNeedingUpdate == buildsList.Count)
+        if (!buildAdded && (buildsUpdated == 0 || buildsNotNeedingUpdate == buildsList.Count))
         {
             return -1;
         }
