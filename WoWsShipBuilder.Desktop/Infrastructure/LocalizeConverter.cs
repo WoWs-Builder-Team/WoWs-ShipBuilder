@@ -98,10 +98,7 @@ public class LocalizeConverter : IValueConverter
 
     private static string ToSnakeCase(string camelCaseString)
     {
-        if (camelCaseString == null)
-        {
-            throw new ArgumentNullException(nameof(camelCaseString));
-        }
+        ArgumentNullException.ThrowIfNull(camelCaseString);
 
         if (camelCaseString.Length < 2)
         {

@@ -49,9 +49,8 @@ public class SignalSelectorViewModel : ReactiveObject
 
     public void SignalCommandExecute(Exterior flag)
     {
-        if (this.SelectedSignals.Contains(flag))
+        if (this.SelectedSignals.Remove(flag))
         {
-            this.SelectedSignals.Remove(flag);
             this.SignalsNumber--;
         }
         else

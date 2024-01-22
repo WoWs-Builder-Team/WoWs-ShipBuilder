@@ -38,7 +38,7 @@ public partial record PingerGunDataContainer : DataContainerBase
 
     public static PingerGunDataContainer? FromShip(Ship ship, IEnumerable<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
-        if (!ship.PingerGunList.Any())
+        if (ship.PingerGunList.IsEmpty)
         {
             return null;
         }

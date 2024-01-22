@@ -1,30 +1,24 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
-WORKDIR /app
-EXPOSE 80
-EXPOSE 443
-
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+﻿FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /src
-COPY . .
+
+# Copy all project files
+COPY . ./
+
+# Restore only projects needed for ShipBuilder Web
 RUN dotnet restore "WoWsShipBuilder.Web/WoWsShipBuilder.Web.csproj"
-WORKDIR "/src/WoWsShipBuilder.Web"
-RUN dotnet build "WoWsShipBuilder.Web.csproj" -c Release -o /app/build
 
-FROM build AS publish
-RUN dotnet publish "WoWsShipBuilder.Web.csproj" -c Release -o /app/publish /p:UseAppHost=false
+# Publish ShipBuilder Web
+RUN dotnet publish "WoWsShipBuilder.Web/WoWsShipBuilder.Web.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-FROM base AS final
-ENV APPLICATION_USER_ID 1001
-ENV APPLICATION_USER appuser
-LABEL org.opencontainers.image.source=https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS deploy-env
+WORKDIR /app
+
+LABEL org.opencontainers.image.source="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder"
 LABEL org.opencontainers.image.description="Container image for ShipBuilder Web"
 LABEL org.opencontainers.image.licenses=MIT
+LABEL org.opencontainers.image.authors="WoWs Builder Team"
 
-RUN groupadd --gid $APPLICATION_USER_ID $APPLICATION_USER \
-    && useradd --uid $APPLICATION_USER_ID --gid $APPLICATION_USER_ID -m $APPLICATION_USER
+COPY --from=build-env --chown=app /app/publish .
 
-WORKDIR /app
-COPY --from=publish --chown=$APPLICATION_USER /app/publish .
-
-USER $APPLICATION_USER
+USER app
 ENTRYPOINT ["dotnet", "WoWsShipBuilder.Web.dll"]

@@ -5,7 +5,7 @@
     [string][Parameter(Mandatory=$false)]$signingPassword
 )
 
-$frameworkVersion="net7.0-windows"
+$frameworkVersion="net8.0-windows"
 
 if ($skipBuild) {
     Write-Output "Skipping build"

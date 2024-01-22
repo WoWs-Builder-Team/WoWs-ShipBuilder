@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.Versioning;
 using System.Threading;
@@ -140,7 +139,7 @@ public class App : Application
         {
             // Can throw a null-reference-exception, no idea why.
             var updateInfo = await updateManager.CheckForUpdate();
-            if (!updateInfo.ReleasesToApply.Any())
+            if (updateInfo.ReleasesToApply.Count == 0)
             {
                 this.logger.LogInformation("No app update found");
                 return;
