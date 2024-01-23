@@ -1,12 +1,11 @@
 ﻿using System.Net;
-using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WoWsShipBuilder.Features.Builds;
+using WoWsShipBuilder.Features.LinkShortening;
 
-namespace WoWsShipBuilder.Features.LinkShortening;
+namespace WoWsShipBuilder.Web.Features.LinkShortening;
 
 public sealed class FirebaseLinkShortener : ILinkShortener, IDisposable
 {
@@ -24,23 +23,23 @@ public sealed class FirebaseLinkShortener : ILinkShortener, IDisposable
         PropertyNameCaseInsensitive = true,
     };
 
+    private readonly bool linkShorteningAvailable;
+
     public FirebaseLinkShortener(HttpClient httpClient, IOptions<LinkShorteningOptions> options, ILogger<FirebaseLinkShortener> logger)
     {
         this.httpClient = httpClient;
         this.options = options.Value;
         this.logger = logger;
         this.semaphore = new(this.options.RateLimit, this.options.RateLimit);
-        this.IsAvailable = !string.IsNullOrEmpty(this.options.ApiKey);
+        this.linkShorteningAvailable = !string.IsNullOrEmpty(this.options.ApiKey);
     }
-
-    public bool IsAvailable { get; }
 
     public void Dispose()
     {
         this.semaphore.Dispose();
     }
 
-    public async Task<ShorteningResult> CreateLinkForBuild(Build build)
+    public async Task<LinkShorteningResult> CreateLinkForBuild(Build build)
     {
         this.logger.LogInformation("Creating short link for build {BuildHash}", build.Hash);
         string buildString = build.CreateShortStringFromBuild();
@@ -52,15 +51,21 @@ public sealed class FirebaseLinkShortener : ILinkShortener, IDisposable
         return await this.SendRequestAsync(request);
     }
 
-    public async Task<ShorteningResult> CreateShortLink(string link)
+    public async Task<LinkShorteningResult> CreateShortLink(string link)
     {
         this.logger.LogInformation("Creating short link for link {Link}", link);
         var request = new DynamicLinkRequest(new(this.options.UriPrefix, link), new(LinkSuffixType.SHORT));
         return await this.SendRequestAsync(request);
     }
 
-    private async Task<ShorteningResult> SendRequestAsync(DynamicLinkRequest linkRequest)
+    private async Task<LinkShorteningResult> SendRequestAsync(DynamicLinkRequest linkRequest)
     {
+        if (!this.linkShorteningAvailable)
+        {
+            this.logger.LogInformation("Link shortening is not available. Returning original link");
+            return new(false, linkRequest.DynamicLinkInfo.Link);
+        }
+
         if (!await this.semaphore.WaitAsync(this.options.RequestTimeout))
         {
             this.logger.LogWarning("Timeout while waiting for dynamic link api access");

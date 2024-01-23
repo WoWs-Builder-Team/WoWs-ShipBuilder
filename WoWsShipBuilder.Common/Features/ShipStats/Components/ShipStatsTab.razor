@@ -458,14 +458,11 @@ else if (ViewModel is not null)
             var metricServiceLabel = "url-long";
             var build = ViewModel!.CreateBuild(BuildName);
             var buildUrl = $"{urlBase}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(build.CreateShortStringFromBuild())}";
-            if (LinkShortener.IsAvailable)
+            var shorteningResult = await LinkShortener.CreateShortLink(buildUrl);
+            if (shorteningResult.Shortened)
             {
-                var shorteningResult = await LinkShortener.CreateShortLink(buildUrl);
-                if (shorteningResult.Shortened)
-                {
-                    buildUrl = shorteningResult.Link;
-                    metricServiceLabel = "url-short";
-                }
+                buildUrl = shorteningResult.Link;
+                metricServiceLabel = "url-short";
             }
 
             await ClipboardService.SetTextAsync(buildUrl);

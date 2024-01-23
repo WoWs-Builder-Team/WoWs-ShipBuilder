@@ -4,9 +4,7 @@ namespace WoWsShipBuilder.Features.LinkShortening;
 
 public interface ILinkShortener
 {
-    public bool IsAvailable { get; }
+    Task<LinkShorteningResult> CreateLinkForBuild(Build build);
 
-    Task<ShorteningResult> CreateLinkForBuild(Build build);
-
-    Task<ShorteningResult> CreateShortLink(string link);
+    Task<LinkShorteningResult> CreateShortLink(string link);
 }
