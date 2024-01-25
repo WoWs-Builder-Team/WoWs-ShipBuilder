@@ -364,7 +364,7 @@
     <value>砲彈重量</value>
   </data>
   <data name="ShipStats_TheoreticalDpm" xml:space="preserve">
-    <value>每分鐘傷害期望</value>
+    <value>每分鐘傷害</value>
   </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
     <value>引信觸發閾值</value>
@@ -766,16 +766,16 @@
     <value>持續時間</value>
   </data>
   <data name="ShipStats_ReloadAfterBurst" xml:space="preserve">
-    <value>彈夾裝填時間(長裝填)</value>
+    <value>長裝填</value>
   </data>
   <data name="ShipStats_ReloadDuringBurst" xml:space="preserve">
-    <value>彈夾裝填時間(短裝填)</value>
+    <value>連發間隔</value>
   </data>
   <data name="ShipStats_RequiredHits" xml:space="preserve">
     <value>擊中要求</value>
   </data>
   <data name="ShipStats_ShotInBurst" xml:space="preserve">
-    <value>一次射擊中的發射次數</value>
+    <value>連發次數</value>
   </data>
   <data name="ShipStats_SpecialAbility" xml:space="preserve">
     <value>特殊能力</value>
@@ -1356,7 +1356,7 @@
       <value>---</value>
   </data>
   <data name="ShipStats_Splash" xml:space="preserve">
-      <value>砲彈對潛艇濺射</value>
+      <value>對潛艇濺射</value>
   </data>
   <data name="ShipStats_SplashRadius" xml:space="preserve">
       <value>半徑</value>
