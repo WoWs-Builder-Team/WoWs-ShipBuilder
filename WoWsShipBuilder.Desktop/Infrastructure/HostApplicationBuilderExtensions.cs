@@ -27,7 +27,7 @@ public static class HostApplicationBuilderExtensions
         builder.Services.AddSingleton<IFileSystem, FileSystem>();
         builder.Services.AddSingleton<IDataService, DesktopDataService>();
         builder.Services.AddSingleton<IAppDataService, DesktopAppDataService>();
-        builder.Services.AddSingleton<IUserDataService, DesktopUserDataService>();
+        builder.Services.AddScoped<IUserDataService, DesktopUserDataService>();
         builder.Services.AddSingleton<AwsClient.AwsClient>();
         builder.Services.AddSingleton<IAwsClient>(x => x.GetRequiredService<AwsClient.AwsClient>());
         builder.Services.AddSingleton<IDesktopAwsClient>(x => x.GetRequiredService<AwsClient.AwsClient>());
