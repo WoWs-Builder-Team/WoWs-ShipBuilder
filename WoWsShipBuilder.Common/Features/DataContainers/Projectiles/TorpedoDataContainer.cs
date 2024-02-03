@@ -112,7 +112,7 @@ public partial class TorpedoDataContainer : ProjectileDataContainer
     [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "AirCarrier", UnitKey = "M", LocalizationKeyOverride = "SecondPing")]
     public decimal CvCutOffSecondPing { get; set; }
 
-    public List<ShipClass>? CanHitClasses { get; set; }
+    public ImmutableList<ShipClass> CanHitClasses { get; set; } = ImmutableList<ShipClass>.Empty;
 
     public bool IsLast { get; set; }
 
@@ -189,7 +189,7 @@ public partial class TorpedoDataContainer : ProjectileDataContainer
 
             if (torp.IgnoreClasses != null && torp.IgnoreClasses.Any())
             {
-                torpedoDataContainer.CanHitClasses = allClasses.Except(torp.IgnoreClasses).ToList();
+                torpedoDataContainer.CanHitClasses = allClasses.Except(torp.IgnoreClasses).ToImmutableList();
             }
 
             torpedoDataContainer.UpdateDataElements();

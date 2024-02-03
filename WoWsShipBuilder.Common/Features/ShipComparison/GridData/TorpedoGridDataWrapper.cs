@@ -1,4 +1,5 @@
-﻿using WoWsShipBuilder.DataStructures;
+﻿using System.Collections.Immutable;
+using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.Features.DataContainers;
 
 namespace WoWsShipBuilder.Features.ShipComparison.GridData;
@@ -7,7 +8,7 @@ public class TorpedoGridDataWrapper
 {
     public TorpedoGridDataWrapper(TorpedoArmamentDataContainer? torpedoArmament)
     {
-        List<TorpedoDataContainer>? torpedoes = torpedoArmament?.Torpedoes;
+        var torpedoes = torpedoArmament?.Torpedoes;
 
         this.FullSalvoDamage = new() { torpedoArmament?.FullSalvoDamage, torpedoArmament?.TorpFullSalvoDmg, torpedoArmament?.AltTorpFullSalvoDmg };
         this.Type = torpedoes?.Select(x => x.TorpedoType).ToNoSortList() ?? new();
@@ -45,5 +46,5 @@ public class TorpedoGridDataWrapper
 
     public NoSortList<decimal> BlastPenetration { get; }
 
-    public NoSortList<List<ShipClass>?> CanHit { get; }
+    public NoSortList<ImmutableList<ShipClass>> CanHit { get; }
 }

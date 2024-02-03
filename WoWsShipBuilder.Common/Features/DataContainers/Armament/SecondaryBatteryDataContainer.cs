@@ -16,7 +16,7 @@ public partial class SecondaryBatteryDataContainer : DataContainerBase
 {
     public string Name { get; set; } = default!;
 
-    public List<string> TurretName { get; set; } = new();
+    public ImmutableList<string> TurretName { get; set; } = ImmutableList<string>.Empty;
 
     public FormattedTextDataElement TurretSetup { get; set; } = default!;
 
@@ -106,7 +106,7 @@ public partial class SecondaryBatteryDataContainer : DataContainerBase
             var secondaryBatteryDataContainer = new SecondaryBatteryDataContainer
             {
                 Name = arrangementString,
-                TurretName = turretName,
+                TurretName = turretName.ToImmutableList(),
                 TurretSetup = new(arrangementString, turretName, ArgumentsTextKind: DataElementTextKind.LocalizationKey),
                 BarrelsLayout = $"{secondaryGroup.Count} x {secondaryGun.NumBarrels}",
                 BarrelsCount = secondaryGroup.Count * secondaryGun.NumBarrels,

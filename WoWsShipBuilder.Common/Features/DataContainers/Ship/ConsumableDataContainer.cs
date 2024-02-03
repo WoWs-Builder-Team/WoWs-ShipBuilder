@@ -36,7 +36,7 @@ public partial class ConsumableDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
     public decimal WorkTime { get; set; }
 
-    public List<Modifier> Modifiers { get; set; } = null!;
+    public ImmutableList<Modifier> Modifiers { get; set; } = ImmutableList<Modifier>.Empty;
 
     public static ConsumableDataContainer FromTypeAndVariant(ShipConsumable consumable, ImmutableList<Modifier> modifiers, bool isCvPlanes, int shipHp, ShipClass shipClass)
     {
@@ -326,7 +326,7 @@ public partial class ConsumableDataContainer : DataContainerBase
             Cooldown = Math.Round(cooldown, 1),
             PreparationTime = Math.Round(prepTime, 1),
             WorkTime = Math.Round(workTime, 1),
-            Modifiers = consumableModifiers,
+            Modifiers = consumableModifiers.ToImmutableList(),
         };
 
         consumableDataContainer.UpdateDataElements();

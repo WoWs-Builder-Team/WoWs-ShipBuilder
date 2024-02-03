@@ -17,7 +17,7 @@ public partial class MainBatteryDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = "TurretNames", ArgumentsTextKind = TextKind.LocalizationKey)]
     public string Name { get; set; } = default!;
 
-    public List<string> TurretNames { get; set; } = new();
+    public ImmutableList<string> TurretNames { get; set; } = ImmutableList<string>.Empty;
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
     public decimal Range { get; set; }
@@ -81,7 +81,7 @@ public partial class MainBatteryDataContainer : DataContainerBase
 
     public decimal TaperDist { get; set; }
 
-    public List<ShellDataContainer> ShellData { get; set; } = default!;
+    public ImmutableList<ShellDataContainer> ShellData { get; set; } = ImmutableList<ShellDataContainer>.Empty;
 
     public Dispersion DispersionData { get; set; } = default!;
 
@@ -178,7 +178,7 @@ public partial class MainBatteryDataContainer : DataContainerBase
         var mainBatteryDataContainer = new MainBatteryDataContainer
         {
             Name = arrangementString.ToString(),
-            TurretNames = turretNames,
+            TurretNames = turretNames.ToImmutableList(),
             Range = Math.Round(range, 2),
             Reload = Math.Round(reload, 2),
             RoF = Math.Round(rateOfFire * barrelCount, 1),
@@ -196,7 +196,7 @@ public partial class MainBatteryDataContainer : DataContainerBase
             DispersionData = dispersion,
             DispersionModifier = dispersionModifier,
             OriginalMainBatteryData = mainBattery,
-            ShellData = shellData,
+            ShellData = shellData.ToImmutableList(),
             DisplayHeDpm = shellData.Select(x => x.Type).Contains($"ArmamentType_{ShellType.HE.ShellTypeToString()}"),
             DisplayApDpm = shellData.Select(x => x.Type).Contains($"ArmamentType_{ShellType.AP.ShellTypeToString()}"),
             DisplaySapDpm = shellData.Select(x => x.Type).Contains($"ArmamentType_{ShellType.SAP.ShellTypeToString()}"),
