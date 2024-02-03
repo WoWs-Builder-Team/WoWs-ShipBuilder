@@ -7,13 +7,19 @@ using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.GameData;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial class MainBatteryDataContainer : DataContainerBase
+public sealed partial class MainBatteryDataContainer(string shipIndex, ImmutableList<ShipUpgrade> shipConfiguration, ImmutableList<Modifier> modifiers)
+    : DataContainerBase, IEquatable<MainBatteryDataContainer>
 {
+    private readonly string shipIndex = shipIndex;
+    private readonly ImmutableList<ShipUpgrade> shipConfiguration = shipConfiguration;
+    private readonly ImmutableList<Modifier> modifiers = modifiers;
+
     [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = "TurretNames", ArgumentsTextKind = TextKind.LocalizationKey)]
     public string Name { get; set; } = default!;
 
@@ -175,7 +181,7 @@ public partial class MainBatteryDataContainer : DataContainerBase
         var (horizontalDispersion, verticalDispersion) = dispersion.CalculateDispersion((double)range * 1000, dispersionModifier);
 
         // rounding reload in here to get a more accurate True reload
-        var mainBatteryDataContainer = new MainBatteryDataContainer
+        var mainBatteryDataContainer = new MainBatteryDataContainer(ship.Index, shipConfiguration, modifiers)
         {
             Name = arrangementString.ToString(),
             TurretNames = turretNames.ToImmutableList(),
@@ -229,6 +235,38 @@ public partial class MainBatteryDataContainer : DataContainerBase
 
         mainBatteryDataContainer.UpdateDataElements();
         return mainBatteryDataContainer;
+    }
+
+    public bool Equals(MainBatteryDataContainer? other)
+    {
+        if (other is null)
+        {
+            return false;
+        }
+
+        return this.shipIndex == other.shipIndex && this.shipConfiguration.SequenceEqual(other.shipConfiguration, ShipUpgradeComparer.Instance) && this.modifiers.SequenceEqual(other.modifiers, ModifierComparer.Instance);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return this.Equals(obj as MainBatteryDataContainer);
+    }
+
+    public override int GetHashCode()
+    {
+        var hashCode = default(HashCode);
+        hashCode.Add(this.shipIndex);
+        foreach (var upgrade in this.shipConfiguration)
+        {
+            hashCode.Add(upgrade, ShipUpgradeComparer.Instance);
+        }
+
+        foreach (var modifier in this.modifiers)
+        {
+            hashCode.Add(modifier, ModifierComparer.Instance);
+        }
+
+        return hashCode.ToHashCode();
     }
 
     private bool ShouldDisplayHeDpm(object obj)

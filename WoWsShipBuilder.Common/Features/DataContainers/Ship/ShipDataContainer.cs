@@ -4,35 +4,37 @@ using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.Features.DataContainers;
 
-public record ShipDataContainer(string Index)
+public sealed class ShipDataContainer(string index) : IEquatable<ShipDataContainer>
 {
-    public SurvivabilityDataContainer SurvivabilityDataContainer { get; set; } = default!;
+    public string Index { get; } = index;
 
-    public MainBatteryDataContainer? MainBatteryDataContainer { get; set; }
+    public SurvivabilityDataContainer SurvivabilityDataContainer { get; init; } = default!;
 
-    public SecondaryBatteryUiDataContainer SecondaryBatteryUiDataContainer { get; set; } = default!;
+    public MainBatteryDataContainer? MainBatteryDataContainer { get; init; }
 
-    public PingerGunDataContainer? PingerGunDataContainer { get; set; }
+    public SecondaryBatteryUiDataContainer SecondaryBatteryUiDataContainer { get; init; } = default!;
 
-    public TorpedoArmamentDataContainer? TorpedoArmamentDataContainer { get; set; }
+    public PingerGunDataContainer? PingerGunDataContainer { get; init; }
 
-    public AirstrikeDataContainer? AirstrikeDataContainer { get; set; }
+    public TorpedoArmamentDataContainer? TorpedoArmamentDataContainer { get; init; }
 
-    public AirstrikeDataContainer? AswAirstrikeDataContainer { get; set; }
+    public AirstrikeDataContainer? AirstrikeDataContainer { get; init; }
 
-    public DepthChargesLauncherDataContainer? DepthChargeLauncherDataContainer { get; set; }
+    public AirstrikeDataContainer? AswAirstrikeDataContainer { get; init; }
 
-    public ImmutableList<CvAircraftDataContainer>? CvAircraftDataContainer { get; set; }
+    public DepthChargesLauncherDataContainer? DepthChargeLauncherDataContainer { get; init; }
 
-    public ManeuverabilityDataContainer ManeuverabilityDataContainer { get; set; } = default!;
+    public ImmutableList<CvAircraftDataContainer>? CvAircraftDataContainer { get; init; }
 
-    public ConcealmentDataContainer ConcealmentDataContainer { get; set; } = default!;
+    public ManeuverabilityDataContainer ManeuverabilityDataContainer { get; init; } = default!;
 
-    public AntiAirDataContainer? AntiAirDataContainer { get; set; }
+    public ConcealmentDataContainer ConcealmentDataContainer { get; init; } = default!;
 
-    public ImmutableList<object> SecondColumnContent { get; set; } = ImmutableList<object>.Empty;
+    public AntiAirDataContainer? AntiAirDataContainer { get; init; }
 
-    public SpecialAbilityDataContainer? SpecialAbilityDataContainer { get; set; }
+    public ImmutableList<object> SecondColumnContent { get; private set; } = ImmutableList<object>.Empty;
+
+    public SpecialAbilityDataContainer? SpecialAbilityDataContainer { get; init; }
 
     public static ShipDataContainer CreateFromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, ImmutableList<Modifier> modifiers)
     {
@@ -76,5 +78,58 @@ public record ShipDataContainer(string Index)
         shipDataContainer.SecondColumnContent = secondColumnContent.ToImmutableList();
 
         return shipDataContainer;
+    }
+
+    public bool Equals(ShipDataContainer? other)
+    {
+        if (ReferenceEquals(null, other))
+        {
+            return false;
+        }
+
+        if (ReferenceEquals(this, other))
+        {
+            return true;
+        }
+
+        return this.Index == other.Index &&
+               this.SurvivabilityDataContainer.Equals(other.SurvivabilityDataContainer) &&
+               Equals(this.MainBatteryDataContainer, other.MainBatteryDataContainer) &&
+               this.SecondaryBatteryUiDataContainer.Equals(other.SecondaryBatteryUiDataContainer) &&
+               Equals(this.PingerGunDataContainer, other.PingerGunDataContainer) &&
+               Equals(this.TorpedoArmamentDataContainer, other.TorpedoArmamentDataContainer) &&
+               Equals(this.AirstrikeDataContainer, other.AirstrikeDataContainer) &&
+               Equals(this.AswAirstrikeDataContainer, other.AswAirstrikeDataContainer) &&
+               Equals(this.DepthChargeLauncherDataContainer, other.DepthChargeLauncherDataContainer) &&
+               Equals(this.CvAircraftDataContainer, other.CvAircraftDataContainer) &&
+               this.ManeuverabilityDataContainer.Equals(other.ManeuverabilityDataContainer) &&
+               this.ConcealmentDataContainer.Equals(other.ConcealmentDataContainer) &&
+               Equals(this.AntiAirDataContainer, other.AntiAirDataContainer) &&
+               Equals(this.SpecialAbilityDataContainer, other.SpecialAbilityDataContainer);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return ReferenceEquals(this, obj) || (obj is ShipDataContainer other && this.Equals(other));
+    }
+
+    public override int GetHashCode()
+    {
+        var hashCode = default(HashCode);
+        hashCode.Add(this.Index);
+        hashCode.Add(this.SurvivabilityDataContainer);
+        hashCode.Add(this.MainBatteryDataContainer);
+        hashCode.Add(this.SecondaryBatteryUiDataContainer);
+        hashCode.Add(this.PingerGunDataContainer);
+        hashCode.Add(this.TorpedoArmamentDataContainer);
+        hashCode.Add(this.AirstrikeDataContainer);
+        hashCode.Add(this.AswAirstrikeDataContainer);
+        hashCode.Add(this.DepthChargeLauncherDataContainer);
+        hashCode.Add(this.CvAircraftDataContainer);
+        hashCode.Add(this.ManeuverabilityDataContainer);
+        hashCode.Add(this.ConcealmentDataContainer);
+        hashCode.Add(this.AntiAirDataContainer);
+        hashCode.Add(this.SpecialAbilityDataContainer);
+        return hashCode.ToHashCode();
     }
 }
