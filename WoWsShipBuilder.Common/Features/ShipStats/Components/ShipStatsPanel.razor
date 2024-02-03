@@ -157,7 +157,7 @@
                                                         @DataElementFragment((data, Localizer))
                                                     }
                                                 }
-                                                @if (torpedo.CanHitClasses is not null)
+                                                @if (!torpedo.CanHitClasses.IsEmpty)
                                                 {
                                                     <div class="d-flex justify-space-between">
                                                         <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">

@@ -100,7 +100,7 @@ public partial class CvAircraftDataContainer : DataContainerBase
 
     public ProjectileDataContainer? Weapon { get; set; }
 
-    public List<ConsumableDataContainer> PlaneConsumables { get; set; } = default!;
+    public ImmutableList<ConsumableDataContainer> PlaneConsumables { get; set; } = ImmutableList<ConsumableDataContainer>.Empty;
 
     // TODO
     public decimal ArmamentReloadTime { get; set; }
@@ -308,7 +308,7 @@ public partial class CvAircraftDataContainer : DataContainerBase
             JatoSpeedMultiplier = Math.Round(jatoSpeedMultiplier, 0),
             WeaponType = weaponType.ProjectileTypeToString(),
             Weapon = weapon,
-            PlaneConsumables = consumables,
+            PlaneConsumables = consumables.ToImmutableList(),
             AimingTime = Math.Round(aimingTime, 1),
             PreparationTime = plane.PreparationTime,
             PostAttackInvulnerabilityDuration = plane.PostAttackInvulnerabilityDuration,

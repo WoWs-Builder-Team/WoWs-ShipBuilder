@@ -15,7 +15,7 @@ public partial class TorpedoArmamentDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = "LauncherNames", ArgumentsTextKind = TextKind.LocalizationKey)]
     public string Name { get; set; } = default!;
 
-    public List<string> LauncherNames { get; set; } = new();
+    public ImmutableList<string> LauncherNames { get; set; } = ImmutableList<string>.Empty;
 
     [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "Loaders")]
     public string BowLoaders { get; set; } = default!;
@@ -59,7 +59,7 @@ public partial class TorpedoArmamentDataContainer : DataContainerBase
 
     public string TorpLayout { get; set; } = default!;
 
-    public List<TorpedoDataContainer> Torpedoes { get; set; } = new();
+    public ImmutableList<TorpedoDataContainer> Torpedoes { get; set; } = ImmutableList<TorpedoDataContainer>.Empty;
 
     public IEnumerable<TorpedoLauncher> TorpedoLaunchers { get; private set; } = default!;
 
@@ -131,12 +131,12 @@ public partial class TorpedoArmamentDataContainer : DataContainerBase
         var torpedoArmamentDataContainer = new TorpedoArmamentDataContainer
         {
             Name = arrangementString.ToString(),
-            LauncherNames = launcherNames,
+            LauncherNames = launcherNames.ToImmutableList(),
             TurnTime = Math.Round(180 / traverseSpeed, 1),
             TraverseSpeed = Math.Round(traverseSpeed, 2),
             Reload = Math.Round(reloadSpeed, 2),
             TorpedoArea = torpedoArea,
-            Torpedoes = torpedoes,
+            Torpedoes = torpedoes.ToImmutableList(),
             TimeToSwitch = Math.Round(reloadSpeed * launcher.AmmoSwitchCoeff, 1),
             TorpedoLaunchers = torpedoModule.TorpedoLaunchers,
             TorpLayout = string.Join(" + ", torpLayout),

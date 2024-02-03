@@ -1,3 +1,5 @@
-﻿namespace WoWsShipBuilder.Features.ShipStats;
+﻿using System.Collections.Immutable;
 
-public sealed record DepthChargeDamageDistributionChartRecord(int DcDmg, decimal SplashRadius, Dictionary<float, List<float>> PointsOfDmg = default!);
+namespace WoWsShipBuilder.Features.ShipStats;
+
+public sealed record DepthChargeDamageDistributionChartRecord(int DcDmg, decimal SplashRadius, ImmutableDictionary<float, ImmutableList<float>> PointsOfDmg);

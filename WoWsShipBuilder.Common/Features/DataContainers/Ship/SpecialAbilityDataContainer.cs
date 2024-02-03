@@ -47,7 +47,7 @@ public partial class SpecialAbilityDataContainer : DataContainerBase
 
     // This is in common
     [JsonIgnore]
-    public List<Modifier> Modifiers { get; set; } = null!;
+    public ImmutableList<Modifier> Modifiers { get; set; } = ImmutableList<Modifier>.Empty;
 
     public bool IsBurstMode { get; set; }
 
@@ -69,7 +69,7 @@ public partial class SpecialAbilityDataContainer : DataContainerBase
                 InactivityDelay = (decimal)specialAbility.DecrementDelay,
                 ProgressLossInterval = (decimal)specialAbility.DecrementPeriod,
                 ProgressLossPerInterval = (decimal)specialAbility.DecrementCount,
-                Modifiers = specialAbility.Modifiers.ToList(),
+                Modifiers = specialAbility.Modifiers,
             };
 
             specialDataContainer.UpdateDataElements();
@@ -109,7 +109,7 @@ public partial class SpecialAbilityDataContainer : DataContainerBase
                 ReloadDuringBurst = burstMode.ReloadDuringBurst,
                 ReloadAfterBurst = burstMode.ReloadAfterBurst,
                 ShotInBurst = burstMode.ShotInBurst,
-                Modifiers = burstMode.Modifiers.ToList(),
+                Modifiers = burstMode.Modifiers,
                 IsBurstMode = true,
             };
 

@@ -294,15 +294,15 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCanHit}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCanHit)" T="GridDataWrapper" Title="@columnTitleCanHit" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> !x.TorpedoBombers.WeaponCanHit.Any() ? 0 : x.TorpedoBombers.WeaponCanHit.First()?.Count ?? (x.TorpedoBombers.WeaponDamage.Any() ? 5 : 0))">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCanHit}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCanHit)" T="GridDataWrapper" Title="@columnTitleCanHit" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> !x.TorpedoBombers.WeaponCanHit.Any() ? 0 : x.TorpedoBombers.WeaponCanHit.First().Count)">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.WeaponCanHit.Any())
                 {
-                    List<List<ShipClass>?> torps = context.Item.TorpedoBombers.WeaponCanHit;
+                    var torps = context.Item.TorpedoBombers.WeaponCanHit;
                     for (var i = 0; i < torps.Count; i++)
                     {
-                        List<ShipClass>? classes = torps[i];
-                        if (classes is null && context.Item.TorpedoBombers.WeaponDamage.Any())
+                        var classes = torps[i];
+                        if (classes.IsEmpty && context.Item.TorpedoBombers.WeaponDamage.Any())
                         {
                             <MudStack row Justify="Justify.Center" AlignItems="AlignItems.Center">
                                 @foreach (var shipClass in Enum.GetValues(typeof(ShipClass)).Cast<ShipClass>().ToList())
@@ -311,11 +311,11 @@
                                 }
                             </MudStack>
                         }
-                        else if (classes is null && !context.Item.TorpedoBombers.WeaponDamage.Any())
+                        else if (classes.IsEmpty && !context.Item.TorpedoBombers.WeaponDamage.Any())
                         {
                             @UtilityFragments.DataNotAvailableFragment
                         }
-                        else if (classes is not null)
+                        else if (!classes.IsEmpty)
                         {
                             <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center">
                                 @foreach (var shipClass in classes)

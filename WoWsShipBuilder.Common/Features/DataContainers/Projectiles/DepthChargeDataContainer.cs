@@ -30,7 +30,7 @@ public partial class DepthChargeDataContainer : ProjectileDataContainer
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "PerCent")]
     public decimal FloodingChance { get; set; }
 
-    public Dictionary<float, List<float>> PointsOfDmg { get; set; } = default!;
+    public ImmutableDictionary<float, ImmutableList<float>> PointsOfDmg { get; set; } = ImmutableDictionary<float, ImmutableList<float>>.Empty;
 
     public static DepthChargeDataContainer FromChargesName(string name, ImmutableList<Modifier> modifiers)
     {
@@ -40,8 +40,8 @@ public partial class DepthChargeDataContainer : ProjectileDataContainer
         decimal maxSpeed = (decimal)(depthCharge.SinkingSpeed * (1 + depthCharge.SinkingSpeedRng)) * Constants.KnotsToMps;
         decimal minTimer = (decimal)(depthCharge.DetonationTimer - depthCharge.DetonationTimerRng);
         decimal maxTimer = (decimal)(depthCharge.DetonationTimer + depthCharge.DetonationTimerRng);
-        decimal minDetDepth = minSpeed * minTimer / 2;
-        decimal maxDetDepth = maxSpeed * maxTimer / 2;
+        decimal minDetDepth = (minSpeed * minTimer) / 2;
+        decimal maxDetDepth = (maxSpeed * maxTimer) / 2;
 
         var depthChargeDataContainer = new DepthChargeDataContainer
         {
@@ -52,7 +52,7 @@ public partial class DepthChargeDataContainer : ProjectileDataContainer
             SinkSpeed = $"{Math.Round(minSpeed, 1)} ~ {Math.Round(maxSpeed, 1)}",
             DetonationTimer = $"{Math.Round(minTimer, 1)} ~ {Math.Round(maxTimer, 1)}",
             DetonationDepth = $"{Math.Round(minDetDepth)} ~ {Math.Round(maxDetDepth)}",
-            PointsOfDmg = depthCharge.PointsOfDamage.ToDictionary(x => x.Key, x => x.Value.ToList()),
+            PointsOfDmg = depthCharge.PointsOfDamage.ToImmutableDictionary(x => x.Key, x => x.Value),
         };
 
         depthChargeDataContainer.UpdateDataElements();
