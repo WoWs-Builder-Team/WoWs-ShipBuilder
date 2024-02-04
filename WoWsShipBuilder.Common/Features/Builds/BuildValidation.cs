@@ -62,7 +62,7 @@ public static class BuildValidation
         List<char> invalidChars = Path.GetInvalidFileNameChars().ToList();
         invalidChars.Add(';');
         List<char> invalidCharsInBuildName = invalidChars.FindAll(buildName.Contains);
-        return invalidCharsInBuildName.Any() ? $"Invalid characters {string.Join(' ', invalidCharsInBuildName)}" : null;
+        return invalidCharsInBuildName.Count != 0 ? $"Invalid characters {string.Join(' ', invalidCharsInBuildName)}" : null;
     }
 
     public static async Task<string?> RetrieveLongUrlFromShortLink(string shortUrl)

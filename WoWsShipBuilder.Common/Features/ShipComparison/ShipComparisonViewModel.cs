@@ -71,7 +71,7 @@ public partial class ShipComparisonViewModel : ReactiveObject
 
     public Dictionary<Guid, GridDataWrapper> PinnedShipList { get; } = new();
 
-    public List<ShipComparisonDataSections> DataSections { get; private set; } = new() { ShipComparisonDataSections.General };
+    public List<ShipComparisonDataSections> DataSections { get; private set; } = [ShipComparisonDataSections.General];
 
     public ShipComparisonDataSections SelectedDataSection { get; set; } = ShipComparisonDataSections.General;
 
@@ -163,11 +163,7 @@ public partial class ShipComparisonViewModel : ReactiveObject
 
     public async Task ToggleTierSelection(int value)
     {
-        if (this.SelectedTiers.Contains(value))
-        {
-            this.SelectedTiers.Remove(value);
-        }
-        else
+        if (!this.SelectedTiers.Remove(value))
         {
             this.SelectedTiers.Add(value);
         }
@@ -177,11 +173,7 @@ public partial class ShipComparisonViewModel : ReactiveObject
 
     public async Task ToggleClassSelection(ShipClass value)
     {
-        if (this.SelectedClasses.Contains(value))
-        {
-            this.SelectedClasses.Remove(value);
-        }
-        else
+        if (!this.SelectedClasses.Remove(value))
         {
             this.SelectedClasses.Add(value);
         }
@@ -191,11 +183,7 @@ public partial class ShipComparisonViewModel : ReactiveObject
 
     public async Task ToggleNationSelection(Nation value)
     {
-        if (this.SelectedNations.Contains(value))
-        {
-            this.SelectedNations.Remove(value);
-        }
-        else
+        if (!this.SelectedNations.Remove(value))
         {
             this.SelectedNations.Add(value);
         }
@@ -205,11 +193,7 @@ public partial class ShipComparisonViewModel : ReactiveObject
 
     public async Task ToggleCategorySelection(ShipCategory value)
     {
-        if (this.SelectedCategories.Contains(value))
-        {
-            this.SelectedCategories.Remove(value);
-        }
-        else
+        if (!this.SelectedCategories.Remove(value))
         {
             this.SelectedCategories.Add(value);
         }
@@ -293,7 +277,7 @@ public partial class ShipComparisonViewModel : ReactiveObject
         var buildList = wrappers.ToDictionary(x => x.Key, x => x.Value);
         foreach (var wrapper in buildList)
         {
-            if (this.FilteredShipList.Count(x => x.Value.Ship.Index.Equals(wrapper.Value.Ship.Index)) > 1)
+            if (this.FilteredShipList.Count(x => x.Value.Ship.Index.Equals(wrapper.Value.Ship.Index, StringComparison.Ordinal)) > 1)
             {
                 this.FilteredShipList.Remove(wrapper.Key);
 
@@ -341,11 +325,7 @@ public partial class ShipComparisonViewModel : ReactiveObject
 
     public async Task AddPinnedShip(GridDataWrapper wrapper)
     {
-        if (!this.PinnedShipList.ContainsKey(wrapper.Id))
-        {
-            this.PinnedShipList.Add(wrapper.Id, wrapper);
-        }
-        else
+        if (!this.PinnedShipList.TryAdd(wrapper.Id, wrapper))
         {
             await this.RemovePinnedShip(wrapper);
         }
@@ -355,11 +335,7 @@ public partial class ShipComparisonViewModel : ReactiveObject
 
     public void AddSelectedShip(GridDataWrapper wrapper)
     {
-        if (!this.SelectedShipList.ContainsKey(wrapper.Id))
-        {
-            this.SelectedShipList.Add(wrapper.Id, wrapper);
-        }
-        else
+        if (!this.SelectedShipList.TryAdd(wrapper.Id, wrapper))
         {
             this.RemoveSelectedShip(wrapper);
         }
@@ -438,14 +414,14 @@ public partial class ShipComparisonViewModel : ReactiveObject
                 this.PinnedShipList.Add(newWrapper.Id, newWrapper);
             }
 
-            if (this.MainBatteryDispersionCache.ContainsKey(selectedShip.Key))
+            if (this.MainBatteryDispersionCache.TryGetValue(selectedShip.Key, out var value))
             {
-                this.MainBatteryDispersionCache[newWrapper.Id] = this.MainBatteryDispersionCache[selectedShip.Key];
+                this.MainBatteryDispersionCache[newWrapper.Id] = value;
             }
 
-            if (this.SecondaryBatteryDispersionCache.ContainsKey(selectedShip.Key))
+            if (this.SecondaryBatteryDispersionCache.TryGetValue(selectedShip.Key, out var secondaryValue))
             {
-                this.SecondaryBatteryDispersionCache[newWrapper.Id] = this.SecondaryBatteryDispersionCache[selectedShip.Key];
+                this.SecondaryBatteryDispersionCache[newWrapper.Id] = secondaryValue;
             }
         }
 
@@ -515,7 +491,7 @@ public partial class ShipComparisonViewModel : ReactiveObject
 
     private Dictionary<Guid, GridDataWrapper> GetShipsToBeDisplayed(bool disableHideShipsIfNoSelectedSection)
     {
-        Dictionary<Guid, GridDataWrapper> list = this.ShowPinnedShipsOnly ? this.PinnedShipList : this.FilteredShipList;
+        var list = this.ShowPinnedShipsOnly ? this.PinnedShipList : this.FilteredShipList;
 
         if (!disableHideShipsIfNoSelectedSection)
         {
@@ -582,7 +558,7 @@ public partial class ShipComparisonViewModel : ReactiveObject
 
     private List<ShipUpgrade> GetShipConfiguration(Ship ship)
     {
-        List<ShipUpgrade> shipConfiguration = this.UseUpgradedModules
+        var shipConfiguration = this.UseUpgradedModules
             ? ShipModuleHelper.GroupAndSortUpgrades(ship.ShipUpgradeInfo.ShipUpgrades)
                 .OrderBy(entry => entry.Key)
                 .Select(entry => entry.Value)
@@ -608,7 +584,7 @@ public partial class ShipComparisonViewModel : ReactiveObject
             return list.ToDictionary(x => x.Key, x => x.Value);
         }
 
-        Dictionary<Guid, GridDataWrapper> newList = this.SelectedDataSection switch
+        var newList = this.SelectedDataSection switch
         {
             ShipComparisonDataSections.MainBattery => list.Where(x => x.Value.ShipDataContainer.MainBatteryDataContainer is not null).ToDictionary(x => x.Key, x => x.Value),
             ShipComparisonDataSections.He => list.Where(x => x.Value.HeShell?.Damage is not null).ToDictionary(x => x.Key, x => x.Value),
@@ -637,7 +613,7 @@ public partial class ShipComparisonViewModel : ReactiveObject
     private void GetDataSectionsToDisplay()
     {
         var displayedShipList = this.GetShipsToBeDisplayed(true);
-        this.DataSections = !displayedShipList.Any() ? new() { ShipComparisonDataSections.General } : this.HideEmptyDataSections(displayedShipList);
+        this.DataSections = displayedShipList.Count == 0 ? [ShipComparisonDataSections.General] : this.HideEmptyDataSections(displayedShipList);
     }
 
     [SuppressMessage("Performance", "CA1822", Justification = "not static to preserve file structure")]

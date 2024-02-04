@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{0F12
 		WoWsShipBuilder.sln.DotSettings = WoWsShipBuilder.sln.DotSettings
 		global.json = global.json
 		Directory.Build.props = Directory.Build.props
+		.dockerignore = .dockerignore
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{43EE144D-CA52-44D5-B761-A27C0A37E1C5}"

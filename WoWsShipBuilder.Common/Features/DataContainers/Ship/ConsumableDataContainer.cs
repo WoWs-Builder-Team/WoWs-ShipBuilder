@@ -52,7 +52,7 @@ public partial record ConsumableDataContainer : DataContainerBase
     {
         var consumableIdentifier = $"{name} {variant}";
         var usingFallback = false;
-        if (!(AppData.ConsumableList?.TryGetValue(consumableIdentifier, out var consumable) ?? false))
+        if (!AppData.ConsumableList.TryGetValue(consumableIdentifier, out var consumable))
         {
             Logging.Logger.LogError("Consumable {Identifier} not found in cached consumable list. Using dummy consumable instead", consumableIdentifier);
             usingFallback = true;
@@ -99,7 +99,7 @@ public partial record ConsumableDataContainer : DataContainerBase
                 consumableModifiers.UpdateConsumableModifierValue(modifiers, "ConsumableDataContainer.TimeDelayAttack.PCY035", "timeDelayAttack");
                 consumableModifiers.UpdateConsumableModifierValue(modifiers, "ConsumableDataContainer.TimeDelayAppear.PCY035", "timeFromHeaven");
 
-                var plane = AppData.FindAircraft(consumable.PlaneName[..consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)]);
+                var plane = AppData.FindAircraft(consumable.PlaneName[..consumable.PlaneName.IndexOf('_', StringComparison.Ordinal)]);
                 var oldCruisingSpeed = consumableModifiers.Find(x => x.Name.Equals("cruisingSpeed", StringComparison.Ordinal));
                 if (oldCruisingSpeed is not null)
                 {
@@ -257,7 +257,7 @@ public partial record ConsumableDataContainer : DataContainerBase
                 consumableModifiers.UpdateConsumableModifierValue(modifiers, "ConsumableDataContainer.ExtraFighters.PCY012.PCY03", "fightersNum");
                 var maxKills = consumableModifiers.First(x => x.Name.Equals("fightersNum", StringComparison.Ordinal)).Value;
 
-                var plane = AppData.FindAircraft(consumable.PlaneName[..consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)]);
+                var plane = AppData.FindAircraft(consumable.PlaneName[..consumable.PlaneName.IndexOf('_', StringComparison.Ordinal)]);
 
                 var oldCruisingModifier = consumableModifiers.Find(x => x.Name.Equals("cruisingSpeed", StringComparison.Ordinal));
                 if (oldCruisingModifier is not null)
