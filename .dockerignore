@@ -24,3 +24,4 @@
 LICENSE
 README.md
 **/appsettings.local.json
+**/wwwroot/lib

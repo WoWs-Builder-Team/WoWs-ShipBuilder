@@ -63,4 +63,12 @@
         </Compile>
     </ItemGroup>
 
+    <!-- Workaround for libman files not being added to the publish directory on first build, see https://github.com/aspnet/LibraryManager/issues/680#issuecomment-1140320218 -->
+    <Target Name="_LibraryManagerRestoreContentItems" AfterTargets="LibraryManagerRestore">
+        <ItemGroup>
+            <Content Remove="@(FilesForPackagingFromProject)" />
+            <Content Include="@(FilesForPackagingFromProject)" CopyToPublishDirectory="PreserveNewest" />
+        </ItemGroup>
+    </Target>
+
 </Project>
