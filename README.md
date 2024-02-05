@@ -1,6 +1,6 @@
 # WoWs-ShipBuilder
 <p align="center">
-  <img src="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder/blob/main/.github/logo_white_text_background.png?raw=true" width="359"/>
+  <img src=".github/logo_white_text_background.png" width="359"/>
 </p>
 
 ## General Information
@@ -24,7 +24,7 @@ Update checks only run on application startup so it won't mess up your system wi
 
 ## Telemetry data and error reports
 
-We do not collect any personal data in our application because it's simply not necessary for the app to work. 
+We do not collect any personal data in our application because it's simply not necessary for the app to work.
 However, we do automatically collect error reports.
 If the application encounters an error, it automatically sends a report to [Sentry](https://sentry.io/) containing the error data. This data does not contain IP addresses or other personal information.
 An error is not always visible for you as most errors should be caught internally and handled using fallback actions.
@@ -39,7 +39,7 @@ If you want to see the program translate in your language, you can follow the gu
 Hosting the server where we store the data used by the program has a monthly cost. If you like the program and would like to help us out, you can donate at https://ko-fi.com/wowsshipbuilder. The app will always be free and with no ads. When you donate, you will also get a special role in our discord server.
 
 ## Discord
-We have a discord server that you can join by clicking [here](https://discord.gg/C8EaepZJDY) . 
+We have a discord server that you can join by clicking [here](https://discord.gg/C8EaepZJDY) .
 
 ## Sponsorships and Support
 
