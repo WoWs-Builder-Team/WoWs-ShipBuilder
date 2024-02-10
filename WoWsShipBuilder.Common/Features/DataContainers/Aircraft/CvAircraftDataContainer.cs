@@ -110,7 +110,7 @@ public partial record CvAircraftDataContainer : DataContainerBase
 
     public static List<CvAircraftDataContainer>? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
     {
-        if (!ship.CvPlanes.Any())
+        if (ship.CvPlanes.IsEmpty)
         {
             return null;
         }

@@ -105,7 +105,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
             this.SkillList = this.ConvertSkillToViewModel(this.currentClass, newCaptain);
             this.CaptainTalentsList.Clear();
 
-            if (newCaptain!.UniqueSkills.Any())
+            if (!newCaptain!.UniqueSkills.IsEmpty)
             {
                 this.CaptainWithTalents = true;
                 foreach ((string _, UniqueSkill talent) in newCaptain.UniqueSkills)
@@ -265,7 +265,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     public List<Modifier> GetModifiersList()
     {
         var modifiers = this.SkillOrderList.ToList()
-            .Where(skill => skill.Modifiers.Any() && skill.SkillNumber != ArSkillNumber && skill.SkillNumber != ArSkillNumberSubs && skill.SkillNumber != FuriousSkillNumber && skill.SkillNumber != ImprovedRepairPartyReadinessSkillNumber && skill.SkillNumber != ManualSecondaryBatteryAimingSkillNumber)
+            .Where(skill => !skill.Modifiers.IsEmpty && skill.SkillNumber != ArSkillNumber && skill.SkillNumber != ArSkillNumberSubs && skill.SkillNumber != FuriousSkillNumber && skill.SkillNumber != ImprovedRepairPartyReadinessSkillNumber && skill.SkillNumber != ManualSecondaryBatteryAimingSkillNumber)
             .SelectMany(m => m.Modifiers)
             .ToList();
 
@@ -414,7 +414,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
             .SelectMany(talent => talent.Modifiers.Select(modifier => new Modifier(modifier.Name, float.Pow(modifier.Value, talent.ActivationNumbers), "", modifier)));
         modifiers.AddRange(talentMultipleActivationModifiers);
 
-        var talentFireChanceModifier = this.CaptainTalentsList.Where(talent => talent.Status && talent.Modifiers.Any(modifier => modifier.Name.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
+        var talentFireChanceModifier = this.CaptainTalentsList.Where(talent => talent.Status && talent.Modifiers.Exists(modifier => modifier.Name.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
             .SelectMany(talent => talent.Modifiers.Select(modifier => new Modifier(modifier.Name, float.Round(modifier.Value * talent.ActivationNumbers, 2), "", modifier)));
         modifiers.AddRange(talentFireChanceModifier);
 

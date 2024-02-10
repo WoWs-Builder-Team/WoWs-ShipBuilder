@@ -11,7 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.5" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.1" />
         <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
         <PackageReference Include="MudBlazor" Version="6.11.1" />
         <PackageReference Include="prometheus-net.AspNetCore" Version="8.2.1" />
@@ -62,5 +62,13 @@
             <DependentUpon>Translation.resx</DependentUpon>
         </Compile>
     </ItemGroup>
+
+    <!-- Workaround for libman files not being added to the publish directory on first build, see https://github.com/aspnet/LibraryManager/issues/680#issuecomment-1140320218 -->
+    <Target Name="_LibraryManagerRestoreContentItems" AfterTargets="LibraryManagerRestore">
+        <ItemGroup>
+            <Content Remove="@(FilesForPackagingFromProject)" />
+            <Content Include="@(FilesForPackagingFromProject)" CopyToPublishDirectory="PreserveNewest" />
+        </ItemGroup>
+    </Target>
 
 </Project>
