@@ -303,12 +303,15 @@ public partial record ConsumableDataContainer : DataContainerBase
             else if (name.Contains("PCY045", StringComparison.InvariantCultureIgnoreCase))
             {
                 // Hydrophone
+                // used prior to 13.1
                 consumableModifiers.UpdateConsumableModifierValue(modifiers, "ConsumableDataContainer.HydrophoneUpdateFrequency.PCY045", "hydrophoneUpdateFrequency");
+                cooldown = modifiers.ApplyModifiers("ConsumableDataContainer.Reload.PCY045", cooldown);
             }
             else if (name.Contains("PCY048", StringComparison.InvariantCultureIgnoreCase))
             {
                 // Submarine Surveillance
                 prepTime = modifiers.ApplyModifiers("ConsumableDataContainer.PrepTime.PCY048", prepTime);
+                cooldown = modifiers.ApplyModifiers("ConsumableDataContainer.Reload.PCY048", cooldown);
             }
         }
         else if (usingFallback)

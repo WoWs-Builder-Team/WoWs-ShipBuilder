@@ -28,8 +28,13 @@ public static class DataContainerUtility
 
     public static void UpdateConsumableModifierValue(this List<Modifier> consumableModifierList, List<Modifier> modifierList, string propertySelector, string modifierName)
     {
-        var modifier = consumableModifierList.Find(x => x.Name.Equals(modifierName))!;
-        var newValue = (float)modifierList.ApplyModifiers(propertySelector, (decimal)modifier.Value);
+        var modifier = consumableModifierList.Find(x => x.Name.Equals(modifierName));
+        var newValue = (float)modifierList.ApplyModifiers(propertySelector, (decimal)(modifier?.Value ?? 0));
+        if (modifier == null)
+        {
+            return;
+        }
+
         consumableModifierList.Remove(modifier);
         consumableModifierList.Add(new Modifier(modifier.Name, newValue, "", modifier));
     }
