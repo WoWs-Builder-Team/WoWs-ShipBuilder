@@ -99,21 +99,22 @@ public class DesktopAppDataService : IAppDataService
         var localVersionInfo = await this.GetCurrentVersionInfo(serverType) ?? throw new InvalidOperationException("No local data found");
         AppData.DataVersion = localVersionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + localVersionInfo.CurrentVersion.DataIteration;
 
-        var dataRootInfo = this.fileSystem.DirectoryInfo.New(this.GetDataPath(serverType));
-        IDirectoryInfo[] categories = dataRootInfo.GetDirectories();
+        var dataRootPath = this.GetDataPath(serverType);
 
         // Multiple categories can be loaded simultaneously without concurrency issues because every cache is only used by one category.
-        await Parallel.ForEachAsync(categories, async (category, ct) =>
+        await Parallel.ForEachAsync(localVersionInfo.Categories, async (category, ct) =>
         {
-            if (category.Name.Contains("Localization", StringComparison.InvariantCultureIgnoreCase))
+            if (category.Key.Contains("Localization", StringComparison.InvariantCultureIgnoreCase))
             {
                 return;
             }
 
-            foreach (var file in category.GetFiles())
+            var categoryPath = this.fileSystem.Path.Combine(dataRootPath, category.Key);
+            foreach (var file in category.Value.Select(file => file.FileName))
             {
-                string content = await this.fileSystem.File.ReadAllTextAsync(file.FullName, ct);
-                await DataCacheHelper.AddToCache(file.Name, category.Name, content);
+                var filePath = this.fileSystem.Path.Combine(categoryPath, file);
+                string content = await this.fileSystem.File.ReadAllTextAsync(filePath, ct);
+                await DataCacheHelper.AddToCache(file, category.Key, content);
             }
         });
 
