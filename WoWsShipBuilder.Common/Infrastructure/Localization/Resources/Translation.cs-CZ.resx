@@ -120,6 +120,9 @@
   <data name="MainWindow_BackToMenu" xml:space="preserve">
     <value>Zpět do nabídky</value>
   </data>
+  <data name="MainWindow_CommanderXpBonus" xml:space="preserve">
+    <value>Kapitán XP bonus %</value>
+  </data>
   <data name="Broadside" xml:space="preserve">
     <value>Broadside (bůček)</value>
   </data>
