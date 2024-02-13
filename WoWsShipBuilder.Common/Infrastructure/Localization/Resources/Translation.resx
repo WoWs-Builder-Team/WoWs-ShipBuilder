@@ -2231,4 +2231,10 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="AppNavigator_MaxLimit" xml:space="preserve">
     <value>Max limit is</value>
   </data>
+  <data name="ShipStats_AmmoSwitchTime" xml:space="preserve">
+    <value>Ammo switch time</value>
+  </data>
+  <data name="ShipStats_AmmoSwitchTimeTooltip" xml:space="preserve">
+    <value>Assuming guns just fired, thus needing a full reload time to fire again</value>
+  </data>
 </root>

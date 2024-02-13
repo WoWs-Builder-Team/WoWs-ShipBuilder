@@ -3096,6 +3096,24 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ammo switch time.
+        /// </summary>
+        public static string ShipStats_AmmoSwitchTime {
+            get {
+                return ResourceManager.GetString("ShipStats_AmmoSwitchTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assuming guns just fired, thus needing a full reload time to fire again.
+        /// </summary>
+        public static string ShipStats_AmmoSwitchTimeTooltip {
+            get {
+                return ResourceManager.GetString("ShipStats_AmmoSwitchTimeTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to K = projectile&apos;s krupp
         ///        M = projectile&apos;s mass [kg]
         ///        S = projectile&apos;s impact speed [m/s]

@@ -30,6 +30,9 @@ public partial record MainBatteryDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
     public decimal Reload { get; set; }
 
+    [DataElementType(DataElementTypes.Tooltip, UnitKey = "S", TooltipKey = "AmmoSwitchTimeTooltip")]
+    public decimal AmmoSwitchTime { get; set; }
+
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "ShotsPerMinute")]
     public decimal RoF { get; set; }
 
@@ -150,6 +153,8 @@ public partial record MainBatteryDataContainer : DataContainerBase
         // Calculate main battery reload
         decimal reload = modifiers.ApplyModifiers("MainBatteryDataContainer.Reload", gun.Reload);
 
+        decimal ammoSwitchTime = modifiers.ApplyModifiers("MainBatteryDataContainer.AmmoSwitchTime", reload * gun.AmmoSwitchCoeff);
+
         // Rotation speed modifiers
         decimal traverseSpeed = modifiers.ApplyModifiers("MainBatteryDataContainer.TraverseSpeed", gun.HorizontalRotationSpeed);
 
@@ -180,6 +185,7 @@ public partial record MainBatteryDataContainer : DataContainerBase
             TurretNames = turretNames,
             Range = Math.Round(range, 2),
             Reload = Math.Round(reload, 2),
+            AmmoSwitchTime = Math.Round(ammoSwitchTime, 2),
             RoF = Math.Round(rateOfFire * barrelCount, 1),
             TurnTime = Math.Round(180 / traverseSpeed, 1),
             TraverseSpeed = Math.Round(traverseSpeed, 2),
