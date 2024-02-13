@@ -123,7 +123,274 @@
   <data name="MainWindow_CommanderXpBonus" xml:space="preserve">
     <value>Kapitán XP bonus %</value>
   </data>
+  <data name="ShipStats_Penetration" xml:space="preserve">
+    <value>Penetrace</value>
+  </data>
   <data name="Broadside" xml:space="preserve">
     <value>Broadside (bůček)</value>
+  </data>
+  <data name="ShipStats_SplashCoeff" xml:space="preserve">
+      <value>Penetrace</value>
+  </data>
+  <data name="ShipComparison_SmokeFiring" xml:space="preserve">
+      <value>Střelba z kouře</value>
+  </data>
+  <data name="ShipComparison_PlanesInSquadron" xml:space="preserve">
+      <value>Letadla v letce</value>
+  </data>
+  <data name="ShipComparison_InitialSpeed" xml:space="preserve">
+      <value>Počáteční rychlost</value>
+  </data>
+  <data name="ShipComparison_PlaneHp" xml:space="preserve">
+      <value>HP letadla</value>
+  </data>
+  <data name="ShipComparison_Spread" xml:space="preserve">
+      <value>Roztažení</value>
+  </data>
+  <data name="ShipComparison_Plane" xml:space="preserve">
+      <value>Letadlo</value>
+  </data>
+  <data name="ShipComparison_Planes" xml:space="preserve">
+      <value>Letouny</value>
+  </data>
+  <data name="ShipComparison_OnDeck" xml:space="preserve">
+      <value>Na palubě</value>
+  </data>
+  <data name="ShipComparison_EngineBoostDuration" xml:space="preserve">
+      <value>Doba trvání přídavného spalování</value>
+  </data>
+  <data name="ShipComparison_Invulnerability" xml:space="preserve">
+      <value>Nezranitelnost</value>
+  </data>
+  <data name="ShipComparison_ViewDistance" xml:space="preserve">
+      <value>Dohled</value>
+  </data>
+  <data name="ShipComparison_PerPlane" xml:space="preserve">
+      <value>Na letadlo</value>
+  </data>
+  <data name="ShipComparison_TorpsPerPlane" xml:space="preserve">
+      <value>Torpéda v letadle</value>
+  </data>
+  <data name="ShipStats_MaxReverseSpeed" xml:space="preserve">
+      <value>Maximální rychlost zpětného chodu</value>
+  </data>
+  <data name="ShipComparison_TypeName" xml:space="preserve">
+      <value>Zadejte název...</value>
+  </data>
+  <data name="ShipComparison_SearchAndPin" xml:space="preserve">
+      <value>Vyhledávání a připnutí lodi</value>
+  </data>
+  <data name="ShipComparison_DispersionAt" xml:space="preserve">
+      <value>Rozptyl na</value>
+  </data>
+  <data name="ShipSelectionWindow_SearchShipOrBuild" xml:space="preserve">
+      <value>Hledat loď nebo build</value>
+  </data>
+  <data name="SettingsWindow_Export" xml:space="preserve">
+      <value>Exportovat</value>
+  </data>
+  <data name="SettingsWindow_DeleteAll" xml:space="preserve">
+      <value>Odstranit vše</value>
+  </data>
+  <data name="BuildConfigurationDialog_Load" xml:space="preserve">
+      <value>Nahrát</value>
+  </data>
+  <data name="SettingsWindow_InvalidJsonFileError" xml:space="preserve">
+      <value>Neplatný soubor. Povoleny pouze .json soubory.</value>
+  </data>
+  <data name="ShipSelector_InvalidPngFileError" xml:space="preserve">
+      <value>Neplatný soubor. Povoleny jsou pouze .png soubory.</value>
+  </data>
+  <data name="SettingsWindow_LocalStorageWarning" xml:space="preserve">
+      <value>Buildy jsou uloženy v lokálním úložišti prohlížeče. Operace jako vymazání mezipaměti prohlížeče pravděpodobně smaže všechna data uložená v místním úložišti. Důrazně doporučujeme exportovat vaše buildy pravidelně nebo alespoň před provedením těchto operací.</value>
+  </data>
+  <data name="ShipStats_Krupp" xml:space="preserve">
+      <value>Krupp</value>
+  </data>
+  <data name="ShipStats_KruppExplanation" xml:space="preserve">
+      <value>Je to konstanta pro pronikání projektilu.
+        Představuje odolnost projektilu.
+        Čím vyšší je hodnota, tím vyšší je penetrace.</value>
+  </data>
+  <data name="ShipStats_ApPenetrationFormula" xml:space="preserve">
+      <value>K = krupp vrženého tělesa
+        M = hmotnost projektilu [kg]
+        S = rychlost nárazu projektilu [m/s]
+        C = kalibr projektilu [m]
+
+        Průnik [mm] = K * (M * S^2)^0. 9 * C^(-1.07) * 0.0000001
+
+      Reverzní inženýrství dle TTaro_</value>
+  </data>
+  <data name="ShipStats_PenetrationAp" xml:space="preserve">
+      <value>Penetrace</value>
+  </data>
+  <data name="BETA_UserAuth" xml:space="preserve">
+      <value>Přihlášení</value>
+  </data>
+  <data name="ShipStats_DcDetonationDepthExplanation" xml:space="preserve">
+      <value>Hloubka ponorek zobrazených ve hře je vyjádřena jako "ship_meter". Ponorka se může ponořit 60[ship_m] = 120[m].</value>
+  </data>
+  <data name="ShipComparison_ShipsPerPage" xml:space="preserve">
+    <value>Lodě na stránku:</value>
+  </data>
+  <data name="ShipComparison_HideColumns" xml:space="preserve">
+    <value>Skrýt sloupce</value>
+  </data>
+  <data name="ShipStats_SecondConsecutive" xml:space="preserve">
+    <value>Druhý a následující</value>
+  </data>
+  <data name="ShipStats_FromSubsAtPeriscopeDepth" xml:space="preserve">
+    <value>Z ponorek v periskopové hloubce</value>
+  </data>
+  <data name="ShipStats_ShellType" xml:space="preserve">
+    <value>Typ granátů</value>
+  </data>
+  <data name="ShipStats_Overall" xml:space="preserve">
+    <value>Celkem</value>
+  </data>
+  <data name="ShipComparison_OutOfRange" xml:space="preserve">
+    <value>Mimo dostřel</value>
+  </data>
+  <data name="ShipComparison_OutOfRangeTooltip" xml:space="preserve">
+    <value>Rozsah vypálení je větší než maximální dostřel této lodi</value>
+  </data>
+  <data name="UserDataService_BuildUpdated" xml:space="preserve">
+    <value>Build byl aktualizován.</value>
+  </data>
+  <data name="UserDataService_BuildSaved" xml:space="preserve">
+    <value>Buildy byly uloženy.</value>
+  </data>
+  <data name="UserDataService_BuildNotSaved" xml:space="preserve">
+    <value>Buildy nebyly uloženy.</value>
+  </data>
+  <data name="UserDataService_BuildLimitReached" xml:space="preserve">
+    <value>Byl dosažen limit úložiště. Další přidání nahradí nejstarší uložený build.</value>
+  </data>
+  <data name="UserDataService_BuildStorageFull" xml:space="preserve">
+    <value>Úložiště buildů je plné. Nejstarší uložený build byl nahrazen.</value>
+  </data>
+  <data name="UserDataService_BuildNotLoaded" xml:space="preserve">
+    <value>nepodařilo se nahrát build.</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_WarningMessage" xml:space="preserve">
+    <value>Archiv již obsahuje build s tímto názvem</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_ForTheShip" xml:space="preserve">
+    <value>pro loď</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_OverwriteQuestion" xml:space="preserve">
+    <value>Přejete si jej přepsat?</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_OverwriteBuild" xml:space="preserve">
+    <value>Přepsat build</value>
+  </data>
+  <data name="ShipStats_ArchiveBuild" xml:space="preserve">
+    <value>Archivovat build</value>
+  </data>
+  <data name="ShipStats_ShareOrSaveBuild" xml:space="preserve">
+    <value>Sdílet / uložit</value>
+  </data>
+  <data name="ShipComparison_AddAShip" xml:space="preserve">
+    <value>Přidat loď...</value>
+  </data>
+  <data name="ShipSelectionDialog_AddShips" xml:space="preserve">
+    <value>Přidat lodě</value>
+  </data>
+  <data name="ShipStatsTab_BuildMustHaveName" xml:space="preserve">
+    <value>Chyba při buildu: musí mít název!</value>
+  </data>
+  <data name="ShipStatsTabs_LinkCopied" xml:space="preserve">
+    <value>Odkaz na build byl zkopírován do schránky</value>
+  </data>
+  <data name="ShipStatsTabs_BuildImageSavedAndCopiedToClipboard" xml:space="preserve">
+    <value>Build image byl uložen a zkopírován do schránky!</value>
+  </data>
+  <data name="ShipStatsTab_ShareLink" xml:space="preserve">
+    <value>Sdílet Odkaz</value>
+  </data>
+  <data name="ShipStatsTab_SaveBuild" xml:space="preserve">
+    <value>Uložit build</value>
+  </data>
+  <data name="ShipStatsTab_ShareBuildImage" xml:space="preserve">
+    <value>Sdílet obrázek buildu</value>
+  </data>
+  <data name="ShipStats_SmokeSpeedLimit" xml:space="preserve">
+    <value>Maximální rychlost pohybu</value>
+  </data>
+  <data name="ShipStats_FirstGMShotDelay" xml:space="preserve">
+    <value>Doba nabití hlavní baterie (První)</value>
+  </data>
+  <data name="ShipStats_OtherGMShotDelay" xml:space="preserve">
+    <value>Doba nabití hlavní baterie (Druhé a další)</value>
+  </data>
+  <data name="ShipStats_LeftSideLoaders" xml:space="preserve">
+    <value>Levá strana</value>
+  </data>
+  <data name="ShipStats_RightSideLoaders" xml:space="preserve">
+    <value>Pravá strana</value>
+  </data>
+  <data name="SettingsWindow_SaveBuildOnShare" xml:space="preserve">
+    <value>Uložit sestavení při sdílení</value>
+  </data>
+  <data name="SettingsWindow_ClosedByDefault" xml:space="preserve">
+    <value>Uzavřeno ve výchozím nastavení</value>
+  </data>
+  <data name="SettingsWindow_MultiSelect" xml:space="preserve">
+    <value>Povolit výběr více položek</value>
+  </data>
+  <data name="SettingsWindow_FtImgWarning" xml:space="preserve">
+    <value>VAROVÁNÍ: Používejte pouze s velmi dobrým připojením k internetu.</value>
+  </data>
+  <data name="SettingsWindow_FittingToolShowImages" xml:space="preserve">
+    <value>Zobrazit obrázky lodí</value>
+  </data>
+  <data name="SettingsWindow_AutoUpdates" xml:space="preserve">
+    <value>Automatické aktualizace</value>
+  </data>
+  <data name="SettingsWindow_RestartRequired" xml:space="preserve">
+    <value>Aby se tato volba projevila, je vyžadován restart.</value>
+  </data>
+  <data name="SettingsWindow_FittingToolSelectorDisabled" xml:space="preserve">
+    <value>Vypnuto</value>
+  </data>
+  <data name="Charts_OpenShipStats" xml:space="preserve">
+    <value>Zobrazit statistiky lodí</value>
+  </data>
+  <data name="WebApp_ViewShipsStats" xml:space="preserve">
+    <value>Zobrazit statistiky lodí</value>
+  </data>
+  <data name="UserDataService_BuildNotUpdated" xml:space="preserve">
+    <value>Build nebyl aktualizován.</value>
+  </data>
+  <data name="BuildImageRenderDialog_CopyImage" xml:space="preserve">
+    <value>Kopírovat obrázek</value>
+  </data>
+  <data name="OverwriteExistingBuildDialog_Message" xml:space="preserve">
+    <value>Archiv již obsahuje jiný build s názvem '{0}' pro loď '{1}'</value>
+  </data>
+  <data name="ShipComparison_Display" xml:space="preserve">
+    <value>Zobrazit</value>
+  </data>
+  <data name="ShipStats_Activate" xml:space="preserve">
+    <value>Aktivovat</value>
+  </data>
+  <data name="SettingsWindow_SavedBuilds" xml:space="preserve">
+    <value>Uložené buildy</value>
+  </data>
+  <data name="BuildConfigurationDialog_ActivateSpecialAbility" xml:space="preserve">
+    <value>Aktivovat speciální schopnost</value>
+  </data>
+  <data name="BuildConfigurationDialog_Alternative" xml:space="preserve">
+    <value>Alternativní</value>
+  </data>
+  <data name="AppNavigator_NoEligibleShips" xml:space="preserve">
+    <value>Nejsou k dispozici žádné lodě. Způsobilé lodě</value>
+  </data>
+  <data name="AppNavigator_TooManyShips" xml:space="preserve">
+    <value>Příliš mnoho lodí. Způsobilé lodě</value>
+  </data>
+  <data name="AppNavigator_MaxLimit" xml:space="preserve">
+    <value>Maximální limit je</value>
   </data>
 </root>
