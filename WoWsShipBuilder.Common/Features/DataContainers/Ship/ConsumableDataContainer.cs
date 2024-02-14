@@ -313,6 +313,11 @@ public partial record ConsumableDataContainer : DataContainerBase
                 prepTime = modifiers.ApplyModifiers("ConsumableDataContainer.PrepTime.PCY048", prepTime);
                 cooldown = modifiers.ApplyModifiers("ConsumableDataContainer.Reload.PCY048", cooldown);
             }
+            else if (name.Contains("PCY047", StringComparison.InvariantCultureIgnoreCase))
+            {
+                // Reserve battery unit
+                workTime = modifiers.ApplyModifiers("ConsumableDataContainer.WorkTime.PCY047", workTime);
+            }
         }
         else if (usingFallback)
         {
