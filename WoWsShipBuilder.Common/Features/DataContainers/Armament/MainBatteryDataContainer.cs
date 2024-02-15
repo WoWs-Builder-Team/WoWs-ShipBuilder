@@ -27,11 +27,11 @@ public partial record MainBatteryDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "DegreePerSecond")]
     public decimal TraverseSpeed { get; set; }
 
-    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
-    public decimal Reload { get; set; }
-
     [DataElementType(DataElementTypes.Tooltip, UnitKey = "S", TooltipKey = "AmmoSwitchTimeTooltip")]
     public decimal AmmoSwitchTime { get; set; }
+
+    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
+    public decimal Reload { get; set; }
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "ShotsPerMinute")]
     public decimal RoF { get; set; }

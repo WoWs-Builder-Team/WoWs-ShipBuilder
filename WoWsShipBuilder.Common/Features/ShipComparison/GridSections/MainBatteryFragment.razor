@@ -28,6 +28,7 @@
         var columnTitleVerticalDispersion = $"{element.localizer.SimpleAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Dispersion))}";
         var columnTitleTurnTime = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TurnTime));
         var columnTitleTraverseSpeed = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TraverseSpeed));
+        var columnTitleAmmoSwitchTime = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AmmoSwitchTime));
         var columnTitleReload = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ReloadTime));
         var columnTitleRof = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RoF));
         var columnTitleHeDpm = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_HE))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Dpm))}";
@@ -105,6 +106,21 @@
                 {
                     <MudText Typo="Typo.body2">
                         @(context.Item.MainBattery.TraverseSpeed + unitDegreePerSecond)
+                    </MudText>
+                }
+                else
+                {
+                    @UtilityFragments.DataNotAvailableFragment
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAmmoSwitchTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAmmoSwitchTime)" SortBy="@(x => x.MainBattery?.AmmoSwitchTime ?? 0)" T="GridDataWrapper" Title="@columnTitleAmmoSwitchTime" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.MainBattery?.AmmoSwitchTime is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @(context.Item.MainBattery.AmmoSwitchTime + unitS)
                     </MudText>
                 }
                 else
