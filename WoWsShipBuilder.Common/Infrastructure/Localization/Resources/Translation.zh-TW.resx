@@ -2232,4 +2232,10 @@ C = 砲彈口徑 [m]
   <data name="AppNavigator_MaxLimit" xml:space="preserve">
     <value>最大限制為</value>
   </data>
+  <data name="ShipStats_AmmoSwitchTime" xml:space="preserve">
+    <value>切彈時間</value>
+  </data>
+  <data name="ShipStats_AmmoSwitchTimeTooltip" xml:space="preserve">
+    <value>若剛剛開砲，就會需要完整的裝填時間才會裝填完畢</value>
+  </data>
 </root>
