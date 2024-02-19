@@ -12,7 +12,7 @@ public partial class DataElementAnalyzerTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord: DataContainerBase
+                     public partial class TestDataContainer: DataContainerBase
                      {
                          [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "Loaders")]
                          public string Prop1 { get; set; } = default!;
@@ -32,7 +32,7 @@ public partial class DataElementAnalyzerTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord: DataContainerBase
+                     public partial class TestDataContainer: DataContainerBase
                      {
                          [DataElementType(DataElementTypes.Grouped, GroupKey = "Loaders")]
                          public string {|SB0002:Prop1|} { get; set; } = default!;
@@ -52,7 +52,7 @@ public partial class DataElementAnalyzerTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord: DataContainerBase
+                     public partial class TestDataContainer: DataContainerBase
                      {
                          [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue)]
                          public string {|SB1001:Prop1|} { get; set; } = default!;
@@ -72,7 +72,7 @@ public partial class DataElementAnalyzerTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord: DataContainerBase
+                     public partial class TestDataContainer: DataContainerBase
                      {
                          [DataElementType(DataElementTypes.KeyValue, GroupKey="Test")]
                          public string {|SB1003:Prop1|} { get; set; } = default!;
