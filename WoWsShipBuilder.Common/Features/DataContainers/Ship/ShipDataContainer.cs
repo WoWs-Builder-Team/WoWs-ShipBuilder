@@ -4,8 +4,10 @@ using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.Features.DataContainers;
 
-public record ShipDataContainer(string Index)
+public class ShipDataContainer(string index)
 {
+    public string Index { get; } = index;
+
     public SurvivabilityDataContainer SurvivabilityDataContainer { get; set; } = default!;
 
     public MainBatteryDataContainer? MainBatteryDataContainer { get; set; }

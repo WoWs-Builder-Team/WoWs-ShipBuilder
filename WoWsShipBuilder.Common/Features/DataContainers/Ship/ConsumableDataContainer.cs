@@ -208,14 +208,6 @@ public partial class ConsumableDataContainer : DataContainerBase
             // Hydro
             consumableModifiers.UpdateConsumableModifierValue(modifiers, "ConsumableDataContainer.TorpDetection.PCY016", "distTorpedo");
         }
-        else if (name.Contains("PCY009", StringComparison.InvariantCultureIgnoreCase) || name.Contains("PCY037", StringComparison.InvariantCultureIgnoreCase))
-        {
-            // TODO: fix these property names in data converter
-            // Damage Control Party, Damage Control Party (auto)
-            uses = modifiers.ApplyModifiers("ConsumableDataContainer.Uses.PCY009.PCY037", uses);
-            cooldown = modifiers.ApplyModifiers("ConsumableDataContainer.Reload.PCY009.PCY037", cooldown);
-            workTime = modifiers.ApplyModifiers("ConsumableDataContainer.WorkTime.PCY009.PCY037", workTime);
-        }
         else if (name.Contains("PCY014", StringComparison.InvariantCultureIgnoreCase))
         {
             // Smoke Generator
@@ -224,9 +216,9 @@ public partial class ConsumableDataContainer : DataContainerBase
         else if (name.Contains("PCY012", StringComparison.InvariantCultureIgnoreCase) || name.Contains("PCY038", StringComparison.InvariantCultureIgnoreCase))
         {
             // Fighter, Fighter (auto)
-            cooldown = modifiers.ApplyModifiers("ConsumableDataContainer.Reload.PCY012.PCY038", cooldown);
+            cooldown = modifiers.ApplyModifiers($"ConsumableDataContainer.Reload.{consumable.Index}", cooldown);
 
-            consumableModifiers.UpdateConsumableModifierValue(modifiers, "ConsumableDataContainer.ExtraFighters.PCY012.PCY03", "fightersNum");
+            consumableModifiers.UpdateConsumableModifierValue(modifiers, $"ConsumableDataContainer.ExtraFighters.{consumable.Index}", "fightersNum");
             var maxKills = consumableModifiers.First(x => x.Name.Equals("fightersNum", StringComparison.Ordinal)).Value;
 
             var plane = AppData.FindAircraft(consumable.PlaneName[..consumable.PlaneName.IndexOf('_', StringComparison.Ordinal)]);
@@ -256,7 +248,7 @@ public partial class ConsumableDataContainer : DataContainerBase
             consumableModifiers.Add(new("maxKills", maxKills, null, "ModifierConverter_MaxKillsAmount", Unit.None, ImmutableHashSet<string>.Empty, DisplayValueProcessingKind.Raw, ValueProcessingKind.None));
 
             var concealment = (decimal)plane.ConcealmentFromShips;
-            var planesConcealment = (float)modifiers.ApplyModifiers("ConsumableDataContainer.Concealment.PCY012.PCY03", concealment);
+            var planesConcealment = (float)modifiers.ApplyModifiers($"ConsumableDataContainer.Concealment.{consumable.Index}", concealment);
             var oldConcealmentModifier = consumableModifiers.Find(x => x.Name.Equals("concealment", StringComparison.Ordinal));
             if (oldConcealmentModifier is not null)
             {
