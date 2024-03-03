@@ -120,17 +120,257 @@
   <data name="MainWindow_BackToMenu" xml:space="preserve">
     <value>Zpět do nabídky</value>
   </data>
+  <data name="MainWindow_ResetBuild" xml:space="preserve">
+    <value>Resetovat build</value>
+  </data>
+  <data name="MainWindow_ShareBuild" xml:space="preserve">
+    <value>Sdílet build</value>
+  </data>
+  <data name="SettingsWindow_AutoUpdate" xml:space="preserve">
+    <value>Povolit automatické aktualizace</value>
+  </data>
+  <data name="SettingsWindow_Clean" xml:space="preserve">
+    <value>Vymazat</value>
+  </data>
+  <data name="SettingsWindow_CleanAppData" xml:space="preserve">
+    <value>Vymazat uložená data aplikace</value>
+  </data>
+  <data name="SettingsWindow_DevelopedBy" xml:space="preserve">
+    <value>Vytvořil:</value>
+  </data>
+  <data name="SettingsWindow_Info" xml:space="preserve">
+    <value>Informace</value>
+  </data>
+  <data name="SettingsWindow_Language" xml:space="preserve">
+    <value>Jazyk</value>
+  </data>
+  <data name="SettingsWindow_Reset" xml:space="preserve">
+    <value>Obnovit</value>
+  </data>
+  <data name="SettingsWindow_ResetSettings" xml:space="preserve">
+    <value>Obnovit nastavení na výchozí hodnoty</value>
+  </data>
+  <data name="SettingsWindow_Settings" xml:space="preserve">
+    <value>Nastavení:</value>
+  </data>
+  <data name="SettingsWindow_Version" xml:space="preserve">
+    <value>Verze:</value>
+  </data>
+  <data name="StartMenu_LoadBuild" xml:space="preserve">
+    <value>Načíst build</value>
+  </data>
+  <data name="StartMenu_NewBuild" xml:space="preserve">
+    <value>Vytvořit novy build</value>
+  </data>
+  <data name="StartMenu_ImportBuild" xml:space="preserve">
+    <value>Importovat build...</value>
+  </data>
   <data name="MainWindow_CommanderXpBonus" xml:space="preserve">
     <value>Kapitán XP bonus %</value>
   </data>
+  <data name="MainWindow_FreeXp" xml:space="preserve">
+    <value>Volné XP:</value>
+  </data>
+  <data name="MainWindow_FreeXpBonus" xml:space="preserve">
+    <value>Bonus k volným XP %</value>
+  </data>
+  <data name="MainWindow_Xp" xml:space="preserve">
+    <value>Konečné XP:</value>
+  </data>
+  <data name="MainWindow_XpBonus" xml:space="preserve">
+    <value>XP bonus %</value>
+  </data>
+  <data name="MainWindow_XpCalculator" xml:space="preserve">
+    <value>Kalkulačka XP</value>
+  </data>
+  <data name="SplashScreen_CamoImages" xml:space="preserve">
+    <value>Stahování obrázků maskovaní</value>
+  </data>
+  <data name="SplashScreen_Done" xml:space="preserve">
+    <value>Hotovo</value>
+  </data>
+  <data name="SplashScreen_Json" xml:space="preserve">
+    <value>Stahování dat</value>
+  </data>
+  <data name="SplashScreen_ShipImages" xml:space="preserve">
+    <value>Stahování obrázků lodí</value>
+  </data>
+  <data name="AirCarrier" xml:space="preserve">
+    <value>Letadlová loď</value>
+  </data>
+  <data name="Battleship" xml:space="preserve">
+    <value>Bitevní loď</value>
+  </data>
+  <data name="Commonwealth" xml:space="preserve">
+    <value>Commonwealth</value>
+  </data>
+  <data name="Cruiser" xml:space="preserve">
+    <value>Křižník</value>
+  </data>
+  <data name="Destroyer" xml:space="preserve">
+    <value>Torpédoborec</value>
+  </data>
+  <data name="Europe" xml:space="preserve">
+    <value>Evropa</value>
+  </data>
+  <data name="Usa" xml:space="preserve">
+    <value>Spojené státy americké.</value>
+  </data>
+  <data name="TITLE_PlaceholderMod" xml:space="preserve">
+    <value>Prázdný slot</value>
+  </data>
+  <data name="IncomingFireAlertDesc" xml:space="preserve">
+    <value>Minimální vzdálenost pro zobrazení varování</value>
+  </data>
+  <data name="ShipSelectionWindow_ClassFilter" xml:space="preserve">
+    <value>Třída</value>
+  </data>
+  <data name="ShipSelectionWindow_ConfirmButton" xml:space="preserve">
+    <value>Potvrdit</value>
+  </data>
+  <data name="ShipSelectionWindow_NationFilter" xml:space="preserve">
+    <value>Národ</value>
+  </data>
+  <data name="ShipSelectionWindow_TierFilter" xml:space="preserve">
+    <value>Úroveň</value>
+  </data>
+  <data name="ShipSelectionWindow_TypeFilter" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
+    <value>Nebyly nalezeny žádné lodě odpovídající kritériím filtrování</value>
+  </data>
+  <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
+      <value>Hledat loď...</value>
+  </data>
+  <data name="ShipStats_TurnTime" xml:space="preserve">
+    <value>Doba otáčení o 180°</value>
+  </data>
+  <data name="ShipStats_HorizontalDisp" xml:space="preserve">
+    <value>Horizontální</value>
+  </data>
+  <data name="ShipStats_Range" xml:space="preserve">
+    <value>Vzdálenost</value>
+  </data>
+  <data name="ShipStats_RoF" xml:space="preserve">
+    <value>Kadence</value>
+  </data>
+  <data name="ShipStats_Reload" xml:space="preserve">
+    <value>Doba přebíjení</value>
+  </data>
   <data name="ShipStats_Penetration" xml:space="preserve">
     <value>Penetrace</value>
+  </data>
+  <data name="ShipStats_BombType" xml:space="preserve">
+    <value>Typ bomby</value>
+  </data>
+  <data name="ShipStats_BompPayload" xml:space="preserve">
+    <value>Bomb naloženo</value>
+  </data>
+  <data name="ShipStats_ConstantDamage" xml:space="preserve">
+    <value>Neustálé poškození</value>
+  </data>
+  <data name="ShipStats_Damage" xml:space="preserve">
+    <value>Poškození</value>
+  </data>
+  <data name="ShipStats_Delay" xml:space="preserve">
+    <value>Zpoždění</value>
+  </data>
+  <data name="ShipStats_Detectability" xml:space="preserve">
+    <value>Odhaleni na</value>
+  </data>
+  <data name="ShipStats_Flak" xml:space="preserve">
+    <value>Flak</value>
+  </data>
+  <data name="ShipStats_FlakDamage" xml:space="preserve">
+    <value>Poškození flakem</value>
+  </data>
+  <data name="ShipStats_HitChance" xml:space="preserve">
+    <value>Šance na zásah</value>
+  </data>
+  <data name="ShipStats_FloodingChance" xml:space="preserve">
+    <value>Šance na zaplavení</value>
+  </data>
+  <data name="ShipStats_MainBattery" xml:space="preserve">
+    <value>Hlavní baterie</value>
+  </data>
+  <data name="ShipStats_ReactionTime" xml:space="preserve">
+    <value>Doba reakce</value>
+  </data>
+  <data name="ShipStats_Torpedo" xml:space="preserve">
+    <value>Torpedo</value>
+  </data>
+  <data name="DispersionGraphWindow_AddShip" xml:space="preserve">
+    <value>Přidat loď</value>
+  </data>
+  <data name="DispersionGraphWindow_RemoveShip" xml:space="preserve">
+    <value>Odstranit loď</value>
+  </data>
+  <data name="MessageBox_ShipNoGun" xml:space="preserve">
+    <value>nemá žádné hlavní zbraně</value>
+  </data>
+  <data name="MessageBox_DuplicateShip" xml:space="preserve">
+    <value>již byl přidán s tímto granátem</value>
+  </data>
+  <data name="ShipStats_Type" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="ShipStats_TurretAngles" xml:space="preserve">
+    <value>Zobrazit úhly věže</value>
+  </data>
+  <data name="FiringAngleWindow_AngleExplanation" xml:space="preserve">
+    <value>Vztažný úhel začína v 0° na přední straně (horní část obrázku) a jde ve směru hodinových ručiček</value>
+  </data>
+  <data name="FiringAngleWindow_PermaTextOff" xml:space="preserve">
+    <value>Nikdy nezobrazovat úhly</value>
+  </data>
+  <data name="FiringAngleWindow_PermaTextOn" xml:space="preserve">
+    <value>Vždy zobrazovat úhly</value>
+  </data>
+  <data name="FiringAngleWindow_ShowAll" xml:space="preserve">
+    <value>Rozbalit všechny úhly</value>
+  </data>
+  <data name="MainWindow_CaptainSkills" xml:space="preserve">
+    <value>Kapitánské dovednosti a kamufláž</value>
+  </data>
+  <data name="MainWindow_Signals" xml:space="preserve">
+    <value>Signály</value>
+  </data>
+  <data name="ShipStats_Name" xml:space="preserve">
+    <value>Jméno</value>
+  </data>
+  <data name="CaptainSkillSelector_Camo" xml:space="preserve">
+    <value>Použít bonus kamufláže</value>
+  </data>
+  <data name="Torpedo" xml:space="preserve">
+    <value>Torpedo</value>
   </data>
   <data name="Broadside" xml:space="preserve">
     <value>Broadside (bůček)</value>
   </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
       <value>Penetrace</value>
+  </data>
+  <data name="DispersionGraphWindow_Horizontal" xml:space="preserve">
+    <value>Horizontální</value>
+  </data>
+  <data name="ShipStats_SplashDmg" xml:space="preserve">
+      <value>Poškození</value>
+  </data>
+  <data name="ShipStats_AirCarrier" xml:space="preserve">
+      <value>Letadlová loď</value>
+  </data>
+  <data name="ShipStats_Cruiser" xml:space="preserve">
+      <value>Křižník</value>
+  </data>
+  <data name="ShipStats_Battleship" xml:space="preserve">
+      <value>Bitevní loď</value>
+  </data>
+  <data name="ShipStats_Destroyer" xml:space="preserve">
+      <value>Torpédoborec</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
+      <value>Signály</value>
   </data>
   <data name="ShipComparison_SmokeFiring" xml:space="preserve">
       <value>Střelba z kouře</value>
