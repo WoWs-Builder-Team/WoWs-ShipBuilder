@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Globalization;
 using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.DataElements;
@@ -11,11 +12,11 @@ using WoWsShipBuilder.Infrastructure.Utility;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record SecondaryBatteryDataContainer : DataContainerBase
+public partial class SecondaryBatteryDataContainer : DataContainerBase
 {
     public string Name { get; set; } = default!;
 
-    public List<string> TurretName { get; set; } = new();
+    public ImmutableList<string> TurretName { get; set; } = ImmutableList<string>.Empty;
 
     public FormattedTextDataElement TurretSetup { get; set; } = default!;
 
@@ -65,7 +66,7 @@ public partial record SecondaryBatteryDataContainer : DataContainerBase
 
     public double DispersionModifier { get; set; }
 
-    public static List<SecondaryBatteryDataContainer>? FromShip(Ship ship, IEnumerable<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static List<SecondaryBatteryDataContainer>? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, ImmutableList<Modifier> modifiers)
     {
         var secondary = ship.Hulls[shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Hull][0]].SecondaryModule;
         if (secondary == null)
@@ -105,7 +106,7 @@ public partial record SecondaryBatteryDataContainer : DataContainerBase
             var secondaryBatteryDataContainer = new SecondaryBatteryDataContainer
             {
                 Name = arrangementString,
-                TurretName = turretName,
+                TurretName = turretName.ToImmutableList(),
                 TurretSetup = new(arrangementString, turretName, ArgumentsTextKind: DataElementTextKind.LocalizationKey),
                 BarrelsLayout = $"{secondaryGroup.Count} x {secondaryGun.NumBarrels}",
                 BarrelsCount = secondaryGroup.Count * secondaryGun.NumBarrels,

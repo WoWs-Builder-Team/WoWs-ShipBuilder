@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using DynamicData.Binding;
@@ -174,11 +175,11 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
                         await this.semaphore.WaitAsync(token);
                         try
                         {
-                            List<Modifier> modifiers = this.GenerateModifierList();
+                            ImmutableList<Modifier> modifiers = this.GenerateModifierList();
                             if (this.ShipStatsControlViewModel != null)
                             {
                                 this.logger.LogDebug("Updating ship stats");
-                                await this.ShipStatsControlViewModel.UpdateShipStats(this.ShipModuleViewModel.SelectedModules.ToList(), modifiers);
+                                await this.ShipStatsControlViewModel.UpdateShipStats(this.ShipModuleViewModel.SelectedModules.ToImmutableList(), modifiers);
                             }
 
                             this.ConsumableViewModel.UpdateConsumableData(modifiers, this.ShipStatsControlViewModel!.CurrentShipStats!.SurvivabilityDataContainer.HitPoints, this.RawShipData.ShipClass);
@@ -197,7 +198,7 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
             token);
     }
 
-    private List<Modifier> GenerateModifierList()
+    private ImmutableList<Modifier> GenerateModifierList()
     {
         var modifiers = new List<Modifier>();
 
@@ -206,7 +207,7 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
         modifiers.AddRange(this.CaptainSkillSelectorViewModel!.GetModifiersList());
         modifiers.AddRange(this.ConsumableViewModel.GetModifiersList());
         modifiers.AddRange(this.ShipStatsControlViewModel!.GetSpecialAbilityModifiers());
-        return modifiers;
+        return modifiers.ToImmutableList();
     }
 
     public void Dispose()

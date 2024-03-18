@@ -1,10 +1,13 @@
+using System.Collections.Immutable;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.Features.DataContainers;
 
-public record ShipDataContainer(string Index)
+public class ShipDataContainer(string index)
 {
+    public string Index { get; } = index;
+
     public SurvivabilityDataContainer SurvivabilityDataContainer { get; set; } = default!;
 
     public MainBatteryDataContainer? MainBatteryDataContainer { get; set; }
@@ -21,7 +24,7 @@ public record ShipDataContainer(string Index)
 
     public DepthChargesLauncherDataContainer? DepthChargeLauncherDataContainer { get; set; }
 
-    public List<CvAircraftDataContainer>? CvAircraftDataContainer { get; set; }
+    public ImmutableList<CvAircraftDataContainer>? CvAircraftDataContainer { get; set; }
 
     public ManeuverabilityDataContainer ManeuverabilityDataContainer { get; set; } = default!;
 
@@ -29,18 +32,18 @@ public record ShipDataContainer(string Index)
 
     public AntiAirDataContainer? AntiAirDataContainer { get; set; }
 
-    public List<object> SecondColumnContent { get; set; } = default!;
+    public ImmutableList<object> SecondColumnContent { get; set; } = ImmutableList<object>.Empty;
 
     public SpecialAbilityDataContainer? SpecialAbilityDataContainer { get; set; }
 
-    public static ShipDataContainer CreateFromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static ShipDataContainer CreateFromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, ImmutableList<Modifier> modifiers)
     {
         var shipDataContainer = new ShipDataContainer(ship.Index)
         {
             // Main weapons
             MainBatteryDataContainer = MainBatteryDataContainer.FromShip(ship, shipConfiguration, modifiers),
             TorpedoArmamentDataContainer = TorpedoArmamentDataContainer.FromShip(ship, shipConfiguration, modifiers),
-            CvAircraftDataContainer = DataContainers.CvAircraftDataContainer.FromShip(ship, shipConfiguration, modifiers),
+            CvAircraftDataContainer = DataContainers.CvAircraftDataContainer.FromShip(ship, shipConfiguration, modifiers)?.ToImmutableList(),
             PingerGunDataContainer = PingerGunDataContainer.FromShip(ship, shipConfiguration, modifiers),
 
             // Secondary weapons
@@ -54,10 +57,10 @@ public record ShipDataContainer(string Index)
             ManeuverabilityDataContainer = ManeuverabilityDataContainer.FromShip(ship, shipConfiguration, modifiers),
             ConcealmentDataContainer = ConcealmentDataContainer.FromShip(ship, shipConfiguration, modifiers),
             SurvivabilityDataContainer = SurvivabilityDataContainer.FromShip(ship, shipConfiguration, modifiers),
-            SpecialAbilityDataContainer = SpecialAbilityDataContainer.FromShip(ship, shipConfiguration, modifiers),
+            SpecialAbilityDataContainer = SpecialAbilityDataContainer.FromShip(ship, shipConfiguration),
         };
 
-        shipDataContainer.SecondColumnContent = new List<object?>
+        var secondColumnContent = new List<object?>
             {
                 shipDataContainer.AntiAirDataContainer,
                 shipDataContainer.AirstrikeDataContainer,
@@ -67,10 +70,12 @@ public record ShipDataContainer(string Index)
             .Cast<object>()
             .ToList();
 
-        if (shipDataContainer.SecondaryBatteryUiDataContainer.Secondaries != null)
+        if (!shipDataContainer.SecondaryBatteryUiDataContainer.Secondaries.IsEmpty)
         {
-            shipDataContainer.SecondColumnContent.Insert(0, shipDataContainer.SecondaryBatteryUiDataContainer);
+            secondColumnContent.Insert(0, shipDataContainer.SecondaryBatteryUiDataContainer);
         }
+
+        shipDataContainer.SecondColumnContent = secondColumnContent.ToImmutableList();
 
         return shipDataContainer;
     }

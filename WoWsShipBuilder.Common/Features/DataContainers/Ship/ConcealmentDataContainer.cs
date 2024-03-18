@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
@@ -7,7 +8,7 @@ using WoWsShipBuilder.DataStructures.Ship;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record ConcealmentDataContainer : DataContainerBase
+public partial class ConcealmentDataContainer : DataContainerBase
 {
     [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Sea", UnitKey = "KM")]
     public decimal ConcealmentBySea { get; set; }
@@ -27,7 +28,7 @@ public partial record ConcealmentDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
     public decimal FromSubsAtPeriscopeDepth { get; set; }
 
-    public static ConcealmentDataContainer FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static ConcealmentDataContainer FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, ImmutableList<Modifier> modifiers)
     {
         var hull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull][0]];
 

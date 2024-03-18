@@ -12,7 +12,7 @@ public partial class DataElementGeneratorTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                      }
                      """;
@@ -22,7 +22,7 @@ public partial class DataElementGeneratorTest
                        #nullable enable
                        namespace Test
                        {
-                           public partial record TestRecord
+                           public partial class TestDataContainer
                            {
                                private void UpdateDataElements()
                                {
@@ -46,7 +46,7 @@ public partial class DataElementGeneratorTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "FPM")]
                          [DataElementFiltering(true, nameof(this.ShouldDisplayTest))]
@@ -64,7 +64,7 @@ public partial class DataElementGeneratorTest
                        #nullable enable
                        namespace Test
                        {
-                           public partial record TestRecord
+                           public partial class TestDataContainer
                            {
                                private void UpdateDataElements()
                                {
@@ -94,7 +94,7 @@ public partial class DataElementGeneratorTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.KeyValue, ValueTextKind = TextKind.LocalizationKey)]
                          public string Prop1 { get; set; } = default!;
@@ -117,7 +117,7 @@ public partial class DataElementGeneratorTest
                        #nullable enable
                        namespace Test
                        {
-                           public partial record TestRecord
+                           public partial class TestDataContainer
                            {
                                private void UpdateDataElements()
                                {

@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
@@ -7,7 +8,7 @@ using WoWsShipBuilder.DataStructures.Ship;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record ManeuverabilityDataContainer : DataContainerBase
+public partial class ManeuverabilityDataContainer : DataContainerBase
 {
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Knots")]
     public decimal ManeuverabilityMaxSpeed { get; set; }
@@ -59,7 +60,7 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
     [DataElementFiltering(false)]
     public decimal EngineBlastProtection { get; set; }
 
-    public static ManeuverabilityDataContainer FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static ManeuverabilityDataContainer FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, ImmutableList<Modifier> modifiers)
     {
         var hull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull][0]];
 

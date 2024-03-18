@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using WoWsShipBuilder.Data.Generator.DataElementGenerator.Model;
 using WoWsShipBuilder.Data.Generator.Utilities;
@@ -30,16 +29,16 @@ public class DataElementGenerator : IIncrementalGenerator
     private static bool CouldBeDataContainer(SyntaxNode syntaxNode, CancellationToken token)
     {
         token.ThrowIfCancellationRequested();
-        return syntaxNode is RecordDeclarationSyntax typeDeclarationSyntax && typeDeclarationSyntax.Modifiers.Any(m => m.IsKind(SyntaxKind.PartialKeyword));
+        return syntaxNode is ClassDeclarationSyntax;
     }
 
     private static RawContainerData ComputeRawContainerData(GeneratorAttributeSyntaxContext context, CancellationToken token)
     {
-        var recordSymbol = (INamedTypeSymbol)context.TargetSymbol;
         token.ThrowIfCancellationRequested();
-        var name = recordSymbol.Name;
-        var dataNamespace = recordSymbol.ContainingNamespace.ToDisplayString();
-        var properties = recordSymbol.GetMembers()
+        var dataContainerSymbol = (INamedTypeSymbol)context.TargetSymbol;
+        var name = dataContainerSymbol.Name;
+        var dataNamespace = dataContainerSymbol.ContainingNamespace.ToDisplayString();
+        var properties = dataContainerSymbol.GetMembers()
             .OfType<IPropertySymbol>()
             .Where(prop => prop.HasAttributeWithFullName(DataElementAttributeFullName))
             .Select(RefineProperty)
@@ -91,7 +90,7 @@ public class DataElementGenerator : IIncrementalGenerator
         builder.Line("#nullable enable");
         using (builder.Namespace(containerData.Namespace))
         {
-            using (builder.Record(containerData.ContainerName))
+            using (builder.Class(containerData.ContainerName))
             {
                 using (builder.Block("private void UpdateDataElements()"))
                 {

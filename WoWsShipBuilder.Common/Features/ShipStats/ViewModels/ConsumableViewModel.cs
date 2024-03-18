@@ -81,7 +81,7 @@ public class ConsumableViewModel : ReactiveObject, IBuildComponentProvider
     /// <param name="modifiers">The list of modifiers applied to the current ship.</param>
     /// <param name="shipHp">The HP of the ship after modifiers have been applied.</param>
     /// <param name="shipClass">The class of the ship.</param>
-    public void UpdateConsumableData(List<Modifier> modifiers, int shipHp, ShipClass shipClass)
+    public void UpdateConsumableData(ImmutableList<Modifier> modifiers, int shipHp, ShipClass shipClass)
     {
         Parallel.ForEach(this.ConsumableSlots, consumableSlot => consumableSlot.UpdateDataContainers(modifiers, shipHp, shipClass));
     }

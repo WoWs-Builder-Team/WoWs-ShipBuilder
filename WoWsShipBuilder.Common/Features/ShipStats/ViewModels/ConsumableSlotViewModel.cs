@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
+﻿using System.Collections.Immutable;
+using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Modifiers;
@@ -19,11 +19,6 @@ public class ConsumableSlotViewModel : ReactiveObject
     private List<ConsumableDataContainer> consumableData = new();
 
     private int selectedIndex;
-
-    public ConsumableSlotViewModel()
-        : this(new List<ShipConsumable>(), null, NullLogger<ConsumableSlotViewModel>.Instance)
-    {
-    }
 
     private ConsumableSlotViewModel(IEnumerable<ShipConsumable> shipConsumables, Action<int, bool>? activationChangeHandler, ILogger<ConsumableSlotViewModel> logger)
     {
@@ -72,11 +67,11 @@ public class ConsumableSlotViewModel : ReactiveObject
     public static ConsumableSlotViewModel Create(IEnumerable<ShipConsumable> shipConsumables, ILoggerFactory loggerFactory, ShipClass shipClass, Action<int, bool>? activationChangeHandler = null)
     {
         var vm = new ConsumableSlotViewModel(shipConsumables, activationChangeHandler, loggerFactory.CreateLogger<ConsumableSlotViewModel>());
-        vm.UpdateDataContainers(new(), 0, shipClass);
+        vm.UpdateDataContainers(ImmutableList<Modifier>.Empty, 0, shipClass);
         return vm;
     }
 
-    public void UpdateDataContainers(List<Modifier> modifiers, int shipHp, ShipClass shipClass)
+    public void UpdateDataContainers(ImmutableList<Modifier> modifiers, int shipHp, ShipClass shipClass)
     {
         var dataContainers = this.shipConsumables.Select(c => ConsumableDataContainer.FromTypeAndVariant(c, modifiers, false, shipHp, shipClass));
         this.ConsumableData = dataContainers.ToList();

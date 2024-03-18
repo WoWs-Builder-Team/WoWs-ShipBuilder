@@ -19,7 +19,7 @@ public partial class DataElementGeneratorTest
         const string baseClass = """
                                  namespace WoWsShipBuilder.DataElements;
 
-                                 public abstract record DataContainerBase
+                                 public abstract class DataContainerBase
                                  {
                                      public global::System.Collections.Generic.List<IDataElement> DataElements { get; } = new();
 
@@ -48,7 +48,7 @@ public partial class DataElementGeneratorTest
                     (typeof(DataElementGenerator.DataElementGenerator), "DataContainerAttribute.g.cs", AttributeHelper.DataContainerAttribute),
                     (typeof(DataElementGenerator.DataElementGenerator), "DataElementTypeAttribute.g.cs", AttributeHelper.DataElementTypeAttribute),
                     (typeof(DataElementGenerator.DataElementGenerator), "DataElementFilteringAttribute.g.cs", AttributeHelper.DataElementFilteringAttribute),
-                    (typeof(DataElementGenerator.DataElementGenerator), "TestRecord.g.cs", expected),
+                    (typeof(DataElementGenerator.DataElementGenerator), "TestDataContainer.g.cs", expected),
                 },
                 ReferenceAssemblies = ReferenceAssemblies.Net.Net80,
                 AdditionalReferences = { MetadataReference.CreateFromFile(typeof(IDataElement).GetTypeInfo().Assembly.Location) },
