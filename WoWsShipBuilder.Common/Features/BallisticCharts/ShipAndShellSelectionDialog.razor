@@ -233,7 +233,7 @@
                 var shipConfiguration = Helpers.GetStockShipConfiguration(ship);
                 UpgradeModuleInShipConfiguration(shipConfiguration, commonHull);
                 UpgradeModuleInShipConfiguration(shipConfiguration, commonArtillery);
-                var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, wrapper.ShipBuildContainer.Modifiers ?? new());
+                var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration.ToImmutableList(), wrapper.ShipBuildContainer.Modifiers);
                 Build build = new(string.Empty, ship.Index, ship.ShipNation, shipConfiguration.Select(x => x.Name.NameToIndex()).ToList(), ImmutableArray<string>.Empty, GetStockConsumableNames(ship), "PCW001", ImmutableArray<int>.Empty, ImmutableArray<string>.Empty);
                 var container = wrapper.ShipBuildContainer with { ShipDataContainer = dataContainer, Build = build };
                 var newWrapper = wrapper with { ShipBuildContainer = container };
@@ -245,7 +245,7 @@
                 var shipConfiguration = Helpers.GetShipConfigurationFromBuild(build.Modules, ship.ShipUpgradeInfo.ShipUpgrades);
                 UpgradeModuleInShipConfiguration(shipConfiguration, commonHull);
                 UpgradeModuleInShipConfiguration(shipConfiguration, commonArtillery);
-                var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, wrapper.ShipBuildContainer.Modifiers ?? new());
+                var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration.ToImmutableList(), wrapper.ShipBuildContainer.Modifiers);
                 Build newBuild = new(build.BuildName, ship.Index, ship.ShipNation, shipConfiguration.Select(x => x.Name.NameToIndex()).ToList(), build.Upgrades.ToList(), build.Consumables.ToList(), build.Captain, build.Skills.ToList(), build.Signals.ToList());
                 var container = wrapper.ShipBuildContainer with { ShipDataContainer = dataContainer, Build = newBuild };
                 var newWrapper = wrapper with { ShipBuildContainer = container };

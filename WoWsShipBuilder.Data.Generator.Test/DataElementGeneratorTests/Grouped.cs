@@ -13,7 +13,7 @@ public partial class DataElementGeneratorTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "Loaders")]
                          public string BowLoaders { get; set; } = default!;
@@ -28,7 +28,7 @@ public partial class DataElementGeneratorTest
                        #nullable enable
                        namespace Test
                        {
-                           public partial record TestRecord
+                           public partial class TestDataContainer
                            {
                                private void UpdateDataElements()
                                {
@@ -68,7 +68,7 @@ public partial class DataElementGeneratorTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "Group1")]
                          public string Prop1 { get; set; } = default!;
@@ -89,7 +89,7 @@ public partial class DataElementGeneratorTest
                        #nullable enable
                        namespace Test
                        {
-                           public partial record TestRecord
+                           public partial class TestDataContainer
                            {
                                private void UpdateDataElements()
                                {

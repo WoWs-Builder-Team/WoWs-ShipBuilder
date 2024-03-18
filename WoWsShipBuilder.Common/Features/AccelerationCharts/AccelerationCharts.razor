@@ -14,6 +14,7 @@
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
+@using System.Collections.Immutable
 
 @inject ILocalizer Localizer
 @inject IDialogService DialogService
@@ -125,7 +126,7 @@
 
             NavManager.TryGetQueryString("shipIndexes", out string shipIndexesFromUrl);
 
-            IEnumerable<ShipBuildContainer>? buildContainers = SessionStateCache.GetAndResetBuildTransferContainers() ?? (!string.IsNullOrWhiteSpace(shipIndexesFromUrl) ? shipIndexesFromUrl.Split(',').Select(x => ShipBuildContainer.CreateNew(AppData.ShipDictionary[x], null, null)) : null);
+            IEnumerable<ShipBuildContainer>? buildContainers = SessionStateCache.GetAndResetBuildTransferContainers() ?? (!string.IsNullOrWhiteSpace(shipIndexesFromUrl) ? shipIndexesFromUrl.Split(',').Select(x => ShipBuildContainer.CreateNew(AppData.ShipDictionary[x], null, ImmutableArray<int>.Empty)) : null);
 
             if (buildContainers is not null)
             {
@@ -175,7 +176,7 @@
 
             List<IEnumerable<ChartsHelper.Point>> shipData = new()
             {
-                GetAccelerationData(shipWrapper.Ship, hull, engine, shipWrapper.Modifiers ?? new(), throttleList),
+                GetAccelerationData(shipWrapper.Ship, hull, engine, shipWrapper.Modifiers, throttleList),
             };
             var newChartData = new NewChartDataInput(shipWrapper.Id.ToString(), label, shipData, chartShipCounter);
             newData.Add(newChartData);
@@ -211,7 +212,7 @@
                 hull = shipWrapper.Ship.Hulls.First().Value;
             }
 
-            var updateChartData = new UpdateChartDataLabelInput(shipWrapper.Id.ToString(), shipWrapper.Id.ToString(), label, GetAccelerationData(shipWrapper.Ship, hull, engine, shipWrapper.Modifiers ?? new(), throttleList));
+            var updateChartData = new UpdateChartDataLabelInput(shipWrapper.Id.ToString(), shipWrapper.Id.ToString(), label, GetAccelerationData(shipWrapper.Ship, hull, engine, shipWrapper.Modifiers, throttleList));
             updatedData.Add(updateChartData);
         }
 
@@ -233,7 +234,7 @@
         await ChartJsInterop.CreateChartAsync(AccelerationId, Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_Acceleration)).Localization, Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_Time)).Localization, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Speed)).Localization, s, knots);
     }
 
-    private static IEnumerable<ChartsHelper.Point> GetAccelerationData(Ship ship, Hull hull, Engine engine, List<Modifier> modifiers, List<int> throttles)
+    private static IEnumerable<ChartsHelper.Point> GetAccelerationData(Ship ship, Hull hull, Engine engine, ImmutableList<Modifier> modifiers, List<int> throttles)
     {
         decimal maxSpeedModifier = modifiers.ApplyModifiers("ManeuverabilityDataContainer.Speed", 1m);
 

@@ -10,7 +10,7 @@ using WoWsShipBuilder.DataStructures.Ship;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record SpecialAbilityDataContainer : DataContainerBase
+public partial class SpecialAbilityDataContainer : DataContainerBase
 {
     public string Name { get; set; } = default!;
 
@@ -47,11 +47,11 @@ public partial record SpecialAbilityDataContainer : DataContainerBase
 
     // This is in common
     [JsonIgnore]
-    public List<Modifier> Modifiers { get; set; } = null!;
+    public ImmutableList<Modifier> Modifiers { get; set; } = ImmutableList<Modifier>.Empty;
 
     public bool IsBurstMode { get; set; }
 
-    public static SpecialAbilityDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static SpecialAbilityDataContainer? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration)
     {
         SpecialAbilityDataContainer specialDataContainer;
 
@@ -69,7 +69,7 @@ public partial record SpecialAbilityDataContainer : DataContainerBase
                 InactivityDelay = (decimal)specialAbility.DecrementDelay,
                 ProgressLossInterval = (decimal)specialAbility.DecrementPeriod,
                 ProgressLossPerInterval = (decimal)specialAbility.DecrementCount,
-                Modifiers = specialAbility.Modifiers.ToList(),
+                Modifiers = specialAbility.Modifiers,
             };
 
             specialDataContainer.UpdateDataElements();
@@ -109,7 +109,7 @@ public partial record SpecialAbilityDataContainer : DataContainerBase
                 ReloadDuringBurst = burstMode.ReloadDuringBurst,
                 ReloadAfterBurst = burstMode.ReloadAfterBurst,
                 ShotInBurst = burstMode.ShotInBurst,
-                Modifiers = burstMode.Modifiers.ToList(),
+                Modifiers = burstMode.Modifiers,
                 IsBurstMode = true,
             };
 

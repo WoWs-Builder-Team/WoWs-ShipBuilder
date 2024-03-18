@@ -409,12 +409,12 @@
         if (MultiSelect)
         {
             var ship = AppData.ShipDictionary[shipIndex];
-            SelectedShips.Add(ShipBuildContainer.CreateNew(ship, null, null));
+            SelectedShips.Add(ShipBuildContainer.CreateNew(ship, null, ImmutableArray<int>.Empty));
         }
         else if (!MultiSelect && SelectedShips.Count == 0)
         {
             var ship = AppData.ShipDictionary[shipIndex];
-            SelectedShips.Add(ShipBuildContainer.CreateNew(ship, null, null));
+            SelectedShips.Add(ShipBuildContainer.CreateNew(ship, null, ImmutableArray<int>.Empty));
         }
     }
 
@@ -425,12 +425,12 @@
         if (MultiSelect)
         {
             MetricsService.BuildImports.WithLabels("ship-selector", "saved-builds").Inc();
-            SelectedShips.Add(ShipBuildContainer.CreateNew(AppData.ShipDictionary[build.ShipIndex], build, null));
+            SelectedShips.Add(ShipBuildContainer.CreateNew(AppData.ShipDictionary[build.ShipIndex], build, ImmutableArray<int>.Empty));
         }
         else if (!MultiSelect && SelectedShips.Count == 0)
         {
             MetricsService.BuildImports.WithLabels("ship-selector", "saved-builds").Inc();
-            SelectedShips.Add(ShipBuildContainer.CreateNew(AppData.ShipDictionary[build.ShipIndex], build, null));
+            SelectedShips.Add(ShipBuildContainer.CreateNew(AppData.ShipDictionary[build.ShipIndex], build, ImmutableArray<int>.Empty));
         }
     }
 

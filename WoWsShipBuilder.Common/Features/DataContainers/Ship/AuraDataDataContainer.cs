@@ -4,7 +4,7 @@ using WoWsShipBuilder.DataElements.DataElementAttributes;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record AuraDataDataContainer : DataContainerBase
+public partial class AuraDataDataContainer : DataContainerBase
 {
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
     public decimal Range { get; set; }

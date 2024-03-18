@@ -13,7 +13,7 @@ public partial class DataElementGeneratorTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Knots")]
                          public decimal Prop1 { get; set; }
@@ -25,7 +25,7 @@ public partial class DataElementGeneratorTest
                        #nullable enable
                        namespace Test
                        {
-                           public partial record TestRecord
+                           public partial class TestDataContainer
                            {
                                private void UpdateDataElements()
                                {

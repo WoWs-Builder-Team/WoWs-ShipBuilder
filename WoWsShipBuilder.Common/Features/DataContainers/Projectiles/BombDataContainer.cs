@@ -1,15 +1,15 @@
+using System.Collections.Immutable;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.Features.BallisticCharts;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
-using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record BombDataContainer : ProjectileDataContainer
+public partial class BombDataContainer : ProjectileDataContainer
 {
     [DataElementType(DataElementTypes.KeyValue, ValueTextKind = TextKind.AppLocalizationKey)]
     public string BombType { get; set; } = default!;
@@ -59,7 +59,7 @@ public partial record BombDataContainer : ProjectileDataContainer
 
     public bool ShowBlastPenetration { get; private set; }
 
-    public static BombDataContainer FromBombName(string name, List<Modifier> modifiers)
+    public static BombDataContainer FromBombName(string name, ImmutableList<Modifier> modifiers)
     {
         var bomb = AppData.FindProjectile<Bomb>(name);
 
