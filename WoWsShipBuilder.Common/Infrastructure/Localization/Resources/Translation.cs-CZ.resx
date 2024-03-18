@@ -1,0 +1,636 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="MainWindow_BackToMenu" xml:space="preserve">
+    <value>Zpět do nabídky</value>
+  </data>
+  <data name="MainWindow_ResetBuild" xml:space="preserve">
+    <value>Resetovat build</value>
+  </data>
+  <data name="MainWindow_ShareBuild" xml:space="preserve">
+    <value>Sdílet build</value>
+  </data>
+  <data name="SettingsWindow_AutoUpdate" xml:space="preserve">
+    <value>Povolit automatické aktualizace</value>
+  </data>
+  <data name="SettingsWindow_Clean" xml:space="preserve">
+    <value>Vymazat</value>
+  </data>
+  <data name="SettingsWindow_CleanAppData" xml:space="preserve">
+    <value>Vymazat uložená data aplikace</value>
+  </data>
+  <data name="SettingsWindow_DevelopedBy" xml:space="preserve">
+    <value>Vytvořil:</value>
+  </data>
+  <data name="SettingsWindow_Info" xml:space="preserve">
+    <value>Informace</value>
+  </data>
+  <data name="SettingsWindow_Language" xml:space="preserve">
+    <value>Jazyk</value>
+  </data>
+  <data name="SettingsWindow_Reset" xml:space="preserve">
+    <value>Obnovit</value>
+  </data>
+  <data name="SettingsWindow_ResetSettings" xml:space="preserve">
+    <value>Obnovit nastavení na výchozí hodnoty</value>
+  </data>
+  <data name="SettingsWindow_Settings" xml:space="preserve">
+    <value>Nastavení:</value>
+  </data>
+  <data name="SettingsWindow_Version" xml:space="preserve">
+    <value>Verze:</value>
+  </data>
+  <data name="StartMenu_LoadBuild" xml:space="preserve">
+    <value>Načíst build</value>
+  </data>
+  <data name="StartMenu_NewBuild" xml:space="preserve">
+    <value>Vytvořit novy build</value>
+  </data>
+  <data name="StartMenu_ImportBuild" xml:space="preserve">
+    <value>Importovat build...</value>
+  </data>
+  <data name="MainWindow_CommanderXpBonus" xml:space="preserve">
+    <value>Kapitán XP bonus %</value>
+  </data>
+  <data name="MainWindow_FreeXp" xml:space="preserve">
+    <value>Volné XP:</value>
+  </data>
+  <data name="MainWindow_FreeXpBonus" xml:space="preserve">
+    <value>Bonus k volným XP %</value>
+  </data>
+  <data name="MainWindow_Xp" xml:space="preserve">
+    <value>Konečné XP:</value>
+  </data>
+  <data name="MainWindow_XpBonus" xml:space="preserve">
+    <value>XP bonus %</value>
+  </data>
+  <data name="MainWindow_XpCalculator" xml:space="preserve">
+    <value>Kalkulačka XP</value>
+  </data>
+  <data name="SplashScreen_CamoImages" xml:space="preserve">
+    <value>Stahování obrázků maskovaní</value>
+  </data>
+  <data name="SplashScreen_Done" xml:space="preserve">
+    <value>Hotovo</value>
+  </data>
+  <data name="SplashScreen_Json" xml:space="preserve">
+    <value>Stahování dat</value>
+  </data>
+  <data name="SplashScreen_ShipImages" xml:space="preserve">
+    <value>Stahování obrázků lodí</value>
+  </data>
+  <data name="AirCarrier" xml:space="preserve">
+    <value>Letadlová loď</value>
+  </data>
+  <data name="Battleship" xml:space="preserve">
+    <value>Bitevní loď</value>
+  </data>
+  <data name="Commonwealth" xml:space="preserve">
+    <value>Commonwealth</value>
+  </data>
+  <data name="Cruiser" xml:space="preserve">
+    <value>Křižník</value>
+  </data>
+  <data name="Destroyer" xml:space="preserve">
+    <value>Torpédoborec</value>
+  </data>
+  <data name="Europe" xml:space="preserve">
+    <value>Evropa</value>
+  </data>
+  <data name="Usa" xml:space="preserve">
+    <value>Spojené státy americké.</value>
+  </data>
+  <data name="TITLE_PlaceholderMod" xml:space="preserve">
+    <value>Prázdný slot</value>
+  </data>
+  <data name="IncomingFireAlertDesc" xml:space="preserve">
+    <value>Minimální vzdálenost pro zobrazení varování</value>
+  </data>
+  <data name="ShipSelectionWindow_ClassFilter" xml:space="preserve">
+    <value>Třída</value>
+  </data>
+  <data name="ShipSelectionWindow_ConfirmButton" xml:space="preserve">
+    <value>Potvrdit</value>
+  </data>
+  <data name="ShipSelectionWindow_NationFilter" xml:space="preserve">
+    <value>Národ</value>
+  </data>
+  <data name="ShipSelectionWindow_TierFilter" xml:space="preserve">
+    <value>Úroveň</value>
+  </data>
+  <data name="ShipSelectionWindow_TypeFilter" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
+    <value>Nebyly nalezeny žádné lodě odpovídající kritériím filtrování</value>
+  </data>
+  <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
+      <value>Hledat loď...</value>
+  </data>
+  <data name="ShipStats_TurnTime" xml:space="preserve">
+    <value>Doba otáčení o 180°</value>
+  </data>
+  <data name="ShipStats_HorizontalDisp" xml:space="preserve">
+    <value>Horizontální</value>
+  </data>
+  <data name="ShipStats_Range" xml:space="preserve">
+    <value>Vzdálenost</value>
+  </data>
+  <data name="ShipStats_RoF" xml:space="preserve">
+    <value>Kadence</value>
+  </data>
+  <data name="ShipStats_Reload" xml:space="preserve">
+    <value>Doba přebíjení</value>
+  </data>
+  <data name="ShipStats_Penetration" xml:space="preserve">
+    <value>Penetrace</value>
+  </data>
+  <data name="ShipStats_BombType" xml:space="preserve">
+    <value>Typ bomby</value>
+  </data>
+  <data name="ShipStats_BompPayload" xml:space="preserve">
+    <value>Bomb naloženo</value>
+  </data>
+  <data name="ShipStats_ConstantDamage" xml:space="preserve">
+    <value>Neustálé poškození</value>
+  </data>
+  <data name="ShipStats_Damage" xml:space="preserve">
+    <value>Poškození</value>
+  </data>
+  <data name="ShipStats_Delay" xml:space="preserve">
+    <value>Zpoždění</value>
+  </data>
+  <data name="ShipStats_Detectability" xml:space="preserve">
+    <value>Odhaleni na</value>
+  </data>
+  <data name="ShipStats_Flak" xml:space="preserve">
+    <value>Flak</value>
+  </data>
+  <data name="ShipStats_FlakDamage" xml:space="preserve">
+    <value>Poškození flakem</value>
+  </data>
+  <data name="ShipStats_HitChance" xml:space="preserve">
+    <value>Šance na zásah</value>
+  </data>
+  <data name="ShipStats_FloodingChance" xml:space="preserve">
+    <value>Šance na zaplavení</value>
+  </data>
+  <data name="ShipStats_MainBattery" xml:space="preserve">
+    <value>Hlavní baterie</value>
+  </data>
+  <data name="ShipStats_ReactionTime" xml:space="preserve">
+    <value>Doba reakce</value>
+  </data>
+  <data name="ShipStats_Torpedo" xml:space="preserve">
+    <value>Torpedo</value>
+  </data>
+  <data name="DispersionGraphWindow_AddShip" xml:space="preserve">
+    <value>Přidat loď</value>
+  </data>
+  <data name="DispersionGraphWindow_RemoveShip" xml:space="preserve">
+    <value>Odstranit loď</value>
+  </data>
+  <data name="MessageBox_ShipNoGun" xml:space="preserve">
+    <value>nemá žádné hlavní zbraně</value>
+  </data>
+  <data name="MessageBox_DuplicateShip" xml:space="preserve">
+    <value>již byl přidán s tímto granátem</value>
+  </data>
+  <data name="ShipStats_Type" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="ShipStats_TurretAngles" xml:space="preserve">
+    <value>Zobrazit úhly věže</value>
+  </data>
+  <data name="FiringAngleWindow_AngleExplanation" xml:space="preserve">
+    <value>Vztažný úhel začína v 0° na přední straně (horní část obrázku) a jde ve směru hodinových ručiček</value>
+  </data>
+  <data name="FiringAngleWindow_PermaTextOff" xml:space="preserve">
+    <value>Nikdy nezobrazovat úhly</value>
+  </data>
+  <data name="FiringAngleWindow_PermaTextOn" xml:space="preserve">
+    <value>Vždy zobrazovat úhly</value>
+  </data>
+  <data name="FiringAngleWindow_ShowAll" xml:space="preserve">
+    <value>Rozbalit všechny úhly</value>
+  </data>
+  <data name="MainWindow_CaptainSkills" xml:space="preserve">
+    <value>Kapitánské dovednosti a kamufláž</value>
+  </data>
+  <data name="MainWindow_Signals" xml:space="preserve">
+    <value>Signály</value>
+  </data>
+  <data name="ShipStats_Name" xml:space="preserve">
+    <value>Jméno</value>
+  </data>
+  <data name="CaptainSkillSelector_Camo" xml:space="preserve">
+    <value>Použít bonus kamufláže</value>
+  </data>
+  <data name="Torpedo" xml:space="preserve">
+    <value>Torpedo</value>
+  </data>
+  <data name="Broadside" xml:space="preserve">
+    <value>Broadside (bůček)</value>
+  </data>
+  <data name="ShipStats_SplashCoeff" xml:space="preserve">
+      <value>Penetrace</value>
+  </data>
+  <data name="DispersionGraphWindow_Horizontal" xml:space="preserve">
+    <value>Horizontální</value>
+  </data>
+  <data name="ShipStats_SplashDmg" xml:space="preserve">
+      <value>Poškození</value>
+  </data>
+  <data name="ShipStats_AirCarrier" xml:space="preserve">
+      <value>Letadlová loď</value>
+  </data>
+  <data name="ShipStats_Cruiser" xml:space="preserve">
+      <value>Křižník</value>
+  </data>
+  <data name="ShipStats_Battleship" xml:space="preserve">
+      <value>Bitevní loď</value>
+  </data>
+  <data name="ShipStats_Destroyer" xml:space="preserve">
+      <value>Torpédoborec</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
+      <value>Signály</value>
+  </data>
+  <data name="ShipComparison_SmokeFiring" xml:space="preserve">
+      <value>Střelba z kouře</value>
+  </data>
+  <data name="ShipComparison_PlanesInSquadron" xml:space="preserve">
+      <value>Letadla v letce</value>
+  </data>
+  <data name="ShipComparison_InitialSpeed" xml:space="preserve">
+      <value>Počáteční rychlost</value>
+  </data>
+  <data name="ShipComparison_PlaneHp" xml:space="preserve">
+      <value>HP letadla</value>
+  </data>
+  <data name="ShipComparison_Spread" xml:space="preserve">
+      <value>Roztažení</value>
+  </data>
+  <data name="ShipComparison_Plane" xml:space="preserve">
+      <value>Letadlo</value>
+  </data>
+  <data name="ShipComparison_Planes" xml:space="preserve">
+      <value>Letouny</value>
+  </data>
+  <data name="ShipComparison_OnDeck" xml:space="preserve">
+      <value>Na palubě</value>
+  </data>
+  <data name="ShipComparison_EngineBoostDuration" xml:space="preserve">
+      <value>Doba trvání přídavného spalování</value>
+  </data>
+  <data name="ShipComparison_Invulnerability" xml:space="preserve">
+      <value>Nezranitelnost</value>
+  </data>
+  <data name="ShipComparison_ViewDistance" xml:space="preserve">
+      <value>Dohled</value>
+  </data>
+  <data name="ShipComparison_PerPlane" xml:space="preserve">
+      <value>Na letadlo</value>
+  </data>
+  <data name="ShipComparison_TorpsPerPlane" xml:space="preserve">
+      <value>Torpéda v letadle</value>
+  </data>
+  <data name="ShipStats_MaxReverseSpeed" xml:space="preserve">
+      <value>Maximální rychlost zpětného chodu</value>
+  </data>
+  <data name="ShipComparison_TypeName" xml:space="preserve">
+      <value>Zadejte název...</value>
+  </data>
+  <data name="ShipComparison_SearchAndPin" xml:space="preserve">
+      <value>Vyhledávání a připnutí lodi</value>
+  </data>
+  <data name="ShipComparison_DispersionAt" xml:space="preserve">
+      <value>Rozptyl na</value>
+  </data>
+  <data name="ShipSelectionWindow_SearchShipOrBuild" xml:space="preserve">
+      <value>Hledat loď nebo build</value>
+  </data>
+  <data name="SettingsWindow_Export" xml:space="preserve">
+      <value>Exportovat</value>
+  </data>
+  <data name="SettingsWindow_DeleteAll" xml:space="preserve">
+      <value>Odstranit vše</value>
+  </data>
+  <data name="BuildConfigurationDialog_Load" xml:space="preserve">
+      <value>Nahrát</value>
+  </data>
+  <data name="SettingsWindow_InvalidJsonFileError" xml:space="preserve">
+      <value>Neplatný soubor. Povoleny pouze .json soubory.</value>
+  </data>
+  <data name="ShipSelector_InvalidPngFileError" xml:space="preserve">
+      <value>Neplatný soubor. Povoleny jsou pouze .png soubory.</value>
+  </data>
+  <data name="SettingsWindow_LocalStorageWarning" xml:space="preserve">
+      <value>Buildy jsou uloženy v lokálním úložišti prohlížeče. Operace jako vymazání mezipaměti prohlížeče pravděpodobně smaže všechna data uložená v místním úložišti. Důrazně doporučujeme exportovat vaše buildy pravidelně nebo alespoň před provedením těchto operací.</value>
+  </data>
+  <data name="ShipStats_Krupp" xml:space="preserve">
+      <value>Krupp</value>
+  </data>
+  <data name="ShipStats_KruppExplanation" xml:space="preserve">
+      <value>Je to konstanta pro pronikání projektilu.
+        Představuje odolnost projektilu.
+        Čím vyšší je hodnota, tím vyšší je penetrace.</value>
+  </data>
+  <data name="ShipStats_ApPenetrationFormula" xml:space="preserve">
+      <value>K = krupp vrženého tělesa
+        M = hmotnost projektilu [kg]
+        S = rychlost nárazu projektilu [m/s]
+        C = kalibr projektilu [m]
+
+        Průnik [mm] = K * (M * S^2)^0. 9 * C^(-1.07) * 0.0000001
+
+      Reverzní inženýrství dle TTaro_</value>
+  </data>
+  <data name="ShipStats_PenetrationAp" xml:space="preserve">
+      <value>Penetrace</value>
+  </data>
+  <data name="BETA_UserAuth" xml:space="preserve">
+      <value>Přihlášení</value>
+  </data>
+  <data name="ShipStats_DcDetonationDepthExplanation" xml:space="preserve">
+      <value>Hloubka ponorek zobrazených ve hře je vyjádřena jako "ship_meter". Ponorka se může ponořit 60[ship_m] = 120[m].</value>
+  </data>
+  <data name="ShipComparison_ShipsPerPage" xml:space="preserve">
+    <value>Lodě na stránku:</value>
+  </data>
+  <data name="ShipComparison_HideColumns" xml:space="preserve">
+    <value>Skrýt sloupce</value>
+  </data>
+  <data name="ShipStats_SecondConsecutive" xml:space="preserve">
+    <value>Druhý a následující</value>
+  </data>
+  <data name="ShipStats_FromSubsAtPeriscopeDepth" xml:space="preserve">
+    <value>Z ponorek v periskopové hloubce</value>
+  </data>
+  <data name="ShipStats_ShellType" xml:space="preserve">
+    <value>Typ granátů</value>
+  </data>
+  <data name="ShipStats_Overall" xml:space="preserve">
+    <value>Celkem</value>
+  </data>
+  <data name="ShipComparison_OutOfRange" xml:space="preserve">
+    <value>Mimo dostřel</value>
+  </data>
+  <data name="ShipComparison_OutOfRangeTooltip" xml:space="preserve">
+    <value>Rozsah vypálení je větší než maximální dostřel této lodi</value>
+  </data>
+  <data name="UserDataService_BuildUpdated" xml:space="preserve">
+    <value>Build byl aktualizován.</value>
+  </data>
+  <data name="UserDataService_BuildSaved" xml:space="preserve">
+    <value>Buildy byly uloženy.</value>
+  </data>
+  <data name="UserDataService_BuildNotSaved" xml:space="preserve">
+    <value>Buildy nebyly uloženy.</value>
+  </data>
+  <data name="UserDataService_BuildLimitReached" xml:space="preserve">
+    <value>Byl dosažen limit úložiště. Další přidání nahradí nejstarší uložený build.</value>
+  </data>
+  <data name="UserDataService_BuildStorageFull" xml:space="preserve">
+    <value>Úložiště buildů je plné. Nejstarší uložený build byl nahrazen.</value>
+  </data>
+  <data name="UserDataService_BuildNotLoaded" xml:space="preserve">
+    <value>nepodařilo se nahrát build.</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_WarningMessage" xml:space="preserve">
+    <value>Archiv již obsahuje build s tímto názvem</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_ForTheShip" xml:space="preserve">
+    <value>pro loď</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_OverwriteQuestion" xml:space="preserve">
+    <value>Přejete si jej přepsat?</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_OverwriteBuild" xml:space="preserve">
+    <value>Přepsat build</value>
+  </data>
+  <data name="ShipStats_ArchiveBuild" xml:space="preserve">
+    <value>Archivovat build</value>
+  </data>
+  <data name="ShipStats_ShareOrSaveBuild" xml:space="preserve">
+    <value>Sdílet / uložit</value>
+  </data>
+  <data name="ShipComparison_AddAShip" xml:space="preserve">
+    <value>Přidat loď...</value>
+  </data>
+  <data name="ShipSelectionDialog_AddShips" xml:space="preserve">
+    <value>Přidat lodě</value>
+  </data>
+  <data name="ShipStatsTab_BuildMustHaveName" xml:space="preserve">
+    <value>Chyba při buildu: musí mít název!</value>
+  </data>
+  <data name="ShipStatsTabs_LinkCopied" xml:space="preserve">
+    <value>Odkaz na build byl zkopírován do schránky</value>
+  </data>
+  <data name="ShipStatsTabs_BuildImageSavedAndCopiedToClipboard" xml:space="preserve">
+    <value>Build image byl uložen a zkopírován do schránky!</value>
+  </data>
+  <data name="ShipStatsTab_ShareLink" xml:space="preserve">
+    <value>Sdílet Odkaz</value>
+  </data>
+  <data name="ShipStatsTab_SaveBuild" xml:space="preserve">
+    <value>Uložit build</value>
+  </data>
+  <data name="ShipStatsTab_ShareBuildImage" xml:space="preserve">
+    <value>Sdílet obrázek buildu</value>
+  </data>
+  <data name="ShipStats_SmokeSpeedLimit" xml:space="preserve">
+    <value>Maximální rychlost pohybu</value>
+  </data>
+  <data name="ShipStats_FirstGMShotDelay" xml:space="preserve">
+    <value>Doba nabití hlavní baterie (První)</value>
+  </data>
+  <data name="ShipStats_OtherGMShotDelay" xml:space="preserve">
+    <value>Doba nabití hlavní baterie (Druhé a další)</value>
+  </data>
+  <data name="ShipStats_LeftSideLoaders" xml:space="preserve">
+    <value>Levá strana</value>
+  </data>
+  <data name="ShipStats_RightSideLoaders" xml:space="preserve">
+    <value>Pravá strana</value>
+  </data>
+  <data name="SettingsWindow_SaveBuildOnShare" xml:space="preserve">
+    <value>Uložit sestavení při sdílení</value>
+  </data>
+  <data name="SettingsWindow_ClosedByDefault" xml:space="preserve">
+    <value>Uzavřeno ve výchozím nastavení</value>
+  </data>
+  <data name="SettingsWindow_MultiSelect" xml:space="preserve">
+    <value>Povolit výběr více položek</value>
+  </data>
+  <data name="SettingsWindow_FtImgWarning" xml:space="preserve">
+    <value>VAROVÁNÍ: Používejte pouze s velmi dobrým připojením k internetu.</value>
+  </data>
+  <data name="SettingsWindow_FittingToolShowImages" xml:space="preserve">
+    <value>Zobrazit obrázky lodí</value>
+  </data>
+  <data name="SettingsWindow_AutoUpdates" xml:space="preserve">
+    <value>Automatické aktualizace</value>
+  </data>
+  <data name="SettingsWindow_RestartRequired" xml:space="preserve">
+    <value>Aby se tato volba projevila, je vyžadován restart.</value>
+  </data>
+  <data name="SettingsWindow_FittingToolSelectorDisabled" xml:space="preserve">
+    <value>Vypnuto</value>
+  </data>
+  <data name="Charts_OpenShipStats" xml:space="preserve">
+    <value>Zobrazit statistiky lodí</value>
+  </data>
+  <data name="WebApp_ViewShipsStats" xml:space="preserve">
+    <value>Zobrazit statistiky lodí</value>
+  </data>
+  <data name="UserDataService_BuildNotUpdated" xml:space="preserve">
+    <value>Build nebyl aktualizován.</value>
+  </data>
+  <data name="BuildImageRenderDialog_CopyImage" xml:space="preserve">
+    <value>Kopírovat obrázek</value>
+  </data>
+  <data name="OverwriteExistingBuildDialog_Message" xml:space="preserve">
+    <value>Archiv již obsahuje jiný build s názvem '{0}' pro loď '{1}'</value>
+  </data>
+  <data name="ShipComparison_Display" xml:space="preserve">
+    <value>Zobrazit</value>
+  </data>
+  <data name="ShipStats_Activate" xml:space="preserve">
+    <value>Aktivovat</value>
+  </data>
+  <data name="SettingsWindow_SavedBuilds" xml:space="preserve">
+    <value>Uložené buildy</value>
+  </data>
+  <data name="BuildConfigurationDialog_ActivateSpecialAbility" xml:space="preserve">
+    <value>Aktivovat speciální schopnost</value>
+  </data>
+  <data name="BuildConfigurationDialog_Alternative" xml:space="preserve">
+    <value>Alternativní</value>
+  </data>
+  <data name="AppNavigator_NoEligibleShips" xml:space="preserve">
+    <value>Nejsou k dispozici žádné lodě. Způsobilé lodě</value>
+  </data>
+  <data name="AppNavigator_TooManyShips" xml:space="preserve">
+    <value>Příliš mnoho lodí. Způsobilé lodě</value>
+  </data>
+  <data name="AppNavigator_MaxLimit" xml:space="preserve">
+    <value>Maximální limit je</value>
+  </data>
+</root>
