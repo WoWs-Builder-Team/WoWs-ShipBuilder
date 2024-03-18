@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using WoWsShipBuilder.Desktop.Features.LinkShortening;
 using WoWsShipBuilder.Desktop.Features.SplashScreen;
 using WoWsShipBuilder.Desktop.Features.Updater;
 using WoWsShipBuilder.Desktop.Infrastructure.AwsClient;
@@ -35,6 +36,7 @@ public static class HostApplicationBuilderExtensions
         builder.Services.AddSingleton<ISettingsAccessor, DesktopSettingsAccessor>();
         builder.Services.AddTransient<ILocalDataUpdater, LocalDataUpdater>();
         builder.Services.AddSingleton<AppNotificationService>();
+        builder.Services.AddSingleton<ILinkShortener, ApiLinkShortener>();
 
         // Replace the default scoped instance with a singleton in order to ensure that the same instance is used throughout the application
         builder.Services.RemoveAll<AppSettings>();

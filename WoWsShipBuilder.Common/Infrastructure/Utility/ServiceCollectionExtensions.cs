@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using MudBlazor;
 using MudBlazor.Services;
 using WoWsShipBuilder.Features.BallisticCharts;
-using WoWsShipBuilder.Features.LinkShortening;
 using WoWsShipBuilder.Features.Navigation;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Features.ShipStats;
@@ -21,6 +20,8 @@ public static class ServiceCollectionExtensions
             config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight;
             config.PopoverOptions.Mode = PopoverMode.Legacy;
         });
+        services.AddHttpClient();
+
         services.AddSingleton<ILocalizationProvider, LocalizationProvider>();
         services.AddSingleton<MetricsService>();
         if (OperatingSystem.IsBrowser())
@@ -36,8 +37,6 @@ public static class ServiceCollectionExtensions
 #pragma warning restore CA1416
             }));
         }
-
-        services.AddSingleton<ILinkShortener, FirebaseLinkShortener>();
 
         services.AddScoped<ILocalizer, Localizer>();
         services.AddScoped<AppSettings>();

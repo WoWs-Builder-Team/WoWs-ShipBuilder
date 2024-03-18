@@ -8,6 +8,7 @@ using Moq;
 using NUnit.Framework;
 using RichardSzalay.MockHttp;
 using WoWsShipBuilder.Features.LinkShortening;
+using WoWsShipBuilder.Web.Features.LinkShortening;
 
 namespace WoWsShipBuilder.Web.Test.LinkShorteningTests;
 
@@ -91,39 +92,5 @@ public class FirebaseLinkShortenerTests
         result.Link.Should().NotBeEmpty();
         result.Shortened.Should().BeTrue();
         mockHttp.GetMatchCount(request).Should().Be(6);
-    }
-
-    [Test]
-    public void CreateShortLink_ApiKeySet_IsAvailable()
-    {
-        var options = new LinkShorteningOptions
-        {
-            ApiKey = "1234",
-            ApiUrl = "https://www.example.com/",
-        };
-        var mockHttp = new MockHttpMessageHandler();
-        var logger = new Mock<ILogger<FirebaseLinkShortener>>();
-        var linkShortener = new FirebaseLinkShortener(mockHttp.ToHttpClient(), Options.Create(options), logger.Object);
-
-        bool result = linkShortener.IsAvailable;
-
-        result.Should().BeTrue();
-    }
-
-    [Test]
-    public void CreateShortLink_ApiKeyNotSet_IsNotAvailable()
-    {
-        var options = new LinkShorteningOptions
-        {
-            ApiKey = string.Empty,
-            ApiUrl = "https://www.example.com/",
-        };
-        var mockHttp = new MockHttpMessageHandler();
-        var logger = new Mock<ILogger<FirebaseLinkShortener>>();
-        var linkShortener = new FirebaseLinkShortener(mockHttp.ToHttpClient(), Options.Create(options), logger.Object);
-
-        bool result = linkShortener.IsAvailable;
-
-        result.Should().BeFalse();
     }
 }
