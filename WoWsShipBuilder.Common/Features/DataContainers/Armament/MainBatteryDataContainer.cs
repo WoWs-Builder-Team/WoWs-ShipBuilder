@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections.Immutable;
+using System.Globalization;
 using System.Text;
 using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
@@ -11,12 +12,12 @@ using WoWsShipBuilder.Infrastructure.GameData;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record MainBatteryDataContainer : DataContainerBase
+public partial class MainBatteryDataContainer : DataContainerBase
 {
     [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = "TurretNames", ArgumentsTextKind = TextKind.LocalizationKey)]
     public string Name { get; set; } = default!;
 
-    public List<string> TurretNames { get; set; } = new();
+    public ImmutableList<string> TurretNames { get; set; } = ImmutableList<string>.Empty;
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
     public decimal Range { get; set; }
@@ -26,6 +27,9 @@ public partial record MainBatteryDataContainer : DataContainerBase
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "DegreePerSecond")]
     public decimal TraverseSpeed { get; set; }
+
+    [DataElementType(DataElementTypes.Tooltip, UnitKey = "S", TooltipKey = "AmmoSwitchTimeTooltip")]
+    public decimal AmmoSwitchTime { get; set; }
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
     public decimal Reload { get; set; }
@@ -80,7 +84,7 @@ public partial record MainBatteryDataContainer : DataContainerBase
 
     public decimal TaperDist { get; set; }
 
-    public List<ShellDataContainer> ShellData { get; set; } = default!;
+    public ImmutableList<ShellDataContainer> ShellData { get; set; } = ImmutableList<ShellDataContainer>.Empty;
 
     public Dispersion DispersionData { get; set; } = default!;
 
@@ -100,7 +104,7 @@ public partial record MainBatteryDataContainer : DataContainerBase
 
     public string BarrelsLayout { get; set; } = default!;
 
-    public static MainBatteryDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static MainBatteryDataContainer? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, ImmutableList<Modifier> modifiers)
     {
         var artilleryConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.Artillery);
         if (artilleryConfiguration == null)
@@ -150,6 +154,8 @@ public partial record MainBatteryDataContainer : DataContainerBase
         // Calculate main battery reload
         decimal reload = modifiers.ApplyModifiers("MainBatteryDataContainer.Reload", gun.Reload);
 
+        decimal ammoSwitchTime = modifiers.ApplyModifiers("MainBatteryDataContainer.AmmoSwitchTime", reload * gun.AmmoSwitchCoeff);
+
         // Rotation speed modifiers
         decimal traverseSpeed = modifiers.ApplyModifiers("MainBatteryDataContainer.TraverseSpeed", gun.HorizontalRotationSpeed);
 
@@ -177,9 +183,10 @@ public partial record MainBatteryDataContainer : DataContainerBase
         var mainBatteryDataContainer = new MainBatteryDataContainer
         {
             Name = arrangementString.ToString(),
-            TurretNames = turretNames,
+            TurretNames = turretNames.ToImmutableList(),
             Range = Math.Round(range, 2),
             Reload = Math.Round(reload, 2),
+            AmmoSwitchTime = Math.Round(ammoSwitchTime, 2),
             RoF = Math.Round(rateOfFire * barrelCount, 1),
             TurnTime = Math.Round(180 / traverseSpeed, 1),
             TraverseSpeed = Math.Round(traverseSpeed, 2),
@@ -195,7 +202,7 @@ public partial record MainBatteryDataContainer : DataContainerBase
             DispersionData = dispersion,
             DispersionModifier = dispersionModifier,
             OriginalMainBatteryData = mainBattery,
-            ShellData = shellData,
+            ShellData = shellData.ToImmutableList(),
             DisplayHeDpm = shellData.Select(x => x.Type).Contains($"ArmamentType_{ShellType.HE.ShellTypeToString()}"),
             DisplayApDpm = shellData.Select(x => x.Type).Contains($"ArmamentType_{ShellType.AP.ShellTypeToString()}"),
             DisplaySapDpm = shellData.Select(x => x.Type).Contains($"ArmamentType_{ShellType.SAP.ShellTypeToString()}"),

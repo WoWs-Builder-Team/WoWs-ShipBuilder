@@ -10,12 +10,12 @@ using WoWsShipBuilder.DataStructures.Ship;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record TorpedoArmamentDataContainer : DataContainerBase
+public partial class TorpedoArmamentDataContainer : DataContainerBase
 {
     [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = "LauncherNames", ArgumentsTextKind = TextKind.LocalizationKey)]
     public string Name { get; set; } = default!;
 
-    public List<string> LauncherNames { get; set; } = new();
+    public ImmutableList<string> LauncherNames { get; set; } = ImmutableList<string>.Empty;
 
     [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "Loaders")]
     public string BowLoaders { get; set; } = default!;
@@ -59,11 +59,11 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
 
     public string TorpLayout { get; set; } = default!;
 
-    public List<TorpedoDataContainer> Torpedoes { get; set; } = new();
+    public ImmutableList<TorpedoDataContainer> Torpedoes { get; set; } = ImmutableList<TorpedoDataContainer>.Empty;
 
     public IEnumerable<TorpedoLauncher> TorpedoLaunchers { get; private set; } = default!;
 
-    public static TorpedoArmamentDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static TorpedoArmamentDataContainer? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, ImmutableList<Modifier> modifiers)
     {
         var torpConfiguration = shipConfiguration.Find(c => c.UcType == ComponentType.Torpedoes);
         if (torpConfiguration == null)
@@ -131,12 +131,12 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
         var torpedoArmamentDataContainer = new TorpedoArmamentDataContainer
         {
             Name = arrangementString.ToString(),
-            LauncherNames = launcherNames,
+            LauncherNames = launcherNames.ToImmutableList(),
             TurnTime = Math.Round(180 / traverseSpeed, 1),
             TraverseSpeed = Math.Round(traverseSpeed, 2),
             Reload = Math.Round(reloadSpeed, 2),
             TorpedoArea = torpedoArea,
-            Torpedoes = torpedoes,
+            Torpedoes = torpedoes.ToImmutableList(),
             TimeToSwitch = Math.Round(reloadSpeed * launcher.AmmoSwitchCoeff, 1),
             TorpedoLaunchers = torpedoModule.TorpedoLaunchers,
             TorpLayout = string.Join(" + ", torpLayout),

@@ -10,6 +10,8 @@
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Utility
 @using MainBatteryDataContainer = WoWsShipBuilder.Features.DataContainers.MainBatteryDataContainer
+@using System.Collections.Immutable
+@using WoWsShipBuilder.DataStructures.Modifiers
 @inject ISettingsAccessor SettingsAccessor
 @inject AppSettings AppSettings
 @inject ILocalizer Localizer
@@ -58,7 +60,7 @@
         return (ship, configuration);
     }
 
-    private (Ship Ship, List<ShipUpgrade> Configuration) LoadPreviewShip(ShipClass shipClass, int tier, Nation nation)
+    private (Ship Ship, ImmutableList<ShipUpgrade> Configuration) LoadPreviewShip(ShipClass shipClass, int tier, Nation nation)
     {
         var ship = AppData.FindShipFromSummary(AppData.ShipSummaryMapper.Values.First(s => s.ShipClass == shipClass && s.Nation == nation && s.Tier == tier));
 
@@ -66,7 +68,7 @@
             .Select(entry => entry.Value.FirstOrDefault())
             .Where(item => item != null)
             .Cast<ShipUpgrade>()
-            .ToList();
+            .ToImmutableList();
 
         return (ship, configuration);
     }
@@ -74,11 +76,11 @@
     private void OpenFiringAngles()
     {
         var (ship, config) = LoadPreviewShip(ShipClass.Destroyer, 5, Nation.UnitedKingdom);
-        var data = MainBatteryDataContainer.FromShip(ship, config, new());
+        var data = MainBatteryDataContainer.FromShip(ship, config, ImmutableList<Modifier>.Empty);
         var records = data!.OriginalMainBatteryData.Guns.Select(gun =>
         {
             var sector = gun.HorizontalSector.Select(a => a + gun.BaseAngle).ToArray();
-            var deadZones = gun.HorizontalDeadZones.Select(z => z.Select(a => a + gun.BaseAngle).ToArray()).ToArray() ?? Array.Empty<decimal[]>();
+            var deadZones = gun.HorizontalDeadZones.Select(z => z.Select(a => a + gun.BaseAngle).ToArray()).ToArray();
             return new GunDataContainer(gun.HorizontalPosition, gun.VerticalPosition, gun.BaseAngle, sector, deadZones);
         });
 

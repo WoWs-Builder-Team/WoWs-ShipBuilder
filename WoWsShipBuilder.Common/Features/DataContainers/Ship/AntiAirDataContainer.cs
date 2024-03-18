@@ -1,12 +1,12 @@
+using System.Collections.Immutable;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.Infrastructure.Utility;
 
 // ReSharper disable InconsistentNaming
 namespace WoWsShipBuilder.Features.DataContainers;
 
-public record AntiAirDataContainer
+public class AntiAirDataContainer
 {
     // These two are for the conversion in damage per second
     private const decimal ConstantDamageMultiplier = 1 / AntiAirAura.DamageInterval;
@@ -19,7 +19,7 @@ public record AntiAirDataContainer
 
     public AuraDataDataContainer? ShortRangeAura { get; set; }
 
-    public static AntiAirDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static AntiAirDataContainer? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, ImmutableList<Modifier> modifiers)
     {
         if (ship.ShipClass.Equals(ShipClass.Submarine))
         {

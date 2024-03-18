@@ -9,7 +9,7 @@ using WoWsShipBuilder.Infrastructure.ApplicationData;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record AirstrikeDataContainer : DataContainerBase
+public partial class AirstrikeDataContainer : DataContainerBase
 {
     public string Header { get; set; } = default!;
 
@@ -50,7 +50,7 @@ public partial record AirstrikeDataContainer : DataContainerBase
 
     public ProjectileDataContainer? Weapon { get; set; }
 
-    public static AirstrikeDataContainer? FromShip(Ship ship, List<Modifier> modifiers, bool isAsw)
+    public static AirstrikeDataContainer? FromShip(Ship ship, ImmutableList<Modifier> modifiers, bool isAsw)
     {
         string header = isAsw ? "ShipStats_AswAirstrike" : "ShipStats_Airstrike";
         ImmutableDictionary<string, AirStrike> airstrikes = ship.AirStrikes;

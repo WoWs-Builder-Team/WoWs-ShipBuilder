@@ -1,14 +1,14 @@
+using System.Collections.Immutable;
 using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record DepthChargesLauncherDataContainer : DataContainerBase
+public partial class DepthChargesLauncherDataContainer : DataContainerBase
 {
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
     public decimal Reload { get; set; }
@@ -21,7 +21,7 @@ public partial record DepthChargesLauncherDataContainer : DataContainerBase
 
     public DepthChargeDataContainer? DepthCharge { get; set; }
 
-    public static DepthChargesLauncherDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static DepthChargesLauncherDataContainer? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, ImmutableList<Modifier> modifiers)
     {
         var shipHull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull][0]];
 

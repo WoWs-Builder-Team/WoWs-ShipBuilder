@@ -227,7 +227,7 @@
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSalvoDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSalvoDamage)" T="GridDataWrapper" Title="@columnTitleSalvoDamage" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.Torpedo.FullSalvoDamage.Where(y => !string.IsNullOrEmpty(y)).Select(z => int.Parse(z ?? "0", NumberStyles.AllowThousands, nfi)).ToNoSortList())">
             <CellTemplate>
                 @{
-                   List<string?> torps = context.Item.Torpedo.FullSalvoDamage.Where(x => !string.IsNullOrEmpty(x)).ToList();
+                   var torps = context.Item.Torpedo.FullSalvoDamage.Where(x => !string.IsNullOrEmpty(x)).ToList();
                    if (torps.Count == 0)
                    {
                        @UtilityFragments.DataNotAvailableFragment
@@ -442,15 +442,15 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCanHit}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCanHit)" T="GridDataWrapper" Title="@columnTitleCanHit" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> !x.Torpedo.CanHit.Any() ? 0 : x.Torpedo.CanHit.First()?.Count ?? (x.Torpedo.Damage.Any() ? 5 : 0))">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCanHit}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCanHit)" T="GridDataWrapper" Title="@columnTitleCanHit" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> !x.Torpedo.CanHit.Any() ? 0 : x.Torpedo.CanHit.First().Count)">
             <CellTemplate>
                 @if (context.Item.Torpedo.CanHit.Any())
                 {
-                    List<List<ShipClass>?> torps = context.Item.Torpedo.CanHit;
+                    var torps = context.Item.Torpedo.CanHit;
                     for (var i = 0; i < torps.Count; i++)
                     {
-                        List<ShipClass>? classes = torps[i];
-                        if (classes is null && context.Item.Torpedo.Damage.Any())
+                        var classes = torps[i];
+                        if (classes.IsEmpty && context.Item.Torpedo.Damage.Any())
                         {
                             <MudStack row Justify="Justify.Center" AlignItems="AlignItems.Center">
                                 @foreach (var shipClass in Enum.GetValues(typeof(ShipClass)).Cast<ShipClass>().ToList())
@@ -459,11 +459,11 @@
                                 }
                             </MudStack>
                         }
-                        else if (classes is null && !context.Item.Torpedo.Damage.Any())
+                        else if (classes.IsEmpty && !context.Item.Torpedo.Damage.Any())
                         {
                             @UtilityFragments.DataNotAvailableFragment
                         }
-                        else if (classes is not null)
+                        else if (!classes.IsEmpty)
                         {
                             <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center">
                                 @foreach (var shipClass in classes)

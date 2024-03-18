@@ -1,5 +1,6 @@
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
+using System.Collections.Immutable;
 using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
@@ -11,7 +12,7 @@ using WoWsShipBuilder.Infrastructure.GameData;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record ShellDataContainer : DataContainerBase
+public partial class ShellDataContainer : DataContainerBase
 {
     public string Name { get; set; } = default!;
 
@@ -81,14 +82,14 @@ public partial record ShellDataContainer : DataContainerBase
 
     public bool ShowBlastPenetration { get; private set; }
 
-    public static List<ShellDataContainer> FromShellName(IEnumerable<string> shellNames, List<Modifier> modifiers, int barrelCount, bool isMainGunShell)
+    public static List<ShellDataContainer> FromShellName(IEnumerable<string> shellNames, ImmutableList<Modifier> modifiers, int barrelCount, bool isMainGunShell)
     {
         var shells = shellNames.Select(shellName => ProcessShell(modifiers, barrelCount, isMainGunShell, shellName)).ToList();
         shells[^1].IsLastEntry = true;
         return shells;
     }
 
-    private static ShellDataContainer ProcessShell(List<Modifier> modifiers, int barrelCount, bool isMainGunShell, string shellName)
+    private static ShellDataContainer ProcessShell(ImmutableList<Modifier> modifiers, int barrelCount, bool isMainGunShell, string shellName)
     {
         var shell = AppData.FindProjectile<ArtilleryShell>(shellName);
 

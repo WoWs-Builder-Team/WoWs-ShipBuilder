@@ -1,4 +1,5 @@
-﻿using WoWsShipBuilder.DataStructures;
+﻿using System.Collections.Immutable;
+using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.Features.DataContainers;
 
 namespace WoWsShipBuilder.Features.ShipComparison.GridData;
@@ -45,7 +46,7 @@ public class TorpedoBomberGridDataWrapper : PlaneGridDataWrapper
         this.WeaponFloodingChance = aerialTorpedoes?.Select(x => x?.FloodingChance ?? 0).ToNoSortList() ?? new();
         this.WeaponBlastRadius = aerialTorpedoes?.Select(x => x?.ExplosionRadius ?? 0).ToNoSortList() ?? new();
         this.WeaponBlastPenetration = aerialTorpedoes?.Select(x => x?.SplashCoeff ?? 0).ToNoSortList() ?? new();
-        this.WeaponCanHit = aerialTorpedoes?.Select(x => x?.CanHitClasses).ToNoSortList() ?? new();
+        this.WeaponCanHit = aerialTorpedoes?.Select(x => x?.CanHitClasses ?? ImmutableList<ShipClass>.Empty).ToNoSortList() ?? new();
     }
 
     public NoSortList<string> WeaponType { get; }
@@ -68,5 +69,5 @@ public class TorpedoBomberGridDataWrapper : PlaneGridDataWrapper
 
     public NoSortList<decimal> WeaponBlastPenetration { get; }
 
-    public NoSortList<List<ShipClass>?> WeaponCanHit { get; }
+    public NoSortList<ImmutableList<ShipClass>> WeaponCanHit { get; }
 }

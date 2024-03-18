@@ -1,15 +1,15 @@
+using System.Collections.Immutable;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
-using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record TorpedoDataContainer : ProjectileDataContainer
+public partial class TorpedoDataContainer : ProjectileDataContainer
 {
     [DataElementType(DataElementTypes.KeyValue, ValueTextKind = TextKind.AppLocalizationKey)]
     public string TorpedoType { get; set; } = default!;
@@ -112,13 +112,13 @@ public partial record TorpedoDataContainer : ProjectileDataContainer
     [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "AirCarrier", UnitKey = "M", LocalizationKeyOverride = "SecondPing")]
     public decimal CvCutOffSecondPing { get; set; }
 
-    public List<ShipClass>? CanHitClasses { get; set; }
+    public ImmutableList<ShipClass> CanHitClasses { get; set; } = ImmutableList<ShipClass>.Empty;
 
     public bool IsLast { get; set; }
 
     public bool IsFromPlane { get; set; }
 
-    public static List<TorpedoDataContainer> FromTorpedoName(IEnumerable<string> torpedoNames, List<Modifier> modifiers, bool fromPlane)
+    public static List<TorpedoDataContainer> FromTorpedoName(IEnumerable<string> torpedoNames, ImmutableList<Modifier> modifiers, bool fromPlane)
     {
         var list = new List<TorpedoDataContainer>();
         foreach (string name in torpedoNames)
@@ -189,7 +189,7 @@ public partial record TorpedoDataContainer : ProjectileDataContainer
 
             if (torp.IgnoreClasses != null && torp.IgnoreClasses.Any())
             {
-                torpedoDataContainer.CanHitClasses = allClasses.Except(torp.IgnoreClasses).ToList();
+                torpedoDataContainer.CanHitClasses = allClasses.Except(torp.IgnoreClasses).ToImmutableList();
             }
 
             torpedoDataContainer.UpdateDataElements();

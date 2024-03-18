@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Globalization;
 using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
@@ -11,7 +12,7 @@ using WoWsShipBuilder.Infrastructure.GameData;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record CvAircraftDataContainer : DataContainerBase
+public partial class CvAircraftDataContainer : DataContainerBase
 {
     public string Name { get; set; } = default!;
 
@@ -99,7 +100,7 @@ public partial record CvAircraftDataContainer : DataContainerBase
 
     public ProjectileDataContainer? Weapon { get; set; }
 
-    public List<ConsumableDataContainer> PlaneConsumables { get; set; } = default!;
+    public ImmutableList<ConsumableDataContainer> PlaneConsumables { get; set; } = ImmutableList<ConsumableDataContainer>.Empty;
 
     // TODO
     public decimal ArmamentReloadTime { get; set; }
@@ -108,7 +109,7 @@ public partial record CvAircraftDataContainer : DataContainerBase
 
     public decimal BoostReloadTime { get; set; }
 
-    public static List<CvAircraftDataContainer>? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static List<CvAircraftDataContainer>? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, ImmutableList<Modifier> modifiers)
     {
         if (ship.CvPlanes.IsEmpty)
         {
@@ -158,7 +159,7 @@ public partial record CvAircraftDataContainer : DataContainerBase
         return list;
     }
 
-    private static CvAircraftDataContainer ProcessCvPlane(Aircraft plane, int shipTier, List<Modifier> modifiers)
+    private static CvAircraftDataContainer ProcessCvPlane(Aircraft plane, int shipTier, ImmutableList<Modifier> modifiers)
     {
         int maxOnDeck = modifiers.ApplyModifiers("CvAircraftDataContainer.MaxOnDeck", plane.MaxPlaneInHangar);
 
@@ -307,7 +308,7 @@ public partial record CvAircraftDataContainer : DataContainerBase
             JatoSpeedMultiplier = Math.Round(jatoSpeedMultiplier, 0),
             WeaponType = weaponType.ProjectileTypeToString(),
             Weapon = weapon,
-            PlaneConsumables = consumables,
+            PlaneConsumables = consumables.ToImmutableList(),
             AimingTime = Math.Round(aimingTime, 1),
             PreparationTime = plane.PreparationTime,
             PostAttackInvulnerabilityDuration = plane.PostAttackInvulnerabilityDuration,

@@ -1,8 +1,8 @@
+using System.Collections.Immutable;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Features.DataContainers;
-using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
@@ -32,9 +32,9 @@ public partial class ShipStatsControlViewModel : ReactiveObject
     // this is the ship base stats. do not modify after creation
     private Ship BaseShipStats { get; set; }
 
-    public async Task UpdateShipStats(List<ShipUpgrade> selectedConfiguration, List<Modifier> modifiers)
+    public async Task UpdateShipStats(ImmutableList<ShipUpgrade> selectedConfiguration, ImmutableList<Modifier> modifiers)
     {
-        ShipDataContainer shipStats = await Task.Run(() => ShipDataContainer.CreateFromShip(this.BaseShipStats, selectedConfiguration, modifiers));
+        var shipStats = await Task.Run(() => ShipDataContainer.CreateFromShip(this.BaseShipStats, selectedConfiguration, modifiers));
         this.CurrentShipStats = shipStats;
     }
 

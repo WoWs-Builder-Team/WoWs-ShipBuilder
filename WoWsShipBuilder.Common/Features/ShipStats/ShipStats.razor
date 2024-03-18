@@ -151,7 +151,7 @@
                     Logger.LogTrace("Build could not be loaded from url because it was not in the correct format");
                 }
 
-                buildList = new() { ShipBuildContainer.CreateNew(AppData.ShipDictionary[shipIndexesFromUrl], build, null) };
+                buildList = new() { ShipBuildContainer.CreateNew(AppData.ShipDictionary[shipIndexesFromUrl], build, ImmutableArray<int>.Empty) };
             }
             else if (buildContainers is not null)
             {
@@ -174,7 +174,7 @@
         if (oldId is not null)
         {
             var ship = shipContainers.First(x => x.Id.Equals(oldId));
-            shipContainers.Replace(ship, ship with { Ship = AppData.ShipDictionary[newShipIndex], Build = null, ShipDataContainer = null, SpecialAbilityActive = false, ActivatedConsumableSlots = null, Modifiers = null });
+            shipContainers.Replace(ship, ship with { Ship = AppData.ShipDictionary[newShipIndex], Build = null, ShipDataContainer = null, SpecialAbilityActive = false, ActivatedConsumableSlots = ImmutableArray<int>.Empty, Modifiers = ImmutableList<Modifier>.Empty });
             selectedTabId = (Guid) oldId;
             update = true;
         }
@@ -245,7 +245,7 @@
 
     private void AddNewIndexes(IEnumerable<string> indexList, IEnumerable<ShipBuildContainer>? buildContainers)
     {
-        shipContainers.AddRange(buildContainers ?? indexList.Select(index => ShipBuildContainer.CreateNew(AppData.ShipDictionary[index], null, null)));
+        shipContainers.AddRange(buildContainers ?? indexList.Select(index => ShipBuildContainer.CreateNew(AppData.ShipDictionary[index], null, ImmutableArray<int>.Empty)));
     }
 
     private ImmutableList<ShipBuildContainer> GetShipBuildContainers(bool calculateShipDataContainer)
@@ -273,10 +273,11 @@
         {
             using var viewModel = ShipStatsTab.CreateViewModel(container.Ship.Index, container.Build);
 
-            List<Modifier> modifiers = viewModel.UpgradePanelViewModel.GetModifierList();
-            modifiers.AddRange(viewModel.ConsumableViewModel.GetModifiersList());
-            modifiers.AddRange(viewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<Modifier>());
-            modifiers.AddRange(viewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<Modifier>());
+            List<Modifier> modifierBuilder = viewModel.UpgradePanelViewModel.GetModifierList();
+            modifierBuilder.AddRange(viewModel.ConsumableViewModel.GetModifiersList());
+            modifierBuilder.AddRange(viewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<Modifier>());
+            modifierBuilder.AddRange(viewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<Modifier>());
+            var modifiers = modifierBuilder.ToImmutableList();
 
             var newDataContainer = calculateShipDataContainer ? DataContainerUtility.GetShipDataContainerFromBuild(container.Ship, container.Build.Modules, container.Ship.ShipUpgradeInfo.ShipUpgrades, modifiers) : container.ShipDataContainer;
             return container with { Modifiers = modifiers, ShipDataContainer = newDataContainer };

@@ -10,7 +10,7 @@ using WoWsShipBuilder.Infrastructure.Utility;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record PingerGunDataContainer : DataContainerBase
+public partial class PingerGunDataContainer : DataContainerBase
 {
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
     public decimal Reload { get; set; }
@@ -36,7 +36,7 @@ public partial record PingerGunDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MPS")]
     public decimal PingSpeed { get; set; }
 
-    public static PingerGunDataContainer? FromShip(Ship ship, IEnumerable<ShipUpgrade> shipConfiguration, List<Modifier> modifiers)
+    public static PingerGunDataContainer? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, ImmutableList<Modifier> modifiers)
     {
         if (ship.PingerGunList.IsEmpty)
         {
@@ -44,7 +44,7 @@ public partial record PingerGunDataContainer : DataContainerBase
         }
 
         PingerGun pingerGun;
-        var pingerUpgrade = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Sonar);
+        var pingerUpgrade = shipConfiguration.Find(c => c.UcType == ComponentType.Sonar);
         if (pingerUpgrade is null && ship.PingerGunList.Count is 1)
         {
             Logging.Logger.LogWarning("No sonar upgrade information found for ship {ShipName} even though there is one sonar module available", ship.Name);
