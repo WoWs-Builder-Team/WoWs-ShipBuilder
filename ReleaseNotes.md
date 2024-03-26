@@ -12,11 +12,10 @@ Download [**WoWsShipBuilderSetup.exe**](https://github.com/WoWs-Builder-Team/WoW
 <summary>Click to show release notes</summary>
 
 ### Additions
-- Ammo switch time is now visible in ship comparison
 
 ### Changes
-- Technical improvements to the application
 
 ### Bugfixes
+- Ship upgrades cannot be selected on mobile devices (#303)
 
 </details>
