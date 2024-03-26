@@ -19,7 +19,7 @@ public static class ServiceCollectionExtensions
         services.AddMudServices(config =>
         {
             config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight;
-            config.PopoverOptions.Mode = PopoverMode.Legacy;
+            config.PopoverOptions.Mode = PopoverMode.Default;
         });
         services.AddSingleton<ILocalizationProvider, LocalizationProvider>();
         services.AddSingleton<MetricsService>();

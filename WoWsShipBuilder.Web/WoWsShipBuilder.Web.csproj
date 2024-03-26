@@ -12,7 +12,6 @@
     <ItemGroup>
       <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.8" />
       <PackageReference Include="prometheus-net.AspNetCore" Version="8.2.1" />
-      <PackageReference Include="ReactiveUI.Blazor" Version="18.4.44" />
       <PackageReference Include="MudBlazor" Version="6.19.1" />
       <PackageReference Include="Sentry.NLog" Version="4.2.1" />
       <PackageReference Include="Nerdbank.GitVersioning" PrivateAssets="all" Version="3.6.133" />
