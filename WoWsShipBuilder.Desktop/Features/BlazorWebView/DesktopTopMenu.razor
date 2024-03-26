@@ -41,7 +41,7 @@
     }
     else if (updateStatus == UpdateStatus.Error)
     {
-        <MudTooltip Text="@NotificationService.AppUpdateMessage">
+        <MudTooltip Text="@Localizer.SimpleAppLocalization(NotificationService.AppUpdateMessage)">
             <MudImage Src="/assets/icons/error.png" Width="50" Height="50" Style="margin-right: 10px;"/>
         </MudTooltip>
     }

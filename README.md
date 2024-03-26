@@ -17,7 +17,7 @@ You can either share builds with others or just store them and access them later
 
 It comes with a nice dark mode and includes some additional features like visualizing the turret angles of a ship or showing the dispersion graphs for one or more ships.
 
-The application is distributed using Clowd.Squirrel, an automatic installer and updater that will install the application and keep it up to date after the first installation.
+The application is distributed using Velopack, an automatic installer and updater that will install the application and keep it up to date after the first installation.
 Update checks only run on application startup so it won't mess up your system with unnecessary services. The application itself is stored in your local app data and installation should not require admin permissions.
 
 **WARNING**: You may get a Windows SmartScreen warning or a warning from your AV software when installing the tool. This is due to the distributed binary being unsigned. Unfortunately, code-signing certificates are rather expensive so we are not able to sign our binary at the moment.

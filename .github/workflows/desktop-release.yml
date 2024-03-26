@@ -1,0 +1,86 @@
+name: Build and create release
+
+on:
+  push:
+    branches:
+      - release/desktop
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+    name: Build and release application
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - name: Create application config
+        run: 'echo "$APPCONFIG" > WoWsShipBuilder.Desktop/Infrastructure/StaticConfiguration/ApplicationOptions.json'
+        shell: bash
+        env:
+          APPCONFIG: ${{secrets.SHIPBUILDER_APPCONFIG}}
+
+      - name: Restore dependencies
+        run: dotnet restore dirs.proj
+      - name: Build application
+        run: dotnet build dirs.proj --no-restore -c Release
+
+      - name: Store current application version
+        uses: actions/upload-artifact@v4
+        with:
+          name: buildInfo
+          path: WoWsShipBuilder.Desktop\buildInfo.txt
+      - name: Store current application version as environment variable
+        run: echo ("CURRENT_TAG=v" + (Get-Content -Path .\WoWsShipBuilder.Desktop\buildInfo.txt -First 1)) >> $env:GITHUB_ENV
+
+      - name: Test application
+        run: dotnet test dirs.proj --no-build -c Release --verbosity normal
+      - name: Extract certificate
+        run: |
+          $certB64 = '${{ secrets.WOWSSB_CERT }}'
+          [IO.File]::WriteAllBytes(".\wowssb.pfx", [Convert]::FromBase64String([char[]]$certB64))
+      - name: Create Velopack Release
+        run: |
+          dotnet tool install -g vpk
+          vpk download github -o releases --repoUrl https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder
+          installer\BuildVelopackRelease.ps1 -skipBuild -signingCert wowssb.pfx -signingPassword '${{ secrets.WOWSSB_CERT_KEY }}'
+          vpk upload github -o releases --repoUrl https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder --publish --releaseName ${{ env.CURRENT_TAG }} --tag ${{ env.CURRENT_TAG }} --token ${{ secrets.GITHUB_TOKEN }}
+        shell: pwsh
+      - name: Cleanup certificate
+        run: Remove-Item .\wowssb.pfx
+
+      - name: Release
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          bodyFile: ReleaseNotes.md
+          tag: ${{ env.CURRENT_TAG }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  sentry-notify:
+    runs-on: ubuntu-latest
+    name: Create release on sentry
+    needs: build-and-release
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download version info
+        uses: actions/download-artifact@v3
+        with:
+          name: buildInfo
+          path: buildInfo
+      - name: Process release version
+        run: echo "RELEASE_VERSION=$(head -n 1 buildInfo/buildInfo.txt)" >> $GITHUB_ENV
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_RELEASE_AUTH }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: production
+          version: ${{ env.RELEASE_VERSION }}

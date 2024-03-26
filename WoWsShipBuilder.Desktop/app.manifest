@@ -13,7 +13,6 @@
             </dpiAwareness>
         </asmv3:windowsSettings>
     </asmv3:application>
-    <SquirrelAwareVersion xmlns="urn:schema-squirrel-com:asm.v1">1</SquirrelAwareVersion>
     <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
         <application>
             <!-- Windows 10 -->

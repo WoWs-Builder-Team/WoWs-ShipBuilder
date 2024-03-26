@@ -26,9 +26,9 @@ https://www.nuget.org/packages/Avalonia
 
 ----------
 
-Clowd.Squirrel
+Velopack
 
-https://www.nuget.org/packages/Clowd.Squirrel
+https://www.nuget.org/packages/Velopack/
 
 ----------
 

@@ -116,4 +116,4 @@ Other style rules:
 
 If you need additional nuget dependencies, please contact the repository maintainers first before adding them.
 We want to keep the application as small as possible. If you add dependencies, ensure that they work in a trimmed release.
-To test the release-compatibility of your local changes, run the local release test script `installer\Tools\SquirrelBuildAndRelease.ps1` and install the created executable locally.
+To test the release-compatibility of your local changes, run the local release test script `installer\BuildVelopackRelease.ps1` and install the created executable locally.
