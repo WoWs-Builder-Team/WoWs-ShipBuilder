@@ -74,17 +74,18 @@ public static class ModifierProcessor
 
     private static string GetUiModifierDescription(Modifier modifier, ILocalizer localizer)
     {
+        var description = string.Empty;
         if (!string.IsNullOrEmpty(modifier.GameLocalizationKey))
         {
-            return localizer.GetGameLocalization(modifier.GameLocalizationKey).Localization;
+            description = localizer.GetGameLocalization(modifier.GameLocalizationKey).Localization;
         }
-
-        if (!string.IsNullOrEmpty(modifier.AppLocalizationKey))
+        else if (!string.IsNullOrEmpty(modifier.AppLocalizationKey))
         {
-            return localizer.GetAppLocalization(modifier.AppLocalizationKey).Localization;
+            description = localizer.GetAppLocalization(modifier.AppLocalizationKey).Localization;
         }
 
-        return string.Empty;
+                                                                                                                    // Remove [HIDDEN] text from some skills modifiers.
+        return description.StartsWith("[UNUSED]", StringComparison.InvariantCultureIgnoreCase) ? string.Empty : description.Replace("[HIDDEN]", "").Trim();
     }
 
     public static string GetUiModifierString(Modifier modifier, ReturnFilter returnFilter, ILocalizer localizer)
@@ -102,13 +103,11 @@ public static class ModifierProcessor
             description = GetUiModifierDescription(modifier, localizer);
         }
 
-        if (string.IsNullOrEmpty(description.Trim()) && returnFilter != ReturnFilter.Value)
+        if (string.IsNullOrEmpty(description) && returnFilter != ReturnFilter.Value)
         {
             return "";
         }
 
-        // Remove [HIDDEN] text from some skills modifiers.
-        description = description.Replace("[HIDDEN]", "");
-        return value + " " + description.Trim();
+        return value + " " + description;
     }
 }
