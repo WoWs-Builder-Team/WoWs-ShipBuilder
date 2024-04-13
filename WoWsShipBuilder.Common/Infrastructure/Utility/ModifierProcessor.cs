@@ -84,8 +84,8 @@ public static class ModifierProcessor
             description = localizer.GetAppLocalization(modifier.AppLocalizationKey).Localization;
         }
 
-                                                                                                                    // Remove [HIDDEN] text from some skills modifiers.
-        return description.StartsWith("[UNUSED]", StringComparison.InvariantCultureIgnoreCase) ? string.Empty : description.Replace("[HIDDEN]", "").Trim();
+        // Remove [HIDDEN] text from some skills modifiers.
+        return description.Replace("[HIDDEN]", "").Trim();
     }
 
     public static string GetUiModifierString(Modifier modifier, ReturnFilter returnFilter, ILocalizer localizer)
