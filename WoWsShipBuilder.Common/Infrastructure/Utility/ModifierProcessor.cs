@@ -66,7 +66,7 @@ public static class ModifierProcessor
                 displayValue += $" {localizer.GetAppLocalization(nameof(Translation.Unit_FPM)).Localization}";
                 break;
             default:
-                throw new ArgumentOutOfRangeException(null, $@"Modifier {modifier.Name} has an invalid or not assigned unit");
+                throw new ArgumentOutOfRangeException(string.Empty, $@"Modifier {modifier.Name} has an invalid or not assigned unit");
         }
 
         return displayValue;
@@ -108,6 +108,6 @@ public static class ModifierProcessor
             return "";
         }
 
-        return value + " " + description;
+        return (value + " " + description).Trim();
     }
 }
