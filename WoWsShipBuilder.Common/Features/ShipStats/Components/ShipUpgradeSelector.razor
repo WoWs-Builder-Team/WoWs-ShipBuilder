@@ -47,7 +47,7 @@
                         <MudPaper Outlined="true">
                             @foreach (var modernization in columnModernizations)
                             {
-                                <MudMenuItem Style="padding: 2px 4px;" OnClick="@(_ => ViewModel.OnModernizationSelected(modernization, columnModernizations))">
+                                <MudMenuItem Style="padding: 2px 4px;" OnAction="@(_ => ViewModel.OnModernizationSelected(modernization, columnModernizations))">
                                     <MudTooltip Color="Color.Transparent" Placement="Placement.Right" Delay="350">
                                         <ChildContent>
                                             <MudImage Width="@GetImageSize(true)" Height="@GetImageSize(true)" Src="@GetUpgradeIcon(modernization)"/>

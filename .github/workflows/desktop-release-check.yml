@@ -6,40 +6,35 @@ on:
       - release/desktop
 
 jobs:
-  build-and-test:
+  verify-velopack-release:
     runs-on: windows-latest
-    name: Release build and test
+    name: Verify Velopack release process
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           global-json-file: global.json
+
+      - name: Restore dependencies
+        run: dotnet restore dirs.proj
       - name: Build application
-        run: dotnet build dirs.proj -c Release
+        run: dotnet build dirs.proj --no-restore -c Release
       - name: Test application
         run: dotnet test dirs.proj --no-build -c Release --verbosity normal
 
-  verify-squirrel-release:
-    runs-on: windows-latest
-    name: Verify squirrel release process
-
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          global-json-file: global.json
-      - name: Run SquirrelBuildAndRelease
-        run: installer\Tools\SquirrelBuildAndRelease.ps1
-        shell: powershell
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          path: releases/WoWsShipBuilderSetup.exe
-          retention-days: 5
+      - name: Extract certificate
+        run: |
+          $certB64 = '${{ secrets.WOWSSB_CERT }}'
+          [IO.File]::WriteAllBytes(".\wowssb.pfx", [Convert]::FromBase64String([char[]]$certB64))
+      - name: Create Velopack Release
+        run: |
+          dotnet tool install -g vpk
+          vpk download github -o releases --repoUrl ${{ github.server_url }}/${{ github.repository }}
+          installer\BuildVelopackRelease.ps1 -skipBuild -signingCert wowssb.pfx -signingPassword '${{ secrets.WOWSSB_CERT_KEY }}'
+        shell: pwsh
+      - name: Cleanup certificate
+        run: Remove-Item .\wowssb.pfx
