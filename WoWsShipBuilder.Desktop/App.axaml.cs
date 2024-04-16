@@ -14,8 +14,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using NLog;
 using Splat;
-using Squirrel;
-using Squirrel.Sources;
+using Velopack;
+using Velopack.Sources;
 using WoWsShipBuilder.Desktop.Features.MessageBox;
 using WoWsShipBuilder.Desktop.Features.SplashScreen;
 using WoWsShipBuilder.Desktop.Infrastructure;
@@ -127,8 +127,8 @@ public class App : Application
     {
         this.logger.LogInformation("Current version: {Version}", Assembly.GetExecutingAssembly().GetName().Version);
 
-        using var updateManager = new UpdateManager(new GithubSource("https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder", null, false));
-        if (!updateManager.IsInstalledApp)
+        var updateManager = new UpdateManager(new GithubSource("https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder", null, false));
+        if (!updateManager.IsInstalled)
         {
             this.logger.LogInformation("No update.exe found, aborting update check");
             return;
@@ -138,22 +138,17 @@ public class App : Application
         try
         {
             // Can throw a null-reference-exception, no idea why.
-            var updateInfo = await updateManager.CheckForUpdate();
-            if (updateInfo.ReleasesToApply.Count == 0)
+            var newVersion = await updateManager.CheckForUpdatesAsync();
+            if (newVersion is null)
             {
                 this.logger.LogInformation("No app update found");
                 return;
             }
 
             await notificationService.NotifyAppUpdateStart();
-            var release = await updateManager.UpdateApp();
-            if (release == null)
-            {
-                this.logger.LogInformation("No app update found");
-                return;
-            }
+            await updateManager.DownloadUpdatesAsync(newVersion);
 
-            this.logger.LogInformation("App updated to version {ReleaseVersion}", release.Version);
+            this.logger.LogInformation("App updated to version {ReleaseVersion}", newVersion.TargetFullRelease.Version);
             await notificationService.NotifyAppUpdateComplete();
             var result = await ShowUpdateRestartDialog((this.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow, this.Services.GetRequiredService<ILocalizer>());
             if (result.Equals(MessageBox.MessageBoxResult.Yes))
@@ -161,13 +156,9 @@ public class App : Application
                 this.logger.LogInformation("User decided to restart after update");
                 if (OperatingSystem.IsWindows())
                 {
-                    UpdateManager.RestartApp();
+                    updateManager.ApplyUpdatesAndRestart(newVersion);
                 }
             }
-        }
-        catch (NullReferenceException)
-        {
-            this.logger.LogDebug("NullReferenceException during app update");
         }
         catch (Exception e)
         {

@@ -1,6 +1,4 @@
-﻿@using WoWsShipBuilder.DataStructures
-@using WoWsShipBuilder.DataStructures.Ship
-@using WoWsShipBuilder.Infrastructure.Localization
+﻿@using WoWsShipBuilder.DataStructures.Ship
 @inherits ReactiveComponentBase<WoWsShipBuilder.Features.ShipStats.ViewModels.ShipModuleViewModel>
 @inject ILocalizer Localizer
 
@@ -21,7 +19,7 @@
                             <MudButton OnClick="@(_ => ViewModel.SelectModuleExecute(upgrade))" Class="pa-2 mb-n2" Style="@GetImageStyle()" Variant="Variant.Outlined" >
                                 <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetModuleIcon(upgrade, ViewModel.SelectedModules.Contains(upgrade))"/>
                             </MudButton>
-                            <MudText Style="@($"min-height: {(columnUpgrade.IndexOf(upgrade) == columnUpgrade.Count - 1 ? "20" : "40")}px; max-width: 80px; max-height: 40px; overflow: hidden; white-space: break-spaces; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; font-size: small")" Align="Align.Center" Typo="Typo.body2">
+                            <MudText Style="@($"min-height: {(columnUpgrade.IndexOf(upgrade) == columnUpgrade.Count - 1 ? "20" : "40")}px; max-width: {(ViewModel.ShipUpgrades.Count > 5 ? "69" : "80")}px; max-height: 40px; overflow: hidden; white-space: break-spaces; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; font-size: small")" Align="Align.Center" Typo="Typo.body2">
                                 @Localizer.GetGameLocalization(upgrade.Name).Localization
                             </MudText>
                         </MudStack>
