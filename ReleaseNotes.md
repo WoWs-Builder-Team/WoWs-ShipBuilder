@@ -1,4 +1,4 @@
-# Update 2.5
+# Update 2.6
 
 ## Download and Install
 
