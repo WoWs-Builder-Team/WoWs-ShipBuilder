@@ -6,23 +6,6 @@ on:
       - release/desktop
 
 jobs:
-  build-and-test:
-    runs-on: windows-latest
-    name: Release build and test
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          global-json-file: global.json
-      - name: Build application
-        run: dotnet build dirs.proj -c Release
-      - name: Test application
-        run: dotnet test dirs.proj --no-build -c Release --verbosity normal
-
   verify-velopack-release:
     runs-on: windows-latest
     name: Verify Velopack release process
@@ -35,9 +18,23 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           global-json-file: global.json
+
+      - name: Restore dependencies
+        run: dotnet restore dirs.proj
+      - name: Build application
+        run: dotnet build dirs.proj --no-restore -c Release
+      - name: Test application
+        run: dotnet test dirs.proj --no-build -c Release --verbosity normal
+
+      - name: Extract certificate
+        run: |
+          $certB64 = '${{ secrets.WOWSSB_CERT }}'
+          [IO.File]::WriteAllBytes(".\wowssb.pfx", [Convert]::FromBase64String([char[]]$certB64))
       - name: Create Velopack Release
         run: |
           dotnet tool install -g vpk
-          vpk download github -o releases --repoUrl https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder
-          installer\BuildVelopackRelease.ps1 -signingCert wowssb.pfx -signingPassword '${{ secrets.WOWSSB_CERT_KEY }}'
+          vpk download github -o releases --repoUrl ${{ github.server_url }}/${{ github.repository }}
+          installer\BuildVelopackRelease.ps1 -skipBuild -signingCert wowssb.pfx -signingPassword '${{ secrets.WOWSSB_CERT_KEY }}'
         shell: pwsh
+      - name: Cleanup certificate
+        run: Remove-Item .\wowssb.pfx

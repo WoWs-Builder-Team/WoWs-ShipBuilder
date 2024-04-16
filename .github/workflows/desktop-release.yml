@@ -46,9 +46,9 @@ jobs:
       - name: Create Velopack Release
         run: |
           dotnet tool install -g vpk
-          vpk download github -o releases --repoUrl https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder
+          vpk download github -o releases --repoUrl ${{ github.server_url }}/${{ github.repository }}
           installer\BuildVelopackRelease.ps1 -skipBuild -signingCert wowssb.pfx -signingPassword '${{ secrets.WOWSSB_CERT_KEY }}'
-          vpk upload github -o releases --repoUrl https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder --publish --releaseName ${{ env.CURRENT_TAG }} --tag ${{ env.CURRENT_TAG }} --token ${{ secrets.GITHUB_TOKEN }}
+          vpk upload github -o releases --repoUrl ${{ github.server_url }}/${{ github.repository }} --publish --releaseName ${{ env.CURRENT_TAG }} --tag ${{ env.CURRENT_TAG }} --token ${{ secrets.GITHUB_TOKEN }}
         shell: pwsh
       - name: Cleanup certificate
         run: Remove-Item .\wowssb.pfx
