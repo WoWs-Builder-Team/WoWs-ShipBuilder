@@ -36,5 +36,8 @@ jobs:
         with:
           global-json-file: global.json
       - name: Create Velopack Release
-        run: installer\BuildVelopackRelease.ps1
+        run: |
+          dotnet tool install -g vpk
+          vpk download github -o releases --repoUrl https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder
+          installer\BuildVelopackRelease.ps1 -signingCert wowssb.pfx -signingPassword '${{ secrets.WOWSSB_CERT_KEY }}'
         shell: pwsh
