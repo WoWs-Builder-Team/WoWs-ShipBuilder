@@ -15,7 +15,7 @@ public partial class DataElementGeneratorTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = nameof(TestValues))]
                          public string Test { get; set; } = default!;
@@ -29,7 +29,7 @@ public partial class DataElementGeneratorTest
                        #nullable enable
                        namespace Test
                        {
-                           public partial record TestRecord
+                           public partial class TestDataContainer
                            {
                                private void UpdateDataElements()
                                {
@@ -60,7 +60,7 @@ public partial class DataElementGeneratorTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = nameof(TestValues), ArgumentsTextKind = TextKind.LocalizationKey)]
                          public string Test { get; set; } = default!;
@@ -74,7 +74,7 @@ public partial class DataElementGeneratorTest
                        #nullable enable
                        namespace Test
                        {
-                           public partial record TestRecord
+                           public partial class TestDataContainer
                            {
                                private void UpdateDataElements()
                                {
@@ -105,7 +105,7 @@ public partial class DataElementGeneratorTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = nameof(TestValues), ValueTextKind = TextKind.LocalizationKey)]
                          public string Test { get; set; } = default!;
@@ -119,7 +119,7 @@ public partial class DataElementGeneratorTest
                        #nullable enable
                        namespace Test
                        {
-                           public partial record TestRecord
+                           public partial class TestDataContainer
                            {
                                private void UpdateDataElements()
                                {
@@ -150,7 +150,7 @@ public partial class DataElementGeneratorTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = nameof(TestValues), ValueTextKind = TextKind.LocalizationKey, ArgumentsTextKind = TextKind.LocalizationKey)]
                          public string Test { get; set; } = default!;
@@ -164,7 +164,7 @@ public partial class DataElementGeneratorTest
                        #nullable enable
                        namespace Test
                        {
-                           public partial record TestRecord
+                           public partial class TestDataContainer
                            {
                                private void UpdateDataElements()
                                {
@@ -195,7 +195,7 @@ public partial class DataElementGeneratorTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = nameof(TestValues), ArgumentsTextKind = TextKind.AppLocalizationKey)]
                          public string Test { get; set; } = default!;
@@ -209,7 +209,7 @@ public partial class DataElementGeneratorTest
                        #nullable enable
                        namespace Test
                        {
-                           public partial record TestRecord
+                           public partial class TestDataContainer
                            {
                                private void UpdateDataElements()
                                {
@@ -240,7 +240,7 @@ public partial class DataElementGeneratorTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = nameof(TestValues), ValueTextKind = TextKind.AppLocalizationKey)]
                          public string Test { get; set; } = default!;
@@ -254,7 +254,7 @@ public partial class DataElementGeneratorTest
                        #nullable enable
                        namespace Test
                        {
-                           public partial record TestRecord
+                           public partial class TestDataContainer
                            {
                                private void UpdateDataElements()
                                {
@@ -285,7 +285,7 @@ public partial class DataElementGeneratorTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = nameof(TestValues), ValueTextKind = TextKind.AppLocalizationKey, ArgumentsTextKind = TextKind.AppLocalizationKey)]
                          public string Test { get; set; } = default!;
@@ -299,7 +299,7 @@ public partial class DataElementGeneratorTest
                        #nullable enable
                        namespace Test
                        {
-                           public partial record TestRecord
+                           public partial class TestDataContainer
                            {
                                private void UpdateDataElements()
                                {

@@ -1,11 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using WoWsShipBuilder.DataStructures.Versioning;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.HttpClients;
-using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Web.Infrastructure;
 
@@ -27,8 +24,7 @@ public class ServerAwsClient : IAwsClient
     public async Task<VersionInfo> DownloadVersionInfo(ServerType serverType)
     {
         var url = @$"{this.options.Host}/api/{serverType.StringName()}/VersionInfo.json";
-        string stringContent = await this.httpClient.GetStringAsync(url);
-        return JsonConvert.DeserializeObject<VersionInfo>(stringContent) ?? throw new HttpRequestException("Unable to process VersionInfo response from AWS server.");
+        return await this.httpClient.GetFromJsonAsync<VersionInfo>(url, AppConstants.JsonSerializerOptions) ?? throw new HttpRequestException("Unable to process VersionInfo response from AWS server.");
     }
 
     public async Task DownloadFiles(ServerType serverType, List<(string, string)> relativeFilePaths, IProgress<int>? downloadProgress = null)

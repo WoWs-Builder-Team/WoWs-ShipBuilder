@@ -5,18 +5,18 @@
 @using DynamicData
 @using Microsoft.AspNetCore.WebUtilities
 @using Microsoft.Extensions.Options
-@using Newtonsoft.Json
 @using WoWsShipBuilder.Features.Builds.Components
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.LinkShortening
 @using WoWsShipBuilder.Features.Settings
 @using WoWsShipBuilder.Infrastructure.ApplicationData
-@using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
 @using System.Collections.Immutable
+@using System.Text.Json
+@using WoWsShipBuilder.Features.Navigation
 
 @implements IAsyncDisposable
 @inject ILocalizer Localizer
@@ -40,7 +40,7 @@
                 </MudButton>
                 <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Style="margin-top: 0;" Class="file-upload-full-height" Accept=".png">
                     <ButtonTemplate>
-                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Image" Style="height: 100%;" for="@context">Import from image</MudButton>
+                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Image" Style="height: 100%;" for="@context">@Localizer.SimpleAppLocalization(nameof(Translation.BuildImport_ImportFromImage))</MudButton>
                     </ButtonTemplate>
                 </MudFileUpload>
             </MudStack>
@@ -408,12 +408,12 @@
         if (MultiSelect)
         {
             var ship = AppData.ShipDictionary[shipIndex];
-            SelectedShips.Add(ShipBuildContainer.CreateNew(ship, null, null));
+            SelectedShips.Add(ShipBuildContainer.CreateNew(ship, null, ImmutableArray<int>.Empty));
         }
         else if (!MultiSelect && SelectedShips.Count == 0)
         {
             var ship = AppData.ShipDictionary[shipIndex];
-            SelectedShips.Add(ShipBuildContainer.CreateNew(ship, null, null));
+            SelectedShips.Add(ShipBuildContainer.CreateNew(ship, null, ImmutableArray<int>.Empty));
         }
     }
 
@@ -424,12 +424,12 @@
         if (MultiSelect)
         {
             MetricsService.BuildImports.WithLabels("ship-selector", "saved-builds").Inc();
-            SelectedShips.Add(ShipBuildContainer.CreateNew(AppData.ShipDictionary[build.ShipIndex], build, null));
+            SelectedShips.Add(ShipBuildContainer.CreateNew(AppData.ShipDictionary[build.ShipIndex], build, ImmutableArray<int>.Empty));
         }
         else if (!MultiSelect && SelectedShips.Count == 0)
         {
             MetricsService.BuildImports.WithLabels("ship-selector", "saved-builds").Inc();
-            SelectedShips.Add(ShipBuildContainer.CreateNew(AppData.ShipDictionary[build.ShipIndex], build, null));
+            SelectedShips.Add(ShipBuildContainer.CreateNew(AppData.ShipDictionary[build.ShipIndex], build, ImmutableArray<int>.Empty));
         }
     }
 
@@ -500,7 +500,7 @@
 
         try
         {
-            var build = buildString.StartsWith('{') ? JsonConvert.DeserializeObject<Build>(buildString)! : Build.CreateBuildFromString(buildString);
+            var build = buildString.StartsWith('{') ? JsonSerializer.Deserialize<Build>(buildString, AppConstants.JsonSerializerOptions)! : Build.CreateBuildFromString(buildString);
             AddSavedBuild(Build.UpgradeBuild(build));
             buildString = string.Empty;
             StateHasChanged();

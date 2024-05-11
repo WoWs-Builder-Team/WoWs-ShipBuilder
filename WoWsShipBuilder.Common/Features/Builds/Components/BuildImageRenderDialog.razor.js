@@ -1,23 +1,49 @@
 ﻿export async function downloadBuildImage(id, imgName, buildString) {
     let img = "";
-    await html2canvas(document.querySelector("#" + id), {
-        backgroundColor: "#282828",
-        useCORS: true,
-        allowTaint: true,
-        scale: 1.8,
-        ignoreElements: function (element) {
-            if ('editBuildNameIcon' === element.id) {
-                return true;
-            }
-        },
-    }).then(function (canvas) {
+    await renderBuildImage(id).then(function (canvas) {
         encodeBuildString(canvas, buildString);
         img = canvas.toDataURL("image/png", 1.0);
+        copyBuildImageToClipboard(canvas);
     });
     let d = document.createElement("a");
     d.href = img;
     d.download = imgName + ".png";
     d.click();
+}
+
+export async function copyBuildImage(id, buildString) {
+    await renderBuildImage(id).then(function (canvas) {
+        encodeBuildString(canvas, buildString);
+        copyBuildImageToClipboard(canvas);
+    });
+}
+
+export function isClipboardAvailable() {
+    return !!(navigator.clipboard && window.ClipboardItem);
+}
+
+function renderBuildImage(id) {
+    const target = document.querySelector("#" + id);
+    return domtoimage.toCanvas(target, {
+        filter: function (element) {
+            return 'editBuildNameIcon' !== element.id;
+        },
+        bgcolor: "#282828",
+        copyDefaultStyles: false,
+        height: target.offsetHeight,
+        width: target.offsetWidth,
+    });
+}
+
+function copyBuildImageToClipboard(canvas) {
+    if (isClipboardAvailable()) {
+        canvas.toBlob(blob => {
+            const item = new ClipboardItem({ 'image/png': blob });
+            navigator.clipboard.write([item]).catch(err => console.log(err));
+        });
+    } else {
+        console.log("Copy to clipboard function is disabled or not yet available in your browser. If you are using Firefox go into about:config page and set the property dom.events.asyncClipboard.clipboardItem to true.");
+    }
 }
 
 function encodeBuildString(canvas, buildString) {

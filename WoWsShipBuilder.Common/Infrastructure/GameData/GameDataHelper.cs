@@ -146,7 +146,6 @@ public static class GameDataHelper
             ShipCategory.Premium => "P",
             ShipCategory.Special => "S",
             ShipCategory.TestShip => "Ts",
-            ShipCategory.SuperShip => "Ss",
             _ => throw new ArgumentOutOfRangeException(nameof(category), category, null),
         };
     }
@@ -159,7 +158,7 @@ public static class GameDataHelper
             "P" => ShipCategory.Premium,
             "S" => ShipCategory.Special,
             "Ts" => ShipCategory.TestShip,
-            "Ss" => ShipCategory.SuperShip,
+            "Ss" => ShipCategory.TechTree,
             _ => throw new ArgumentOutOfRangeException(nameof(index), index, null),
         };
     }

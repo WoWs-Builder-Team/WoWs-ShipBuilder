@@ -1,6 +1,6 @@
-﻿using FluentAssertions;
+﻿using System.Text.Json;
+using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
-using Newtonsoft.Json;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.Features.Builds;
 
@@ -95,7 +95,7 @@ public class BuildDeserialization
 
         Func<Build> action = () => Build.CreateBuildFromString(input);
 
-        action.Should().ThrowExactly<FormatException>().WithInnerException<JsonSerializationException>();
+        action.Should().ThrowExactly<FormatException>().WithInnerException<JsonException>();
     }
 
     [Test]
@@ -105,7 +105,7 @@ public class BuildDeserialization
 
         Func<Build> action = () => Build.CreateBuildFromString(input);
 
-        action.Should().ThrowExactly<FormatException>().WithInnerException<JsonSerializationException>();
+        action.Should().ThrowExactly<FormatException>().WithInnerException<ArgumentNullException>();
     }
 
     [Test]

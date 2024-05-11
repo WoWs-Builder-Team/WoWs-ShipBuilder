@@ -1,8 +1,10 @@
+using System.Collections.Immutable;
 using System.Globalization;
 using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
@@ -10,11 +12,11 @@ using WoWsShipBuilder.Infrastructure.Utility;
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record SecondaryBatteryDataContainer : DataContainerBase
+public partial class SecondaryBatteryDataContainer : DataContainerBase
 {
     public string Name { get; set; } = default!;
 
-    public List<string> TurretName { get; set; } = new();
+    public ImmutableList<string> TurretName { get; set; } = ImmutableList<string>.Empty;
 
     public FormattedTextDataElement TurretSetup { get; set; } = default!;
 
@@ -24,7 +26,6 @@ public partial record SecondaryBatteryDataContainer : DataContainerBase
 
     public string BarrelsLayout { get; set; } = default!;
 
-    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
     public decimal Range { get; set; }
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
@@ -35,6 +36,8 @@ public partial record SecondaryBatteryDataContainer : DataContainerBase
 
     [DataElementType(DataElementTypes.KeyValue)]
     public string TheoreticalDpm { get; set; } = default!;
+
+    public int Dpm { get; set; }
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "FPM")]
     [DataElementFiltering(true, "ShouldDisplayFpm")]
@@ -49,7 +52,21 @@ public partial record SecondaryBatteryDataContainer : DataContainerBase
 
     public bool DisplayFpm { get; set; }
 
-    public static List<SecondaryBatteryDataContainer>? FromShip(Ship ship, IEnumerable<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers)
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "DispersionAtMaxRange", UnitKey = "M")]
+    public decimal HorizontalDisp { get; set; }
+
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "DispersionAtMaxRange", UnitKey = "M")]
+    public decimal VerticalDisp { get; set; }
+
+    public decimal DelimDist { get; set; }
+
+    public decimal TaperDist { get; set; }
+
+    public Dispersion DispersionData { get; set; } = default!;
+
+    public double DispersionModifier { get; set; }
+
+    public static List<SecondaryBatteryDataContainer>? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, ImmutableList<Modifier> modifiers)
     {
         var secondary = ship.Hulls[shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Hull][0]].SecondaryModule;
         if (secondary == null)
@@ -58,7 +75,7 @@ public partial record SecondaryBatteryDataContainer : DataContainerBase
         }
 
         var result = new List<SecondaryBatteryDataContainer>();
-        List<List<Gun>> groupedSecondaries = secondary.Guns.GroupBy(gun => new { gun.BarrelDiameter, gun.NumBarrels })
+        var groupedSecondaries = secondary.Guns.GroupBy(gun => new { gun.BarrelDiameter, gun.NumBarrels })
             .OrderBy(group => group.Key.BarrelDiameter)
             .ThenBy(group => group.Key.NumBarrels)
             .Select(group => group.ToList())
@@ -70,19 +87,16 @@ public partial record SecondaryBatteryDataContainer : DataContainerBase
             string arrangementString = $"{secondaryGroup.Count} x {secondaryGun.NumBarrels} {{0}}";
             List<string> turretName = new() { secondaryGun.Name };
 
-            var reloadModifiers = modifiers.FindModifiers("GSShotDelay");
-            float reload = reloadModifiers.Aggregate((float)secondaryGun.Reload, (current, reloadModifier) => current * reloadModifier);
+            decimal reload = modifiers.ApplyModifiers("SecondaryBatteryDataContainer.Reload", secondaryGun.Reload);
 
-            var arModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
-            reload = arModifiers.Aggregate(reload, (current, arModifier) => current * (1 - (arModifier / 100)));
+            decimal range = modifiers.ApplyModifiers("SecondaryBatteryDataContainer.Range", secondary.MaxRange) / 1000;
 
-            var otherReloadModifiers = modifiers.FindModifiers("ATBAReloadCoeff");
-            reload = otherReloadModifiers.Aggregate(reload, (current, modifier) => current * modifier);
+            // Consider dispersion modifiers
+            var dispersionModifier = (float)modifiers.ApplyModifiers("SecondaryBatteryDataContainer.Dispersion.IdealRadius", 1m);
+            var dispersion = secondaryGun.Dispersion;
+            var dispersionContainer = dispersion.CalculateDispersion((double)range * 1000, dispersionModifier);
 
-            var rangeModifiers = modifiers.FindModifiers("GSMaxDist");
-            decimal range = rangeModifiers.Aggregate(secondary.MaxRange, (current, rangeModifier) => current * (decimal)rangeModifier);
-
-            decimal rof = 60 / (decimal)reload;
+            decimal rof = 60 / reload;
 
             var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
             nfi.NumberGroupSeparator = "'";
@@ -92,15 +106,21 @@ public partial record SecondaryBatteryDataContainer : DataContainerBase
             var secondaryBatteryDataContainer = new SecondaryBatteryDataContainer
             {
                 Name = arrangementString,
-                TurretName = turretName,
+                TurretName = turretName.ToImmutableList(),
                 TurretSetup = new(arrangementString, turretName, ArgumentsTextKind: DataElementTextKind.LocalizationKey),
                 BarrelsLayout = $"{secondaryGroup.Count} x {secondaryGun.NumBarrels}",
                 BarrelsCount = secondaryGroup.Count * secondaryGun.NumBarrels,
                 GunCaliber = Math.Round(secondaryGun.BarrelDiameter * 1000),
-                Range = Math.Round(range / 1000, 2),
-                Reload = Math.Round((decimal)reload, 2),
+                Range = Math.Round(range, 2),
+                Reload = Math.Round(reload, 2),
                 RoF = Math.Round(rof * barrelCount, 1),
                 Sigma = secondary.Sigma,
+                DelimDist = (range * (decimal)dispersion.Delim) / 1000,
+                TaperDist = (decimal)dispersion.TaperDist / 1000,
+                HorizontalDisp = Math.Round((decimal)dispersionContainer.Horizontal, 2),
+                VerticalDisp = Math.Round((decimal)dispersionContainer.Vertical, 2),
+                DispersionData = dispersion,
+                DispersionModifier = dispersionModifier,
             };
 
             ShellDataContainer? shellData;
@@ -110,7 +130,6 @@ public partial record SecondaryBatteryDataContainer : DataContainerBase
             }
             catch (KeyNotFoundException e)
             {
-                // TODO: fix issue properly for next minor release
                 Logging.Logger.LogWarning(e, "One or more keys of the secondary data were not found");
                 shellData = new()
                 {
@@ -123,11 +142,12 @@ public partial record SecondaryBatteryDataContainer : DataContainerBase
 
             secondaryBatteryDataContainer.Shell = shellData;
             secondaryBatteryDataContainer.DisplayFpm = shellData.Type.Equals($"ArmamentType_{ShellType.HE.ShellTypeToString()}", StringComparison.Ordinal);
-            secondaryBatteryDataContainer.TheoreticalDpm = Math.Round(shellData.Damage * barrelCount * rof).ToString("n0", nfi);
+            secondaryBatteryDataContainer.Dpm = (int)Math.Round(shellData.Damage * barrelCount * rof);
+            secondaryBatteryDataContainer.TheoreticalDpm = secondaryBatteryDataContainer.Dpm.ToString("n0", nfi);
 
             if (secondaryBatteryDataContainer.DisplayFpm)
             {
-                secondaryBatteryDataContainer.PotentialFpm = Math.Round(shellData.ShellFireChance / 100 * barrelCount * rof, 2);
+                secondaryBatteryDataContainer.PotentialFpm = Math.Round((shellData.ShellFireChance / 100) * barrelCount * rof, 2);
             }
 
             secondaryBatteryDataContainer.UpdateDataElements();

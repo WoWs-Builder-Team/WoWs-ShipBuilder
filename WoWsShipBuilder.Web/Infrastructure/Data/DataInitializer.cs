@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Localization;
-using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Web.Infrastructure.Data;
 

@@ -12,7 +12,7 @@ public partial class DataElementAnalyzerTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.Tooltip, TooltipKey = "Test")]
                          public decimal Prop1 { get; set; }
@@ -32,7 +32,7 @@ public partial class DataElementAnalyzerTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.Tooltip)]
                          public decimal {|SB1002:Prop1|} { get; set; }
@@ -52,7 +52,7 @@ public partial class DataElementAnalyzerTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.Tooltip, TooltipKey = "Test", UnitKey = "Test")]
                          public decimal Prop1 { get; set; }
@@ -72,7 +72,7 @@ public partial class DataElementAnalyzerTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.Tooltip, TooltipKey = "Test", LocalizationKeyOverride = "Test")]
                          public decimal Prop1 { get; set; }
@@ -92,7 +92,7 @@ public partial class DataElementAnalyzerTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.Tooltip, TooltipKey = "Test", ArgumentsCollectionName = "Values")]
                          public decimal {|SB1003:Prop1|} { get; set; }
@@ -112,7 +112,7 @@ public partial class DataElementAnalyzerTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.Tooltip, TooltipKey = "Test", ArgumentsTextKind = TextKind.LocalizationKey)]
                          public decimal {|SB1003:Prop1|} { get; set; }
@@ -132,7 +132,7 @@ public partial class DataElementAnalyzerTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.Tooltip, TooltipKey = "Test", ArgumentsTextKind = TextKind.AppLocalizationKey)]
                          public decimal {|SB1003:Prop1|} { get; set; }
@@ -152,7 +152,7 @@ public partial class DataElementAnalyzerTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.Tooltip, TooltipKey = "Test", ValueTextKind = TextKind.LocalizationKey)]
                          public decimal {|SB1003:Prop1|} { get; set; }
@@ -172,7 +172,7 @@ public partial class DataElementAnalyzerTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.Tooltip, TooltipKey = "Test", ValueTextKind = TextKind.AppLocalizationKey)]
                          public decimal {|SB1003:Prop1|} { get; set; }

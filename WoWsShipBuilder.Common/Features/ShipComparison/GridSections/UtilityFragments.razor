@@ -1,4 +1,6 @@
-﻿@code {
+﻿@using WoWsShipBuilder.Infrastructure.Localization.Resources
+@using WoWsShipBuilder.Features.ShipStats.Components
+@code {
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
     public static readonly RenderFragment DataNotAvailableFragment = __builder =>
@@ -6,5 +8,25 @@
         <MudText Typo="Typo.body2" Color="Color.Dark">
             @ShipComparisonViewModel.DataNotAvailable
         </MudText>
+    };
+
+    // Parameter needs to be named __builder, otherwise compilation will fail.
+    // ReSharper disable once InconsistentNaming UnusedParameter.Local
+    public static readonly RenderFragment<(ILocalizer localizer, double firingRange, decimal maxRange)> OutOfRangeFragment = element => __builder =>
+    {
+        <MudTooltip Color="Color.Transparent" Delay="350" Arrow>
+            <TooltipContent>
+                <MudPaper Outlined Class="pa-2">
+                    <MudText Typo="Typo.body2">
+                        <MultilineString InputString="@($"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_OutOfRangeTooltip))} " + $"\n {element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_FiringRange))}: {element.firingRange} {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_KM))} " + $"\n {element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_MaxRange))}: {element.maxRange} {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_KM))}")"/>
+                    </MudText>
+                </MudPaper>
+            </TooltipContent>
+            <ChildContent>
+                <MudText Typo="Typo.body2" Color="Color.Dark">
+                    @element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_OutOfRange))
+                </MudText>
+            </ChildContent>
+        </MudTooltip>
     };
 }

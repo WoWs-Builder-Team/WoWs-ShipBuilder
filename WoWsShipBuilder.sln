@@ -9,12 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{0F12
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
-		ResharperFileLayout.xml = ResharperFileLayout.xml
 		stylecop.json = stylecop.json
 		WoWsShipBuilder.sln.DotSettings = WoWsShipBuilder.sln.DotSettings
 		global.json = global.json
-		dirs.proj = dirs.proj
 		Directory.Build.props = Directory.Build.props
+		.dockerignore = .dockerignore
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{43EE144D-CA52-44D5-B761-A27C0A37E1C5}"
@@ -26,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{43EE144D-C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub Workflows", "GitHub Workflows", "{C5D1C2CC-CDA1-47AC-8329-8CBFDB751341}"
 	ProjectSection(SolutionItems) = preProject
-		.github\workflows\deployment.yml = .github\workflows\deployment.yml
+		.github\workflows\desktop-release.yml = .github\workflows\desktop-release.yml
 		.github\workflows\dotnet-build.yml = .github\workflows\dotnet-build.yml
 		.github\workflows\dotnet-dev-build.yml = .github\workflows\dotnet-dev-build.yml
 		.github\workflows\desktop-release-check.yml = .github\workflows\desktop-release-check.yml

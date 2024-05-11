@@ -24,7 +24,7 @@ builder.ConfigureShipBuilderOptions();
 
 builder.Logging.ClearProviders();
 builder.Host.UseNLog(new() { RemoveLoggerFactoryFilter = false, ParseMessageTemplates = true });
-SetupExtensions.ConfigureNlog(builder.Configuration.GetValue<bool>("DisableLoki"), builder.Environment.IsDevelopment());
+SetupExtensions.ConfigureNlog(builder.Environment.IsDevelopment());
 
 PlatformRegistrationManager.SetRegistrationNamespaces(RegistrationNamespace.Blazor);
 

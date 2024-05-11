@@ -1,28 +1,30 @@
 @page "/"
 @using System.Collections.ObjectModel
 @using System.Collections.Specialized
-@using WoWsShipBuilder.Infrastructure.DataTransfer
+@using WoWsShipBuilder.Features.Navigation
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Utility
-@inject NavigationManager NavManager
 @inject RefreshNotifierService NotifierService
 @inject ILocalizer Localizer
-@inject SessionStateCache SessionStateCache
+@inject AppNavigator AppNavigator
 @implements IDisposable
 
 <PageTitle>
     WoWs ShipBuilder
 </PageTitle>
 
+<MudHidden Breakpoint="Breakpoint.MdAndDown">
+    <FittingToolSelector SelectedShips="@selectedShips"/>
+</MudHidden>
 <MudContainer>
     <MudGrid Justify="Justify.Center">
-        <MudItem xs="12" Class="py-2" />
+        <MudItem xs="12" Class="py-2"/>
         <MudItem xs="12">
             <ShipSelector SelectedShips="@selectedShips" AllowCopies EnableBuildImport EnableSavedBuildList/>
         </MudItem>
         <MudItem xs="12" Class="mt-n2">
-            <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@GoToShipPage" FullWidth="true">
-                @Localizer.GetAppLocalization(nameof(Translation.WebApp_GoToShipsPage)).Localization
+            <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@(_ => AppNavigator.NavigateTo(AppNavigator.AppPage.ShipStats, selectedShips))" FullWidth="true">
+                @Localizer.GetAppLocalization(nameof(Translation.WebApp_ViewShipsStats)).Localization
             </MudButton>
         </MudItem>
     </MudGrid>
@@ -47,13 +49,6 @@
     private void OnRefresh()
     {
         StateHasChanged();
-    }
-
-    private void GoToShipPage()
-    {
-        string indexes = string.Join(",", selectedShips.Select(x => x.Ship.Index));
-        SessionStateCache.SetBuildTransferContainers(selectedShips.ToList());
-        NavManager.NavigateTo("/ship?shipIndexes=" + indexes);
     }
 
     public void Dispose()

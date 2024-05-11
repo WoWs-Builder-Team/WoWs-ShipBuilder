@@ -20,7 +20,7 @@
         var columnTitleType = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Type));
         var columnTitleDamage = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Damage));
         var columnTitleSplashRadius = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SplashRadius));
-        var columnTitleSplashDamage = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Splash))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Damage))}";
+        var columnTitleSplashDamage = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SplashDmgSubs));
         var columnTitlePenetration = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Penetration));
         var columnTitleFireChance = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FireChance));
         var columnTitleBlastRadius = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Blast))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ExplosionRadius))}";
@@ -335,7 +335,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRicochetAngles}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRicochetAngles)" T="GridDataWrapper" Title="@columnTitleRicochetAngles" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.RocketPlanes.WeaponRicochetAngles.Select(y => int.Parse(string.IsNullOrEmpty(y) ? "0" : y.Split("-").First())).ToList())">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRicochetAngles}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRicochetAngles)" T="GridDataWrapper" Title="@columnTitleRicochetAngles" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.RocketPlanes.WeaponRicochetAngles.Select(y => int.Parse(string.IsNullOrEmpty(y) ? "0" : y.Split("-").First())).ToNoSortList())">
             <CellTemplate>
                 @if (context.Item.RocketPlanes.WeaponRicochetAngles.Any())
                 {

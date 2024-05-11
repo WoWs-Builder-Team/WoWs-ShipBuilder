@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.Immutable;
+using System.Text.RegularExpressions;
 using FluentAssertions;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.Features.Builds;
@@ -16,7 +17,7 @@ public partial class BuildStringCreation
         const string buildName = "test-build";
         const string shipIndex = "PASC020";
         var expectedString = $"{shipIndex};;;PCW001;;;;{Build.CurrentBuildVersion};{buildName}";
-        var build = new Build(buildName, shipIndex, Nation.Usa, new(), new(), new(), "PCW001", new(), new());
+        var build = new Build(buildName, shipIndex, Nation.Usa, ImmutableArray<string>.Empty, ImmutableArray<string>.Empty, ImmutableArray<string>.Empty, "PCW001", ImmutableArray<int>.Empty, ImmutableArray<string>.Empty);
 
         var result = build.CreateShortStringFromBuild();
 
@@ -28,7 +29,7 @@ public partial class BuildStringCreation
     {
         const string buildName = "test-build";
         const string shipIndex = "PASC020";
-        var build = new Build(buildName, shipIndex, Nation.Usa, new(), new(), new(), "PCW001", new(), new());
+        var build = new Build(buildName, shipIndex, Nation.Usa, ImmutableArray<string>.Empty, ImmutableArray<string>.Empty, ImmutableArray<string>.Empty, "PCW001", ImmutableArray<int>.Empty, ImmutableArray<string>.Empty);
         var buildString = build.CreateShortStringFromBuild();
 
         var result = this.buildRegex.Match(buildString);
@@ -45,7 +46,7 @@ public partial class BuildStringCreation
     public void EmptyBuild_CreateShortStringWithoutBuildName_MatchesRegex()
     {
         const string shipIndex = "PASC020";
-        var build = new Build(string.Empty, shipIndex, Nation.Usa, new(), new(), new(), "PCW001", new(), new());
+        var build = new Build(string.Empty, shipIndex, Nation.Usa, ImmutableArray<string>.Empty, ImmutableArray<string>.Empty, ImmutableArray<string>.Empty, "PCW001", ImmutableArray<int>.Empty, ImmutableArray<string>.Empty);
         var buildString = build.CreateShortStringFromBuild();
 
         var result = this.buildRegex.Match(buildString);

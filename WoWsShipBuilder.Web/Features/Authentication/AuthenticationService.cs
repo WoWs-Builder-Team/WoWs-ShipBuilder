@@ -39,11 +39,11 @@ public class AuthenticationService
         if (response.IsSuccessStatusCode)
         {
             var responseData = await response.Content.ReadFromJsonAsync<WgResponse>();
-            if (responseData is not null && responseData.Status.Equals("ok"))
+            if (responseData is not null && responseData.Status.Equals("ok", StringComparison.Ordinal))
             {
-                Dictionary<string, object>? privateData = responseData.Data.FirstOrDefault().Value?.Private;
+                var privateData = responseData.Data.FirstOrDefault().Value?.Private;
                 this.logger.LogInformation("Token-verification for account {} successful", accountId);
-                return privateData is not null && privateData.Any();
+                return privateData is not null && privateData.Count != 0;
             }
         }
 

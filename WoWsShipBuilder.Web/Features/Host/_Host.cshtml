@@ -1,9 +1,51 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using WoWsShipBuilder.Web.Features.Layout
 @namespace WoWsShipBuilder.Web.Features.Host
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@{
-    Layout = "_Layout.cshtml";
-}
 
-<component type="typeof(WebRootComponent)" render-mode="Server"/>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>WoWs ShipBuilder</title>
+    <base href="/"/>
+
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet"/>
+
+    <link href="_content/WoWsShipBuilder.Common/WoWsShipBuilder.Common.bundle.scp.css" rel="stylesheet">
+    <link href="_content/WoWsShipBuilder.Common/css/app.css" rel="stylesheet"/>
+    <link href="_content/WoWsShipBuilder.Common/css/fonts.css" rel="stylesheet"/>
+
+    <meta content="WoWs ShipBuilder" property="og:title">
+    <meta content="Ships stats.
+Charts.
+Ships builds." property="og:description">
+    <meta content="/_content/WoWsShipBuilder.Common/assets/app-logo-small.png" property="og:image">
+    <meta name="theme-color" content="#FFFFFF">
+    <link rel="alternate" type="application/json+oembed" href="/oembed.json" />
+    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+</head>
+<body style="background-color: #282828">
+<component type="typeof(WebRootComponent)" render-mode="ServerPrerendered"/>
+
+<div id="blazor-error-ui">
+    <environment include="Staging,Production">
+        An error has occurred. This application may no longer respond until reloaded.
+    </environment>
+    <environment include="Development">
+        An unhandled exception has occurred. See browser dev tools for details.
+    </environment>
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+
+<script src="_framework/blazor.server.js"></script>
+<script src="_content/MudBlazor/MudBlazor.min.js"></script>
+<script src="_content/WoWsShipBuilder.Common/lib/chartJs/dist/chart.umd.min.js"></script>
+<script src="_content/WoWsShipBuilder.Common/lib/autocolor/dist/chartjs-plugin-autocolors.min.js"></script>
+<script src="_content/WoWsShipBuilder.Common/lib/dom-to-image-more/dist/dom-to-image-more.min.js"></script>
+</body>
+</html>

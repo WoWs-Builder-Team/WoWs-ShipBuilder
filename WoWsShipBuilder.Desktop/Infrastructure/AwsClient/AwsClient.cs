@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.IO.Compression;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -69,7 +70,7 @@ public class AwsClient : ClientBase, IDesktopAwsClient
     public async Task<VersionInfo> DownloadVersionInfo(ServerType serverType)
     {
         string url = @$"{Host}/api/{serverType.StringName()}/VersionInfo.json";
-        return await this.GetJsonAsync<VersionInfo>(url) ?? throw new HttpRequestException("Unable to process VersionInfo response from AWS server.");
+        return await this.Client.GetFromJsonAsync<VersionInfo>(url, AppConstants.JsonSerializerOptions) ?? throw new HttpRequestException("Unable to process VersionInfo response from AWS server.");
     }
 
     public async Task DownloadFiles(ServerType serverType, List<(string, string)> relativeFilePaths, IProgress<int>? downloadProgress = null)

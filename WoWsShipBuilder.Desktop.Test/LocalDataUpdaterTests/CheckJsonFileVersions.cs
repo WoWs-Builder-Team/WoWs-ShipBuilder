@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Immutable;
+using System.Reflection;
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
@@ -39,11 +40,11 @@ public partial class LocalDataUpdaterTest
         var previousVersion = new GameVersion(new(0, 10, 9), GameVersionType.Live, 1);
         var localVersionInfo = this.CreateTestVersionInfo(1, previousVersion);
         var testVersionInfo = new VersionInfo(
-            new()
+            new Dictionary<string, ImmutableList<FileVersion>>
             {
-                { "Ability", new() { new("Common.json", 2) } },
-                { "Ship", new() { new("Japan.json", 1), new("Germany.json", 1) } },
-            },
+                { "Ability", ImmutableList.Create(new FileVersion("Common.json", 2)) },
+                { "Ship", ImmutableList.Create<FileVersion>(new("Japan.json", 1), new("Germany.json", 1)) },
+            }.ToImmutableDictionary(),
             2,
             currentVersion,
             localVersionInfo.CurrentVersion);
@@ -89,19 +90,19 @@ public partial class LocalDataUpdaterTest
         var previousVersion = new GameVersion(new(0, 10, 9), GameVersionType.Live, 1);
         var previousVersionCode = 1;
         var localVersionInfo = new VersionInfo(
-            new()
+            new Dictionary<string, ImmutableList<FileVersion>>
             {
-                { "Ability", new() { new("Common.json", previousVersionCode) } },
-                { "Ship", new() { new("Japan.json", previousVersionCode), new("Germany.json", previousVersionCode) } },
-            },
+                { "Ability", ImmutableList.Create(new FileVersion("Common.json", previousVersionCode)) },
+                { "Ship", ImmutableList.Create<FileVersion>(new("Japan.json", previousVersionCode), new("Germany.json", previousVersionCode)) },
+            }.ToImmutableDictionary(),
             previousVersionCode,
             previousVersion);
         var testVersionInfo = new VersionInfo(
-            new()
+            new Dictionary<string, ImmutableList<FileVersion>>
             {
-                { "Ability", new() { new("Common.json", 2) } },
-                { "Ship", new() { new("Japan.json", 1), new("Germany.json", 1) } },
-            },
+                { "Ability", ImmutableList.Create(new FileVersion("Common.json", 2)) },
+                { "Ship", ImmutableList.Create<FileVersion>(new("Japan.json", 1), new("Germany.json", 1)) },
+            }.ToImmutableDictionary(),
             2,
             currentVersion,
             localVersionInfo.CurrentVersion)

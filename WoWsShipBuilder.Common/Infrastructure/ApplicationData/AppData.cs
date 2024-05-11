@@ -37,6 +37,11 @@ public static class AppData
     public static Dictionary<string, Ship> ShipDictionary { get; } = new();
 
     /// <summary>
+    /// Gets or sets the ship data structure for the fitting tool ship selector.
+    /// </summary>
+    public static ImmutableDictionary<Nation, ImmutableDictionary<ShipCategory, ImmutableDictionary<ShipClass, ImmutableDictionary<int, ImmutableList<Ship>>>>> FittingToolShipSelectorDataStructure { get; set; } = ImmutableDictionary<Nation, ImmutableDictionary<ShipCategory, ImmutableDictionary<ShipClass, ImmutableDictionary<int, ImmutableList<Ship>>>>>.Empty;
+
+    /// <summary>
     /// Gets or sets the list of available consumables.
     /// </summary>
     public static Dictionary<string, Consumable> ConsumableList { get; set; } = new();
@@ -75,6 +80,7 @@ public static class AppData
     public static void ResetCaches()
     {
         ShipSummaryMapper = ImmutableDictionary<string, ShipSummary>.Empty;
+        FittingToolShipSelectorDataStructure = ImmutableDictionary<Nation, ImmutableDictionary<ShipCategory, ImmutableDictionary<ShipClass, ImmutableDictionary<int, ImmutableList<Ship>>>>>.Empty;
         ConsumableList.Clear();
         ModernizationCache.Clear();
         ProjectileCache.Clear();

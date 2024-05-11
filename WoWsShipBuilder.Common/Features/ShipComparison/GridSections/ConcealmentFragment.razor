@@ -15,7 +15,7 @@
         var columnTitleFromShipSmokeFiring = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ConcealmentFromShips))}: {element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SmokeFiring))}";
         var columnTitleFromPlanesBase = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ConcealmentFromPlanes))}: {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ConcealmentBySea))}";
         var columnTitleFromPlanesOnFire = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ConcealmentFromPlanes))}: {element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_OnFire))}";
-        var columnTitleFromSubs = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FromSubs))}: {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ConcealmentBySubPeriscope))}";
+        var columnTitleFromSubs = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FromSubsAtPeriscopeDepth));
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFromShipBase}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromShipBase)" T="GridDataWrapper" SortBy="@(x => x.Concealment.ConcealmentBySea)" Title="@columnTitleFromShipBase" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
@@ -92,12 +92,12 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFromSubs}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromSubs)" T="GridDataWrapper" SortBy="@(x => x.Concealment.ConcealmentBySubPeriscope)" Title="@columnTitleFromSubs" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFromSubs}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromSubs)" T="GridDataWrapper" SortBy="@(x => x.Concealment.FromSubsAtPeriscopeDepth)" Title="@columnTitleFromSubs" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.Concealment.ConcealmentBySubPeriscope != 0)
+                @if (context.Item.Concealment.FromSubsAtPeriscopeDepth != 0)
                 {
                     <MudText Typo="Typo.body2">
-                        @(context.Item.Concealment.ConcealmentBySubPeriscope + unitKm)
+                        @(context.Item.Concealment.FromSubsAtPeriscopeDepth + unitKm)
                     </MudText>
                 }
                 else

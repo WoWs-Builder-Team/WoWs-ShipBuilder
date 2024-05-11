@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Platform;
 using DynamicData;
 using Microsoft.AspNetCore.Components.WebView.WindowsForms;
@@ -184,17 +185,8 @@ public class BlazorWebView : NativeControlHost
         return base.CreateNativeControlCore(parent);
     }
 
-    private void CoreWebView2OnIsDefaultDownloadDialogOpenChanged(object? sender, object e)
-    {
-        if (this.blazorWebView?.WebView.CoreWebView2.IsDefaultDownloadDialogOpen == true)
-        {
-            this.blazorWebView.WebView.CoreWebView2.CloseDefaultDownloadDialog();
-        }
-    }
-
     private void WebViewOnCoreWebView2InitializationCompleted(object? sender, CoreWebView2InitializationCompletedEventArgs e)
     {
-        // blazorWebView!.WebView.CoreWebView2.IsDefaultDownloadDialogOpenChanged += CoreWebView2OnIsDefaultDownloadDialogOpenChanged;
         this.DefaultDownloadFolderPath = this.defaultDownloadPath;
         this.blazorWebView!.WebView.CoreWebView2InitializationCompleted -= this.WebViewOnCoreWebView2InitializationCompleted;
     }
@@ -203,7 +195,6 @@ public class BlazorWebView : NativeControlHost
     {
         if (OperatingSystem.IsWindows())
         {
-            // blazorWebView!.WebView.CoreWebView2.IsDefaultDownloadDialogOpenChanged -= CoreWebView2OnIsDefaultDownloadDialogOpenChanged;
             this.blazorWebView?.Dispose();
             this.blazorWebView = null;
         }
@@ -213,14 +204,14 @@ public class BlazorWebView : NativeControlHost
         }
     }
 
-    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    protected override void OnUnloaded(RoutedEventArgs e)
     {
-        base.OnDetachedFromVisualTree(e);
         if (OperatingSystem.IsWindows())
         {
-            // Do not use until dotnet 8 because disposing the webview will deadlock. see https://github.com/dotnet/maui/issues/7997#issuecomment-1258681003
-            // blazorWebView?.Dispose();
+            this.blazorWebView?.Dispose();
             this.blazorWebView = null;
         }
+
+        base.OnUnloaded(e);
     }
 }

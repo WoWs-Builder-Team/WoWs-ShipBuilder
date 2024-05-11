@@ -13,7 +13,7 @@ public partial class DataElementGeneratorTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.KeyValue)]
                          public decimal Prop1 { get; set; }
@@ -25,7 +25,7 @@ public partial class DataElementGeneratorTest
                        #nullable enable
                        namespace Test
                        {
-                           public partial record TestRecord
+                           public partial class TestDataContainer
                            {
                                private void UpdateDataElements()
                                {
@@ -54,7 +54,7 @@ public partial class DataElementGeneratorTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.KeyValue, ValueTextKind = TextKind.LocalizationKey)]
                          public decimal Prop1 { get; set; }
@@ -66,7 +66,7 @@ public partial class DataElementGeneratorTest
                        #nullable enable
                        namespace Test
                        {
-                           public partial record TestRecord
+                           public partial class TestDataContainer
                            {
                                private void UpdateDataElements()
                                {
@@ -95,7 +95,7 @@ public partial class DataElementGeneratorTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.KeyValue, ValueTextKind = TextKind.AppLocalizationKey)]
                          public decimal Prop1 { get; set; }
@@ -107,7 +107,7 @@ public partial class DataElementGeneratorTest
                        #nullable enable
                        namespace Test
                        {
-                           public partial record TestRecord
+                           public partial class TestDataContainer
                            {
                                private void UpdateDataElements()
                                {

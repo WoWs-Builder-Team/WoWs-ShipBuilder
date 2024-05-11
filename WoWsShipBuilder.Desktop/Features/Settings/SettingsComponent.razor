@@ -1,5 +1,4 @@
-﻿@using WoWsShipBuilder.Infrastructure.DataTransfer
-@using WoWsShipBuilder.Infrastructure.Localization
+﻿@using WoWsShipBuilder.Infrastructure.Localization
 @using WoWsShipBuilder.Infrastructure
 @using WoWsShipBuilder.Features.Settings
 @using WoWsShipBuilder.Infrastructure.GameData
@@ -12,7 +11,6 @@
 @using Avalonia
 @using Avalonia.Controls
 @using Avalonia.Controls.ApplicationLifetimes
-@using Newtonsoft.Json
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.Utility
@@ -20,7 +18,9 @@
 @using System.IO.Abstractions
 @using System.Net
 @using System.IO
+@using System.Text.Json
 @using Avalonia.Platform.Storage
+@using WoWsShipBuilder.Infrastructure.DataTransfer
 @using MudBlazor.Utilities
 @using WoWsShipBuilder.Infrastructure.ApplicationTheme
 
@@ -65,7 +65,7 @@
         </MudItem>
 
         <MudItem xs="12">
-            <MudSelect @bind-Value="selectedCulture" Style="max-width: 500px;" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_SelectedLanguage)).Localization" HelperText="We recommend restarting the app after changing the language.">
+            <MudSelect @bind-Value="selectedCulture" Style="max-width: 500px;" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_SelectedLanguage)).Localization" HelperText="@Localizer.SimpleAppLocalization(nameof(Translation.Settingswindow_LanguageChanged))">
                 @foreach (var culture in AppConstants.SupportedLanguages)
                 {
                     <MudSelectItem Value="@culture">@culture.CultureInfo.DisplayName</MudSelectItem>
@@ -110,7 +110,7 @@
         <MudItem xs="12">
             <MudStack Row Class="mb-1" AlignItems="AlignItems.Center">
                 <MudText Typo="Typo.h6">
-                    @($"Saved builds ({savedBuilds.Count})")
+                    @($"{Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_SavedBuilds))} ({savedBuilds.Count})")
                 </MudText>
                 <MudButton Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Download" OnClick="@(async () => await ExportSavedBuilds())">
                     @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Export))
@@ -126,6 +126,7 @@
                     @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_DeleteAll))
                 </MudButton>
             </MudStack>
+            <MudSwitch @bind-Checked="@storeBuildOnShare" LabelPosition="LabelPosition.End" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_SaveBuildOnShare))" Color="Color.Primary"/>
         </MudItem>
 
         <MudItem xs="12">
@@ -140,21 +141,31 @@
         </MudItem>
 
         <MudItem xs="12">
+            <MudText Typo="Typo.h6">
+                @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_FittingToolSelector))
+            </MudText>
+            <MudSwitch @bind-Checked="@fittingToolSelectorDisabled" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_FittingToolSelectorDisabled))"/>
+            <MudSwitch @bind-Checked="@fittingToolSelectorClosedByDefault" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_ClosedByDefault))" Disabled="fittingToolSelectorDisabled"/>
+            <MudSwitch @bind-Checked="@fittingToolSelectorMultiSelection" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_MultiSelect))" Disabled="fittingToolSelectorDisabled"/>
+            <MudSwitch @bind-Checked="@fittingToolSelectorShowShipImages" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_FittingToolShowImages))" Class="mb-n3" Disabled="fittingToolSelectorDisabled"/>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudText Typo="Typo.h6">
+                @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_AutoUpdates))
+            </MudText>
             <MudStack AlignItems="AlignItems.Start">
-                <MudCheckBox @bind-Checked="@storeBuildOnShare" LabelPosition="LabelPosition.Start" Label="Save build on share" Color="Color.Primary"/>
+                <MudSwitch @bind-Checked="@autoUpdateEnabled" LabelPosition="LabelPosition.End" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_AutoUpdate))" Color="Color.Primary"/>
             </MudStack>
         </MudItem>
 
         <MudItem xs="12">
-            <MudStack AlignItems="AlignItems.Start">
-                <MudCheckBox @bind-Checked="@autoUpdateEnabled" LabelPosition="LabelPosition.Start" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_AutoUpdate))" Color="Color.Primary"/>
-            </MudStack>
-        </MudItem>
-
-        <MudItem xs="12">
+            <MudText Typo="Typo.h6">
+                @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_BuildImagePath))
+            </MudText>
             <MudStack AlignItems="AlignItems.Start" Spacing="0">
-                <MudCheckBox @bind-Checked="@customBuildImagePathEnabled" LabelPosition="LabelPosition.Start" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_BuildImagePath))" Color="Color.Primary"/>
-                <MudTextField @bind-Value="@customBuildImagePath" FullWidth HelperText="A restart is required for this option to take effect" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_BuildImagePath))" Adornment="Adornment.End" OnAdornmentClick="OnImageFolderSelectClicked" AdornmentIcon="@Icons.Material.Filled.Folder" Disabled="@(!customBuildImagePathEnabled)"/>
+                <MudSwitch @bind-Checked="@customBuildImagePathEnabled" LabelPosition="LabelPosition.End" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_EnableBuildImagePath))" Color="Color.Primary"/>
+                <MudTextField @bind-Value="@customBuildImagePath" FullWidth HelperText="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_RestartRequired))" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_BuildImagePath))" Adornment="Adornment.End" OnAdornmentClick="OnImageFolderSelectClicked" AdornmentIcon="@Icons.Material.Filled.Folder" Disabled="@(!customBuildImagePathEnabled)"/>
             </MudStack>
         </MudItem>
     </MudGrid>
@@ -199,6 +210,14 @@
     private bool autoUpdateEnabled = true;
 
     private bool storeBuildOnShare = true;
+
+    private bool fittingToolSelectorMultiSelection;
+
+    private bool fittingToolSelectorShowShipImages;
+
+    private bool fittingToolSelectorClosedByDefault;
+
+    private bool fittingToolSelectorDisabled;
 
     private string appVersion = "Undefined";
 
@@ -253,6 +272,10 @@
         customBuildImagePath = AppSettings.CustomImagePath;
         autoUpdateEnabled = AppSettings.AutoUpdateEnabled;
         storeBuildOnShare = AppSettings.StoreBuildOnShare;
+        fittingToolSelectorMultiSelection = AppSettings.FittingToolSelectorMultiSelection;
+        fittingToolSelectorShowShipImages = AppSettings.FittingToolSelectorShowShipImages;
+        fittingToolSelectorClosedByDefault = AppSettings.FittingToolSelectorClosedByDefault;
+        fittingToolSelectorDisabled = AppSettings.FittingToolSelectorDisabled;
         themePrimaryColor = AppSettings.ThemePrimaryColor ?? ThemeManager.DefaultPrimaryColor;
         themeStyle = AppSettings.ThemeStyle ?? ThemeManager.DefaultThemeStyle;
         themeVariant = AppSettings.ThemeVariant ?? ThemeManager.DefaultThemeVariant;
@@ -295,6 +318,14 @@
 
         settingsChanged = settingsChanged || storeBuildOnShare != AppSettings.StoreBuildOnShare;
         AppSettings.StoreBuildOnShare = storeBuildOnShare;
+
+        AppSettings.FittingToolSelectorMultiSelection = fittingToolSelectorMultiSelection;
+        settingsChanged = settingsChanged || fittingToolSelectorShowShipImages != AppSettings.FittingToolSelectorShowShipImages;
+        AppSettings.FittingToolSelectorShowShipImages = fittingToolSelectorShowShipImages;
+        settingsChanged = settingsChanged || fittingToolSelectorClosedByDefault != AppSettings.FittingToolSelectorClosedByDefault;
+        AppSettings.FittingToolSelectorClosedByDefault = fittingToolSelectorClosedByDefault;
+        settingsChanged = settingsChanged || fittingToolSelectorDisabled != AppSettings.FittingToolSelectorDisabled;
+        AppSettings.FittingToolSelectorDisabled = fittingToolSelectorDisabled;
 
         settingsChanged = settingsChanged || themePrimaryColor.Value != AppSettings.ThemePrimaryColor;
         AppSettings.ThemePrimaryColor = themePrimaryColor.Value;
@@ -371,9 +402,9 @@
     private async Task OnImageFolderSelectClicked(MouseEventArgs obj)
     {
         var mainWindow = (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow!;
-        var startLocation = await mainWindow.StorageProvider.TryGetWellKnownFolderAsync(WellKnownFolder.Pictures);
+        var startLocation = await mainWindow.StorageProvider.TryGetFolderFromPathAsync(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures));
         var selectionResult = await Dispatcher.UIThread.InvokeAsync(async () => await mainWindow.StorageProvider.OpenFolderPickerAsync(new() { SuggestedStartLocation = startLocation, AllowMultiple = false }));
-        var path = selectionResult.Single().TryGetLocalPath();
+        var path = selectionResult.SingleOrDefault()?.TryGetLocalPath() ?? null;
         if (path is not null)
         {
             customBuildImagePath = path;
@@ -383,15 +414,14 @@
     private async Task ExportSavedBuilds()
     {
         var mainWindow = (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow!;
-        var selectionResult = await Dispatcher.UIThread.InvokeAsync(async () => await mainWindow.StorageProvider.OpenFolderPickerAsync(new() { AllowMultiple = false }));
-        var path = selectionResult.Single().TryGetLocalPath();
+        IReadOnlyList<IStorageFolder> selectionResult = await Dispatcher.UIThread.InvokeAsync(async () => await mainWindow.StorageProvider.OpenFolderPickerAsync(new() { AllowMultiple = false }));
+        var path = selectionResult.SingleOrDefault()?.TryGetLocalPath() ?? null;
         if (path is not null)
         {
             var buildStrings = savedBuilds.Select(x => x.CreateShortStringFromBuild()).ToList();
-            await using (var stream = FileSystem.File.CreateText($"{path}/builds.json"))
+            await using (var stream = FileSystem.File.Create($"{path}/builds.json"))
             {
-                var serializer = new JsonSerializer();
-                serializer.Serialize(stream, buildStrings);
+                await JsonSerializer.SerializeAsync(stream, buildStrings, AppConstants.JsonSerializerOptions);
             }
             Snackbar.Add("Builds successfully exported.", Severity.Success);
             RefreshNotifierService.NotifyRefreshRequested();
@@ -407,9 +437,9 @@
             IEnumerable<string>? buildList;
             try
             {
-                buildList = JsonConvert.DeserializeObject<IEnumerable<string>>(buildsString);
+                buildList = JsonSerializer.Deserialize<IEnumerable<string>>(buildsString, AppConstants.JsonSerializerOptions);
             }
-            catch (JsonReaderException)
+            catch (JsonException)
             {
                 Snackbar.Add("Corrupted JSON file.", Severity.Error);
                 return;

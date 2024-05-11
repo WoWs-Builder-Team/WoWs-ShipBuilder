@@ -7,9 +7,10 @@
 @using WoWsShipBuilder.Features.BallisticCharts.Data
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.DataContainers
-@using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Utility
+@using System.Collections.Immutable
+@using WoWsShipBuilder.Features.Navigation
 @implements IDisposable
 @inject ILocalizer Localizer
 
@@ -71,7 +72,7 @@
         </MudContainer>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@Cancel" Variant="Variant.Filled" Color="Color.Warning">
+        <MudButton OnClick="@Cancel" Variant="Variant.Text" Color="Color.Default">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
         <MudButton Color="Color.Tertiary" OnClick="@(() => ReturnSelectedShells(true))" Variant="Variant.Filled" Disabled="@(processing || !dataWrappers.Exists(wrapper => wrapper.SelectedShells.Any()))">
@@ -90,7 +91,7 @@
             }
         </MudButton>
         <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
-            <MudButton Color="Color.Success" OnClick="@(() => ReturnSelectedShells(false))" Variant="Variant.Filled" Disabled="processing">
+            <MudButton Color="Color.Primary" OnClick="@(() => ReturnSelectedShells(false))" Variant="Variant.Filled" Disabled="processing">
                 @if (processing)
                 {
                     <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -232,8 +233,8 @@
                 var shipConfiguration = Helpers.GetStockShipConfiguration(ship);
                 UpgradeModuleInShipConfiguration(shipConfiguration, commonHull);
                 UpgradeModuleInShipConfiguration(shipConfiguration, commonArtillery);
-                var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, wrapper.ShipBuildContainer.Modifiers ?? new());
-                Build build = new(string.Empty, ship.Index, ship.ShipNation, shipConfiguration.Select(x => x.Name.NameToIndex()).ToList(), new(), GetStockConsumableNames(ship), "PCW001", new(), new());
+                var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration.ToImmutableList(), wrapper.ShipBuildContainer.Modifiers);
+                Build build = new(string.Empty, ship.Index, ship.ShipNation, shipConfiguration.Select(x => x.Name.NameToIndex()).ToList(), ImmutableArray<string>.Empty, GetStockConsumableNames(ship), "PCW001", ImmutableArray<int>.Empty, ImmutableArray<string>.Empty);
                 var container = wrapper.ShipBuildContainer with { ShipDataContainer = dataContainer, Build = build };
                 var newWrapper = wrapper with { ShipBuildContainer = container };
                 newWrappers.Add(newWrapper);
@@ -244,7 +245,7 @@
                 var shipConfiguration = Helpers.GetShipConfigurationFromBuild(build.Modules, ship.ShipUpgradeInfo.ShipUpgrades);
                 UpgradeModuleInShipConfiguration(shipConfiguration, commonHull);
                 UpgradeModuleInShipConfiguration(shipConfiguration, commonArtillery);
-                var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, wrapper.ShipBuildContainer.Modifiers ?? new());
+                var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration.ToImmutableList(), wrapper.ShipBuildContainer.Modifiers);
                 Build newBuild = new(build.BuildName, ship.Index, ship.ShipNation, shipConfiguration.Select(x => x.Name.NameToIndex()).ToList(), build.Upgrades.ToList(), build.Consumables.ToList(), build.Captain, build.Skills.ToList(), build.Signals.ToList());
                 var container = wrapper.ShipBuildContainer with { ShipDataContainer = dataContainer, Build = newBuild };
                 var newWrapper = wrapper with { ShipBuildContainer = container };

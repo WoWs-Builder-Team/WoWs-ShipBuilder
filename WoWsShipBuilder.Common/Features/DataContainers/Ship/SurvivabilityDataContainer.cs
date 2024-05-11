@@ -1,15 +1,16 @@
 // ReSharper disable InconsistentNaming
 
+using System.Collections.Immutable;
 using WoWsShipBuilder.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.DataContainers;
 
 [DataContainer]
-public partial record SurvivabilityDataContainer : DataContainerBase
+public partial class SurvivabilityDataContainer : DataContainerBase
 {
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "HP", LocalizationKeyOverride = "ShipHp")]
     public int HitPoints { get; set; }
@@ -92,52 +93,44 @@ public partial record SurvivabilityDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Flooding", UnitKey = "PerCent")]
     public decimal FloodTorpedoProtection { get; set; }
 
-    public static SurvivabilityDataContainer FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)
+    public static SurvivabilityDataContainer FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, ImmutableList<Modifier> modifiers)
     {
         Hull shipHull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull].First()];
 
         // Survivability expert
         decimal hitPoints = shipHull.Health;
-        int survivabilityExpertIndex = modifiers.FindModifierIndex("healthPerLevel");
-        if (survivabilityExpertIndex > -1)
+        var survivabilityExpertAdditionalHp = modifiers.ApplyModifiers("SurvivabilityDataContainer.Hp", ship.Tier);
+
+        // if it's below 15, the modifier is not present.
+        if (survivabilityExpertAdditionalHp > 15)
         {
-            hitPoints += (decimal)modifiers[survivabilityExpertIndex].Value * ship.Tier;
+            hitPoints += survivabilityExpertAdditionalHp;
         }
 
-        int fireSpots = shipHull.FireSpots;
-        if (modifiers.FindModifierIndex("fireResistanceEnabled") > -1)
-        {
-            fireSpots--;
-        }
+        int fireSpots = modifiers.ApplyModifiers("SurvivabilityDataContainer.FireResistance", shipHull.FireSpots);
 
-        decimal fireDuration = shipHull.FireDuration;
-        decimal floodDuration = shipHull.FloodingDuration;
-        foreach (float modifier in modifiers.FindModifiers("hlCritTimeCoeff"))
-        {
-            fireDuration *= (decimal)modifier;
-            floodDuration *= (decimal)modifier;
-        }
-
-        fireDuration = modifiers.FindModifiers("burnTime").Aggregate(fireDuration, (current, modifier) => current * (decimal)modifier);
-
-        floodDuration = modifiers.FindModifiers("floodTime").Aggregate(floodDuration, (current, modifier) => current * (decimal)modifier);
+        decimal fireDuration = modifiers.ApplyModifiers("SurvivabilityDataContainer.FireDuration", shipHull.FireDuration);
+        decimal floodDuration = modifiers.ApplyModifiers("SurvivabilityDataContainer.FloodDuration", shipHull.FloodingDuration);
 
         // fire chance reduction = base fire resistance +(100 - base fire resistance) *(1 - burnProb)
         decimal baseFireResistance = 1 - shipHull.FireResistance;
-        decimal fireResistanceModifiers = modifiers.FindModifiers("burnProb").Aggregate(1M, (current, modifier) => current * (decimal)modifier);
+        decimal fireResistanceModifiers = modifiers.ApplyModifiers("SurvivabilityDataContainer.FireChanceResistance", 1M);
         decimal fireResistance = baseFireResistance + ((1 - baseFireResistance) * (1 - fireResistanceModifiers));
 
-        decimal modifiedFloodingCoeff = modifiers.FindModifiers("uwCoeffBonus").Aggregate(shipHull.FloodingResistance * 3, (current, modifier) => current - ((decimal)modifier / 100)) * 100;
+        decimal modifiedFloodingCoeff = modifiers.ApplyModifiers("SurvivabilityDataContainer.FloodChanceResistance", shipHull.FloodingResistance * 3) * 100;
+
         decimal fireDps = hitPoints * shipHull.FireTickDamage / 100;
+        fireDps = modifiers.ApplyModifiers("SurvivabilityDataContainer.FireDamageWeakness", fireDps);
         decimal fireTotalDamage = fireDuration * fireDps;
 
         decimal floodDps = hitPoints * shipHull.FloodingTickDamage / 100;
+        floodDps = modifiers.ApplyModifiers("SurvivabilityDataContainer.FloodDamageWeakness", floodDps);
         decimal floodTotalDamage = floodDuration * floodDps;
 
-        decimal diveCapacityRechargeRateModifier = modifiers.FindModifiers("batteryRegenCoeff").Aggregate(1M, (current, modifier) => current * (decimal)modifier);
-        decimal diveCapacityModifier = modifiers.FindModifiers("batteryCapacityCoeff").Aggregate(1M, (current, modifier) => current * (decimal)modifier);
+        decimal diveCapacityRechargeRateModifier = modifiers.ApplyModifiers("SurvivabilityDataContainer.DiveCapacityRecharge", 1m);
+        decimal diveCapacityModifier = modifiers.ApplyModifiers("SurvivabilityDataContainer.DiveCapacity", 1m);
 
-        float repairableDamageModifier = modifiers.FindModifiers("regeneratedHPPartCoef", true).Aggregate(0f, (current, modifier) => current + modifier);
+        decimal repairableDamageModifier = modifiers.ApplyModifiers("SurvivabilityDataContainer.RepairableDamage", 0m);
 
         var survivability = new SurvivabilityDataContainer
         {
@@ -162,31 +155,31 @@ public partial record SurvivabilityDataContainer : DataContainerBase
             {
                 case ShipHitLocation.Citadel:
                     survivability.CitadelHp = (int)Math.Ceiling(location.Hp * (survivability.HitPoints / shipHull.Health) / 50) * 50;
-                    survivability.CitadelRegenRatio = Math.Round((decimal)(location.RepairableDamage + repairableDamageModifier) * 100);
+                    survivability.CitadelRegenRatio = Math.Round(((decimal)location.RepairableDamage + repairableDamageModifier) * 100);
                     break;
                 case ShipHitLocation.Bow:
                     survivability.BowHp = (int)Math.Ceiling(location.Hp * (survivability.HitPoints / shipHull.Health) / 50) * 50;
-                    survivability.BowRegenRatio = Math.Round((decimal)(location.RepairableDamage + repairableDamageModifier) * 100);
+                    survivability.BowRegenRatio = Math.Round(((decimal)location.RepairableDamage + repairableDamageModifier) * 100);
                     break;
                 case ShipHitLocation.Stern:
                     survivability.SternHp = (int)Math.Ceiling(location.Hp * (survivability.HitPoints / shipHull.Health) / 50) * 50;
-                    survivability.SternRegenRatio = Math.Round((decimal)(location.RepairableDamage + repairableDamageModifier) * 100);
+                    survivability.SternRegenRatio = Math.Round(((decimal)location.RepairableDamage + repairableDamageModifier) * 100);
                     break;
                 case ShipHitLocation.Superstructure:
                     survivability.SuperstructureHp = (int)Math.Ceiling(location.Hp * (survivability.HitPoints / shipHull.Health) / 50) * 50;
-                    survivability.SuperstructureRegenRatio = Math.Round((decimal)(location.RepairableDamage + repairableDamageModifier) * 100);
+                    survivability.SuperstructureRegenRatio = Math.Round(((decimal)location.RepairableDamage + repairableDamageModifier) * 100);
                     break;
                 case ShipHitLocation.AuxiliaryRooms:
                     survivability.AuxiliaryRoomsHp = (int)Math.Ceiling(location.Hp * (survivability.HitPoints / shipHull.Health) / 50) * 50;
-                    survivability.AuxiliaryRoomsRegenRatio = Math.Round((decimal)(location.RepairableDamage + repairableDamageModifier) * 100);
+                    survivability.AuxiliaryRoomsRegenRatio = Math.Round(((decimal)location.RepairableDamage + repairableDamageModifier) * 100);
                     break;
                 case ShipHitLocation.Casemate:
                     survivability.CasemateHp = (int)Math.Ceiling(location.Hp * (survivability.HitPoints / shipHull.Health) / 50) * 50;
-                    survivability.CasemateRegenRatio = Math.Round((decimal)(location.RepairableDamage + repairableDamageModifier) * 100);
+                    survivability.CasemateRegenRatio = Math.Round(((decimal)location.RepairableDamage + repairableDamageModifier) * 100);
                     break;
                 default:
                     survivability.HullHp = (int)Math.Ceiling(location.Hp * (survivability.HitPoints / shipHull.Health) / 50) * 50;
-                    survivability.HullRegenRatio = Math.Round((decimal)(location.RepairableDamage + repairableDamageModifier) * 100);
+                    survivability.HullRegenRatio = Math.Round(((decimal)location.RepairableDamage + repairableDamageModifier) * 100);
                     break;
             }
         }

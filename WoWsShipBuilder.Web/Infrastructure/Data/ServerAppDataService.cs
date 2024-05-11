@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
+using System.Text.Json;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using Sentry;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
@@ -8,6 +8,7 @@ using WoWsShipBuilder.DataStructures.Versioning;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.HttpClients;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Web.Infrastructure.Data;
 
@@ -63,6 +64,7 @@ public class ServerAppDataService : IAppDataService
         });
         var files = onlineVersionInfo.Categories.SelectMany(category => category.Value.Select(file => (category.Key, file.FileName))).ToList();
         await this.awsClient.DownloadFiles(this.options.Server, files);
+        Helpers.InitializeShipSelectorDataStructure();
         this.logger.LogInformation("Finished fetching data");
     }
 
@@ -73,7 +75,7 @@ public class ServerAppDataService : IAppDataService
         string dataRoot = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), shipBuilderDirectory, "json", serverType.StringName());
 
         string versionInfoContent = await File.ReadAllTextAsync(Path.Join(dataRoot, "VersionInfo.json"));
-        var localVersionInfo = JsonConvert.DeserializeObject<VersionInfo>(versionInfoContent)!;
+        var localVersionInfo = JsonSerializer.Deserialize<VersionInfo>(versionInfoContent, AppConstants.JsonSerializerOptions)!;
         AppData.DataVersion = localVersionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + localVersionInfo.CurrentVersion.DataIteration;
 
         var dataRootInfo = new DirectoryInfo(dataRoot);
@@ -90,6 +92,8 @@ public class ServerAppDataService : IAppDataService
                 await DataCacheHelper.AddToCache(file.Name, category.Name, content);
             }
         }
+
+        Helpers.InitializeShipSelectorDataStructure();
     }
 
     public async Task<VersionInfo?> GetCurrentVersionInfo(ServerType serverType)
@@ -111,7 +115,7 @@ public class ServerAppDataService : IAppDataService
             }
 
             string fileContent = await File.ReadAllTextAsync(Path.Join(localizationRoot, $"{language}.json"));
-            return JsonConvert.DeserializeObject<Dictionary<string, string>>(fileContent);
+            return JsonSerializer.Deserialize<Dictionary<string, string>>(fileContent, AppConstants.JsonSerializerOptions);
         }
 
         if (this.awsClient is ServerAwsClient serverAwsClient)

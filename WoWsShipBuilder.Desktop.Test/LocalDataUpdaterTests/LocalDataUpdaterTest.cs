@@ -1,4 +1,5 @@
-﻿using System.IO.Abstractions.TestingHelpers;
+﻿using System.Collections.Immutable;
+using System.IO.Abstractions.TestingHelpers;
 using System.Reflection;
 using Moq;
 using WoWsShipBuilder.DataStructures.Ship;
@@ -30,11 +31,11 @@ public partial class LocalDataUpdaterTest
     private VersionInfo CreateTestVersionInfo(int versionCode, GameVersion gameVersion)
     {
         return new(
-            new()
+            new Dictionary<string, ImmutableList<FileVersion>>
             {
-                { "Ability", new() { new("Common.json", versionCode) } },
-                { "Ship", new() { new("Japan.json", versionCode), new("Germany.json", versionCode) } },
-            },
+                { "Ability", ImmutableList.Create(new FileVersion("Common.json", versionCode)) },
+                { "Ship", ImmutableList.Create<FileVersion>(new("Japan.json", versionCode), new("Germany.json", versionCode)) },
+            }.ToImmutableDictionary(),
             versionCode,
             gameVersion)
         {

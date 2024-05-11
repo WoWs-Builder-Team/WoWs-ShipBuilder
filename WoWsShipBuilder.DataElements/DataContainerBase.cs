@@ -2,7 +2,7 @@
 
 namespace WoWsShipBuilder.DataElements;
 
-public abstract record DataContainerBase
+public abstract class DataContainerBase
 {
     public List<IDataElement> DataElements { get; } = new();
 

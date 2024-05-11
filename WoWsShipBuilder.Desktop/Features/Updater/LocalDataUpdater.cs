@@ -206,7 +206,7 @@ public class LocalDataUpdater : ILocalDataUpdater
             shouldLocalizationUpdate = false;
         }
 
-        if (filesToDownload.Any())
+        if (filesToDownload.Count != 0)
         {
             filesToDownload.Add((string.Empty, "VersionInfo.json"));
         }
@@ -267,7 +267,7 @@ public class LocalDataUpdater : ILocalDataUpdater
             }
         }
 
-        if (!missingFiles.Any())
+        if (missingFiles.Count == 0)
         {
             return new(true);
         }
@@ -290,12 +290,12 @@ public class LocalDataUpdater : ILocalDataUpdater
 
     public async Task CheckInstalledLocalizations(ServerType serverType)
     {
-        List<string> installedLocales = await this.appDataService.GetInstalledLocales(serverType, false);
+        var installedLocales = await this.appDataService.GetInstalledLocales(serverType, false);
         if (!installedLocales.Contains(this.appSettings.SelectedLanguage.LocalizationFileName))
         {
             this.logger.LogInformation("Selected localization is not installed. Downloading file...");
             string localizationFile = this.appSettings.SelectedLanguage.LocalizationFileName + ".json";
-            await this.awsClient.DownloadFiles(serverType, new() { ("Localization", localizationFile) });
+            await this.awsClient.DownloadFiles(serverType, [("Localization", localizationFile)]);
             this.logger.LogInformation("Downloaded localization file for selected localization. Updating localizer data...");
         }
         else
@@ -311,8 +311,8 @@ public class LocalDataUpdater : ILocalDataUpdater
     /// <param name="progressTracker">An <see cref="IProgress{T}"/> used to monitor the progress of the update.</param>
     private async Task CheckFilesAndDownloadUpdates(ServerType serverType, IProgress<(int, string)> progressTracker)
     {
-        UpdateCheckResult checkResult = await this.CheckJsonFileVersions(serverType);
-        if (checkResult.AvailableFileUpdates.Any())
+        var checkResult = await this.CheckJsonFileVersions(serverType);
+        if (checkResult.AvailableFileUpdates.Count != 0)
         {
             this.logger.LogInformation("Updating {AvailableUpdateCount} files...", checkResult.AvailableFileUpdates.Count);
             progressTracker.Report((1, nameof(Translation.SplashScreen_Json)));
@@ -342,7 +342,7 @@ public class LocalDataUpdater : ILocalDataUpdater
     {
         string imageBasePath = this.appDataService.AppDataImageDirectory;
         var shipImageDirectory = this.fileSystem.DirectoryInfo.New(this.fileSystem.Path.Combine(imageBasePath, "Ships"));
-        if (!shipImageDirectory.Exists || !shipImageDirectory.GetFiles().Any() || !canDeltaUpdate)
+        if (!shipImageDirectory.Exists || shipImageDirectory.GetFiles().Length == 0 || !canDeltaUpdate)
         {
             progressTracker.Report((2, nameof(Translation.SplashScreen_ShipImages)));
             await this.awsClient.DownloadImages(this.fileSystem);

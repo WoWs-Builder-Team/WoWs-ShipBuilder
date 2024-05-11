@@ -4,6 +4,7 @@ using MudBlazor;
 using MudBlazor.Services;
 using WoWsShipBuilder.Features.BallisticCharts;
 using WoWsShipBuilder.Features.LinkShortening;
+using WoWsShipBuilder.Features.Navigation;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Features.ShipStats;
 using WoWsShipBuilder.Infrastructure.ApplicationTheme;
@@ -20,7 +21,7 @@ public static class ServiceCollectionExtensions
         services.AddMudServices(config =>
         {
             config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight;
-            config.PopoverOptions.Mode = PopoverMode.Legacy;
+            config.PopoverOptions.Mode = PopoverMode.Default;
         });
         services.AddSingleton<ILocalizationProvider, LocalizationProvider>();
         services.AddSingleton<MetricsService>();
@@ -46,6 +47,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ChartJsInterop>();
         services.AddScoped<MouseEventInterop>();
         services.AddScoped<SessionStateCache>();
+        services.AddScoped<ExpanderStateCache>();
+        services.AddScoped<AppNavigator>();
         services.AddScoped<ThemeManager>();
 
         return services;

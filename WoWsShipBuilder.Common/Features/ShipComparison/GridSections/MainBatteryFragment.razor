@@ -6,7 +6,7 @@
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer, double range, Dictionary<Guid, DispersionContainer> dispersionCache)> MainBatteryDataFragment = element => __builder =>
+    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer, double firingRange, Dictionary<Guid, DispersionValue> dispersionCache)> MainBatteryDataFragment = element => __builder =>
     {
         string dataSectionString = ShipComparisonDataSections.MainBattery.AsString();
 
@@ -28,6 +28,7 @@
         var columnTitleVerticalDispersion = $"{element.localizer.SimpleAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Dispersion))}";
         var columnTitleTurnTime = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TurnTime));
         var columnTitleTraverseSpeed = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TraverseSpeed));
+        var columnTitleAmmoSwitchTime = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AmmoSwitchTime));
         var columnTitleReload = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ReloadTime));
         var columnTitleRof = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RoF));
         var columnTitleHeDpm = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_HE))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Dpm))}";
@@ -84,36 +85,6 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleHorizontalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHorizontalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Horizontal : 0)" T="GridDataWrapper" Title="@columnTitleHorizontalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @if (element.dispersionCache.TryGetValue(context.Item.Id, out var value))
-                {
-                    <MudText Typo="Typo.body2">
-                        @(Math.Round(value.Horizontal, 2) + unitM)
-                    </MudText>
-                }
-                else
-                {
-                    @UtilityFragments.DataNotAvailableFragment
-                }
-            </CellTemplate>
-        </TemplateColumn>
-
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleVerticalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleVerticalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Vertical : 0)" T="GridDataWrapper" Title="@columnTitleVerticalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @if (element.dispersionCache.TryGetValue(context.Item.Id, out var value))
-                {
-                    <MudText Typo="Typo.body2">
-                        @(Math.Round(value.Vertical, 2) + unitM)
-                    </MudText>
-                }
-                else
-                {
-                    @UtilityFragments.DataNotAvailableFragment
-                }
-            </CellTemplate>
-        </TemplateColumn>
-
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTurnTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTurnTime)" SortBy="@(x => x.MainBattery?.TurnTime ?? 0)" T="GridDataWrapper" Title="@columnTitleTurnTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.MainBattery?.TurnTime is not null)
@@ -135,6 +106,21 @@
                 {
                     <MudText Typo="Typo.body2">
                         @(context.Item.MainBattery.TraverseSpeed + unitDegreePerSecond)
+                    </MudText>
+                }
+                else
+                {
+                    @UtilityFragments.DataNotAvailableFragment
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAmmoSwitchTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAmmoSwitchTime)" SortBy="@(x => x.MainBattery?.AmmoSwitchTime ?? 0)" T="GridDataWrapper" Title="@columnTitleAmmoSwitchTime" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.MainBattery?.AmmoSwitchTime is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @(context.Item.MainBattery.AmmoSwitchTime + unitS)
                     </MudText>
                 }
                 else
@@ -271,6 +257,44 @@
                 {
                     <MudText Typo="Typo.body2">
                         @(context.Item.MainBattery.PotentialFpm + unitFpm)
+                    </MudText>
+                }
+                else
+                {
+                    @UtilityFragments.DataNotAvailableFragment
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleHorizontalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHorizontalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Horizontal : 0)" T="GridDataWrapper" Title="@columnTitleHorizontalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.MainBattery is not null && context.Item.MainBattery.Range < (decimal)element.firingRange)
+                {
+                    @UtilityFragments.OutOfRangeFragment((element.localizer, element.firingRange, context.Item.MainBattery.Range))
+                }
+                else if (element.dispersionCache.TryGetValue(context.Item.Id, out var value))
+                {
+                    <MudText Typo="Typo.body2">
+                        @(Math.Round(value.Horizontal, 2) + unitM)
+                    </MudText>
+                }
+                else
+                {
+                    @UtilityFragments.DataNotAvailableFragment
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleVerticalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleVerticalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Vertical : 0)" T="GridDataWrapper" Title="@columnTitleVerticalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.MainBattery is not null && context.Item.MainBattery.Range < (decimal)element.firingRange)
+                {
+                    @UtilityFragments.OutOfRangeFragment((element.localizer, element.firingRange, context.Item.MainBattery.Range))
+                }
+                else if (element.dispersionCache.TryGetValue(context.Item.Id, out var value) && context.Item.MainBattery is not null && context.Item.MainBattery.Range > (decimal)element.firingRange)
+                {
+                    <MudText Typo="Typo.body2">
+                        @(Math.Round(value.Vertical, 2) + unitM)
                     </MudText>
                 }
                 else

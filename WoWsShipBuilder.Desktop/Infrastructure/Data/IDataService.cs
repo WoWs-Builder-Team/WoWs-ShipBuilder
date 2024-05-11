@@ -7,11 +7,11 @@ public interface IDataService
 {
     Task StoreStringAsync(string content, string path);
 
-    Task StoreAsync(object content, string path);
+    Task StoreAsync<T>(T content, string path);
 
     Task StoreAsync(Stream stream, string path);
 
-    void Store(object content, string path);
+    void Store<T>(T content, string path);
 
     void Store(Stream stream, string path);
 

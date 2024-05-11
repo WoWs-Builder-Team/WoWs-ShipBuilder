@@ -1,13 +1,14 @@
 ﻿@using Prometheus
 @using System.Collections.Concurrent
+@using System.Collections.Immutable
 @using Microsoft.Extensions.Hosting
 @using Microsoft.Extensions.Options
 @using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.LinkShortening
+@using WoWsShipBuilder.Features.Navigation
 @using WoWsShipBuilder.Features.ShipStats.Components
 @using WoWsShipBuilder.Infrastructure.ApplicationData
-@using WoWsShipBuilder.Infrastructure.DataTransfer
 @using WoWsShipBuilder.Infrastructure.GameData
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
@@ -79,7 +80,7 @@
         </MudBreakpointProvider>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@Cancel" Variant="Variant.Filled" Color="Color.Warning">
+        <MudButton OnClick="@Cancel" Variant="Variant.Text" Color="Color.Default">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
         <MudButton Color="Color.Tertiary" OnClick="@ResetBuild" Variant="Variant.Filled">
@@ -87,7 +88,7 @@
                  @Localizer.GetAppLocalization(nameof(Translation.MainWindow_ResetBuild)).Localization
             </MudText>
         </MudButton>
-        <MudButton Color="Color.Success" OnClick="@SaveBuilds" Variant="Variant.Filled" Disabled="@(ViewModel!.BuildName.Intersect(Path.GetInvalidFileNameChars()).Any() || ViewModel!.BuildName.Contains(';'))">
+        <MudButton Color="Color.Primary" OnClick="@SaveBuilds" Variant="Variant.Filled" Disabled="@(ViewModel!.BuildName.Intersect(Path.GetInvalidFileNameChars()).Any() || ViewModel!.BuildName.Contains(';'))">
             <MudText Typo="Typo.button">
                  @Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_ConfirmButton)).Localization
             </MudText>
@@ -183,7 +184,7 @@
                                     }
                                     @if (!SpecialAbilityDisabled && (shipData.Ship.SpecialAbility is not null || shipData.Ship.MainBatteryModuleList.Any(x => x.Value.BurstModeAbility is not null)))
                                     {
-                                        <MudSwitch T="bool" @bind-Checked="ViewModel.SpecialAbilityActive" Color="Color.Primary" Label="Activate special ability"/>
+                                        <MudSwitch T="bool" @bind-Checked="ViewModel.SpecialAbilityActive" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildConfigurationDialog_ActivateSpecialAbility))"/>
                                     }
                                 </MudStack>
                             </MudItem>
@@ -195,19 +196,19 @@
                             </MudItem>
                             <MudItem xs="12" md="6">
                                 <MudStack Row="true" Justify="Justify.Center" Style="margin-top: -14px">
-                                    <MudTextField @bind-Value="inputBuildString" Class="default-label-background" Immediate DebounceInterval="150" Validation="@(new Func<string, Task<string?>>(ValidateBuildString))" Clearable FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Alternative" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink))" Variant="Variant.Outlined"/>
+                                    <MudTextField @bind-Value="inputBuildString" Class="default-label-background" Immediate DebounceInterval="150" Validation="@(new Func<string, Task<string?>>(ValidateBuildString))" Clearable FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildConfigurationDialog_Alternative))" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink))" Variant="Variant.Outlined"/>
                                     <MudButton Disabled="@(string.IsNullOrWhiteSpace(buildString))" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" Style="margin-top: 6px" OnClick="@ImportBuildFromString">
                                         @Localizer.GetAppLocalization(Translation.BuildConfigurationDialog_Load).Localization
                                     </MudButton>
                                     <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Class="file-upload-full-height" Accept=".png">
                                         <ButtonTemplate>
-                                            <MudButton HtmlTag="label" Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Image" Style="height: 100%;" for="@context">Import</MudButton>
+                                            <MudButton HtmlTag="label" Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Image" Style="height: 100%;" for="@context">@Localizer.SimpleAppLocalization(nameof(Translation.BuildImport_Import))</MudButton>
                                         </ButtonTemplate>
                                     </MudFileUpload>
                                 </MudStack>
                             </MudItem>
                             <MudItem xs="12" md="6">
-                                <MudTextField @bind-Value="ViewModel.BuildName" Immediate Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))" DebounceInterval="150" Clearable FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-n2 mb-0 default-label-background"/>
+                                <MudTextField @bind-Value="ViewModel.BuildName" AutoFocus Immediate Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))" DebounceInterval="150" Clearable FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_BuildName))" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Variant="Variant.Outlined" Class="mt-n2 mb-0 default-label-background"/>
                             </MudItem>
                         }
                         else
@@ -274,7 +275,7 @@
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
             var vm = ShipBuildViewModel.Create(shipBuildContainer);
-            foreach (int slot in shipBuildContainer.ActivatedConsumableSlots ?? Array.Empty<int>())
+            foreach (int slot in shipBuildContainer.ActivatedConsumableSlots)
             {
                 vm.ConsumableViewModel.ConsumableSlots[slot].ConsumableActivated = true;
             }
@@ -295,7 +296,7 @@
 
     private async Task ResetBuild()
     {
-        var vm = LoadShipViewModel(SelectedContainer with { Build = null, ActivatedConsumableSlots = null, SpecialAbilityActive = false });
+        var vm = LoadShipViewModel(SelectedContainer with { Build = null, ActivatedConsumableSlots = ImmutableArray<int>.Empty, SpecialAbilityActive = false });
         ViewModel = vm;
         vmCache[SelectedContainer.Id] = vm;
         await Task.Delay(1); // needed for the captain skill selector to rerender properly
@@ -317,7 +318,7 @@
                 throw new FormatException();
             }
 
-            ViewModel = LoadShipViewModel(ShipBuildContainer.CreateNew(ship, build, null));
+            ViewModel = LoadShipViewModel(ShipBuildContainer.CreateNew(ship, build, ImmutableArray<int>.Empty));
             inputBuildString = string.Empty;
             buildString = string.Empty;
             vmCache[SelectedContainer.Id] = ViewModel;

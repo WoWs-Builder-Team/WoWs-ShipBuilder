@@ -1353,6 +1353,9 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="Placeholder" xml:space="preserve">
       <value>---</value>
   </data>
+  <data name="ShipStats_Splash" xml:space="preserve">
+      <value>Schadensbereich</value>
+  </data>
   <data name="ShipStats_SplashRadius" xml:space="preserve">
       <value>Explosionsradius</value>
   </data>
@@ -1537,6 +1540,18 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="ShipStats_Tonnage" xml:space="preserve">
       <value>Tonnage</value>
   </data>
+  <data name="ShipStats_ForwardEngineUpTime" xml:space="preserve">
+      <value>Zeit bis zum Erreichen der Vorwärtsgeschwindigkeit</value>
+  </data>
+  <data name="ShipStats_BackwardEngineUpTime" xml:space="preserve">
+      <value>Zeit bis zum Erreichen der Rückwärtsgeschwindigkeit</value>
+  </data>
+  <data name="ShipStats_ForwardEngineForsag" xml:space="preserve">
+      <value>Überdrehzahl des vorwärts Motors</value>
+  </data>
+  <data name="ShipStats_BackwardEngineForsag" xml:space="preserve">
+      <value>Überdrehzahl des rückwärts Motors</value>
+  </data>
   <data name="ShipStats_ForwardEngineForsagMaxSpeed" xml:space="preserve">
       <value>Maximale Vorwärtsgeschwindigkeit</value>
   </data>
@@ -1606,6 +1621,9 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="ShipAndShellsSelectionDialog_NoShipSelected" xml:space="preserve">
       <value>Kein Schiff ausgewählt</value>
   </data>
+  <data name="ShipStats_TargetAreaRadius" xml:space="preserve">
+      <value>Zielbereichs-Radius</value>
+  </data>
   <data name="ShipStats_ProgressPerAction" xml:space="preserve">
       <value>Fortschritt pro Aktion</value>
   </data>
@@ -1657,6 +1675,12 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="ShipStats_SternLoaders" xml:space="preserve">
       <value>Heck</value>
   </data>
+  <data name="ShipStats_First" xml:space="preserve">
+      <value>Erster</value>
+  </data>
+  <data name="ShipStats_Second" xml:space="preserve">
+      <value>Zweiter</value>
+  </data>
   <data name="Unit_U" xml:space="preserve">
       <value>Einheit</value>
   </data>
@@ -1665,6 +1689,9 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   </data>
   <data name="ShipStats_ManeuverabilitySubsMaxDiveSpeed" xml:space="preserve">
       <value>Maximale Tauchgeschwindigkeit</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsDivingPlaneShiftTime" xml:space="preserve">
+      <value>Drehgeschwindigkeit von Tiefenruder</value>
   </data>
   <data name="ShipStats_DiveCapacity" xml:space="preserve">
       <value>Tauchkapazität</value>
@@ -1686,6 +1713,9 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   </data>
   <data name="ShipStats_MaxTurningSpeed" xml:space="preserve">
       <value>Maximale Drehgeschwindigkeit</value>
+  </data>
+  <data name="ShipStats_TurningAcceleration" xml:space="preserve">
+      <value>Drehbeschleunigung</value>
   </data>
   <data name="ShipStats_MaxVerticalSpeed" xml:space="preserve">
       <value>Maximale vertikale Geschwindigkeit</value>
@@ -1717,6 +1747,9 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="ShipStats_MoreDetails" xml:space="preserve">
       <value>Weitere Details</value>
   </data>
+  <data name="ShipStats_CutOffDistances" xml:space="preserve">
+      <value>Abbruchdistanzen</value>
+  </data>
   <data name="Unit_DegreePerSecond2" xml:space="preserve">
       <value>^/s²</value>
   </data>
@@ -1746,6 +1779,12 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   </data>
   <data name="BuildImageSettingsDialog_TwoColumnsTooltip" xml:space="preserve">
       <value>Vergrößert das Bildlayout durch Aufteilen von Elementen in zwei nebeneinander liegende Spalten (Kapitänsfertigkeiten und Signale sind nicht verdeckbar).</value>
+  </data>
+  <data name="BuildNameDialog_BuildName" xml:space="preserve">
+      <value>Build Name</value>
+  </data>
+  <data name="BuildNameDialog_EnterBuildName" xml:space="preserve">
+      <value>Build-Namen eingeben</value>
   </data>
   <data name="BuildImageRenderDialog_SaveImage" xml:space="preserve">
       <value>Bild speichern</value>
@@ -1888,11 +1927,17 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="ShipComparison_OnFire" xml:space="preserve">
       <value>In Brand</value>
   </data>
+  <data name="ShipComparison_SmokeFiring" xml:space="preserve">
+      <value>Schießen aus dem Nebel</value>
+  </data>
   <data name="ShipComparison_FullReverseTime" xml:space="preserve">
       <value>Volle Umkehrzeit</value>
   </data>
   <data name="ShipComparison_Charges" xml:space="preserve">
       <value>Ladungen</value>
+  </data>
+  <data name="ShipComparison_DropRange" xml:space="preserve">
+      <value>Abwurf-Reichweite</value>
   </data>
   <data name="ShipComparison_PlanesInSquadron" xml:space="preserve">
       <value>Flugzeuge pro Staffel</value>
@@ -1918,7 +1963,232 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="ShipComparison_Planes" xml:space="preserve">
       <value>Flugzeuge</value>
   </data>
+  <data name="ShipComparison_OnDeck" xml:space="preserve">
+      <value>An Deck</value>
+  </data>
+  <data name="ShipComparison_EngineBoostDuration" xml:space="preserve">
+      <value>Motorboost-Dauer</value>
+  </data>
+  <data name="ShipComparison_Invulnerability" xml:space="preserve">
+      <value>Unverwundbarkeit</value>
+  </data>
+  <data name="ShipComparison_ViewDistance" xml:space="preserve">
+      <value>Sichtweite</value>
+  </data>
+  <data name="ShipComparison_AreaChange" xml:space="preserve">
+      <value>Bereichsänderung</value>
+  </data>
+  <data name="ShipComparison_PerPlane" xml:space="preserve">
+      <value>je Flugzeug</value>
+  </data>
+  <data name="ShipComparison_TorpsPerPlane" xml:space="preserve">
+      <value>Torpedos je Flugzeug</value>
+  </data>
+  <data name="ShipStats_MaxReverseSpeed" xml:space="preserve">
+      <value>Maximale Rückwärtsgeschwindigkeit</value>
+  </data>
+  <data name="ShipComparison_TypeName" xml:space="preserve">
+      <value>Schiffsnamen eingeben...</value>
+  </data>
+  <data name="ShipComparison_SearchAndPin" xml:space="preserve">
+      <value>Schiff suchen &amp; anheften</value>
+  </data>
+  <data name="ShipComparison_DispersionAt" xml:space="preserve">
+      <value>Streuung auf</value>
+  </data>
+  <data name="ShipComparison_FiringRange" xml:space="preserve">
+      <value>Schussreichweite</value>
+  </data>
+  <data name="ShipSelectionWindow_SearchShipOrBuild" xml:space="preserve">
+      <value>Schiff oder Build suchen</value>
+  </data>
+  <data name="SettingsWindow_Export" xml:space="preserve">
+      <value>Exportieren</value>
+  </data>
+  <data name="SettingsWindow_DeleteAll" xml:space="preserve">
+      <value>Alle Löschen</value>
+  </data>
+  <data name="BuildConfigurationDialog_Load" xml:space="preserve">
+      <value>Laden</value>
+  </data>
+  <data name="SettingsWindow_InvalidJsonFileError" xml:space="preserve">
+      <value>Ungültige Datei. Nur .json Dateien erlaubt.</value>
+  </data>
+  <data name="ShipSelector_InvalidPngFileError" xml:space="preserve">
+      <value>Ungültige Datei. Nur .png Dateien erlaubt.</value>
+  </data>
+  <data name="SettingsWindow_LocalStorageWarning" xml:space="preserve">
+      <value>Builds werden lokal im Browser gespeichert. Operationen wie das Leeren des Browser-Caches können unter Umständen alle im lokalen Speicher gespeicherten Daten löschen. Wir empfehlen daher dringend, Builds periodisch oder zumindest vor dem Ausführen solcher Operationen zu exportieren.</value>
+  </data>
+  <data name="ShipStats_Krupp" xml:space="preserve">
+      <value>Krupp</value>
+  </data>
+  <data name="ShipStats_KruppExplanation" xml:space="preserve">
+      <value>Es ist eine Konstante, die benutzt wird, um die Penetration des Projektils anzupassen.
+        Zeigt an, wie stabil das Projektil ist.
+        Je höher der Wert, desto höher ist die Penetration.</value>
+  </data>
+  <data name="ShipStats_ApPenetrationFormula" xml:space="preserve">
+      <value>K = Der Krupp
+        M = die Masse des Projektils [kg]
+        S = die Einschlaggeschwindigkeit des Projektils [m/s]
+        C = Kaliber [m]
+
+        Durchdringung [mm] = K * (M * S^2)^0. 9 * C^(-1.07) * 0.0000001
+
+      Reverse-Engineered von TTaro_</value>
+  </data>
   <data name="ShipStats_PenetrationAp" xml:space="preserve">
       <value>Durchschlagskraft</value>
+  </data>
+  <data name="BETA_UserAuth" xml:space="preserve">
+      <value>Benutzeranmeldung</value>
+  </data>
+  <data name="ShipStats_DcDetonationDepthExplanation" xml:space="preserve">
+      <value>Die Tauchtiefe der im Spiel gezeigten U-Boote wird als "ship_m" (Schiffsmeter) ausgedrückt. U-Boote können 60[ship_m] = 120[m] tauchen.</value>
+  </data>
+  <data name="ShipComparison_ShipsPerPage" xml:space="preserve">
+    <value>Schiffe pro Seite:</value>
+  </data>
+  <data name="ShipComparison_HideColumns" xml:space="preserve">
+    <value>Spalten ausblenden</value>
+  </data>
+  <data name="ShipStats_SecondConsecutive" xml:space="preserve">
+    <value>Zweite und Folgende</value>
+  </data>
+  <data name="ShipStats_FromSubsAtPeriscopeDepth" xml:space="preserve">
+    <value>Von U-Booten auf Periskop-Tiefe</value>
+  </data>
+  <data name="ShipStats_ShellType" xml:space="preserve">
+    <value>Munitionstyp</value>
+  </data>
+  <data name="ShipStats_Overall" xml:space="preserve">
+    <value>Gesamt</value>
+  </data>
+  <data name="ShipComparison_SplashDmgSubs" xml:space="preserve">
+    <value>Flächenschaden gegen U-Boote</value>
+  </data>
+  <data name="ShipComparison_OutOfRange" xml:space="preserve">
+    <value>Außer Reichweite</value>
+  </data>
+  <data name="ShipComparison_OutOfRangeTooltip" xml:space="preserve">
+    <value>Die Schussdistanz ist größer als die maximale Reichweite des Schiffes</value>
+  </data>
+  <data name="UserDataService_BuildUpdated" xml:space="preserve">
+    <value>Build wurde aktualisiert.</value>
+  </data>
+  <data name="UserDataService_BuildSaved" xml:space="preserve">
+    <value>Builds wurden gespeichert.</value>
+  </data>
+  <data name="UserDataService_BuildNotSaved" xml:space="preserve">
+    <value>Builds wurden nicht gespeichert.</value>
+  </data>
+  <data name="UserDataService_BuildLimitReached" xml:space="preserve">
+    <value>Build-Speicherlimit erreicht. Der nächste Build wird den ältesten gespeicherten Build ersetzen.</value>
+  </data>
+  <data name="UserDataService_BuildStorageFull" xml:space="preserve">
+    <value>Build-Speicher ist voll. Der älteste gespeicherte Build wurde ersetzt.</value>
+  </data>
+  <data name="UserDataService_BuildNotLoaded" xml:space="preserve">
+    <value>Build konnte nicht geladen werden.</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_WarningMessage" xml:space="preserve">
+    <value>Das Archiv enthält bereits einen Build namens</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_ForTheShip" xml:space="preserve">
+    <value>für das Schiff</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_OverwriteQuestion" xml:space="preserve">
+    <value>Existierenden Build überschreiben?</value>
+  </data>
+  <data name="UpdateSavedBuildConfirmationDialog_OverwriteBuild" xml:space="preserve">
+    <value>Build überschreiben</value>
+  </data>
+  <data name="ShipStats_ArchiveBuild" xml:space="preserve">
+    <value>Build archivieren</value>
+  </data>
+  <data name="ShipStats_ShareOrSaveBuild" xml:space="preserve">
+    <value>Teilen / Speichern</value>
+  </data>
+  <data name="ShipComparison_AddAShip" xml:space="preserve">
+    <value>Schiff hinzufügen...</value>
+  </data>
+  <data name="ShipSelectionDialog_AddShips" xml:space="preserve">
+    <value>Schiffe hinzufügen</value>
+  </data>
+  <data name="ShipStatsTab_BuildMustHaveName" xml:space="preserve">
+    <value>Fehler beim Speichern des Builds: Build muss einen Namen haben!</value>
+  </data>
+  <data name="ShipStatsTabs_LinkCopied" xml:space="preserve">
+    <value>Build-Link in die Zwischenablage kopiert</value>
+  </data>
+  <data name="ShipStatsTabs_BuildImageSavedAndCopiedToClipboard" xml:space="preserve">
+    <value>Die Build-Grafik wurde gespeichert und in die Zwischenablage kopiert!</value>
+  </data>
+  <data name="ShipStatsTab_ShareLink" xml:space="preserve">
+    <value>Link teilen</value>
+  </data>
+  <data name="ShipStatsTab_SaveBuild" xml:space="preserve">
+    <value>Build speichern</value>
+  </data>
+  <data name="ShipStatsTab_ShareBuildImage" xml:space="preserve">
+    <value>Build-Grafik teilen</value>
+  </data>
+  <data name="ShipStats_SmokeSpeedLimit" xml:space="preserve">
+    <value>Maximale Bewegungsgeschwindigkeit</value>
+  </data>
+  <data name="ShipStats_FirstGMShotDelay" xml:space="preserve">
+    <value>Hauptbatterie Ladezeit (Erste)</value>
+  </data>
+  <data name="ShipStats_OtherGMShotDelay" xml:space="preserve">
+    <value>Hauptbatterie-Ladezeit (Zweite und Folgende)</value>
+  </data>
+  <data name="ShipStats_LeftSideLoaders" xml:space="preserve">
+    <value>Linke Seite</value>
+  </data>
+  <data name="ShipStats_RightSideLoaders" xml:space="preserve">
+    <value>Rechte Seite</value>
+  </data>
+  <data name="SettingsWindow_SaveBuildOnShare" xml:space="preserve">
+    <value>Build beim Teilen speichern</value>
+  </data>
+  <data name="SettingsWindow_FittingToolSelector" xml:space="preserve">
+    <value>Schiffs-Selektor im Fitting-Tool Stil</value>
+  </data>
+  <data name="SettingsWindow_ClosedByDefault" xml:space="preserve">
+    <value>Standardmäßig geschlossen</value>
+  </data>
+  <data name="SettingsWindow_MultiSelect" xml:space="preserve">
+    <value>Mehrfachauswahl zulassen</value>
+  </data>
+  <data name="SettingsWindow_FtImgWarning" xml:space="preserve">
+    <value>WARNUNG: Nur mit schneller Internetverbindung verwenden.</value>
+  </data>
+  <data name="SettingsWindow_FittingToolShowImages" xml:space="preserve">
+    <value>Schiffsbilder anzeigen</value>
+  </data>
+  <data name="SettingsWindow_AutoUpdates" xml:space="preserve">
+    <value>Automatische Updates</value>
+  </data>
+  <data name="SettingsWindow_RestartRequired" xml:space="preserve">
+    <value>Ein Neustart ist erforderlich, damit diese Option wirksam wird.</value>
+  </data>
+  <data name="SettingsWindow_FittingToolSelectorDisabled" xml:space="preserve">
+    <value>Deaktiviert</value>
+  </data>
+  <data name="Charts_OpenShipStats" xml:space="preserve">
+    <value>Schiffsstatistiken öffnen</value>
+  </data>
+  <data name="WebApp_ViewShipsStats" xml:space="preserve">
+    <value>Schiffsstatistiken anzeigen</value>
+  </data>
+  <data name="UserDataService_BuildNotUpdated" xml:space="preserve">
+    <value>Build wurde nicht aktualisiert.</value>
+  </data>
+  <data name="BuildImageRenderDialog_CopyImage" xml:space="preserve">
+    <value>Bild kopieren</value>
+  </data>
+  <data name="OverwriteExistingBuildDialog_Message" xml:space="preserve">
+    <value>Das Archiv enthält bereits einen anderen Build namens '{0}' für das Schiff '{1}'</value>
   </data>
 </root>

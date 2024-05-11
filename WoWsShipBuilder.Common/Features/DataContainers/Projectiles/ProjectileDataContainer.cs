@@ -2,4 +2,6 @@ using WoWsShipBuilder.DataElements;
 
 namespace WoWsShipBuilder.Features.DataContainers;
 
-public abstract record ProjectileDataContainer : DataContainerBase;
+public abstract class ProjectileDataContainer : DataContainerBase
+{
+}

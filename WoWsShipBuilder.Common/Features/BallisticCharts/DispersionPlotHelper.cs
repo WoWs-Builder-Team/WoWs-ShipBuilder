@@ -32,7 +32,7 @@ public static class DispersionPlotHelper
     {
         double impactAngle;
         List<KeyValuePair<double, Ballistic>> ballistic = BallisticHelper.CalculateBallistic(shell, maxRange, shell.Penetration).Where(x => x.Key >= aimingRange).ToList();
-        if (ballistic.Any())
+        if (ballistic.Count != 0)
         {
             impactAngle = ballistic[0].Value.ImpactAngle;
         }

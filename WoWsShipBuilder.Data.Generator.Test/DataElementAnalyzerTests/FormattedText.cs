@@ -12,7 +12,7 @@ public partial class DataElementAnalyzerTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName="Test")]
                          public decimal Prop1 { get; set; }
@@ -32,7 +32,7 @@ public partial class DataElementAnalyzerTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.FormattedText)]
                          public decimal {|SB1002:Prop1|} { get; set; }
@@ -52,7 +52,7 @@ public partial class DataElementAnalyzerTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = "Test", ArgumentsTextKind = TextKind.LocalizationKey)]
                          public decimal Prop1 { get; set; }
@@ -72,7 +72,7 @@ public partial class DataElementAnalyzerTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = "Test", ArgumentsTextKind = TextKind.AppLocalizationKey)]
                          public decimal Prop1 { get; set; }
@@ -92,7 +92,7 @@ public partial class DataElementAnalyzerTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = "Test", LocalizationKeyOverride = "Test")]
                          public decimal {|SB1003:Prop1|} { get; set; }
@@ -112,7 +112,7 @@ public partial class DataElementAnalyzerTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = "Test", UnitKey = "Test")]
                          public decimal {|SB1003:Prop1|} { get; set; }
@@ -132,7 +132,7 @@ public partial class DataElementAnalyzerTest
                      namespace Test;
 
                      [DataContainer]
-                     public partial record TestRecord : DataContainerBase
+                     public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.FormattedText, ArgumentsCollectionName = "Test", TooltipKey = "Test")]
                          public decimal {|SB1003:Prop1|} { get; set; }

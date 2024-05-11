@@ -2,8 +2,9 @@
 using System.IO.Abstractions;
 using System.Runtime.Versioning;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
 
 namespace WoWsShipBuilder.Desktop.Infrastructure.Data;
 
@@ -23,10 +24,10 @@ public class DesktopDataService : IDataService
         await this.fileSystem.File.WriteAllTextAsync(path, content, Encoding.UTF8);
     }
 
-    public async Task StoreAsync(object content, string path)
+    public async Task StoreAsync<T>(T content, string path)
     {
         this.CreateDirectory(path);
-        string fileContents = JsonConvert.SerializeObject(content);
+        string fileContents = JsonSerializer.Serialize(content, AppConstants.JsonSerializerOptions);
         await this.fileSystem.File.WriteAllTextAsync(path, fileContents, Encoding.UTF8);
     }
 
@@ -37,10 +38,10 @@ public class DesktopDataService : IDataService
         await stream.CopyToAsync(fileStream);
     }
 
-    public void Store(object content, string path)
+    public void Store<T>(T content, string path)
     {
         this.CreateDirectory(path);
-        string fileContents = JsonConvert.SerializeObject(content);
+        string fileContents = JsonSerializer.Serialize(content, AppConstants.JsonSerializerOptions);
         this.fileSystem.File.WriteAllText(path, fileContents, Encoding.UTF8);
     }
 
@@ -59,13 +60,13 @@ public class DesktopDataService : IDataService
     public async Task<T?> LoadAsync<T>(string path)
     {
         string contents = await this.fileSystem.File.ReadAllTextAsync(path, Encoding.UTF8);
-        return JsonConvert.DeserializeObject<T>(contents);
+        return JsonSerializer.Deserialize<T>(contents, AppConstants.JsonSerializerOptions);
     }
 
     public T? Load<T>(string path)
     {
         string contents = this.fileSystem.File.ReadAllText(path, Encoding.UTF8);
-        return JsonConvert.DeserializeObject<T>(contents);
+        return JsonSerializer.Deserialize<T>(contents, AppConstants.JsonSerializerOptions);
     }
 
     public string CombinePaths(params string[] paths)

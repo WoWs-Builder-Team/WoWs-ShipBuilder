@@ -555,9 +555,6 @@
   <data name="ShipStats_ShortAura" xml:space="preserve">
     <value>近程防空区</value>
   </data>
-  <data name="ShipStats_Aircraft" xml:space="preserve">
-    <value>航空器</value>
-  </data>
   <data name="Bomb" xml:space="preserve">
     <value>炸弹</value>
   </data>

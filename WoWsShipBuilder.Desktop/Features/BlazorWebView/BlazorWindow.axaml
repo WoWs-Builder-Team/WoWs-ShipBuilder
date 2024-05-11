@@ -7,7 +7,8 @@
         x:Class="WoWsShipBuilder.Desktop.Features.BlazorWebView.BlazorWindow"
         WindowStartupLocation="CenterScreen"
         Background="#ff282828"
-        MinHeight="850"
+        MinHeight="720"
+        Height="850"
         Title="WoWs ShipBuilder">
     <Grid RowDefinitions="30, *">
         <!-- <infrastructure:AppHeader ShowMaximizeButton="True" /> -->
@@ -15,6 +16,7 @@
                                       HostPage="wwwroot\\index.html"
                                       RootComponents="{DynamicResource rootComponents}"
                                       Services="{DynamicResource services}"
-                                      DefaultDownloadFolderPath="{DynamicResource downloadPath}"/>
+                                      DefaultDownloadFolderPath="{DynamicResource downloadPath}"
+                                      Margin="2 2 2 2"/>
     </Grid>
 </Window>

@@ -66,6 +66,16 @@ public class MetricsService
         LabelNames = new[] { "action" },
     });
 
+    public Counter BallisticChartsActions { get; } = Prometheus.Metrics.CreateCounter("charts_actions_total", "Number of usage of the actions of the ballistic charts page (inline links, buttons)", new CounterConfiguration
+    {
+        LabelNames = new[] { "action" },
+    });
+
+    public Counter AccelerationChartsActions { get; } = Prometheus.Metrics.CreateCounter("acceleration_charts_actions_total", "Number of usage of the actions of the acceleration charts page (inline links, buttons)", new CounterConfiguration
+    {
+        LabelNames = new[] { "action" },
+    });
+
     public Counter BuildConfigurationDialogUsage { get; } = Prometheus.Metrics.CreateCounter("build_configuration_dialog_usage_total", "Number of usage of the build configuration dialog", new CounterConfiguration
     {
         LabelNames = new[] { "feature" },
@@ -73,7 +83,7 @@ public class MetricsService
 
     public Counter CustomAccelerationDataUsage { get; } = Prometheus.Metrics.CreateCounter("custom_acceleration_data_usage_total", "Number of usage of the custom acceleration data feature");
 
-    public Counter ChartsTabUsage { get; } = Prometheus.Metrics.CreateCounter("charts_tab_usage_total", "Number of usage of each charts tab", new CounterConfiguration
+    public Counter BallisticChartsTabUsage { get; } = Prometheus.Metrics.CreateCounter("charts_tab_usage_total", "Number of usage of each charts tab", new CounterConfiguration
     {
         LabelNames = new[] { "tab" },
     });

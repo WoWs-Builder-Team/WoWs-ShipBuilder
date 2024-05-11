@@ -17,10 +17,10 @@
       ]
     },
     {
-      "library": "html2canvas@1.4.1",
-      "destination": "wwwroot/lib/html2canvas/",
-      "files":[
-        "dist/html2canvas.min.js"
+      "library": "dom-to-image-more@3.2.0",
+      "destination": "wwwroot/lib/dom-to-image-more/",
+      "files": [
+        "dist/dom-to-image-more.min.js"
       ]
     }
   ]

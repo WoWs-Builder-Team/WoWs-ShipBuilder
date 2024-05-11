@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -8,14 +10,11 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Moq;
 using Moq.Protected;
-using Newtonsoft.Json;
 using NUnit.Framework;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Versioning;
-using WoWsShipBuilder.Infrastructure;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
-using WoWsShipBuilder.Infrastructure.Utility;
 using WoWsShipBuilder.Web.Infrastructure;
 
 namespace WoWsShipBuilder.Web.Test;
@@ -35,7 +34,7 @@ public class ServerAwsClientTest
     [Test]
     public async Task DownloadFiles()
     {
-        var testVersionInfo = new VersionInfo(new() { { "Ship", new() { new("Germany.json", 1) } } }, 0, GameVersion.Default);
+        var testVersionInfo = new VersionInfo(new Dictionary<string, ImmutableList<FileVersion>> { { "Ship", ImmutableList.Create(new FileVersion("Germany.json", 1)) } }.ToImmutableDictionary(), 0, GameVersion.Default);
         const string testShipKey = "PGSA001";
         var shipDictionary = new Dictionary<string, Ship> { { testShipKey, new Ship { Index = testShipKey, Id = 1234 } } };
 
@@ -43,17 +42,17 @@ public class ServerAwsClientTest
                 "SendAsync",
                 ItExpr.Is<HttpRequestMessage>(message => message.RequestUri!.AbsoluteUri.EndsWith("VersionInfo.json")),
                 ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(new HttpResponseMessage { Content = new StringContent(JsonConvert.SerializeObject(testVersionInfo)) });
+            .ReturnsAsync(new HttpResponseMessage { Content = new StringContent(JsonSerializer.Serialize(testVersionInfo, AppConstants.JsonSerializerOptions)) });
 
         var shipRequestExpression = ItExpr.Is<HttpRequestMessage>(message => message.RequestUri!.AbsolutePath.Equals("/api/live/Ship/Germany.json"));
         this.messageHandlerMock.Protected().Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
                 shipRequestExpression,
                 ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(new HttpResponseMessage { Content = new StringContent(JsonConvert.SerializeObject(shipDictionary)) });
+            .ReturnsAsync(new HttpResponseMessage { Content = new StringContent(JsonSerializer.Serialize(shipDictionary, AppConstants.JsonSerializerOptions)) });
 
-        var cdnOptions = new CdnOptions { Host = "https://example.com"};
-        IOptions<CdnOptions>? options = Options.Create(cdnOptions);
+        var cdnOptions = new CdnOptions { Host = "https://example.com" };
+        IOptions<CdnOptions> options = Options.Create(cdnOptions);
         var client = new ServerAwsClient(new(this.messageHandlerMock.Object), options, NullLogger<ServerAwsClient>.Instance);
 
         var versionInfo = await client.DownloadVersionInfo(ServerType.Live);

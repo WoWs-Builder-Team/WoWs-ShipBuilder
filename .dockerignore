@@ -23,3 +23,5 @@
 **/values.dev.yaml
 LICENSE
 README.md
+**/appsettings.local.json
+**/wwwroot/lib
