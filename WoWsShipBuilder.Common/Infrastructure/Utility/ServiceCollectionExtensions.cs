@@ -8,7 +8,6 @@ using WoWsShipBuilder.Features.Navigation;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Features.ShipStats;
 using WoWsShipBuilder.Infrastructure.ApplicationTheme;
-using WoWsShipBuilder.Infrastructure.DataTransfer;
 using WoWsShipBuilder.Infrastructure.Localization;
 using WoWsShipBuilder.Infrastructure.Metrics;
 

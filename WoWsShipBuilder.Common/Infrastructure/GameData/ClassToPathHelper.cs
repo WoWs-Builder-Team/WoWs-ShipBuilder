@@ -1,4 +1,5 @@
 ﻿using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.Infrastructure.ApplicationTheme;
 
 namespace WoWsShipBuilder.Infrastructure.GameData;
 
@@ -12,6 +13,7 @@ public static class ClassToPathHelper
 
     private const string GoldColor = "#ffffd700";
     private const string WhiteColor = "#ffffffff";
+    private const string GreyColor = "#7f7f7f7f";
 
     public static string GetSvgPathFromClass(ShipClass shipClass)
     {
@@ -26,18 +28,15 @@ public static class ClassToPathHelper
         };
     }
 
-    public static string GetColorFromCategory(ShipCategory category, bool border)
+    public static string GetColorFromCategory(ShipCategory category, bool border, ThemeManager.ThemeVariant currentThemeVariant)
     {
+        var standardColor = currentThemeVariant == ThemeManager.ThemeVariant.Light ? GreyColor : WhiteColor;
+
         if (border)
         {
-            return category.Equals(ShipCategory.TechTree) ? WhiteColor : GoldColor;
+            return category.Equals(ShipCategory.TechTree) ? standardColor : GoldColor;
         }
 
-        if (category.Equals(ShipCategory.Premium) && !border)
-        {
-            return GoldColor;
-        }
-
-        return WhiteColor;
+        return category.Equals(ShipCategory.Premium) ? GoldColor : standardColor;
     }
 }

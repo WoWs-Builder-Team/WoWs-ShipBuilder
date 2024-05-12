@@ -35,7 +35,7 @@
         <MudItem xs="12">
             <MudStack Row>
                 <MudTextField Variant="Variant.Outlined" Immediate T="string" Class="default-label-background" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)).Localization" @bind-Value="buildString"/>
-                <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@ImportFromString">
+                <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@ImportFromString">
                     @Localizer.GetAppLocalization(nameof(Translation.WebApp_LoadBuild)).Localization
                 </MudButton>
                 <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Style="margin-top: 0;" Class="file-upload-full-height" Accept=".png">
@@ -504,12 +504,10 @@
             AddSavedBuild(Build.UpgradeBuild(build));
             buildString = string.Empty;
             StateHasChanged();
-            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
             Snackbar.Add("Build loaded", Severity.Success);
         }
         catch (Exception)
         {
-            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
             Snackbar.Add("Failed to load build from string", Severity.Error);
         }
     }

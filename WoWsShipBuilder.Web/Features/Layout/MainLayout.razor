@@ -15,14 +15,14 @@
 <MudSnackbarProvider/>
 
 <MudLayout>
-    <TopMenu/>
+    <TopMenu IsDarkTheme="isDarkTheme"/>
     <MudMainContent Class="px-2">
         <CascadingValue Name="SettingsInitialized" Value="@settingsInitialized">
             @Body
         </CascadingValue>
     </MudMainContent>
     <footer style="margin-top: 16px;">
-        <ShipBuilderFooter/>
+        <ShipBuilderFooter IsDarkTheme="isDarkTheme"/>
     </footer>
 </MudLayout>
 

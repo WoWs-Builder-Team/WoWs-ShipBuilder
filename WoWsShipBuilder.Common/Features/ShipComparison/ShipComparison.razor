@@ -36,6 +36,7 @@
 @using static WoWsShipBuilder.Features.ShipComparison.GridSections.BombersFragment
 @using static WoWsShipBuilder.Features.ShipComparison.GridSections.BombsFragment
 @using System.Collections.Immutable
+@using WoWsShipBuilder.Infrastructure.ApplicationTheme
 @using WoWsShipBuilder.Features.Navigation
 
 @inherits ReactiveComponentBase<ShipComparisonViewModel>
@@ -52,6 +53,7 @@
 @inject SessionStateCache SessionStateCache
 @inject IDialogService DialogService
 @inject AppNavigator AppNavigator
+@inject ThemeManager ThemeManager
 
 <PageTitle>WoWs ShipBuilder: Ship Comparison</PageTitle>
 
@@ -193,7 +195,7 @@
                 <CellTemplate>
                     <MudTooltip Arrow Delay="350" Color="Color.Transparent">
                         <ChildContent>
-                            <MudIcon Icon="@(Helpers.GetIconFromClass(context.Item.ShipClass, context.Item.ShipCategory))" Size="Size.Medium" ViewBox="-1 -3 24 10"/>
+                            <MudIcon Icon="@(Helpers.GetIconFromClass(context.Item.ShipClass, context.Item.ShipCategory, ThemeManager.SelectedThemeVariant))" Size="Size.Medium" ViewBox="-1 -3 24 10"/>
                         </ChildContent>
                         <TooltipContent>
                             <MudPaper Outlined Class="pa-2">
@@ -290,7 +292,7 @@
 
     private const int MaxPageSize = 300;
 
-    private const string StickyColumnsBackgroundColor = "background-color: #262626";
+    private const string StickyColumnsBackgroundColor = "background-color: var(--mud-palette-drawer-background)";
 
     private const string TiersUrlParameter = "t";
 

@@ -10,6 +10,12 @@ public class ThemeManager
 
     private readonly AppSettings appSettings;
 
+    public const string DefaultPrimaryColor = "#6186FF";
+
+    public const ThemeVariant DefaultThemeVariant = ThemeVariant.Dark;
+
+    public const ThemeStyle DefaultThemeStyle = ThemeStyle.Rounded;
+
     public ThemeManager(AppSettings appSettings)
     {
         this.appSettings = appSettings;
@@ -31,18 +37,15 @@ public class ThemeManager
         Sharp,
     }
 
-    public string DefaultPrimaryColor => "#6186FF";
-
-    public ThemeVariant DefaultThemeVariant => ThemeVariant.Dark;
-
-    public ThemeStyle DefaultThemeStyle => ThemeStyle.Rounded;
+    public ThemeVariant SelectedThemeVariant { get; private set; }
 
     public MudTheme AppTheme { get; private set; }
 
     private MudTheme GetAppTheme()
     {
-        ThemeVariant? selectedThemeVariant = Helpers.IsAprilFool() ? ThemeVariant.AprilFool : this.appSettings.ThemeVariant ?? this.DefaultThemeVariant;
-        return selectedThemeVariant switch
+        this.SelectedThemeVariant = Helpers.IsAprilFool() ? ThemeVariant.AprilFool : this.appSettings.ThemeVariant ?? DefaultThemeVariant;
+
+        return this.SelectedThemeVariant switch
         {
             ThemeVariant.Dark => this.CreateDarkTheme(),
             ThemeVariant.Light => this.CreateLightTheme(),
@@ -57,17 +60,17 @@ public class ThemeManager
         {
             LayoutProperties =
             {
-                DefaultBorderRadius = (this.appSettings.ThemeStyle ?? this.DefaultThemeStyle) == ThemeStyle.Sharp ? "0" : $"{BorderRadius}px",
+                DefaultBorderRadius = (this.appSettings.ThemeStyle ?? DefaultThemeStyle) == ThemeStyle.Sharp ? "0" : $"{BorderRadius}px",
             },
             PaletteDark =
             {
                 Black = "#121212FF",
                 White = "#FDFDFDFF",
-                Primary = this.appSettings.ThemePrimaryColor ?? this.DefaultPrimaryColor,
+                Primary = this.appSettings.ThemePrimaryColor ?? DefaultPrimaryColor,
                 PrimaryContrastText = "#242424",
                 Secondary = "#D4D4D4",
                 SecondaryContrastText = "#282828",
-                Tertiary = "#FFD700",
+                Tertiary = "#F0B105",
                 TertiaryContrastText = "#282828",
                 InfoContrastText = "#FDFDFDFF",
                 Success = "#00CD42",
@@ -77,6 +80,7 @@ public class ThemeManager
                 ErrorContrastText = "#FDFDFDFF",
                 Dark = "#505050",
                 DarkContrastText = "#FDFDFDFF",
+                DrawerBackground = "#232323",
                 Surface = "#232323",
                 HoverOpacity = 0.165,
                 AppbarBackground = "#121212FF",
@@ -149,26 +153,32 @@ public class ThemeManager
 
     private MudTheme CreateLightTheme()
     {
+        var primaryColor = this.appSettings.ThemePrimaryColor ?? DefaultPrimaryColor;
+
         return new()
         {
             LayoutProperties =
             {
-                DefaultBorderRadius = (this.appSettings.ThemeStyle ?? this.DefaultThemeStyle) == ThemeStyle.Sharp ? "0" : $"{BorderRadius}px",
+                DefaultBorderRadius = (this.appSettings.ThemeStyle ?? DefaultThemeStyle) == ThemeStyle.Sharp ? "0" : $"{BorderRadius}px",
             },
             Palette =
             {
-                Primary = this.appSettings.ThemePrimaryColor ?? this.DefaultPrimaryColor,
-                AppbarBackground = "F0F0F0F0",
-                AppbarText = "#121212FF",
+                Primary = primaryColor,
+                TextPrimary = "#000000FF",
+                PrimaryContrastText = "#FFFFFF",
+                Secondary = "#000000FF",
+                SecondaryContrastText = "#FFFFFF",
+                Tertiary = "#F0B105",
+                TertiaryContrastText = "#FFFFFF",
+                AppbarBackground = primaryColor,
+                AppbarText = "#000000FF",
                 Background = "#FFFFFF",
-                TextPrimary = "#333333",
                 DrawerBackground = "#EDEDED",
                 Surface = "#EDEDED",
-                GrayDark = this.appSettings.ThemePrimaryColor ?? this.DefaultPrimaryColor,
-                PrimaryContrastText = "F0F0F0F0",
+                GrayDark = primaryColor,
                 HoverOpacity = 0.165,
-                Black = "#121212FF",
-                GrayDarker = "#121212FF",
+                Black = "#000000FF",
+                GrayDarker = "#000000FF",
             },
             ZIndex =
             {
