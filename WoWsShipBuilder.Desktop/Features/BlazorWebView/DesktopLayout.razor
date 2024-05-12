@@ -36,6 +36,15 @@
         ThemeManager.ThemeChanged += UpdateTheme;
     }
 
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender)
+        {
+            ThemeManager.UpdateTheme();
+        }
+    }
+
     private void UpdateTheme(object? sender, MudTheme newTheme)
     {
         theme = newTheme;
