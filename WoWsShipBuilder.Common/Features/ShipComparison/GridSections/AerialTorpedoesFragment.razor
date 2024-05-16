@@ -294,7 +294,10 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCanHit}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCanHit)" T="GridDataWrapper" Title="@columnTitleCanHit" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> !x.TorpedoBombers.WeaponCanHit.Any() ? 0 : x.TorpedoBombers.WeaponCanHit.First().Count)">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCanHit}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCanHit)" T="GridDataWrapper" Title="@columnTitleCanHit" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => !x.TorpedoBombers.WeaponCanHit.Any() ? 0 : x.TorpedoBombers.WeaponCanHit.First().Count)">
+            <HeaderTemplate>
+
+            </HeaderTemplate>
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.WeaponCanHit.Any())
                 {
@@ -304,8 +307,8 @@
                         var classes = torps[i];
                         if (classes.IsEmpty && context.Item.TorpedoBombers.WeaponDamage.Any())
                         {
-                            <MudStack row Justify="Justify.Center" AlignItems="AlignItems.Center">
-                                @foreach (var shipClass in Enum.GetValues(typeof(ShipClass)).Cast<ShipClass>().ToList())
+                            <MudStack row Justify="Justify.Center" AlignItems="AlignItems.Center" Style="padding: inherit">
+                                @foreach (var shipClass in Enum.GetValues(typeof(ShipClass)).Cast<ShipClass>().Where(x => x != ShipClass.Auxiliary))
                                 {
                                     <MudIcon ViewBox="0 0 22 10" Icon="@($"<path d=\"{ClassToPathHelper.GetSvgPathFromClass(shipClass)}\"/>")"/>
                                 }
@@ -317,13 +320,14 @@
                         }
                         else if (!classes.IsEmpty)
                         {
-                            <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center">
+                            <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center" Style="padding: inherit">
                                 @foreach (var shipClass in classes)
                                 {
                                     <MudIcon ViewBox="0 0 22 10" Icon="@($"<path d=\"{ClassToPathHelper.GetSvgPathFromClass(shipClass)}\"/>")"/>
                                 }
                             </MudStack>
                         }
+
                         if (i < torps.Count - 1)
                         {
                             <MudDivider Class="my-1"/>

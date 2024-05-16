@@ -139,7 +139,7 @@
         </MudPaper>
     </MudStack>
 
-    <MudDataGrid @ref="dataGrid" T="GridDataWrapper" ServerData="@ReloadData" DragDropColumnReordering DragIndicatorSize="Size.Small" ApplyDropClassesOnDragStarted Groupable="false" SortMode="SortMode.Multiple" Hideable ShowColumnOptions="false" Filterable="false" ShowFilterIcons="false" FilterMode="DataGridFilterMode.Simple" Hover Outlined Bordered Dense Breakpoint="Breakpoint.None" Virtualize ColumnResizeMode="ResizeMode.Column" Style="overflow-y: hidden">
+    <MudDataGrid @ref="dataGrid" T="GridDataWrapper" ServerData="@ReloadData" DragDropColumnReordering DragIndicatorSize="Size.Small" ApplyDropClassesOnDragStarted Groupable="false" SortMode="SortMode.Multiple" Hideable ShowColumnOptions="false" Filterable="false" ShowFilterIcons="false" FilterMode="DataGridFilterMode.Simple" Hover Outlined Bordered Dense Breakpoint="Breakpoint.None" Virtualize ColumnResizeMode="ResizeMode.Column" Style="overflow-y: hidden" Class="data-grid-text-wrap">
         <ToolBarContent>
             <MudTextField T="string" Class="ml-0 mr-auto mt-n3" ValueChanged="Search" Placeholder="@Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShip)).Localization" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Clearable="true" Immediate="true" DebounceInterval="150" Style="width: 40%"/>
             <MudButton OnClick="@(async () => await OpenHideColumnsDialog())" DisableElevation="true" Variant="Variant.Text" StartIcon="@Icons.Material.Outlined.Settings" Size="Size.Small" Color="Color.Secondary" Style="margin-top: -13px" Class="mx-auto">
@@ -414,7 +414,7 @@
             ViewModel.ShowPinnedShipsOnly = true;
         }
 
-        ImmutableList<ShipBuildContainer>? buildContainers = SessionStateCache.GetAndResetBuildTransferContainers();
+        var buildContainers = SessionStateCache.GetAndResetBuildTransferContainers();
         if (buildContainers is not null)
         {
             await AddShip(buildContainers, false);
@@ -437,7 +437,7 @@
         {
             MetricsService.PageAccessCount.WithLabels("comparison").Inc();
 
-            hiddenColumns = dataGrid.RenderedColumns.Where(x => x.Hideable is true).ToDictionary(x => x.FieldId, x => hiddenColumns.TryGetValue(x.FieldId, out bool hidden) && hidden);
+            hiddenColumns = dataGrid.RenderedColumns.Where(x => x.Hideable is not false).ToDictionary(x => x.FieldId, x => hiddenColumns.TryGetValue(x.FieldId, out var hidden) && hidden);
 
             NavManager.TryGetQueryString(HiddenColumnsUrlParameter, out hiddeColumnsUrlString);
             if (string.IsNullOrEmpty(hiddeColumnsUrlString))
@@ -486,7 +486,7 @@
         }
 
         MetricsService.BuildConfigurationDialogUsage.WithLabels("comparison").Inc();
-        IEnumerable<ShipBuildContainer>? results = await buildConfigurationHelper.ShowDialogAsync(shipBuildContainers);
+        var results = await buildConfigurationHelper.ShowDialogAsync(shipBuildContainers);
         isDialogOpen = false;
 
         if (results is not null)

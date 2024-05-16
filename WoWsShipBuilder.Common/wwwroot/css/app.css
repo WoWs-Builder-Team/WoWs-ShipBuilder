@@ -325,3 +325,7 @@ div.default-label-background label {
     z-index: 100;
     top: 64px;
 }
+
+.data-grid-text-wrap * {
+    word-break: keep-all
+}

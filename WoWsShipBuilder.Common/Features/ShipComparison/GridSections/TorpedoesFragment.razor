@@ -452,8 +452,8 @@
                         var classes = torps[i];
                         if (classes.IsEmpty && context.Item.Torpedo.Damage.Any())
                         {
-                            <MudStack row Justify="Justify.Center" AlignItems="AlignItems.Center">
-                                @foreach (var shipClass in Enum.GetValues(typeof(ShipClass)).Cast<ShipClass>().ToList())
+                            <MudStack row Justify="Justify.Center" AlignItems="AlignItems.Center" Style="padding: inherit">
+                                @foreach (var shipClass in Enum.GetValues(typeof(ShipClass)).Cast<ShipClass>().Where(x => x != ShipClass.Auxiliary))
                                 {
                                     <MudIcon ViewBox="0 0 22 10" Icon="@($"<path d=\"{ClassToPathHelper.GetSvgPathFromClass(shipClass)}\"/>")"/>
                                 }
@@ -465,7 +465,7 @@
                         }
                         else if (!classes.IsEmpty)
                         {
-                            <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center">
+                            <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center" Style="padding: inherit">
                                 @foreach (var shipClass in classes)
                                 {
                                     <MudIcon ViewBox="0 0 22 10" Icon="@($"<path d=\"{ClassToPathHelper.GetSvgPathFromClass(shipClass)}\"/>")"/>
