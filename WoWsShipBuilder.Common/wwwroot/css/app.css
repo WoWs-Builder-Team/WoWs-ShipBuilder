@@ -154,7 +154,7 @@ img.kofiimg {
 span.kofitext {
     color: #dedede ;
     letter-spacing: -0.15px ;
-    text-wrap: none;
+    text-wrap: inherit;
     vertical-align: middle;
     line-height: 33px ;
     padding: 0;
