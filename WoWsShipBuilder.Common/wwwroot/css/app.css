@@ -263,6 +263,10 @@ div.mud-expand-panel {
     background-color: color-mix(in srgb, var(--mud-palette-grey-dark), transparent 40%);
 }
 
+.data-grid-text-wrap * {
+    word-break: keep-all
+}
+
 .mud-data-grid button.drag-icon-options {
     visibility: hidden;
     width: 0;
@@ -324,8 +328,4 @@ div.default-label-background label {
     position: sticky;
     z-index: 100;
     top: 64px;
-}
-
-.data-grid-text-wrap * {
-    word-break: keep-all
 }
