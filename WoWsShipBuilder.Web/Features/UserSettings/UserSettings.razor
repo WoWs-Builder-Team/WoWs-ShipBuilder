@@ -58,16 +58,16 @@
         </MudItem>
         <MudItem xs="12">
             <MudStack Row AlignItems="AlignItems.Center">
-                <MudSelect T="ThemeManager.ThemeVariant" @bind-Value="themeVariant" Dense Immediate Label="@Localizer.SimpleAppLocalization(nameof(Translation.Settings_Theme))" Disabled="@Helpers.IsAprilFool()">
-                    @foreach (var theme in Enum.GetValues<ThemeManager.ThemeVariant>().Except(new[] { ThemeManager.ThemeVariant.AprilFool }))
+                <MudSelect T="ThemeEnums.ThemeVariant" @bind-Value="themeVariant" Dense Immediate Label="@Localizer.SimpleAppLocalization(nameof(Translation.Settings_Theme))" Disabled="@Helpers.IsAprilFool()">
+                    @foreach (var theme in Enum.GetValues<ThemeEnums.ThemeVariant>().Except(new[] { ThemeEnums.ThemeVariant.AprilFool }))
                     {
                         <MudSelectItem Value="@theme">
                             <MudText Color="Color.Default">@Localizer.GetAppLocalization(theme.ToString()).Localization</MudText>
                         </MudSelectItem>
                     }
                 </MudSelect>
-                <MudSelect T="ThemeManager.ThemeStyle" @bind-Value="themeStyle" Dense Immediate Label="@Localizer.SimpleAppLocalization(nameof(Translation.Settings_ThemeStyle))" Disabled="@Helpers.IsAprilFool()">
-                    @foreach (var style in Enum.GetValues<ThemeManager.ThemeStyle>())
+                <MudSelect T="ThemeEnums.ThemeStyle" @bind-Value="themeStyle" Dense Immediate Label="@Localizer.SimpleAppLocalization(nameof(Translation.Settings_ThemeStyle))" Disabled="@Helpers.IsAprilFool()">
+                    @foreach (var style in Enum.GetValues<ThemeEnums.ThemeStyle>())
                     {
                         <MudSelectItem Value="@style">
                             <MudText Color="Color.Default">@Localizer.GetAppLocalization(style.ToString()).Localization</MudText>
@@ -206,9 +206,9 @@
 
     private MudColor themePrimaryColor = default!;
 
-    private ThemeManager.ThemeStyle themeStyle;
+    private ThemeEnums.ThemeStyle themeStyle;
 
-    private ThemeManager.ThemeVariant themeVariant;
+    private ThemeEnums.ThemeVariant themeVariant;
 
     private string CurrentCode
     {

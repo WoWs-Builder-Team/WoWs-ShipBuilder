@@ -3,18 +3,17 @@ using Microsoft.Extensions.Hosting;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
-using WoWsShipBuilder.Infrastructure.ApplicationTheme;
 using WoWsShipBuilder.Infrastructure.GameData;
 
 namespace WoWsShipBuilder.Infrastructure.Utility;
 
 public static class Helpers
 {
-    public static string GetIconFromClass(ShipClass shipClass, ShipCategory category, ThemeManager.ThemeVariant currentThemeVariant)
+    public static string GetIconFromClass(ShipClass shipClass, ShipCategory category)
     {
         string path = ClassToPathHelper.GetSvgPathFromClass(shipClass);
-        string stroke = ClassToPathHelper.GetColorFromCategory(category, true, currentThemeVariant)[3..];
-        string fill = ClassToPathHelper.GetColorFromCategory(category, false, currentThemeVariant)[3..];
+        string stroke = ClassToPathHelper.GetColorFromCategory(category, true)[3..];
+        string fill = ClassToPathHelper.GetColorFromCategory(category, false)[3..];
         return $"<path fill=\"#{fill}\" stroke=\"#{stroke}\" stroke-width=\"1\"  d=\"{path}\" />";
     }
 

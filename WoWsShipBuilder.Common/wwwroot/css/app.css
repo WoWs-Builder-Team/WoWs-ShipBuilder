@@ -326,3 +326,11 @@ div.default-label-background label {
     z-index: 100;
     top: 64px;
 }
+
+.image-filter-invert-100 {
+    filter: var(--wowssb-image-filter-100);
+}
+
+.image-filter-invert-50 {
+    filter: var(--wowssb-image-filter-50);
+}

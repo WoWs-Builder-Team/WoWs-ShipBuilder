@@ -48,7 +48,7 @@
     private void UpdateTheme(object? sender, MudTheme newTheme)
     {
         theme = newTheme;
-        isDarkTheme = AppSettings.ThemeVariant != ThemeManager.ThemeVariant.Light;
+        isDarkTheme = AppSettings.ThemeVariant != ThemeEnums.ThemeVariant.Light;
         StateHasChanged();
     }
 

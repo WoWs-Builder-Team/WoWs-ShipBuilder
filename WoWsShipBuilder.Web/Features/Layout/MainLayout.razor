@@ -13,16 +13,17 @@
 <MudThemeProvider Theme="theme" IsDarkMode="isDarkTheme"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
+<CustomThemeProvider IsDarkTheme="isDarkTheme"/>
 
 <MudLayout>
-    <TopMenu IsDarkTheme="isDarkTheme"/>
+    <TopMenu/>
     <MudMainContent Class="px-2">
         <CascadingValue Name="SettingsInitialized" Value="@settingsInitialized">
             @Body
         </CascadingValue>
     </MudMainContent>
     <footer style="margin-top: 16px;">
-        <ShipBuilderFooter IsDarkTheme="isDarkTheme"/>
+        <ShipBuilderFooter/>
     </footer>
 </MudLayout>
 
@@ -42,8 +43,11 @@
 
     private void UpdateTheme(object? sender, MudTheme newTheme)
     {
-        theme = newTheme;
-        isDarkTheme = AppSettings.ThemeVariant != ThemeManager.ThemeVariant.Light;
+        if (sender is not null)
+        {
+            theme = newTheme;
+        }
+        isDarkTheme = AppSettings.ThemeVariant != ThemeEnums.ThemeVariant.Light;
         StateHasChanged();
     }
 

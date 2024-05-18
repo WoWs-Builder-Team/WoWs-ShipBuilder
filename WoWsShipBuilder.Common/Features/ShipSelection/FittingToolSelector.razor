@@ -44,7 +44,7 @@
                                     {
                                         <li class="parent" @key="shipClass.Key">
                                             <MudStack Row Class="ml-3" AlignItems="AlignItems.Center">
-                                                <MudIcon Icon="@(Helpers.GetIconFromClass(shipClass.Key, category.Key, ThemeManager.SelectedThemeVariant))" Size="Size.Medium" ViewBox="0 0 24 10"/>
+                                                <MudIcon Icon="@(Helpers.GetIconFromClass(shipClass.Key, category.Key))" Size="Size.Medium" ViewBox="0 0 24 10"/>
                                                 <MudText Class="pa-2" Style="white-space: nowrap; font-size: 1rem">
                                                     @Localizer.SimpleAppLocalization(shipClass.Key.ShipClassToString())
                                                 </MudText>

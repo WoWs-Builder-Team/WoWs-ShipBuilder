@@ -72,9 +72,9 @@ public class AppSettings
 
     public string? ThemePrimaryColor { get; set; }
 
-    public ThemeManager.ThemeStyle? ThemeStyle { get; set; }
+    public ThemeEnums.ThemeStyle? ThemeStyle { get; set; }
 
-    public ThemeManager.ThemeVariant? ThemeVariant { get; set; }
+    public ThemeEnums.ThemeVariant? ThemeVariant { get; set; }
 
     public void ClearSettings()
     {

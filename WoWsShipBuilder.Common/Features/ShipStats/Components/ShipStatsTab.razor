@@ -9,14 +9,11 @@
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.LinkShortening
 @using WoWsShipBuilder.Features.Settings
-@using WoWsShipBuilder.Infrastructure
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.GameData
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
-@using System.Diagnostics
-@using System.Collections.ObjectModel
 @using WoWsShipBuilder.DataStructures.Modifiers
 @using WoWsShipBuilder.Features.Navigation
 @using WoWsShipBuilder.Infrastructure.DataTransfer
@@ -76,7 +73,7 @@ else if (ViewModel is not null)
                             <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, CurrentTabId, ViewModel.PreviousShip))" AlignItems="AlignItems.Center" id="@(CurrentTabId + "_" + ViewModel.PreviousShip.Index)" @oncontextmenu:preventDefault="true">
                                 <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.PreviousShip.Index + ".png")"/>
                                 <MudStack Row="true" Justify="Justify.Center" Spacing="1">
-                                    <MudIcon ViewBox="-1 0 24 10" Icon="@Helpers.GetIconFromClass(ViewModel.PreviousShip.ShipClass, ViewModel.PreviousShip.Category, ThemeManager.SelectedThemeVariant)"/>
+                                    <MudIcon ViewBox="-1 0 24 10" Icon="@Helpers.GetIconFromClass(ViewModel.PreviousShip.ShipClass, ViewModel.PreviousShip.Category)"/>
                                     <MudText Align="Align.Center">@GetShipTier(ViewModel.PreviousShip.Tier) @Localizer.GetGameLocalization(ViewModel.PreviousShip.Index + "_FULL").Localization</MudText>
                                 </MudStack>
                             </MudStack>
@@ -84,7 +81,7 @@ else if (ViewModel is not null)
                         <MudStack Class="px-2" AlignItems="AlignItems.Center">
                             <MudImage Width="@GetImageWidth(true)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.CurrentShipIndex + ".png")" Style="@GetBackgroundFlag(ViewModel.CurrentShip.Nation, ViewModel.CurrentShipIndex)"/>
                             <MudStack Row="true" Justify="Justify.Center" Spacing="1">
-                                <MudIcon ViewBox="-1 0 24 10" Icon="@Helpers.GetIconFromClass(ViewModel.CurrentShip.ShipClass, ViewModel.CurrentShip.Category, ThemeManager.SelectedThemeVariant)"/>
+                                <MudIcon ViewBox="-1 0 24 10" Icon="@Helpers.GetIconFromClass(ViewModel.CurrentShip.ShipClass, ViewModel.CurrentShip.Category)"/>
                                 <MudText Align="Align.Center">@GetShipTier(ViewModel.CurrentShip.Tier) @Localizer.GetGameLocalization(ViewModel.CurrentShipIndex + "_FULL").Localization</MudText>
                             </MudStack>
                         </MudStack>
@@ -95,7 +92,7 @@ else if (ViewModel is not null)
                                 <MudStack key="@(CurrentTabId + "_" + ship.Index)" Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, CurrentTabId, ship))" AlignItems="AlignItems.Center" id="@(CurrentTabId + "_" + ship.Index)" @oncontextmenu:preventDefault="true">
                                     <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ship.Index + ".png")"/>
                                     <MudStack Row="true" Justify="Justify.Center" Spacing="1">
-                                        <MudIcon ViewBox="-1 0 24 10" Icon="@Helpers.GetIconFromClass(ship.ShipClass, ship.Category, ThemeManager.SelectedThemeVariant)"/>
+                                        <MudIcon ViewBox="-1 0 24 10" Icon="@Helpers.GetIconFromClass(ship.ShipClass, ship.Category)"/>
                                         <MudText Align="Align.Center">@GetShipTier(ship.Tier) @Localizer.GetGameLocalization(ship.Index + "_FULL").Localization</MudText>
                                     </MudStack>
                                 </MudStack>

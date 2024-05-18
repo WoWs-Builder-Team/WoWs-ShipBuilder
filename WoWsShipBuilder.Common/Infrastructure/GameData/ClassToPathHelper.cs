@@ -12,8 +12,6 @@ public static class ClassToPathHelper
     private const string SubIcon = "m 0 0 h 3.175 V 9.7896 h -3.175 z M 5.8208 0.1719 V 9.6969 L 18.124 4.9344 Z";
 
     private const string GoldColor = "#ffffd700";
-    private const string WhiteColor = "#ffffffff";
-    private const string GreyColor = "#7f7f7f7f";
 
     public static string GetSvgPathFromClass(ShipClass shipClass)
     {
@@ -28,15 +26,13 @@ public static class ClassToPathHelper
         };
     }
 
-    public static string GetColorFromCategory(ShipCategory category, bool border, ThemeManager.ThemeVariant currentThemeVariant)
+    public static string GetColorFromCategory(ShipCategory category, bool border)
     {
-        var standardColor = currentThemeVariant == ThemeManager.ThemeVariant.Light ? GreyColor : WhiteColor;
-
         if (border)
         {
-            return category.Equals(ShipCategory.TechTree) ? standardColor : GoldColor;
+            return category.Equals(ShipCategory.TechTree) ? "var(--wowssb-ship-class-icon-color)" : GoldColor;
         }
 
-        return category.Equals(ShipCategory.Premium) ? GoldColor : standardColor;
+        return category.Equals(ShipCategory.Premium) ? GoldColor : "var(--wowssb-ship-class-icon-color)";
     }
 }
