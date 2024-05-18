@@ -1,0 +1,22 @@
+﻿@using System.Text
+
+@((MarkupString)BuildCustomThemeProperties())
+
+@code
+{
+    [Parameter, EditorRequired]
+    public bool IsDarkTheme { get; set; }
+
+    private string BuildCustomThemeProperties()
+    {
+        var builder = new StringBuilder();
+        builder.AppendLine("<style>").AppendLine(":root{");
+
+        builder.AppendLine($"--wowssb-image-filter-100: {(IsDarkTheme ? "none" : "invert(100%)")};");
+        builder.AppendLine($"--wowssb-image-filter-50: {(IsDarkTheme ? "none" : "invert(50%)")};");
+        builder.AppendLine($"--wowssb-ship-class-icon-color: {(IsDarkTheme ? "#ffffff" : "#7f7f7f")};");
+        builder.AppendLine("--wowssb-icon-gold-color: #ffd700;");
+
+        return builder.AppendLine("}").AppendLine("</style>").ToString();
+    }
+}
