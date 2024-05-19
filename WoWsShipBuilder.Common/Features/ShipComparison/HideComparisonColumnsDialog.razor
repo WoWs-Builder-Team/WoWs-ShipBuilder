@@ -9,13 +9,13 @@
                 @foreach (var (section, columns) in switchesLayout)
                 {
                     <MudPaper Outlined Elevation="0" @key="@(section.AsString())">
-                        <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
+                        <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center" Spacing="0">
                             <MudText Typo="Typo.body2" Align="Align.Center" Style="font-weight: bold">
                                 @(section.Localize(Localizer).ToUpper())
                             </MudText>
                             @foreach (var column in columns)
                             {
-                                <MudSwitch @bind-Checked="@(switchesLayout[section][column.Key])" Label="@column.Key" LabelPosition="LabelPosition.End" Size="Size.Medium" Color="Color.Primary" @key="@($"{section}_{column}")" Style="width: 100%; white-space: nowrap" Class="ml-1"/>
+                                <MudSwitch @bind-Value="@(switchesLayout[section][column.Key])" Label="@column.Key" LabelPosition="LabelPosition.End" Size="Size.Medium" Color="Color.Primary" @key="@($"{section}_{column}")" Style="width: 100%; white-space: nowrap" Class="ml-2 mr-n2"/>
                             }
                         </MudStack>
                     </MudPaper>
@@ -43,11 +43,11 @@
     {
         base.OnInitialized();
 
-        foreach (string key in HiddenColumns.Keys)
+        foreach (var key in HiddenColumns.Keys)
         {
-            string[] split = key.Split('_');
+            var split = key.Split('_');
             var section = Enum.Parse<ShipComparisonDataSections>(split[0]);
-            if (switchesLayout.TryGetValue(section, out Dictionary<string, bool>? dataSection))
+            if (switchesLayout.TryGetValue(section, out var dataSection))
             {
                 dataSection.Add(split[1], !HiddenColumns[key]);
             }
