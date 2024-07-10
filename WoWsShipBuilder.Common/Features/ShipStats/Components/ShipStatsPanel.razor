@@ -493,7 +493,10 @@
                                 else
                                 {
                                     <MudText Typo="Typo.body2">@Localizer.GetGameLocalization(ViewModel.CurrentShipStats.SpecialAbilityDataContainer.Name).Localization.ToUpperInvariant()</MudText>
-                                    <MudText Typo="Typo.body2">@FixSpecialAbilityDescription(Localizer.GetGameLocalization(ViewModel.CurrentShipStats.SpecialAbilityDataContainer.Description).Localization)</MudText>
+                                    @if(!string.IsNullOrEmpty((ViewModel.CurrentShipStats.SpecialAbilityDataContainer.Description)))
+                                    {
+                                        <MudText Typo="Typo.body2">@FixSpecialAbilityDescription(Localizer.GetGameLocalization(ViewModel.CurrentShipStats.SpecialAbilityDataContainer.Description).Localization)</MudText>
+                                    }
                                 }
                                 <MudSwitch @bind-Checked="@ViewModel.IsSpecialAbilityActive" Label="@Localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Activate))" Color="Color.Primary"/>
                                 <MudDivider Light="true" Class="ma-1"/>

@@ -59,10 +59,15 @@ public partial class SpecialAbilityDataContainer : DataContainerBase
         {
             var specialAbility = ship.SpecialAbility;
 
+            var description = "";
+            if (!specialAbility.ActivatorName.Equals(""))
+            {
+                description = specialAbility.ActivatorName.Equals("RibbonActivator") ? $"RAGE_MODE_TRIGGER_DESCRIPTION_{specialAbility.ActivatorName}" : $"RAGE_MODE_DESCRIPTION_{specialAbility.ActivatorName}";
+            }
             specialDataContainer = new()
             {
                 Name = $"DOCK_RAGE_MODE_TITLE_{specialAbility.Name}",
-                Description = specialAbility.ActivatorName.Equals("RibbonActivator") ? $"RAGE_MODE_TRIGGER_DESCRIPTION_{specialAbility.ActivatorName}" : $"RAGE_MODE_DESCRIPTION_{specialAbility.ActivatorName}",
+                Description = description,
                 Duration = Math.Round((decimal)specialAbility.Duration, 1),
                 TargetAreaRadius = Math.Round((decimal)(specialAbility.ActivatorRadius / 1000), 1),
                 ProgressPerAction = (decimal)specialAbility.ProgressPerAction,
