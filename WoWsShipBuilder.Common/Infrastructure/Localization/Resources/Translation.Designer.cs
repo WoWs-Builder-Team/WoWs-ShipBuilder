@@ -2169,6 +2169,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset color.
+        /// </summary>
+        public static string SettingsWindow_ResetColor {
+            get {
+                return ResourceManager.GetString("SettingsWindow_ResetColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reset settings to default.
         /// </summary>
         public static string SettingsWindow_ResetSettings {

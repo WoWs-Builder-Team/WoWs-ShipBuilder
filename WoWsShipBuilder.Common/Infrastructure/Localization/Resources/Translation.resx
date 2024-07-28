@@ -2249,4 +2249,7 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipSelector_DeleteFromSavedBuilds" xml:space="preserve">
     <value>Delete from Saved Builds</value>
   </data>
+  <data name="SettingsWindow_ResetColor" xml:space="preserve">
+    <value>Reset color</value>
+  </data>
 </root>
