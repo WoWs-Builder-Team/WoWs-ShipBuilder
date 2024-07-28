@@ -7,15 +7,9 @@
             </MudText>
             <div style="text-align: center">
                 <a href="https://discord.gg/C8EaepZJDY" target="_blank">
-                    <img src="/_content/WoWsShipBuilder.Common/assets/discord.png" style="@((IsDarkTheme ? string.Empty : "filter: invert(50%); ") + "width: 128px; height: auto;")" alt="ShipBuilder discord"/>
+                    <img src="/_content/WoWsShipBuilder.Common/assets/discord.png" style="width: 128px; height: auto;" class="image-filter-invert-50" alt="ShipBuilder discord"/>
                 </a>
             </div>
         </MudItem>
     </MudGrid>
 </MudContainer>
-
-@code
-{
-    [Parameter, EditorRequired]
-    public bool IsDarkTheme { get; set; }
-}

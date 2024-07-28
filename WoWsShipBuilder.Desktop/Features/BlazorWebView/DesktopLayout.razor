@@ -10,6 +10,7 @@
 <MudThemeProvider Theme="@theme" IsDarkMode="isDarkTheme"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
+<CustomThemeProvider IsDarkTheme="isDarkTheme"/>
 
 <MudLayout>
     <DesktopTopMenu/>
@@ -19,7 +20,7 @@
         </CascadingValue>
     </MudMainContent>
     <footer style="margin-top: 16px;">
-        <ShipBuilderFooter IsDarkTheme="isDarkTheme"/>
+        <ShipBuilderFooter/>
     </footer>
 </MudLayout>
 
