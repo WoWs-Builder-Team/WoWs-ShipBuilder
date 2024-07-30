@@ -655,7 +655,7 @@
       <value>最大</value>
   </data>
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
-    <value>投彈區長度</value>
+    <value>飛機航程</value>
   </data>
   <data name="ShipStats_MinimumDistance" xml:space="preserve">
       <value>最小</value>
