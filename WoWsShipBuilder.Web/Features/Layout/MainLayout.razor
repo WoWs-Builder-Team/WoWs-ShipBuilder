@@ -1,14 +1,19 @@
 @using WoWsShipBuilder.Infrastructure.Utility
 @using WoWsShipBuilder.Features.Settings
 @using WoWsShipBuilder.Infrastructure.ApplicationData
+@using WoWsShipBuilder.Infrastructure.ApplicationTheme
+
 @inherits LayoutComponentBase
+@implements IDisposable
 @inject ISettingsAccessor SettingsAccessor
 @inject AppSettings AppSettings
 @inject RefreshNotifierService RefreshNotifierService
+@inject ThemeManager ThemeManager
 
-<MudThemeProvider Theme="@(Helpers.IsAprilFool() ? aprilFoolTheme : theme)" IsDarkMode="true"/>
+<MudThemeProvider Theme="theme" IsDarkMode="isDarkTheme"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
+<CustomThemeProvider IsDarkTheme="isDarkTheme"/>
 
 <MudLayout>
     <TopMenu/>
@@ -25,6 +30,26 @@
 @code
 {
     private bool settingsInitialized;
+
+    private MudTheme theme = default!;
+    private bool isDarkTheme = true;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        theme = ThemeManager.AppTheme;
+        ThemeManager.ThemeChanged += UpdateTheme;
+    }
+
+    private void UpdateTheme(object? sender, MudTheme newTheme)
+    {
+        if (sender is not null)
+        {
+            theme = newTheme;
+        }
+        isDarkTheme = AppSettings.ThemeVariant != ThemeEnums.ThemeVariant.Light;
+        StateHasChanged();
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -43,56 +68,13 @@
 
             AppSettings.UpdateFromSettings(settings);
             settingsInitialized = true;
+            ThemeManager.UpdateTheme();
             RefreshNotifierService.NotifyRefreshRequested();
-            StateHasChanged();
         }
     }
 
-    private readonly MudTheme theme = Helpers.CreateDarkTheme(true);
-
-    private readonly MudTheme aprilFoolTheme = new()
+    public void Dispose()
     {
-        LayoutProperties =
-        {
-            DefaultBorderRadius = "0",
-        },
-        PaletteDark =
-        {
-            Black = $"{Helpers.GenerateRandomColor()}FF",
-            White = $"{Helpers.GenerateRandomColor()}FF",
-            Primary = $"{Helpers.GenerateRandomColor()}FF",
-            PrimaryContrastText = $"{Helpers.GenerateRandomColor()}FF",
-            Secondary = $"{Helpers.GenerateRandomColor()}FF",
-            Info = $"{Helpers.GenerateRandomColor()}FF",
-            InfoContrastText = $"{Helpers.GenerateRandomColor()}FF",
-            Success = $"{Helpers.GenerateRandomColor()}FF",
-            SuccessContrastText = $"{Helpers.GenerateRandomColor()}FF",
-            Warning = $"{Helpers.GenerateRandomColor()}FF",
-            WarningContrastText = $"{Helpers.GenerateRandomColor()}FF",
-            Error = $"{Helpers.GenerateRandomColor()}FF",
-            ErrorContrastText = $"{Helpers.GenerateRandomColor()}FF",
-            Dark = $"{Helpers.GenerateRandomColor()}FF",
-            DarkContrastText = $"{Helpers.GenerateRandomColor()}FF",
-            TextPrimary = $"{Helpers.GenerateRandomColor()}FF",
-            TextSecondary = $"{Helpers.GenerateRandomColor()}89",
-            TextDisabled = $"{Helpers.GenerateRandomColor()}60",
-            ActionDefault = $"{Helpers.GenerateRandomColor()}89",
-            ActionDisabled = $"{Helpers.GenerateRandomColor()}42",
-            ActionDisabledBackground = $"{Helpers.GenerateRandomColor()}1E",
-            Surface = $"{Helpers.GenerateRandomColor()}FF",
-            LinesDefault = $"{Helpers.GenerateRandomColor()}4D",
-            LinesInputs = $"{Helpers.GenerateRandomColor()}",
-            AppbarBackground = $"{Helpers.GenerateRandomColor()}FF",
-            HoverOpacity = new Random().NextDouble(),
-            DrawerBackground = $"{Helpers.GenerateRandomColor()}",
-            DividerLight = $"{Helpers.GenerateRandomColor()}CC",
-            BackgroundGrey = $"{Helpers.GenerateRandomColor()}FF",
-        },
-        ZIndex =
-        {
-            Dialog = 2000,
-            Popover = 3000,
-            Tooltip = 4000,
-        },
-    };
+        ThemeManager.ThemeChanged -= UpdateTheme;
+    }
 }

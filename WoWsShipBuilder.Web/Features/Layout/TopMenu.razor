@@ -1,13 +1,11 @@
 ﻿@using Microsoft.Extensions.Options
 @using WoWsShipBuilder.Features.Settings
-@using WoWsShipBuilder.Infrastructure
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.GameData
 @using WoWsShipBuilder.Infrastructure.Localization
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Utility
 @using WoWsShipBuilder.Web.Features.BetaAccess
-@using WoWsShipBuilder.Web.Infrastructure
 
 @implements IDisposable
 
@@ -97,7 +95,7 @@
             </TooltipContent>
             <ChildContent>
                 <NavLink class="d-flex me-4" href="@ShipBuilderOptions.MinimapRendererUrl" target="_blank">
-                    <MudImage Class="px-2" Src="/_content/WoWsShipBuilder.Common/assets/render_logo.png" Height="35"/>
+                    <MudImage Class="px-2 image-filter-invert-100" Src="/_content/WoWsShipBuilder.Common/assets/render_logo.png" Height="35"/>
                     <MudText Class="align-self-center">Replay Renderer</MudText>
                 </NavLink>
             </ChildContent>
@@ -197,7 +195,7 @@
             }
             <MudDivider Class="my-4"/>
             <MudButton Style="text-transform: none !important;" Size="Size.Large" Color="Color.Inherit" Href="@ShipBuilderOptions.MinimapRendererUrl" Target="_blank">
-                <MudImage Class="px-2" Src="/_content/WoWsShipBuilder.Common/assets/render_logo.png" Height="35"/>
+                <MudImage Class="px-2 image-filter-invert-100" Src="/_content/WoWsShipBuilder.Common/assets/render_logo.png" Height="35"/>
                 Minimap Renderer
             </MudButton>
         </MudNavMenu>

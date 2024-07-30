@@ -312,6 +312,7 @@ div.default-label-background label {
 .ship-stats-tabs .mud-tabs-toolbar .mud-tab-active {
     background-color: var(--mud-palette-primary);
     color: var(--mud-palette-primary-text);
+    border-radius: var(--mud-default-borderradius);
 
     /*noinspection CssUnresolvedCustomProperty*/
     & svg {
@@ -328,4 +329,12 @@ div.default-label-background label {
     position: sticky;
     z-index: 100;
     top: 64px;
+}
+
+.image-filter-invert-100 {
+    filter: var(--wowssb-image-filter-100);
+}
+
+.image-filter-invert-50 {
+    filter: var(--wowssb-image-filter-50);
 }

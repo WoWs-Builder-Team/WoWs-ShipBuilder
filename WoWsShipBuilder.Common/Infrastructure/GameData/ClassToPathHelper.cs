@@ -1,4 +1,5 @@
 ﻿using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.Infrastructure.ApplicationTheme;
 
 namespace WoWsShipBuilder.Infrastructure.GameData;
 
@@ -11,7 +12,6 @@ public static class ClassToPathHelper
     private const string SubIcon = "m 0 0 h 3.175 V 9.7896 h -3.175 z M 5.8208 0.1719 V 9.6969 L 18.124 4.9344 Z";
 
     private const string GoldColor = "#ffffd700";
-    private const string WhiteColor = "#ffffffff";
 
     public static string GetSvgPathFromClass(ShipClass shipClass)
     {
@@ -30,14 +30,9 @@ public static class ClassToPathHelper
     {
         if (border)
         {
-            return category.Equals(ShipCategory.TechTree) ? WhiteColor : GoldColor;
+            return category.Equals(ShipCategory.TechTree) ? "var(--wowssb-ship-class-icon-color)" : GoldColor;
         }
 
-        if (category.Equals(ShipCategory.Premium) && !border)
-        {
-            return GoldColor;
-        }
-
-        return WhiteColor;
+        return category.Equals(ShipCategory.Premium) ? GoldColor : "var(--wowssb-ship-class-icon-color)";
     }
 }
