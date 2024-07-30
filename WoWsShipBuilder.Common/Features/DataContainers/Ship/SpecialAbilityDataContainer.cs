@@ -64,6 +64,7 @@ public partial class SpecialAbilityDataContainer : DataContainerBase
             {
                 description = specialAbility.ActivatorName.Equals("RibbonActivator") ? $"RAGE_MODE_TRIGGER_DESCRIPTION_{specialAbility.ActivatorName}" : $"RAGE_MODE_DESCRIPTION_{specialAbility.ActivatorName}";
             }
+
             specialDataContainer = new()
             {
                 Name = $"DOCK_RAGE_MODE_TITLE_{specialAbility.Name}",
