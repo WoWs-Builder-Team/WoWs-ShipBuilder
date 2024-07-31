@@ -514,8 +514,8 @@
         await dataGrid.ReloadServerData();
         if (warnings.Count > 0)
         {
-            string shipNames = string.Join(", ", warnings.Select(x => LocalizeShipName(x.Value.Ship.Index)));
-            Snackbar.Add($"The build on < {shipNames} > has been reset without removing the last instance.", Severity.Success);
+            var shipNames = string.Join(", ", warnings.Select(x => LocalizeShipName(x.Value.Ship.Index)));
+            Snackbar.Add($"{Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_RemoveBuildWarningPt1))} < {shipNames} > {Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_RemoveBuildWarningPt2))}", Severity.Success);
         }
     }
 

@@ -228,7 +228,7 @@
             CloseOnEscapeKey = true,
             DisableBackdropClick = false,
         };
-        var result = await (await DialogService.ShowAsync<ShipSelectionDialog>("Add ships", options)).Result;
+        var result = await (await DialogService.ShowAsync<ShipSelectionDialog>(Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionDialog_AddShips)), options)).Result;
         Logger.LogTrace("Result received from add ship dialog");
         if (!result.Canceled && result.Data is List<ShipBuildContainer> { Count: > 0 } newShips)
         {

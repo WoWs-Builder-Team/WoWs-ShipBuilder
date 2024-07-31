@@ -2252,4 +2252,10 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="SettingsWindow_ResetColor" xml:space="preserve">
     <value>Reset color</value>
   </data>
+  <data name="ShipComparison_RemoveBuildWarningPt1" xml:space="preserve">
+    <value>The build on</value>
+  </data>
+  <data name="ShipComparison_RemoveBuildWarningPt2" xml:space="preserve">
+    <value>has been reset without removing the last instance.</value>
+  </data>
 </root>

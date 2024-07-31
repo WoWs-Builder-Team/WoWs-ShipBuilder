@@ -2700,6 +2700,24 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The build on.
+        /// </summary>
+        public static string ShipComparison_RemoveBuildWarningPt1 {
+            get {
+                return ResourceManager.GetString("ShipComparison_RemoveBuildWarningPt1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to has been reset without removing the last instance..
+        /// </summary>
+        public static string ShipComparison_RemoveBuildWarningPt2 {
+            get {
+                return ResourceManager.GetString("ShipComparison_RemoveBuildWarningPt2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reset all.
         /// </summary>
         public static string ShipComparison_ResetAll {
