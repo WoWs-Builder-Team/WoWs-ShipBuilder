@@ -2252,4 +2252,10 @@ Az összeállítások módosítása gombbal kezelheti az egyes hajók kiosztás�
   <data name="SettingsWindow_ResetColor" xml:space="preserve">
     <value>Szín visszaállítása</value>
   </data>
+  <data name="ShipComparison_RemoveBuildWarningPt1" xml:space="preserve">
+    <value>Az összeállítás</value>
+  </data>
+  <data name="ShipComparison_RemoveBuildWarningPt2" xml:space="preserve">
+    <value>vissza lett állítva, az utolsó beállítás nem került törlésre.</value>
+  </data>
 </root>
