@@ -2237,4 +2237,19 @@ Az összeállítások módosítása gombbal kezelheti az egyes hajók kiosztás�
   <data name="ShipStats_AmmoSwitchTimeTooltip" xml:space="preserve">
     <value>Feltéve, hogy a fegyverek éppen elsültek, így teljes újratöltési időre van szükség az ismételt tüzeléshez</value>
   </data>
+  <data name="Settings_ThemePrimaryColor" xml:space="preserve">
+    <value>Téma főszín</value>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Téma</value>
+  </data>
+  <data name="Settings_ThemeStyle" xml:space="preserve">
+    <value>Téma stílusa</value>
+  </data>
+  <data name="ShipSelector_DeleteFromSavedBuilds" xml:space="preserve">
+    <value>Törlés az elmentett összeállításokból</value>
+  </data>
+  <data name="SettingsWindow_ResetColor" xml:space="preserve">
+    <value>Szín visszaállítása</value>
+  </data>
 </root>
