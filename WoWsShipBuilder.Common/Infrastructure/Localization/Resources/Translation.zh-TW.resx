@@ -2253,4 +2253,10 @@ C = 砲彈口徑 [m]
   <data name="SettingsWindow_ResetColor" xml:space="preserve">
     <value>重設顏色</value>
   </data>
+  <data name="ShipComparison_RemoveBuildWarningPt1" xml:space="preserve">
+    <value>於</value>
+  </data>
+  <data name="ShipComparison_RemoveBuildWarningPt2" xml:space="preserve">
+    <value>的配置已被重置。</value>
+  </data>
 </root>
