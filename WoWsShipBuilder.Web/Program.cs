@@ -5,21 +5,27 @@ using ReactiveUI;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Utility;
 using WoWsShipBuilder.Web.Features.Authentication;
+using WoWsShipBuilder.Web.Features.Host;
 using WoWsShipBuilder.Web.Infrastructure;
 using WoWsShipBuilder.Web.Infrastructure.Data;
 using WoWsShipBuilder.Web.Infrastructure.Metrics;
+using _Imports = WoWsShipBuilder._Imports;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true);
 
-builder.Services.AddRazorPages(options =>
-{
-    options.RootDirectory = "/Features/Host";
-});
-builder.Services.AddServerSideBlazor(options =>
-{
-    options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(10);
-});
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
+
+// builder.Services.AddRazorPages(options =>
+// {
+//     options.RootDirectory = "/Features/Host";
+// });
+// builder.Services.AddServerSideBlazor(options =>
+// {
+//     options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(10);
+// });
+builder.Services.AddControllers();
 builder.ConfigureShipBuilderOptions();
 
 builder.Logging.ClearProviders();
@@ -37,12 +43,10 @@ Logging.Initialize(app.Services.GetRequiredService<ILoggerFactory>());
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error");
+    app.UseExceptionHandler("/Error", createScopeForErrors: true);
 }
 
 app.UseHttpsRedirection();
-
-app.MapStaticAssets();
 
 app.UseRouting();
 app.UseHttpMetrics(options =>
@@ -51,11 +55,15 @@ app.UseHttpMetrics(options =>
 });
 app.UseReferrerTracking();
 app.UseShipBuilderAuth();
+app.UseAntiforgery();
 
 app.MapControllers();
 app.MapMetrics();
-app.MapBlazorHub();
-app.MapFallbackToPage("/_Host");
+
+app.MapStaticAssets();
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode()
+    .AddAdditionalAssemblies(typeof(_Imports).Assembly);
 
 var culture = AppConstants.DefaultCultureDetails.CultureInfo;
 CultureInfo.DefaultThreadCurrentCulture = culture;
