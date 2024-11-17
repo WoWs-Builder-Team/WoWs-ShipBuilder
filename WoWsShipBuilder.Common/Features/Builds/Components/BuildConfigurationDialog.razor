@@ -184,7 +184,7 @@
                                     }
                                     @if (!SpecialAbilityDisabled && (shipData.Ship.SpecialAbility is not null || shipData.Ship.MainBatteryModuleList.Any(x => x.Value.BurstModeAbility is not null)))
                                     {
-                                        <MudSwitch T="bool" @bind-Checked="ViewModel.SpecialAbilityActive" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildConfigurationDialog_ActivateSpecialAbility))"/>
+                                        <MudSwitch T="bool" @bind-Value="ViewModel.SpecialAbilityActive" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildConfigurationDialog_ActivateSpecialAbility))"/>
                                     }
                                 </MudStack>
                             </MudItem>

@@ -3,7 +3,6 @@ using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Testing;
-using Microsoft.CodeAnalysis.Testing.Verifiers;
 using WoWsShipBuilder.Data.Generator.DataElementGenerator;
 using WoWsShipBuilder.DataElements;
 
@@ -14,7 +13,7 @@ namespace WoWsShipBuilder.Data.Generator.Test.DataElementGeneratorTests;
 public partial class DataElementGeneratorTest
 {
     [AssertionMethod]
-    private static CSharpSourceGeneratorTest<DataElementGenerator.DataElementGenerator, NUnitVerifier> CreateTest(string source, string expected)
+    private static CSharpSourceGeneratorTest<DataElementGenerator.DataElementGenerator, DefaultVerifier> CreateTest(string source, string expected)
     {
         const string baseClass = """
                                  namespace WoWsShipBuilder.DataElements;
@@ -50,7 +49,7 @@ public partial class DataElementGeneratorTest
                     (typeof(DataElementGenerator.DataElementGenerator), "DataElementFilteringAttribute.g.cs", AttributeHelper.DataElementFilteringAttribute),
                     (typeof(DataElementGenerator.DataElementGenerator), "TestDataContainer.g.cs", expected),
                 },
-                ReferenceAssemblies = ReferenceAssemblies.Net.Net80,
+                ReferenceAssemblies = ReferenceAssemblies.Net.Net90,
                 AdditionalReferences = { MetadataReference.CreateFromFile(typeof(IDataElement).GetTypeInfo().Assembly.Location) },
             },
         };
