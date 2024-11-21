@@ -75,14 +75,14 @@ public class ThemeManager
                 HoverOpacity = new Random().NextDouble(),
                 DrawerBackground = $"{Helpers.GenerateRandomColor()}",
                 DividerLight = $"{Helpers.GenerateRandomColor()}CC",
-                BackgroundGrey = $"{Helpers.GenerateRandomColor()}FF",
+                BackgroundGray = $"{Helpers.GenerateRandomColor()}FF",
                 SecondaryContrastText = $"{Helpers.GenerateRandomColor()}FF",
                 Tertiary = $"{Helpers.GenerateRandomColor()}FF",
                 TertiaryContrastText = $"{Helpers.GenerateRandomColor()}FF",
                 Background = $"{Helpers.GenerateRandomColor()}FF",
                 GrayDark = $"{Helpers.GenerateRandomColor()}FF",
             },
-            Palette =
+            PaletteLight =
             {
                 Black = $"{Helpers.GenerateRandomColor()}FF",
                 White = $"{Helpers.GenerateRandomColor()}FF",
@@ -112,7 +112,7 @@ public class ThemeManager
                 HoverOpacity = new Random().NextDouble(),
                 DrawerBackground = $"{Helpers.GenerateRandomColor()}",
                 DividerLight = $"{Helpers.GenerateRandomColor()}CC",
-                BackgroundGrey = $"{Helpers.GenerateRandomColor()}FF",
+                BackgroundGray = $"{Helpers.GenerateRandomColor()}FF",
                 SecondaryContrastText = $"{Helpers.GenerateRandomColor()}FF",
                 Tertiary = $"{Helpers.GenerateRandomColor()}FF",
                 TertiaryContrastText = $"{Helpers.GenerateRandomColor()}FF",
@@ -136,7 +136,7 @@ public class ThemeManager
             {
                 DefaultBorderRadius = this.currentThemeStyle == ThemeEnums.ThemeStyle.Sharp ? "0" : $"{BorderRadius}px",
             },
-            Palette =
+            PaletteLight =
             {
                 Primary = this.currentPrimaryColor,
                 TextPrimary = "#000000FF",
@@ -178,7 +178,7 @@ public class ThemeManager
                 HoverOpacity = 0.165,
                 AppbarBackground = "#121212FF",
                 Background = "#282828",
-                BackgroundGrey = "#1E1E1E",
+                BackgroundGray = "#1E1E1E",
                 GrayDark = "#505050",
             },
             ZIndex =

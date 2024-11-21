@@ -49,7 +49,7 @@
                         </MudStack>
                     </MudItem>
                     <MudItem xs="2">
-                        <MudList @bind-SelectedValue="selectedListValue" Dense Clickable Style="max-height: min(80vh, 850px); overflow-y: scroll;">
+                        <MudList @bind-SelectedValue="selectedListValue" Dense Style="max-height: min(80vh, 850px); overflow-y: scroll;">
                             @for (var i = 0; i < Ships.Count; i++)
                             {
                                 int index = i;
@@ -201,9 +201,9 @@
                                         @Localizer.GetAppLocalization(Translation.BuildConfigurationDialog_Load).Localization
                                     </MudButton>
                                     <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Class="file-upload-full-height" Accept=".png">
-                                        <ButtonTemplate>
-                                            <MudButton HtmlTag="label" Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Image" Style="height: 100%;" for="@context">@Localizer.SimpleAppLocalization(nameof(Translation.BuildImport_Import))</MudButton>
-                                        </ButtonTemplate>
+                                        <ActivatorContent>
+                                            <MudButton HtmlTag="label" Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Image" Style="height: 100%;">@Localizer.SimpleAppLocalization(nameof(Translation.BuildImport_Import))</MudButton>
+                                        </ActivatorContent>
                                     </MudFileUpload>
                                 </MudStack>
                             </MudItem>

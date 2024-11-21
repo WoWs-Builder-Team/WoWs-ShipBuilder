@@ -42,7 +42,7 @@
                     <MudIconButton Icon="@Icons.Material.Filled.Add" OnClick="@OpenAddDialogAsync" Color="Color.Primary"/>
                 </MudTooltip>
                 <MudHidden Invert Breakpoint="Breakpoint.SmAndDown">
-                    <MudMenu Icon="@Icons.Material.Filled.Menu" Dense Color="Color.Primary" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.BottomLeft" DisableElevation>
+                    <MudMenu Icon="@Icons.Material.Filled.Menu" Dense Color="Color.Primary" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.BottomLeft" DropShadow="false">
                         <MudStack Spacing="0" AlignItems="AlignItems.Center" Justify="Justify.Center">
                             <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInBallisticCharts).Localization" Arrow Delay="350">
                                 <MudIconButton OnClick="@(() => AppNavigator.NavigateTo(AppNavigator.AppPage.BallisticCharts, GetShipBuildContainers(false), AppNavigator.AppPage.ShipStats))" Color="Color.Primary" Style="width: 48px; height: 48px">
@@ -226,7 +226,7 @@
         {
             MaxWidth = MaxWidth.Large,
             CloseOnEscapeKey = true,
-            DisableBackdropClick = false,
+            BackdropClick = true,
         };
         var result = await (await DialogService.ShowAsync<ShipSelectionDialog>(Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionDialog_AddShips)), options)).Result;
         Logger.LogTrace("Result received from add ship dialog");

@@ -69,7 +69,7 @@
 
     private async Task OpenSettings()
     {
-        var options = new DialogOptions { MaxWidth = MaxWidth.ExtraLarge, NoHeader = true, DisableBackdropClick = true };
+        var options = new DialogOptions { MaxWidth = MaxWidth.ExtraLarge, NoHeader = true, BackdropClick = false };
         var dialog = await DialogService.ShowAsync<SettingsDialog>(string.Empty, options);
         await dialog.Result;
     }

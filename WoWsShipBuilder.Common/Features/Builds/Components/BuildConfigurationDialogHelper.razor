@@ -27,11 +27,11 @@
     public bool NoHeader { get; set; }
 
     [Parameter]
-    public bool DisableBackdropClick { get; set; } = true;
+    public bool BackdropClick { get; set; } = true;
 
     public async Task<IEnumerable<ShipBuildContainer>?> ShowDialogAsync(IReadOnlyCollection<ShipBuildContainer> shipBuildContainers)
     {
-        var options = new DialogOptions { MaxWidth = MaxWidth, FullWidth = FullWidth, NoHeader = NoHeader, DisableBackdropClick = DisableBackdropClick };
+        var options = new DialogOptions { MaxWidth = MaxWidth, FullWidth = FullWidth, NoHeader = NoHeader, BackdropClick = BackdropClick };
         var cdnOptions = CdnOptions.Value;
         var parameters = new DialogParameters
         {

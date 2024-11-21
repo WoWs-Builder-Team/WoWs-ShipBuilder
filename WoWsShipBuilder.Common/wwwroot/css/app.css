@@ -252,7 +252,7 @@ div.mud-expand-panel {
 .custom-expansion-panel-header .mud-expand-panel-header {
     padding: 4px 8px;
     min-height: 24px;
-    background-color: var(--mud-palette-grey-dark);
+    background-color: var(--mud-palette-gray-dark);
     border-radius: var(--mud-default-borderradius);
 }
 
@@ -260,7 +260,7 @@ div.mud-expand-panel {
 .custom-child-expansion-panel-header .mud-expand-panel-header {
     padding: 4px 8px;
     min-height: 24px;
-    background-color: color-mix(in srgb, var(--mud-palette-grey-dark), transparent 40%);
+    background-color: color-mix(in srgb, var(--mud-palette-gray-dark), transparent 40%);
 }
 
 .data-grid-text-wrap * {

@@ -115,7 +115,7 @@
                      </MudExpansionPanel>
                 </MudExpansionPanels>
                 <MudStack Row="true" Style="flex-wrap: wrap">
-                    <MudButton OnClick="@EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing" DisableElevation FullWidth="@SetFullWidth()">
+                    <MudButton OnClick="@EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing" DropShadow="false" FullWidth="@SetFullWidth()">
                         @if (processing)
                         {
                             <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>

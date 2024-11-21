@@ -98,7 +98,7 @@ else if (ViewModel is not null)
                         }
                     </MudItem>
                     <MudItem xs="12" md="3" xl="2" Class="align-self-center d-flex justify-center">
-                        <MudButtonGroup OverrideStyles="false" Class="gap-2" VerticalAlign Style="width: 100%">
+                        <MudButtonGroup OverrideStyles="false" Class="gap-2" Vertical Style="width: 100%">
                             <MudButton Class="py-1" Size="Size.Small" Variant="Variant.Outlined" Color="Color.Primary" FullWidth OnClick="@(async () => await GetBuildLink())" StartIcon="@Icons.Material.Filled.Share">
                                 @Localizer.SimpleAppLocalization(nameof(Translation.ShipStatsTab_ShareLink))
                             </MudButton>
