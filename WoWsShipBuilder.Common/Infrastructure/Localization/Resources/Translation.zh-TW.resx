@@ -655,7 +655,7 @@
       <value>最大</value>
   </data>
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
-    <value>投彈區長度</value>
+    <value>飛機航程</value>
   </data>
   <data name="ShipStats_MinimumDistance" xml:space="preserve">
       <value>最小</value>
@@ -2237,5 +2237,26 @@ C = 砲彈口徑 [m]
   </data>
   <data name="ShipStats_AmmoSwitchTimeTooltip" xml:space="preserve">
     <value>若剛剛開砲，就會需要完整的裝填時間才會裝填完畢</value>
+  </data>
+  <data name="Settings_ThemePrimaryColor" xml:space="preserve">
+    <value>主題主顏色</value>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>佈景主題</value>
+  </data>
+  <data name="Settings_ThemeStyle" xml:space="preserve">
+    <value>主題風格</value>
+  </data>
+  <data name="ShipSelector_DeleteFromSavedBuilds" xml:space="preserve">
+    <value>刪除已儲存的配置</value>
+  </data>
+  <data name="SettingsWindow_ResetColor" xml:space="preserve">
+    <value>重設顏色</value>
+  </data>
+  <data name="ShipComparison_RemoveBuildWarningPt1" xml:space="preserve">
+    <value>於</value>
+  </data>
+  <data name="ShipComparison_RemoveBuildWarningPt2" xml:space="preserve">
+    <value>的配置已被重置。</value>
   </data>
 </root>

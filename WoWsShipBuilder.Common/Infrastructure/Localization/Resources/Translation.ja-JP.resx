@@ -1528,6 +1528,12 @@
   <data name="Charts_ChangeBuilds" xml:space="preserve">
       <value>ビルドを変更</value>
   </data>
+  <data name="AccelerationChart_ExplanationText" xml:space="preserve">
+      <value>艦艇を選択後、3種類のギア(スピード)を選択できます。
+チャートは、初期ギア→中間ギア→最終ギアの順に進行し、現在のギアにおける最高速度に到達した後にのみ、次のギアに移行します。
+2つのギアを同じ値に設定すると、1つに統合されます。
+「ビルドを変更」ボタンを使用し、艦艇のビルドを調整できます。同一艦艇を複数追加し、異なるビルドで比較することもできます。</value>
+  </data>
   <data name="AccelerationChart_Explanation" xml:space="preserve">
       <value>加速チャートの説明</value>
   </data>
@@ -1777,6 +1783,9 @@
   <data name="BuildImageSettingsDialog_Elements" xml:space="preserve">
       <value>要素</value>
   </data>
+  <data name="BuildImageSettingsDialog_TwoColumnsTooltip" xml:space="preserve">
+      <value>要素を並べて2つに分割し、画像レイアウトを広げます。(艦長スキルと信号旗は非表示になりません)</value>
+  </data>
   <data name="BuildNameDialog_BuildName" xml:space="preserve">
       <value>ビルドの名前</value>
   </data>
@@ -2014,14 +2023,35 @@
   <data name="ShipSelector_InvalidPngFileError" xml:space="preserve">
       <value>無効なファイルです。使用できるのは.pngファイルのみです</value>
   </data>
+  <data name="SettingsWindow_LocalStorageWarning" xml:space="preserve">
+      <value>ビルドはブラウザのローカルストレージに保存されます。 ブラウザのキャッシュクリアなどの操作は、ローカルストレージに保存されているすべてのデータを削除する可能性があります。 定期的に、少なくともそのような操作を実行する前に、ビルドをエクスポートすることを強くお勧めします。</value>
+  </data>
   <data name="ShipStats_Krupp" xml:space="preserve">
       <value>クルップ値</value>
+  </data>
+  <data name="ShipStats_KruppExplanation" xml:space="preserve">
+      <value>弾体の貫通力を調整するために使用される定数です。
+        弾体がどの程度頑丈かを表します。
+        値が大きいほど、貫通力が高くなります。</value>
+  </data>
+  <data name="ShipStats_ApPenetrationFormula" xml:space="preserve">
+      <value>K = 弾体のクルップ値
+        M = 弾体の質量 [kg]
+        S = 弾体着弾時の速さ [m/s]
+        C = 弾体の口径 [m]
+
+        貫通力 [mm] = K * (M * S^2)^0.69 * C^(-1.07) * 0.0000001
+
+      TTaro_によってリバースエンジニアリングされました。わたしです。</value>
   </data>
   <data name="ShipStats_PenetrationAp" xml:space="preserve">
       <value>貫通力</value>
   </data>
   <data name="BETA_UserAuth" xml:space="preserve">
       <value>ユーザーログイン</value>
+  </data>
+  <data name="ShipStats_DcDetonationDepthExplanation" xml:space="preserve">
+      <value>ゲーム内で表示される潜水艦の深度は"ship_meter"で表現されています。例: 潜水艦は60[ship_m] = 120[m] を潜ることができます。</value>
   </data>
   <data name="ShipComparison_ShipsPerPage" xml:space="preserve">
     <value>1ページあたりの艦艇数:</value>
@@ -2199,5 +2229,8 @@
   </data>
   <data name="AppNavigator_MaxLimit" xml:space="preserve">
     <value>上限</value>
+  </data>
+  <data name="ShipStats_AmmoSwitchTime" xml:space="preserve">
+    <value>弾種切り替え時間</value>
   </data>
 </root>
