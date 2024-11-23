@@ -424,7 +424,7 @@ else if (ViewModel is not null)
             ["BuildName"] = BuildName,
         };
         var result = await (await DialogService.ShowAsync<BuildNameDialog>(string.Empty, parameters, options)).Result;
-        if (!result.Canceled && result.Data is string buildName)
+        if (result is { Canceled: false, Data: string buildName })
         {
             BuildName = buildName;
         }

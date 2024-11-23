@@ -448,7 +448,7 @@
         };
         var dialog = await DialogService.ShowAsync<BuildStringInputDialog>(Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)), parameters);
         var result = await dialog.Result;
-        if (!result.Canceled && result.Data is Build build)
+        if (result is { Canceled: false, Data: Build build })
         {
             SelectedShips.Replace(SelectedShips.Single(x => x.Id.Equals(ship.Id)), ship with { Build = build });
         }

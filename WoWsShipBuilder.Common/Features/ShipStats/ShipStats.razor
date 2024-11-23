@@ -198,7 +198,7 @@
         shipContainers.Remove(ship);
         cache.RemoveEntry(id);
 
-        if (mudTabs.ActivePanel.ID.Equals(panel.ID))
+        if (mudTabs.ActivePanel?.ID?.Equals(panel.ID) ?? false)
         {
             // If shipIndexes contains more element than index (meaning, index is not out of bound for the shipIndexes list), then we select the ship at the same index.
             // We do it with the ID because using the index makes the tab appear as blank ("display: none" in the style).
@@ -230,7 +230,7 @@
         };
         var result = await (await DialogService.ShowAsync<ShipSelectionDialog>(Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionDialog_AddShips)), options)).Result;
         Logger.LogTrace("Result received from add ship dialog");
-        if (!result.Canceled && result.Data is List<ShipBuildContainer> { Count: > 0 } newShips)
+        if (result is { Canceled: false, Data: List<ShipBuildContainer> { Count: > 0 } newShips })
         {
             Logger.LogTrace("Adding new ships");
             AddNewIndexes(new[] { newShips.First().Ship.Index }, new[] { newShips.First() });

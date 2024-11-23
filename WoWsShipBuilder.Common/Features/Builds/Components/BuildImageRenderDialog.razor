@@ -222,7 +222,7 @@
             ["BuildName"] = BuildName,
         };
         var result = await (await DialogService.ShowAsync<BuildNameDialog>(string.Empty, parameters, options)).Result;
-        if (!result.Canceled && result.Data is string buildName)
+        if (result is { Canceled: false, Data: string buildName })
         {
             BuildName = buildName;
         }
@@ -305,7 +305,7 @@
             ["Breakpoint"] = Breakpoint,
         };
         var dialogResult = await (await DialogService.ShowAsync<BuildImageSettingsDialog>(string.Empty, parameters, options)).Result;
-        if (!dialogResult.Canceled && dialogResult.Data is bool[] result)
+        if (dialogResult is { Canceled: false, Data: bool[] result })
         {
             showModules = result[0];
             showCaptainSkills = result[1];
