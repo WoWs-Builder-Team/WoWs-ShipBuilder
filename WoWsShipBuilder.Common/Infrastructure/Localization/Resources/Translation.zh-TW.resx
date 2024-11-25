@@ -490,7 +490,7 @@
     <value>沒有主炮</value>
   </data>
   <data name="MessageBox_DuplicateShip" xml:space="preserve">
-    <value>此砲彈已被添加</value>
+    <value>此砲彈已被新增</value>
   </data>
   <data name="ShipStats_Type" xml:space="preserve">
     <value>彈種</value>
@@ -1176,7 +1176,7 @@
     <value>半穿甲彈</value>
   </data>
   <data name="ChartsWeb_AddRemoveShips" xml:space="preserve">
-      <value>添加/移除船艦/彈藥</value>
+      <value>新增/移除船艦/彈藥</value>
   </data>
   <data name="ChartsWeb_DispersionCharts" xml:space="preserve">
       <value>散佈圖表</value>
@@ -1525,7 +1525,7 @@
       <value>時間</value>
   </data>
   <data name="AccelerationChart_AddRemoveShip" xml:space="preserve">
-      <value>添加/移除艦艇</value>
+      <value>新增/移除艦艇</value>
   </data>
   <data name="Charts_ChangeBuilds" xml:space="preserve">
       <value>改變配置</value>
@@ -1540,7 +1540,7 @@
       <value>加速圖表說明</value>
   </data>
   <data name="AccelerationChart_CustomDataTitle" xml:space="preserve">
-      <value>添加自訂資料</value>
+      <value>新增自訂資料</value>
   </data>
   <data name="ShipStats_EnginePower" xml:space="preserve">
       <value>Engine power</value>
