@@ -4,11 +4,11 @@ using System.Reflection;
 using Moq;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Versioning;
-using WoWsShipBuilder.Desktop.Infrastructure.AwsClient;
+using WoWsShipBuilder.Desktop.CrossPlatform.Infrastructure.AwsClient;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 
-namespace WoWsShipBuilder.Desktop.Test.LocalDataUpdaterTests;
+namespace WoWsShipBuilder.Desktop.CrossPlatform.Test.LocalDataUpdaterTests;
 
 [TestFixture]
 public partial class LocalDataUpdaterTest

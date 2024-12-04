@@ -2,11 +2,11 @@
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using WoWsShipBuilder.DataStructures.Versioning;
-using WoWsShipBuilder.Desktop.Features.Updater;
+using WoWsShipBuilder.Desktop.CrossPlatform.Features.Updater;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Infrastructure.GameData;
 
-namespace WoWsShipBuilder.Desktop.Test.LocalDataUpdaterTests;
+namespace WoWsShipBuilder.Desktop.CrossPlatform.Test.LocalDataUpdaterTests;
 
 public partial class LocalDataUpdaterTest
 {

@@ -2,9 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using WoWsShipBuilder.Desktop.CrossPlatform.Features.Updater;
+using WoWsShipBuilder.Desktop.CrossPlatform.Infrastructure.AwsClient;
 using WoWsShipBuilder.Desktop.Features.SplashScreen;
-using WoWsShipBuilder.Desktop.Features.Updater;
-using WoWsShipBuilder.Desktop.Infrastructure.AwsClient;
 using WoWsShipBuilder.Desktop.Infrastructure.Data;
 using WoWsShipBuilder.Features.LinkShortening;
 using WoWsShipBuilder.Features.Settings;

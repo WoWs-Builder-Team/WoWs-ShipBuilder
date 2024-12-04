@@ -6,10 +6,10 @@ using Moq;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Versioning;
-using WoWsShipBuilder.Desktop.Features.Updater;
+using WoWsShipBuilder.Desktop.CrossPlatform.Features.Updater;
 using WoWsShipBuilder.Infrastructure.GameData;
 
-namespace WoWsShipBuilder.Desktop.Test.LocalDataUpdaterTests;
+namespace WoWsShipBuilder.Desktop.CrossPlatform.Test.LocalDataUpdaterTests;
 
 public partial class LocalDataUpdaterTest
 {

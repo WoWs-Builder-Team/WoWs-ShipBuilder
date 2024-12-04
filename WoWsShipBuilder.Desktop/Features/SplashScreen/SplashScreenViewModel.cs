@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using ReactiveUI;
-using WoWsShipBuilder.Desktop.Features.Updater;
+using WoWsShipBuilder.Desktop.CrossPlatform.Features.Updater;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Localization;

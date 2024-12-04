@@ -48,7 +48,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.Common", "W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.Common.Test", "WoWsShipBuilder.Common.Test\WoWsShipBuilder.Common.Test.csproj", "{ADF8F4FA-286D-42FE-B5D2-E3FBEBE3732A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.Desktop.Test", "WoWsShipBuilder.Desktop.Test\WoWsShipBuilder.Desktop.Test.csproj", "{344A6052-BB97-4E29-A61E-680DC42F644F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.Desktop.CrossPlatform.Test", "WoWsShipBuilder.Desktop.CrossPlatform.Test\WoWsShipBuilder.Desktop.CrossPlatform.Test.csproj", "{344A6052-BB97-4E29-A61E-680DC42F644F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.Desktop.CrossPlatform", "WoWsShipBuilder.Desktop.CrossPlatform\WoWsShipBuilder.Desktop.CrossPlatform.csproj", "{5B001F6C-B90A-4556-8ED1-02216D156703}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.Desktop.Test", "WoWsShipBuilder.Desktop.Test\WoWsShipBuilder.Desktop.Test.csproj", "{C6370F1F-41C9-466F-849F-4758B195AFDF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,5 +96,13 @@ Global
 		{344A6052-BB97-4E29-A61E-680DC42F644F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{344A6052-BB97-4E29-A61E-680DC42F644F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{344A6052-BB97-4E29-A61E-680DC42F644F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B001F6C-B90A-4556-8ED1-02216D156703}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B001F6C-B90A-4556-8ED1-02216D156703}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B001F6C-B90A-4556-8ED1-02216D156703}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B001F6C-B90A-4556-8ED1-02216D156703}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6370F1F-41C9-466F-849F-4758B195AFDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6370F1F-41C9-466F-849F-4758B195AFDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6370F1F-41C9-466F-849F-4758B195AFDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6370F1F-41C9-466F-849F-4758B195AFDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

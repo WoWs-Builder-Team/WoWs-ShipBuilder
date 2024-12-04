@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\WoWsShipBuilder.Common\WoWsShipBuilder.Common.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="21.1.3" />
+    </ItemGroup>
+
+</Project>

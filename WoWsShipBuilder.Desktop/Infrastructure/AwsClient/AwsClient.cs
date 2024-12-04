@@ -8,6 +8,7 @@ using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.DataStructures.Versioning;
+using WoWsShipBuilder.Desktop.CrossPlatform.Infrastructure.AwsClient;
 using WoWsShipBuilder.Desktop.Infrastructure.Data;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;

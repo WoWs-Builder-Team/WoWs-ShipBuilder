@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using WoWsShipBuilder.Infrastructure.GameData;
+﻿using WoWsShipBuilder.Infrastructure.GameData;
 
-namespace WoWsShipBuilder.Desktop.Features.Updater;
+namespace WoWsShipBuilder.Desktop.CrossPlatform.Features.Updater;
 
 /// <summary>
 /// Represents the results of an update check.

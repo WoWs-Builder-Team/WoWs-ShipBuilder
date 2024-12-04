@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace WoWsShipBuilder.Desktop.Features.Updater;
+﻿namespace WoWsShipBuilder.Desktop.CrossPlatform.Features.Updater;
 
 public record ValidationResult(bool ValidationStatus)
 {

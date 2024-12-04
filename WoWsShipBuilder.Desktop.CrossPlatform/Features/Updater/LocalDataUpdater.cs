@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO.Abstractions;
-using System.Linq;
+﻿using System.IO.Abstractions;
 using System.Reflection;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Versioning;
-using WoWsShipBuilder.Desktop.Infrastructure.AwsClient;
+using WoWsShipBuilder.Desktop.CrossPlatform.Infrastructure.AwsClient;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.HttpClients;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;
 
-namespace WoWsShipBuilder.Desktop.Features.Updater;
+namespace WoWsShipBuilder.Desktop.CrossPlatform.Features.Updater;
 
 /// <summary>
 /// The default <see cref="ILocalDataUpdater"/> implementation used to update the local application data.
