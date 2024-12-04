@@ -214,7 +214,7 @@ a.kofi-button:active {
     display: initial;
 }
 
-.tab-header-limited-height .mud-tabs-toolbar {
+.tab-header-limited-height .mud-tabs-tabbar {
     display: none;
 }
 
@@ -240,6 +240,16 @@ div.mud-expand-panel {
 
 .file-upload-full-height div.mud-input-control-input-container {
     height: 100%;
+    margin-top: 6px;
+    margin-bottom: 4px;
+
+    div {
+        height: 100%;
+
+        button {
+            height: 100%;
+        }
+    }
 }
 
 .tab-panel-build-config-dialog {
