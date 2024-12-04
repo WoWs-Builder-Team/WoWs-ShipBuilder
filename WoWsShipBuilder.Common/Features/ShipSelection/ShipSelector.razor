@@ -99,7 +99,7 @@
 
     @* ship list *@
     <MudItem xs="12" md="@(HideSelectedShipList ? 6 : 4)">
-        <MudPaper Style="max-height: 300px; min-height: 300px; overflow:auto" Outlined="true">
+        <MudPaper Style="max-height: max(300px, 30vh); min-height: max(300px, 30vh); overflow:auto" Outlined="true">
             <MudList T="KeyValuePair<string, ShipSummary>">
                 <MudVirtualize Enabled Items="@filteredSummaryList" Context="pair">
                     <MudListItem Style="text-align: center" Value="@pair.Value.Index" OnClick="@(() => AddShip(pair.Value.Index))">
@@ -116,7 +116,7 @@
     @if (!HideSelectedShipList)
     {
         <MudItem xs="12" md="4">
-            <MudPaper Outlined="true" Style="min-height: 300px; max-height: 300px; overflow: auto">
+            <MudPaper Outlined="true" Style="min-height: max(300px, 30vh); max-height: max(300px, 30vh); overflow: auto">
                 <MudList Dense T="ShipBuildContainer">
                     @if (!SelectedShips.Any())
                     {
@@ -163,7 +163,7 @@
     @if (EnableSavedBuildList)
     {
         <MudItem xs="12" md="@(HideSelectedShipList ? 6 : 4)">
-            <MudPaper Outlined Style="min-height: 300px; max-height: 300px; overflow: auto">
+            <MudPaper Outlined Style="min-height: max(300px, 30vh); max-height: max(300px, 30vh); overflow: auto">
                 <MudList Dense T="Build">
                     @if (!filteredBuildsList.Any())
                     {
