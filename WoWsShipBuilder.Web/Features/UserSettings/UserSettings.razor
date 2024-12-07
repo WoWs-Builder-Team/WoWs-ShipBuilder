@@ -75,7 +75,7 @@
                     }
                 </MudSelect>
                 <div class="mt-2" style="@($"background-color:{themePrimaryColor}; height: 36.5px; width:36.5px; border-radius: var(--mud-default-borderradius);")"></div>
-                <MudColorPicker Label="@Localizer.SimpleAppLocalization(nameof(Translation.Settings_ThemePrimaryColor))" DisableToolbar="false" PickerVariant="PickerVariant.Dialog" @bind-Value="themePrimaryColor" Style="@($"color: {themePrimaryColor};")" Disabled="@Helpers.IsAprilFool()"/>
+                <MudColorPicker Label="@Localizer.SimpleAppLocalization(nameof(Translation.Settings_ThemePrimaryColor))" ShowToolbar PickerVariant="PickerVariant.Dialog" @bind-Value="themePrimaryColor" Style="@($"color: {themePrimaryColor};")" Disabled="@Helpers.IsAprilFool()"/>
                 <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="@(() => themePrimaryColor = ThemeManager.DefaultPrimaryColor)" Class="mt-4">
                     @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_ResetColor))
                 </MudButton>
@@ -105,11 +105,11 @@
                     @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Export))
                 </MudButton>
                 <MudFileUpload T="IBrowserFile" FilesChanged="@(async file => await ImportSavedBuilds(file))" Style="margin-top: 0;" Class="file-upload-full-height" Accept=".json" MaximumFileCount="1">
-                    <ButtonTemplate>
-                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Upload" Style="height: 100%;" for="@context">
+                    <ActivatorContent>
+                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Upload" Style="height: 100%;">
                             @Localizer.SimpleAppLocalization(nameof(Translation.BuildImport_Import))
                         </MudButton>
-                    </ButtonTemplate>
+                    </ActivatorContent>
                 </MudFileUpload>
                 <MudButton Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Delete" OnClick="@DeleteAllSavedBuilds">
                     @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_DeleteAll))

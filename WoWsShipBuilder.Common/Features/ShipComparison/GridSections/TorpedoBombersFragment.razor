@@ -39,7 +39,7 @@
         var columnTitleAreaChangeWhileAiming = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_AreaChange))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AimingRateMoving))}";
         var columnTitleAreaChangeDuringPreparation = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_AreaChange))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AimingPreparationRateMoving))}";
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleType}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleType)" T="GridDataWrapper" Title="@columnTitleType" SortBy="@(x=> !x.TorpedoBombers.Type.Any() ? string.Empty : element.localizer.GetAppLocalization($"ShipStats_{x.TorpedoBombers.Type.First()}").Localization)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleType}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleType)" T="GridDataWrapper" Title="@columnTitleType" SortBy="@(x=> !x.TorpedoBombers.Type.Any() ? string.Empty : element.localizer.GetAppLocalization($"ShipStats_{x.TorpedoBombers.Type.First()}").Localization)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.Type.Any())
                 {
@@ -63,7 +63,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlanesInSquadron}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlanesInSquadron)" T="GridDataWrapper" Title="@columnTitlePlanesInSquadron" SortBy="@(x => x.TorpedoBombers.InSquadron)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitlePlanesInSquadron}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlanesInSquadron)" T="GridDataWrapper" Title="@columnTitlePlanesInSquadron" SortBy="@(x => x.TorpedoBombers.InSquadron)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.InSquadron.Any())
                 {
@@ -87,7 +87,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlanesPerAttack}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlanesPerAttack)" T="GridDataWrapper" Title="@columnTitlePlanesPerAttack" SortBy="@(x => x.TorpedoBombers.PerAttack)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitlePlanesPerAttack}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlanesPerAttack)" T="GridDataWrapper" Title="@columnTitlePlanesPerAttack" SortBy="@(x => x.TorpedoBombers.PerAttack)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.PerAttack.Any())
                 {
@@ -111,7 +111,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlanesOnDeck}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlanesOnDeck)" T="GridDataWrapper" Title="@columnTitlePlanesOnDeck" SortBy="@(x => x.TorpedoBombers.OnDeck)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitlePlanesOnDeck}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlanesOnDeck)" T="GridDataWrapper" Title="@columnTitlePlanesOnDeck" SortBy="@(x => x.TorpedoBombers.OnDeck)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.OnDeck.Any())
                 {
@@ -135,7 +135,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRestorationTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRestorationTime)" T="GridDataWrapper" Title="@columnTitleRestorationTime" SortBy="@(x => x.TorpedoBombers.RestorationTime)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleRestorationTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRestorationTime)" T="GridDataWrapper" Title="@columnTitleRestorationTime" SortBy="@(x => x.TorpedoBombers.RestorationTime)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.RestorationTime.Any())
                 {
@@ -159,7 +159,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCruisingSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCruisingSpeed)" T="GridDataWrapper" Title="@columnTitleCruisingSpeed" SortBy="@(x => x.TorpedoBombers.CruisingSpeed)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleCruisingSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCruisingSpeed)" T="GridDataWrapper" Title="@columnTitleCruisingSpeed" SortBy="@(x => x.TorpedoBombers.CruisingSpeed)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.CruisingSpeed.Any())
                 {
@@ -183,7 +183,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxSpeed)" T="GridDataWrapper" Title="@columnTitleMaxSpeed" SortBy="@(x => x.TorpedoBombers.MaxSpeed)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleMaxSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxSpeed)" T="GridDataWrapper" Title="@columnTitleMaxSpeed" SortBy="@(x => x.TorpedoBombers.MaxSpeed)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.MaxSpeed.Any())
                 {
@@ -207,7 +207,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMinSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMinSpeed)" T="GridDataWrapper" Title="@columnTitleMinSpeed" SortBy="@(x => x.TorpedoBombers.MinSpeed)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleMinSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMinSpeed)" T="GridDataWrapper" Title="@columnTitleMinSpeed" SortBy="@(x => x.TorpedoBombers.MinSpeed)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.MinSpeed.Any())
                 {
@@ -231,7 +231,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleEngineBoost}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleEngineBoost)" T="GridDataWrapper" Title="@columnTitleEngineBoost" SortBy="@(x => x.TorpedoBombers.EngineBoostDuration)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleEngineBoost}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleEngineBoost)" T="GridDataWrapper" Title="@columnTitleEngineBoost" SortBy="@(x => x.TorpedoBombers.EngineBoostDuration)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.EngineBoostDuration.Any())
                 {
@@ -255,7 +255,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleInitialBoostDuration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleInitialBoostDuration)" T="GridDataWrapper" Title="@columnTitleInitialBoostDuration" SortBy="@(x => x.TorpedoBombers.InitialBoostDuration)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleInitialBoostDuration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleInitialBoostDuration)" T="GridDataWrapper" Title="@columnTitleInitialBoostDuration" SortBy="@(x => x.TorpedoBombers.InitialBoostDuration)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.InitialBoostDuration.Any(x => x != 0))
                 {
@@ -279,7 +279,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleInitialBoostSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleInitialBoostSpeed)" T="GridDataWrapper" Title="@columnTitleInitialBoostSpeed" SortBy="@(x => x.TorpedoBombers.InitialBoostValue)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleInitialBoostSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleInitialBoostSpeed)" T="GridDataWrapper" Title="@columnTitleInitialBoostSpeed" SortBy="@(x => x.TorpedoBombers.InitialBoostValue)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.InitialBoostValue.Any(x => x != 0))
                 {
@@ -303,7 +303,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlaneHp}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlaneHp)" T="GridDataWrapper" Title="@columnTitlePlaneHp" SortBy="@(x => x.TorpedoBombers.PlaneHp)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitlePlaneHp}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePlaneHp)" T="GridDataWrapper" Title="@columnTitlePlaneHp" SortBy="@(x => x.TorpedoBombers.PlaneHp)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.PlaneHp.Any())
                 {
@@ -327,7 +327,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSquadronHp}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSquadronHp)" T="GridDataWrapper" Title="@columnTitleSquadronHp" SortBy="@(x => x.TorpedoBombers.SquadronHp)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleSquadronHp}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSquadronHp)" T="GridDataWrapper" Title="@columnTitleSquadronHp" SortBy="@(x => x.TorpedoBombers.SquadronHp)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.SquadronHp.Any())
                 {
@@ -351,7 +351,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAttackGroupHp}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAttackGroupHp)" T="GridDataWrapper" Title="@columnTitleAttackGroupHp" SortBy="@(x => x.TorpedoBombers.AttackGroupHp)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleAttackGroupHp}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAttackGroupHp)" T="GridDataWrapper" Title="@columnTitleAttackGroupHp" SortBy="@(x => x.TorpedoBombers.AttackGroupHp)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.AttackGroupHp.Any())
                 {
@@ -375,7 +375,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDamageTakenWhileAttacking}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDamageTakenWhileAttacking)" T="GridDataWrapper" Title="@columnTitleDamageTakenWhileAttacking" SortBy="@(x => x.TorpedoBombers.DamageDuringAttack)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleDamageTakenWhileAttacking}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDamageTakenWhileAttacking)" T="GridDataWrapper" Title="@columnTitleDamageTakenWhileAttacking" SortBy="@(x => x.TorpedoBombers.DamageDuringAttack)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.DamageDuringAttack.Any())
                 {
@@ -399,7 +399,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTorpedoesPerPlane}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTorpedoesPerPlane)" T="GridDataWrapper" Title="@columnTitleTorpedoesPerPlane" SortBy="@(x => x.TorpedoBombers.WeaponsPerPlane)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleTorpedoesPerPlane}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTorpedoesPerPlane)" T="GridDataWrapper" Title="@columnTitleTorpedoesPerPlane" SortBy="@(x => x.TorpedoBombers.WeaponsPerPlane)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.WeaponsPerPlane.Any())
                 {
@@ -423,7 +423,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePreparationTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePreparationTime)" T="GridDataWrapper" Title="@columnTitlePreparationTime" SortBy="@(x => x.TorpedoBombers.PreparationTime)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitlePreparationTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePreparationTime)" T="GridDataWrapper" Title="@columnTitlePreparationTime" SortBy="@(x => x.TorpedoBombers.PreparationTime)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.PreparationTime.Any())
                 {
@@ -447,7 +447,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAimingTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAimingTime)" T="GridDataWrapper" Title="@columnTitleAimingTime" SortBy="@(x => x.TorpedoBombers.AimingTime)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleAimingTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAimingTime)" T="GridDataWrapper" Title="@columnTitleAimingTime" SortBy="@(x => x.TorpedoBombers.AimingTime)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.AimingTime.Any())
                 {
@@ -471,7 +471,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFullyAimedTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFullyAimedTime)" T="GridDataWrapper" Title="@columnTitleFullyAimedTime" SortBy="@(x => x.TorpedoBombers.TimeToFullyAimed)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleFullyAimedTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFullyAimedTime)" T="GridDataWrapper" Title="@columnTitleFullyAimedTime" SortBy="@(x => x.TorpedoBombers.TimeToFullyAimed)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.TimeToFullyAimed.Any())
                 {
@@ -495,7 +495,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleInvulnerabilityTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleInvulnerabilityTime)" T="GridDataWrapper" Title="@columnTitleInvulnerabilityTime" SortBy="@(x => x.TorpedoBombers.PostAttackInvulnerability)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleInvulnerabilityTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleInvulnerabilityTime)" T="GridDataWrapper" Title="@columnTitleInvulnerabilityTime" SortBy="@(x => x.TorpedoBombers.PostAttackInvulnerability)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.PostAttackInvulnerability.Any())
                 {
@@ -519,7 +519,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAttackCooldown}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAttackCooldown)" T="GridDataWrapper" Title="@columnTitleAttackCooldown" SortBy="@(x => x.TorpedoBombers.AttackCooldown)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleAttackCooldown}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAttackCooldown)" T="GridDataWrapper" Title="@columnTitleAttackCooldown" SortBy="@(x => x.TorpedoBombers.AttackCooldown)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.AttackCooldown.Any())
                 {
@@ -543,7 +543,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleConcealment}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleConcealment)" T="GridDataWrapper" Title="@columnTitleConcealment" SortBy="@(x => x.TorpedoBombers.Concealment)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleConcealment}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleConcealment)" T="GridDataWrapper" Title="@columnTitleConcealment" SortBy="@(x => x.TorpedoBombers.Concealment)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.Concealment.Any())
                 {
@@ -567,7 +567,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleViewRange}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleViewRange)" T="GridDataWrapper" Title="@columnTitleViewRange" SortBy="@(x => x.TorpedoBombers.Spotting)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleViewRange}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleViewRange)" T="GridDataWrapper" Title="@columnTitleViewRange" SortBy="@(x => x.TorpedoBombers.Spotting)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.Spotting.Any())
                 {
@@ -591,7 +591,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAreaChangeWhileAiming}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAreaChangeWhileAiming)" T="GridDataWrapper" Title="@columnTitleAreaChangeWhileAiming" SortBy="@(x => !x.TorpedoBombers.AreaChangeAiming.Any() ? double.MinValue : x.TorpedoBombers.AreaChangeAiming.Select(decimal.Parse).ToNoSortList())" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleAreaChangeWhileAiming}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAreaChangeWhileAiming)" T="GridDataWrapper" Title="@columnTitleAreaChangeWhileAiming" SortBy="@(x => !x.TorpedoBombers.AreaChangeAiming.Any() ? double.MinValue : x.TorpedoBombers.AreaChangeAiming.Select(decimal.Parse).ToNoSortList())" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.AreaChangeAiming.Any())
                 {
@@ -615,7 +615,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAreaChangeDuringPreparation}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAreaChangeDuringPreparation)" T="GridDataWrapper" Title="@columnTitleAreaChangeDuringPreparation" SortBy="@(x => !x.TorpedoBombers.AreaChangePreparation.Any() ? double.MinValue : x.TorpedoBombers.AreaChangePreparation.Select(decimal.Parse).ToNoSortList())" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleAreaChangeDuringPreparation}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAreaChangeDuringPreparation)" T="GridDataWrapper" Title="@columnTitleAreaChangeDuringPreparation" SortBy="@(x => !x.TorpedoBombers.AreaChangePreparation.Any() ? double.MinValue : x.TorpedoBombers.AreaChangePreparation.Select(decimal.Parse).ToNoSortList())" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombers.AreaChangePreparation.Any())
                 {

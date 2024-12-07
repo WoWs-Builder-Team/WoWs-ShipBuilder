@@ -274,7 +274,7 @@
         {
             MaxWidth = MaxWidth.Large,
             CloseOnEscapeKey = true,
-            DisableBackdropClick = false,
+            BackdropClick = true,
         };
 
         var parameters = new DialogParameters
@@ -284,7 +284,7 @@
 
         var result = await (await DialogService.ShowAsync<ShipBuildContainerSelectionDialog>(@Localizer.SimpleAppLocalization(nameof(Translation.AccelerationChart_AddRemoveShip)), parameters, options)).Result;
 
-        if (!result.Canceled && result.Data is ShipBuildContainerSelectionDialogOutput dialogOutput)
+        if (result is { Canceled: false, Data: ShipBuildContainerSelectionDialogOutput dialogOutput })
         {
             var newShipList = dialogOutput.ShipList;
 
@@ -360,7 +360,7 @@
     {
         var result = await (await DialogService.ShowAsync<CustomAccelerationDataDialog>("Custom data")).Result;
 
-        if (!result.Canceled && result.Data is ShipBuildContainer shipBuildContainer)
+        if (result is { Canceled: false, Data: ShipBuildContainer shipBuildContainer })
         {
             MetricsService.CustomAccelerationDataUsage.Inc();
 

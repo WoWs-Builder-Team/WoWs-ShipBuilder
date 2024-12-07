@@ -214,7 +214,7 @@ a.kofi-button:active {
     display: initial;
 }
 
-.tab-header-limited-height .mud-tabs-toolbar {
+.tab-header-limited-height .mud-tabs-tabbar {
     display: none;
 }
 
@@ -240,6 +240,16 @@ div.mud-expand-panel {
 
 .file-upload-full-height div.mud-input-control-input-container {
     height: 100%;
+    margin-top: 6px;
+    margin-bottom: 4px;
+
+    div {
+        height: 100%;
+
+        button {
+            height: 100%;
+        }
+    }
 }
 
 .tab-panel-build-config-dialog {
@@ -252,7 +262,7 @@ div.mud-expand-panel {
 .custom-expansion-panel-header .mud-expand-panel-header {
     padding: 4px 8px;
     min-height: 24px;
-    background-color: var(--mud-palette-grey-dark);
+    background-color: var(--mud-palette-gray-dark);
     border-radius: var(--mud-default-borderradius);
 }
 
@@ -260,7 +270,7 @@ div.mud-expand-panel {
 .custom-child-expansion-panel-header .mud-expand-panel-header {
     padding: 4px 8px;
     min-height: 24px;
-    background-color: color-mix(in srgb, var(--mud-palette-grey-dark), transparent 40%);
+    background-color: color-mix(in srgb, var(--mud-palette-gray-dark), transparent 40%);
 }
 
 .data-grid-text-wrap * {

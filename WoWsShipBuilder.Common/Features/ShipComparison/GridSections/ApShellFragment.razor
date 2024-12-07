@@ -28,7 +28,7 @@
         var columnTitleArmingThreshold = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ArmingThreshold));
         var columnTitleFuseTimer = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FuseTimer));
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCaliber}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCaliber)" SortBy="@(x => x.MainBattery?.GunCaliber ?? 0)" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleCaliber}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCaliber)" SortBy="@(x => x.MainBattery?.GunCaliber ?? 0)" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ApShell?.Damage is not null)
                 {
@@ -43,7 +43,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMass}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMass)" SortBy="@(x => x.ApShell?.Mass ?? 0)" T="GridDataWrapper" Title="@columnTitleMass" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleMass}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMass)" SortBy="@(x => x.ApShell?.Mass ?? 0)" T="GridDataWrapper" Title="@columnTitleMass" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ApShell?.Mass is not null)
                 {
@@ -58,7 +58,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDamage)" SortBy="@(x => x.ApShell?.Damage ?? 0)" T="GridDataWrapper" Title="@columnTitleDamage" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDamage)" SortBy="@(x => x.ApShell?.Damage ?? 0)" T="GridDataWrapper" Title="@columnTitleDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ApShell?.Damage is not null)
                 {
@@ -73,7 +73,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashRadius}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSplashRadius)" SortBy="@(x => x.ApShell?.SplashRadius ?? 0)" T="GridDataWrapper" Title="@columnTitleSplashRadius" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleSplashRadius}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSplashRadius)" SortBy="@(x => x.ApShell?.SplashRadius ?? 0)" T="GridDataWrapper" Title="@columnTitleSplashRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ApShell?.SplashRadius is not null)
                 {
@@ -88,7 +88,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSplashDamage)" SortBy="@(x => x.ApShell?.SplashDmg ?? 0)" T="GridDataWrapper" Title="@columnTitleSplashDamage" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleSplashDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSplashDamage)" SortBy="@(x => x.ApShell?.SplashDmg ?? 0)" T="GridDataWrapper" Title="@columnTitleSplashDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ApShell?.SplashDmg is not null)
                 {
@@ -103,7 +103,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleInitialSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleInitialSpeed)" SortBy="@(x => x.ApShell?.ShellVelocity ?? 0)" T="GridDataWrapper" Title="@columnTitleInitialSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleInitialSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleInitialSpeed)" SortBy="@(x => x.ApShell?.ShellVelocity ?? 0)" T="GridDataWrapper" Title="@columnTitleInitialSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ApShell?.ShellVelocity is not null)
                 {
@@ -118,7 +118,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAirDrag}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAirDrag)" SortBy="@(x => x.ApShell?.AirDrag ?? 0)" T="GridDataWrapper" Title="@columnTitleAirDrag" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleAirDrag}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAirDrag)" SortBy="@(x => x.ApShell?.AirDrag ?? 0)" T="GridDataWrapper" Title="@columnTitleAirDrag" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ApShell?.AirDrag is not null)
                 {
@@ -133,7 +133,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleKrupp}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleKrupp)" SortBy="@(x => x.ApShell?.Krupp ?? 0)" T="GridDataWrapper" Title="@columnTitleKrupp" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleKrupp}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleKrupp)" SortBy="@(x => x.ApShell?.Krupp ?? 0)" T="GridDataWrapper" Title="@columnTitleKrupp" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ApShell?.Krupp is not null)
                 {
@@ -148,7 +148,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleOvermatch}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleOvermatch)" SortBy="@(x => x.ApShell?.Overmatch ?? 0)" T="GridDataWrapper" Title="@columnTitleOvermatch" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleOvermatch}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleOvermatch)" SortBy="@(x => x.ApShell?.Overmatch ?? 0)" T="GridDataWrapper" Title="@columnTitleOvermatch" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ApShell?.Overmatch is not null)
                 {
@@ -163,7 +163,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRicochetAngles}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRicochetAngles)" T="GridDataWrapper" Title="@columnTitleRicochetAngles" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => decimal.Parse(x.ApShell?.RicochetAngles?.Split(" - ").First() ?? "0"))">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleRicochetAngles}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRicochetAngles)" T="GridDataWrapper" Title="@columnTitleRicochetAngles" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => decimal.Parse(x.ApShell?.RicochetAngles?.Split(" - ").First() ?? "0"))">
             <CellTemplate>
                 @if (!string.IsNullOrEmpty(context.Item.ApShell?.RicochetAngles))
                 {
@@ -178,7 +178,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleArmingThreshold}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleArmingThreshold)" SortBy="@(x => x.ApShell?.ArmingThreshold ?? 0)" T="GridDataWrapper" Title="@columnTitleArmingThreshold" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleArmingThreshold}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleArmingThreshold)" SortBy="@(x => x.ApShell?.ArmingThreshold ?? 0)" T="GridDataWrapper" Title="@columnTitleArmingThreshold" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ApShell?.ArmingThreshold is not null)
                 {
@@ -193,7 +193,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFuseTimer}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFuseTimer)" SortBy="@(x => x.ApShell?.FuseTimer ?? 0)" T="GridDataWrapper" Title="@columnTitleFuseTimer" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleFuseTimer}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFuseTimer)" SortBy="@(x => x.ApShell?.FuseTimer ?? 0)" T="GridDataWrapper" Title="@columnTitleFuseTimer" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ApShell?.FuseTimer is not null)
                 {

@@ -173,7 +173,7 @@ public class Build
         string buildString = JsonSerializer.Serialize(build, AppConstants.JsonSerializerOptions);
         byte[] textData = System.Text.Encoding.UTF8.GetBytes(buildString);
         byte[] hash = SHA256.HashData(textData);
-        return BitConverter.ToString(hash).Replace("-", string.Empty);
+        return Convert.ToHexString(hash);
     }
 
     public override int GetHashCode()

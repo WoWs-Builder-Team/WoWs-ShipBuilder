@@ -113,7 +113,7 @@
                 <MudText Typo="Typo.body1">Download ShipBuilder Desktop App</MudText>
             </TooltipContent>
             <ChildContent>
-                <MudIconButton Icon="@Icons.Material.Filled.InstallDesktop" Color="Color.Inherit" Link="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder/releases/latest" Target="_blank" Size="Size.Large" Style="margin-top: 1px"/>
+                <MudIconButton Icon="@Icons.Material.Filled.InstallDesktop" Color="Color.Inherit" Href="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder/releases/latest" Target="_blank" Size="Size.Large" Style="margin-top: 1px"/>
             </ChildContent>
         </MudTooltip>
         <MudTooltip>
@@ -121,7 +121,7 @@
                 <MudText Typo="Typo.body1">GiHub Repository</MudText>
             </TooltipContent>
             <ChildContent>
-                <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder#wows-shipbuilder" Target="_blank"/>
+                <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Href="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder#wows-shipbuilder" Target="_blank"/>
             </ChildContent>
         </MudTooltip>
         @if (userAuthEnabled)
@@ -178,7 +178,7 @@
             <MudDivider Class="my-4"/>
             <MudNavLink Icon="@Icons.Material.Filled.Settings" Href="/settings">@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Settings)).Localization</MudNavLink>
             <MudDivider Class="my-4"/>
-            <MudNavLink Style="text-transform: none !important;" Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Href="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder#wows-shipbuilder" Target="_blank">GitHub Repository</MudNavLink>
+            <MudNavLink Style="text-transform: none !important;" Icon="@Icons.Custom.Brands.GitHub" IconColor="Color.Inherit" Href="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder#wows-shipbuilder" Target="_blank">GitHub Repository</MudNavLink>
             <MudDivider Class="my-4"/>
             @switch (CdnOptions.Value.Server)
             {

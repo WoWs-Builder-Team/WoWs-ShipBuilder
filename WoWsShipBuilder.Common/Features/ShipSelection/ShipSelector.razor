@@ -1,7 +1,5 @@
 ﻿@using WoWsShipBuilder.DataStructures
 @using System.Globalization
-@using System.Collections.ObjectModel
-@using System.Net
 @using DynamicData
 @using Microsoft.AspNetCore.WebUtilities
 @using Microsoft.Extensions.Options
@@ -10,7 +8,6 @@
 @using WoWsShipBuilder.Features.LinkShortening
 @using WoWsShipBuilder.Features.Settings
 @using WoWsShipBuilder.Infrastructure.ApplicationData
-@using WoWsShipBuilder.Infrastructure.Localization
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
@@ -29,19 +26,19 @@
 @inject MetricsService MetricsService
 @inject RefreshNotifierService NotifierService
 
-<MudGrid Justify="Justify.Center" Spacing="2">
+<MudGrid Justify="Justify.Center" Spacing="4">
     @if (EnableBuildImport)
     {
         <MudItem xs="12">
             <MudStack Row>
                 <MudTextField Variant="Variant.Outlined" Immediate T="string" Class="default-label-background" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)).Localization" @bind-Value="buildString"/>
-                <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@ImportFromString">
+                <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@ImportFromString" Style="margin-top: 6px; margin-bottom: 4px;">
                     @Localizer.GetAppLocalization(nameof(Translation.WebApp_LoadBuild)).Localization
                 </MudButton>
                 <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Style="margin-top: 0;" Class="file-upload-full-height" Accept=".png">
-                    <ButtonTemplate>
-                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Image" Style="height: 100%;" for="@context">@Localizer.SimpleAppLocalization(nameof(Translation.BuildImport_ImportFromImage))</MudButton>
-                    </ButtonTemplate>
+                    <ActivatorContent>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Image">@Localizer.SimpleAppLocalization(nameof(Translation.BuildImport_ImportFromImage))</MudButton>
+                    </ActivatorContent>
                 </MudFileUpload>
             </MudStack>
         </MudItem>
@@ -102,9 +99,9 @@
 
     @* ship list *@
     <MudItem xs="12" md="@(HideSelectedShipList ? 6 : 4)">
-        <MudPaper Style="max-height: 300px; min-height: 300px; overflow:auto" Outlined="true">
-            <MudList Clickable>
-                <MudVirtualize IsEnabled Items="@filteredSummaryList" Context="pair">
+        <MudPaper Style="max-height: max(300px, 30vh); min-height: max(300px, 30vh); overflow:auto" Outlined="true">
+            <MudList T="KeyValuePair<string, ShipSummary>">
+                <MudVirtualize Enabled Items="@filteredSummaryList" Context="pair">
                     <MudListItem Style="text-align: center" Value="@pair.Value.Index" OnClick="@(() => AddShip(pair.Value.Index))">
                         <MudText Color="Color.Default">
                             @pair.Key
@@ -119,8 +116,8 @@
     @if (!HideSelectedShipList)
     {
         <MudItem xs="12" md="4">
-            <MudPaper Outlined="true" Style="min-height: 300px; max-height: 300px; overflow: auto">
-                <MudList Dense>
+            <MudPaper Outlined="true" Style="min-height: max(300px, 30vh); max-height: max(300px, 30vh); overflow: auto">
+                <MudList Dense T="ShipBuildContainer">
                     @if (!SelectedShips.Any())
                     {
                         <MudListItem Disabled>
@@ -166,8 +163,8 @@
     @if (EnableSavedBuildList)
     {
         <MudItem xs="12" md="@(HideSelectedShipList ? 6 : 4)">
-            <MudPaper Outlined Style="min-height: 300px; max-height: 300px; overflow: auto">
-                <MudList Clickable Dense>
+            <MudPaper Outlined Style="min-height: max(300px, 30vh); max-height: max(300px, 30vh); overflow: auto">
+                <MudList Dense T="Build">
                     @if (!filteredBuildsList.Any())
                     {
                         <MudListItem Disabled>
@@ -176,7 +173,7 @@
                     }
                     else
                     {
-                        <MudVirtualize IsEnabled="true" Items="filteredBuildsList" Context="build">
+                        <MudVirtualize Enabled Items="filteredBuildsList" Context="build">
                             <MudListItem @key="build.Hash" Value="build" OnClick="@(() => AddSavedBuild(build))" Icon="@(HideSelectedShipList ? Icons.Material.Filled.KeyboardArrowRight : Icons.Material.Filled.KeyboardArrowLeft)">
                                 <MudStack Style="align-items: stretch" Class="my-n1" Spacing="1">
                                     <MudStack Row Justify="Justify.SpaceBetween">
@@ -451,7 +448,7 @@
         };
         var dialog = await DialogService.ShowAsync<BuildStringInputDialog>(Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)), parameters);
         var result = await dialog.Result;
-        if (!result.Canceled && result.Data is Build build)
+        if (result is { Canceled: false, Data: Build build })
         {
             SelectedShips.Replace(SelectedShips.Single(x => x.Id.Equals(ship.Id)), ship with { Build = build });
         }

@@ -22,7 +22,7 @@
     <!--Separator-->
     <Style Selector="Separator">
         <Setter Property="Background">
-            <RadialGradientBrush GradientOrigin="50%,50%" Radius="0.7">
+            <RadialGradientBrush GradientOrigin="50%,50%" RadiusX="70%" RadiusY="70%">
                 <RadialGradientBrush.GradientStops>
                     <GradientStop Color="Gray" Offset="0" />
                     <GradientStop Color="#00000000" Offset="1" />
