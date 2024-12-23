@@ -51,7 +51,7 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="21.1.7" />
-        <PackageReference Include="Velopack" Version="0.0.942" />
+        <PackageReference Include="Velopack" Version="0.0.1015" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\WoWsShipBuilder.Common\WoWsShipBuilder.Common.csproj" />
