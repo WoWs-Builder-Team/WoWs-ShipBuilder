@@ -1,4 +1,4 @@
-# Update 2.6
+# Update 2.7
 
 ## Download and Install
 
@@ -18,11 +18,12 @@ from the artifacts of this release, then extract it and run **WoWsShipBuilder.ex
 <summary>Click to show release notes</summary>
 
 ### Additions
+- Major theme overhaul with a new theme manager, allowing customization of the application UI theme
 
 ### Changes
-- We have replaced the app's update framework. Future updates should be significantly smaller and therefore faster to download.
+- some updates to add support for new modifiers of the game
 
 ### Bugfixes
-- Ship upgrades cannot be selected on mobile devices (#303)
+- various minor bug fixes
 
 </details>
