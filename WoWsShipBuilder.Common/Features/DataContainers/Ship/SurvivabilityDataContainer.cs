@@ -107,6 +107,8 @@ public partial class SurvivabilityDataContainer : DataContainerBase
             hitPoints += survivabilityExpertAdditionalHp;
         }
 
+        hitPoints = modifiers.ApplyModifiers("SurvivabilityDataContainer.Hp.Permanent", hitPoints);
+
         int fireSpots = modifiers.ApplyModifiers("SurvivabilityDataContainer.FireResistance", shipHull.FireSpots);
 
         decimal fireDuration = modifiers.ApplyModifiers("SurvivabilityDataContainer.FireDuration", shipHull.FireDuration);
@@ -134,7 +136,7 @@ public partial class SurvivabilityDataContainer : DataContainerBase
 
         var survivability = new SurvivabilityDataContainer
         {
-            HitPoints = (int)hitPoints,
+            HitPoints = Convert.ToInt32(Math.Ceiling((hitPoints * 50) / 50)),
             FireDuration = Math.Round(fireDuration, 1),
             FireAmount = fireSpots,
             FireReduction = Math.Round(fireResistance * 100, 1),
