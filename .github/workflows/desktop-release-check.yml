@@ -26,15 +26,9 @@ jobs:
       - name: Test application
         run: dotnet test dirs.proj --no-build -c Release --verbosity normal
 
-      - name: Extract certificate
-        run: |
-          $certB64 = '${{ secrets.WOWSSB_CERT }}'
-          [IO.File]::WriteAllBytes(".\wowssb.pfx", [Convert]::FromBase64String([char[]]$certB64))
       - name: Create Velopack Release
         run: |
           dotnet tool install -g vpk
           vpk download github -o releases --repoUrl ${{ github.server_url }}/${{ github.repository }}
-          installer\BuildVelopackRelease.ps1 -skipBuild -signingCert wowssb.pfx -signingPassword '${{ secrets.WOWSSB_CERT_KEY }}'
+          installer\BuildVelopackRelease.ps1 -skipBuild
         shell: pwsh
-      - name: Cleanup certificate
-        run: Remove-Item .\wowssb.pfx
