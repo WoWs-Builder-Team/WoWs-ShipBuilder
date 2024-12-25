@@ -14,13 +14,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{0F12
 		global.json = global.json
 		Directory.Build.props = Directory.Build.props
 		.dockerignore = .dockerignore
+		nuget.config = nuget.config
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{43EE144D-CA52-44D5-B761-A27C0A37E1C5}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE = LICENSE
 		README.md = README.md
-		ReleaseNotes.md = ReleaseNotes.md
+		docs\BuildSpec.md = docs\BuildSpec.md
+		docs\RELEASE.md = docs\RELEASE.md
+		docs\ReleaseNotes.md = docs\ReleaseNotes.md
+		docs\Third-Party-Dependencies.txt = docs\Third-Party-Dependencies.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub Workflows", "GitHub Workflows", "{C5D1C2CC-CDA1-47AC-8329-8CBFDB751341}"
@@ -51,6 +55,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.Desktop.Test", "tests\WoWsShipBuilder.Desktop.Test\WoWsShipBuilder.Desktop.Test.csproj", "{344A6052-BB97-4E29-A61E-680DC42F644F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{275730B9-81F6-4423-B063-C45EE3A19FE8}"
+	ProjectSection(SolutionItems) = preProject
+		tests\.editorconfig = tests\.editorconfig
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{DDDCA094-7FB6-4736-8686-2934EC47451F}"
 EndProject

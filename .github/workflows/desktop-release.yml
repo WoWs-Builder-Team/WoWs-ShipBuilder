@@ -42,9 +42,14 @@ jobs:
 
       - name: Test application
         run: dotnet test dirs.proj --no-build -c Release --verbosity normal
+
+      - name: Determine vpk version
+        id: vpk-version
+        run: echo ("VELOPACK_VERSION=" + (Select-Xml -Path .\src\WoWsShipBuilder.Desktop\WoWsShipBuilder.Desktop.csproj -XPath "//PackageReference[@Include='Velopack']" | Select-Object -ExpandProperty Node -First 1 | foreach {$_.Version})) >> $env:GITHUB_OUTPUT
+      - name: Install vpk
+        run: dotnet tool install -g --version ${{ steps.vpk-version.outputs.VELOPACK_VERSION }} vpk
       - name: Create Velopack Release
         run: |
-          dotnet tool install -g vpk
           vpk download github -o releases --repoUrl ${{ github.server_url }}/${{ github.repository }}
           installer\BuildVelopackRelease.ps1 -skipBuild
           vpk upload github -o releases --repoUrl ${{ github.server_url }}/${{ github.repository }} --publish --releaseName ${{ env.CURRENT_VERSION }} --tag ${{ env.CURRENT_TAG }} --token ${{ secrets.GITHUB_TOKEN }}
@@ -54,7 +59,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
-          bodyFile: ReleaseNotes.md
+          bodyFile: docs/ReleaseNotes.md
           tag: ${{ env.CURRENT_TAG }}
           token: ${{ secrets.GITHUB_TOKEN }}
           name: ${{ env.CURRENT_VERSION }}
