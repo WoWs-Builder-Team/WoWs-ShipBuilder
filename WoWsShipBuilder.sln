@@ -30,12 +30,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub Workflows", "GitHub Workflows", "{C5D1C2CC-CDA1-47AC-8329-8CBFDB751341}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\desktop-release.yml = .github\workflows\desktop-release.yml
-		.github\workflows\dotnet-build.yml = .github\workflows\dotnet-build.yml
-		.github\workflows\dotnet-dev-build.yml = .github\workflows\dotnet-dev-build.yml
 		.github\workflows\desktop-release-check.yml = .github\workflows\desktop-release-check.yml
 		.github\workflows\sonar-code-analysis.yml = .github\workflows\sonar-code-analysis.yml
 		.github\workflows\web-docker-build.yml = .github\workflows\web-docker-build.yml
 		.github\workflows\web-release-check.yaml = .github\workflows\web-release-check.yaml
+		.github\workflows\build-test.yml = .github\workflows\build-test.yml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.Web", "src\WoWsShipBuilder.Web\WoWsShipBuilder.Web.csproj", "{D0FAB2EE-BAD4-4A7A-B9AD-1FC1565E13CC}"
