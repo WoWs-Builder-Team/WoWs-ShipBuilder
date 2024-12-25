@@ -10,6 +10,9 @@ jobs:
     runs-on: windows-latest
     name: Build and release application
 
+    outputs:
+      current_version: ${{ steps.version-selector.outputs.CURRENT_VERSION }}
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -22,20 +25,20 @@ jobs:
         run: 'echo "$APPCONFIG" > WoWsShipBuilder.Desktop/Infrastructure/StaticConfiguration/ApplicationOptions.json'
         shell: bash
         env:
-          APPCONFIG: ${{secrets.SHIPBUILDER_APPCONFIG}}
+          APPCONFIG: ${{ secrets.SHIPBUILDER_APPCONFIG }}
 
       - name: Restore dependencies
         run: dotnet restore dirs.proj
       - name: Build application
         run: dotnet build dirs.proj --no-restore -c Release
 
-      - name: Store current application version
-        uses: actions/upload-artifact@v4
-        with:
-          name: buildInfo
-          path: src\WoWsShipBuilder.Desktop\buildInfo.txt
-      - name: Store current application version as environment variable
-        run: echo ("CURRENT_TAG=v" + (Get-Content -Path .\src\WoWsShipBuilder.Desktop\buildInfo.txt -First 1)) >> $env:GITHUB_ENV
+      - name: Store current application version as output variable
+        id: version-selector
+        run: echo ("CURRENT_VERSION=" + (Select-Xml -Path .\src\WoWsShipBuilder.Desktop\WoWsShipBuilder.Desktop.csproj -XPath "//VersionPrefix" | Select-Object -ExpandProperty Node -First 1 | foreach {$_.InnerXml})) >> $env:GITHUB_OUTPUT
+      - name: Store current version as environment variable
+        run: echo "CURRENT_VERSION=v${{ steps.version-selector.outputs.CURRENT_VERSION }}" >> $env:GITHUB_ENV
+      - name: Store current tag as environment variable
+        run: echo "CURRENT_TAG=v${{ steps.version-selector.outputs.CURRENT_VERSION }}" >> $env:GITHUB_ENV
 
       - name: Test application
         run: dotnet test dirs.proj --no-build -c Release --verbosity normal
@@ -44,7 +47,7 @@ jobs:
           dotnet tool install -g vpk
           vpk download github -o releases --repoUrl ${{ github.server_url }}/${{ github.repository }}
           installer\BuildVelopackRelease.ps1 -skipBuild
-          vpk upload github -o releases --repoUrl ${{ github.server_url }}/${{ github.repository }} --publish --releaseName ${{ env.CURRENT_TAG }} --tag ${{ env.CURRENT_TAG }} --token ${{ secrets.GITHUB_TOKEN }}
+          vpk upload github -o releases --repoUrl ${{ github.server_url }}/${{ github.repository }} --publish --releaseName ${{ env.CURRENT_VERSION }} --tag ${{ env.CURRENT_TAG }} --token ${{ secrets.GITHUB_TOKEN }}
         shell: pwsh
 
       - name: Release
@@ -54,21 +57,18 @@ jobs:
           bodyFile: ReleaseNotes.md
           tag: ${{ env.CURRENT_TAG }}
           token: ${{ secrets.GITHUB_TOKEN }}
+          name: ${{ env.CURRENT_VERSION }}
 
   sentry-notify:
     runs-on: ubuntu-latest
     name: Create release on sentry
     needs: build-and-release
 
+    env:
+      RELEASE_VERSION: ${{ needs.build-and-release.outputs.current_version }}
+
     steps:
       - uses: actions/checkout@v4
-      - name: Download version info
-        uses: actions/download-artifact@v4
-        with:
-          name: buildInfo
-          path: buildInfo
-      - name: Process release version
-        run: echo "RELEASE_VERSION=$(head -n 1 buildInfo/buildInfo.txt)" >> $GITHUB_ENV
       - name: Create Sentry release
         uses: getsentry/action-release@v1
         env:
