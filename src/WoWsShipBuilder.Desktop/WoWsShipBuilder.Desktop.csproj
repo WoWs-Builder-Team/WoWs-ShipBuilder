@@ -58,7 +58,7 @@
         <ProjectReference Include="..\WoWsShipBuilder.Data.Generator\WoWsShipBuilder.Data.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
     <ItemGroup>
-        <AdditionalFiles Include="..\stylecop.json">
+        <AdditionalFiles Include="..\..\stylecop.json">
             <Link>stylecop.json</Link>
         </AdditionalFiles>
     </ItemGroup>
@@ -84,7 +84,7 @@
         <Content Remove="Settings\ApplicationOptions.json" />
     </ItemGroup>
     <ItemGroup>
-        <Content Include="..\docs\Third-Party-Dependencies.txt">
+        <Content Include="..\..\docs\Third-Party-Dependencies.txt">
             <Link>Third-Party-Dependencies.txt</Link>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
             <CopyToPublishDirectory>Always</CopyToPublishDirectory>

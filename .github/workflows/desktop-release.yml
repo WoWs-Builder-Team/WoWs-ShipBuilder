@@ -33,9 +33,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: buildInfo
-          path: WoWsShipBuilder.Desktop\buildInfo.txt
+          path: src\WoWsShipBuilder.Desktop\buildInfo.txt
       - name: Store current application version as environment variable
-        run: echo ("CURRENT_TAG=v" + (Get-Content -Path .\WoWsShipBuilder.Desktop\buildInfo.txt -First 1)) >> $env:GITHUB_ENV
+        run: echo ("CURRENT_TAG=v" + (Get-Content -Path .\src\WoWsShipBuilder.Desktop\buildInfo.txt -First 1)) >> $env:GITHUB_ENV
 
       - name: Test application
         run: dotnet test dirs.proj --no-build -c Release --verbosity normal
