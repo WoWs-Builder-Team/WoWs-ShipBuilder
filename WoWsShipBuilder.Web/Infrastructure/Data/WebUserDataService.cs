@@ -195,7 +195,7 @@ public sealed class WebUserDataService : IUserDataService, IAsyncDisposable
                     ["ShipIndex"] = build.ShipIndex,
                 };
                 var result = await (await this.dialogService.ShowAsync<OverwriteExistingBuildConfirmationDialog>(string.Empty, parameters, options)).Result;
-                if (!result.Canceled && (bool)result.Data)
+                if (result is not null && !result.Canceled && (bool)(result.Data ?? false))
                 {
                     int index = this.savedBuilds.IndexOf(buildToUpdate);
                     this.savedBuilds.Remove(buildToUpdate);

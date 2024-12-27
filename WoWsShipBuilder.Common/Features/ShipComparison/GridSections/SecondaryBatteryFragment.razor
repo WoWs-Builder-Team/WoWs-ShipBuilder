@@ -32,7 +32,7 @@
         var columnTitleFpm = element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Fpm));
         var columnTitleSigma = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Sigma));
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCaliber}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCaliber)" SortBy="@(x => x.Secondary.Caliber)" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleCaliber}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCaliber)" SortBy="@(x => x.Secondary.Caliber)" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Secondary.Caliber.Any())
                 {
@@ -56,7 +56,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBarrels}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBarrels)" T="GridDataWrapper" SortBy="@(x => x.Secondary.BarrelCount.Sum())" Title="@columnTitleBarrels" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleBarrels}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBarrels)" T="GridDataWrapper" SortBy="@(x => x.Secondary.BarrelCount.Sum())" Title="@columnTitleBarrels" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Secondary.BarrelCount.Any() && context.Item.Secondary.BarrelsLayout.Any())
                 {
@@ -81,7 +81,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxRange}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxRange)" SortBy="@(x => x.Secondary.Range ?? 0)" T="GridDataWrapper" Title="@columnTitleMaxRange" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleMaxRange}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxRange)" SortBy="@(x => x.Secondary.Range ?? 0)" T="GridDataWrapper" Title="@columnTitleMaxRange" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Secondary.Range is not null)
                 {
@@ -96,7 +96,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReload}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleReload)" SortBy="@(x => x.Secondary.Reload)" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleReload}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleReload)" SortBy="@(x => x.Secondary.Reload)" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Secondary.Reload.Any())
                 {
@@ -120,7 +120,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRof}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRof)" T="GridDataWrapper" Title="@columnTitleRof" SortBy="@(x => x.Secondary.RoF.Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleRof}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRof)" T="GridDataWrapper" Title="@columnTitleRof" SortBy="@(x => x.Secondary.RoF.Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Secondary.RoF.Any())
                 {
@@ -144,7 +144,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDpm}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDpm)" T="GridDataWrapper" Title="@columnTitleDpm" SortBy="@(x => x.Secondary.Dpm.Select(y => int.Parse(y, NumberStyles.AllowThousands, nfi)).Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleDpm}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDpm)" T="GridDataWrapper" Title="@columnTitleDpm" SortBy="@(x => x.Secondary.Dpm.Select(y => int.Parse(y, NumberStyles.AllowThousands, nfi)).Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Secondary.Dpm.Any())
                 {
@@ -168,7 +168,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFpm}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFpm)" T="GridDataWrapper" Title="@columnTitleFpm" SortBy="@(x => x.Secondary.Fpm.Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleFpm}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFpm)" T="GridDataWrapper" Title="@columnTitleFpm" SortBy="@(x => x.Secondary.Fpm.Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Secondary.Fpm.Any())
                 {
@@ -192,7 +192,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleHorizontalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHorizontalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Select(y => (decimal)y.Horizontal).ToNoSortList() : new())" T="GridDataWrapper" Title="@columnTitleHorizontalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleHorizontalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHorizontalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Select(y => (decimal)y.Horizontal).ToNoSortList() : new())" T="GridDataWrapper" Title="@columnTitleHorizontalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Secondary.Range is not null && context.Item.Secondary.Range.Value < (decimal)element.firingRange)
                 {
@@ -219,7 +219,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleVerticalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleVerticalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Select(y => (decimal)y.Vertical).ToNoSortList() : new())" T="GridDataWrapper" Title="@columnTitleVerticalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleVerticalDispersion}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleVerticalDispersion)" SortBy="@(x => element.dispersionCache.TryGetValue(x.Id, out var value) ? value.Select(y => (decimal)y.Vertical).ToNoSortList() : new())" T="GridDataWrapper" Title="@columnTitleVerticalDispersion" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Secondary.Range is not null && context.Item.Secondary.Range.Value < (decimal)element.firingRange)
                 {
@@ -246,7 +246,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSigma}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSigma)" SortBy="@(x => x.Secondary.Sigma ?? 0)" T="GridDataWrapper" Title="@columnTitleSigma" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleSigma}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSigma)" SortBy="@(x => x.Secondary.Sigma ?? 0)" T="GridDataWrapper" Title="@columnTitleSigma" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Secondary.Sigma is not null)
                 {

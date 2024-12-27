@@ -27,9 +27,9 @@
         var columnTitleFloodingMaxDmg = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Flooding))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Max))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Damage))}";
         var columnTitleFloodingChanceReduction = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TorpedoProtection));
 
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleHp}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHp)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Survivability.HitPoints)" Title="@columnTitleHp" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn id="@($"{dataSectionString}_{columnTitleHp}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleHp)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Survivability.HitPoints)" Title="@columnTitleHp" HeaderClass="column-text-center" CellClass="column-text-center"/>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnDiveCapacity}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnDiveCapacity)" SortBy="@(x => x.Survivability.DiveCapacity)" T="GridDataWrapper" Title="@columnDiveCapacity" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnDiveCapacity}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnDiveCapacity)" SortBy="@(x => x.Survivability.DiveCapacity)" T="GridDataWrapper" Title="@columnDiveCapacity" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Survivability.DiveCapacity != 0)
                 {
@@ -44,7 +44,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnDiveCapacityRechargeRate}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnDiveCapacityRechargeRate)" SortBy="@(x => x.Survivability.DiveCapacityRechargeRate)" T="GridDataWrapper" Title="@columnDiveCapacityRechargeRate" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnDiveCapacityRechargeRate}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnDiveCapacityRechargeRate)" SortBy="@(x => x.Survivability.DiveCapacityRechargeRate)" T="GridDataWrapper" Title="@columnDiveCapacityRechargeRate" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Survivability.DiveCapacityRechargeRate != 0)
                 {
@@ -59,9 +59,9 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFireMaxAmount}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireMaxAmount)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Survivability.FireAmount)" Title="@columnTitleFireMaxAmount" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn id="@($"{dataSectionString}_{columnTitleFireMaxAmount}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireMaxAmount)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Survivability.FireAmount)" Title="@columnTitleFireMaxAmount" HeaderClass="column-text-center" CellClass="column-text-center"/>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFireMaxDuration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireMaxDuration)" T="GridDataWrapper" SortBy="@(x => x.Survivability.FireDuration)" Title="@columnTitleFireMaxDuration" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleFireMaxDuration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireMaxDuration)" T="GridDataWrapper" SortBy="@(x => x.Survivability.FireDuration)" Title="@columnTitleFireMaxDuration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Survivability.FireDuration != 0)
                 {
@@ -76,11 +76,11 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFireDps}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireDps)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Survivability.FireDPS)" Title="@columnTitleFireDps" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn id="@($"{dataSectionString}_{columnTitleFireDps}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireDps)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Survivability.FireDPS)" Title="@columnTitleFireDps" HeaderClass="column-text-center" CellClass="column-text-center"/>
 
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFireMaxDmg}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireMaxDmg)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Survivability.FireTotalDamage)" Title="@columnTitleFireMaxDmg" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn id="@($"{dataSectionString}_{columnTitleFireMaxDmg}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireMaxDmg)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Survivability.FireTotalDamage)" Title="@columnTitleFireMaxDmg" HeaderClass="column-text-center" CellClass="column-text-center"/>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFireChanceReduction}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireChanceReduction)" T="GridDataWrapper" SortBy="@(x => x.Survivability.FireReduction)" Title="@columnTitleFireChanceReduction" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleFireChanceReduction}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireChanceReduction)" T="GridDataWrapper" SortBy="@(x => x.Survivability.FireReduction)" Title="@columnTitleFireChanceReduction" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Survivability.FireReduction != 0)
                 {
@@ -95,9 +95,9 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFloodingMaxAmount}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireMaxAmount)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Survivability.FloodAmount)" Title="@columnTitleFloodingMaxAmount" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn id="@($"{dataSectionString}_{columnTitleFloodingMaxAmount}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireMaxAmount)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Survivability.FloodAmount)" Title="@columnTitleFloodingMaxAmount" HeaderClass="column-text-center" CellClass="column-text-center"/>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFloodingMaxDuration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFloodingMaxDuration)" T="GridDataWrapper" SortBy="@(x => x.Survivability.FloodDuration)" Title="@columnTitleFloodingMaxDuration" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleFloodingMaxDuration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFloodingMaxDuration)" T="GridDataWrapper" SortBy="@(x => x.Survivability.FloodDuration)" Title="@columnTitleFloodingMaxDuration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Survivability.FloodDuration != 0)
                 {
@@ -112,11 +112,11 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFloodingDps}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFloodingDps)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Survivability.FloodDPS)" Title="@columnTitleFloodingDps" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn id="@($"{dataSectionString}_{columnTitleFloodingDps}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFloodingDps)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Survivability.FloodDPS)" Title="@columnTitleFloodingDps" HeaderClass="column-text-center" CellClass="column-text-center"/>
 
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFloodingMaxDmg}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFloodingMaxDmg)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Survivability.FloodTotalDamage)" Title="@columnTitleFloodingMaxDmg" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn id="@($"{dataSectionString}_{columnTitleFloodingMaxDmg}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFloodingMaxDmg)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.Survivability.FloodTotalDamage)" Title="@columnTitleFloodingMaxDmg" HeaderClass="column-text-center" CellClass="column-text-center"/>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFloodingChanceReduction}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFloodingChanceReduction)" T="GridDataWrapper" SortBy="@(x => x.Survivability.FloodTorpedoProtection)" Title="@columnTitleFloodingChanceReduction" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleFloodingChanceReduction}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFloodingChanceReduction)" T="GridDataWrapper" SortBy="@(x => x.Survivability.FloodTorpedoProtection)" Title="@columnTitleFloodingChanceReduction" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Survivability.FloodTorpedoProtection != 0)
                 {

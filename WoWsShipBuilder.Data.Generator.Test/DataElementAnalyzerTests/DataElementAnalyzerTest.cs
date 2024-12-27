@@ -2,7 +2,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Testing;
-using Microsoft.CodeAnalysis.Testing.Verifiers;
 using WoWsShipBuilder.Data.Generator.DataElementGenerator;
 using WoWsShipBuilder.DataElements;
 
@@ -32,7 +31,7 @@ public partial class DataElementAnalyzerTest
     }
 
     [AssertionMethod]
-    private static CSharpAnalyzerTest<DataElementAnalyzer, NUnitVerifier> CreateTest(string source)
+    private static CSharpAnalyzerTest<DataElementAnalyzer, DefaultVerifier> CreateTest(string source)
     {
         const string baseClass = """
                                  namespace WoWsShipBuilder.DataElements;
@@ -68,7 +67,7 @@ public partial class DataElementAnalyzerTest
                     AttributeHelper.DataElementFilteringAttribute,
                     baseClass,
                 },
-                ReferenceAssemblies = ReferenceAssemblies.Net.Net70,
+                ReferenceAssemblies = ReferenceAssemblies.Net.Net90,
                 AdditionalReferences = { MetadataReference.CreateFromFile(typeof(IDataElement).GetTypeInfo().Assembly.Location) },
             },
         };

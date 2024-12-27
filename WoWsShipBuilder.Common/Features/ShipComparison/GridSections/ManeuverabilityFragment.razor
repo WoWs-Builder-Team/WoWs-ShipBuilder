@@ -28,7 +28,7 @@
         var columnTitleRudderProtection = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RudderBlastProtection))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_BlastProtection))}";
         var columnTitleEngineProtection = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_EngineBlastProtection))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_BlastProtection))}";
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxSpeed)" T="GridDataWrapper" SortBy="@(x => x.ManeuverabilityData.MaxSpeed)" Title="@columnTitleMaxSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleMaxSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxSpeed)" T="GridDataWrapper" SortBy="@(x => x.ManeuverabilityData.MaxSpeed)" Title="@columnTitleMaxSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ManeuverabilityData.MaxSpeed != 0)
                 {
@@ -43,7 +43,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxSpeedAtPeriscopeDepth}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxSpeedAtPeriscopeDepth)" SortBy="@(x => x.ManeuverabilityData.MaxSpeedAtPeriscopeDepth)" T="GridDataWrapper" Title="@columnTitleMaxSpeedAtPeriscopeDepth" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleMaxSpeedAtPeriscopeDepth}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxSpeedAtPeriscopeDepth)" SortBy="@(x => x.ManeuverabilityData.MaxSpeedAtPeriscopeDepth)" T="GridDataWrapper" Title="@columnTitleMaxSpeedAtPeriscopeDepth" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ManeuverabilityData.MaxSpeedAtPeriscopeDepth != 0)
                 {
@@ -58,7 +58,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxSpeedAtMaxDepth}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxSpeedAtMaxDepth)" SortBy="@(x => x.ManeuverabilityData.MaxSpeedAtMaxDepth)" T="GridDataWrapper" Title="@columnTitleMaxSpeedAtMaxDepth" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleMaxSpeedAtMaxDepth}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxSpeedAtMaxDepth)" SortBy="@(x => x.ManeuverabilityData.MaxSpeedAtMaxDepth)" T="GridDataWrapper" Title="@columnTitleMaxSpeedAtMaxDepth" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ManeuverabilityData.MaxSpeedAtMaxDepth != 0)
                 {
@@ -73,7 +73,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxReverseSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxReverseSpeed)" T="GridDataWrapper" SortBy="@(x => x.ManeuverabilityData.MaxReverseSpeed)" Title="@columnTitleMaxReverseSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleMaxReverseSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxReverseSpeed)" T="GridDataWrapper" SortBy="@(x => x.ManeuverabilityData.MaxReverseSpeed)" Title="@columnTitleMaxReverseSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ManeuverabilityData.MaxReverseSpeed != 0)
                 {
@@ -88,7 +88,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxReverseSpeedAtPeriscopeDepth}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxReverseSpeedAtPeriscopeDepth)" SortBy="@(x => x.ManeuverabilityData.MaxReverseSpeedAtPeriscopeDepth)" T="GridDataWrapper" Title="@columnTitleMaxReverseSpeedAtPeriscopeDepth" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleMaxReverseSpeedAtPeriscopeDepth}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxReverseSpeedAtPeriscopeDepth)" SortBy="@(x => x.ManeuverabilityData.MaxReverseSpeedAtPeriscopeDepth)" T="GridDataWrapper" Title="@columnTitleMaxReverseSpeedAtPeriscopeDepth" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ManeuverabilityData.MaxReverseSpeedAtPeriscopeDepth != 0)
                 {
@@ -103,7 +103,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxReverseSpeedAtMaxDepth}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxReverseSpeedAtMaxDepth)" SortBy="@(x => x.ManeuverabilityData.MaxReverseSpeedAtMaxDepth)" T="GridDataWrapper" Title="@columnTitleMaxReverseSpeedAtMaxDepth" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleMaxReverseSpeedAtMaxDepth}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMaxReverseSpeedAtMaxDepth)" SortBy="@(x => x.ManeuverabilityData.MaxReverseSpeedAtMaxDepth)" T="GridDataWrapper" Title="@columnTitleMaxReverseSpeedAtMaxDepth" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ManeuverabilityData.MaxReverseSpeedAtMaxDepth != 0)
                 {
@@ -118,7 +118,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDiveSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDiveSpeed)" SortBy="@(x => x.ManeuverabilityData.MaxDiveSpeed)" T="GridDataWrapper" Title="@columnTitleDiveSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleDiveSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDiveSpeed)" SortBy="@(x => x.ManeuverabilityData.MaxDiveSpeed)" T="GridDataWrapper" Title="@columnTitleDiveSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ManeuverabilityData.MaxDiveSpeed != 0)
                 {
@@ -133,7 +133,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDivingPlaneShiftTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDivingPlaneShiftTime)" SortBy="@(x => x.ManeuverabilityData.DivingPlaneShiftTime)" T="GridDataWrapper" Title="@columnTitleDivingPlaneShiftTime" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleDivingPlaneShiftTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDivingPlaneShiftTime)" SortBy="@(x => x.ManeuverabilityData.DivingPlaneShiftTime)" T="GridDataWrapper" Title="@columnTitleDivingPlaneShiftTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ManeuverabilityData.DivingPlaneShiftTime != 0)
                 {
@@ -148,7 +148,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRudderShiftTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRudderShiftTime)" T="GridDataWrapper" SortBy="@(x => x.ManeuverabilityData.RudderShiftTime)" Title="@columnTitleRudderShiftTime" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleRudderShiftTime}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRudderShiftTime)" T="GridDataWrapper" SortBy="@(x => x.ManeuverabilityData.RudderShiftTime)" Title="@columnTitleRudderShiftTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ManeuverabilityData.RudderShiftTime != 0)
                 {
@@ -163,7 +163,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTurningCircle}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTurningCircle)" T="GridDataWrapper" SortBy="@(x => x.ManeuverabilityData.TurningCircle)" Title="@columnTitleTurningCircle" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleTurningCircle}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleTurningCircle)" T="GridDataWrapper" SortBy="@(x => x.ManeuverabilityData.TurningCircle)" Title="@columnTitleTurningCircle" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ManeuverabilityData.TurningCircle != 0)
                 {
@@ -178,7 +178,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFullAhead}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFullAhead)" T="GridDataWrapper" SortBy="@(x => x.ManeuverabilityData.TimeToFullAhead)" Title="@columnTitleFullAhead" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleFullAhead}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFullAhead)" T="GridDataWrapper" SortBy="@(x => x.ManeuverabilityData.TimeToFullAhead)" Title="@columnTitleFullAhead" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ManeuverabilityData.TimeToFullAhead != 0)
                 {
@@ -193,7 +193,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFullReverse}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFullReverse)" T="GridDataWrapper" SortBy="@(x => x.ManeuverabilityData.TimeToFullReverse)" Title="@columnTitleFullReverse" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleFullReverse}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFullReverse)" T="GridDataWrapper" SortBy="@(x => x.ManeuverabilityData.TimeToFullReverse)" Title="@columnTitleFullReverse" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ManeuverabilityData.TimeToFullReverse != 0)
                 {
@@ -208,8 +208,8 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleRudderProtection}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRudderProtection)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityData.RudderProtection)" Title="@columnTitleRudderProtection" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn id="@($"{dataSectionString}_{columnTitleRudderProtection}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRudderProtection)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityData.RudderProtection)" Title="@columnTitleRudderProtection" HeaderClass="column-text-center" CellClass="column-text-center"/>
 
-        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleEngineProtection}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleEngineProtection)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityData.EngineProtection)" Title="@columnTitleEngineProtection" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn id="@($"{dataSectionString}_{columnTitleEngineProtection}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleEngineProtection)" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityData.EngineProtection)" Title="@columnTitleEngineProtection" HeaderClass="column-text-center" CellClass="column-text-center"/>
     };
 }

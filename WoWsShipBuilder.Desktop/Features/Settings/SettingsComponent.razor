@@ -1,5 +1,4 @@
 ﻿@using WoWsShipBuilder.Infrastructure.Localization
-@using WoWsShipBuilder.Infrastructure
 @using WoWsShipBuilder.Features.Settings
 @using WoWsShipBuilder.Infrastructure.GameData
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
@@ -9,18 +8,18 @@
 @using System.Reactive.Linq
 @using System.Reflection
 @using Avalonia
-@using Avalonia.Controls
 @using Avalonia.Controls.ApplicationLifetimes
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.Utility
 @using Dispatcher = Avalonia.Threading.Dispatcher
 @using System.IO.Abstractions
-@using System.Net
 @using System.IO
 @using System.Text.Json
 @using Avalonia.Platform.Storage
 @using WoWsShipBuilder.Infrastructure.DataTransfer
+@using MudBlazor.Utilities
+@using WoWsShipBuilder.Infrastructure.ApplicationTheme
 
 @implements IDisposable
 @inject ILocalizer Localizer
@@ -33,6 +32,7 @@
 @inject ILocalizationProvider LocalizationProvider
 @inject IUserDataService UserDataService
 @inject IFileSystem FileSystem
+@inject ThemeManager ThemeManager
 
 <MudContainer>
     <MudGrid Justify="Justify.Center">
@@ -82,48 +82,68 @@
                 }
             </MudSelect>
         </MudItem>
-
+        <MudItem xs="12">
+            <MudStack Row AlignItems="AlignItems.Center">
+                <MudSelect T="ThemeEnums.ThemeVariant" @bind-Value="themeVariant" Dense Immediate Label="@Localizer.SimpleAppLocalization(nameof(Translation.Settings_Theme))" Disabled="@Helpers.IsAprilFool()">
+                    @foreach (var theme in Enum.GetValues<ThemeEnums.ThemeVariant>().Except(new[] { ThemeEnums.ThemeVariant.AprilFool }))
+                    {
+                        <MudSelectItem Value="@theme">
+                            <MudText Color="Color.Default">@Localizer.GetAppLocalization(theme.ToString()).Localization</MudText>
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+                <MudSelect T="ThemeEnums.ThemeStyle" @bind-Value="themeStyle" Dense Immediate Label="@Localizer.SimpleAppLocalization(nameof(Translation.Settings_ThemeStyle))" Disabled="@Helpers.IsAprilFool()">
+                    @foreach (var style in Enum.GetValues<ThemeEnums.ThemeStyle>())
+                    {
+                        <MudSelectItem Value="@style">
+                            <MudText Color="Color.Default">@Localizer.GetAppLocalization(style.ToString()).Localization</MudText>
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+                <div class="mt-2" style="@($"background-color:{themePrimaryColor}; height: 36.5px; width:36.5px; border-radius: var(--mud-default-borderradius);")"></div>
+                <MudColorPicker Label="@Localizer.SimpleAppLocalization(nameof(Translation.Settings_ThemePrimaryColor))" ShowToolbar PickerVariant="PickerVariant.Dialog" @bind-Value="themePrimaryColor" Style="@($"color: {themePrimaryColor};")" Disabled="@Helpers.IsAprilFool()"/>
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="@(() => themePrimaryColor = ThemeManager.DefaultPrimaryColor)" Class="mt-4">
+                    @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_ResetColor))
+                </MudButton>
+            </MudStack>
+        </MudItem>
         <MudItem xs="12">
             <MudStack Row Class="mb-1" AlignItems="AlignItems.Center">
                 <MudText Typo="Typo.h6">
                     @($"{Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_SavedBuilds))} ({savedBuilds.Count})")
                 </MudText>
-                <MudButton Class="rounded-4" Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Download" OnClick="@(async () => await ExportSavedBuilds())">
+                <MudButton Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Download" OnClick="@(async () => await ExportSavedBuilds())">
                     @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Export))
                 </MudButton>
                 <MudFileUpload T="IBrowserFile" FilesChanged="@(async file => await ImportSavedBuilds(file))" Style="margin-top: 0;" Class="file-upload-full-height" Accept=".json" MaximumFileCount="1">
-                    <ButtonTemplate>
-                        <MudButton HtmlTag="label" Class="rounded-4" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Upload" Style="height: 100%;" for="@context">
+                    <ActivatorContent>
+                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Upload" Style="height: 100%;">
                             @Localizer.SimpleAppLocalization(nameof(Translation.BuildImport_Import))
                         </MudButton>
-                    </ButtonTemplate>
+                    </ActivatorContent>
                 </MudFileUpload>
-                <MudButton Class="rounded-4" Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Delete" OnClick="@(async () => await DeleteAllSavedBuilds())">
+                <MudButton Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Delete" OnClick="@(async () => await DeleteAllSavedBuilds())">
                     @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_DeleteAll))
                 </MudButton>
             </MudStack>
-            <MudSwitch @bind-Checked="@storeBuildOnShare" LabelPosition="LabelPosition.End" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_SaveBuildOnShare))" Color="Color.Primary"/>
+            <MudSwitch @bind-Value="@storeBuildOnShare" LabelPosition="LabelPosition.End" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_SaveBuildOnShare))" Color="Color.Primary"/>
         </MudItem>
 
         <MudItem xs="12">
-            <MudStack>
-                <MudText Typo="Typo.h6">@Localizer.GetAppLocalization(nameof(Translation.WebApp_ExpanderSettingHeader)).Localization</MudText>
-                <MudStack>
-                    <MudSwitch @bind-Checked="@openMainExpandersByDefault" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_ExpanderSetting)).Localization" Color="Color.Primary"/>
-                    <MudSwitch @bind-Checked="@openAmmoExpandersByDefault" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_AmmoExpanderSetting)).Localization" Color="Color.Primary"/>
-                    <MudSwitch @bind-Checked="@openSecondariesAndAaExpandersByDefault" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_SecondariesAndAAExpanderSetting)).Localization" Color="Color.Primary"/>
-                </MudStack>
-            </MudStack>
+            <MudText Typo="Typo.h6">@Localizer.GetAppLocalization(nameof(Translation.WebApp_ExpanderSettingHeader)).Localization</MudText>
+            <MudSwitch @bind-Value="@openMainExpandersByDefault" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_ExpanderSetting)).Localization" Color="Color.Primary"/>
+            <MudSwitch @bind-Value="@openAmmoExpandersByDefault" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_AmmoExpanderSetting)).Localization" Color="Color.Primary"/>
+            <MudSwitch @bind-Value="@openSecondariesAndAaExpandersByDefault" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_SecondariesAndAAExpanderSetting)).Localization" Color="Color.Primary"/>
         </MudItem>
 
         <MudItem xs="12">
             <MudText Typo="Typo.h6">
                 @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_FittingToolSelector))
             </MudText>
-            <MudSwitch @bind-Checked="@fittingToolSelectorDisabled" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_FittingToolSelectorDisabled))"/>
-            <MudSwitch @bind-Checked="@fittingToolSelectorClosedByDefault" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_ClosedByDefault))" Disabled="fittingToolSelectorDisabled"/>
-            <MudSwitch @bind-Checked="@fittingToolSelectorMultiSelection" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_MultiSelect))" Disabled="fittingToolSelectorDisabled"/>
-            <MudSwitch @bind-Checked="@fittingToolSelectorShowShipImages" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_FittingToolShowImages))" Class="mb-n3" Disabled="fittingToolSelectorDisabled"/>
+            <MudSwitch @bind-Value="@fittingToolSelectorDisabled" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_FittingToolSelectorDisabled))"/>
+            <MudSwitch @bind-Value="@fittingToolSelectorClosedByDefault" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_ClosedByDefault))" Disabled="fittingToolSelectorDisabled"/>
+            <MudSwitch @bind-Value="@fittingToolSelectorMultiSelection" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_MultiSelect))" Disabled="fittingToolSelectorDisabled"/>
+            <MudSwitch @bind-Value="@fittingToolSelectorShowShipImages" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_FittingToolShowImages))" Class="mb-n3" Disabled="fittingToolSelectorDisabled"/>
         </MudItem>
 
         <MudItem xs="12">
@@ -131,7 +151,7 @@
                 @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_AutoUpdates))
             </MudText>
             <MudStack AlignItems="AlignItems.Start">
-                <MudSwitch @bind-Checked="@autoUpdateEnabled" LabelPosition="LabelPosition.End" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_AutoUpdate))" Color="Color.Primary"/>
+                <MudSwitch @bind-Value="@autoUpdateEnabled" LabelPosition="LabelPosition.End" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_AutoUpdate))" Color="Color.Primary"/>
             </MudStack>
         </MudItem>
 
@@ -140,7 +160,7 @@
                 @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_BuildImagePath))
             </MudText>
             <MudStack AlignItems="AlignItems.Start" Spacing="0">
-                <MudSwitch @bind-Checked="@customBuildImagePathEnabled" LabelPosition="LabelPosition.End" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_EnableBuildImagePath))" Color="Color.Primary"/>
+                <MudSwitch @bind-Value="@customBuildImagePathEnabled" LabelPosition="LabelPosition.End" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_EnableBuildImagePath))" Color="Color.Primary"/>
                 <MudTextField @bind-Value="@customBuildImagePath" FullWidth HelperText="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_RestartRequired))" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_BuildImagePath))" Adornment="Adornment.End" OnAdornmentClick="OnImageFolderSelectClicked" AdornmentIcon="@Icons.Material.Filled.Folder" Disabled="@(!customBuildImagePathEnabled)"/>
             </MudStack>
         </MudItem>
@@ -199,6 +219,12 @@
 
     private List<Build> savedBuilds = new();
 
+    private MudColor themePrimaryColor = default!;
+
+    private ThemeEnums.ThemeStyle themeStyle;
+
+    private ThemeEnums.ThemeVariant themeVariant;
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -246,6 +272,9 @@
         fittingToolSelectorShowShipImages = AppSettings.FittingToolSelectorShowShipImages;
         fittingToolSelectorClosedByDefault = AppSettings.FittingToolSelectorClosedByDefault;
         fittingToolSelectorDisabled = AppSettings.FittingToolSelectorDisabled;
+        themePrimaryColor = AppSettings.ThemePrimaryColor ?? ThemeManager.DefaultPrimaryColor;
+        themeStyle = AppSettings.ThemeStyle ?? ThemeManager.DefaultThemeStyle;
+        themeVariant = AppSettings.ThemeVariant ?? ThemeManager.DefaultThemeVariant;
 
         StateHasChanged();
     }
@@ -294,6 +323,15 @@
         settingsChanged = settingsChanged || fittingToolSelectorDisabled != AppSettings.FittingToolSelectorDisabled;
         AppSettings.FittingToolSelectorDisabled = fittingToolSelectorDisabled;
 
+        settingsChanged = settingsChanged || themePrimaryColor.Value != AppSettings.ThemePrimaryColor;
+        AppSettings.ThemePrimaryColor = themePrimaryColor.Value;
+
+        settingsChanged = settingsChanged || themeVariant != AppSettings.ThemeVariant;
+        AppSettings.ThemeVariant = themeVariant;
+
+        settingsChanged = settingsChanged || themeStyle != AppSettings.ThemeStyle;
+        AppSettings.ThemeStyle = themeStyle;
+
         await SettingsAccessor.SaveSettings(AppSettings);
 
         await LocalizationProvider.RefreshDataAsync(AppSettings.SelectedServerType, AppSettings.SelectedLanguage);
@@ -301,6 +339,7 @@
         if (settingsChanged)
         {
             RefreshNotifierService.NotifyRefreshRequested();
+            ThemeManager.UpdateTheme();
         }
     }
 
@@ -311,6 +350,7 @@
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
         Snackbar.Add(Localizer.GetAppLocalization(nameof(Translation.WebApp_SettingsSaved)).Localization, Severity.Success, config => { config.CloseAfterNavigation = true; });
         RefreshNotifierService.NotifyRefreshRequested();
+        ThemeManager.UpdateTheme();
     }
 
     public void Dispose()

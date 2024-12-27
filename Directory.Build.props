@@ -1,13 +1,13 @@
 ﻿<Project>
   <PropertyGroup>
-    <CommonTargetFramework>net8.0</CommonTargetFramework>
-    <DesktopTargetFramework>net8.0-windows</DesktopTargetFramework>
+    <CommonTargetFramework>net9.0</CommonTargetFramework>
+    <DesktopTargetFramework>net9.0-windows</DesktopTargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
     <TargetFramework>$(CommonTargetFramework)</TargetFramework>
     <Nullable>enable</Nullable>
-    <LangVersion>12</LangVersion>
+    <LangVersion>13</LangVersion>
     <AnalysisMode>Recommended</AnalysisMode>
   </PropertyGroup>
 </Project>

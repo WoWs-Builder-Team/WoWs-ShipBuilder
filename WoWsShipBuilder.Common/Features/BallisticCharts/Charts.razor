@@ -115,7 +115,7 @@
                      </MudExpansionPanel>
                 </MudExpansionPanels>
                 <MudStack Row="true" Style="flex-wrap: wrap">
-                    <MudButton OnClick="@EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing" DisableElevation FullWidth="@SetFullWidth()">
+                    <MudButton OnClick="@EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing" DropShadow="false" FullWidth="@SetFullWidth()">
                         @if (processing)
                         {
                             <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -176,7 +176,7 @@
                         }
                     </MudSelect>
                 </MudStack>
-                <DispersionPlot Ships="GetDataForDispersionPlot()" EllipsePlane="selectedDispPlotPlane" FusoPosition="selectedFusoPosition" IsVertical="verticalDispPlot" PlotScaling="dispPlotScaling" Tab="@((ChartsTabs)chartsTabs.ActivePanel.ID)"/>
+                <DispersionPlot Ships="GetDataForDispersionPlot()" EllipsePlane="selectedDispPlotPlane" FusoPosition="selectedFusoPosition" IsVertical="verticalDispPlot" PlotScaling="dispPlotScaling" Tab="@((ChartsTabs)chartsTabs.ActivePanel!.ID!)"/>
             </MudStack>
         </MudTabPanel>
         <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_BallisticCharts)).Localization" ID="ChartsTabs.BallisticCharts">
@@ -332,7 +332,7 @@
         if (firstRender)
         {
             MetricsService.PageAccessCount.WithLabels("ballistic_charts").Inc();
-            var panelId = chartsTabs.ActivePanel.ID.ToString() ?? "unknown";
+            var panelId = chartsTabs.ActivePanel!.ID!.ToString() ?? "unknown";
             MetricsService.BallisticChartsTabUsage.WithLabels(panelId).Inc();
             SetProcessing(true);
             Breakpoint = await BreakpointService.GetCurrentBreakpointAsync();
@@ -611,13 +611,12 @@
     {
         SetProcessing(true);
         var selectedShipList = await GetSelectedShipsAsync();
-        if (selectedShipList is null || selectedShipList.Canceled)
+        if (selectedShipList is null || selectedShipList.Canceled || selectedShipList.Data is not ShipAndShellSelectionDialogOutput data)
         {
             SetProcessing(false);
             return;
         }
 
-        var data = (ShipAndShellSelectionDialogOutput)selectedShipList.Data;
         if (data.OpenBuildDialog)
         {
             var chartIds = GetChartsIdList();
@@ -772,7 +771,7 @@
 
     private void ActivePanelChanged(int index)
     {
-        var panelId = chartsTabs.ActivePanel.ID.ToString() ?? "unknown";
+        var panelId = chartsTabs.ActivePanel!.ID!.ToString() ?? "unknown";
         MetricsService.BallisticChartsTabUsage.WithLabels(panelId).Inc();
     }
 }

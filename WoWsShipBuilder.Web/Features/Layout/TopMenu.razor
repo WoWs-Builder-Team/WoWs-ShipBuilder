@@ -1,13 +1,11 @@
 ﻿@using Microsoft.Extensions.Options
 @using WoWsShipBuilder.Features.Settings
-@using WoWsShipBuilder.Infrastructure
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.GameData
 @using WoWsShipBuilder.Infrastructure.Localization
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Utility
 @using WoWsShipBuilder.Web.Features.BetaAccess
-@using WoWsShipBuilder.Web.Infrastructure
 
 @implements IDisposable
 
@@ -97,7 +95,7 @@
             </TooltipContent>
             <ChildContent>
                 <NavLink class="d-flex me-4" href="@ShipBuilderOptions.MinimapRendererUrl" target="_blank">
-                    <MudImage Class="px-2" Src="/_content/WoWsShipBuilder.Common/assets/render_logo.png" Height="35"/>
+                    <MudImage Class="px-2 image-filter-invert-100" Src="/_content/WoWsShipBuilder.Common/assets/render_logo.png" Height="35"/>
                     <MudText Class="align-self-center">Replay Renderer</MudText>
                 </NavLink>
             </ChildContent>
@@ -115,7 +113,7 @@
                 <MudText Typo="Typo.body1">Download ShipBuilder Desktop App</MudText>
             </TooltipContent>
             <ChildContent>
-                <MudIconButton Icon="@Icons.Material.Filled.InstallDesktop" Color="Color.Inherit" Link="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder/releases/latest" Target="_blank" Size="Size.Large" Style="margin-top: 1px"/>
+                <MudIconButton Icon="@Icons.Material.Filled.InstallDesktop" Color="Color.Inherit" Href="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder/releases/latest" Target="_blank" Size="Size.Large" Style="margin-top: 1px"/>
             </ChildContent>
         </MudTooltip>
         <MudTooltip>
@@ -123,7 +121,7 @@
                 <MudText Typo="Typo.body1">GiHub Repository</MudText>
             </TooltipContent>
             <ChildContent>
-                <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder#wows-shipbuilder" Target="_blank"/>
+                <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Href="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder#wows-shipbuilder" Target="_blank"/>
             </ChildContent>
         </MudTooltip>
         @if (userAuthEnabled)
@@ -180,7 +178,7 @@
             <MudDivider Class="my-4"/>
             <MudNavLink Icon="@Icons.Material.Filled.Settings" Href="/settings">@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Settings)).Localization</MudNavLink>
             <MudDivider Class="my-4"/>
-            <MudNavLink Style="text-transform: none !important;" Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Href="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder#wows-shipbuilder" Target="_blank">GitHub Repository</MudNavLink>
+            <MudNavLink Style="text-transform: none !important;" Icon="@Icons.Custom.Brands.GitHub" IconColor="Color.Inherit" Href="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder#wows-shipbuilder" Target="_blank">GitHub Repository</MudNavLink>
             <MudDivider Class="my-4"/>
             @switch (CdnOptions.Value.Server)
             {
@@ -197,7 +195,7 @@
             }
             <MudDivider Class="my-4"/>
             <MudButton Style="text-transform: none !important;" Size="Size.Large" Color="Color.Inherit" Href="@ShipBuilderOptions.MinimapRendererUrl" Target="_blank">
-                <MudImage Class="px-2" Src="/_content/WoWsShipBuilder.Common/assets/render_logo.png" Height="35"/>
+                <MudImage Class="px-2 image-filter-invert-100" Src="/_content/WoWsShipBuilder.Common/assets/render_logo.png" Height="35"/>
                 Minimap Renderer
             </MudButton>
         </MudNavMenu>

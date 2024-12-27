@@ -142,6 +142,6 @@ public class DesktopUserDataService : IUserDataService
             ["ShipIndex"] = build.ShipIndex,
         };
         var result = await (await this.dialogService.ShowAsync<OverwriteExistingBuildConfirmationDialog>(string.Empty, parameters, options)).Result;
-        return !result.Canceled && (bool)result.Data;
+        return result is not null && !result.Canceled && (bool)(result.Data ?? false);
     }
 }

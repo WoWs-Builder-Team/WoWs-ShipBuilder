@@ -5,18 +5,18 @@
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @using System.Collections.Immutable
 
-<MudRadioGroup @bind-SelectedOption="selectedTier">
+<MudRadioGroup @bind-Value="selectedTier">
     @for (var i = 1; i <= 11; i++)
     {
         int tier = i;
-        <MudRadio Option="@tier">Tier @tier</MudRadio>
+        <MudRadio Value="@tier">Tier @tier</MudRadio>
     }
 </MudRadioGroup>
 
-<MudRadioGroup @bind-SelectedOption="selectedClass">
+<MudRadioGroup @bind-Value="selectedClass">
     @foreach(var shipClass in Enum.GetValues<ShipClass>().Except(new [] { ShipClass.Auxiliary }))
     {
-        <MudRadio Option="@shipClass">@shipClass</MudRadio>
+        <MudRadio Value="@shipClass">@shipClass</MudRadio>
     }
 </MudRadioGroup>
 

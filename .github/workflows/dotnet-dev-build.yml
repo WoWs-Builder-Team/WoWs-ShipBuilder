@@ -27,11 +27,11 @@ jobs:
     name: Build application on dev branch
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           global-json-file: global.json
       - name: Restore dependencies
@@ -45,11 +45,11 @@ jobs:
     runs-on: windows-latest
     name: Build application on dev branch (Windows)
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           global-json-file: global.json
       - name: Restore dependencies

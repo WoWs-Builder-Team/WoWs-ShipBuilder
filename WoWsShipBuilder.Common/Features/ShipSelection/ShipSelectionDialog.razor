@@ -7,15 +7,13 @@
 
 @implements IDisposable
 
-<MudDialog ContentStyle="max-height: calc(90vh - 100px); overflow-y: scroll; padding: 8px 16px;">
+<MudDialog ContentStyle="max-height: calc(90vh - 100px); overflow-y: scroll; padding: 8px 16px;" Class="default-background">
     <DialogContent>
-        <MudContainer >
-            <ShipSelector SelectedShips="@selectedShips" AllowCopies EnableBuildImport EnableSavedBuildList/>
-        </MudContainer>
+        <ShipSelector SelectedShips="@selectedShips" AllowCopies EnableBuildImport EnableSavedBuildList/>
     </DialogContent>
     <DialogActions>
-        <MudButton Variant="Variant.Text" Color="Color.Default" DisableElevation="true" OnClick="@Cancel">@Localizer.SimpleAppLocalization(nameof(Translation.Cancel))</MudButton>
-        <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@SubmitShips">
+        <MudButton Variant="Variant.Text" Color="Color.Default" OnClick="@Cancel">@Localizer.SimpleAppLocalization(nameof(Translation.Cancel))</MudButton>
+        <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@SubmitShips">
             @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionDialog_AddShips))
         </MudButton>
     </DialogActions>

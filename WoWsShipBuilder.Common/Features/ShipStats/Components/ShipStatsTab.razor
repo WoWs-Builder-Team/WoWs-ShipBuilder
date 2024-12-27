@@ -9,14 +9,11 @@
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.LinkShortening
 @using WoWsShipBuilder.Features.Settings
-@using WoWsShipBuilder.Infrastructure
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.GameData
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
-@using System.Diagnostics
-@using System.Collections.ObjectModel
 @using WoWsShipBuilder.DataStructures.Modifiers
 @using WoWsShipBuilder.Features.Navigation
 @using WoWsShipBuilder.Infrastructure.DataTransfer
@@ -101,7 +98,7 @@ else if (ViewModel is not null)
                         }
                     </MudItem>
                     <MudItem xs="12" md="3" xl="2" Class="align-self-center d-flex justify-center">
-                        <MudButtonGroup OverrideStyles="false" Class="gap-2" VerticalAlign Style="width: 100%">
+                        <MudButtonGroup OverrideStyles="false" Class="gap-2" Vertical Style="width: 100%">
                             <MudButton Class="py-1" Size="Size.Small" Variant="Variant.Outlined" Color="Color.Primary" FullWidth OnClick="@(async () => await GetBuildLink())" StartIcon="@Icons.Material.Filled.Share">
                                 @Localizer.SimpleAppLocalization(nameof(Translation.ShipStatsTab_ShareLink))
                             </MudButton>
@@ -427,7 +424,7 @@ else if (ViewModel is not null)
             ["BuildName"] = BuildName,
         };
         var result = await (await DialogService.ShowAsync<BuildNameDialog>(string.Empty, parameters, options)).Result;
-        if (!result.Canceled && result.Data is string buildName)
+        if (result is { Canceled: false, Data: string buildName })
         {
             BuildName = buildName;
         }
