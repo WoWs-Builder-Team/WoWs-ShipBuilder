@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Testing;
-using Microsoft.CodeAnalysis.Testing.Verifiers;
+using Microsoft.CodeAnalysis.Testing;
 using WoWsShipBuilder.Data.Generator.PropertyChangedGenerator;
 
 namespace WoWsShipBuilder.Data.Generator.Test.PropertyChangedGeneratorTests;
@@ -40,7 +40,7 @@ public class PropertyChangedGeneratorTest
 
                      """;
 
-        await new CSharpSourceGeneratorTest<PropertyChangedSourceGenerator, NUnitVerifier>
+        await new CSharpSourceGeneratorTest<PropertyChangedSourceGenerator, DefaultVerifier>
         {
             TestState =
             {
@@ -82,7 +82,7 @@ public class PropertyChangedGeneratorTest
 
                        """;
 
-        await new CSharpSourceGeneratorTest<PropertyChangedSourceGenerator, NUnitVerifier>
+        await new CSharpSourceGeneratorTest<PropertyChangedSourceGenerator, DefaultVerifier>
         {
             TestState =
             {
@@ -125,7 +125,7 @@ public class PropertyChangedGeneratorTest
 
                        """;
 
-        await new CSharpSourceGeneratorTest<PropertyChangedSourceGenerator, NUnitVerifier>
+        await new CSharpSourceGeneratorTest<PropertyChangedSourceGenerator, DefaultVerifier>
         {
             TestState =
             {
@@ -168,7 +168,7 @@ public class PropertyChangedGeneratorTest
 
                        """;
 
-        await new CSharpSourceGeneratorTest<PropertyChangedSourceGenerator, NUnitVerifier>
+        await new CSharpSourceGeneratorTest<PropertyChangedSourceGenerator, DefaultVerifier>
         {
             TestState =
             {
@@ -212,7 +212,7 @@ public class PropertyChangedGeneratorTest
 
                        """;
 
-        await new CSharpSourceGeneratorTest<PropertyChangedSourceGenerator, NUnitVerifier>
+        await new CSharpSourceGeneratorTest<PropertyChangedSourceGenerator, DefaultVerifier>
         {
             TestState =
             {
@@ -264,7 +264,7 @@ public class PropertyChangedGeneratorTest
 
                        """;
 
-        await new CSharpSourceGeneratorTest<PropertyChangedSourceGenerator, NUnitVerifier>
+        await new CSharpSourceGeneratorTest<PropertyChangedSourceGenerator, DefaultVerifier>
         {
             TestState =
             {

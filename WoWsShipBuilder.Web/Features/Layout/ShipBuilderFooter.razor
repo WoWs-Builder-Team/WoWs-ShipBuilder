@@ -1,13 +1,17 @@
-﻿<MudContainer >
+﻿@using WoWsShipBuilder.Features.Settings
+@using WoWsShipBuilder.Infrastructure.ApplicationTheme
+@inject AppSettings AppSettings
+
+<MudContainer >
     <MudGrid Justify="Justify.Center">
         <MudItem >
             <MudText Align="Align.Center">
-                Developed by the WoWsShipbuilder team.
+                Developed by the WoWs-ShipBuilder team.
                 All copyright materials provided by Wargaming.net are owned by Wargaming.net.
             </MudText>
             <div style="text-align: center">
                 <a href="https://discord.gg/C8EaepZJDY" target="_blank">
-                    <img src="/_content/WoWsShipBuilder.Common/assets/discord.png" style="width: 128px; height: auto;" alt="ShipBuilder discord"/>
+                    <img src="/_content/WoWsShipBuilder.Common/assets/discord.png" style="width: 128px; height: auto;" class="image-filter-invert-50" alt="ShipBuilder discord"/>
                 </a>
             </div>
         </MudItem>

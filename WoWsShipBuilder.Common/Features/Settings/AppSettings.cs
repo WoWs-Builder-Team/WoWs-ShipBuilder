@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
+using WoWsShipBuilder.Infrastructure.ApplicationTheme;
 using WoWsShipBuilder.Infrastructure.DataTransfer;
 using ServerType = WoWsShipBuilder.Infrastructure.GameData.ServerType;
 
@@ -69,6 +70,12 @@ public class AppSettings
 
     public bool FittingToolSelectorShowShipImages { get; set; }
 
+    public string? ThemePrimaryColor { get; set; }
+
+    public ThemeEnums.ThemeStyle? ThemeStyle { get; set; }
+
+    public ThemeEnums.ThemeVariant? ThemeVariant { get; set; }
+
     public void ClearSettings()
     {
         this.AutoUpdateEnabled = true;
@@ -98,6 +105,9 @@ public class AppSettings
         this.FittingToolSelectorMultiSelection = false;
         this.FittingToolSelectorShowShipImages = false;
         this.FittingToolSelectorDisabled = false;
+        this.ThemePrimaryColor = default;
+        this.ThemeStyle = default;
+        this.ThemeVariant = default;
     }
 
     public void UpdateFromSettings(AppSettings settings)
@@ -129,5 +139,8 @@ public class AppSettings
         this.FittingToolSelectorMultiSelection = settings.FittingToolSelectorMultiSelection;
         this.FittingToolSelectorShowShipImages = settings.FittingToolSelectorShowShipImages;
         this.FittingToolSelectorDisabled = settings.FittingToolSelectorDisabled;
+        this.ThemePrimaryColor = settings.ThemePrimaryColor;
+        this.ThemeStyle = settings.ThemeStyle;
+        this.ThemeVariant = settings.ThemeVariant;
     }
 }

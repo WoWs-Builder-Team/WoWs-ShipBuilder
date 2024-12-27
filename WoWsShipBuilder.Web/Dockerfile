@@ -1,4 +1,4 @@
-﻿FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build-env
+﻿FROM mcr.microsoft.com/dotnet/sdk:9.0-alpine AS build-env
 ARG TARGETARCH
 WORKDIR /src
 
@@ -11,7 +11,7 @@ RUN dotnet restore "WoWsShipBuilder.Web/WoWsShipBuilder.Web.csproj" -a $TARGETAR
 # Publish ShipBuilder Web
 RUN dotnet publish "WoWsShipBuilder.Web/WoWsShipBuilder.Web.csproj" -a $TARGETARCH --no-restore -c Release -o /app
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS deploy-env
+FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine AS deploy-env
 EXPOSE 8080
 
 # Enable globalization and time zones:

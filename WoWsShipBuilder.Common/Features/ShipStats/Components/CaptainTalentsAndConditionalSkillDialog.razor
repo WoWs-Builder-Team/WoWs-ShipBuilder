@@ -43,7 +43,7 @@
                             {
                                 <MudNumericField Margin="Margin.Dense" Variant="Variant.Outlined" @bind-Value="@modifier.ActivationNumbers" Min="1" Max="modifier.MaximumActivations"/>
                             }
-                            <MudSwitch @bind-Checked="@modifier.Status" Color="Color.Primary" Class="ml-1" Label="@(modifier.Status ? "On" : "Off")"/>
+                            <MudSwitch @bind-Value="@modifier.Status" Color="Color.Primary" Class="ml-1" Label="@(modifier.Status ? "On" : "Off")"/>
                         </MudItem>
                     }
                 }
@@ -74,7 +74,7 @@
                             {
                                 <MudNumericField Variant="Variant.Outlined" @bind-Value="@talent.ActivationNumbers" Min="1" Max="talent.MaximumActivations"/>
                             }
-                            <MudSwitch @bind-Checked="@talent.Status" Color="Color.Primary" Class="ml-1" Label="@(talent.Status ? "On" : "Off")"/>
+                            <MudSwitch @bind-Value="@talent.Status" Color="Color.Primary" Class="ml-1" Label="@(talent.Status ? "On" : "Off")"/>
                         </MudItem>
                     }
                 }

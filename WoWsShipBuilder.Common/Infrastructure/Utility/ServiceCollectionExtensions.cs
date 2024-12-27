@@ -7,6 +7,7 @@ using WoWsShipBuilder.Features.LinkShortening;
 using WoWsShipBuilder.Features.Navigation;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Features.ShipStats;
+using WoWsShipBuilder.Infrastructure.ApplicationTheme;
 using WoWsShipBuilder.Infrastructure.Localization;
 using WoWsShipBuilder.Infrastructure.Metrics;
 
@@ -47,6 +48,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<SessionStateCache>();
         services.AddScoped<ExpanderStateCache>();
         services.AddScoped<AppNavigator>();
+        services.AddScoped<ThemeManager>();
 
         return services;
     }

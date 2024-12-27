@@ -11,15 +11,19 @@ jobs:
     name: Verify image build
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
       - uses: dotnet/nbgv@master
         with:
           setAllVars: true
           path: WoWsShipBuilder.Web
       - name: Build container image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: false

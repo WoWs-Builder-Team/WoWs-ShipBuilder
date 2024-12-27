@@ -39,19 +39,13 @@ jobs:
 
       - name: Test application
         run: dotnet test dirs.proj --no-build -c Release --verbosity normal
-      - name: Extract certificate
-        run: |
-          $certB64 = '${{ secrets.WOWSSB_CERT }}'
-          [IO.File]::WriteAllBytes(".\wowssb.pfx", [Convert]::FromBase64String([char[]]$certB64))
       - name: Create Velopack Release
         run: |
           dotnet tool install -g vpk
           vpk download github -o releases --repoUrl ${{ github.server_url }}/${{ github.repository }}
-          installer\BuildVelopackRelease.ps1 -skipBuild -signingCert wowssb.pfx -signingPassword '${{ secrets.WOWSSB_CERT_KEY }}'
+          installer\BuildVelopackRelease.ps1 -skipBuild
           vpk upload github -o releases --repoUrl ${{ github.server_url }}/${{ github.repository }} --publish --releaseName ${{ env.CURRENT_TAG }} --tag ${{ env.CURRENT_TAG }} --token ${{ secrets.GITHUB_TOKEN }}
         shell: pwsh
-      - name: Cleanup certificate
-        run: Remove-Item .\wowssb.pfx
 
       - name: Release
         uses: ncipollo/release-action@v1
@@ -69,7 +63,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download version info
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: buildInfo
           path: buildInfo

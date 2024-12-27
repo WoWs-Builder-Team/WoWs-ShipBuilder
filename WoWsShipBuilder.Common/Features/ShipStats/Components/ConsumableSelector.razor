@@ -36,7 +36,7 @@
                                 <MudPaper Outlined="true">
                                     @foreach (var consumable in consumableSlot.ConsumableData)
                                     {
-                                        <MudMenuItem Style="padding: 0;" OnAction="@(_ => SwapConsumable(consumableSlot, consumable))">
+                                        <MudMenuItem Style="padding: 0;" OnClick="@(_ => SwapConsumable(consumableSlot, consumable))">
                                             <MudTooltip Placement="Placement.Right" Color="Color.Transparent" Style="z-index: 1000000">
                                                 <ChildContent>
                                                     <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetConsumableIcon(consumable)"/>
@@ -178,9 +178,9 @@
     {
         if (viewModel.ConsumableActivated)
         {
-            return isButton ? "border-color: #FFD700;" : "border: 1px solid; border-color: #FFD700;";
+            return isButton ? "border-color: #BF0000FF;" : "border: 1px solid; border-color: #BF0000FF; border-radius: var(--mud-default-borderradius);";
         }
-        return isButton ? $"border-color: {Color.Default};" : "border: 1px solid; border-color: transparent;";
+        return isButton ? $"border-color: {Color.Default};" : "border: 1px solid; border-color: transparent; border-radius: var(--mud-default-borderradius);";
     }
 
     private static string ConvertValue(string value, bool isValueKey, bool isAppLocalizationKey, ILocalizer localizer)

@@ -1,10 +1,8 @@
 ﻿@using WoWsShipBuilder.DataStructures
 @using System.Text
-@using System.Collections.Specialized
-@using System.Reflection
-@using System.Reflection.Metadata.Ecma335
 @using WoWsShipBuilder.Features.ShipStats.ViewModels
 @using WoWsShipBuilder.DataStructures.Captain
+@using WoWsShipBuilder.Infrastructure.ApplicationTheme
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
@@ -12,6 +10,7 @@
 @inject ILocalizer Localizer
 @inject IDialogService DialogService
 @inject MetricsService MetricsService
+@inject ThemeManager ThemeManager
 
 @if (ViewModel is not null)
 {
@@ -41,7 +40,7 @@
                     </MudText>
                 </MudButton>
             </MudItem>
-            @foreach ((string skillName, var skill) in ViewModel.SkillList!)
+            @foreach (var (skillName, skill) in ViewModel.SkillList!)
             {
                 <MudItem @key="skill.Skill.SkillNumber" Class="d-flex justify-center mb-n3" xs="2" Style="@(GetOrder(skill.SkillPosition) + GetSubFix())">
                     <MudTooltip Placement="Placement.Right" Color="Color.Transparent" Delay="350">
@@ -49,7 +48,7 @@
                             <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" Bordered Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">
                                 <MudBadge Content="@(ViewModel.SkillOrderList.IndexOf(skill.Skill) + 1)" Color="Color.Error" Bordered Origin="Origin.TopLeft" Overlap="true" BadgeClass="skill-order-number" Visible="@ShouldShowBadge(skill.Skill)">
                                     <MudButton Class="pa-2" Variant="Variant.Outlined" Color="@(GetColorFromState(skill))" OnClick="@(() => OnSkillClick(skill))" Style="@GetImageBreakpointStyle()">
-                                        <MudImage Width="@GetImageSize()" Height="@GetImageSize()" ObjectFit="ObjectFit.ScaleDown" Src="@("/_content/WoWsShipBuilder.Common/assets/Skills/" + ToSnakeCase(skillName) + ".png")"/>
+                                        <MudImage Width="@GetImageSize()" Height="@GetImageSize()" ObjectFit="ObjectFit.ScaleDown" Src="@("/_content/WoWsShipBuilder.Common/assets/Skills/" + ToSnakeCase(skillName) + ".png")" Class="image-filter-invert-50"/>
                                     </MudButton>
                                 </MudBadge>
                             </MudBadge>
@@ -62,7 +61,7 @@
                                     </MudText>
                                     @{
                                         // this is here so we can have the call to the localizer only once, to share the value between the if and the mudtext
-                                        string localization = Localizer.GetGameLocalization("SKILL_DESC_" + ToSnakeCase(skillName)).Localization;
+                                        var localization = Localizer.GetGameLocalization("SKILL_DESC_" + ToSnakeCase(skillName)).Localization;
                                         if (!string.IsNullOrWhiteSpace(localization))
                                         {
                                             <MudText Align="Align.Left" Typo="Typo.body2" Style="white-space: break-spaces">

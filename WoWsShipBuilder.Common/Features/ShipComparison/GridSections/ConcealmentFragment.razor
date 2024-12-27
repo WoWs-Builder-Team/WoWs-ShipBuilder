@@ -17,7 +17,7 @@
         var columnTitleFromPlanesOnFire = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ConcealmentFromPlanes))}: {element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_OnFire))}";
         var columnTitleFromSubs = element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FromSubsAtPeriscopeDepth));
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFromShipBase}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromShipBase)" T="GridDataWrapper" SortBy="@(x => x.Concealment.ConcealmentBySea)" Title="@columnTitleFromShipBase" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleFromShipBase}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromShipBase)" T="GridDataWrapper" SortBy="@(x => x.Concealment.ConcealmentBySea)" Title="@columnTitleFromShipBase" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Concealment.ConcealmentBySea != 0)
                 {
@@ -32,7 +32,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFromShipOnFire}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromShipOnFire)" T="GridDataWrapper" SortBy="@(x => x.Concealment.ConcealmentBySeaFire)" Title="@columnTitleFromShipOnFire" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleFromShipOnFire}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromShipOnFire)" T="GridDataWrapper" SortBy="@(x => x.Concealment.ConcealmentBySeaFire)" Title="@columnTitleFromShipOnFire" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Concealment.ConcealmentBySeaFire != 0)
                 {
@@ -47,7 +47,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFromShipSmokeFiring}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromShipSmokeFiring)" SortBy="@(x => x.Concealment.ConcealmentBySeaFiringSmoke)" T="GridDataWrapper" Title="@columnTitleFromShipSmokeFiring" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleFromShipSmokeFiring}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromShipSmokeFiring)" SortBy="@(x => x.Concealment.ConcealmentBySeaFiringSmoke)" T="GridDataWrapper" Title="@columnTitleFromShipSmokeFiring" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Concealment.ConcealmentBySeaFiringSmoke != 0)
                 {
@@ -62,7 +62,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFromPlanesBase}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromPlanesBase)" T="GridDataWrapper" SortBy="@(x => x.Concealment.ConcealmentByAir)" Title="@columnTitleFromPlanesBase" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleFromPlanesBase}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromPlanesBase)" T="GridDataWrapper" SortBy="@(x => x.Concealment.ConcealmentByAir)" Title="@columnTitleFromPlanesBase" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Concealment.ConcealmentByAir != 0)
                 {
@@ -77,7 +77,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFromPlanesOnFire}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromPlanesOnFire)" T="GridDataWrapper" SortBy="@(x => x.Concealment.ConcealmentByAirFire)" Title="@columnTitleFromPlanesOnFire" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleFromPlanesOnFire}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromPlanesOnFire)" T="GridDataWrapper" SortBy="@(x => x.Concealment.ConcealmentByAirFire)" Title="@columnTitleFromPlanesOnFire" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Concealment.ConcealmentByAirFire != 0)
                 {
@@ -92,7 +92,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFromSubs}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromSubs)" T="GridDataWrapper" SortBy="@(x => x.Concealment.FromSubsAtPeriscopeDepth)" Title="@columnTitleFromSubs" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Sortable="true" id="@($"{dataSectionString}_{columnTitleFromSubs}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFromSubs)" T="GridDataWrapper" SortBy="@(x => x.Concealment.FromSubsAtPeriscopeDepth)" Title="@columnTitleFromSubs" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.Concealment.FromSubsAtPeriscopeDepth != 0)
                 {

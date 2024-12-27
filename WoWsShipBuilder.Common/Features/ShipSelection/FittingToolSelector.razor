@@ -8,6 +8,7 @@
 @using WoWsShipBuilder.Features.Settings
 @using System.Collections.Immutable
 @using WoWsShipBuilder.Features.Navigation
+@using WoWsShipBuilder.Infrastructure.ApplicationTheme
 
 @inject ILocalizer Localizer
 @inject IHostEnvironment Environment
@@ -16,6 +17,7 @@
 @inject SessionStateCache SessionStateCache
 @inject AppSettings AppSettings
 @inject AppNavigator AppNavigator
+@inject ThemeManager ThemeManager
 
 @if (!AppSettings.FittingToolSelectorDisabled)
 {
