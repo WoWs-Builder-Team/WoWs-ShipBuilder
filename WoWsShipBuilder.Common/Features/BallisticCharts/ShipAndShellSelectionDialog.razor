@@ -95,13 +95,13 @@
                 @if (processing)
                 {
                     <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                    <MudText Class="ms-2" Typo="Typo.button">
+                    <MudText Class="ms-2 ml-2" Typo="Typo.button">
                         @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
                     </MudText>
                 }
                 else
                 {
-                    <MudText Typo="Typo.button">
+                    <MudText Typo="Typo.button" Class="ml-2">
                         @Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_ConfirmButton)).Localization
                     </MudText>
                 }

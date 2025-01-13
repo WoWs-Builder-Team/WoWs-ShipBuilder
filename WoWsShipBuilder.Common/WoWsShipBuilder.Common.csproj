@@ -4,6 +4,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>WoWsShipBuilder</RootNamespace>
         <NeutralLanguage>en-GB</NeutralLanguage>
+        <!-- This is necessary for desktop to be able to read the bundled css file -->
+        <StaticWebAssetFingerprintingEnabled>false</StaticWebAssetFingerprintingEnabled>
     </PropertyGroup>
 
     <ItemGroup>
