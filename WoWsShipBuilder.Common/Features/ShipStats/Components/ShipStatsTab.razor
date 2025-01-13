@@ -18,6 +18,7 @@
 @using WoWsShipBuilder.Features.Navigation
 @using WoWsShipBuilder.Infrastructure.DataTransfer
 @using System.Collections.Immutable
+@using WoWsShipBuilder.Features.RecommendedBuilds
 
 @inject IHostEnvironment Environment
 @inject ILocalizer Localizer
@@ -63,7 +64,12 @@ else if (ViewModel is not null)
             <MudPaper Outlined="true" Class="@("py-2 px-" + GetShipCarouselPadding())">
                 <MudGrid Justify="Justify.Center">
                     <MudItem xs="12" md="3" xl="2" Class="align-self-center d-flex justify-center">
-                        <MudTextField @bind-Value="BuildName" Label="@($"{Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_Build))}:")" AutoFocus Immediate DebounceInterval="100" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Variant="Variant.Outlined" Margin="Margin.Dense" Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))"/>
+                        <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center" Spacing="1">
+                            <MudTextField @bind-Value="BuildName" Label="@($"{Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_Build))}:")" AutoFocus Immediate DebounceInterval="100" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Variant="Variant.Outlined" Margin="Margin.Dense" Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))"/>
+                            <MudButton Size="Size.Medium" Variant="Variant.Outlined" Color="Color.Primary" FullWidth OnClick="@(async () => await OpenRecommendedBuildDialog())" StartIcon="@Icons.Material.Filled.Share">
+                                @Localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RecommendedBuilds))
+                            </MudButton>
+                        </MudStack>
                     </MudItem>
                     <MudItem xs="12" md="6" xl="8" Class="@(GetShipAlign() + " d-flex justify-center")">
                         @if (ViewModel.PreviousShip is not null)
@@ -361,7 +367,7 @@ else if (ViewModel is not null)
 
     public static ShipBuildContainer GetBuildContainer(Guid containerId, VmCacheEntry cacheEntry, bool calculateShipDataContainer)
     {
-        List<Modifier> modifierBuilder = cacheEntry.ViewModel.UpgradePanelViewModel.GetModifierList();
+        var modifierBuilder = cacheEntry.ViewModel.UpgradePanelViewModel.GetModifierList();
         modifierBuilder.AddRange(cacheEntry.ViewModel.ConsumableViewModel.GetModifiersList());
         modifierBuilder.AddRange(cacheEntry.ViewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<Modifier>());
         modifierBuilder.AddRange(cacheEntry.ViewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<Modifier>());
@@ -481,6 +487,30 @@ else if (ViewModel is not null)
         else
         {
             Snackbar.Add(Localizer.SimpleAppLocalization(nameof(Translation.ShipStatsTab_BuildMustHaveName)), Severity.Error);
+        }
+    }
+
+    private async Task OpenRecommendedBuildDialog()
+    {
+        var selectedShipIndex = ViewModel!.CurrentShip.Index;
+        DialogOptions options = new()
+        {
+            NoHeader = true,
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Medium,
+        };
+        DialogParameters parameters = new()
+        {
+            ["SelectedShip"] = AppData.ShipDictionary[selectedShipIndex],
+        };
+        var result = await (await DialogService.ShowAsync<RecommendedBuildsDialog>(string.Empty, parameters, options)).Result;
+        if (result is { Canceled: false, Data: Build build })
+        {
+            Build = build;
+            ViewModel = LoadShipViewModel(selectedShipIndex);
+            var oldCacheEntry = Cache[CurrentTabId]!;
+            Cache[CurrentTabId] = oldCacheEntry with { ViewModel = ViewModel };
+            oldCacheEntry.ViewModel.Dispose();
         }
     }
 }

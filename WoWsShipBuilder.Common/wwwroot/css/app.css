@@ -319,7 +319,18 @@ div.default-label-background label {
 }
 
 /*noinspection CssUnresolvedCustomProperty*/
-.ship-stats-tabs .mud-tabs-toolbar .mud-tab-active {
+.ship-stats-tabs .mud-tab-active {
+    background-color: var(--mud-palette-primary);
+    color: var(--mud-palette-primary-text);
+    border-radius: var(--mud-default-borderradius);
+
+    /*noinspection CssUnresolvedCustomProperty*/
+    & svg {
+        fill: var(--mud-palette-primary-text);
+    }
+}
+
+.ship-stats-tabs .mud-tab-active:hover {
     background-color: var(--mud-palette-primary);
     color: var(--mud-palette-primary-text);
     border-radius: var(--mud-default-borderradius);
@@ -335,10 +346,11 @@ div.default-label-background label {
     background-color: var(--mud-palette-background);
 }
 
-.sticky-tabs-header .mud-tabs-toolbar {
+.sticky-tabs-header .mud-tabs-tabbar {
     position: sticky;
     z-index: 100;
     top: 64px;
+    border-radius:var(--mud-default-borderradius) !important;
 }
 
 .image-filter-invert-100 {
