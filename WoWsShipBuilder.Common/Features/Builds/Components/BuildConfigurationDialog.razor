@@ -7,6 +7,7 @@
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.LinkShortening
 @using WoWsShipBuilder.Features.Navigation
+@using WoWsShipBuilder.Features.RecommendedBuilds
 @using WoWsShipBuilder.Features.ShipStats.Components
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.GameData
@@ -23,8 +24,10 @@
 @inject ISnackbar Snackbar
 @inject IOptions<LinkShorteningOptions> LinkShorteningOptions
 @inject IJSRuntime Runtime
+@inject IDialogService DialogService
+@inject IUserDataService UserDataService
 
-<MudDialog Style="max-height: 95vh;" Class="default-background">
+<MudDialog Style="max-height: 100%" Class="default-background" ContentStyle="overflow-y: visible">
     <DialogContent>
         <MudBreakpointProvider>
             <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
@@ -59,7 +62,7 @@
                                         @Localizer.GetGameLocalization(Ships[index].Ship.Index + "_FULL").Localization
                                     </MudText>
                                     <MudText Typo="Typo.body2" Class="ml-2" Color="Color.Secondary">
-                                        @(Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (buildNameDictionary.TryGetValue(shipData.Id, out string? value) ? value : !string.IsNullOrEmpty(shipData.Build?.BuildName) ? shipData.Build.BuildName : Build.DefaultBuildName))
+                                        @(Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (buildNameDictionary.TryGetValue(shipData.Id, out var value) ? value : !string.IsNullOrEmpty(shipData.Build?.BuildName) ? shipData.Build.BuildName : Build.DefaultBuildName))
                                     </MudText>
                                 </MudListItem>
                             }
@@ -105,7 +108,7 @@
     /// A read-only collection of <see cref="ShipBuildContainer"/> objects that contain the base data for the dialog.
     /// </summary>
     [Parameter, EditorRequired]
-    public IReadOnlyList<ShipBuildContainer> Ships { get; set; } = default!;
+    public IReadOnlyList<ShipBuildContainer> Ships { get; set; } = null!;
 
     /// <summary>
     /// The base path to use for ship images, assuming an image path matches the pattern {ImageBasePath}/{ShipIndex}.png with ImageBasePath containing also the protocol (https or http).
@@ -113,7 +116,7 @@
     /// <b>Note that the path should not end with a slash.</b>
     /// </summary>
     [Parameter, EditorRequired]
-    public string ImageBasePath { get; set; } = default!;
+    public string ImageBasePath { get; set; } = null!;
 
     [Parameter]
     public bool SpecialAbilityDisabled { get; set; }
@@ -132,7 +135,7 @@
 
     private readonly RenderFragment tabContent;
 
-    private MudTabs desktopTabs = default!;
+    private MudTabs desktopTabs = null!;
 
     private object selectedListValue = 0;
 
@@ -141,6 +144,11 @@
     private string? inputBuildStringValidationResultCache;
 
     private string buildString = string.Empty;
+
+    private IEnumerable<Build>? savedBuilds;
+
+    private bool isSavedBuildsOpen;
+
 
     public BuildConfigurationDialog()
     {
@@ -195,20 +203,43 @@
                                 </MudStack>
                             </MudItem>
                             <MudItem xs="12" md="6">
-                                <MudStack Row="true" Justify="Justify.Center" AlignItems="AlignItems.Stretch" Style="margin-top: -14px">
-                                    <MudTextField @bind-Value="inputBuildString" Class="default-label-background" Immediate DebounceInterval="150" Validation="@(new Func<string, Task<string?>>(ValidateBuildString))" Clearable FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildConfigurationDialog_Alternative))" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink))" Variant="Variant.Outlined"/>
-                                    <MudButton Disabled="@(string.IsNullOrWhiteSpace(buildString))" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" Style="margin-top: 6px; margin-bottom: 4px;" OnClick="@ImportBuildFromString">
+                                <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Class="file-upload-full-height" Accept=".png">
+                                    <ActivatorContent>
+                                        <MudButton Variant="Variant.Outlined" FullWidth Color="Color.Primary" Size="Size.Small" StartIcon="@Icons.Material.Filled.Image">@Localizer.SimpleAppLocalization(nameof(Translation.BuildImport_ImportFromImage))</MudButton>
+                                    </ActivatorContent>
+                                </MudFileUpload>
+                                <MudStack Row="true" Justify="Justify.Center" AlignItems="AlignItems.Stretch" Class="mb-0">
+                                    <MudTextField Margin="Margin.Dense" @bind-Value="inputBuildString" Class="default-label-background mt-1" Immediate DebounceInterval="150" Validation="@(new Func<string, Task<string?>>(ValidateBuildString))" Clearable FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildConfigurationDialog_Alternative))" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink))" Variant="Variant.Outlined"/>
+                                    <MudButton Disabled="@(string.IsNullOrWhiteSpace(buildString))" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" Style="margin-top: 5px; margin-bottom: 4px;" OnClick="@ImportBuildFromString">
                                         @Localizer.GetAppLocalization(Translation.BuildConfigurationDialog_Load).Localization
                                     </MudButton>
-                                    <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Class="file-upload-full-height" Accept=".png">
-                                        <ActivatorContent>
-                                            <MudButton Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Image">@Localizer.SimpleAppLocalization(nameof(Translation.BuildImport_Import))</MudButton>
-                                        </ActivatorContent>
-                                    </MudFileUpload>
                                 </MudStack>
                             </MudItem>
                             <MudItem xs="12" md="6">
-                                <MudTextField @bind-Value="ViewModel.BuildName" AutoFocus Immediate Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))" DebounceInterval="150" Clearable FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_BuildName))" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Variant="Variant.Outlined" Class="mt-n2 mb-0 default-label-background"/>
+                                <MudStack Row="true" Justify="Justify.Center" AlignItems="AlignItems.Stretch" Style="width: 100%; margin-top: 6px">
+                                    <MudButton Style="width: 50%" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="@(async () => await OpenRecommendedBuildsDialog())">
+                                        @Localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RecommendedBuilds))
+                                    </MudButton>
+                                    <div class="d-flex" style="width: 50%">
+                                        @{
+                                            var filteredSavedBuilds = savedBuilds?.Where(build => build.ShipIndex == SelectedContainer.Ship.Index).ToList() ?? [];
+                                            <MudButton Disabled="!filteredSavedBuilds.Any()" FullWidth Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="@(() => isSavedBuildsOpen = !isSavedBuildsOpen)">
+                                                @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_SavedBuilds))
+                                            </MudButton>
+                                            <MudPopover AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Open="isSavedBuildsOpen" Paper RelativeWidth OverflowBehavior="OverflowBehavior.FlipOnOpen" Style="overflow-y:scroll; max-height: 68.5%; border: 1px solid var(--mud-palette-lines-default); padding: 0 0 8px 8px">
+                                                @foreach(var build in filteredSavedBuilds)
+                                                {
+                                                    <MudPaper Outlined Class="mt-2 pa-2 default-background">
+                                                        <MudText @onclick="@(async () => await LoadSavedBuild(build))" Style="cursor: pointer" Align="Align.Center">
+                                                            @Localizer.SimpleGameLocalization(build.BuildName)
+                                                        </MudText>
+                                                    </MudPaper>
+                                                }
+                                            </MudPopover>
+                                        }
+                                    </div>
+                                </MudStack>
+                                <MudTextField @bind-Value="ViewModel.BuildName" Margin="Margin.Dense" AutoFocus Immediate Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))" DebounceInterval="150" Clearable FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_BuildName))" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Variant="Variant.Outlined" Class="mb-0 default-label-background"/>
                             </MudItem>
                         }
                         else
@@ -235,6 +266,8 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        savedBuilds ??= await UserDataService.LoadBuildsAsync();
+
         if (firstRender)
         {
             module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/scripts/buildImageDecoder.js");
@@ -245,6 +278,7 @@
                 buildNameDictionary[container.Id] = !string.IsNullOrEmpty(container.Build?.BuildName) ? container.Build.BuildName : Build.DefaultBuildName;
             }
         }
+
         await base.OnAfterRenderAsync(firstRender);
     }
 
@@ -305,14 +339,19 @@
     private async Task ImportBuildFromString()
     {
         MetricsService.BuildImports.WithLabels("build-config-dialog", "string").Inc();
-        await ImportBuild(SelectedContainer.Ship);
+        await ImportBuild(SelectedContainer.Ship, Build.CreateBuildFromString(buildString));
     }
 
-    private async Task ImportBuild(Ship ship)
+    private async Task LoadSavedBuild(Build build)
+    {
+        isSavedBuildsOpen = false;
+        await ImportBuild(SelectedContainer.Ship, build);
+    }
+
+    private async Task ImportBuild(Ship ship,  Build build)
     {
         try
         {
-            var build = Build.CreateBuildFromString(buildString);
             if (build.ShipIndex != ship.Index)
             {
                 throw new FormatException();
@@ -335,10 +374,9 @@
     {
         if (file is not null && file.ContentType.Equals("image/png"))
         {
-            var result = await module!.InvokeAsync<string>("findUploadAndDecode");
-            buildString = result;
+            buildString = await module!.InvokeAsync<string>("findUploadAndDecode");
             MetricsService.BuildImports.WithLabels("build-config-dialog", "image").Inc();
-            await ImportBuild(SelectedContainer.Ship);
+            await ImportBuild(SelectedContainer.Ship, Build.CreateBuildFromString(buildString));
         }
         else
         {
@@ -394,6 +432,26 @@
             catch (JSDisconnectedException)
             {
             }
+        }
+    }
+
+    private async Task OpenRecommendedBuildsDialog()
+    {
+        var selectedShip = SelectedContainer.Ship;
+        DialogOptions options = new()
+        {
+            NoHeader = true,
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Medium,
+        };
+        DialogParameters parameters = new()
+        {
+            ["SelectedShip"] = selectedShip,
+        };
+        var result = await (await DialogService.ShowAsync<RecommendedBuildsDialog>(string.Empty, parameters, options)).Result;
+        if (result is { Canceled: false, Data: Build build })
+        {
+            await ImportBuild(selectedShip, build);
         }
     }
 }

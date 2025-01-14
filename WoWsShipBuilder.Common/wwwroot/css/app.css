@@ -360,3 +360,7 @@ div.default-label-background label {
 .image-filter-invert-50 {
     filter: var(--wowssb-image-filter-50);
 }
+
+.full-width {
+    width: 100%;
+}

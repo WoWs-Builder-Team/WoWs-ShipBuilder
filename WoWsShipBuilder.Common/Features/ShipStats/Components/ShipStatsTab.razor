@@ -64,11 +64,29 @@ else if (ViewModel is not null)
             <MudPaper Outlined="true" Class="@("py-2 px-" + GetShipCarouselPadding())">
                 <MudGrid Justify="Justify.Center">
                     <MudItem xs="12" md="3" xl="2" Class="align-self-center d-flex justify-center">
-                        <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center" Spacing="1">
-                            <MudTextField @bind-Value="BuildName" Label="@($"{Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_Build))}:")" AutoFocus Immediate DebounceInterval="100" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Variant="Variant.Outlined" Margin="Margin.Dense" Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))"/>
-                            <MudButton Size="Size.Medium" Variant="Variant.Outlined" Color="Color.Primary" FullWidth OnClick="@(async () => await OpenRecommendedBuildDialog())" StartIcon="@Icons.Material.Filled.Share">
+                        <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center" Spacing="1" Style="width: 100%">
+                            <MudTextField Class="mt-n1 full-width" @bind-Value="BuildName" Label="@($"{Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_Build))}:")" AutoFocus Immediate DebounceInterval="100" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Variant="Variant.Outlined" Margin="Margin.Dense" Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))"/>
+                            <MudButton Size="Size.Small" Variant="Variant.Outlined" Color="Color.Primary" FullWidth OnClick="@(async () => await OpenRecommendedBuildDialog())" StartIcon="@Icons.Material.Filled.ThumbUpAlt">
                                 @Localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RecommendedBuilds))
                             </MudButton>
+                            <div class="d-flex" style="width: 100%; margin-top: 3px">
+                                @{
+                                    var filteredSavedBuilds = SavedBuilds?.Where(build => build.ShipIndex == ShipIndex).ToList() ?? [];
+                                    <MudButton Disabled="!filteredSavedBuilds.Any()" FullWidth Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="@(() => isSavedBuildsOpen = !isSavedBuildsOpen)" StartIcon="@Icons.Material.Filled.StarRate">
+                                        @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_SavedBuilds))
+                                    </MudButton>
+                                    <MudPopover AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Open="isSavedBuildsOpen" Paper RelativeWidth OverflowBehavior="OverflowBehavior.FlipOnOpen" Style="overflow-y:scroll; max-height: 68.5%; border: 1px solid var(--mud-palette-lines-default); padding: 0 0 8px 8px">
+                                        @foreach(var build in filteredSavedBuilds)
+                                        {
+                                            <MudPaper Outlined Class="mt-2 pa-2 default-background">
+                                                <MudText @onclick="@(_ =>LoadBuild(build))" Style="cursor: pointer" Align="Align.Center">
+                                                    @Localizer.SimpleGameLocalization(build.BuildName)
+                                                </MudText>
+                                            </MudPaper>
+                                        }
+                                    </MudPopover>
+                                }
+                            </div>
                         </MudStack>
                     </MudItem>
                     <MudItem xs="12" md="6" xl="8" Class="@(GetShipAlign() + " d-flex justify-center")">
@@ -138,7 +156,7 @@ else if (ViewModel is not null)
 
     [Parameter]
     [EditorRequired]
-    public string ShipIndex { get; set; } = default!;
+    public string ShipIndex { get; set; } = null!;
 
     [Parameter]
     [EditorRequired]
@@ -151,7 +169,10 @@ else if (ViewModel is not null)
     public Build? Build { get; set; }
 
     [Parameter, EditorRequired]
-    public VmCache Cache { get; set; } = default!;
+    public VmCache Cache { get; set; } = null!;
+
+    [Parameter, EditorRequired]
+    public IEnumerable<Build>? SavedBuilds { get; set; }
 
     [CascadingParameter]
     private Breakpoint Breakpoint { get; set; }
@@ -164,6 +185,8 @@ else if (ViewModel is not null)
     private bool initialized;
 
     private bool shipChanged;
+
+    private bool isSavedBuildsOpen;
 
     private string BuildName
     {
@@ -187,8 +210,6 @@ else if (ViewModel is not null)
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await base.OnAfterRenderAsync(firstRender);
-
         if (ViewModel is null)
         {
             Cache[CurrentTabId] = new(null!);
@@ -218,10 +239,14 @@ else if (ViewModel is not null)
                 await MouseEventInterop.PreventMiddleClickDefaultBatched(elementIds);
             }
         }
+
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     private ShipViewModel LoadShipViewModel(string shipIndex)
     {
+        isSavedBuildsOpen = false;
+
         MetricsService.ShipViewCount.WithLabels(shipIndex, Localizer.GetGameLocalization(shipIndex + "_FULL", AppConstants.DefaultCultureDetails).Localization).Inc();
         using (MetricsService.ShipViewModelInitDurationAverage.NewTimer())
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
@@ -492,7 +517,6 @@ else if (ViewModel is not null)
 
     private async Task OpenRecommendedBuildDialog()
     {
-        var selectedShipIndex = ViewModel!.CurrentShip.Index;
         DialogOptions options = new()
         {
             NoHeader = true,
@@ -501,16 +525,21 @@ else if (ViewModel is not null)
         };
         DialogParameters parameters = new()
         {
-            ["SelectedShip"] = AppData.ShipDictionary[selectedShipIndex],
+            ["SelectedShip"] = AppData.ShipDictionary[ViewModel!.CurrentShip.Index],
         };
         var result = await (await DialogService.ShowAsync<RecommendedBuildsDialog>(string.Empty, parameters, options)).Result;
         if (result is { Canceled: false, Data: Build build })
         {
-            Build = build;
-            ViewModel = LoadShipViewModel(selectedShipIndex);
-            var oldCacheEntry = Cache[CurrentTabId]!;
-            Cache[CurrentTabId] = oldCacheEntry with { ViewModel = ViewModel };
-            oldCacheEntry.ViewModel.Dispose();
+            LoadBuild(build);
         }
+    }
+
+    private void LoadBuild(Build build)
+    {
+        Build = build;
+        ViewModel = LoadShipViewModel(ViewModel!.CurrentShip.Index);
+        var oldCacheEntry = Cache[CurrentTabId]!;
+        Cache[CurrentTabId] = oldCacheEntry with { ViewModel = ViewModel };
+        oldCacheEntry.ViewModel.Dispose();
     }
 }

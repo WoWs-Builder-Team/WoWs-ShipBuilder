@@ -48,12 +48,23 @@
                                 @Localizer.GetGameLocalization(SelectedShip.Index + "_FULL").Localization
                             </MudText>
                         </MudStack>
-                        <MudButton Style="height: 60px; width: 114px" Variant="Variant.Outlined" Color="Color.Primary">
-                            Disclaimer
-                        </MudButton>
+                        <MudTooltip Placement="Placement.Bottom" Color="Color.Transparent" Delay="300" Arrow>
+                            <ChildContent>
+                                <MudButton Style="height: 60px; width: 114px" Variant="Variant.Outlined" Color="Color.Primary">
+                                    Disclaimer
+                                </MudButton>
+                            </ChildContent>
+                            <TooltipContent>
+                                <MudPaper Outlined Class="pa-2">
+                                    <MudText Style="max-width: 500px" Typo="Typo.body2">
+                                        <MultilineString InputString="@disclaimer"/>
+                                    </MudText>
+                                </MudPaper>
+                            </TooltipContent>
+                        </MudTooltip>
                     </MudStack>
                 }
-                <MudTabs Elevation="2" Position="Position.Top" HideSlider Centered Outlined Border="true" @ref="mudTabs" Style="margin-top: 17px;" Class="ship-stats-tabs" PanelClass="pt-2" ActivePanelIndexChanged="@(index => LoadShipViewModels(selectedShipRecommendedBuilds[index]))">
+                <MudTabs Elevation="2" Position="Position.Top" HideSlider Centered Outlined Border="true" Style="margin-top: 17px;" Class="ship-stats-tabs" PanelClass="pt-2" ActivePanelIndexChanged="@(index => LoadShipViewModels(selectedShipRecommendedBuilds[index]))">
                     @if (!selectedShipRecommendedBuilds.Any())
                     {
                         <MudTabPanel Text="No Build" Tag="@("NoBuild")" ID="@("NoBuild")" @key="@("NoBuild")" Style="min-width: 100%;" Disabled>
@@ -135,7 +146,6 @@
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; } = new();
 
-    private MudTabs mudTabs = null!;
     private MudBreakpointProvider breakpointProvider = null!;
     private string disclaimer = string.Empty;
     private string noBuild = string.Empty;

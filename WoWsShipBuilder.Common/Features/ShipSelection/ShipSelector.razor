@@ -321,7 +321,6 @@
         {
             savedBuilds = await UserDataService.LoadBuildsAsync();
             filteredBuildsList = savedBuilds.ToList();
-            filteredBuildsList.ForEach(x => x.UpgradeBuild());
             StateHasChanged();
         }
     }
