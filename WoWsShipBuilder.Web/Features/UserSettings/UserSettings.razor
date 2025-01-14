@@ -235,7 +235,7 @@
     {
         if (firstRender)
         {
-            MetricsService.PageAccessCount.WithLabels("settings").Inc();
+            MetricsService.AddPageAccess("settings");
             savedBuilds = (await UserDataService.LoadBuildsAsync()).ToList();
             StateHasChanged();
         }
@@ -348,7 +348,7 @@
                 AppSettings.BetaAccessCodes.Add(CurrentCode);
                 await SettingsAccessor.SaveSettings(AppSettings);
                 RefreshNotifierService.NotifyRefreshRequested();
-                MetricsService.BetaCodeActivation.WithLabels(CurrentCode).Inc();
+                MetricsService.AddBetaCodeActivation(CurrentCode);
                 Snackbar.Add($"'{Localizer.SimpleAppLocalization(betaEntry.LocalizationKey)}' {Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_CodeEnabled))}", Severity.Success, config => { config.CloseAfterNavigation = true; });
             }
             else
@@ -389,7 +389,7 @@
         module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/scripts/userSettings.js");
         var buildStrings = savedBuilds.Select(x => x.CreateShortStringFromBuild()).ToList();
         await module.InvokeVoidAsync("downloadObjectAsJson", buildStrings, "builds");
-        MetricsService.SavedBuildOperations.WithLabels("export").Inc();
+        MetricsService.AddSavedBuildOperation("export");
     }
 
     private async Task ImportSavedBuilds(IBrowserFile? file)
@@ -437,7 +437,7 @@
                 builds.Reverse();
                 await UserDataService.ImportBuildsAsync(builds);
                 savedBuilds = (await UserDataService.LoadBuildsAsync()).ToList();
-                MetricsService.SavedBuildOperations.WithLabels("import").Inc();
+                MetricsService.AddSavedBuildOperation("import");
                 if (counter > 0)
                 {
                     Snackbar.Add($"{counter} builds could not be imported.", Severity.Warning);
@@ -461,7 +461,7 @@
         await UserDataService.RemoveSavedBuildsAsync(savedBuilds);
         savedBuilds = (await UserDataService.LoadBuildsAsync()).ToList();
         Snackbar.Add("All saved builds deleted.", Severity.Info);
-        MetricsService.SavedBuildOperations.WithLabels("delete").Inc();
+        MetricsService.AddSavedBuildOperation("delete");
         StateHasChanged();
     }
 }

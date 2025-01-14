@@ -1,99 +1,153 @@
-﻿using Prometheus;
+﻿using System.Diagnostics.Metrics;
 
 namespace WoWsShipBuilder.Infrastructure.Metrics;
 
 public class MetricsService
 {
-    private static readonly double[] DefaultDurationBuckets = { .00125, .0025, .005, .01, .025, .05, .075, .1, .25, .5, .75, 1, 2.5, 5 };
+    private static readonly double[] DefaultDurationBuckets = [.00125, .0025, .005, .01, .025, .05, .075, .1, .25, .5, .75, 1, 2.5, 5];
 
-    public Counter PageAccessCount { get; } = Prometheus.Metrics.CreateCounter("page_access_total", "Number of page accesses", new CounterConfiguration
+    private readonly Meter meter;
+
+    private readonly Counter<int> pageAccessCount;
+
+    private readonly Counter<int> shipViewCount;
+
+    private readonly Counter<int> refCount;
+
+    private readonly Counter<int> savedBuildOperations;
+
+    private readonly Counter<int> buildImports;
+
+    private readonly Counter<int> sharedBuilds;
+
+    private readonly Counter<int> shipStatsActions;
+
+    private readonly Counter<int> shipComparisonActions;
+
+    private readonly Counter<int> ballisticChartsActions;
+
+    private readonly Counter<int> accelerationChartsActions;
+
+    private readonly Counter<int> buildConfigurationDialogUsage;
+
+    private readonly Counter<int> customAccelerationDataUsage;
+
+    private readonly Counter<int> ballisticsChartsTabUsage;
+
+    private readonly Counter<int> betaCodeActivation;
+
+    private readonly Counter<int> captainSkillPopupUsage;
+
+    private readonly Counter<int> consumableActivations;
+
+    public MetricsService(IMeterFactory meterFactory)
     {
-        LabelNames = new[] { "page" },
-    });
+        this.meter = meterFactory.Create("Wowssb.Web");
+        this.pageAccessCount = this.meter.CreateCounter<int>("page.access.total", description: "Number of page accesses");
+        this.shipViewCount = this.meter.CreateCounter<int>("ship.views.total", description: "Number of ship views");
+        var histogramAdvice = new InstrumentAdvice<double> { HistogramBucketBoundaries = DefaultDurationBuckets };
+        this.ComparisonLoadDuration = this.meter.CreateHistogram("comparison.load.duration.seconds", description: "Load duration for the ship comparison data grid in seconds", advice: histogramAdvice);
+        this.ShipViewModelInitDuration = this.meter.CreateHistogram("ship.vm.init.duration.seconds", description: "Init-time of the ship VM in seconds", advice: histogramAdvice);
+        this.ComparisonShipCount = this.meter.CreateHistogram<int>("comparison.ship.count", description: "Number of ships shown in the comparison", advice: new() { HistogramBucketBoundaries = Enumerable.Range(1, 15).Select(x => x * 50).ToList() });
+        this.refCount = this.meter.CreateCounter<int>("ship.page.refs.total", description: "Number of refs for ship page requests");
+        this.savedBuildOperations = this.meter.CreateCounter<int>("saved.build.operations.total", description: "Number of saved build operations");
+        this.buildImports = this.meter.CreateCounter<int>("build.imports.total", description: "Number of build imports");
+        this.sharedBuilds = this.meter.CreateCounter<int>("shared.builds.total", description: "Number of shared builds");
+        this.shipStatsActions = this.meter.CreateCounter<int>("ship.stats.header.actions.total", description: "Number of usage of the actions of the shipstats page (inline links, buttons)");
+        this.shipComparisonActions = this.meter.CreateCounter<int>("ship.comparison.actions.total", description: "Number of usage of the actions of the ship comparison page (inline links, buttons)");
+        this.ballisticChartsActions = this.meter.CreateCounter<int>("charts.actions.total", description: "Number of usage of the actions of the ballistic charts page (inline links, buttons)");
+        this.accelerationChartsActions = this.meter.CreateCounter<int>("acceleration.charts.actions.total", description: "Number of usage of the actions of the acceleration charts page (inline links, buttons)");
+        this.buildConfigurationDialogUsage = this.meter.CreateCounter<int>("build.configuration.dialog.usage.total", description: "Number of usage of the build configuration dialog");
+        this.customAccelerationDataUsage = this.meter.CreateCounter<int>("custom.acceleration.data.usage.total", description: "Number of usage of the custom acceleration data feature");
+        this.ballisticsChartsTabUsage = this.meter.CreateCounter<int>("charts.tab.usage.total", description: "Number of usage of each charts tab");
+        this.betaCodeActivation = this.meter.CreateCounter<int>("beta.code.activation.total", description: "Number of times a user activates a beta code");
+        this.captainSkillPopupUsage = this.meter.CreateCounter<int>("captain.skill.popup.usage.total", description: "Number of times a user opens the captain skill popup");
+        this.consumableActivations = this.meter.CreateCounter<int>("consumable.activations.total", description: "Number of times a user activates a consumable");
+    }
 
-    public Counter ShipViewCount { get; } = Prometheus.Metrics.CreateCounter("ship_views_total", "Number of viewed ships.", new CounterConfiguration
+    public Histogram<double> ComparisonLoadDuration { get; }
+
+    public Histogram<int> ComparisonShipCount { get; }
+
+    public Histogram<double> ShipViewModelInitDuration { get; }
+
+    public void AddPageAccess(string page)
     {
-        LabelNames = new[] { "ship_index", "ship_name" },
-    });
+        this.pageAccessCount.Add(1, new KeyValuePair<string, object?>("page", page));
+    }
 
-    public Histogram ComparisonLoadDuration { get; } = Prometheus.Metrics.CreateHistogram("comparison_load_duration_seconds", "Load duration for the ship comparison data grid in seconds", new HistogramConfiguration
+    public void AddShipView(string shipIndex, string shipName)
     {
-        Buckets = DefaultDurationBuckets,
-    });
+        this.shipViewCount.Add(1, new("ship_index", shipIndex), new("ship_name", shipName));
+    }
 
-    public Histogram ComparisonShipCount { get; } = Prometheus.Metrics.CreateHistogram("comparison_ship_count", "Number of ships shown in the comparison", new HistogramConfiguration
+    public void AddReferrer(string referrer, string path)
     {
-        Buckets = Histogram.LinearBuckets(50, 50, 15),
-    });
+        this.refCount.Add(1, new("referrer", referrer), new("path", path));
+    }
 
-    public Histogram ShipViewModelInitDuration { get; } = Prometheus.Metrics.CreateHistogram("ship_vm_init_duration_seconds", "Init-time of the ship VM in seconds", new HistogramConfiguration
+    public void AddSavedBuildOperation(string operation)
     {
-        Buckets = DefaultDurationBuckets,
-    });
+        this.savedBuildOperations.Add(1, new KeyValuePair<string, object?>("operation", operation));
+    }
 
-    public Summary ShipViewModelInitDurationAverage { get; } = Prometheus.Metrics.CreateSummary("ship_vm_init_duration_average60s", "Average init-time of the ship VM in seconds over the last minute", new SummaryConfiguration
+    public void AddBuildImport(string source, string type)
     {
-        MaxAge = TimeSpan.FromMinutes(1),
-    });
+        this.buildImports.Add(1, new("source", source), new("type", type));
+    }
 
-    public Counter RefCount { get; } = Prometheus.Metrics.CreateCounter("ship_page_refs_total", "Number of refs for ship page requests", new CounterConfiguration
+    public void AddSharedBuild(string type)
     {
-        LabelNames = new[] { "referrer", "path" },
-    });
+        this.sharedBuilds.Add(1, new KeyValuePair<string, object?>("type", type));
+    }
 
-    public Counter SavedBuildOperations { get; } = Prometheus.Metrics.CreateCounter("saved_build_operations_total", "Number of saved build operations", new CounterConfiguration
+    public void AddShipStatsAction(string action)
     {
-        LabelNames = new[] { "operation" },
-    });
+        this.shipStatsActions.Add(1, new KeyValuePair<string, object?>("action", action));
+    }
 
-    public Counter BuildImports { get; } = Prometheus.Metrics.CreateCounter("build_imports_total", "Number of build imports", new CounterConfiguration
+    public void AddShipComparisonAction(string action)
     {
-        LabelNames = new[] { "source", "type" },
-    });
+        this.shipComparisonActions.Add(1, new KeyValuePair<string, object?>("action", action));
+    }
 
-    public Counter SharedBuilds { get; } = Prometheus.Metrics.CreateCounter("shared_builds_total", "Number of shared builds", new CounterConfiguration
+    public void AddBallisticChartsAction(string action)
     {
-        LabelNames = new[] { "type" },
-    });
+        this.ballisticChartsActions.Add(1, new KeyValuePair<string, object?>("action", action));
+    }
 
-    public Counter ShipStatsActions { get; } = Prometheus.Metrics.CreateCounter("ship_stats_header_actions_total", "Number of usage of the actions of the shipstats page (inline links, buttons)", new CounterConfiguration
+    public void AddAccelerationChartsAction(string action)
     {
-        LabelNames = new[] { "action" },
-    });
+        this.accelerationChartsActions.Add(1, new KeyValuePair<string, object?>("action", action));
+    }
 
-    public Counter ShipComparisonActions { get; } = Prometheus.Metrics.CreateCounter("ship_comparison_actions_total", "Number of usage of the actions of the ship comparison page (inline links, buttons)", new CounterConfiguration
+    public void AddBuildConfigurationDialogUsage(string feature)
     {
-        LabelNames = new[] { "action" },
-    });
+        this.buildConfigurationDialogUsage.Add(1, new KeyValuePair<string, object?>("feature", feature));
+    }
 
-    public Counter BallisticChartsActions { get; } = Prometheus.Metrics.CreateCounter("charts_actions_total", "Number of usage of the actions of the ballistic charts page (inline links, buttons)", new CounterConfiguration
+    public void AddCustomAccelerationDataUsage()
     {
-        LabelNames = new[] { "action" },
-    });
+        this.customAccelerationDataUsage.Add(1);
+    }
 
-    public Counter AccelerationChartsActions { get; } = Prometheus.Metrics.CreateCounter("acceleration_charts_actions_total", "Number of usage of the actions of the acceleration charts page (inline links, buttons)", new CounterConfiguration
+    public void AddBallisticsChartsTabUsage(string tab)
     {
-        LabelNames = new[] { "action" },
-    });
+        this.ballisticsChartsTabUsage.Add(1, new KeyValuePair<string, object?>("tab", tab));
+    }
 
-    public Counter BuildConfigurationDialogUsage { get; } = Prometheus.Metrics.CreateCounter("build_configuration_dialog_usage_total", "Number of usage of the build configuration dialog", new CounterConfiguration
+    public void AddBetaCodeActivation(string code)
     {
-        LabelNames = new[] { "feature" },
-    });
+        this.betaCodeActivation.Add(1, new KeyValuePair<string, object?>("code", code));
+    }
 
-    public Counter CustomAccelerationDataUsage { get; } = Prometheus.Metrics.CreateCounter("custom_acceleration_data_usage_total", "Number of usage of the custom acceleration data feature");
-
-    public Counter BallisticChartsTabUsage { get; } = Prometheus.Metrics.CreateCounter("charts_tab_usage_total", "Number of usage of each charts tab", new CounterConfiguration
+    public void AddCaptainSkillPopupUsage()
     {
-        LabelNames = new[] { "tab" },
-    });
+        this.captainSkillPopupUsage.Add(1);
+    }
 
-    public Counter BetaCodeActivation { get; } = Prometheus.Metrics.CreateCounter("beta_code_activation_total", "Number of times a user activates a beta code", new CounterConfiguration
+    public void AddConsumableActivation()
     {
-        LabelNames = new[] { "code" },
-    });
-
-    public Counter CaptainSkillPopupUsage { get; } = Prometheus.Metrics.CreateCounter("captain_skill_popup_usage_total", "Number of times a user opens the captain skill popup");
-
-    public Counter ConsumableActivations { get; } = Prometheus.Metrics.CreateCounter("consumable_activations_total", "Number of times a user activates a consumable");
+        this.consumableActivations.Add(1);
+    }
 }

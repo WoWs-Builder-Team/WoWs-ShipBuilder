@@ -118,16 +118,16 @@ public class AppNavigator
         switch (leavingPage)
         {
             case AppPage.ShipStats:
-                this.metricsService.ShipStatsActions.WithLabels(metricLabel).Inc();
+                this.metricsService.AddShipStatsAction(metricLabel);
                 break;
             case AppPage.BallisticCharts:
-                this.metricsService.BallisticChartsActions.WithLabels(metricLabel).Inc();
+                this.metricsService.AddBallisticChartsAction(metricLabel);
                 break;
             case AppPage.AccelerationCharts:
-                this.metricsService.AccelerationChartsActions.WithLabels(metricLabel).Inc();
+                this.metricsService.AddAccelerationChartsAction(metricLabel);
                 break;
             case AppPage.ShipComparison:
-                this.metricsService.ShipComparisonActions.WithLabels(metricLabel).Inc();
+                this.metricsService.AddShipComparisonAction(metricLabel);
                 break;
             default:
                 return;

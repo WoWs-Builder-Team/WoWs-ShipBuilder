@@ -137,7 +137,7 @@
             viewModel.ConsumableActivated = !viewModel.ConsumableActivated;
             if (viewModel.ConsumableActivated)
             {
-                MetricsService.ConsumableActivations.Inc();
+                MetricsService.AddConsumableActivation();
             }
         }
     }

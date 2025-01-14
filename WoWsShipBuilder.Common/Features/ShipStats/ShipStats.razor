@@ -109,10 +109,10 @@
         if (firstRender)
         {
             UpdateUrl();
-            MetricsService.PageAccessCount.WithLabels("shipstats").Inc();
+            MetricsService.AddPageAccess("shipstats");
             if (!string.IsNullOrWhiteSpace(shipBuildFromUrl))
             {
-                MetricsService.BuildImports.WithLabels("ship-stats", "url").Inc();
+                MetricsService.AddBuildImport("ship-stats", "url");
             }
         }
 
@@ -220,7 +220,7 @@
     private async Task OpenAddDialogAsync()
     {
         Logger.LogTrace("Add ship dialog opened");
-        MetricsService.ShipStatsActions.WithLabels("add-ship").Inc();
+        MetricsService.AddShipStatsAction("add-ship");
 
         var options = new DialogOptions
         {

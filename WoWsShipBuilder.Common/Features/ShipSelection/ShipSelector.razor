@@ -420,12 +420,12 @@
 
         if (MultiSelect)
         {
-            MetricsService.BuildImports.WithLabels("ship-selector", "saved-builds").Inc();
+            MetricsService.AddBuildImport("ship-selector", "saved-builds");
             SelectedShips.Add(ShipBuildContainer.CreateNew(AppData.ShipDictionary[build.ShipIndex], build, ImmutableArray<int>.Empty));
         }
         else if (!MultiSelect && SelectedShips.Count == 0)
         {
-            MetricsService.BuildImports.WithLabels("ship-selector", "saved-builds").Inc();
+            MetricsService.AddBuildImport("ship-selector", "saved-builds");
             SelectedShips.Add(ShipBuildContainer.CreateNew(AppData.ShipDictionary[build.ShipIndex], build, ImmutableArray<int>.Empty));
         }
     }
@@ -462,7 +462,7 @@
 
     private async Task ImportFromString()
     {
-        MetricsService.BuildImports.WithLabels("ship-selector", "string").Inc();
+        MetricsService.AddBuildImport("ship-selector", "string");
         await LoadBuild();
     }
 
@@ -472,7 +472,7 @@
         {
             var result = await module!.InvokeAsync<string>("findUploadAndDecode");
             buildString = result;
-            MetricsService.BuildImports.WithLabels("ship-selector", "image").Inc();
+            MetricsService.AddBuildImport("ship-selector", "image");
             await LoadBuild();
             buildString = string.Empty;
         }

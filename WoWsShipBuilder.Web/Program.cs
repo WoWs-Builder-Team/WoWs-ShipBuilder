@@ -1,6 +1,5 @@
 using System.Globalization;
 using NLog.Web;
-using Prometheus;
 using ReactiveUI;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Utility;
@@ -17,14 +16,6 @@ builder.Configuration.AddJsonFile("appsettings.local.json", optional: true, relo
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-// builder.Services.AddRazorPages(options =>
-// {
-//     options.RootDirectory = "/Features/Host";
-// });
-// builder.Services.AddServerSideBlazor(options =>
-// {
-//     options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(10);
-// });
 builder.Services.AddControllers();
 builder.ConfigureShipBuilderOptions();
 
@@ -49,16 +40,12 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
-app.UseHttpMetrics(options =>
-{
-    options.AddCustomLabel("path", context => context.Request.Path);
-});
 app.UseReferrerTracking();
 app.UseShipBuilderAuth();
 app.UseAntiforgery();
 
 app.MapControllers();
-app.MapMetrics();
+app.MapPrometheusScrapingEndpoint();
 
 app.MapStaticAssets();
 app.MapRazorComponents<App>()

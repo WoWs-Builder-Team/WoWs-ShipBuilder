@@ -2,7 +2,6 @@
 @using System.Net
 @using Microsoft.Extensions.Hosting
 @using Microsoft.Extensions.Options
-@using Prometheus
 @using WoWsShipBuilder.Features.Builds.Components
 @using WoWsShipBuilder.Features.DataContainers
 @using WoWsShipBuilder.Features.ShipStats.ViewModels
@@ -216,8 +215,7 @@ else if (ViewModel is not null)
 
     private ShipViewModel LoadShipViewModel(string shipIndex)
     {
-        MetricsService.ShipViewCount.WithLabels(shipIndex, Localizer.GetGameLocalization(shipIndex + "_FULL", AppConstants.DefaultCultureDetails).Localization).Inc();
-        using (MetricsService.ShipViewModelInitDurationAverage.NewTimer())
+        MetricsService.AddShipView(shipIndex, Localizer.GetGameLocalization(shipIndex + "_FULL", AppConstants.DefaultCultureDetails).Localization);
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
             var vm = CreateViewModel(shipIndex, Build);
@@ -476,7 +474,7 @@ else if (ViewModel is not null)
                 await UserDataService.SaveBuildAsync(build);
             }
 
-            MetricsService.SharedBuilds.WithLabels(metricServiceLabel).Inc();
+            MetricsService.AddSharedBuild(metricServiceLabel);
         }
         else
         {
