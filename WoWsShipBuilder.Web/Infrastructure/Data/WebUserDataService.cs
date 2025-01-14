@@ -79,6 +79,7 @@ public sealed class WebUserDataService : IUserDataService, IAsyncDisposable
                         var build = Build.CreateBuildFromString(buildString);
                         if (AppData.ShipDictionary.ContainsKey(build.ShipIndex))
                         {
+                            build.UpgradeBuild();
                             builds.Add(build);
                         }
                         else
@@ -100,7 +101,7 @@ public sealed class WebUserDataService : IUserDataService, IAsyncDisposable
             }
         }
 
-        return this.savedBuilds ?? new List<Build>();
+        return this.savedBuilds ?? [];
     }
 
     public async Task ImportBuildsAsync(IEnumerable<Build> builds)

@@ -46,11 +46,11 @@ public class DesktopUserDataService : IUserDataService
             return this.savedBuilds;
         }
 
-        string path = this.dataService.CombinePaths(this.appDataService.DefaultAppDataDirectory, "builds.json");
+        var path = this.dataService.CombinePaths(this.appDataService.DefaultAppDataDirectory, "builds.json");
 
         if (!this.fileSystem.File.Exists(path))
         {
-            return Enumerable.Empty<Build>();
+            return [];
         }
 
         List<string>? buildList = null;
@@ -66,13 +66,14 @@ public class DesktopUserDataService : IUserDataService
         if (buildList is not null)
         {
             var builds = new List<Build>();
-            foreach (string buildString in buildList)
+            foreach (var buildString in buildList)
             {
                 try
                 {
                     var build = Build.CreateBuildFromString(buildString);
                     if (AppData.ShipDictionary.ContainsKey(build.ShipIndex))
                     {
+                        build.UpgradeBuild();
                         builds.Add(build);
                     }
                 }
@@ -85,7 +86,7 @@ public class DesktopUserDataService : IUserDataService
             this.savedBuilds = builds.DistinctBy(x => x.Hash).ToList();
         }
 
-        return this.savedBuilds ?? Enumerable.Empty<Build>();
+        return this.savedBuilds ?? [];
     }
 
     public async Task ImportBuildsAsync(IEnumerable<Build> builds)
