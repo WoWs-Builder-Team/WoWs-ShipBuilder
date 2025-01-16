@@ -48,10 +48,10 @@
                 </MudPaper>
             </MudItem>
             <MudItem xs="12" md="8">
-                <MudTabs Elevation="2" Position="Position.Top" HideSlider Centered Outlined Border="true" @ref="mudTabs" Style="margin-top: 17px;" Class="ship-stats-tabs" PanelClass="pt-2" ActivePanelIndexChanged="@(index => LoadShipViewModels(selectedShipRecommendedBuilds[index]))">
+                <MudTabs Elevation="2" Position="Position.Top" HideSlider Centered Outlined Border="true" @ref="mudTabs" Style="margin-top: 17px;" Class="ship-stats-tabs" PanelClass="pt-2" ActivePanelIndexChanged="@(index => LoadShipViewModels(index))">
                     @if (selectedShip == null!)
                     {
-                        <MudTabPanel Text="Disclaimer" Tag="@("Disclaimer")" ID="@("Disclaimer")" @key="@("Disclaimer")" Style="min-width: 100%;" Disabled>
+                        <MudTabPanel Text="@Localizer.SimpleAppLocalization(nameof(Translation.RecommendedBuilds_Disclaimer))" Tag="@("Disclaimer")" ID="@(Guid.NewGuid())" @key="@("Disclaimer")" Style="min-width: 100%;" Disabled>
                             <div style="display: flex; width: 100%; min-height: 100%; max-height: 100%; border: 1px solid var(--mud-palette-lines-default); padding: 8px; color: var(--mud-palette-text-primary); background-color: var(--mud-palette-surface); border-radius: var(--mud-default-borderradius); transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;">
                                 <MudText Style="@(IsSmallScreen() ? string.Empty : "font-size: large; " + "white-space: break-spaces; max-width: 100%; display: table-caption; max-height: 100%; height: 100%; overflow-y: scroll;")" Typo="Typo.body2">
                                     <MultilineString InputString="@disclaimer"/>
@@ -61,7 +61,7 @@
                     }
                     else if (!selectedShipRecommendedBuilds.Any())
                     {
-                        <MudTabPanel Text="No Build" Tag="@("NoBuild")" ID="@("NoBuild")" @key="@("NoBuild")" Style="min-width: 100%;" Disabled>
+                        <MudTabPanel Text="@Localizer.SimpleAppLocalization(nameof(Translation.RecommendedBuilds_NoBuild))" Tag="@("NoBuild")" ID="@noBuildTabId" @key="@("NoBuild")" Style="min-width: 100%;" Disabled>
                             <div style="display: flex; width: 100%; min-height: 100%; max-height: 100%; border: 1px solid var(--mud-palette-lines-default); padding: 8px; color: var(--mud-palette-text-primary); background-color: var(--mud-palette-surface); border-radius: var(--mud-default-borderradius); transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;">
                                 <MudText Style="@(IsSmallScreen() ? string.Empty : "font-size: large; " + "white-space: break-spaces; max-width: 100%; display: table-caption; max-height: 100%; height: 100%; overflow-y: scroll;")" Typo="Typo.body2">
                                     <MultilineString InputString="@noBuild"/>
@@ -110,7 +110,7 @@
                                     <ShipUpgradeSelectorImageRender ViewModel="@upgradePanelViewModel"/>
                                     <ConsumableSelectorImageRender ViewModel="@consumableViewModel"/>
                                     <SignalSelectorImageRender ViewModel="@signalSelectorViewModel"/>
-                                    <div style="display: flex; width: 50%; min-height: 100%; max-height: 100%; border: 1px solid var(--mud-palette-lines-default); padding: 8px; color: var(--mud-palette-text-primary); background-color: var(--mud-palette-surface); border-radius: var(--mud-default-borderradius); transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;">
+                                    <div style="display: flex; width: 100%; min-height: 100%; max-height: 100%; border: 1px solid var(--mud-palette-lines-default); padding: 8px; color: var(--mud-palette-text-primary); background-color: var(--mud-palette-surface); border-radius: var(--mud-default-borderradius); transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;">
                                         <MudText Style="word-break: break-all; max-width: 100%; display: table-caption; max-height: 100%; height: 100%;" Typo="Typo.body2">
                                             <MultilineString InputString="@recommendedBuild.Notes"/>
                                         </MudText>
@@ -200,6 +200,8 @@
 
     private string inputText = string.Empty;
 
+    private readonly Guid noBuildTabId = Guid.NewGuid();
+
     private string InputText
     {
         get => inputText;
@@ -224,7 +226,7 @@
         RecommendedBuild testBuild2 = new(Guid.Parse("1e24a86b-d9f2-44f1-acf8-876da95a5b5b"), Build.CreateBuildFromString("PGSC506;PGUA603,PGUH605,PGUT605,PGUS605,PGUE603;PCM012;PCW001;13,6;PCY009,PCY016,PCY012,PCY010;PCEF019;4;test2"), "Scam scam scam");
         RecommendedBuild testBuild3 = new(Guid.Parse("90f9938a-c2eb-45ba-89f3-22fbcd569587"), Build.CreateBuildFromString("PBSD105;PBUA403,PBUH405,PBUT404,PBUS404,PBUE403;PCM069,PCM039,PCM037;PBW100;21,39,6,13;PCY009,PCY014;PCEF019,PCEF009,PCEF017,PCEF008;4;test3"), string.Empty);
         RecommendedBuild testBuild4 = new(Guid.Parse("fd2c876d-6e2b-4316-8399-e4575c60be7d"), Build.CreateBuildFromString("PJSD708;PJUA781,PJUH782,PJUT781,PJUS781,PJUE781;;PCW001;19,28;PCY009,PCY014,PCY015;;4;test4"), "123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 ");
-        AddRecommendedBuilds(recommendedBuilds, new List<RecommendedBuild> { testBuild1, testBuild2, testBuild3, testBuild4 });
+        AddRecommendedBuilds(new List<RecommendedBuild> { testBuild1, testBuild2, testBuild3, testBuild4 });
         ApplyFilter();
 
         NavManager.TryGetQueryString("build", out string buildIdFromUrl);
@@ -300,17 +302,17 @@
         }
     }
 
-    private static void AddRecommendedBuilds(IDictionary<string, List<RecommendedBuild>> dict, IEnumerable<RecommendedBuild> builds)
+    private void AddRecommendedBuilds(IEnumerable<RecommendedBuild> builds)
     {
         foreach (var build in builds)
         {
-            if (dict.TryGetValue(build.Build.ShipIndex, out var value))
+            if (recommendedBuilds.TryGetValue(build.Build.ShipIndex, out var value))
             {
                 value.Add(build);
             }
             else
             {
-                dict.Add(build.Build.ShipIndex, [build]);
+                recommendedBuilds.Add(build.Build.ShipIndex, [build]);
             }
         }
     }
@@ -329,9 +331,9 @@
         else
         {
             await Task.Delay(1);
-            mudTabs.ActivatePanel("Disclaimer", true);
+            mudTabs.ActivatePanel(noBuildTabId, true);
             UpdateUrl(null);
-            currentActiveTabId = Guid.Empty;
+            currentActiveTabId = noBuildTabId;
         }
     }
 
@@ -351,6 +353,20 @@
         return $"/_content/WoWsShipBuilder.Common/assets/nation_flags/flag_{imgName}.png";
     }
 
+    private void LoadShipViewModels(int index)
+    {
+        try
+        {
+            LoadShipViewModels(selectedShipRecommendedBuilds[index]);
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            UpdateUrl(null);
+            currentActiveTabId = noBuildTabId;
+            mudTabs.ActivatePanel(noBuildTabId, true);
+        }
+    }
+
     private void LoadShipViewModels(RecommendedBuild recommendedBuild)
     {
         if (!recommendedBuild.Id.Equals(currentActiveTabId))
@@ -364,6 +380,7 @@
             consumableViewModel.LoadBuild(recommendedBuild.Build.Consumables);
 
             currentActiveTabId = recommendedBuild.Id;
+            mudTabs.ActivatePanel(currentActiveTabId);
 
             UpdateUrl(recommendedBuild.Id);
         }
