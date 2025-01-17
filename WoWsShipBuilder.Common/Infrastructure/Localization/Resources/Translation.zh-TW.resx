@@ -1053,10 +1053,10 @@
     <value>取消</value>
   </data>
   <data name="Dialog_Yes" xml:space="preserve">
-    <value>是的</value>
+    <value>確認</value>
   </data>
   <data name="Dialog_No" xml:space="preserve">
-    <value>不</value>
+    <value>取消</value>
   </data>
   <data name="Dialog_Ok" xml:space="preserve">
     <value>確定</value>
@@ -1344,7 +1344,7 @@
       <value>應用程式更新時發生錯誤，請查看日誌檔案以獲得更多詳細資訊。</value>
   </data>
   <data name="NotificationService_UpdateCompleted" xml:space="preserve">
-      <value>應用程式已在背景更新。需要重新啟動才能應用更新。點按重新啟動。</value>
+      <value>應用程式已在背景更新。需要重新啟動才能應用更新，點擊本圖案以重新啟動。</value>
   </data>
   <data name="UpdateMessageBox_Description" xml:space="preserve">
       <value>應用程式已更新，是否重新啟動以應用更改？</value>
