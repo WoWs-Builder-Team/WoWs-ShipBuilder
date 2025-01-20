@@ -26,6 +26,10 @@ jobs:
       - name: Test application
         run: dotnet test dirs.proj --no-build -c Release --verbosity normal
 
+      - name: Extract certificate
+        run: |
+          $certB64 = '${{ secrets.WOWSSB_CERT }}'
+          [IO.File]::WriteAllBytes(".\wowssb.pfx", [Convert]::FromBase64String([char[]]$certB64))
       - name: Determine vpk version
         id: vpk-version
         run: echo ("VELOPACK_VERSION=" + (Select-Xml -Path .\src\WoWsShipBuilder.Desktop\WoWsShipBuilder.Desktop.csproj -XPath "//PackageReference[@Include='Velopack']" | Select-Object -ExpandProperty Node -First 1 | foreach {$_.Version})) >> $env:GITHUB_OUTPUT
@@ -34,5 +38,7 @@ jobs:
       - name: Create Velopack Release
         run: |
           vpk download github -o artifacts/releases --repoUrl ${{ github.server_url }}/${{ github.repository }}
-          installer\BuildVelopackRelease.ps1 -skipBuild
+          installer\BuildVelopackRelease.ps1 -skipBuild -signingCert wowssb.pfx -signingPassword '${{ secrets.WOWSSB_CERT_KEY }}'
         shell: pwsh
+      - name: Cleanup certificate
+        run: Remove-Item .\wowssb.pfx
