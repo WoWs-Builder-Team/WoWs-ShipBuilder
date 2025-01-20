@@ -28,4 +28,4 @@ jobs:
           context: .
           push: false
           tags: ghcr.io/wows-builder-team/wowssb:${{ env.NBGV_NuGetPackageVersion }}
-          file: WoWsShipBuilder.Web/Dockerfile
+          file: src/WoWsShipBuilder.Web/Dockerfile
