@@ -15,6 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{0F12
 		Directory.Build.props = Directory.Build.props
 		.dockerignore = .dockerignore
 		nuget.config = nuget.config
+		dirs.proj = dirs.proj
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{43EE144D-CA52-44D5-B761-A27C0A37E1C5}"
@@ -59,6 +60,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{275730B9
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{DDDCA094-7FB6-4736-8686-2934EC47451F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{85A47AC3-E85C-4E1C-B909-85D88E89DDDC}"
+	ProjectSection(SolutionItems) = preProject
+		installer\BuildVelopackRelease.ps1 = installer\BuildVelopackRelease.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
