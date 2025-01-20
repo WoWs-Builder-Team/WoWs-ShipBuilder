@@ -1,4 +1,4 @@
 files:
   - source: /src/WoWsShipBuilder.Common/Infrastructure/Localization/Resources/Translation.resx
     translation: /src/WoWsShipBuilder.Common/Infrastructure/Localization/Resources/Translation.%locale%.resx
-    update_option: update_as_unapproved
+    update_option: update_without_changes
