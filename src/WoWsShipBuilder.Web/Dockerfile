@@ -6,10 +6,10 @@ WORKDIR /src
 COPY . ./
 
 # Restore only projects needed for ShipBuilder Web
-RUN dotnet restore "WoWsShipBuilder.Web/WoWsShipBuilder.Web.csproj" -a $TARGETARCH
+RUN dotnet restore "src/WoWsShipBuilder.Web/WoWsShipBuilder.Web.csproj" -a $TARGETARCH
 
 # Publish ShipBuilder Web
-RUN dotnet publish "WoWsShipBuilder.Web/WoWsShipBuilder.Web.csproj" -a $TARGETARCH --no-restore -c Release -o /app
+RUN dotnet publish "src/WoWsShipBuilder.Web/WoWsShipBuilder.Web.csproj" -a $TARGETARCH --no-restore -c Release -o /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine AS deploy-env
 EXPOSE 8080
