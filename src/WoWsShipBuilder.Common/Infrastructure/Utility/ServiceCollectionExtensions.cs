@@ -41,7 +41,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ILinkShortener, FirebaseLinkShortener>();
 
         services.AddScoped<ILocalizer, Localizer>();
-        services.AddScoped<AppSettings>();
+        services.AddScoped<AppSettings>(_ => new() { FittingToolSelectorDisabled = true });
         services.AddScoped<RefreshNotifierService>();
         services.AddScoped<ChartJsInterop>();
         services.AddScoped<MouseEventInterop>();
