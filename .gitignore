@@ -20,3 +20,4 @@ appsettings.local.json
 /.sonar/
 
 TestResults/
+/artifacts/
