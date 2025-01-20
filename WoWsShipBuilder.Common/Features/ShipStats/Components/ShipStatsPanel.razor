@@ -536,7 +536,7 @@
     private void OpenAngleDialog(IEnumerable<IGun> guns, bool isArtillery)
     {
         var label = isArtillery ? "open-turret-diagram" : "open-torpedo-diagram";
-        MetricsService.ShipStatsActions.WithLabels(label).Inc();
+        MetricsService.AddShipStatsAction(label);
         var records = guns
             .OrderBy(gun => gun, new TurretListComparer())
             .Select(gun =>
@@ -562,7 +562,7 @@
     {
         if (!showDepthChargeDamageDistributionChart)
         {
-            MetricsService.ShipStatsActions.WithLabels("show-dc-chart").Inc();
+            MetricsService.AddShipStatsAction("show-dc-chart");
         }
 
         showDepthChargeDamageDistributionChart = !showDepthChargeDamageDistributionChart;

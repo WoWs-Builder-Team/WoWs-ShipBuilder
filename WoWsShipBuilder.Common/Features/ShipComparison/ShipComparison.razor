@@ -4,7 +4,6 @@
 @using Microsoft.AspNetCore.Http.Extensions
 @using Microsoft.Extensions.Hosting
 @using Microsoft.Extensions.Options
-@using Prometheus
 @using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.Builds.Components
@@ -443,7 +442,7 @@
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
-            MetricsService.PageAccessCount.WithLabels("comparison").Inc();
+            MetricsService.AddPageAccess("comparison");
 
             hiddenColumns = dataGrid.RenderedColumns.Where(x => x.Hideable is not false).ToDictionary(x => x.FieldId, x => hiddenColumns.TryGetValue(x.FieldId, out var hidden) && hidden);
 
@@ -493,7 +492,7 @@
             shipBuildContainers.AddRange(ViewModel!.SelectedShipList.Values.Select(x => x.ShipBuildContainer).OrderBy(x => LocalizeShipName(x.Ship.Index)));
         }
 
-        MetricsService.BuildConfigurationDialogUsage.WithLabels("comparison").Inc();
+        MetricsService.AddBuildConfigurationDialogUsage("comparison");
         var results = await buildConfigurationHelper.ShowDialogAsync(shipBuildContainers);
         isDialogOpen = false;
 
@@ -533,7 +532,7 @@
         ViewModel!.ToggleHideShipsWithoutSelectedSection();
         if (ViewModel.HideShipsWithoutSelectedSection)
         {
-            MetricsService.ShipComparisonActions.WithLabels("hide-ships-without-section").Inc();
+            MetricsService.AddShipComparisonAction("hide-ships-without-section");
         }
 
         AppSettings.ShipComparisonHideShipsWithoutSection = ViewModel.HideShipsWithoutSelectedSection;
@@ -544,7 +543,7 @@
 
     private async Task AddPinnedShip(GridDataWrapper wrapper)
     {
-        MetricsService.ShipComparisonActions.WithLabels("toggle-pin").Inc();
+        MetricsService.AddShipComparisonAction("toggle-pin");
         await ViewModel!.AddPinnedShip(wrapper);
         await UpdateUrl();
         await dataGrid.ReloadServerData();
@@ -568,7 +567,7 @@
         ViewModel!.ToggleShowPinnedShipOnly();
         if (ViewModel.ShowPinnedShipsOnly)
         {
-            MetricsService.ShipComparisonActions.WithLabels("show-pinned-ships-only").Inc();
+            MetricsService.AddShipComparisonAction("show-pinned-ships-only");
         }
 
         await UpdateUrl();
@@ -580,7 +579,7 @@
         ViewModel!.ToggleUpgradedModules();
         if (ViewModel.UseUpgradedModules)
         {
-            MetricsService.ShipComparisonActions.WithLabels("use-upgraded-modules").Inc();
+            MetricsService.AddShipComparisonAction("use-upgraded-modules");
         }
 
         AppSettings.ShipComparisonUseUpgradedModules = ViewModel.UseUpgradedModules;
@@ -686,7 +685,7 @@
 
     private async Task OpenHideColumnsDialog()
     {
-        MetricsService.ShipComparisonActions.WithLabels("hide-columns").Inc();
+        MetricsService.AddShipComparisonAction("hide-columns");
         isDialogOpen = true;
         DialogOptions options = new()
         {
@@ -752,7 +751,7 @@
                 }
             }
 
-            MetricsService.ComparisonShipCount.Observe(data.Count);
+            MetricsService.ComparisonShipCount.Record(data.Count);
             totalShips = data.Count;
 
             return Task.FromResult<GridData<GridDataWrapper>>(new() { TotalItems = data.Count, Items = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToList() });

@@ -1,4 +1,5 @@
-﻿using WoWsShipBuilder.Infrastructure.ApplicationData;
+﻿using OpenTelemetry.Metrics;
+using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.HttpClients;
 using WoWsShipBuilder.Infrastructure.Utility;
 using WoWsShipBuilder.Web.Features.Authentication;
@@ -25,6 +26,15 @@ public static class ServiceCollectionExtensions
         services.AddScoped<AuthenticationService>();
 
         services.AddTransient<DataInitializer>();
+
+        services.AddOpenTelemetry()
+            .WithMetrics(builder =>
+            {
+                builder.AddPrometheusExporter();
+                builder.AddMeter(
+                    "Microsoft.AspNetCore.Hosting",
+                    "Wowssb.Web");
+            });
 
         return services;
     }

@@ -120,7 +120,7 @@
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
-            MetricsService.PageAccessCount.WithLabels("acceleration_charts").Inc();
+            MetricsService.AddPageAccess("acceleration_charts");
             Breakpoint = await BreakpointService.GetCurrentBreakpointAsync();
             await SetupChartAsync();
 
@@ -313,7 +313,7 @@
                 }
 
                 var containerList = shipBuildCache.Select(x => x.Value).ToList();
-                MetricsService.BuildConfigurationDialogUsage.WithLabels("acceleration-charts").Inc();
+                MetricsService.AddBuildConfigurationDialogUsage("acceleration-charts");
                 var buildConfigurationResult = await buildConfigurationHelper.ShowDialogAsync(containerList);
 
                 Dictionary<int, ShipBuildContainer> shipsToUpdate = new();
@@ -362,7 +362,7 @@
 
         if (result is { Canceled: false, Data: ShipBuildContainer shipBuildContainer })
         {
-            MetricsService.CustomAccelerationDataUsage.Inc();
+            MetricsService.AddCustomAccelerationDataUsage();
 
             // add the new one
             Dictionary<int, ShipBuildContainer> shipsToAdd = new() { { counter, shipBuildContainer } };
@@ -377,7 +377,7 @@
     private async Task ConfigureBuilds()
     {
         var containerList = shipBuildCache.Select(x => x.Value).ToList();
-        MetricsService.BuildConfigurationDialogUsage.WithLabels("acceleration-charts").Inc();
+        MetricsService.AddBuildConfigurationDialogUsage("acceleration-charts");
         var result = await buildConfigurationHelper.ShowDialogAsync(containerList);
 
         if (result is not null)

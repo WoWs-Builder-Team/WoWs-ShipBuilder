@@ -240,7 +240,7 @@
         if (!string.IsNullOrWhiteSpace(BuildName))
         {
             imgGenerationInProgress = true;
-            MetricsService.SharedBuilds.WithLabels("image").Inc();
+            MetricsService.AddSharedBuild("image");
             module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/Features/Builds/Components/BuildImageRenderDialog.razor.js");
             await module.InvokeVoidAsync("copyBuildImage", "image", BuildString[..(BuildString.LastIndexOf(';') + 1)] + BuildName);
             imgGenerationInProgress = false;
@@ -261,7 +261,7 @@
         if (!string.IsNullOrWhiteSpace(BuildName))
         {
             imgGenerationInProgress = true;
-            MetricsService.SharedBuilds.WithLabels("image").Inc();
+            MetricsService.AddSharedBuild("image");
             module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/_content/WoWsShipBuilder.Common/Features/Builds/Components/BuildImageRenderDialog.razor.js");
             await module.InvokeVoidAsync("downloadBuildImage", "image", $"{Localizer.GetGameLocalization(Ship.Index + "_FULL").Localization}_{BuildName}", BuildString[..(BuildString.LastIndexOf(';') + 1)] + BuildName);
             imgGenerationInProgress = false;

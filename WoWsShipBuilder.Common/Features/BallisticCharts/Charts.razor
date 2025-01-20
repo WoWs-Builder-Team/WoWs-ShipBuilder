@@ -331,9 +331,9 @@
 
         if (firstRender)
         {
-            MetricsService.PageAccessCount.WithLabels("ballistic_charts").Inc();
+            MetricsService.AddPageAccess("ballistic_charts");
             var panelId = chartsTabs.ActivePanel!.ID!.ToString() ?? "unknown";
-            MetricsService.BallisticChartsTabUsage.WithLabels(panelId).Inc();
+            MetricsService.AddBallisticsChartsTabUsage(panelId);
             SetProcessing(true);
             Breakpoint = await BreakpointService.GetCurrentBreakpointAsync();
             await SetupChartsAsync();
@@ -651,7 +651,7 @@
     private async Task EditBuildAsync()
     {
         SetProcessing(true);
-        MetricsService.BuildConfigurationDialogUsage.WithLabels("ballistic-charts").Inc();
+        MetricsService.AddBuildConfigurationDialogUsage("ballistic-charts");
         var result = await buildConfigurationHelper.ShowDialogAsync(displayedShips.Values.Select(x => x.ShipBuildContainer).ToList());
         if (result is not null)
         {
@@ -772,6 +772,6 @@
     private void ActivePanelChanged(int index)
     {
         var panelId = chartsTabs.ActivePanel!.ID!.ToString() ?? "unknown";
-        MetricsService.BallisticChartsTabUsage.WithLabels(panelId).Inc();
+        MetricsService.AddBallisticsChartsTabUsage(panelId);
     }
 }

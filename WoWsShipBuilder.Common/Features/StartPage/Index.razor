@@ -3,10 +3,12 @@
 @using System.Collections.Specialized
 @using WoWsShipBuilder.Features.Navigation
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
+@using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
 @inject RefreshNotifierService NotifierService
 @inject ILocalizer Localizer
 @inject AppNavigator AppNavigator
+@inject MetricsService MetricsService
 @implements IDisposable
 
 <PageTitle>
@@ -39,6 +41,15 @@
         base.OnInitialized();
         selectedShips.CollectionChanged += SelectedShipsOnCollectionChanged;
         NotifierService.RefreshRequested += OnRefresh;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender)
+        {
+            MetricsService.AddPageAccess("start");
+        }
     }
 
     private void SelectedShipsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
