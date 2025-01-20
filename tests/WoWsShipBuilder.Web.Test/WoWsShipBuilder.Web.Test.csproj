@@ -22,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\WoWsShipBuilder.Web\WoWsShipBuilder.Web.csproj" />
+      <ProjectReference Include="..\..\src\WoWsShipBuilder.Web\WoWsShipBuilder.Web.csproj" />
     </ItemGroup>
 
 </Project>

@@ -21,7 +21,7 @@ jobs:
       - uses: dotnet/nbgv@master
         with:
           setAllVars: true
-          path: WoWsShipBuilder.Web
+          path: src/WoWsShipBuilder.Web
       - name: Build container image
         uses: docker/build-push-action@v6
         with:

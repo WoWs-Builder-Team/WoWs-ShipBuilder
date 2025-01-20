@@ -31,11 +31,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\WoWsShipBuilder.Desktop\WoWsShipBuilder.Desktop.csproj" />
+        <ProjectReference Include="..\..\src\WoWsShipBuilder.Desktop\WoWsShipBuilder.Desktop.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <AdditionalFiles Include="..\stylecop.json">
+        <AdditionalFiles Include="..\..\stylecop.json">
             <Link>stylecop.json</Link>
         </AdditionalFiles>
     </ItemGroup>
