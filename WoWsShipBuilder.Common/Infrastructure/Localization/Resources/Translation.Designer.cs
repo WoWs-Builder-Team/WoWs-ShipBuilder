@@ -1773,11 +1773,56 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disclaimer.
+        /// </summary>
+        public static string RecommendedBuilds_Disclaimer {
+            get {
+                return ResourceManager.GetString("RecommendedBuilds_Disclaimer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Build.
+        /// </summary>
+        public static string RecommendedBuilds_NoBuild {
+            get {
+                return ResourceManager.GetString("RecommendedBuilds_NoBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select build.
         /// </summary>
         public static string RecommendedBuilds_SelectBuild {
             get {
                 return ResourceManager.GetString("RecommendedBuilds_SelectBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build Editor.
+        /// </summary>
+        public static string RecommendedBuildsEditor_BuildEditor {
+            get {
+                return ResourceManager.GetString("RecommendedBuildsEditor_BuildEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notes.
+        /// </summary>
+        public static string RecommendedBuildsEditor_Notes {
+            get {
+                return ResourceManager.GetString("RecommendedBuildsEditor_Notes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Ships.
+        /// </summary>
+        public static string RecommendedBuildsEditor_SelectShips {
+            get {
+                return ResourceManager.GetString("RecommendedBuildsEditor_SelectShips", resourceCulture);
             }
         }
         
@@ -4764,7 +4809,7 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recommended builds.
+        ///   Looks up a localized string similar to Recommended Builds.
         /// </summary>
         public static string ShipStats_RecommendedBuilds {
             get {

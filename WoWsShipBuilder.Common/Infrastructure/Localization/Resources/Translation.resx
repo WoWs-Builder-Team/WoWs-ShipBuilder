@@ -2052,7 +2052,7 @@ You can use the Change builds button to manage the builds of single ships. You c
       <value>Select build</value>
   </data>
   <data name="ShipStats_RecommendedBuilds" xml:space="preserve">
-      <value>Recommended builds</value>
+    <value>Recommended Builds</value>
   </data>
   <data name="BETA_UserAuth" xml:space="preserve">
       <value>User login</value>
@@ -2263,5 +2263,20 @@ You can use the Change builds button to manage the builds of single ships. You c
   </data>
   <data name="ShipComparison_RemoveBuildWarningPt2" xml:space="preserve">
     <value>has been reset without removing the last instance.</value>
+  </data>
+  <data name="RecommendedBuilds_NoBuild" xml:space="preserve">
+    <value>No Build</value>
+  </data>
+  <data name="RecommendedBuildsEditor_SelectShips" xml:space="preserve">
+    <value>Select Ships</value>
+  </data>
+  <data name="RecommendedBuildsEditor_BuildEditor" xml:space="preserve">
+    <value>Build Editor</value>
+  </data>
+  <data name="RecommendedBuildsEditor_Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="RecommendedBuilds_Disclaimer" xml:space="preserve">
+    <value>Disclaimer</value>
   </data>
 </root>

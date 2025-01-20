@@ -239,7 +239,7 @@
         if (result is { Canceled: false, Data: List<ShipBuildContainer> { Count: > 0 } newShips })
         {
             Logger.LogTrace("Adding new ships");
-            AddNewIndexes(new[] { newShips.First().Ship.Index }, new[] { newShips.First() });
+            AddNewIndexes([newShips.First().Ship.Index], [newShips.First()]);
             selectedTabId = shipContainers.Last().Id;
             AddNewIndexes(newShips.Skip(1).Select(x => x.Ship.Index).ToList(), newShips.Skip(1).ToImmutableList());
             updateTab = true;

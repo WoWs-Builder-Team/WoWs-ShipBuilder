@@ -37,6 +37,8 @@ PlatformRegistrationManager.SetRegistrationNamespaces(RegistrationNamespace.Blaz
 builder.Services.UseShipBuilderWeb();
 builder.Services.AddCookieAuth();
 
+builder.Services.AddServerSideBlazor().AddHubOptions(opt => opt.MaximumReceiveMessageSize = null); //needed because of this https://github.com/MudBlazor/MudBlazor/issues/7263
+
 var app = builder.Build();
 Logging.Initialize(app.Services.GetRequiredService<ILoggerFactory>());
 

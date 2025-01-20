@@ -364,3 +364,19 @@ div.default-label-background label {
 .full-width {
     width: 100%;
 }
+
+.half-width {
+    width: 50%;
+}
+
+.text-field-text-align-center .mud-input-slot {
+    text-align: center;
+}
+
+.build-notes-text-field-min-height .mud-input-control-input-container {
+    min-height: 100% !important;
+}
+
+.build-notes-text-field-min-height .mud-input {
+    align-items: start !important;
+}

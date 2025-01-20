@@ -65,7 +65,7 @@ else if (ViewModel is not null)
                 <MudGrid Justify="Justify.Center">
                     <MudItem xs="12" md="3" xl="2" Class="align-self-center d-flex justify-center">
                         <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center" Spacing="1" Style="width: 100%">
-                            <MudTextField Class="mt-n1 full-width" @bind-Value="BuildName" Label="@($"{Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_Build))}:")" AutoFocus Immediate DebounceInterval="100" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Variant="Variant.Outlined" Margin="Margin.Dense" Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))"/>
+                            <MudTextField Class="mt-n1 full-width text-field-text-align-center" @bind-Value="BuildName" Label="@($"{Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_Build))}:")" AutoFocus Immediate DebounceInterval="100" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Variant="Variant.Outlined" Margin="Margin.Dense" Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))"/>
                             <MudButton Size="Size.Small" Variant="Variant.Outlined" Color="Color.Primary" FullWidth OnClick="@(async () => await OpenRecommendedBuildDialog())" StartIcon="@Icons.Material.Filled.ThumbUpAlt">
                                 @Localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RecommendedBuilds))
                             </MudButton>

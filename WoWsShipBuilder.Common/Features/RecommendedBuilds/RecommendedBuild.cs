@@ -1,5 +1,5 @@
-﻿using WoWsShipBuilder.Features.Builds;
+﻿using WoWsShipBuilder.Features.Navigation;
 
 namespace WoWsShipBuilder.Features.RecommendedBuilds;
 
-public record RecommendedBuild(Guid Id, Build Build, string Notes);
+public record RecommendedBuild(ShipBuildContainer BuildContainer, string Notes);

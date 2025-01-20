@@ -239,7 +239,7 @@
                                         }
                                     </div>
                                 </MudStack>
-                                <MudTextField @bind-Value="ViewModel.BuildName" Margin="Margin.Dense" AutoFocus Immediate Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))" DebounceInterval="150" Clearable FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_BuildName))" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Variant="Variant.Outlined" Class="mb-0 default-label-background"/>
+                                <MudTextField @bind-Value="ViewModel.BuildName" Margin="Margin.Dense" AutoFocus Immediate Validation="@(new Func<string, string?>(BuildValidation.ValidateBuildName))" DebounceInterval="150" Clearable FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_BuildName))" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Variant="Variant.Outlined" Class="mb-0 default-label-background text-field-text-align-center"/>
                             </MudItem>
                         }
                         else

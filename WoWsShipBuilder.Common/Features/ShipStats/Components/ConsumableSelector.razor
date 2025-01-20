@@ -12,7 +12,7 @@
 
 @if (ViewModel is not null)
 {
-    <MudCard Outlined="true" Class="py-2 px-3" Style="flex: content">
+    <MudCard Outlined="true" Class="py-2 px-3" Style="flex: content;">
         <MudStack Spacing="1">
             <MudStack Row="true" Justify="Justify.Center">
                 @foreach (var consumableSlot in ViewModel.ConsumableSlots)
@@ -64,9 +64,12 @@
                     }
                 }
             </MudStack>
-            <MudText Align="Align.Center" Typo="Typo.caption">
-                @(Breakpoint is Breakpoint.Xs or Breakpoint.Sm ? Localizer.GetAppLocalization(nameof(Translation.Consumable_HoldToggle)).Localization : Localizer.GetAppLocalization(nameof(Translation.Consumable_RightClickToggle)).Localization)
-            </MudText>
+            @if (!HideRightClickDisclaimer)
+            {
+                <MudText Align="Align.Center" Typo="Typo.caption">
+                    @(Breakpoint is Breakpoint.Xs or Breakpoint.Sm ? Localizer.GetAppLocalization(nameof(Translation.Consumable_HoldToggle)).Localization : Localizer.GetAppLocalization(nameof(Translation.Consumable_RightClickToggle)).Localization)
+                </MudText>
+            }
         </MudStack>
     </MudCard>
 }
@@ -75,6 +78,9 @@
 
     [CascadingParameter]
     private Breakpoint Breakpoint { get; set; }
+
+    [Parameter]
+    public bool HideRightClickDisclaimer { get; set; }
 
     private CancellationTokenSource tokenSource = new();
 

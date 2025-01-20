@@ -8,6 +8,7 @@
 @using Microsoft.Extensions.Hosting
 @using Microsoft.Extensions.Options
 @using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.DataStructures.Modifiers
 @using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.Features.Navigation
 @using WoWsShipBuilder.Features.ShipStats.Components
@@ -71,12 +72,12 @@
                     }
                     @foreach (var recommendedBuild in selectedShipRecommendedBuilds)
                     {
-                        <MudTabPanel Text="@recommendedBuild.Build.BuildName" Tag="@recommendedBuild.Id" ID="recommendedBuild.Id" @key="recommendedBuild.Id">
+                        <MudTabPanel Text="@recommendedBuild.BuildContainer.Build!.BuildName" Tag="@recommendedBuild.BuildContainer.Id" ID="recommendedBuild.BuildContainer.Id" @key="recommendedBuild.BuildContainer.Id">
                             <MudStack Spacing="2">
                                 <MudStack Row AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
                                     <div style="align-self: start; width: 112px;">
-                                        <MudImage Height="67" ObjectFit="ObjectFit.ScaleDown" Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{recommendedBuild.Build.ShipIndex}.png")" Style="position: absolute; z-index: 10"/>
-                                        <MudImage Height="67" Width="112" ObjectFit="ObjectFit.Cover" Src="@GetBackgroundFlag(selectedShip!.ShipNation, recommendedBuild.Build.ShipIndex)" Style="position: absolute; z-index: 9"/>
+                                        <MudImage Height="67" ObjectFit="ObjectFit.ScaleDown" Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{recommendedBuild.BuildContainer.Build.ShipIndex}.png")" Style="position: absolute; z-index: 10"/>
+                                        <MudImage Height="67" Width="112" ObjectFit="ObjectFit.Cover" Src="@GetBackgroundFlag(selectedShip!.ShipNation, recommendedBuild.BuildContainer.Build.ShipIndex)" Style="position: absolute; z-index: 9"/>
                                     </div>
                                     <MudStack Row Class="align-center">
                                         @if (IsSmallScreen())
@@ -96,7 +97,7 @@
                                             </MudText>
                                         }
                                         <MudText Typo="Typo.body2" Style="@(IsSmallScreen() ? "font-size: large;" : "font-size: x-large;" + "font-weight: bold;")">
-                                            @Localizer.GetGameLocalization(recommendedBuild.Build.ShipIndex + "_FULL").Localization
+                                            @Localizer.GetGameLocalization(recommendedBuild.BuildContainer.Build.ShipIndex + "_FULL").Localization
                                         </MudText>
                                     </MudStack>
                                     <MudButton Style="height: 60px; width: 114px" EndIcon="@(IsSmallScreen() ? Icons.Material.Filled.KeyboardArrowDown : Icons.Material.Filled.ArrowForwardIos)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => SelectBuild(recommendedBuild))">
@@ -157,13 +158,13 @@
                 <MudPaper Outlined Style="@(IsSmallScreen() ? "min-height: 300px; max-height: 300px; overflow: auto" : "height: 84vh; overflow: auto")">
                     <MudList Dense T="List<RecommendedBuild>">
                         <MudVirtualize Items="selectedBuilds" Context="build">
-                            <MudListItem @key="@build.Id" Value="@build.Build">
+                            <MudListItem @key="@build.BuildContainer.Id" Value="@build.BuildContainer.Build">
                                 <MudStack Style="align-items: stretch" Class="my-n1" Spacing="1">
                                     <MudText>
-                                        @Localizer.SimpleGameLocalization(build.Build.ShipIndex + "_FULL")
+                                        @Localizer.SimpleGameLocalization(build.BuildContainer.Ship.Index + "_FULL")
                                     </MudText>
                                     <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1">
-                                        @(Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_Build)).Localization + ": " + (!string.IsNullOrWhiteSpace(build.Build.BuildName) ? build.Build.BuildName : Build.DefaultBuildName))
+                                        @(Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_Build)).Localization + ": " + (!string.IsNullOrWhiteSpace(build.BuildContainer.Build.BuildName) ? build.BuildContainer.Build.BuildName : Build.DefaultBuildName))
                                     </MudText>
                                 </MudStack>
                             </MudListItem>
@@ -222,18 +223,18 @@
     {
         await base.OnInitializedAsync();
         InitializeRecommendedBuildsList();
-        RecommendedBuild testBuild1 = new(Guid.Parse("142cb6c0-4a0e-4029-a8ff-4a8af26bc55d"), Build.CreateBuildFromString("PBSD105;PBUA403,PBUH405,PBUT404,PBUS404,PBUE403;PCM020;PBW102;21,39;PCY009,PCY014;PCEF019,PCEF009;4;test1"), "Scam build !!!");
-        RecommendedBuild testBuild2 = new(Guid.Parse("1e24a86b-d9f2-44f1-acf8-876da95a5b5b"), Build.CreateBuildFromString("PGSC506;PGUA603,PGUH605,PGUT605,PGUS605,PGUE603;PCM012;PCW001;13,6;PCY009,PCY016,PCY012,PCY010;PCEF019;4;test2"), "Scam scam scam");
-        RecommendedBuild testBuild3 = new(Guid.Parse("90f9938a-c2eb-45ba-89f3-22fbcd569587"), Build.CreateBuildFromString("PBSD105;PBUA403,PBUH405,PBUT404,PBUS404,PBUE403;PCM069,PCM039,PCM037;PBW100;21,39,6,13;PCY009,PCY014;PCEF019,PCEF009,PCEF017,PCEF008;4;test3"), string.Empty);
-        RecommendedBuild testBuild4 = new(Guid.Parse("fd2c876d-6e2b-4316-8399-e4575c60be7d"), Build.CreateBuildFromString("PJSD708;PJUA781,PJUH782,PJUT781,PJUS781,PJUE781;;PCW001;19,28;PCY009,PCY014,PCY015;;4;test4"), "123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 ");
+        RecommendedBuild testBuild1 = new(new(AppData.ShipDictionary["PBSD105"],Build.CreateBuildFromString("PBSD105;PBUA403,PBUH405,PBUT404,PBUS404,PBUE403;PCM020;PBW102;21,39;PCY009,PCY014;PCEF019,PCEF009;4;test1"),Guid.Parse("142cb6c0-4a0e-4029-a8ff-4a8af26bc55d"), ImmutableArray<int>.Empty, false, null, ImmutableList<Modifier>.Empty), "Scam build !!!");
+        RecommendedBuild testBuild2 = new(new(AppData.ShipDictionary["PGSC506"],Build.CreateBuildFromString("PGSC506;PGUA603,PGUH605,PGUT605,PGUS605,PGUE603;PCM012;PCW001;13,6;PCY009,PCY016,PCY012,PCY010;PCEF019;4;test2"),Guid.Parse("1e24a86b-d9f2-44f1-acf8-876da95a5b5b"), ImmutableArray<int>.Empty, false, null, ImmutableList<Modifier>.Empty), "Scam build !!!");
+        RecommendedBuild testBuild3 = new(new(AppData.ShipDictionary["PBSD105"],Build.CreateBuildFromString("PBSD105;PBUA403,PBUH405,PBUT404,PBUS404,PBUE403;PCM069,PCM039,PCM037;PBW100;21,39,6,13;PCY009,PCY014;PCEF019,PCEF009,PCEF017,PCEF008;4;test3"),Guid.Parse("90f9938a-c2eb-45ba-89f3-22fbcd569587"), ImmutableArray<int>.Empty, false, null, ImmutableList<Modifier>.Empty), string.Empty);
+        RecommendedBuild testBuild4 = new(new(AppData.ShipDictionary["PJSD708"],Build.CreateBuildFromString("PJSD708;PJUA781,PJUH782,PJUT781,PJUS781,PJUE781;;PCW001;19,28;PCY009,PCY014,PCY015;;4;test4"),Guid.Parse("fd2c876d-6e2b-4316-8399-e4575c60be7d"), ImmutableArray<int>.Empty, false, null, ImmutableList<Modifier>.Empty), "123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 ");
         AddRecommendedBuilds(new List<RecommendedBuild> { testBuild1, testBuild2, testBuild3, testBuild4 });
         ApplyFilter();
 
         NavManager.TryGetQueryString("build", out string buildIdFromUrl);
         if (!string.IsNullOrEmpty(buildIdFromUrl))
         {
-            var recommendedBuild = recommendedBuilds.SelectMany(x => x.Value).First(x => x.Id.ToString().Equals(buildIdFromUrl));
-            await SelectShip(recommendedBuild.Build.ShipIndex, recommendedBuild);
+            var recommendedBuild = recommendedBuilds.SelectMany(x => x.Value).First(x => x.BuildContainer.Id.ToString().Equals(buildIdFromUrl));
+            await SelectShip(recommendedBuild.BuildContainer.Build!.ShipIndex, recommendedBuild);
         }
 
         StringBuilder disclaimerBuilder = new();
@@ -272,7 +273,7 @@
             .Where(x => ShipFilter(x.Key, InputText))
             .OrderBy(x => Localizer.SimpleGameLocalization($"{x.Key}_FULL"));
         filteredRecommendedBuildsList.Clear();
-        AddRecommendedBuilds(filteredRecommendedBuildsList, builds);
+        AddFilteredRecommendedBuilds(builds);
         StateHasChanged();
     }
 
@@ -287,17 +288,17 @@
         return result;
     }
 
-    private static void AddRecommendedBuilds(IDictionary<string, List<RecommendedBuild>> dict, IEnumerable<KeyValuePair<string, List<RecommendedBuild>>> builds)
+    private void AddFilteredRecommendedBuilds(IEnumerable<KeyValuePair<string, List<RecommendedBuild>>> builds)
     {
         foreach (var build in builds)
         {
-            if (dict.TryGetValue(build.Key, out var value))
+            if (filteredRecommendedBuildsList.TryGetValue(build.Key, out var value))
             {
                 value.AddRange(build.Value);
             }
             else
             {
-                dict.Add(build.Key, build.Value );
+                filteredRecommendedBuildsList.Add(build.Key, build.Value );
             }
         }
     }
@@ -306,13 +307,13 @@
     {
         foreach (var build in builds)
         {
-            if (recommendedBuilds.TryGetValue(build.Build.ShipIndex, out var value))
+            if (recommendedBuilds.TryGetValue(build.BuildContainer.Build!.ShipIndex, out var value))
             {
                 value.Add(build);
             }
             else
             {
-                recommendedBuilds.Add(build.Build.ShipIndex, [build]);
+                recommendedBuilds.Add(build.BuildContainer.Build!.ShipIndex, [build]);
             }
         }
     }
@@ -326,7 +327,7 @@
             var recommendedBuild = build ?? selectedShipRecommendedBuilds[0];
             LoadShipViewModels(recommendedBuild);
             await Task.Delay(1); //required to finish loading the new tabs before selecting the ID
-            mudTabs.ActivatePanel(recommendedBuild.Id, true);
+            mudTabs.ActivatePanel(recommendedBuild.BuildContainer.Id, true);
         }
         else
         {
@@ -369,20 +370,20 @@
 
     private void LoadShipViewModels(RecommendedBuild recommendedBuild)
     {
-        if (!recommendedBuild.Id.Equals(currentActiveTabId))
+        if (!recommendedBuild.BuildContainer.Id.Equals(currentActiveTabId))
         {
             InitializeViewModels();
 
-            signalSelectorViewModel.LoadBuild(recommendedBuild.Build.Signals);
-            captainSkillSelectorViewModel.LoadBuild(recommendedBuild.Build.Skills, recommendedBuild.Build.Captain);
-            shipModuleViewModel.LoadBuild(recommendedBuild.Build.Modules);
-            upgradePanelViewModel.LoadBuild(recommendedBuild.Build.Upgrades);
-            consumableViewModel.LoadBuild(recommendedBuild.Build.Consumables);
+            signalSelectorViewModel.LoadBuild(recommendedBuild.BuildContainer.Build!.Signals);
+            captainSkillSelectorViewModel.LoadBuild(recommendedBuild.BuildContainer.Build.Skills, recommendedBuild.BuildContainer.Build.Captain);
+            shipModuleViewModel.LoadBuild(recommendedBuild.BuildContainer.Build.Modules);
+            upgradePanelViewModel.LoadBuild(recommendedBuild.BuildContainer.Build!.Upgrades);
+            consumableViewModel.LoadBuild(recommendedBuild.BuildContainer.Build.Consumables);
 
-            currentActiveTabId = recommendedBuild.Id;
+            currentActiveTabId = recommendedBuild.BuildContainer.Id;
             mudTabs.ActivatePanel(currentActiveTabId);
 
-            UpdateUrl(recommendedBuild.Id);
+            UpdateUrl(recommendedBuild.BuildContainer.Id);
         }
     }
 
@@ -402,7 +403,7 @@
 
     private void GoToShipPage()
     {
-        AppNavigator.NavigateTo(AppNavigator.AppPage.ShipStats, selectedBuilds.Select(x => ShipBuildContainer.CreateNew(AppData.ShipDictionary[x.Build.ShipIndex], x.Build, ImmutableArray<int>.Empty)).ToImmutableList());
+        AppNavigator.NavigateTo(AppNavigator.AppPage.ShipStats, selectedBuilds.Select(x => ShipBuildContainer.CreateNew(AppData.ShipDictionary[x.BuildContainer.Build!.ShipIndex], x.BuildContainer.Build, ImmutableArray<int>.Empty)).ToImmutableList());
     }
 
     private void UpdateUrl(Guid? buildId)
