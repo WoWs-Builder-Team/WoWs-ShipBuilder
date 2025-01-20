@@ -73,7 +73,7 @@
         return (ship, configuration);
     }
 
-    private void OpenFiringAngles()
+    private async Task OpenFiringAngles()
     {
         var (ship, config) = LoadPreviewShip(ShipClass.Destroyer, 5, Nation.UnitedKingdom);
         var data = MainBatteryDataContainer.FromShip(ship, config, ImmutableList<Modifier>.Empty);
@@ -93,8 +93,12 @@
         {
             NoHeader = true,
             CloseButton = false,
+            CloseOnEscapeKey = true,
+            BackdropClick = true,
+            FullWidth = true,
+            MaxWidth = MaxWidth.Medium,
         };
-        DialogService.Show<FiringAngleDialog>("FiringAngles", parameters, options);
+        await DialogService.ShowAsync<FiringAngleDialog>("FiringAngles", parameters, options);
     }
 
 }

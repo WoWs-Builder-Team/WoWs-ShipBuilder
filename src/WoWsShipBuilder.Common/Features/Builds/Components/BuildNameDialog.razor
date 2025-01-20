@@ -18,7 +18,7 @@
 @code {
 
     [CascadingParameter]
-    MudDialogInstance MudDialog { get; set; } = new();
+    IMudDialogInstance MudDialog { get; set; } = null!;
 
     [Parameter]
     public string BuildName { get; set; } = default!;

@@ -113,7 +113,7 @@
 @code
 {
     [CascadingParameter]
-    MudDialogInstance MudDialog { get; set; } = new();
+    IMudDialogInstance MudDialog { get; set; } = null!;
 
     [Parameter]
     public List<ChartsDataWrapper> InputData { get; set; } = new();
