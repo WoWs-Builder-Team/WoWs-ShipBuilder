@@ -1528,6 +1528,12 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="Charts_ChangeBuilds" xml:space="preserve">
       <value>Builds ändern</value>
   </data>
+  <data name="AccelerationChart_ExplanationText" xml:space="preserve">
+      <value>Nachdem Sie ein Schiff ausgewählt haben, haben Sie die Möglichkeit, die 3 Gänge auszuwählen, die im Diagramm verwendet werden.
+Das Diagramm geht in der Reihenfolge der Anfangsgetriebe --&gt; Mittelgetriebe --&gt; Endgetriebe, nur nach Erreichen der maximalen Geschwindigkeit des aktuellen Getriebes zum nächsten wechseln.
+Wenn zwei Geräte auf den gleichen Wert gesetzt werden, werden sie zu einem zusammengeführt.
+Sie können mit der Schaltfläche Builds ändern die Builds einzelner Schiffe verwalten. Sie können ein Schiff auch mehrmals hinzufügen, wenn Sie verschiedene Builds vergleichen möchten.</value>
+  </data>
   <data name="AccelerationChart_Explanation" xml:space="preserve">
       <value>Erklärung des Beschleunigungsdiagramms</value>
   </data>
@@ -2190,5 +2196,65 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   </data>
   <data name="OverwriteExistingBuildDialog_Message" xml:space="preserve">
     <value>Das Archiv enthält bereits einen anderen Build namens '{0}' für das Schiff '{1}'</value>
+  </data>
+  <data name="ShipComparison_Display" xml:space="preserve">
+    <value>Anzeigen</value>
+  </data>
+  <data name="ShipStats_Activate" xml:space="preserve">
+    <value>Aktivieren</value>
+  </data>
+  <data name="AccelerationChart_InitialGear" xml:space="preserve">
+    <value>Anfangsgang</value>
+  </data>
+  <data name="AccelerationChart_MiddleGear" xml:space="preserve">
+    <value>Mittlere Gang</value>
+  </data>
+  <data name="AccelerationChart_FinalGear" xml:space="preserve">
+    <value>Letzte Gang</value>
+  </data>
+  <data name="SettingsWindow_SavedBuilds" xml:space="preserve">
+    <value>Gespeicherte Builds</value>
+  </data>
+  <data name="BuildConfigurationDialog_ActivateSpecialAbility" xml:space="preserve">
+    <value>Spezielle Fähigkeit aktivieren</value>
+  </data>
+  <data name="BuildConfigurationDialog_Alternative" xml:space="preserve">
+    <value>Alternativ</value>
+  </data>
+  <data name="AppNavigator_NoEligibleShips" xml:space="preserve">
+    <value>Keine Schiffe verfügbar. Zulässige Schiffe</value>
+  </data>
+  <data name="AppNavigator_TooManyShips" xml:space="preserve">
+    <value>Zu viele Schiffe. Zulässige Schiffe</value>
+  </data>
+  <data name="AppNavigator_MaxLimit" xml:space="preserve">
+    <value>Maximales Limit ist</value>
+  </data>
+  <data name="ShipStats_AmmoSwitchTime" xml:space="preserve">
+    <value>Munitionswechselzeit</value>
+  </data>
+  <data name="ShipStats_AmmoSwitchTimeTooltip" xml:space="preserve">
+    <value>Angenommen, die Geschütze wurden gerade abgefeuert und brauchen daher eine volle Nachladezeit, um wieder zu feuern</value>
+  </data>
+  <data name="Settings_ThemePrimaryColor" xml:space="preserve">
+    <value>Hauptfarbe des Themes</value>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Farbschema</value>
+  </data>
+  <data name="Settings_ThemeStyle" xml:space="preserve">
+    <value>Themenstil</value>
+  </data>
+  <data name="ShipSelector_DeleteFromSavedBuilds" xml:space="preserve">
+    <value>Aus gespeicherten Builds löschen</value>
+  </data>
+  <data name="SettingsWindow_ResetColor" xml:space="preserve">
+    <value>Farbe zurücksetzen</value>
+  </data>
+  <data name="ShipComparison_RemoveBuildWarningPt1" xml:space="preserve">
+    <value>Der Build für</value>
+  </data>
+  <data name="ShipComparison_RemoveBuildWarningPt2" xml:space="preserve">
+    <value>wurde zurückgesetzt, ohne die letzte Instanz zu löschen.</value>
   </data>
 </root>

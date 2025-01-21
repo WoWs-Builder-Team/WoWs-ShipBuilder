@@ -124,7 +124,7 @@
     <value>重置配置</value>
   </data>
   <data name="MainWindow_ShareBuild" xml:space="preserve">
-    <value>共享配置</value>
+    <value>分享配置</value>
   </data>
   <data name="SettingsWindow_AutoUpdate" xml:space="preserve">
     <value>啟用自動更新</value>
@@ -601,7 +601,7 @@
       <value>武器</value>
   </data>
   <data name="SkipBomb" xml:space="preserve">
-    <value>跳彈炸彈</value>
+    <value>彈跳炸彈</value>
   </data>
   <data name="Torpedo" xml:space="preserve">
     <value>魚雷</value>
@@ -676,7 +676,7 @@
     <value>深水炸彈</value>
   </data>
   <data name="ShipStats_FirstPingDuration" xml:space="preserve">
-    <value>第一次ping持續時間</value>
+    <value>單ping持續時間</value>
   </data>
   <data name="ShipStats_PingDuration" xml:space="preserve">
     <value>Ping 持續時間</value>
@@ -691,7 +691,7 @@
     <value>音波寬度</value>
   </data>
   <data name="ShipStats_SecondPingDuration" xml:space="preserve">
-    <value>第二次Ping持續時間</value>
+    <value>雙Ping持續時間</value>
   </data>
   <data name="ShipStats_Shells" xml:space="preserve">
     <value>砲彈</value>
@@ -715,7 +715,7 @@
     <value>保存並退出</value>
   </data>
   <data name="FiringAngleWindow_Disclaimer" xml:space="preserve">
-    <value>有些炮塔方向可能會有誤。WG的資料中沒有包含這些信息，因此我們採用了適用於大多數情況的折中方法。如果您發現炮塔方向和/或角度有誤，請前往Github或加入下方的Discord伺服器報告。</value>
+    <value>有些炮塔方向可能會有誤。WG的資料中沒有包含這些資訊，因此我們採用了適用於大多數情況的折衷方法。如果您發現炮塔方向和/或角度有誤，歡迎前往Github或加入下方的Discord伺服器向我們回報。</value>
   </data>
   <data name="BuildCreationWindow_BuildSaved" xml:space="preserve">
     <value>配置已儲存</value>
@@ -1053,10 +1053,10 @@
     <value>取消</value>
   </data>
   <data name="Dialog_Yes" xml:space="preserve">
-    <value>是的</value>
+    <value>是</value>
   </data>
   <data name="Dialog_No" xml:space="preserve">
-    <value>不</value>
+    <value>否</value>
   </data>
   <data name="Dialog_Ok" xml:space="preserve">
     <value>確定</value>
@@ -1344,13 +1344,13 @@
       <value>應用程式更新時發生錯誤，請查看日誌檔案以獲得更多詳細資訊。</value>
   </data>
   <data name="NotificationService_UpdateCompleted" xml:space="preserve">
-      <value>應用程式已在背景更新。需要重新啟動才能應用更新。點按重新啟動。</value>
+      <value>應用程式已在背景更新。需要重新啟動才能應用更新，點擊本圖案以重新啟動。</value>
   </data>
   <data name="UpdateMessageBox_Description" xml:space="preserve">
-      <value>應用程式已更新，是否重新啟動以應用更改？</value>
+      <value>應用程式已更新，是否重新啟動以套用更新？</value>
   </data>
   <data name="UpdateMessageBox_Title" xml:space="preserve">
-      <value>應用已更新</value>
+      <value>應用程式已更新</value>
   </data>
   <data name="Placeholder" xml:space="preserve">
       <value>---</value>
@@ -1477,7 +1477,7 @@
       <value>複製短網址</value>
   </data>
   <data name="Build_EnterBuildName" xml:space="preserve">
-      <value>請輸入版本名稱。艦名將自動顯示在最後。</value>
+      <value>請輸入配置名稱。艦艇名稱將自動插入於結尾。</value>
   </data>
   <data name="BETA_ShipComparison" xml:space="preserve">
       <value>加速度圖表beta版</value>
