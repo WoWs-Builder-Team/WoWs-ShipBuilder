@@ -5,7 +5,7 @@ using WoWsShipBuilder.Infrastructure.ApplicationData;
 
 namespace WoWsShipBuilder.Desktop.Infrastructure.Data;
 
-internal class DataMigrator
+internal sealed class DataMigrator
 {
     private readonly IFileSystem fileSystem;
 
