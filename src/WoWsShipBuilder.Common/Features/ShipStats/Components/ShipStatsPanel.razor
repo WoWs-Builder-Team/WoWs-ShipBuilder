@@ -85,7 +85,7 @@
                                     </TooltipContent>
                                 </MudTooltip>
                                 <MudDivider/>
-                                <MudText Typo="Typo.body2" @onclick="@(_ => OpenAngleDialog(ViewModel.CurrentShipStats.MainBatteryDataContainer.OriginalMainBatteryData.Guns, true))" Class="mb-2 link-text">
+                                <MudText Typo="Typo.body2" @onclick="@(async _ => await OpenAngleDialog(ViewModel.CurrentShipStats.MainBatteryDataContainer.OriginalMainBatteryData.Guns, true))" Class="mb-2 link-text">
                                     @Localizer.GetAppLocalization(nameof(Translation.ShipStats_TurretAngles)).Localization
                                 </MudText>
 
@@ -133,7 +133,7 @@
                                 {
                                     @DataElementFragment((data,Localizer))
                                 }
-                                <MudText Typo="Typo.body2" @onclick="@(_ => OpenAngleDialog(ViewModel.CurrentShipStats.TorpedoArmamentDataContainer.TorpedoLaunchers, false))" Class="mb-2 link-text">
+                                <MudText Typo="Typo.body2" @onclick="@(async _ => await OpenAngleDialog(ViewModel.CurrentShipStats.TorpedoArmamentDataContainer.TorpedoLaunchers, false))" Class="mb-2 link-text">
                                     @Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowLaunchersAngles)).Localization
                                 </MudText>
                                 <!--Torpedo data-->
@@ -533,7 +533,7 @@
         return $"<path d=\"{path}\"/>";
     }
 
-    private void OpenAngleDialog(IEnumerable<IGun> guns, bool isArtillery)
+    private async Task OpenAngleDialog(IEnumerable<IGun> guns, bool isArtillery)
     {
         var label = isArtillery ? "open-turret-diagram" : "open-torpedo-diagram";
         MetricsService.AddShipStatsAction(label);
@@ -554,8 +554,12 @@
         {
             NoHeader = true,
             CloseButton = false,
+            CloseOnEscapeKey = true,
+            BackdropClick = true,
+            FullWidth = true,
+            MaxWidth = MaxWidth.Medium,
         };
-        DialogService.Show<FiringAngleDialog>("FiringAngles", parameters, options);
+        await DialogService.ShowAsync<FiringAngleDialog>("FiringAngles", parameters, options);
     }
 
     private void SetDepthChargeDamageDistributionChartVisibility()

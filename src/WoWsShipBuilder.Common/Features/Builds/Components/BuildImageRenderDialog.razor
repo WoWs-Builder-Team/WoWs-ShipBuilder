@@ -143,7 +143,7 @@
 @code
 {
     [CascadingParameter]
-    MudDialogInstance MudDialog { get; set; } = new();
+    IMudDialogInstance MudDialog { get; set; } = null!;
 
     [Parameter, EditorRequired]
     public ShipSummary Ship { get; set; } = default!;

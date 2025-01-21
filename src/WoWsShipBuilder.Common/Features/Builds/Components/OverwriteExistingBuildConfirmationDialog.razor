@@ -23,13 +23,13 @@
 @code {
 
     [CascadingParameter]
-    MudDialogInstance MudDialog { get; set; } = new();
+    IMudDialogInstance MudDialog { get; set; } = null!;
 
     [Parameter, EditorRequired]
-    public string ShipIndex { get; set; } = default!;
+    public string ShipIndex { get; set; } = null!;
 
     [Parameter, EditorRequired]
-    public string BuildName { get; set; } = default!;
+    public string BuildName { get; set; } = null!;
 
     private void Cancel()
     {

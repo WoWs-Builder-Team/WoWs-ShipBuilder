@@ -20,9 +20,9 @@
 @code {
 
     [CascadingParameter]
-    MudDialogInstance MudDialog { get; set; } = default!;
+    IMudDialogInstance MudDialog { get; set; } = null!;
 
-    private SettingsComponent settingsComponent = default!;
+    private SettingsComponent settingsComponent = null!;
 
     private async Task SaveSettingsAsync()
     {

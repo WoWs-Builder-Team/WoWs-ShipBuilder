@@ -23,10 +23,10 @@
 @code {
 
     [CascadingParameter]
-    MudDialogInstance MudDialog { get; set; } = new();
+    IMudDialogInstance MudDialog { get; set; } = null!;
 
     [Parameter]
-    public string SelectedShipIndex { get; set; } = default!;
+    public string SelectedShipIndex { get; set; } = null!;
 
     private string inputBuild = string.Empty;
 

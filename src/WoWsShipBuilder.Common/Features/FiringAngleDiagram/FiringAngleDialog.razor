@@ -14,24 +14,15 @@
 @code {
 
     [CascadingParameter]
-    public MudDialogInstance DialogInstance { get; set; } = default!;
+    public IMudDialogInstance DialogInstance { get; set; } = null!;
 
     [Parameter]
-    public IEnumerable<GunDataContainer> GunDataContainers { get; set; } = default!;
+    public IEnumerable<GunDataContainer> GunDataContainers { get; set; } = null!;
 
     [Parameter]
     public bool IsArtillery { get; set; }
 
     private IJSObjectReference? module;
-
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        DialogInstance.Options.CloseOnEscapeKey = true;
-        DialogInstance.Options.BackdropClick = true;
-        DialogInstance.Options.FullWidth = true;
-        DialogInstance.Options.MaxWidth = MaxWidth.Medium;
-    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

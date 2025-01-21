@@ -73,7 +73,7 @@
 @code
 {
     [CascadingParameter]
-    MudDialogInstance MudDialog { get; set; } = new();
+    IMudDialogInstance MudDialog { get; set; } = null!;
 
     private readonly List<ShipClass> classList = Enum.GetValues<ShipClass>().Except(new List<ShipClass> { ShipClass.Auxiliary }).ToList();
 

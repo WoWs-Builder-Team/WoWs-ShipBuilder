@@ -126,7 +126,7 @@
                     @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_DeleteAll))
                 </MudButton>
             </MudStack>
-            <MudSwitch @bind-Value="@storeBuildOnShare" LabelPosition="LabelPosition.End" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_SaveBuildOnShare))" Color="Color.Primary"/>
+            <MudSwitch @bind-Value="@storeBuildOnShare" LabelPlacement="Placement.End" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_SaveBuildOnShare))" Color="Color.Primary"/>
         </MudItem>
 
         <MudItem xs="12">
@@ -140,10 +140,10 @@
             <MudText Typo="Typo.h6">
                 @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_FittingToolSelector))
             </MudText>
-            <MudSwitch @bind-Value="@fittingToolSelectorDisabled" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_FittingToolSelectorDisabled))"/>
-            <MudSwitch @bind-Value="@fittingToolSelectorClosedByDefault" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_ClosedByDefault))" Disabled="fittingToolSelectorDisabled"/>
-            <MudSwitch @bind-Value="@fittingToolSelectorMultiSelection" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_MultiSelect))" Disabled="fittingToolSelectorDisabled"/>
-            <MudSwitch @bind-Value="@fittingToolSelectorShowShipImages" LabelPosition="LabelPosition.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_FittingToolShowImages))" Class="mb-n3" Disabled="fittingToolSelectorDisabled"/>
+            <MudSwitch @bind-Value="@fittingToolSelectorDisabled" LabelPlacement="Placement.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_FittingToolSelectorDisabled))"/>
+            <MudSwitch @bind-Value="@fittingToolSelectorClosedByDefault" LabelPlacement="Placement.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_ClosedByDefault))" Disabled="fittingToolSelectorDisabled"/>
+            <MudSwitch @bind-Value="@fittingToolSelectorMultiSelection" LabelPlacement="Placement.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_MultiSelect))" Disabled="fittingToolSelectorDisabled"/>
+            <MudSwitch @bind-Value="@fittingToolSelectorShowShipImages" LabelPlacement="Placement.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_FittingToolShowImages))" Class="mb-n3" Disabled="fittingToolSelectorDisabled"/>
         </MudItem>
 
         <MudItem xs="12">
@@ -151,7 +151,7 @@
                 @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_AutoUpdates))
             </MudText>
             <MudStack AlignItems="AlignItems.Start">
-                <MudSwitch @bind-Value="@autoUpdateEnabled" LabelPosition="LabelPosition.End" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_AutoUpdate))" Color="Color.Primary"/>
+                <MudSwitch @bind-Value="@autoUpdateEnabled" LabelPlacement="Placement.End" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_AutoUpdate))" Color="Color.Primary"/>
             </MudStack>
         </MudItem>
 
@@ -160,7 +160,7 @@
                 @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_BuildImagePath))
             </MudText>
             <MudStack AlignItems="AlignItems.Start" Spacing="0">
-                <MudSwitch @bind-Value="@customBuildImagePathEnabled" LabelPosition="LabelPosition.End" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_EnableBuildImagePath))" Color="Color.Primary"/>
+                <MudSwitch @bind-Value="@customBuildImagePathEnabled" LabelPlacement="Placement.End" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_EnableBuildImagePath))" Color="Color.Primary"/>
                 <MudTextField @bind-Value="@customBuildImagePath" FullWidth HelperText="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_RestartRequired))" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_BuildImagePath))" Adornment="Adornment.End" OnAdornmentClick="OnImageFolderSelectClicked" AdornmentIcon="@Icons.Material.Filled.Folder" Disabled="@(!customBuildImagePathEnabled)"/>
             </MudStack>
         </MudItem>
