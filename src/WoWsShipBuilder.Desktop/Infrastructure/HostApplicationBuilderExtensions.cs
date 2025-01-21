@@ -42,6 +42,8 @@ public static class HostApplicationBuilderExtensions
         builder.Services.RemoveAll<RefreshNotifierService>();
         builder.Services.AddSingleton<RefreshNotifierService>();
 
+        builder.Services.AddTransient<DataMigrator>();
+
         builder.Services.AddTransient<SplashScreenViewModel>();
         builder.Services.AddWindowsFormsBlazorWebView();
 #if DEBUG

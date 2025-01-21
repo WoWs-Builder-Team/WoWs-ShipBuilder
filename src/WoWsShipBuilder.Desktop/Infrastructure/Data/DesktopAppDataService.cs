@@ -26,7 +26,7 @@ public class DesktopAppDataService : IAppDataService
         this.fileSystem = fileSystem;
         this.dataService = dataService;
         this.appSettings = appSettings;
-        this.DefaultAppDataDirectory = dataService.CombinePaths(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), AppConstants.ShipBuilderName);
+        this.DefaultAppDataDirectory = dataService.CombinePaths(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), AppConstants.ShipBuilderName);
     }
 
     public string DefaultAppDataDirectory { get; }

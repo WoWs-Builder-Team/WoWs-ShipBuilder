@@ -19,6 +19,7 @@ using Velopack.Sources;
 using WoWsShipBuilder.Desktop.Features.MessageBox;
 using WoWsShipBuilder.Desktop.Features.SplashScreen;
 using WoWsShipBuilder.Desktop.Infrastructure;
+using WoWsShipBuilder.Desktop.Infrastructure.Data;
 using WoWsShipBuilder.Features.Settings;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Localization;
@@ -69,6 +70,8 @@ public class App : Application
         if (this.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             Logging.Initialize(this.Services.GetRequiredService<ILoggerFactory>());
+            var dataMigrator = this.services.GetRequiredService<DataMigrator>();
+            dataMigrator.MigrateData();
             this.InitializeSettings();
             var settings = this.Services.GetRequiredService<AppSettings>();
 

@@ -15,9 +15,9 @@ public static class LoggingSetup
         var target = new FileTarget
         {
 #if DEBUG
-            FileName = "${specialfolder:folder=ApplicationData}/WoWsShipBuilderDev/logs/WoWsShipBuilder-${shortdate}.log",
+            FileName = "${specialfolder:folder=LocalApplicationData}/WoWsShipBuilderDev/logs/WoWsShipBuilder-${shortdate}.log",
 #else
-            FileName = "${specialfolder:folder=ApplicationData}/WoWsShipBuilder/logs/WoWsShipBuilder-${shortdate}.log",
+            FileName = "${specialfolder:folder=LocalApplicationData}/WoWsShipBuilder/logs/WoWsShipBuilder-${shortdate}.log",
 #endif
             Layout = "${longdate}|${level}|${logger}|${message:withException=true}",
             MaxArchiveFiles = 5,
@@ -30,7 +30,7 @@ public static class LoggingSetup
 #if DEBUG
         var debugTarget = new FileTarget
         {
-            FileName = "${specialfolder:folder=ApplicationData}/WoWsShipBuilderDev/logs/WoWsShipBuilder-${shortdate}-debug.log",
+            FileName = "${specialfolder:folder=LocalApplicationData}/WoWsShipBuilderDev/logs/WoWsShipBuilder-${shortdate}-debug.log",
             Layout = "${longdate}|${level}|${logger}|${message:withException=true}",
             MaxArchiveFiles = 5,
             ArchiveAboveSize = 10240000,
