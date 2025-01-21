@@ -34,7 +34,7 @@ jobs:
 
       - name: Store current application version as output variable
         id: version-selector
-        run: echo ("CURRENT_VERSION=" + (Select-Xml -Path .\src\WoWsShipBuilder.Desktop\WoWsShipBuilder.Desktop.csproj -XPath "//VersionPrefix" | Select-Object -ExpandProperty Node -First 1 | foreach {$_.InnerXml})) >> $env:GITHUB_OUTPUT
+        run: echo ("CURRENT_VERSION=" + (Select-Xml -Path ./src/WoWsShipBuilder.Desktop/WoWsShipBuilder.Desktop.csproj -XPath "//VersionPrefix" | Select-Object -ExpandProperty Node -First 1 | foreach {$_.InnerXml})) >> $env:GITHUB_OUTPUT
       - name: Store current version as environment variable
         run: echo "CURRENT_VERSION=v${{ steps.version-selector.outputs.CURRENT_VERSION }}" >> $env:GITHUB_ENV
       - name: Store current tag as environment variable
@@ -46,20 +46,20 @@ jobs:
       - name: Extract certificate
         run: |
           $certB64 = '${{ secrets.WOWSSB_CERT }}'
-          [IO.File]::WriteAllBytes(".\wowssb.pfx", [Convert]::FromBase64String([char[]]$certB64))
+          [IO.File]::WriteAllBytes("./wowssb.pfx", [Convert]::FromBase64String([char[]]$certB64))
       - name: Determine vpk version
         id: vpk-version
-        run: echo ("VELOPACK_VERSION=" + (Select-Xml -Path .\src\WoWsShipBuilder.Desktop\WoWsShipBuilder.Desktop.csproj -XPath "//PackageReference[@Include='Velopack']" | Select-Object -ExpandProperty Node -First 1 | foreach {$_.Version})) >> $env:GITHUB_OUTPUT
+        run: echo ("VELOPACK_VERSION=" + (Select-Xml -Path ./src/WoWsShipBuilder.Desktop/WoWsShipBuilder.Desktop.csproj -XPath "//PackageReference[@Include='Velopack']" | Select-Object -ExpandProperty Node -First 1 | foreach {$_.Version})) >> $env:GITHUB_OUTPUT
       - name: Install vpk
         run: dotnet tool install -g --version ${{ steps.vpk-version.outputs.VELOPACK_VERSION }} vpk
       - name: Create Velopack Release
         run: |
           vpk download github -o artifacts/releases --repoUrl ${{ github.server_url }}/${{ github.repository }}
-          installer\BuildVelopackRelease.ps1 -skipBuild -signingCert wowssb.pfx -signingPassword '${{ secrets.WOWSSB_CERT_KEY }}'
+          build/BuildVelopackRelease.ps1 -skipBuild -signingCert wowssb.pfx -signingPassword '${{ secrets.WOWSSB_CERT_KEY }}'
           vpk upload github -o artifacts/releases --repoUrl ${{ github.server_url }}/${{ github.repository }} --publish --releaseName ${{ env.CURRENT_VERSION }} --tag ${{ env.CURRENT_TAG }} --token ${{ secrets.GITHUB_TOKEN }}
         shell: pwsh
       - name: Cleanup certificate
-        run: Remove-Item .\wowssb.pfx
+        run: Remove-Item ./wowssb.pfx
 
       - name: Release
         uses: ncipollo/release-action@v1
