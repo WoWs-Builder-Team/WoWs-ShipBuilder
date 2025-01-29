@@ -4,7 +4,7 @@
 
 @if (ViewModel is not null)
 {
-    <MudCard Outlined="true" Class="pt-2 pb-1 px-md-2">
+    <MudCard Outlined="true" Class="pt-2 pb-1 px-md-2" Style="flex: content">
         <MudStack Row="true" Justify="Justify.SpaceBetween" Style="overflow-x: auto;">
             @foreach (var columnUpgrade in ViewModel.ShipUpgrades)
             {

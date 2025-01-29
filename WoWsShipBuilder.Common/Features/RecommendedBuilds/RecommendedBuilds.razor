@@ -180,29 +180,17 @@
 @code
 {
     private MudTabs mudTabs = null!;
-
     private MudBreakpointProvider breakpointProvider = null!;
-
     private readonly Dictionary<string, List<RecommendedBuild>> recommendedBuilds = new();
-
     private readonly Dictionary<string, List<RecommendedBuild>> filteredRecommendedBuildsList = new();
-
     private List<RecommendedBuild> selectedShipRecommendedBuilds = [];
-
     private readonly List<RecommendedBuild> selectedBuilds = [];
-
     private Ship selectedShip = null!;
-
     private Guid currentActiveTabId;
-
     private string disclaimer = string.Empty;
-
     private string noBuild = string.Empty;
-
     private string inputText = string.Empty;
-
     private readonly Guid noBuildTabId = Guid.NewGuid();
-
     private string InputText
     {
         get => inputText;
@@ -298,7 +286,7 @@
             }
             else
             {
-                filteredRecommendedBuildsList.Add(build.Key, build.Value );
+                filteredRecommendedBuildsList.Add(build.Key, build.Value);
             }
         }
     }
