@@ -193,10 +193,10 @@
 
 
 @code {
-    private static readonly int[] TiersRange = { 1, 11 };
+    private static readonly int[] TiersRange = [1, 11];
 
     [Parameter, EditorRequired]
-    public Func<Task> SelectionChanged { get; set; } = default!;
+    public Func<Task> SelectionChanged { get; set; } = null!;
 
     private static Color GetColorFromBool(bool active)
     {

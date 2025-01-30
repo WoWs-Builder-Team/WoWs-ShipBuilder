@@ -298,7 +298,7 @@
         set
         {
             inputText = value;
-            ApplyFilter(recommendedBuilds, filteredRecommendedBuildsList, InputText);
+            ApplyFilterToEditor();
         }
     }
 
@@ -320,7 +320,7 @@
         set
         {
             inputTextPublication = value;
-            ApplyFilter(buildsForPublication, filteredBuildsForPublication, InputTextPublication);
+            ApplyFilterToPublication();
         }
     }
 
@@ -328,7 +328,7 @@
     {
         base.OnInitialized();
         GetAvailableBuilds();
-        ApplyFilter(recommendedBuilds, filteredRecommendedBuildsList, InputText);
+        ApplyFilterToEditor();
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -341,6 +341,10 @@
 
         updateTab = false;
     }
+
+    private void ApplyFilterToEditor() => ApplyFilter(recommendedBuilds, filteredRecommendedBuildsList, InputText);
+
+    private void ApplyFilterToPublication() => ApplyFilter(buildsForPublication, filteredBuildsForPublication, InputTextPublication);
 
     private void ApplyFilter(Dictionary<string, List<RecommendedBuild>> sourceCollection, Dictionary<string, List<RecommendedBuild>> destinationCollection, string searchText)
     {
@@ -378,6 +382,7 @@
     {
         selectedShip = AppData.ShipDictionary[shipIndex];
         selectedShipRecommendedBuilds = recommendedBuilds[shipIndex];
+
         if (build is not null && !selectedShipRecommendedBuilds.Contains(build))
         {
             selectedShipRecommendedBuilds.Add(build);
@@ -611,7 +616,6 @@
         }
 
         selectedBuildPreview = recommendedBuild;
-
         publicationTabs.ActivatePanel(recommendedBuild.BuildContainer.Id);
     }
 
@@ -651,7 +655,7 @@
                 }
             }
 
-            ApplyFilter(buildsForPublication, filteredBuildsForPublication, InputTextPublication);
+            ApplyFilterToPublication();
 
             if (selectedShipPreview is not null)
             {
@@ -663,7 +667,7 @@
     private void EditSelectedBuild()
     {
         InputText = Localizer.SimpleGameLocalization($"{selectedShipPreview!.Index}_FULL");
-        ApplyFilter(recommendedBuilds, filteredRecommendedBuildsList, InputText);
+        ApplyFilterToEditor();
         SelectShip(selectedShipPreview!.Index, selectedBuildPreview);
         selectedBuild = selectedShipRecommendedBuilds.SingleOrDefault(x => x.BuildContainer.Id == (Guid)publicationTabs.ActivePanel!.ID!);
         sectionTabs.ActivatePanel("BuildEditor", true);
