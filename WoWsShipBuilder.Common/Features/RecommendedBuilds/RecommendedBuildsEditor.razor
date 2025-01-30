@@ -29,7 +29,7 @@
 @inject MetricsService MetricsService
 
 <MudBreakpointProvider @ref="breakpointProvider">
-    <MudContainer Fixed>
+    <MudContainer Fixed Style="overflow-y: hidden; scrollbar-color: transparent transparent">
         <MudGrid Justify="Justify.Center" Spacing="2">
             <MudItem xs="12">
                 <MudTabs Elevation="2" Position="Position.Top" HideSlider Centered Outlined Border Style="margin-top: 17px;" Class="ship-stats-tabs mt-1" PanelClass="pt-2" @ref="sectionTabs" ActivePanelIndexChanged="@(async _ => await OnSectionPanelChanged())">
@@ -218,6 +218,12 @@
                                                         Edit Build
                                                     </MudButton>
                                                 </MudStack>
+                                                @if (vmCache.TryGetValue(recommendedBuild.BuildContainer.Id, out var vm) && vm.IsDeleted)
+                                                {
+                                                    <MudText Style="position: absolute; z-index: 10; width: 100%; height: 100%; align-items: center; justify-content: center; display: flex; font-size: 150px; text-decoration-line: underline overline; transform: rotate(-30deg); pointer-events: none" Typo="Typo.button" Align="Align.Center" Color="Color.Primary">
+                                                        REMOVED
+                                                    </MudText>
+                                                }
                                                 @if (IsSmallScreen())
                                                 {
                                                     <ShipModuleSelectorImageRender ViewModel="@shipModuleViewModel"/>
@@ -306,6 +312,7 @@
     private List<RecommendedBuild> selectedShipRecommendedBuildsPreview = [];
     private MudTabs publicationTabs = null!;
     private readonly Dictionary<string, List<RecommendedBuild>> filteredBuildsForPublication = new();
+    private RecommendedBuild? selectedBuildPreview;
     private string inputTextPublication = string.Empty;
     private string InputTextPublication
     {
@@ -367,10 +374,19 @@
         return result;
     }
 
-    private void SelectShip(string shipIndex)
+    private void SelectShip(string shipIndex, RecommendedBuild? build = null)
     {
         selectedShip = AppData.ShipDictionary[shipIndex];
         selectedShipRecommendedBuilds = recommendedBuilds[shipIndex];
+        if (build is not null && !selectedShipRecommendedBuilds.Contains(build))
+        {
+            selectedShipRecommendedBuilds.Add(build);
+            if (vmCache.TryGetValue(build.BuildContainer.Id, out var vm) && vm.IsDeleted)
+            {
+                vm.IsDeleted = false;
+            }
+        }
+
         if (selectedShipRecommendedBuilds.Any())
         {
             selectedBuild = selectedShipRecommendedBuilds[0];
@@ -576,7 +592,14 @@
 
     private void LoadBuildViewModels(RecommendedBuild recommendedBuild)
     {
-        InitializeBuildViewModels();
+        if (selectedShipPreview is not null)
+        {
+            signalSelectorViewModel = new();
+            captainSkillSelectorViewModel = new(selectedShipPreview.ShipClass, CaptainSkillSelectorViewModel.LoadParams(selectedShipPreview.ShipNation));
+            shipModuleViewModel = new(selectedShipPreview.ShipUpgradeInfo);
+            upgradePanelViewModel = new(selectedShipPreview, AppData.ModernizationCache);
+            consumableViewModel = ConsumableViewModel.Create(selectedShipPreview, new List<string>(), Logging.LoggerFactory);
+        }
 
         if (recommendedBuild.BuildContainer.Build is not null)
         {
@@ -587,19 +610,9 @@
             consumableViewModel.LoadBuild(recommendedBuild.BuildContainer.Build.Consumables);
         }
 
-        publicationTabs.ActivatePanel(recommendedBuild.BuildContainer.Id);
-    }
+        selectedBuildPreview = recommendedBuild;
 
-    private void InitializeBuildViewModels()
-    {
-        if (selectedShipPreview is not null)
-        {
-            signalSelectorViewModel = new();
-            captainSkillSelectorViewModel = new(selectedShipPreview.ShipClass, CaptainSkillSelectorViewModel.LoadParams(selectedShipPreview.ShipNation));
-            shipModuleViewModel = new(selectedShipPreview.ShipUpgradeInfo);
-            upgradePanelViewModel = new(selectedShipPreview, AppData.ModernizationCache);
-            consumableViewModel = ConsumableViewModel.Create(selectedShipPreview, new List<string>(), Logging.LoggerFactory);
-        }
+        publicationTabs.ActivatePanel(recommendedBuild.BuildContainer.Id);
     }
 
     private async Task SelectShipPreview(string shipIndex, RecommendedBuild? build = null)
@@ -651,7 +664,7 @@
     {
         InputText = Localizer.SimpleGameLocalization($"{selectedShipPreview!.Index}_FULL");
         ApplyFilter(recommendedBuilds, filteredRecommendedBuildsList, InputText);
-        SelectShip(selectedShipPreview!.Index);
+        SelectShip(selectedShipPreview!.Index, selectedBuildPreview);
         selectedBuild = selectedShipRecommendedBuilds.SingleOrDefault(x => x.BuildContainer.Id == (Guid)publicationTabs.ActivePanel!.ID!);
         sectionTabs.ActivatePanel("BuildEditor", true);
         mudTabs.ActivatePanel(selectedBuild!.BuildContainer.Id, true);
