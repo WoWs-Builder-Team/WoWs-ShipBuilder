@@ -1,4 +1,4 @@
-# Update 2.8
+# Update 2025.1
 
 ## Download and Install
 
@@ -18,10 +18,8 @@ from the artifacts of this release, then extract it and run **WoWsShipBuilder.ex
 <summary>Click to show release notes</summary>
 
 ### Additions
-- Major theme overhaul with a new theme manager, allowing customization of the application UI theme
 
 ### Changes
-- some updates to add support for new modifiers of the game
 
 ### Bugfixes
 - various minor bug fixes
