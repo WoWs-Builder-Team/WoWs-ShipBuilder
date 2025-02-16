@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using Microsoft.Extensions.Hosting;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.DataStructures.Versioning;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 
@@ -82,5 +83,20 @@ public static class Helpers
                                         tierGrouping => tierGrouping.Select(tierShip => tierShip.Value).ToImmutableList()))));
 
         AppData.FittingToolShipSelectorDataStructure = result;
+    }
+
+    public static string ComputeMainVersionString(Version version)
+    {
+        return version.Build != -1 ? version.ToString(3) : version.ToString(2);
+    }
+
+    public static string ComputeFullVersionString(VersionInfo versionInfo)
+    {
+        if (versionInfo.CurrentVersion.MainVersion.Build != -1)
+        {
+            return versionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + versionInfo.CurrentVersion.DataIteration;
+        }
+
+        return versionInfo.CurrentVersion.MainVersion.ToString(2) + "#" + versionInfo.CurrentVersion.DataIteration;
     }
 }

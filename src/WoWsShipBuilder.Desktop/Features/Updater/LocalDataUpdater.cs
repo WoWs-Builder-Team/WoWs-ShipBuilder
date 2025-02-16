@@ -13,6 +13,7 @@ using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.HttpClients;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Desktop.Features.Updater;
 
@@ -211,7 +212,7 @@ public class LocalDataUpdater : ILocalDataUpdater
             filesToDownload.Add((string.Empty, "VersionInfo.json"));
         }
 
-        var versionName = onlineVersionInfo.CurrentVersion.MainVersion.ToString(3);
+        var versionName = Helpers.ComputeMainVersionString(onlineVersionInfo.CurrentVersion.MainVersion);
 
         if (this.SupportedDataStructureVersion.Major < onlineVersionInfo.DataStructuresVersion.Major || this.SupportedDataStructureVersion.Minor < onlineVersionInfo.DataStructuresVersion.Minor)
         {

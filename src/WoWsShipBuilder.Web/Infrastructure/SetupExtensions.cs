@@ -7,6 +7,7 @@ using NLog.Targets;
 using Sentry;
 using WoWsShipBuilder.Features.LinkShortening;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
+using WoWsShipBuilder.Infrastructure.Utility;
 using LogLevel = NLog.LogLevel;
 
 namespace WoWsShipBuilder.Web.Infrastructure;
@@ -21,7 +22,7 @@ public static class SetupExtensions
         configuration.AddRule(level, LogLevel.Fatal, logConsole);
 
         var version = Assembly.GetEntryAssembly()?.GetName().Version ?? new Version(0, 0);
-        var release = $"{version.Major}.{version.Minor}.{version.Build}";
+        var release = Helpers.ComputeMainVersionString(version);
         configuration.AddSentry(o =>
         {
             o.Release = release;

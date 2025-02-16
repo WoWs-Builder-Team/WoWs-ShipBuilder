@@ -17,7 +17,7 @@ public partial class LocalDataUpdaterTest
     public async Task CheckJsonFileVersion_NoExistingData_AllFilesMarkedForDownload()
     {
         // Arrange
-        var testVersionInfo = this.CreateTestVersionInfo(1, new(Version.Parse("0.11.0"), GameVersionType.Live, 1));
+        var testVersionInfo = this.CreateTestVersionInfo(1, new(Version.Parse("14.0"), GameVersionType.Live, 1));
         this.awsClientMock.Setup(x => x.DownloadVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
         this.mockFileSystem.AddDirectory(this.appDataHelper.Object.GetDataPath(ServerType.Live));
 
@@ -36,8 +36,8 @@ public partial class LocalDataUpdaterTest
     public async Task CheckJsonFileVersion_ExistingDataOneVersionDiff_IncrementalUpdate()
     {
         // Arrange
-        var currentVersion = new GameVersion(new(0, 10, 10), GameVersionType.Live, 1);
-        var previousVersion = new GameVersion(new(0, 10, 9), GameVersionType.Live, 1);
+        var currentVersion = new GameVersion(new(13, 10), GameVersionType.Live, 1);
+        var previousVersion = new GameVersion(new(13, 9), GameVersionType.Live, 1);
         var localVersionInfo = this.CreateTestVersionInfo(1, previousVersion);
         var testVersionInfo = new VersionInfo(
             new Dictionary<string, ImmutableList<FileVersion>>
@@ -66,7 +66,7 @@ public partial class LocalDataUpdaterTest
     public async Task CheckJsonFileVersion_ExistingData_NoDownloads()
     {
         // Arrange
-        var testVersionInfo = this.CreateTestVersionInfo(1, new(Version.Parse("0.11.0"), GameVersionType.Live, 1));
+        var testVersionInfo = this.CreateTestVersionInfo(1, new(Version.Parse("14.0"), GameVersionType.Live, 1));
         this.awsClientMock.Setup(x => x.DownloadVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
         this.mockFileSystem.AddDirectory(this.appDataHelper.Object.GetDataPath(ServerType.Live));
         this.appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
@@ -86,8 +86,8 @@ public partial class LocalDataUpdaterTest
     {
         // Arrange
         var supportedDataVersion = Assembly.GetAssembly(typeof(Ship))!.GetName().Version!;
-        var currentVersion = new GameVersion(new(0, 10, 10), GameVersionType.Live, 1);
-        var previousVersion = new GameVersion(new(0, 10, 9), GameVersionType.Live, 1);
+        var currentVersion = new GameVersion(new(13, 10), GameVersionType.Live, 1);
+        var previousVersion = new GameVersion(new(13, 9), GameVersionType.Live, 1);
         var previousVersionCode = 1;
         var localVersionInfo = new VersionInfo(
             new Dictionary<string, ImmutableList<FileVersion>>
@@ -107,7 +107,7 @@ public partial class LocalDataUpdaterTest
             currentVersion,
             localVersionInfo.CurrentVersion)
         {
-            DataStructuresVersion = new(supportedDataVersion.Major, supportedDataVersion.Minor + 1, supportedDataVersion.Build),
+            DataStructuresVersion = new(supportedDataVersion.Major, supportedDataVersion.Minor + 1),
         };
         this.awsClientMock.Setup(x => x.DownloadVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
         this.mockFileSystem.AddDirectory(this.appDataHelper.Object.GetDataPath(ServerType.Live));

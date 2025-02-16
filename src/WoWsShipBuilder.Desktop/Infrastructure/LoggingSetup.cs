@@ -4,6 +4,7 @@ using System.Reflection;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Desktop.Infrastructure;
 
@@ -40,7 +41,7 @@ public static class LoggingSetup
 #endif
 
         var version = Assembly.GetEntryAssembly()?.GetName().Version ?? new Version(0, 0);
-        var release = $"{version.Major}.{version.Minor}.{version.Build}";
+        var release = Helpers.ComputeMainVersionString(version);
 
         config.AddSentry(o =>
         {

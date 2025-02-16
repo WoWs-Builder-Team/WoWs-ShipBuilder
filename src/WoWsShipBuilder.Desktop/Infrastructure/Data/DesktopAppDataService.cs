@@ -97,7 +97,7 @@ public class DesktopAppDataService : IAppDataService
         Logging.Logger.LogDebug("Loading local files from disk");
         AppData.ResetCaches();
         var localVersionInfo = await this.GetCurrentVersionInfo(serverType) ?? throw new InvalidOperationException("No local data found");
-        AppData.DataVersion = localVersionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + localVersionInfo.CurrentVersion.DataIteration;
+        AppData.DataVersion = Helpers.ComputeFullVersionString(localVersionInfo);
 
         var dataRootPath = this.GetDataPath(serverType);
 

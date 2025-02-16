@@ -1,9 +1,6 @@
 ﻿using System.Globalization;
 using System.Text.Json;
 using Microsoft.Extensions.Options;
-using Sentry;
-using WoWsShipBuilder.DataStructures;
-using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Versioning;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
@@ -45,9 +42,9 @@ public class ServerAppDataService : IAppDataService
         AppData.ResetCaches();
 
         var onlineVersionInfo = await this.awsClient.DownloadVersionInfo(this.options.Server);
-        if (onlineVersionInfo.CurrentVersion is not null)
+        if (onlineVersionInfo.CurrentVersion is not null) // check for null for legacy compatibility
         {
-            AppData.DataVersion = onlineVersionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + onlineVersionInfo.CurrentVersion.DataIteration;
+            AppData.DataVersion = Helpers.ComputeFullVersionString(onlineVersionInfo);
             this.logger.LogInformation("Found online version info with version {Version}", AppData.DataVersion);
         }
         else
@@ -58,7 +55,12 @@ public class ServerAppDataService : IAppDataService
 
         SentrySdk.ConfigureScope(scope =>
         {
-            scope.SetTag("data.version", onlineVersionInfo.CurrentVersion?.MainVersion.ToString(3) ?? undefinedMarker);
+            var mainVersionString = undefinedMarker;
+            if (onlineVersionInfo.CurrentVersion?.MainVersion is { } mainVersion)
+            {
+                mainVersionString = Helpers.ComputeMainVersionString(mainVersion);
+            }
+            scope.SetTag("data.version", mainVersionString);
             scope.SetTag("data.iteration", onlineVersionInfo.CurrentVersion?.DataIteration.ToString(CultureInfo.InvariantCulture) ?? undefinedMarker);
             scope.SetTag("data.server", onlineVersionInfo.CurrentVersion?.VersionType.ToString() ?? undefinedMarker);
         });
@@ -76,7 +78,8 @@ public class ServerAppDataService : IAppDataService
 
         string versionInfoContent = await File.ReadAllTextAsync(Path.Join(dataRoot, "VersionInfo.json"));
         var localVersionInfo = JsonSerializer.Deserialize<VersionInfo>(versionInfoContent, AppConstants.JsonSerializerOptions)!;
-        AppData.DataVersion = localVersionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + localVersionInfo.CurrentVersion.DataIteration;
+
+        AppData.DataVersion = Helpers.ComputeFullVersionString(localVersionInfo);
 
         var dataRootInfo = new DirectoryInfo(dataRoot);
         DirectoryInfo[] categories = dataRootInfo.GetDirectories();
@@ -125,8 +128,6 @@ public class ServerAppDataService : IAppDataService
 
         return null;
     }
-
-    public Ship GetShipFromSummary(ShipSummary summary) => AppData.ShipDictionary[summary.Index];
 
     public string GetDataPath(ServerType serverType)
     {
