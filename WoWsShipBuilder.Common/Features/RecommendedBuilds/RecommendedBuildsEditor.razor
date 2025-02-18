@@ -36,7 +36,10 @@
                     <MudTabPanel Text="@Localizer.SimpleAppLocalization(nameof(Translation.RecommendedBuildsEditor_BuildEditor))" Tag="@("BuildEditor")" ID="@("BuildEditor")" @key="@("BuildEditor")" Style="min-width: 100%;">
                         <MudGrid Justify="Justify.Center" Spacing="2">
                             <MudItem xs="12" md="2">
-                                <MudTextField Style="max-height: 52px" Class="mt-0" AutoFocus T="string" FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShip))" @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
+                                <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center" Spacing="2">
+                                    <MudTextField Style="max-height: 52px" Class="mt-0" AutoFocus T="string" FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShip))" @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
+                                    <RecommendedBuildsShipFilter IsSmallScreen="IsSmallScreen()" ShipList="filteredRecommendedBuildsList" ApplyFilter="@(() => ApplyFilterToEditor())" SelectedCategories="selectedCategories" SelectedClasses="selectedClasses" SelectedNations="selectedNations" SelectedTiers="selectedTiers"/>
+                                </MudStack>
                                 <MudPaper Outlined Style="@(IsSmallScreen() ? "min-height: 300px; max-height: 300px; overflow: auto" : "height: 83vh; overflow: auto")">
                                     <MudList Dense T="KeyValuePair<string, List<RecommendedBuild>>">
                                         <MudVirtualize Items="filteredRecommendedBuildsList" Context="pair">
@@ -291,6 +294,10 @@
     private readonly Dictionary<string, List<RecommendedBuild>> filteredRecommendedBuildsList = new();
     private readonly ConcurrentDictionary<Guid, RecommendedBuildViewModel> vmCache = new();
     private bool updateTab;
+    private readonly List<int> selectedTiers = [];
+    private readonly List<ShipClass> selectedClasses = [];
+    private readonly List<Nation> selectedNations = [];
+    private readonly List<ShipCategory> selectedCategories = [];
     private string inputText = string.Empty;
     private string InputText
     {
@@ -350,6 +357,10 @@
     {
         var builds = sourceCollection
             .Where(x => ShipFilter(x.Key, searchText))
+            .Where(x => !selectedTiers.Any() || selectedTiers.Contains(AppData.ShipSummaryMapper[x.Key].Tier))
+            .Where(x => !selectedCategories.Any() || selectedCategories.Contains(AppData.ShipSummaryMapper[x.Key].Category))
+            .Where(x => !selectedClasses.Any() || selectedClasses.Contains(AppData.ShipSummaryMapper[x.Key].ShipClass))
+            .Where(x => !selectedNations.Any() || selectedNations.Contains(AppData.ShipSummaryMapper[x.Key].Nation))
             .OrderBy(x => Localizer.SimpleGameLocalization($"{x.Key}_FULL"));
         destinationCollection.Clear();
         foreach (var build in builds)
