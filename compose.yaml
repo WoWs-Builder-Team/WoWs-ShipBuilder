@@ -1,0 +1,8 @@
+﻿services:
+  db:
+    image: docker.io/library/postgres:17
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: wowssb
