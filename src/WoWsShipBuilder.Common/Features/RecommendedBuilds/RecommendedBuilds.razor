@@ -168,7 +168,7 @@
                                         @Localizer.SimpleGameLocalization(build.BuildContainer.Ship.Index + "_FULL")
                                     </MudText>
                                     <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1">
-                                        @(Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_Build)).Localization + ": " + (!string.IsNullOrWhiteSpace(build.BuildContainer.Build.BuildName) ? build.BuildContainer.Build.BuildName : Build.DefaultBuildName))
+                                        @(Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_Build)).Localization + ": " + (!string.IsNullOrWhiteSpace(build.BuildContainer.Build?.BuildName) ? build.BuildContainer.Build.BuildName : Build.DefaultBuildName))
                                     </MudText>
                                 </MudStack>
                             </MudListItem>
