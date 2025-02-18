@@ -10,6 +10,9 @@ jobs:
     runs-on: windows-latest
     name: Build and release application
 
+    outputs:
+      current_version: ${{ steps.version-selector.outputs.CURRENT_VERSION }}
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -22,53 +25,61 @@ jobs:
         run: 'echo "$APPCONFIG" > WoWsShipBuilder.Desktop/Infrastructure/StaticConfiguration/ApplicationOptions.json'
         shell: bash
         env:
-          APPCONFIG: ${{secrets.SHIPBUILDER_APPCONFIG}}
+          APPCONFIG: ${{ secrets.SHIPBUILDER_APPCONFIG }}
 
       - name: Restore dependencies
         run: dotnet restore dirs.proj
       - name: Build application
         run: dotnet build dirs.proj --no-restore -c Release
 
-      - name: Store current application version
-        uses: actions/upload-artifact@v4
-        with:
-          name: buildInfo
-          path: WoWsShipBuilder.Desktop\buildInfo.txt
-      - name: Store current application version as environment variable
-        run: echo ("CURRENT_TAG=v" + (Get-Content -Path .\WoWsShipBuilder.Desktop\buildInfo.txt -First 1)) >> $env:GITHUB_ENV
+      - name: Store current application version as output variable
+        id: version-selector
+        run: echo ("CURRENT_VERSION=" + (Select-Xml -Path ./src/WoWsShipBuilder.Desktop/WoWsShipBuilder.Desktop.csproj -XPath "//VersionPrefix" | Select-Object -ExpandProperty Node -First 1 | foreach {$_.InnerXml})) >> $env:GITHUB_OUTPUT
+      - name: Store current version as environment variable
+        run: echo "CURRENT_VERSION=v${{ steps.version-selector.outputs.CURRENT_VERSION }}" >> $env:GITHUB_ENV
+      - name: Store current tag as environment variable
+        run: echo "CURRENT_TAG=v${{ steps.version-selector.outputs.CURRENT_VERSION }}" >> $env:GITHUB_ENV
 
       - name: Test application
         run: dotnet test dirs.proj --no-build -c Release --verbosity normal
+
+      - name: Extract certificate
+        run: |
+          $certB64 = '${{ secrets.WOWSSB_CERT }}'
+          [IO.File]::WriteAllBytes("./wowssb.pfx", [Convert]::FromBase64String([char[]]$certB64))
+      - name: Determine vpk version
+        id: vpk-version
+        run: echo ("VELOPACK_VERSION=" + (Select-Xml -Path ./src/WoWsShipBuilder.Desktop/WoWsShipBuilder.Desktop.csproj -XPath "//PackageReference[@Include='Velopack']" | Select-Object -ExpandProperty Node -First 1 | foreach {$_.Version})) >> $env:GITHUB_OUTPUT
+      - name: Install vpk
+        run: dotnet tool install -g --version ${{ steps.vpk-version.outputs.VELOPACK_VERSION }} vpk
       - name: Create Velopack Release
         run: |
-          dotnet tool install -g vpk
-          vpk download github -o releases --repoUrl ${{ github.server_url }}/${{ github.repository }}
-          installer\BuildVelopackRelease.ps1 -skipBuild
-          vpk upload github -o releases --repoUrl ${{ github.server_url }}/${{ github.repository }} --publish --releaseName ${{ env.CURRENT_TAG }} --tag ${{ env.CURRENT_TAG }} --token ${{ secrets.GITHUB_TOKEN }}
+          vpk download github -o artifacts/releases --repoUrl ${{ github.server_url }}/${{ github.repository }}
+          build/BuildVelopackRelease.ps1 -skipBuild -signingCert wowssb.pfx -signingPassword '${{ secrets.WOWSSB_CERT_KEY }}'
+          vpk upload github -o artifacts/releases --repoUrl ${{ github.server_url }}/${{ github.repository }} --publish --releaseName ${{ env.CURRENT_VERSION }} --tag ${{ env.CURRENT_TAG }} --token ${{ secrets.GITHUB_TOKEN }}
         shell: pwsh
+      - name: Cleanup certificate
+        run: Remove-Item ./wowssb.pfx
 
       - name: Release
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
-          bodyFile: ReleaseNotes.md
+          bodyFile: docs/ReleaseNotes.md
           tag: ${{ env.CURRENT_TAG }}
           token: ${{ secrets.GITHUB_TOKEN }}
+          name: ${{ env.CURRENT_VERSION }}
 
   sentry-notify:
     runs-on: ubuntu-latest
     name: Create release on sentry
     needs: build-and-release
 
+    env:
+      RELEASE_VERSION: ${{ needs.build-and-release.outputs.current_version }}
+
     steps:
       - uses: actions/checkout@v4
-      - name: Download version info
-        uses: actions/download-artifact@v4
-        with:
-          name: buildInfo
-          path: buildInfo
-      - name: Process release version
-        run: echo "RELEASE_VERSION=$(head -n 1 buildInfo/buildInfo.txt)" >> $GITHUB_ENV
       - name: Create Sentry release
         uses: getsentry/action-release@v1
         env:

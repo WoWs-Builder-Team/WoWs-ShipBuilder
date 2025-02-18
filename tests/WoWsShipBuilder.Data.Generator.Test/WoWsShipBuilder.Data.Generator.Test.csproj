@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <IsPackable>false</IsPackable>
+        <EmitCompilerGeneratedFiles>false</EmitCompilerGeneratedFiles>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Using Include="System.Threading.Tasks" />
+        <Using Include="NUnit.Framework" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="coverlet.collector" Version="6.0.2">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="FluentAssertions" Version="7.0.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" Version="1.1.2" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing" Version="1.1.2" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.12.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+        <PackageReference Include="NUnit" Version="4.2.2" />
+        <PackageReference Include="NUnit.Analyzers" Version="4.4.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
+        <PackageReference Include="System.Formats.Asn1" Version="9.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\WoWsShipBuilder.Data.Generator\WoWsShipBuilder.Data.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
+      <ProjectReference Include="..\..\src\WoWsShipBuilder.DataElements\WoWsShipBuilder.DataElements.csproj" />
+    </ItemGroup>
+
+</Project>

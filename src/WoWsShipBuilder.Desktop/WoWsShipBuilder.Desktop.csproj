@@ -1,0 +1,101 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>$(DesktopTargetFramework)</TargetFramework>
+        <ApplicationIcon>Assets/ShipBuilderIcon_bg.ico</ApplicationIcon>
+        <Win32Resource />
+        <SignAssembly>false</SignAssembly>
+        <AssemblyName>WoWsShipBuilder</AssemblyName>
+        <Authors>WoWsShipBuilder-Team</Authors>
+        <RepositoryType>github</RepositoryType>
+        <NeutralLanguage>en-GB</NeutralLanguage>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <NoWarn>$(NoWarn);NU5128;NU5048</NoWarn>
+        <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
+        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+        <RootNamespace>WoWsShipBuilder.Desktop</RootNamespace>
+        <VersionPrefix>2025.1.0</VersionPrefix>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <ILLinkTreatWarningsAsErrors>false</ILLinkTreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AvaloniaResource Include="Assets\**" />
+        <AvaloniaResource Include="wwwroot\assets\icons\error.png" />
+        <AvaloniaResource Include="wwwroot\assets\icons\info.png" />
+        <None Remove="Assets\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="Infrastructure\StaticConfiguration\ApplicationOptions.json" />
+        <Content Remove="Infrastructure\StaticConfiguration\*.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.WindowsForms" Version="9.0.12" />
+        <PackageReference Include="Avalonia" Version="11.2.3" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.2.3" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="11.2.3" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.2.3" />
+        <PackageReference Include="Avalonia.Themes.Simple" Version="11.2.3" />
+        <PackageReference Include="NLog.Extensions.Logging" Version="5.3.15" />
+        <PackageReference Include="Sentry.NLog" Version="4.13.0" />
+        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="TestableIO.System.IO.Abstractions.Analyzers" Version="2022.0.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="21.1.7" />
+        <PackageReference Include="Velopack" Version="0.0.1015" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\WoWsShipBuilder.Common\WoWsShipBuilder.Common.csproj" />
+        <ProjectReference Include="..\WoWsShipBuilder.Data.Generator\WoWsShipBuilder.Data.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="..\..\stylecop.json">
+            <Link>stylecop.json</Link>
+        </AdditionalFiles>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="Features\BlazorWebView\BlazorWindow.axaml.cs">
+            <DependentUpon>BlazorWindow.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="App.axaml.cs">
+            <DependentUpon>App.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Features\SplashScreen\SplashScreen.axaml.cs">
+            <DependentUpon>SplashScreen.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Common\AppHeader.axaml.cs">
+            <DependentUpon>AppHeader.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Remove="Settings\ApplicationOptions.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="..\..\docs\Third-Party-Dependencies.txt">
+            <Link>Third-Party-Dependencies.txt</Link>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+        </Content>
+    </ItemGroup>
+
+</Project>
