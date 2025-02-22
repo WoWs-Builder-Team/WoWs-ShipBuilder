@@ -1,7 +1,6 @@
 ﻿@page "/recommended-builds-editor"
 @using System.Collections.Concurrent
 @using System.Collections.Immutable
-@using System.Globalization
 @using Microsoft.Extensions.Hosting
 @using Microsoft.Extensions.Options
 @using WoWsShipBuilder.DataStructures
@@ -9,7 +8,6 @@
 @using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.Navigation
-@using WoWsShipBuilder.Features.Settings
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Features.ShipStats.Components
@@ -22,7 +20,6 @@
 @inherits ReactiveComponentBase<ShipBuildViewModel>
 
 @inject ILocalizer Localizer
-@inject AppSettings AppSettings
 @inject IOptions<CdnOptions> CdnOptions
 @inject IHostEnvironment Environment
 @inject MetricsService MetricsService
@@ -31,31 +28,11 @@
     <MudContainer Fixed Style="overflow-y: hidden; scrollbar-color: transparent transparent">
         <MudGrid Justify="Justify.Center" Spacing="2">
             <MudItem xs="12">
-                <MudTabs Elevation="2" Position="Position.Top" HideSlider Centered Outlined Border Style="margin-top: 17px;" Class="ship-stats-tabs mt-1" PanelClass="pt-2" @ref="sectionTabs" ActivePanelIndexChanged="@(async _ => await OnSectionPanelChanged())">
+                <MudTabs Elevation="2" KeepPanelsAlive Position="Position.Top" HideSlider Centered Outlined Border Style="margin-top: 17px;" Class="ship-stats-tabs mt-1" PanelClass="pt-2" @ref="sectionTabs" ActivePanelIndexChanged="@(async _ => await OnSectionPanelChanged())">
                     <MudTabPanel Text="@Localizer.SimpleAppLocalization(nameof(Translation.RecommendedBuildsEditor_BuildEditor))" Tag="@("BuildEditor")" ID="@("BuildEditor")" @key="@("BuildEditor")" Style="min-width: 100%;">
                         <MudGrid Justify="Justify.Center" Spacing="2">
                             <MudItem xs="12" md="2">
-                                <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center" Spacing="2">
-                                    <MudTextField Clearable Style="max-height: 52px" Class="mt-0" AutoFocus T="string" FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShip))" @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
-                                    <RecommendedBuildsShipFilter IsSmallScreen="IsSmallScreen()" ShipList="filteredRecommendedBuildsList" ApplyFilter="@(() => ApplyFilterToEditor())" SelectedCategories="selectedCategories" SelectedClasses="selectedClasses" SelectedNations="selectedNations" SelectedTiers="selectedTiers"/>
-                                </MudStack>
-                                <MudPaper Outlined Style="@(IsSmallScreen() ? "min-height: 300px; max-height: 300px; overflow: auto" : "height: 83vh; overflow: auto")">
-                                    <MudList Dense T="KeyValuePair<string, List<RecommendedBuild>>">
-                                        <MudVirtualize Items="filteredRecommendedBuildsList" Context="pair">
-                                            <MudListItem @key="@pair.Key" Value="@pair.Value" OnClick="@(_ => SelectShip(pair.Key))">
-                                                <MudStack Style="align-items: stretch" Class="my-n1" Spacing="1">
-                                                    <MudText>
-                                                        @Localizer.SimpleGameLocalization(pair.Key + "_FULL")
-                                                    </MudText>
-                                                    <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1">
-                                                        @(pair.Value.Count + " builds")
-                                                    </MudText>
-                                                </MudStack>
-                                            </MudListItem>
-                                            <MudDivider/>
-                                        </MudVirtualize>
-                                    </MudList>
-                                </MudPaper>
+                                <RecommendedBuildsShipSelector @ref="editorSelector" IsSmallScreen="IsSmallScreen()" List="recommendedBuilds" OnShipSelected="@(index => SelectShip(index))"/>
                             </MudItem>
                             <MudItem xs="12" md="10">
                                 <MudDynamicTabs ActivePanelIndexChanged="@OnActivePanelChanged" Centered Position="Position.Top" HideSlider CloseTab="@RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="py-6" Outlined Border Class="ship-stats-tabs">
@@ -162,24 +139,7 @@
                     <MudTabPanel Text="Publish" Tag="@("Publish")" ID="@("Publish")" @key="@("Publish")" Style="min-width: 100%;">
                         <MudGrid Justify="Justify.Center" Spacing="2">
                             <MudItem xs="12" md="2">
-                                <MudTextField Style="max-height: 52px" Class="mt-0" AutoFocus T="string" FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShip))" @bind-Text="@InputTextPublication" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
-                                <MudPaper Outlined Style="@(IsSmallScreen() ? "min-height: 300px; max-height: 300px; overflow: auto" : "height: 74vh; overflow: auto")">
-                                    <MudList Dense T="KeyValuePair<string, List<RecommendedBuild>>">
-                                        <MudVirtualize Items="filteredBuildsForPublication" Context="pair">
-                                            <MudListItem @key="@pair.Key" Value="@pair.Value" OnClick="@(async _ => await SelectShipPreview(pair.Key))">
-                                                <MudStack Style="align-items: stretch" Class="my-n1" Spacing="1">
-                                                    <MudText>
-                                                        @Localizer.SimpleGameLocalization(pair.Key + "_FULL")
-                                                    </MudText>
-                                                    <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1">
-                                                        @(pair.Value.Count + " builds")
-                                                    </MudText>
-                                                </MudStack>
-                                            </MudListItem>
-                                            <MudDivider/>
-                                        </MudVirtualize>
-                                    </MudList>
-                                </MudPaper>
+                                <RecommendedBuildsShipSelector @ref="publicationSelector" IsSmallScreen="IsSmallScreen()" List="buildsForPublication" OnShipSelected="@(async index => await SelectShipPreview(index))"/>
                                 <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth Class="mt-2" Style="height: 52px">
                                     Publish builds
                                 </MudButton>
@@ -283,6 +243,7 @@
 
 
 @code {
+    private RecommendedBuildsShipSelector editorSelector = null!;
     private MudBreakpointProvider breakpointProvider = null!;
     private MudTabs sectionTabs = null!;
     private MudTabs mudTabs = null!;
@@ -290,24 +251,10 @@
     private RecommendedBuild? selectedBuild;
     private List<RecommendedBuild> selectedShipRecommendedBuilds = [];
     private readonly Dictionary<string, List<RecommendedBuild>> recommendedBuilds = new();
-    private readonly Dictionary<string, List<RecommendedBuild>> filteredRecommendedBuildsList = new();
     private readonly ConcurrentDictionary<Guid, RecommendedBuildViewModel> vmCache = new();
     private bool updateTab;
-    private readonly List<int> selectedTiers = [];
-    private readonly List<ShipClass> selectedClasses = [];
-    private readonly List<Nation> selectedNations = [];
-    private readonly List<ShipCategory> selectedCategories = [];
-    private string inputText = string.Empty;
-    private string InputText
-    {
-        get => inputText;
-        set
-        {
-            inputText = value;
-            ApplyFilterToEditor();
-        }
-    }
 
+    private RecommendedBuildsShipSelector publicationSelector = null!;
     private readonly Dictionary<string, List<RecommendedBuild>> buildsForPublication = new();
     private ShipModuleViewModel shipModuleViewModel = null!;
     private SignalSelectorViewModel signalSelectorViewModel = null!;
@@ -317,24 +264,12 @@
     private Ship? selectedShipPreview;
     private List<RecommendedBuild> selectedShipRecommendedBuildsPreview = [];
     private MudTabs publicationTabs = null!;
-    private readonly Dictionary<string, List<RecommendedBuild>> filteredBuildsForPublication = new();
     private RecommendedBuild? selectedBuildPreview;
-    private string inputTextPublication = string.Empty;
-    private string InputTextPublication
-    {
-        get => inputTextPublication;
-        set
-        {
-            inputTextPublication = value;
-            ApplyFilterToPublication();
-        }
-    }
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
         GetAvailableBuilds();
-        ApplyFilterToEditor();
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -346,46 +281,6 @@
         }
 
         updateTab = false;
-    }
-
-    private void ApplyFilterToEditor() => ApplyFilter(recommendedBuilds, filteredRecommendedBuildsList, InputText);
-
-    private void ApplyFilterToPublication() => ApplyFilter(buildsForPublication, filteredBuildsForPublication, InputTextPublication);
-
-    private void ApplyFilter(Dictionary<string, List<RecommendedBuild>> sourceCollection, Dictionary<string, List<RecommendedBuild>> destinationCollection, string searchText)
-    {
-        var builds = sourceCollection
-            .Where(x => ShipFilter(x.Key, searchText))
-            .Where(x => !selectedTiers.Any() || selectedTiers.Contains(AppData.ShipSummaryMapper[x.Key].Tier))
-            .Where(x => !selectedCategories.Any() || selectedCategories.Contains(AppData.ShipSummaryMapper[x.Key].Category))
-            .Where(x => !selectedClasses.Any() || selectedClasses.Contains(AppData.ShipSummaryMapper[x.Key].ShipClass))
-            .Where(x => !selectedNations.Any() || selectedNations.Contains(AppData.ShipSummaryMapper[x.Key].Nation))
-            .OrderBy(x => Localizer.SimpleGameLocalization($"{x.Key}_FULL"));
-        destinationCollection.Clear();
-        foreach (var build in builds)
-        {
-            if (destinationCollection.TryGetValue(build.Key, out var value))
-            {
-                value.AddRange(build.Value);
-            }
-            else
-            {
-                destinationCollection.Add(build.Key, build.Value);
-            }
-        }
-
-        StateHasChanged();
-    }
-
-    private bool ShipFilter(string shipIndex, string textSearch)
-    {
-        var result = string.IsNullOrWhiteSpace(textSearch);
-        if (!result)
-        {
-            result = AppSettings.SelectedLanguage.CultureInfo.CompareInfo.IndexOf(Localizer.SimpleGameLocalization($"{shipIndex}_FULL"), textSearch, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1;
-        }
-
-        return result;
     }
 
     private void SelectShip(string shipIndex, RecommendedBuild? build = null)
@@ -678,7 +573,7 @@
                 }
             }
 
-            ApplyFilterToPublication();
+            publicationSelector.ApplyFilter();
 
             if (selectedShipPreview is not null)
             {
@@ -689,8 +584,7 @@
 
     private void EditSelectedBuild()
     {
-        InputText = Localizer.SimpleGameLocalization($"{selectedShipPreview!.Index}_FULL");
-        ApplyFilterToEditor();
+        editorSelector.InputText = Localizer.SimpleGameLocalization($"{selectedShipPreview!.Index}_FULL");
         SelectShip(selectedShipPreview!.Index, selectedBuildPreview);
         selectedBuild = selectedShipRecommendedBuilds.SingleOrDefault(x => x.BuildContainer.Id == (Guid)publicationTabs.ActivePanel!.ID!);
         sectionTabs.ActivatePanel("BuildEditor", true);

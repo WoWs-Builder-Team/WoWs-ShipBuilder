@@ -2,8 +2,6 @@
 @using System.Collections.Immutable
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.Builds.Components
-@using WoWsShipBuilder.Features.Settings
-@using System.Globalization
 @using System.Text
 @using Microsoft.Extensions.Hosting
 @using Microsoft.Extensions.Options
@@ -19,7 +17,6 @@
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 
 @inject ILocalizer Localizer
-@inject AppSettings AppSettings
 @inject IOptions<CdnOptions> CdnOptions
 @inject IHostEnvironment Environment
 @inject NavigationManager NavManager
@@ -28,25 +25,8 @@
 <MudBreakpointProvider @ref="breakpointProvider">
     <MudContainer Fixed>
         <MudGrid Justify="Justify.Center" Spacing="2">
-            <MudItem xs="12" md="2">
-                <MudTextField Style="max-height: 52px" Class="mt-4" AutoFocus T="string" FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShip))" @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
-                <MudPaper Outlined Style="@(IsSmallScreen() ? "min-height: 300px; max-height: 300px; overflow: auto" : "height: 84vh; overflow: auto")">
-                    <MudList Dense T="KeyValuePair<string, List<RecommendedBuild>>">
-                        <MudVirtualize Items="filteredRecommendedBuildsList" Context="pair">
-                            <MudListItem @key="@pair.Key" Value="@pair.Value" OnClick="@(async _ => await SelectShip(pair.Key))">
-                                <MudStack Style="align-items: stretch" Class="my-n1" Spacing="1">
-                                    <MudText>
-                                        @Localizer.SimpleGameLocalization(pair.Key + "_FULL")
-                                    </MudText>
-                                    <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1">
-                                        @(pair.Value.Count + " builds")
-                                    </MudText>
-                                </MudStack>
-                            </MudListItem>
-                            <MudDivider/>
-                        </MudVirtualize>
-                    </MudList>
-                </MudPaper>
+            <MudItem xs="12" md="2" Style="padding-top: 24px">
+                <RecommendedBuildsShipSelector IsSmallScreen="IsSmallScreen()" List="recommendedBuilds" OnShipSelected="@(index => SelectShip(index))"/>
             </MudItem>
             <MudItem xs="12" md="8">
                 <MudTabs Elevation="2" Position="Position.Top" HideSlider Centered Outlined Border="true" @ref="mudTabs" Style="margin-top: 17px;" Class="ship-stats-tabs" PanelClass="pt-2" ActivePanelIndexChanged="@(index => LoadShipViewModels(index))">
@@ -186,24 +166,13 @@
     private MudTabs mudTabs = null!;
     private MudBreakpointProvider breakpointProvider = null!;
     private readonly Dictionary<string, List<RecommendedBuild>> recommendedBuilds = new();
-    private readonly Dictionary<string, List<RecommendedBuild>> filteredRecommendedBuildsList = new();
     private List<RecommendedBuild> selectedShipRecommendedBuilds = [];
     private readonly List<RecommendedBuild> selectedBuilds = [];
     private Ship selectedShip = null!;
     private Guid currentActiveTabId;
     private string disclaimer = string.Empty;
     private string noBuild = string.Empty;
-    private string inputText = string.Empty;
     private readonly Guid noBuildTabId = Guid.NewGuid();
-    private string InputText
-    {
-        get => inputText;
-        set
-        {
-            inputText = value;
-            ApplyFilter();
-        }
-    }
 
     private ShipModuleViewModel shipModuleViewModel = null!;
     private SignalSelectorViewModel signalSelectorViewModel = null!;
@@ -211,23 +180,15 @@
     private UpgradePanelViewModelBase upgradePanelViewModel = null!;
     private ConsumableViewModel consumableViewModel = null!;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await base.OnInitializedAsync();
+        base.OnInitialized();
         InitializeRecommendedBuildsList();
         RecommendedBuild testBuild1 = new(new(AppData.ShipDictionary["PBSD105"],Build.CreateBuildFromString("PBSD105;PBUA403,PBUH405,PBUT404,PBUS404,PBUE403;PCM020;PBW102;21,39;PCY009,PCY014;PCEF019,PCEF009;4;test1"),Guid.Parse("142cb6c0-4a0e-4029-a8ff-4a8af26bc55d"), ImmutableArray<int>.Empty, false, null, ImmutableList<Modifier>.Empty), "Scam build !!!");
         RecommendedBuild testBuild2 = new(new(AppData.ShipDictionary["PGSC506"],Build.CreateBuildFromString("PGSC506;PGUA603,PGUH605,PGUT605,PGUS605,PGUE603;PCM012;PCW001;13,6;PCY009,PCY016,PCY012,PCY010;PCEF019;4;test2"),Guid.Parse("1e24a86b-d9f2-44f1-acf8-876da95a5b5b"), ImmutableArray<int>.Empty, false, null, ImmutableList<Modifier>.Empty), "Scam build !!!");
         RecommendedBuild testBuild3 = new(new(AppData.ShipDictionary["PBSD105"],Build.CreateBuildFromString("PBSD105;PBUA403,PBUH405,PBUT404,PBUS404,PBUE403;PCM069,PCM039,PCM037;PBW100;21,39,6,13;PCY009,PCY014;PCEF019,PCEF009,PCEF017,PCEF008;4;test3"),Guid.Parse("90f9938a-c2eb-45ba-89f3-22fbcd569587"), ImmutableArray<int>.Empty, false, null, ImmutableList<Modifier>.Empty), string.Empty);
         RecommendedBuild testBuild4 = new(new(AppData.ShipDictionary["PJSD708"],Build.CreateBuildFromString("PJSD708;PJUA781,PJUH782,PJUT781,PJUS781,PJUE781;;PCW001;19,28;PCY009,PCY014,PCY015;;4;test4"),Guid.Parse("fd2c876d-6e2b-4316-8399-e4575c60be7d"), ImmutableArray<int>.Empty, false, null, ImmutableList<Modifier>.Empty), "123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 123456 789 1234567890 ");
         AddRecommendedBuilds(new List<RecommendedBuild> { testBuild1, testBuild2, testBuild3, testBuild4 });
-        ApplyFilter();
-
-        NavManager.TryGetQueryString("build", out string buildIdFromUrl);
-        if (!string.IsNullOrEmpty(buildIdFromUrl))
-        {
-            var recommendedBuild = recommendedBuilds.SelectMany(x => x.Value).First(x => x.BuildContainer.Id.ToString().Equals(buildIdFromUrl));
-            await SelectShip(recommendedBuild.BuildContainer.Build!.ShipIndex, recommendedBuild);
-        }
 
         StringBuilder disclaimerBuilder = new();
         disclaimerBuilder.AppendLine("The numbers on the skills indicate the recommended pick order. We strongly recommend that you strictly stick to the pick order of at least the first 5 skills.");
@@ -259,38 +220,16 @@
         }
     }
 
-    private void ApplyFilter()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var builds = recommendedBuilds
-            .Where(x => ShipFilter(x.Key, InputText))
-            .OrderBy(x => Localizer.SimpleGameLocalization($"{x.Key}_FULL"));
-        filteredRecommendedBuildsList.Clear();
-        AddFilteredRecommendedBuilds(builds);
-        StateHasChanged();
-    }
-
-    private bool ShipFilter(string shipIndex, string textSearch)
-    {
-        var result = string.IsNullOrWhiteSpace(textSearch);
-        if (!result)
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
         {
-            result = AppSettings.SelectedLanguage.CultureInfo.CompareInfo.IndexOf(Localizer.SimpleGameLocalization($"{shipIndex}_FULL"), textSearch, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1;
-        }
-
-        return result;
-    }
-
-    private void AddFilteredRecommendedBuilds(IEnumerable<KeyValuePair<string, List<RecommendedBuild>>> builds)
-    {
-        foreach (var build in builds)
-        {
-            if (filteredRecommendedBuildsList.TryGetValue(build.Key, out var value))
+            NavManager.TryGetQueryString("build", out string buildIdFromUrl);
+            if (!string.IsNullOrEmpty(buildIdFromUrl))
             {
-                value.AddRange(build.Value);
-            }
-            else
-            {
-                filteredRecommendedBuildsList.Add(build.Key, build.Value);
+                var recommendedBuild = recommendedBuilds.SelectMany(x => x.Value).First(x => x.BuildContainer.Id.ToString().Equals(buildIdFromUrl));
+                await SelectShip(recommendedBuild.BuildContainer.Build!.ShipIndex, recommendedBuild);
             }
         }
     }
