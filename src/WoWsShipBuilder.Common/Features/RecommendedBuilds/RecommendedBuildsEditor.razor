@@ -36,7 +36,7 @@
                         <MudGrid Justify="Justify.Center" Spacing="2">
                             <MudItem xs="12" md="2">
                                 <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center" Spacing="2">
-                                    <MudTextField Style="max-height: 52px" Class="mt-0" AutoFocus T="string" FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShip))" @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
+                                    <MudTextField Clearable Style="max-height: 52px" Class="mt-0" AutoFocus T="string" FullWidth Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShip))" @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
                                     <RecommendedBuildsShipFilter IsSmallScreen="IsSmallScreen()" ShipList="filteredRecommendedBuildsList" ApplyFilter="@(() => ApplyFilterToEditor())" SelectedCategories="selectedCategories" SelectedClasses="selectedClasses" SelectedNations="selectedNations" SelectedTiers="selectedTiers"/>
                                 </MudStack>
                                 <MudPaper Outlined Style="@(IsSmallScreen() ? "min-height: 300px; max-height: 300px; overflow: auto" : "height: 83vh; overflow: auto")">
@@ -393,7 +393,7 @@
         selectedShip = AppData.ShipDictionary[shipIndex];
         selectedShipRecommendedBuilds = recommendedBuilds[shipIndex];
 
-        if (build is not null && !selectedShipRecommendedBuilds.Contains(build))
+        if (build is not null && selectedShipRecommendedBuilds.All(x => x.BuildContainer.Id != build.BuildContainer.Id))
         {
             selectedShipRecommendedBuilds.Add(build);
             if (vmCache.TryGetValue(build.BuildContainer.Id, out var vm) && vm.IsDeleted)
@@ -475,6 +475,18 @@
             if (vm.IsNew)
             {
                 vmCache.TryRemove(selectedBuild!.BuildContainer.Id, out _);
+                if (selectedBuildPreview?.BuildContainer.Ship.Index == selectedBuild!.BuildContainer.Ship.Index)
+                {
+                    selectedShipRecommendedBuildsPreview.Remove(selectedBuildPreview);
+                    if (!selectedShipRecommendedBuildsPreview.Any())
+                    {
+                        selectedShipPreview = null;
+                    }
+                    else
+                    {
+                        selectedBuildPreview = selectedShipRecommendedBuildsPreview.First();
+                    }
+                }
             }
             else
             {
