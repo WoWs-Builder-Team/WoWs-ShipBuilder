@@ -200,10 +200,10 @@
         }
     </div>
 </MudStack>
-<MudPaper Outlined Style="@(IsSmallScreen ? "min-height: 300px; max-height: 300px; overflow: auto" : "height: 83vh; overflow: auto")">
+<MudPaper Outlined Style="@(IsSmallScreen ? "min-height: 300px; max-height: 300px; overflow: auto" : $"height: {MaxHeight}; overflow: auto")">
     <MudList Dense T="KeyValuePair<string, List<RecommendedBuild>>">
         <MudVirtualize Items="filteredRecommendedBuildsList" Context="pair">
-            <MudListItem @key="@pair.Key" Value="@pair.Value" OnClick="@(() => SelectShip(pair.Key))">
+            <MudListItem @key="@pair.Key" Value="@pair.Value" OnClick="@(async () => await OnShipSelected.InvokeAsync(pair.Key))">
                 <MudStack Style="align-items: stretch" Class="my-n1" Spacing="1">
                     <MudText>
                         @Localizer.SimpleGameLocalization(pair.Key + "_FULL")
@@ -225,6 +225,9 @@
 
     [Parameter]
     public bool IsOpen { get; set; }
+
+    [Parameter]
+    public string MaxHeight { get; set; } = "82vh";
 
     [Parameter, EditorRequired]
     public bool IsSmallScreen { get; set; }
@@ -267,7 +270,7 @@
         ApplyFilter();
     }
 
-    public void ApplyFilter()
+    private void ApplyFilter()
     {
         var builds = List
             .Where(x => ShipFilter(x.Key, InputText))
@@ -302,8 +305,6 @@
 
         return result;
     }
-
-    private async Task SelectShip(string shipIndex) => await OnShipSelected.InvokeAsync(shipIndex);
 
     private static Color GetColorFromBool(bool active)
     {
