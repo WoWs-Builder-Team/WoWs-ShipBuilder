@@ -63,7 +63,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{DDDCA0
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{85A47AC3-E85C-4E1C-B909-85D88E89DDDC}"
 	ProjectSection(SolutionItems) = preProject
-		installer\BuildVelopackRelease.ps1 = installer\BuildVelopackRelease.ps1
+		build\BuildVelopackRelease.ps1 = build\BuildVelopackRelease.ps1
 	EndProjectSection
 EndProject
 Global
