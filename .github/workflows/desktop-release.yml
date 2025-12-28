@@ -14,11 +14,11 @@ jobs:
       current_version: ${{ steps.version-selector.outputs.CURRENT_VERSION }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           global-json-file: global.json
       - name: Create application config
@@ -79,9 +79,9 @@ jobs:
       RELEASE_VERSION: ${{ needs.build-and-release.outputs.current_version }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Create Sentry release
-        uses: getsentry/action-release@v1
+        uses: getsentry/action-release@v3
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_RELEASE_AUTH }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
