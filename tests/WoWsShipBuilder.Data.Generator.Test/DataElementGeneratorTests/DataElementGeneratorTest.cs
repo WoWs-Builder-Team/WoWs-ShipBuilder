@@ -49,7 +49,7 @@ public partial class DataElementGeneratorTest
                     (typeof(DataElementGenerator.DataElementGenerator), "DataElementFilteringAttribute.g.cs", AttributeHelper.DataElementFilteringAttribute),
                     (typeof(DataElementGenerator.DataElementGenerator), "TestDataContainer.g.cs", expected),
                 },
-                ReferenceAssemblies = ReferenceAssemblies.Net.Net90,
+                ReferenceAssemblies = ReferenceAssemblies.Net.Net100,
                 AdditionalReferences = { MetadataReference.CreateFromFile(typeof(IDataElement).GetTypeInfo().Assembly.Location) },
             },
         };
