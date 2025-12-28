@@ -123,7 +123,7 @@
 
         if (!updateTab) return;
         Logger.LogDebug("Tab update requested");
-        mudTabs.ActivatePanel(selectedTabId, true);
+        await mudTabs.ActivatePanelAsync(selectedTabId, true);
         updateTab = false;
         StateHasChanged();
     }
@@ -190,7 +190,7 @@
         return update;
     }
 
-    private void RemoveTab(MudTabPanel panel)
+    private async Task RemoveTab(MudTabPanel panel)
     {
         var id = (Guid) panel.Tag!;
         var ship = shipContainers.First(x => x.Id.Equals(id));
@@ -206,11 +206,11 @@
             // Finally, if the list is empty, we check if the new ship tab is present. If it is, we select that one, otherwise we do nothing.
             if (shipContainers.Count > index && index != -1)
             {
-                mudTabs.ActivatePanel(shipContainers[index].Id);
+                await mudTabs.ActivatePanelAsync(shipContainers[index].Id);
             }
             else if (shipContainers.Count > 0)
             {
-                mudTabs.ActivatePanel(shipContainers.Last().Id);
+                await mudTabs.ActivatePanelAsync(shipContainers.Last().Id);
             }
         }
 

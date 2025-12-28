@@ -1,23 +1,23 @@
 ﻿{
-  "version": "1.0",
+  "version": "3.0",
   "defaultProvider": "jsdelivr",
   "libraries": [
     {
-      "library": "chart.js@4.4.0",
+      "library": "chart.js@4.5.1",
       "destination": "wwwroot/lib/chartJs/",
       "files": [
         "dist/chart.umd.min.js"
       ]
     },
     {
-      "library": "chartjs-plugin-autocolors@0.2.2",
+      "library": "chartjs-plugin-autocolors@0.3.1",
       "destination": "wwwroot/lib/autocolor/",
       "files":[
         "dist/chartjs-plugin-autocolors.min.js"
       ]
     },
     {
-      "library": "dom-to-image-more@3.2.0",
+      "library": "dom-to-image-more@3.7.2",
       "destination": "wwwroot/lib/dom-to-image-more/",
       "files": [
         "dist/dom-to-image-more.min.js"

@@ -4,6 +4,11 @@
     const rulersOffset = 20;
     for(const key in data){
         const canvas = document.getElementById(key);
+        if (canvas === null) {
+            console.log(`Cannot find canvas for id ${key}`);
+            continue;
+        }
+
         const ctx = canvas.getContext("2d");
 
         const drawingData = data[key];
@@ -38,13 +43,13 @@
         if(canvas.height < minSize){
             canvas.height = minSize;
         }
-        
+
         canvas.style.width = canvas.width + "px";
         canvas.style.height = canvas.height + "px";
-        
+
         canvas.width *= ratio;
         canvas.height *= ratio;
-        
+
         const width = canvas.width / ratio;
         const height = canvas.height / ratio;
         const centerX = width / 2;
@@ -148,13 +153,13 @@
         ctx.moveTo(canvasRight + rulersOffset + 10, innerEllipseBottom);
         ctx.lineTo(canvasRight + rulersOffset - 10, innerEllipseBottom);
         ctx.stroke();
-        
+
         ctx.font = "14px Roboto";
         ctx.fillStyle = "grey";
         ctx.textBaseline = "top";
         ctx.textAlign = "center";
         ctx.fillText(bottomText, centerX, canvasBottom + rulersOffset + 10);
-        
+
         ctx.textBaseline = "bottom";
         ctx.translate(canvasLeft - rulersOffset - 10, centerY);
         ctx.rotate(-Math.PI / 2);

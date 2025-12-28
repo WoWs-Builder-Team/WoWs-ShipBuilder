@@ -53,7 +53,7 @@
                             {
                                 int index = i;
                                 var shipData = Ships[index];
-                                <MudListItem Value="index" OnClick="@(() => desktopTabs.ActivatePanel(index))">
+                                <MudListItem Value="index" OnClick="@(async () => await desktopTabs.ActivatePanelAsync(index))">
                                     <MudText Color="Color.Secondary">
                                         @Localizer.GetGameLocalization(Ships[index].Ship.Index + "_FULL").Localization
                                     </MudText>
