@@ -159,3 +159,6 @@ max_line_length = 160
 [*.{yaml,yml,json,props,targets,xml,resx}]
 indent_size = 2
 tab_width = 2
+
+[dependabot.yml]
+end_of_line = lf
