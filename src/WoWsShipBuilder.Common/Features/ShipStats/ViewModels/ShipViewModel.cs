@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Reactive.Disposables;
+using System.Reactive.Disposables.Fluent;
 using System.Reactive.Linq;
 using DynamicData.Binding;
 using Microsoft.Extensions.Logging;

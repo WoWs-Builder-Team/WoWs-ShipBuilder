@@ -26,7 +26,7 @@ public static class LoggingSetup
         };
         config.AddTarget("logfile", target);
         config.LoggingRules.Add(new LoggingRule("*", LogLevel.Info, target));
-        Trace.Listeners.Add(new NLogTraceListener());
+        Trace.Listeners.Add(new DefaultTraceListener());
 
 #if DEBUG
         var debugTarget = new FileTarget

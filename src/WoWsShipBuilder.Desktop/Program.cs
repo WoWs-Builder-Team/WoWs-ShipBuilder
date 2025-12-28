@@ -2,13 +2,14 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
-using Avalonia.ReactiveUI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
+using ReactiveUI.Avalonia;
 using Sentry;
 using Velopack;
+using Velopack.Logging;
 using WoWsShipBuilder.Desktop.Infrastructure;
 using WoWsShipBuilder.Desktop.Infrastructure.StaticConfiguration;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
@@ -29,10 +30,26 @@ internal sealed class Program
         using var app = builder.Build();
         if (OperatingSystem.IsWindows())
         {
-            VelopackApp.Build().Run(app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("Velopack"));
+            var velopackLogger = new VelopackLogger(app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("Velopack"));
+            VelopackApp.Build().SetLogger(velopackLogger).Run();
         }
 
         RunProgram(app, args).GetAwaiter().GetResult();
+    }
+
+    // Avalonia configuration, don't remove; also used by visual designer.
+    public static AppBuilder BuildAvaloniaApp(IServiceProvider services)
+    {
+        return AppBuilder.Configure<App>(() => new() { Services = services })
+            .UsePlatformDetect()
+            .LogToTrace()
+            .UseSkia()
+            .UseReactiveUI();
+    }
+
+    public static AppBuilder BuildAvaloniaApp()
+    {
+        return BuildAvaloniaApp(CreatePreviewServiceProvider());
     }
 
     // Initialization code. Don't use any Avalonia, third-party APIs or any
@@ -73,18 +90,27 @@ internal sealed class Program
         }
     }
 
-    // Avalonia configuration, don't remove; also used by visual designer.
-    public static AppBuilder BuildAvaloniaApp(IServiceProvider services)
-        => AppBuilder.Configure<App>(() => new() { Services = services })
-            .UsePlatformDetect()
-            .LogToTrace()
-            .UseSkia()
-            .UseReactiveUI();
-
-    public static AppBuilder BuildAvaloniaApp() => BuildAvaloniaApp(CreatePreviewServiceProvider());
-
     private static IServiceProvider CreatePreviewServiceProvider()
     {
         return new ServiceCollection().AddLogging(builder => builder.ClearProviders()).BuildServiceProvider();
+    }
+
+    private sealed class VelopackLogger(ILogger logger) : IVelopackLogger
+    {
+        public void Log(VelopackLogLevel logLevel, string? message, Exception? exception)
+        {
+            var level = logLevel switch
+            {
+                VelopackLogLevel.Trace => LogLevel.Trace,
+                VelopackLogLevel.Debug => LogLevel.Debug,
+                VelopackLogLevel.Information => LogLevel.Information,
+                VelopackLogLevel.Warning => LogLevel.Warning,
+                VelopackLogLevel.Error => LogLevel.Error,
+                VelopackLogLevel.Critical => LogLevel.Critical,
+                _ => throw new ArgumentOutOfRangeException(nameof(logLevel), logLevel, null),
+            };
+
+            logger.Log(level, exception, "{Message}", message);
+        }
     }
 }

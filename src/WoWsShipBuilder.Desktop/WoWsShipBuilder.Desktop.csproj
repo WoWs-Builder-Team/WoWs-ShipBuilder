@@ -15,7 +15,8 @@
         <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <RootNamespace>WoWsShipBuilder.Desktop</RootNamespace>
-        <VersionPrefix>2025.1.0</VersionPrefix>
+        <VersionPrefix>2026.1.0</VersionPrefix>
+        <UseWpf>true</UseWpf>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -36,14 +37,14 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.WindowsForms" Version="9.0.12" />
-        <PackageReference Include="Avalonia" Version="11.2.3" />
-        <PackageReference Include="Avalonia.Desktop" Version="11.2.3" />
-        <PackageReference Include="Avalonia.Diagnostics" Version="11.2.3" />
-        <PackageReference Include="Avalonia.ReactiveUI" Version="11.2.3" />
-        <PackageReference Include="Avalonia.Themes.Simple" Version="11.2.3" />
-        <PackageReference Include="NLog.Extensions.Logging" Version="5.3.15" />
-        <PackageReference Include="Sentry.NLog" Version="4.13.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.WindowsForms" Version="10.0.20" />
+        <PackageReference Include="Avalonia" Version="11.3.10" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.3.10" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="11.3.10" />
+        <PackageReference Include="Avalonia.Themes.Simple" Version="11.3.10" />
+        <PackageReference Include="ReactiveUI.Avalonia" Version="11.3.8" />
+        <PackageReference Include="NLog.Extensions.Logging" Version="6.1.0" />
+        <PackageReference Include="Sentry.NLog" Version="6.0.0" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -52,8 +53,8 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="21.1.7" />
-        <PackageReference Include="Velopack" Version="0.0.1015" />
+        <PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="22.1.0" />
+        <PackageReference Include="Velopack" Version="0.0.1298" />
     </ItemGroup>
 
     <ItemGroup>

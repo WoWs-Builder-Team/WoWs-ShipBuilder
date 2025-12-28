@@ -2,6 +2,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Input.Platform;
 using WoWsShipBuilder.Infrastructure.DataTransfer;
 
 namespace WoWsShipBuilder.Desktop.Infrastructure;
@@ -12,7 +13,7 @@ public class AvaloniaClipboardService : IClipboardService
 
     public async Task<string> GetTextAsync()
     {
-        return await MainWindow!.Clipboard!.GetTextAsync() ?? string.Empty;
+        return await (MainWindow?.Clipboard?.TryGetTextAsync() ?? Task.FromResult<string?>(null)) ?? string.Empty;
     }
 
     public async Task SetTextAsync(string text)

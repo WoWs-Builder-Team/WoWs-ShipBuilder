@@ -23,9 +23,9 @@ $iconPath = "src/WoWsShipBuilder.Desktop/Assets/ShipBuilderIcon_bg.ico"
 if ($signingCert) {
     Write-Output "Signing release"
     $absoluteCertificatePath = Resolve-Path $signingCert
-    vpk pack -o "artifacts/releases" --icon "$iconPath" --splashImage "installer/SplashScreen.gif" --packId "WoWsShipBuilder" --packVersion "$version" --packDir "$publishDir" --mainExe "WoWsShipBuilder.exe" --releaseNotes "docs/ReleaseNotes.md" --signParams "/a /f $absoluteCertificatePath /p $signingPassword /fd sha256 /tr http://timestamp.digicert.com /td sha256"
+    vpk pack -o "artifacts/releases" --icon "$iconPath" --splashImage "build/SplashScreen.gif" --packId "WoWsShipBuilder" --packVersion "$version" --packDir "$publishDir" --mainExe "WoWsShipBuilder.exe" --releaseNotes "docs/ReleaseNotes.md" --signParams "/a /f $absoluteCertificatePath /p $signingPassword /fd sha256 /tr http://timestamp.digicert.com /td sha256"
 } else {
-    vpk pack -o "artifacts/releases" --icon "$iconPath" --splashImage "installer/SplashScreen.gif" --packId "WoWsShipBuilder" --packVersion "$version" --packDir "$publishDir" --mainExe "WoWsShipBuilder.exe" --releaseNotes "docs/ReleaseNotes.md"
+    vpk pack -o "artifacts/releases" --icon "$iconPath" --splashImage "build/SplashScreen.gif" --packId "WoWsShipBuilder" --packVersion "$version" --packDir "$publishDir" --mainExe "WoWsShipBuilder.exe" --releaseNotes "docs/ReleaseNotes.md"
 }
 
 Write-Output "Velopack build complete"

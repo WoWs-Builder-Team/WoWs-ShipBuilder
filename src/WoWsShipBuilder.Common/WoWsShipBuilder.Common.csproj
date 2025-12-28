@@ -13,9 +13,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
+        <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="3.0.71" />
         <PackageReference Include="MudBlazor" Version="8.0.0" />
-        <PackageReference Include="ReactiveUI.Blazor" Version="20.1.63" />
+        <PackageReference Include="ReactiveUI.Blazor" Version="22.3.1" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -25,7 +25,7 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="WoWsShipBuilder.DataStructures" Version="6.0.0" />
-        <PackageReference Include="ReactiveUI" Version="20.1.63" />
+        <PackageReference Include="ReactiveUI" Version="22.3.1" />
     </ItemGroup>
 
     <ItemGroup>
