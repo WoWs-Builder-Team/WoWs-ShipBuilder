@@ -484,7 +484,7 @@
 
     private async Task LoadBuild()
     {
-        if (!string.IsNullOrEmpty(LinkShorteningOptions.Value.UriPrefix) && buildString.Contains(LinkShorteningOptions.Value.UriPrefix + '/'))
+        if (!string.IsNullOrEmpty(LinkShorteningOptions.Value.Domain) && buildString.Contains(LinkShorteningOptions.Value.Domain + '/'))
         {
             var fullUrl = await BuildValidation.RetrieveLongUrlFromShortLink(buildString) ?? string.Empty;
             buildString = fullUrl;

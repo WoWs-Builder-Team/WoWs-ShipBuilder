@@ -369,7 +369,7 @@
 
         inputBuildStringCache = buildStr;
 
-        var validationResult = await BuildValidation.ValidateBuildString(buildStr, SelectedContainer.Ship.Index, Localizer, LinkShorteningOptions.Value.UriPrefix);
+        var validationResult = await BuildValidation.ValidateBuildString(buildStr, SelectedContainer.Ship.Index, Localizer, LinkShorteningOptions.Value.Domain);
 
         buildString = validationResult.ValidatedBuildString;
 

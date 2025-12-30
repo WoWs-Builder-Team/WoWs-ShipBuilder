@@ -38,7 +38,7 @@ public static class ServiceCollectionExtensions
             }));
         }
 
-        services.AddSingleton<ILinkShortener, FirebaseLinkShortener>();
+        services.AddSingleton<ILinkShortener, ShlinkLinkShortener>();
 
         services.AddScoped<ILocalizer, Localizer>();
         services.AddScoped<AppSettings>(_ => new() { FittingToolSelectorDisabled = true });

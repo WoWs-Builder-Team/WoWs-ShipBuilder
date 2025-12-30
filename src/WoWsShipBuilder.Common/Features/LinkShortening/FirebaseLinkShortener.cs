@@ -8,6 +8,7 @@ using WoWsShipBuilder.Features.Builds;
 
 namespace WoWsShipBuilder.Features.LinkShortening;
 
+[Obsolete("Firebase dynamic links are no longer supported")]
 public sealed class FirebaseLinkShortener : ILinkShortener, IDisposable
 {
     private readonly HttpClient httpClient;
@@ -52,7 +53,7 @@ public sealed class FirebaseLinkShortener : ILinkShortener, IDisposable
         return await this.SendRequestAsync(request);
     }
 
-    public async Task<ShorteningResult> CreateShortLink(string link)
+    public async Task<ShorteningResult> CreateShortLink(string link, string buildName)
     {
         this.logger.LogInformation("Creating short link for link {Link}", link);
         var request = new DynamicLinkRequest(new(this.options.UriPrefix, link), new(LinkSuffixType.SHORT));

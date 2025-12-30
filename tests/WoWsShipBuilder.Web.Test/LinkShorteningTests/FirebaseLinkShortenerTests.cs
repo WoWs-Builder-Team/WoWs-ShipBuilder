@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -11,6 +12,8 @@ using WoWsShipBuilder.Features.LinkShortening;
 
 namespace WoWsShipBuilder.Web.Test.LinkShorteningTests;
 
+[Obsolete("Firebase dynamic links are no longer supported")]
+[Ignore("Firebase dynamic links are no longer supported")]
 [TestFixture]
 public class FirebaseLinkShortenerTests
 {
@@ -28,7 +31,7 @@ public class FirebaseLinkShortenerTests
         var logger = new Mock<ILogger<FirebaseLinkShortener>>();
         var linkShortener = new FirebaseLinkShortener(mockHttp.ToHttpClient(), Options.Create(options), logger.Object);
 
-        var result = await linkShortener.CreateShortLink(testLink);
+        var result = await linkShortener.CreateShortLink(testLink, string.Empty);
 
         result.Link.Should().NotBeEmpty();
         result.Shortened.Should().BeTrue();
@@ -52,10 +55,10 @@ public class FirebaseLinkShortenerTests
 
         for (var i = 0; i < 5; i++)
         {
-            await linkShortener.CreateShortLink(testLink);
+            await linkShortener.CreateShortLink(testLink, string.Empty);
         }
 
-        var result = await linkShortener.CreateShortLink(testLink);
+        var result = await linkShortener.CreateShortLink(testLink, string.Empty);
 
         result.Link.Should().NotBeEmpty();
         result.Shortened.Should().BeFalse();
@@ -81,10 +84,10 @@ public class FirebaseLinkShortenerTests
         var sw = Stopwatch.StartNew();
         for (var i = 0; i < 5; i++)
         {
-            await linkShortener.CreateShortLink(testLink);
+            await linkShortener.CreateShortLink(testLink, string.Empty);
         }
 
-        var result = await linkShortener.CreateShortLink(testLink);
+        var result = await linkShortener.CreateShortLink(testLink, string.Empty);
         sw.Stop();
 
         sw.ElapsedMilliseconds.Should().BeGreaterThanOrEqualTo(1000);

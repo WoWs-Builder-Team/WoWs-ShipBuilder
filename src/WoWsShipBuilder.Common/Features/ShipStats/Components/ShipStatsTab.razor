@@ -457,7 +457,7 @@ else if (ViewModel is not null)
             var buildUrl = $"{urlBase}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(build.CreateShortStringFromBuild())}";
             if (LinkShortener.IsAvailable)
             {
-                var shorteningResult = await LinkShortener.CreateShortLink(buildUrl);
+                var shorteningResult = await LinkShortener.CreateShortLink(buildUrl, BuildName);
                 if (shorteningResult.Shortened)
                 {
                     buildUrl = shorteningResult.Link;

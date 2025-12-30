@@ -56,7 +56,7 @@
 
         inputBuildCache = buildStr;
 
-        var validationResult = await BuildValidation.ValidateBuildString(buildStr, SelectedShipIndex, Localizer, LinkShorteningOptions.Value.UriPrefix);
+        var validationResult = await BuildValidation.ValidateBuildString(buildStr, SelectedShipIndex, Localizer, LinkShorteningOptions.Value.Domain);
 
         buildString = validationResult.ValidatedBuildString;
 

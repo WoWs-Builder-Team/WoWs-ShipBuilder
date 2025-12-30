@@ -8,5 +8,5 @@ public interface ILinkShortener
 
     Task<ShorteningResult> CreateLinkForBuild(Build build);
 
-    Task<ShorteningResult> CreateShortLink(string link);
+    Task<ShorteningResult> CreateShortLink(string link, string buildName);
 }
