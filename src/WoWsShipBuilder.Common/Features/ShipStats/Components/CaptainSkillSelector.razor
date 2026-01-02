@@ -2,7 +2,6 @@
 @using System.Text
 @using WoWsShipBuilder.Features.ShipStats.ViewModels
 @using WoWsShipBuilder.DataStructures.Captain
-@using WoWsShipBuilder.Infrastructure.ApplicationTheme
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
 @using WoWsShipBuilder.Infrastructure.Utility
@@ -10,7 +9,6 @@
 @inject ILocalizer Localizer
 @inject IDialogService DialogService
 @inject MetricsService MetricsService
-@inject ThemeManager ThemeManager
 
 @if (ViewModel is not null)
 {
@@ -45,7 +43,7 @@
                 <MudItem @key="skill.Skill.SkillNumber" Class="d-flex justify-center mb-n3" xs="2" Style="@(GetOrder(skill.SkillPosition) + GetSubFix())">
                     <MudTooltip Placement="Placement.Right" Color="Color.Transparent" Delay="350">
                         <ChildContent>
-                            <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" Bordered Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">
+                            <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@SpecialIconPath" Bordered Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">
                                 <MudBadge Content="@(ViewModel.SkillOrderList.IndexOf(skill.Skill) + 1)" Color="Color.Error" Bordered Origin="Origin.TopLeft" Overlap="true" BadgeClass="skill-order-number" Visible="@ShouldShowBadge(skill.Skill)">
                                     <MudButton Class="pa-2" Variant="Variant.Outlined" Color="@(GetColorFromState(skill))" OnClick="@(() => OnSkillClick(skill))" Style="@GetImageBreakpointStyle()">
                                         <MudImage Width="@GetImageSize()" Height="@GetImageSize()" ObjectFit="ObjectFit.ScaleDown" Src="@("/_content/WoWsShipBuilder.Common/assets/Skills/" + ToSnakeCase(skillName) + ".png")" Class="image-filter-invert-50"/>
@@ -127,7 +125,7 @@
     [CascadingParameter]
     private Breakpoint Breakpoint { get; set; }
 
-    private string specialIconPath = @"<path style=""fill:#ffffff;fill-opacity:1;"" d=""m 9.1521727,1.5579681 h 5.6956543 v 7.5942036 h 7.594205 v 5.6956533 h -7.594205 v 7.594206 H 9.1521727 V 14.847825 H 1.5579678 V 9.1521717 h 7.5942049 z""/>";
+    private const string SpecialIconPath = """<path style="fill:#ffffff;fill-opacity:1;" d="m 9.1521727,1.5579681 h 5.6956543 v 7.5942036 h 7.594205 v 5.6956533 h -7.594205 v 7.594206 H 9.1521727 V 14.847825 H 1.5579678 V 9.1521717 h 7.5942049 z"/>""";
 
     private static string ToSnakeCase(string camelCaseString)
     {
@@ -160,23 +158,14 @@
         return sb.ToString();
     }
 
-    private int GetColumnSize(int column)
+    private static string GetOrder(SkillPosition single)
     {
-        if (ShipClass != ShipClass.Submarine)
-        {
-            return 2;
-        }
-        return column is 0 or 4 ? 3 : 2;
+        return $"order: {(single.Tier * 10) + single.XPosition};";
     }
 
     private string GetSubFix()
     {
         return ShipClass != ShipClass.Submarine ? string.Empty : "flex-basis: 20%; max-width: 20%;";
-    }
-
-    private string GetOrder(SkillPosition single)
-    {
-        return $"order: {(single.Tier * 10) + single.XPosition};";
     }
 
     private bool ShouldShowBadge(Skill skill)
@@ -207,31 +196,20 @@
 
     private int GetImageSize()
     {
-        switch (Breakpoint)
+        return Breakpoint switch
         {
-            case Breakpoint.Xs:
-            case Breakpoint.Sm:
-                return 25;
-            default:
-                return 40;
-        }
+            Breakpoint.Xs or Breakpoint.Sm => 25,
+            _ => 40,
+        };
     }
 
     private string GetImageBreakpointStyle()
     {
-        switch (Breakpoint)
+        return Breakpoint switch
         {
-            case Breakpoint.Xs:
-            case Breakpoint.Sm:
-                return "min-width: 40px; width: 40px; height: 40px;";
-            default:
-                return "min-width: 55px; width: 55px; height: 55px;";
-        }
-    }
-
-    private string GetMudPaperBorderColor(SkillItemViewModel skillItem)
-    {
-        return " border-color: " + (ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? "#BC0606" : "var(--mud-palette-text-disabled)") + ";";
+            Breakpoint.Xs or Breakpoint.Sm => "min-width: 40px; width: 40px; height: 40px;",
+            _ => "min-width: 55px; width: 55px; height: 55px;",
+        };
     }
 
     private async Task OpenSkillDialog()

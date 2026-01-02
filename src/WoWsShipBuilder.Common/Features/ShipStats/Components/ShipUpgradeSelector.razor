@@ -16,7 +16,7 @@
         <MudStack Row="true" Justify="Justify.Center" >
             @foreach (List<Modernization> columnModernizations in ViewModel.AvailableModernizationList)
             {
-                <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" PopoverClass="mt-1" ListClass="pa-0" >
+                <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" PopoverClass="mt-1" ListClass="pa-0 upgrade-popup-no-min-width">
                     <ActivatorContent>
                         <MudTooltip Color="Color.Transparent" Placement="Placement.Right" Delay="350">
                             <ChildContent>

@@ -20,9 +20,19 @@ public class Build
 
     private const char ListSeparator = ',';
 
-    // TODO: make private when updating to .NET 8
+#pragma warning disable S107
     [JsonConstructor]
-    public Build(string buildName, string shipIndex, Nation nation, ImmutableArray<string> modules, ImmutableArray<string> upgrades, ImmutableArray<string> consumables, string captain, ImmutableArray<int> skills, ImmutableArray<string> signals, int buildVersion = CurrentBuildVersion)
+    private Build(
+        string buildName,
+        string shipIndex,
+        Nation nation,
+        ImmutableArray<string> modules,
+        ImmutableArray<string> upgrades,
+        ImmutableArray<string> consumables,
+        string captain,
+        ImmutableArray<int> skills,
+        ImmutableArray<string> signals,
+        int buildVersion = CurrentBuildVersion)
     {
         this.BuildName = buildName ?? throw new ArgumentNullException(nameof(buildName));
         this.ShipIndex = shipIndex ?? throw new ArgumentNullException(nameof(shipIndex));
@@ -37,6 +47,7 @@ public class Build
 
         this.Hash = CreateHash(this);
     }
+#pragma warning restore S107
 
     public Build(string buildName, string shipIndex, Nation nation, IEnumerable<string> modules, IEnumerable<string> upgrades, IEnumerable<string> consumables, string captain, IEnumerable<int> skills, IEnumerable<string> signals)
         : this(buildName, shipIndex, nation, modules.ToImmutableArray(), upgrades.ToImmutableArray(), consumables.ToImmutableArray(), captain, skills.ToImmutableArray(), signals.ToImmutableArray())
@@ -150,13 +161,13 @@ public class Build
         if (oldBuild.BuildVersion < 3)
         {
             oldBuild.Signals = ReduceToIndex(oldBuild.Signals).ToImmutableArray();
-            logger.LogDebug("Reducing signal names to index for build {}", oldBuild.Hash);
+            logger.LogDebug("Reducing signal names to index for build {OldBuildHash}", oldBuild.Hash);
         }
 
         if (oldBuild.BuildVersion < 4)
         {
             oldBuild.Modules = ReduceToIndex(oldBuild.Modules).ToImmutableArray();
-            logger.LogDebug("Reducing module names to index for build {}", oldBuild.Hash);
+            logger.LogDebug("Reducing module names to index for build {OldBuildHash}", oldBuild.Hash);
         }
 
         if (oldBuild.BuildVersion < CurrentBuildVersion)

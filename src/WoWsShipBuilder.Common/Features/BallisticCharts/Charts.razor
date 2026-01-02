@@ -289,7 +289,7 @@
     private const string ImpactAngleId = "impact-angle";
 
     private string shellIndexFromUrl = string.Empty;
-    private string[] shipIndexesFromUrl = { };
+    private string[] shipIndexesFromUrl = [];
 
     private BuildConfigurationDialogHelper buildConfigurationHelper = default!;
 
@@ -337,34 +337,37 @@
             SetProcessing(true);
             Breakpoint = await BreakpointService.GetCurrentBreakpointAsync();
             await SetupChartsAsync();
-            if (shipIndexesFromUrl.Any())
+            var indexes = shipIndexesFromUrl.ToImmutableArray();
+            if (!indexes.IsEmpty)
             {
-                IEnumerable<ShipBuildContainer>? buildContainers = SessionStateCache.GetAndResetBuildTransferContainers() ?? (shipIndexesFromUrl.Any() ? shipIndexesFromUrl.Select(x =>  ShipBuildContainer.CreateNew(AppData.ShipDictionary[x], null, ImmutableArray<int>.Empty) with { ShipDataContainer = DataContainerUtility.GetStockShipDataContainer(AppData.ShipDictionary[x]) }) : null);
-                if (buildContainers is not null)
+                var buildContainers = SessionStateCache.GetAndResetBuildTransferContainers() ??
+                                      indexes.Select(x => ShipBuildContainer.CreateNew(AppData.ShipDictionary[x], null, ImmutableArray<int>.Empty) with
+                                          {
+                                              ShipDataContainer = DataContainerUtility.GetStockShipDataContainer(AppData.ShipDictionary[x]),
+                                          }
+                                      );
+                List<ChartsDataWrapper> shipsToAdd = [];
+                foreach (var container in buildContainers)
                 {
-                    List<ChartsDataWrapper> shipsToAdd = new();
-                    foreach (var container in buildContainers)
-                    {
-                        ChartsDataWrapper wrapper = new(container , new());
-
-                        if (shellIndexFromUrl.Any())
-                        {
-                            shipsToAdd.Add(wrapper with { SelectedShells = new() { { shellIndexFromUrl, new(null, null, null) } } });
-                        }
-                        else
-                        {
-                            displayedShips.Add(wrapper.ShipBuildContainer.Id, wrapper);
-                        }
-                    }
+                    ChartsDataWrapper wrapper = new(container, new());
 
                     if (shellIndexFromUrl.Any())
                     {
-                        await UpdateChartsBatchAsync(new(shipsToAdd, new(), new(), false));
+                        shipsToAdd.Add(wrapper with { SelectedShells = new() { { shellIndexFromUrl, new(null, null, null) } } });
                     }
                     else
                     {
-                        await EditChartsAsync();
+                        displayedShips.Add(wrapper.ShipBuildContainer.Id, wrapper);
                     }
+                }
+
+                if (shellIndexFromUrl.Any())
+                {
+                    await UpdateChartsBatchAsync(new(shipsToAdd, new(), new(), false));
+                }
+                else
+                {
+                    await EditChartsAsync();
                 }
             }
 
@@ -459,7 +462,7 @@
                 shipToAdd.SelectedShells[shellIndex] = shipToAdd.SelectedShells[shellIndex] with { DispPlotShipsCache = dispersionPlotData };
 
                 var newJsShipId = GenerateJsShipId(shipId, shellIndex);
-                var oldJsShipId = shellIndexChangesByBuilds is not null ? shellIndexChangesByBuilds.TryGetValue(newJsShipId, out string? previousJsShipId) ? previousJsShipId : newJsShipId : newJsShipId;
+                var oldJsShipId = shellIndexChangesByBuilds is not null ? shellIndexChangesByBuilds.GetValueOrDefault(newJsShipId, newJsShipId) : newJsShipId;
 
                 var jsDataInput = new MultipleUpdateChartDataLabelInput(oldJsShipId, counter, newJsShipId, label , shipData);
                 jsDataInputs.Add(jsDataInput);

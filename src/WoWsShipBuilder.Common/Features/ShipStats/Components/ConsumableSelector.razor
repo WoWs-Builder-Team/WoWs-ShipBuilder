@@ -1,5 +1,4 @@
-﻿@using WoWsShipBuilder.DataElements
-@using WoWsShipBuilder.Features.ShipStats.ViewModels
+﻿@using WoWsShipBuilder.Features.ShipStats.ViewModels
 @using WoWsShipBuilder.Features.DataContainers;
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
@@ -81,9 +80,8 @@
     private readonly SemaphoreSlim semaphore = new(1, 1);
 
     // ReSharper disable once InconsistentNaming
-    private static RenderFragment<(ConsumableDataContainer consumableData, ILocalizer localizer)> tooltipFragment = pair => __builder =>
-    {
-        <MudPaper Outlined="true" Style="min-width: 300px; max-width: 300px">
+    private static readonly RenderFragment<(ConsumableDataContainer consumableData, ILocalizer localizer)> tooltipFragment = pair =>
+        @<MudPaper Outlined="true" Style="min-width: 300px; max-width: 300px">
             <MudStack Spacing="0" Class="pa-2">
                 <MudText Align="Align.Center" Typo="Typo.h6">
                     @pair.localizer.GetGameLocalization("DOCK_CONSUME_TITLE_" + pair.consumableData.Name).Localization
@@ -115,30 +113,28 @@
                     }
                 }
             </MudStack>
-        </MudPaper>
-    };
+        </MudPaper>;
 
-    private string GetConsumableIcon(ConsumableDataContainer consumable)
+    private static string GetConsumableIcon(ConsumableDataContainer consumable)
     {
-        string iconName = string.IsNullOrEmpty(consumable.IconName) ? consumable.Name : consumable.IconName;
+        var iconName = string.IsNullOrEmpty(consumable.IconName) ? consumable.Name : consumable.IconName;
         return $"/_content/WoWsShipBuilder.Common/assets/consumable_icons/consumable_{iconName}.png";
     }
 
-    private void SwapConsumable(ConsumableSlotViewModel viewModel, ConsumableDataContainer consumableData)
+    private static void SwapConsumable(ConsumableSlotViewModel viewModel, ConsumableDataContainer consumableData)
     {
         viewModel.SelectedIndex = viewModel.ConsumableData.IndexOf(consumableData);
     }
 
     private void ActivateConsumable(MouseEventArgs args, ConsumableSlotViewModel viewModel)
     {
-        if (args.Button == 2)
+        if (args.Button != 2) return;
+
+        Logger.LogDebug("Toggling activation status of consumable slot {Slot}", viewModel.Slot);
+        viewModel.ConsumableActivated = !viewModel.ConsumableActivated;
+        if (viewModel.ConsumableActivated)
         {
-            Logger.LogDebug("Toggling activation status of consumable slot {Slot}", viewModel.Slot);
-            viewModel.ConsumableActivated = !viewModel.ConsumableActivated;
-            if (viewModel.ConsumableActivated)
-            {
-                MetricsService.AddConsumableActivation();
-            }
+            MetricsService.AddConsumableActivation();
         }
     }
 
@@ -148,7 +144,7 @@
         tokenSource.Dispose();
     }
 
-    private async void StartTimer(ConsumableSlotViewModel viewModel)
+    private async Task StartTimer(ConsumableSlotViewModel viewModel)
     {
         tokenSource = new();
         CancellationToken token = tokenSource.Token;
@@ -181,23 +177,6 @@
             return isButton ? "border-color: #BF0000FF;" : "border: 1px solid; border-color: #BF0000FF; border-radius: var(--mud-default-borderradius);";
         }
         return isButton ? $"border-color: {Color.Default};" : "border: 1px solid; border-color: transparent; border-radius: var(--mud-default-borderradius);";
-    }
-
-    private static string ConvertValue(string value, bool isValueKey, bool isAppLocalizationKey, ILocalizer localizer)
-    {
-        return !isValueKey ? value : (isAppLocalizationKey ? localizer.GetAppLocalization(value) : localizer.GetGameLocalization(value)).Localization;
-    }
-
-    private static string ConvertFormattedText(FormattedTextDataElement formattedTextDataElement, ILocalizer localizer)
-    {
-        try
-        {
-            return FormattedTextHelper.ConvertFormattedText(formattedTextDataElement, localizer);
-        }
-        catch (Exception)
-        {
-            return "Error";
-        }
     }
 
     private int GetImageSize()

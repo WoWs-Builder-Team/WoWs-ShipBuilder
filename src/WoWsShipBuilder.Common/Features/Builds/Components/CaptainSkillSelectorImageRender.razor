@@ -139,14 +139,14 @@
         return sb.ToString();
     }
 
+    private static string GetOrder(SkillPosition single)
+    {
+        return $"order: {(single.Tier * 10) + single.XPosition};";
+    }
+
     private string GetSubFix()
     {
         return ShipClass != ShipClass.Submarine ? "" : "flex-basis: 20%; max-width: 20%;";
-    }
-
-    private string GetOrder(SkillPosition single)
-    {
-        return $"order: {single.Tier * 10 + single.XPosition};";
     }
 
     private bool ShouldShowBadge(Skill skill)

@@ -39,7 +39,7 @@ public static class DataContainerUtility
 
     public static void UpdateConsumableModifierValue(this List<Modifier> consumableModifierList, ImmutableList<Modifier> modifierList, string propertySelector, string modifierName)
     {
-        var modifier = consumableModifierList.Find(x => x.Name.Equals(modifierName));
+        var modifier = consumableModifierList.Find(x => x.Name.Equals(modifierName, StringComparison.Ordinal));
         var newValue = (float)modifierList.ApplyModifiers(propertySelector, (decimal)(modifier?.Value ?? 0));
         if (modifier == null)
         {

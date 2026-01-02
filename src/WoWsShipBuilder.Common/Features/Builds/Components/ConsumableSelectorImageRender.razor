@@ -1,6 +1,5 @@
 ﻿@using WoWsShipBuilder.Features.DataContainers
 @using WoWsShipBuilder.Features.ShipStats.Components
-@using WoWsShipBuilder.Infrastructure.Localization
 @using WoWsShipBuilder.Infrastructure.Utility
 
 @inherits ReactiveComponentBase<WoWsShipBuilder.Features.ShipStats.ViewModels.ConsumableViewModel>
@@ -45,10 +44,8 @@
     private Breakpoint Breakpoint { get; set; }
 
     // ReSharper disable once InconsistentNaming
-    // ReSharper disable once UnusedParameter.Local
-    private static readonly RenderFragment<(ConsumableDataContainer consumableData, ILocalizer localizer)> TooltipFragment = pair => __builder =>
-    {
-        <MudPaper Outlined="true" Style="min-width: 300px; max-width: 300px">
+    private static readonly RenderFragment<(ConsumableDataContainer consumableData, ILocalizer localizer)> TooltipFragment = pair =>
+        @<MudPaper Outlined="true" Style="min-width: 300px; max-width: 300px">
             <MudStack Spacing="0" Class="pa-2">
                 <MudText Align="Align.Center" Typo="Typo.h6">
                     @pair.localizer.GetGameLocalization("DOCK_CONSUME_TITLE_" + pair.consumableData.Name).Localization
@@ -80,12 +77,11 @@
                     }
                 }
             </MudStack>
-        </MudPaper>
-    };
+        </MudPaper>;
 
-    private string GetConsumableIcon(ConsumableDataContainer consumable)
+    private static string GetConsumableIcon(ConsumableDataContainer consumable)
     {
-        string iconName = string.IsNullOrEmpty(consumable.IconName) ? consumable.Name : consumable.IconName;
+        var iconName = string.IsNullOrEmpty(consumable.IconName) ? consumable.Name : consumable.IconName;
         return $"/_content/WoWsShipBuilder.Common/assets/consumable_icons/consumable_{iconName}.png";
     }
 

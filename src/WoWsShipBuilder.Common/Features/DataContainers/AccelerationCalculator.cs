@@ -1,6 +1,7 @@
 ﻿using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.DataContainers;
 
@@ -93,14 +94,14 @@ public static class AccelerationCalculator
         var timeForward = (fullPowerForwardTime / timeConstant) * accelerationModifiers.EngineForwardUpTimeModifiers;
         var timeBackward = (fullPowerBackwardTime / timeConstant) * accelerationModifiers.EngineBackwardUpTimeModifiers;
 
-        var forsageForward = speedBoostModifiers.ForwardEngineForsagOverride == 0 ? forwardEngineForsag * accelerationModifiers.EngineForwardForsagePowerModifier : speedBoostModifiers.ForwardEngineForsagOverride;
-        var forsageBackwards = speedBoostModifiers.BackwardEngineForsagOverride == 0 ? backwardEngineForsag * accelerationModifiers.EngineBackwardForsagePowerModifier : speedBoostModifiers.BackwardEngineForsagOverride;
+        var forsageForward = Helpers.DoubleEquals(speedBoostModifiers.ForwardEngineForsagOverride, 0) ? forwardEngineForsag * accelerationModifiers.EngineForwardForsagePowerModifier : speedBoostModifiers.ForwardEngineForsagOverride;
+        var forsageBackwards = Helpers.DoubleEquals(speedBoostModifiers.BackwardEngineForsagOverride, 0) ? backwardEngineForsag * accelerationModifiers.EngineBackwardForsagePowerModifier : speedBoostModifiers.BackwardEngineForsagOverride;
 
-        var forsageForwardMaxSpeed = speedBoostModifiers.SpeedBoostEngineForwardForsageMaxSpeedOverride == 0 ? forwardEngineForsagMaxSpeed * accelerationModifiers.EngineForwardForsageMaxSpeedModifier : speedBoostModifiers.SpeedBoostEngineForwardForsageMaxSpeedOverride;
-        var forsageBackwardsMaxSpeed = speedBoostModifiers.SpeedBoostEngineBackwardEngineForsagOverride == 0 ? backwardEngineForsagMaxSpeed * accelerationModifiers.EngineBackwardForsageMaxSpeedModifier : speedBoostModifiers.SpeedBoostEngineBackwardEngineForsagOverride;
+        var forsageForwardMaxSpeed = Helpers.DoubleEquals(speedBoostModifiers.SpeedBoostEngineForwardForsageMaxSpeedOverride, 0) ? forwardEngineForsagMaxSpeed * accelerationModifiers.EngineForwardForsageMaxSpeedModifier : speedBoostModifiers.SpeedBoostEngineForwardForsageMaxSpeedOverride;
+        var forsageBackwardsMaxSpeed = Helpers.DoubleEquals(speedBoostModifiers.SpeedBoostEngineBackwardEngineForsagOverride, 0) ? backwardEngineForsagMaxSpeed * accelerationModifiers.EngineBackwardForsageMaxSpeedModifier : speedBoostModifiers.SpeedBoostEngineBackwardEngineForsagOverride;
 
-        var powerIncreaseForward = Dt * maxPowerForward / timeForward;
-        var powerIncreaseBackward = Dt * maxPowerBackwards / timeBackward;
+        var powerIncreaseForward = (Dt * maxPowerForward) / timeForward;
+        var powerIncreaseBackward = (Dt * maxPowerBackwards) / timeBackward;
 
         // begin the pain, aka the math
 

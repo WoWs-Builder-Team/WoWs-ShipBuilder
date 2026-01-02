@@ -418,21 +418,11 @@
     {
         if (!AllowCopies && SelectedShips.Any(x => x.Ship.Index.Equals(build.ShipIndex))) return;
 
-        if (MultiSelect)
+        if (MultiSelect || SelectedShips.Count == 0)
         {
             MetricsService.AddBuildImport("ship-selector", "saved-builds");
             SelectedShips.Add(ShipBuildContainer.CreateNew(AppData.ShipDictionary[build.ShipIndex], build, ImmutableArray<int>.Empty));
         }
-        else if (!MultiSelect && SelectedShips.Count == 0)
-        {
-            MetricsService.AddBuildImport("ship-selector", "saved-builds");
-            SelectedShips.Add(ShipBuildContainer.CreateNew(AppData.ShipDictionary[build.ShipIndex], build, ImmutableArray<int>.Empty));
-        }
-    }
-
-    private void RemoveAllShips()
-    {
-        SelectedShips.Clear();
     }
 
     private async Task AddBuild(ShipBuildContainer ship)
@@ -525,6 +515,7 @@
             }
             catch (JSDisconnectedException)
             {
+                // Ignore
             }
         }
     }

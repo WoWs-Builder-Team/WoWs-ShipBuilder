@@ -63,7 +63,7 @@ public partial class PingerGunDataContainer : DataContainerBase
         }
         else
         {
-            Logging.Logger.LogWarning("Unable to retrieve sonar component from upgrade info for ship {} and ship upgrade {}", ship.Index, pingerUpgrade.Name);
+            Logging.Logger.LogWarning("Unable to retrieve sonar component from upgrade info for ship {Ship} and ship upgrade {Upgrade}", ship.Index, pingerUpgrade.Name);
             pingerGun = ship.PingerGunList.First().Value;
         }
 

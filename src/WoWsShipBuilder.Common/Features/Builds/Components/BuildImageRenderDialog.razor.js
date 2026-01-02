@@ -2,7 +2,7 @@
     let img = "";
     await renderBuildImage(id).then(function (canvas) {
         encodeBuildString(canvas, buildString);
-        img = canvas.toDataURL("image/png", 1.0);
+        img = canvas.toDataURL("image/png", 1);
         copyBuildImageToClipboard(canvas);
     });
     let d = document.createElement("a");
@@ -73,7 +73,7 @@ function encodeBuildString(canvas, buildString) {
                 if (charIndex >= buildString.length) {
                     state = 'finishing';
                 } else {
-                    charValue = buildString[charIndex++].charCodeAt(0);
+                    charValue = buildString[charIndex++].codePointAt(0);
                 }
             }
             switch (pixelElementIndex % 3) {

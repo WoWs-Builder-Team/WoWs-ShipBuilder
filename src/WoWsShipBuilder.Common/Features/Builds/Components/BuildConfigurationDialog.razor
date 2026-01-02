@@ -58,7 +58,7 @@
                                         @Localizer.GetGameLocalization(Ships[index].Ship.Index + "_FULL").Localization
                                     </MudText>
                                     <MudText Typo="Typo.body2" Class="ml-2" Color="Color.Secondary">
-                                        @(Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (buildNameDictionary.TryGetValue(shipData.Id, out string? value) ? value : !string.IsNullOrEmpty(shipData.Build?.BuildName) ? shipData.Build.BuildName : Build.DefaultBuildName))
+                                        @($"{Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {FindBuildName(shipData)}")
                                     </MudText>
                                 </MudListItem>
                             }
@@ -141,6 +141,7 @@
 
     private string buildString = string.Empty;
 
+#pragma warning disable S3776
     public BuildConfigurationDialog()
     {
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
@@ -224,6 +225,7 @@
             }
         };
     }
+#pragma warning restore S3776
 
     protected override async Task OnInitializedAsync()
     {
@@ -379,6 +381,17 @@
         await Task.Delay(1);
 
         return inputBuildStringValidationResultCache = validationResult.ValidationMessage;
+    }
+
+    private string FindBuildName(ShipBuildContainer shipData)
+    {
+        var buildName = buildNameDictionary.GetValueOrDefault(shipData.Id);
+        if (buildName is not null)
+        {
+            return buildName;
+        }
+
+        return !string.IsNullOrEmpty(shipData.Build?.BuildName) ? shipData.Build.BuildName : Build.DefaultBuildName;
     }
 
     public async ValueTask DisposeAsync()

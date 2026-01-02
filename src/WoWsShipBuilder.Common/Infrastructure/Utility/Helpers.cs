@@ -99,4 +99,9 @@ public static class Helpers
 
         return versionInfo.CurrentVersion.MainVersion.ToString(2) + "#" + versionInfo.CurrentVersion.DataIteration;
     }
+
+    public static bool DoubleEquals(double a, double b, double epsilon = 0.00001f)
+    {
+        return Math.Abs(a - b) <= epsilon;
+    }
 }

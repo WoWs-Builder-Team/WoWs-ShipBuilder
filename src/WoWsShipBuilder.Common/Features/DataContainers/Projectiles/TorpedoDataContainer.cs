@@ -187,7 +187,7 @@ public partial class TorpedoDataContainer : ProjectileDataContainer
                 torpedoDataContainer.CvCutOffSecondPing = Math.Round((decimal)cvCutOff[^1], 1);
             }
 
-            if (torp.IgnoreClasses != null && torp.IgnoreClasses.Any())
+            if (!torp.IgnoreClasses.IsDefaultOrEmpty)
             {
                 torpedoDataContainer.CanHitClasses = allClasses.Except(torp.IgnoreClasses).ToImmutableList();
             }
