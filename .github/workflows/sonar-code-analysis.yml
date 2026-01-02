@@ -57,7 +57,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: pwsh
         run: |
-          ${{ runner.temp }}/scanner/dotnet-sonarscanner begin /k:"WoWs-Builder-Team_WoWs-ShipBuilder" /o:"wows-builder-team" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="TestResults/*/*.xml" /d:sonar.verbose=true
+          ${{ runner.temp }}/scanner/dotnet-sonarscanner begin /k:"WoWs-Builder-Team_WoWs-ShipBuilder" /o:"wows-builder-team" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="TestResults/*/*.xml"
           dotnet build dirs.proj -c Release --no-restore
           dotnet test dirs.proj -c Release --no-build --collect:"XPlat Code Coverage;Format=opencover" --results-directory TestResults
           ${{ runner.temp }}/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
