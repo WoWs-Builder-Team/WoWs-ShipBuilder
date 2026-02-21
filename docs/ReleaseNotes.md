@@ -23,5 +23,6 @@ from the artifacts of this release, then extract it and run **WoWsShipBuilder.ex
 
 ### Bugfixes
 - various minor bug fixes
+- dependency updates
 
 </details>

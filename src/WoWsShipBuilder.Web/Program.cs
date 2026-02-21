@@ -1,6 +1,7 @@
 using System.Globalization;
 using NLog.Web;
 using ReactiveUI;
+using ReactiveUI.Builder;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Utility;
 using WoWsShipBuilder.Web.Features.Authentication;
@@ -23,7 +24,9 @@ builder.Logging.ClearProviders();
 builder.Host.UseNLog(new() { RemoveLoggerFactoryFilter = false, ParseMessageTemplates = true });
 SetupExtensions.ConfigureNlog(builder.Environment.IsDevelopment());
 
-PlatformRegistrationManager.SetRegistrationNamespaces(RegistrationNamespace.Blazor);
+RxAppBuilder.CreateReactiveUIBuilder()
+    .WithBlazor()
+    .BuildApp();
 
 builder.Services.UseShipBuilderWeb();
 builder.Services.AddCookieAuth();
