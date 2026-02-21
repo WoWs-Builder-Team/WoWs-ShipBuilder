@@ -2197,4 +2197,64 @@
   <data name="OverwriteExistingBuildDialog_Message" xml:space="preserve">
     <value>Архив уже содержит билд с названием '{0}' для корабля '{1}'</value>
   </data>
+  <data name="ShipComparison_Display" xml:space="preserve">
+    <value>Показать</value>
+  </data>
+  <data name="ShipStats_Activate" xml:space="preserve">
+    <value>Активировать</value>
+  </data>
+  <data name="AccelerationChart_InitialGear" xml:space="preserve">
+    <value>Начальный ход</value>
+  </data>
+  <data name="AccelerationChart_MiddleGear" xml:space="preserve">
+    <value>Промежуточный ход</value>
+  </data>
+  <data name="AccelerationChart_FinalGear" xml:space="preserve">
+    <value>Конечный ход</value>
+  </data>
+  <data name="SettingsWindow_SavedBuilds" xml:space="preserve">
+    <value>Сохраненные билды</value>
+  </data>
+  <data name="BuildConfigurationDialog_ActivateSpecialAbility" xml:space="preserve">
+    <value>Активировать спецспособность</value>
+  </data>
+  <data name="BuildConfigurationDialog_Alternative" xml:space="preserve">
+    <value>Альтернативный</value>
+  </data>
+  <data name="AppNavigator_NoEligibleShips" xml:space="preserve">
+    <value>Нет доступных кораблей. Допустимые корабли</value>
+  </data>
+  <data name="AppNavigator_TooManyShips" xml:space="preserve">
+    <value>Слишком много кораблей. Допустимые корабли</value>
+  </data>
+  <data name="AppNavigator_MaxLimit" xml:space="preserve">
+    <value>Максимальный лимит</value>
+  </data>
+  <data name="ShipStats_AmmoSwitchTime" xml:space="preserve">
+    <value>Время смены снаряда</value>
+  </data>
+  <data name="ShipStats_AmmoSwitchTimeTooltip" xml:space="preserve">
+    <value>Предполагается, что орудия только произвели выстрел, и требуют полной перезарядки до следующего выстрела</value>
+  </data>
+  <data name="Settings_ThemePrimaryColor" xml:space="preserve">
+    <value>Основной цвет темы</value>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Тема</value>
+  </data>
+  <data name="Settings_ThemeStyle" xml:space="preserve">
+    <value>Стиль темы</value>
+  </data>
+  <data name="ShipSelector_DeleteFromSavedBuilds" xml:space="preserve">
+    <value>Удалить из сохраненных билдов</value>
+  </data>
+  <data name="SettingsWindow_ResetColor" xml:space="preserve">
+    <value>Сбросить цвет</value>
+  </data>
+  <data name="ShipComparison_RemoveBuildWarningPt1" xml:space="preserve">
+    <value>Билд на</value>
+  </data>
+  <data name="ShipComparison_RemoveBuildWarningPt2" xml:space="preserve">
+    <value>был сброшен без удаления последней версии.</value>
+  </data>
 </root>

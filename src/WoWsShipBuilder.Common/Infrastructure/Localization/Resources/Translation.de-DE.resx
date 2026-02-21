@@ -661,7 +661,7 @@
       <value>Minimale Reichweite</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
-    <value>Bomben pro Ladung</value>
+    <value>Anzahl der Ladungen</value>
   </data>
   <data name="ShipStats_AswAirstrike" xml:space="preserve">
     <value>Wasserbomben-Luftschlag</value>
@@ -1530,7 +1530,7 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   </data>
   <data name="AccelerationChart_ExplanationText" xml:space="preserve">
       <value>Nachdem Sie ein Schiff ausgewählt haben, haben Sie die Möglichkeit, die 3 Gänge auszuwählen, die im Diagramm verwendet werden.
-Das Diagramm geht in der Reihenfolge der Anfangsgetriebe --&gt; Mittelgetriebe --&gt; Endgetriebe, nur nach Erreichen der maximalen Geschwindigkeit des aktuellen Getriebes zum nächsten wechseln.
+Das Diagramm geht in der Reihenfolge der Anfangsgetriebe --> Mittelgetriebe --> Endgetriebe, nur nach Erreichen der maximalen Geschwindigkeit des aktuellen Getriebes zum nächsten wechseln.
 Wenn zwei Geräte auf den gleichen Wert gesetzt werden, werden sie zu einem zusammengeführt.
 Sie können mit der Schaltfläche Builds ändern die Builds einzelner Schiffe verwalten. Sie können ein Schiff auch mehrmals hinzufügen, wenn Sie verschiedene Builds vergleichen möchten.</value>
   </data>
