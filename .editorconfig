@@ -9,6 +9,7 @@ trim_trailing_whitespace = true
 insert_final_newline = true
 indent_size = 4
 tab_width = 4
+max_line_length = 180
 
 # Microsoft .NET properties
 dotnet_naming_rule.private_constants_rule.import_to_resharper = as_predefined
@@ -151,6 +152,7 @@ dotnet_diagnostic.CA1309.severity = suggestion # Use ordinal StringComparison
 dotnet_diagnostic.CA1311.severity = suggestion # Specify a culture or use an invariant version
 dotnet_diagnostic.CA1822.severity = suggestion # Mark member as static
 dotnet_diagnostic.CA1859.severity = suggestion # Use concrete types when possible for improved performance
+dotnet_diagnostic.CA1873.severity = none # Avoid potentially expensive logging
 
 [*.axaml]
 max_line_length = 160
@@ -158,3 +160,6 @@ max_line_length = 160
 [*.{yaml,yml,json,props,targets,xml,resx}]
 indent_size = 2
 tab_width = 2
+
+[dependabot.yml]
+end_of_line = lf

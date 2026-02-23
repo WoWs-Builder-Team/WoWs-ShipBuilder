@@ -1,0 +1,500 @@
+﻿@using WoWsShipBuilder.Infrastructure.Localization
+@using WoWsShipBuilder.Features.Settings
+@using WoWsShipBuilder.Infrastructure.GameData
+@using WoWsShipBuilder.Infrastructure.Localization.Resources
+@using Microsoft.Extensions.DependencyInjection
+@using WoWsShipBuilder.Desktop.Features.SplashScreen
+@using DynamicData.Binding
+@using System.Reactive.Linq
+@using System.Reflection
+@using Avalonia
+@using Avalonia.Controls.ApplicationLifetimes
+@using WoWsShipBuilder.Features.Builds
+@using WoWsShipBuilder.Infrastructure.ApplicationData
+@using WoWsShipBuilder.Infrastructure.Utility
+@using Dispatcher = Avalonia.Threading.Dispatcher
+@using System.IO.Abstractions
+@using System.IO
+@using System.Text.Json
+@using Avalonia.Platform.Storage
+@using WoWsShipBuilder.Infrastructure.DataTransfer
+@using MudBlazor.Utilities
+@using WoWsShipBuilder.Infrastructure.ApplicationTheme
+
+@implements IDisposable
+@inject ILocalizer Localizer
+@inject RefreshNotifierService RefreshNotifierService
+@inject AppSettings AppSettings
+@inject ISettingsAccessor SettingsAccessor
+@inject ISnackbar Snackbar
+@inject IServiceProvider ServiceProvider
+@inject IDialogService DialogService
+@inject ILocalizationProvider LocalizationProvider
+@inject IUserDataService UserDataService
+@inject IFileSystem FileSystem
+@inject ThemeManager ThemeManager
+
+<MudContainer>
+    <MudGrid Justify="Justify.Center">
+        <MudItem xs="12">
+            <MudCard Outlined>
+                <MudCardHeader>
+                    <CardHeaderAvatar>
+                        <MudIcon Icon="@Icons.Material.Filled.Info"/>
+                    </CardHeaderAvatar>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">@Localizer.GetAppLocalization(nameof(Translation.WebApp_ApplicationInfo)).Localization</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudGrid>
+                        <MudItem xs="8">
+                            @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Version)) @appVersion
+                            <br/>
+                            @Localizer.GetAppLocalization(nameof(Translation.WebApp_CurrentVersion)).Localization @AppData.DataVersion
+                        </MudItem>
+                        <MudItem xs="4">
+                            Need help with the app? Visit our <MudLink Color="Color.Info" Href="https://discord.gg/C8EaepZJDY">Discord Server</MudLink> <MudIcon Icon="@Icons.Custom.Brands.Discord" Color="Color.Inherit" ViewBox="0 -5 24 24"/>
+                        </MudItem>
+                    </MudGrid>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudSelect @bind-Value="selectedCulture" Style="max-width: 500px;" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_SelectedLanguage)).Localization" HelperText="@Localizer.SimpleAppLocalization(nameof(Translation.Settingswindow_LanguageChanged))">
+                @foreach (var culture in AppConstants.SupportedLanguages)
+                {
+                    <MudSelectItem Value="@culture">@culture.CultureInfo.DisplayName</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudSelect @bind-Value="@selectedServerType" Style="max-width: 500px;" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Server))">
+                <MudSelectItem Value="ServerType.Live">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypeLive))</MudSelectItem>
+                <MudSelectItem Value="ServerType.Pts">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypePts))</MudSelectItem>
+                @if (isDevMode)
+                {
+                    <MudSelectItem Value="ServerType.Dev1">@ServerType.Dev1.DisplayName()</MudSelectItem>
+                    <MudSelectItem Value="ServerType.Dev2">@ServerType.Dev2.DisplayName()</MudSelectItem>
+                    <MudSelectItem Value="ServerType.Dev3">@ServerType.Dev3.DisplayName()</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="12">
+            <MudStack Row AlignItems="AlignItems.Center">
+                <MudSelect T="ThemeEnums.ThemeVariant" @bind-Value="themeVariant" Dense Immediate Label="@Localizer.SimpleAppLocalization(nameof(Translation.Settings_Theme))" Disabled="@Helpers.IsAprilFool()">
+                    @foreach (var theme in Enum.GetValues<ThemeEnums.ThemeVariant>().Except(new[] { ThemeEnums.ThemeVariant.AprilFool }))
+                    {
+                        <MudSelectItem Value="@theme">
+                            <MudText Color="Color.Default">@Localizer.GetAppLocalization(theme.ToString()).Localization</MudText>
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+                <MudSelect T="ThemeEnums.ThemeStyle" @bind-Value="themeStyle" Dense Immediate Label="@Localizer.SimpleAppLocalization(nameof(Translation.Settings_ThemeStyle))" Disabled="@Helpers.IsAprilFool()">
+                    @foreach (var style in Enum.GetValues<ThemeEnums.ThemeStyle>())
+                    {
+                        <MudSelectItem Value="@style">
+                            <MudText Color="Color.Default">@Localizer.GetAppLocalization(style.ToString()).Localization</MudText>
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+                <div class="mt-2" style="@($"background-color:{themePrimaryColor}; height: 36.5px; width:36.5px; border-radius: var(--mud-default-borderradius);")"></div>
+                <MudColorPicker Label="@Localizer.SimpleAppLocalization(nameof(Translation.Settings_ThemePrimaryColor))" ShowToolbar PickerVariant="PickerVariant.Dialog" @bind-Value="themePrimaryColor" Style="@($"color: {themePrimaryColor};")" Disabled="@Helpers.IsAprilFool()"/>
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="@(() => themePrimaryColor = ThemeManager.DefaultPrimaryColor)" Class="mt-4">
+                    @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_ResetColor))
+                </MudButton>
+            </MudStack>
+        </MudItem>
+        <MudItem xs="12">
+            <MudStack Row Class="mb-1" AlignItems="AlignItems.Center">
+                <MudText Typo="Typo.h6">
+                    @($"{Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_SavedBuilds))} ({savedBuilds.Count})")
+                </MudText>
+                <MudButton Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Download" OnClick="@(async () => await ExportSavedBuilds())">
+                    @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Export))
+                </MudButton>
+                <MudFileUpload T="IBrowserFile" FilesChanged="@(async file => await ImportSavedBuilds(file))" Style="margin-top: 0;" Class="file-upload-full-height" Accept=".json" MaximumFileCount="1">
+                    <ActivatorContent>
+                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Upload" Style="height: 100%;">
+                            @Localizer.SimpleAppLocalization(nameof(Translation.BuildImport_Import))
+                        </MudButton>
+                    </ActivatorContent>
+                </MudFileUpload>
+                <MudButton Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Delete" OnClick="@(async () => await DeleteAllSavedBuilds())">
+                    @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_DeleteAll))
+                </MudButton>
+            </MudStack>
+            <MudSwitch @bind-Value="@storeBuildOnShare" LabelPlacement="Placement.End" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_SaveBuildOnShare))" Color="Color.Primary"/>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudText Typo="Typo.h6">@Localizer.GetAppLocalization(nameof(Translation.WebApp_ExpanderSettingHeader)).Localization</MudText>
+            <MudSwitch @bind-Value="@openMainExpandersByDefault" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_ExpanderSetting)).Localization" Color="Color.Primary"/>
+            <MudSwitch @bind-Value="@openAmmoExpandersByDefault" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_AmmoExpanderSetting)).Localization" Color="Color.Primary"/>
+            <MudSwitch @bind-Value="@openSecondariesAndAaExpandersByDefault" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_SecondariesAndAAExpanderSetting)).Localization" Color="Color.Primary"/>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudText Typo="Typo.h6">
+                @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_FittingToolSelector))
+            </MudText>
+            <MudSwitch @bind-Value="@fittingToolSelectorDisabled" LabelPlacement="Placement.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_FittingToolSelectorDisabled))"/>
+            <MudSwitch @bind-Value="@fittingToolSelectorClosedByDefault" LabelPlacement="Placement.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_ClosedByDefault))" Disabled="fittingToolSelectorDisabled"/>
+            <MudSwitch @bind-Value="@fittingToolSelectorMultiSelection" LabelPlacement="Placement.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_MultiSelect))" Disabled="fittingToolSelectorDisabled"/>
+            <MudSwitch @bind-Value="@fittingToolSelectorShowShipImages" LabelPlacement="Placement.End" Color="Color.Primary" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_FittingToolShowImages))" Class="mb-n3" Disabled="fittingToolSelectorDisabled"/>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudText Typo="Typo.h6">
+                @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_AutoUpdates))
+            </MudText>
+            <MudStack AlignItems="AlignItems.Start">
+                <MudSwitch @bind-Value="@autoUpdateEnabled" LabelPlacement="Placement.End" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_AutoUpdate))" Color="Color.Primary"/>
+            </MudStack>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudText Typo="Typo.h6">
+                @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_BuildImagePath))
+            </MudText>
+            <MudStack AlignItems="AlignItems.Start" Spacing="0">
+                <MudSwitch @bind-Value="@customBuildImagePathEnabled" LabelPlacement="Placement.End" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_EnableBuildImagePath))" Color="Color.Primary"/>
+                <MudTextField @bind-Value="@customBuildImagePath" FullWidth HelperText="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_RestartRequired))" Label="@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_BuildImagePath))" Adornment="Adornment.End" OnAdornmentClick="OnImageFolderSelectClicked" AdornmentIcon="@Icons.Material.Filled.Folder" Disabled="@(!customBuildImagePathEnabled)"/>
+            </MudStack>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+<MudOverlay @bind-Visible="@isOverlayVisible" DarkBackground>
+    <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
+        <MudProgressCircular Color="Color.Primary" Indeterminate/>
+        <MudText Typo="Typo.h5">@Localizer.SimpleAppLocalization(currentDownloadInfo)</MudText>
+    </MudStack>
+</MudOverlay>
+
+@code {
+
+    [CascadingParameter(Name = "SettingsInitialized")]
+    protected bool SettingsInitialized { get; set; }
+
+#if DEBUG
+    private bool isDevMode = true;
+#else
+    private bool isDevMode = false;
+#endif
+
+    private CultureDetails selectedCulture = AppConstants.DefaultCultureDetails;
+
+    private ServerType selectedServerType = ServerType.Live;
+
+    private bool openMainExpandersByDefault = true;
+
+    private bool openAmmoExpandersByDefault = true;
+
+    private bool openSecondariesAndAaExpandersByDefault = true;
+
+    private bool isOverlayVisible = false;
+
+    private string currentDownloadInfo = string.Empty;
+
+    private bool customBuildImagePathEnabled = false;
+
+    private string? customBuildImagePath;
+
+    private bool autoUpdateEnabled = true;
+
+    private bool storeBuildOnShare = true;
+
+    private bool fittingToolSelectorMultiSelection;
+
+    private bool fittingToolSelectorShowShipImages;
+
+    private bool fittingToolSelectorClosedByDefault;
+
+    private bool fittingToolSelectorDisabled;
+
+    private string appVersion = "Undefined";
+
+    private List<Build> savedBuilds = new();
+
+    private MudColor themePrimaryColor = default!;
+
+    private ThemeEnums.ThemeStyle themeStyle;
+
+    private ThemeEnums.ThemeVariant themeVariant;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        RefreshNotifierService.RefreshRequested += UpdateSettingsValues;
+        UpdateSettingsValues();
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomEnd;
+        var rawVersion = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "Undefined";
+        appVersion = StripCommitFromVersion(rawVersion);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            savedBuilds = (await UserDataService.LoadBuildsAsync()).ToList();
+            StateHasChanged();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private static string StripCommitFromVersion(string rawVersion)
+    {
+        int commitStartIndex = rawVersion.IndexOf("+", StringComparison.Ordinal);
+        if (commitStartIndex > 0)
+        {
+            rawVersion = rawVersion[..commitStartIndex];
+        }
+
+        return rawVersion;
+    }
+
+    private void UpdateSettingsValues()
+    {
+        selectedCulture = AppSettings.SelectedLanguage;
+        selectedServerType = AppSettings.SelectedServerType;
+        openMainExpandersByDefault = AppSettings.OpenAllMainExpandersByDefault;
+        openAmmoExpandersByDefault = AppSettings.OpenAllAmmoExpandersByDefault;
+        openSecondariesAndAaExpandersByDefault = AppSettings.OpenSecondariesAndAaExpandersByDefault;
+        customBuildImagePathEnabled = AppSettings.CustomImagePath is not null;
+        customBuildImagePath = AppSettings.CustomImagePath;
+        autoUpdateEnabled = AppSettings.AutoUpdateEnabled;
+        storeBuildOnShare = AppSettings.StoreBuildOnShare;
+        fittingToolSelectorMultiSelection = AppSettings.FittingToolSelectorMultiSelection;
+        fittingToolSelectorShowShipImages = AppSettings.FittingToolSelectorShowShipImages;
+        fittingToolSelectorClosedByDefault = AppSettings.FittingToolSelectorClosedByDefault;
+        fittingToolSelectorDisabled = AppSettings.FittingToolSelectorDisabled;
+        themePrimaryColor = AppSettings.ThemePrimaryColor ?? ThemeManager.DefaultPrimaryColor;
+        themeStyle = AppSettings.ThemeStyle ?? ThemeManager.DefaultThemeStyle;
+        themeVariant = AppSettings.ThemeVariant ?? ThemeManager.DefaultThemeVariant;
+
+        StateHasChanged();
+    }
+
+    public async Task SaveSettingsAsync()
+    {
+        bool settingsChanged = AppSettings.SelectedLanguage != selectedCulture;
+        AppSettings.SelectedLanguage = selectedCulture;
+        var languageChanged = settingsChanged;
+
+        var serverTypeChanged = selectedServerType != AppSettings.SelectedServerType;
+        settingsChanged = settingsChanged || serverTypeChanged;
+        AppSettings.SelectedServerType = selectedServerType;
+        if (serverTypeChanged || languageChanged)
+        {
+            await ChangeServerType(selectedServerType);
+        }
+
+        settingsChanged = settingsChanged || openAmmoExpandersByDefault != AppSettings.OpenAllAmmoExpandersByDefault;
+        AppSettings.OpenAllAmmoExpandersByDefault = openAmmoExpandersByDefault;
+
+        settingsChanged = settingsChanged || openMainExpandersByDefault != AppSettings.OpenAllMainExpandersByDefault;
+        AppSettings.OpenAllMainExpandersByDefault = openMainExpandersByDefault;
+
+        settingsChanged = settingsChanged || openSecondariesAndAaExpandersByDefault != AppSettings.OpenSecondariesAndAaExpandersByDefault;
+        AppSettings.OpenSecondariesAndAaExpandersByDefault = openSecondariesAndAaExpandersByDefault;
+
+        var customBuildImagePathChanged = customBuildImagePathEnabled != AppSettings.CustomImagePath is not null || customBuildImagePath != AppSettings.CustomImagePath;
+        if (customBuildImagePathChanged)
+        {
+            settingsChanged = true;
+            AppSettings.CustomImagePath = !customBuildImagePathEnabled ? null : customBuildImagePath;
+        }
+
+        settingsChanged = settingsChanged || autoUpdateEnabled != AppSettings.AutoUpdateEnabled;
+        AppSettings.AutoUpdateEnabled = autoUpdateEnabled;
+
+        settingsChanged = settingsChanged || storeBuildOnShare != AppSettings.StoreBuildOnShare;
+        AppSettings.StoreBuildOnShare = storeBuildOnShare;
+
+        AppSettings.FittingToolSelectorMultiSelection = fittingToolSelectorMultiSelection;
+        settingsChanged = settingsChanged || fittingToolSelectorShowShipImages != AppSettings.FittingToolSelectorShowShipImages;
+        AppSettings.FittingToolSelectorShowShipImages = fittingToolSelectorShowShipImages;
+        settingsChanged = settingsChanged || fittingToolSelectorClosedByDefault != AppSettings.FittingToolSelectorClosedByDefault;
+        AppSettings.FittingToolSelectorClosedByDefault = fittingToolSelectorClosedByDefault;
+        settingsChanged = settingsChanged || fittingToolSelectorDisabled != AppSettings.FittingToolSelectorDisabled;
+        AppSettings.FittingToolSelectorDisabled = fittingToolSelectorDisabled;
+
+        settingsChanged = settingsChanged || themePrimaryColor.Value != AppSettings.ThemePrimaryColor;
+        AppSettings.ThemePrimaryColor = themePrimaryColor.Value;
+
+        settingsChanged = settingsChanged || themeVariant != AppSettings.ThemeVariant;
+        AppSettings.ThemeVariant = themeVariant;
+
+        settingsChanged = settingsChanged || themeStyle != AppSettings.ThemeStyle;
+        AppSettings.ThemeStyle = themeStyle;
+
+        await SettingsAccessor.SaveSettings(AppSettings);
+
+        await LocalizationProvider.RefreshDataAsync(AppSettings.SelectedServerType, AppSettings.SelectedLanguage);
+        Snackbar.Add("Settings saved", Severity.Success, config => { config.CloseAfterNavigation = true; });
+        if (settingsChanged)
+        {
+            RefreshNotifierService.NotifyRefreshRequested();
+            ThemeManager.UpdateTheme();
+        }
+    }
+
+    public async Task ResetSettingsAsync()
+    {
+        AppSettings.ClearSettings();
+        await SettingsAccessor.SaveSettings(AppSettings);
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+        Snackbar.Add(Localizer.GetAppLocalization(nameof(Translation.WebApp_SettingsSaved)).Localization, Severity.Success, config => { config.CloseAfterNavigation = true; });
+        RefreshNotifierService.NotifyRefreshRequested();
+        ThemeManager.UpdateTheme();
+    }
+
+    public void Dispose()
+    {
+        RefreshNotifierService.RefreshRequested -= UpdateSettingsValues;
+    }
+
+    private async Task ChangeServerType(ServerType serverType)
+    {
+        isOverlayVisible = true;
+        StateHasChanged();
+        await Task.Delay(1);
+
+        var vm = ServiceProvider.GetRequiredService<SplashScreenViewModel>();
+        var subscription = vm.WhenValueChanged(x => x.DownloadInfo).Do(OnDownloadInfoChanged).Subscribe();
+        try
+        {
+            await vm.VersionCheck(true, true);
+        }
+        catch (Exception)
+        {
+            await DialogService.ShowMessageBox(
+                Localizer.SimpleAppLocalization(nameof(Translation.DataUpdate_ErrorTitle)),
+                Localizer.SimpleAppLocalization(nameof(Translation.DataUpdate_ErrorDescription)));
+        }
+        finally
+        {
+            isOverlayVisible = false;
+            subscription.Dispose();
+            currentDownloadInfo = string.Empty;
+        }
+    }
+
+    private void OnDownloadInfoChanged(string? downloadInfo)
+    {
+        if (downloadInfo is null)
+        {
+            return;
+        }
+
+        currentDownloadInfo = downloadInfo;
+        StateHasChanged();
+    }
+
+    private async Task OnImageFolderSelectClicked(MouseEventArgs obj)
+    {
+        var mainWindow = (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow!;
+        var startLocation = await mainWindow.StorageProvider.TryGetFolderFromPathAsync(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures));
+        var selectionResult = await Dispatcher.UIThread.InvokeAsync(async () => await mainWindow.StorageProvider.OpenFolderPickerAsync(new() { SuggestedStartLocation = startLocation, AllowMultiple = false }));
+        var path = selectionResult.SingleOrDefault()?.TryGetLocalPath() ?? null;
+        if (path is not null)
+        {
+            customBuildImagePath = path;
+        }
+    }
+
+    private async Task ExportSavedBuilds()
+    {
+        var mainWindow = (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow!;
+        IReadOnlyList<IStorageFolder> selectionResult = await Dispatcher.UIThread.InvokeAsync(async () => await mainWindow.StorageProvider.OpenFolderPickerAsync(new() { AllowMultiple = false }));
+        var path = selectionResult.SingleOrDefault()?.TryGetLocalPath() ?? null;
+        if (path is not null)
+        {
+            var buildStrings = savedBuilds.Select(x => x.CreateShortStringFromBuild()).ToList();
+            await using (var stream = FileSystem.File.Create($"{path}/builds.json"))
+            {
+                await JsonSerializer.SerializeAsync(stream, buildStrings, AppConstants.JsonSerializerOptions);
+            }
+            Snackbar.Add("Builds successfully exported.", Severity.Success);
+            RefreshNotifierService.NotifyRefreshRequested();
+        }
+    }
+
+    private async Task ImportSavedBuilds(IBrowserFile? file)
+    {
+        if (file is not null && file.ContentType.Equals("application/json"))
+        {
+            using StreamReader reader = new(file.OpenReadStream());
+            var buildsString = await reader.ReadToEndAsync();
+            IEnumerable<string>? buildList;
+            try
+            {
+                buildList = JsonSerializer.Deserialize<IEnumerable<string>>(buildsString, AppConstants.JsonSerializerOptions);
+            }
+            catch (JsonException)
+            {
+                Snackbar.Add("Corrupted JSON file.", Severity.Error);
+                return;
+            }
+
+            if (buildList is not null)
+            {
+                var builds = new List<Build>();
+                var counter = 0;
+                foreach (string buildString in buildList)
+                {
+                    try
+                    {
+                        var build = Build.CreateBuildFromString(buildString);
+                        if (AppData.ShipDictionary.ContainsKey(build.ShipIndex))
+                        {
+                            builds.Add(build);
+                        }
+                        else
+                        {
+                            counter++;
+                        }
+                    }
+                    catch (FormatException)
+                    {
+                        counter++;
+                    }
+                }
+
+                builds.Reverse();
+                await UserDataService.ImportBuildsAsync(builds);
+                savedBuilds = (await UserDataService.LoadBuildsAsync()).ToList();
+                if (counter > 0)
+                {
+                    Snackbar.Add($"{counter} builds could not be imported.", Severity.Warning);
+                }
+                else
+                {
+                    Snackbar.Add("Builds successfully imported.", Severity.Success);
+                }
+
+                RefreshNotifierService.NotifyRefreshRequested();
+            }
+            else
+            {
+                Snackbar.Add("No build to import found.", Severity.Error);
+            }
+        }
+        else
+        {
+            Snackbar.Add(Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_InvalidJsonFileError)), Severity.Error);
+        }
+    }
+
+    private async Task DeleteAllSavedBuilds()
+    {
+        await UserDataService.RemoveSavedBuildsAsync(savedBuilds);
+        savedBuilds = (await UserDataService.LoadBuildsAsync()).ToList();
+        Snackbar.Add("All saved builds deleted.", Severity.Info);
+        RefreshNotifierService.NotifyRefreshRequested();
+    }
+}
