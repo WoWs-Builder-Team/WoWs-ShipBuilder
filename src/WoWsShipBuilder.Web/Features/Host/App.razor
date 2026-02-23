@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>WoWs ShipBuilder</title>
+    <base href="/"/>
+
+    <link href="@Assets["_content/MudBlazor/MudBlazor.min.css"]" rel="stylesheet"/>
+
+    <link href="@Assets["_content/WoWsShipBuilder.Common/WoWsShipBuilder.Common.bundle.scp.css"]" rel="stylesheet">
+    <link href="@Assets["_content/WoWsShipBuilder.Common/css/app.css"]" rel="stylesheet"/>
+    <link href="@Assets["_content/WoWsShipBuilder.Common/css/fonts.css"]" rel="stylesheet"/>
+
+    <meta content="WoWs ShipBuilder" property="og:title">
+    <meta content="Ships stats.
+Charts.
+Ships builds." property="og:description">
+    <meta content="@Assets["/_content/WoWsShipBuilder.Common/assets/app-logo-small.png"]" property="og:image">
+    <meta name="theme-color" content="#FFFFFF">
+    <link rel="alternate" type="application/json+oembed" href="/oembed.json" />
+    <HeadOutlet @rendermode="InteractiveServer"></HeadOutlet>
+</head>
+<!--suppress CssUnresolvedCustomProperty -->
+<body style="background-color: var(--mud-palette-background)">
+
+<WebRootComponent @rendermode="InteractiveServer" />
+
+<script src="_framework/blazor.web.js"></script>
+<script src="_content/MudBlazor/MudBlazor.min.js"></script>
+<script src="_content/WoWsShipBuilder.Common/lib/chartJs/dist/chart.umd.min.js"></script>
+<script src="_content/WoWsShipBuilder.Common/lib/autocolor/dist/chartjs-plugin-autocolors.min.js"></script>
+<script src="_content/WoWsShipBuilder.Common/lib/dom-to-image-more/dist/dom-to-image-more.min.js"></script>
+</body>
+</html>

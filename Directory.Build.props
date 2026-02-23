@@ -1,13 +1,14 @@
 ﻿<Project>
   <PropertyGroup>
-    <CommonTargetFramework>net9.0</CommonTargetFramework>
-    <DesktopTargetFramework>net9.0-windows</DesktopTargetFramework>
+    <CommonTargetFramework>net10.0</CommonTargetFramework>
+    <DesktopTargetFramework>net10.0-windows</DesktopTargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
     <TargetFramework>$(CommonTargetFramework)</TargetFramework>
     <Nullable>enable</Nullable>
-    <LangVersion>13</LangVersion>
+    <LangVersion>14</LangVersion>
     <AnalysisMode>Recommended</AnalysisMode>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
 </Project>

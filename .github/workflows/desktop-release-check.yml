@@ -11,11 +11,11 @@ jobs:
     name: Verify Velopack release process
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           global-json-file: global.json
 
@@ -26,9 +26,19 @@ jobs:
       - name: Test application
         run: dotnet test dirs.proj --no-build -c Release --verbosity normal
 
+      - name: Extract certificate
+        run: |
+          $certB64 = '${{ secrets.WOWSSB_CERT }}'
+          [IO.File]::WriteAllBytes("./wowssb.pfx", [Convert]::FromBase64String([char[]]$certB64))
+      - name: Determine vpk version
+        id: vpk-version
+        run: echo ("VELOPACK_VERSION=" + (Select-Xml -Path ./src/WoWsShipBuilder.Desktop/WoWsShipBuilder.Desktop.csproj -XPath "//PackageReference[@Include='Velopack']" | Select-Object -ExpandProperty Node -First 1 | foreach {$_.Version})) >> $env:GITHUB_OUTPUT
+      - name: Install vpk
+        run: dotnet tool install -g --version ${{ steps.vpk-version.outputs.VELOPACK_VERSION }} vpk
       - name: Create Velopack Release
         run: |
-          dotnet tool install -g vpk
-          vpk download github -o releases --repoUrl ${{ github.server_url }}/${{ github.repository }}
-          installer\BuildVelopackRelease.ps1 -skipBuild
+          vpk download github -o artifacts/releases --repoUrl ${{ github.server_url }}/${{ github.repository }}
+          build/BuildVelopackRelease.ps1 -skipBuild -signingCert wowssb.pfx -signingPassword '${{ secrets.WOWSSB_CERT_KEY }}'
         shell: pwsh
+      - name: Cleanup certificate
+        run: Remove-Item ./wowssb.pfx
