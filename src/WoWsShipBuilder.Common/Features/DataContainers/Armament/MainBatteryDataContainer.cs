@@ -159,23 +159,24 @@ public partial class MainBatteryDataContainer : DataContainerBase
 
         var gun = mainBattery.Guns[0];
         var burstModeAbility = mainBattery.BurstModeAbility;
-        var isBurstMode = modifiers.Find(modifier => modifier.AffectedProperties.Contains("MainBatteryDataContainer.BurstMode")) is not null && burstModeAbility is not null;
+        var isBurstMode = modifiers.Find(modifier => modifier.Name.Contains("BurstModeEnabled")) is not null && burstModeAbility is not null;
         var shouldDisplayBurstModeReload = burstModeAbility is { ShotInBurst: > 1 } && isBurstMode;
 
         // Calculate main battery reload
-        decimal reload;
-        decimal burstReload = 1.0m;
-        if (shouldDisplayBurstModeReload)
+        decimal reload = gun.Reload;
+        if (isBurstMode)
         {
             reload = burstModeAbility.ReloadAfterBurst;
-            burstReload = modifiers.ApplyModifiers("MainBatteryDataContainer.Reload", burstModeAbility.ReloadDuringBurst);
-        }
-        else
-        {
-            reload = isBurstMode ? burstModeAbility.ReloadAfterBurst : gun.Reload;
+            barrelCount *= burstModeAbility.ShotInBurst;
         }
 
         reload = modifiers.ApplyModifiers("MainBatteryDataContainer.Reload", reload);
+
+        decimal burstReload = 1.0m;
+        if (shouldDisplayBurstModeReload)
+        {
+            burstReload = modifiers.ApplyModifiers("MainBatteryDataContainer.Reload", burstModeAbility.ReloadDuringBurst);
+        }
 
         decimal ammoSwitchTime = modifiers.ApplyModifiers("MainBatteryDataContainer.AmmoSwitchTime", reload * gun.AmmoSwitchCoeff);
 
@@ -191,6 +192,10 @@ public partial class MainBatteryDataContainer : DataContainerBase
         var dispersion = gun.Dispersion;
 
         decimal rateOfFire = 60 / reload;
+        if (isBurstMode)
+        {
+            rateOfFire = 60 / (reload + (burstReload * (burstModeAbility.ShotInBurst - 1)));
+        }
 
         var maxRangeBw = (double)(range / 30);
         double vRadiusCoeff = (dispersion.RadiusOnMax - dispersion.RadiusOnDelim) / (maxRangeBw * (1 - dispersion.Delim));
@@ -201,7 +206,7 @@ public partial class MainBatteryDataContainer : DataContainerBase
         // Get burst mode ammo list
         var burstModeAmmoList = burstModeAbility?.AlternateShells;
         var ammoList = (burstModeAmmoList?.Length > 0 && isBurstMode) ? burstModeAmmoList : gun.AmmoList;
-        var shellData = ShellDataContainer.FromShellName(ammoList, modifiers, barrelCount, true); // TODO: need to be depended on F key if there is F key on this ship with alt ammo(s)
+        var shellData = ShellDataContainer.FromShellName(ammoList, modifiers, barrelCount, true);
 
         var (horizontalDispersion, verticalDispersion) = dispersion.CalculateDispersion((double)range * 1000, dispersionModifier);
 
