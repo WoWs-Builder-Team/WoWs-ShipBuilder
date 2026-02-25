@@ -1,6 +1,6 @@
 ﻿// noinspection JSUnusedGlobalSymbols
 export function drawDispersionPlotBatched(data, scaling, fusoReference, text){
-    for(const [id, drawingData] in Object.entries(data)) {
+    for(const [id, drawingData] of Object.entries(data)) {
         drawDispersionPlot(id, drawingData, scaling, fusoReference, text);
     }
 }
