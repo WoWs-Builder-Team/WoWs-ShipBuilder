@@ -8,8 +8,15 @@ COPY . ./
 # Restore only projects needed for ShipBuilder Web
 RUN dotnet restore "src/WoWsShipBuilder.Web/WoWsShipBuilder.Web.csproj" -a $TARGETARCH
 
+RUN dotnet tool install -g Microsoft.Web.LibraryManager.Cli
+ENV PATH="${PATH}:/root/.dotnet/tools"
+RUN cd src/WoWsShipBuilder.Common/ && libman restore
+
 # Publish ShipBuilder Web
 RUN dotnet publish "src/WoWsShipBuilder.Web/WoWsShipBuilder.Web.csproj" -a $TARGETARCH --no-restore -c Release -o /app
+
+RUN ls -l /app/wwwroot/
+RUN ls -l /app/wwwroot/_content/WoWsShipBuilder.Common/
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0-alpine AS deploy-env
 EXPOSE 8080
