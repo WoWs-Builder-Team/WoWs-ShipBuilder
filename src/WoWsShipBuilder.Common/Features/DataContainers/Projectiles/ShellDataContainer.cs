@@ -110,42 +110,42 @@ public partial class ShellDataContainer : DataContainerBase
         switch (shell.ShellType)
         {
             case ShellType.HE:
-                {
-                    overmatch = 0;
-                    showBlastPenetration = true;
+            {
+                overmatch = 0;
+                showBlastPenetration = true;
 
-                    // IFHE fire chance malus
-                    shellFireChance = modifiers.ApplyModifiers($"ShellDataContainer.FireChance.{gunType}.Multiplier", shellFireChance);
+                // IFHE fire chance malus
+                shellFireChance = modifiers.ApplyModifiers($"ShellDataContainer.FireChance.{gunType}.Multiplier", shellFireChance);
 
-                    // Victor Lima and India X-Ray signals
-                    shellFireChance = modifiers.ApplyModifiers(shell.Caliber > 0.160f ? $"ShellDataContainer.FireChance.{gunType}.Big.Additive" : $"ShellDataContainer.FireChance.{gunType}.Small.Additive", shellFireChance);
+                // Victor Lima and India X-Ray signals
+                shellFireChance = modifiers.ApplyModifiers(shell.Caliber > 0.160f ? $"ShellDataContainer.FireChance.{gunType}.Big.Additive" : $"ShellDataContainer.FireChance.{gunType}.Small.Additive", shellFireChance);
 
-                    // Demolition expert and talent
-                    shellFireChance = modifiers.ApplyModifiers($"ShellDataContainer.FireChance.{gunType}", shellFireChance);
+                // Demolition expert and talent
+                shellFireChance = modifiers.ApplyModifiers($"ShellDataContainer.FireChance.{gunType}", shellFireChance);
 
-                    // IFHE and possibly modifiers from supership abilities
-                    shellPenetration = modifiers.ApplyModifiers($"ShellDataContainer.Penetration.{gunType}", shellPenetration);
-                    goto case ShellType.SAP;
-                }
+                // IFHE and possibly modifiers from supership abilities
+                shellPenetration = modifiers.ApplyModifiers($"ShellDataContainer.Penetration.{gunType}", shellPenetration);
+                goto case ShellType.SAP;
+            }
 
             case ShellType.SAP:
-                {
-                    armingThreshold = 0;
-                    fuseTimer = 0;
-                    shellDamage = modifiers.ApplyModifiers($"ShellDataContainer.Damage.HESAP.{gunType}", shellDamage);
-                    break;
-                }
+            {
+                armingThreshold = 0;
+                fuseTimer = 0;
+                shellDamage = modifiers.ApplyModifiers($"ShellDataContainer.Damage.HESAP.{gunType}", shellDamage);
+                break;
+            }
 
             case ShellType.AP:
+            {
+                if (shell.Caliber >= 0.190f)
                 {
-                    if (shell.Caliber >= 0.190f)
-                    {
-                        shellDamage = modifiers.ApplyModifiers("ShellDataContainer.Damage.BigAp", shellDamage);
-                    }
-
-                    shellDamage = modifiers.ApplyModifiers("ShellDataContainer.Damage.Ap", shellDamage);
-                    break;
+                    shellDamage = modifiers.ApplyModifiers("ShellDataContainer.Damage.BigAp", shellDamage);
                 }
+
+                shellDamage = modifiers.ApplyModifiers("ShellDataContainer.Damage.Ap", shellDamage);
+                break;
+            }
         }
 
         decimal minRicochet = Math.Round((decimal)shell.RicochetAngle, 1);
