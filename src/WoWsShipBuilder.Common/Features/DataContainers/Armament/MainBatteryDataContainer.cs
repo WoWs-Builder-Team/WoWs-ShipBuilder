@@ -35,9 +35,11 @@ public partial class MainBatteryDataContainer : DataContainerBase
     public decimal Reload { get; set; }
 
     [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "BurstMode", UnitKey = "S")]
+    [DataElementFiltering(true, "ShouldDisplayBurstReload")]
     public decimal BurstDuringReload { get; set; }
 
     [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "BurstMode", UnitKey = "S")]
+    [DataElementFiltering(true, "ShouldDisplayBurstReload")]
     public decimal BurstAfterReload { get; set; }
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "ShotsPerMinute")]
@@ -218,7 +220,7 @@ public partial class MainBatteryDataContainer : DataContainerBase
             TurretNames = turretNames.ToImmutableList(),
             Range = Math.Round(range, 2),
             AmmoSwitchTime = Math.Round(ammoSwitchTime, 2),
-            RoF = Math.Round(rateOfFire * barrelCount * numberOfShots, 1),
+            RoF = Math.Round(rateOfFire * barrelCount, 1),
             TurnTime = Math.Round(180 / traverseSpeed, 1),
             TraverseSpeed = Math.Round(traverseSpeed, 2),
             Sigma = mainBattery.Sigma,
@@ -246,22 +248,22 @@ public partial class MainBatteryDataContainer : DataContainerBase
         if (mainBatteryDataContainer.DisplayHeDpm)
         {
             var heShell = shellData.First(x => x.Type.Equals($"ArmamentType_{ShellType.HE.ShellTypeToString()}", StringComparison.Ordinal));
-            mainBatteryDataContainer.TheoreticalHeDpm = Math.Round(heShell.Damage * barrelCount * numberOfShots * rateOfFire).ToString("n0", nfi);
+            mainBatteryDataContainer.TheoreticalHeDpm = Math.Round(heShell.Damage * barrelCount * rateOfFire).ToString("n0", nfi);
             mainBatteryDataContainer.HeSalvo = Math.Round(heShell.Damage * barrelCount * numberOfShots).ToString("n0", nfi);
-            mainBatteryDataContainer.PotentialFpm = Math.Round(heShell.ShellFireChance / 100 * barrelCount * numberOfShots * rateOfFire, 2);
+            mainBatteryDataContainer.PotentialFpm = Math.Round(heShell.ShellFireChance / 100 * barrelCount * rateOfFire, 2);
         }
 
         if (mainBatteryDataContainer.DisplayApDpm)
         {
             decimal shellDamage = shellData.First(x => x.Type.Equals($"ArmamentType_{ShellType.AP.ShellTypeToString()}", StringComparison.Ordinal)).Damage;
-            mainBatteryDataContainer.TheoreticalApDpm = Math.Round(shellDamage * barrelCount * numberOfShots * rateOfFire).ToString("n0", nfi);
+            mainBatteryDataContainer.TheoreticalApDpm = Math.Round(shellDamage * barrelCount * rateOfFire).ToString("n0", nfi);
             mainBatteryDataContainer.ApSalvo = Math.Round(shellDamage * barrelCount * numberOfShots).ToString("n0", nfi);
         }
 
         if (mainBatteryDataContainer.DisplaySapDpm)
         {
             decimal shellDamage = shellData.First(x => x.Type.Equals($"ArmamentType_{ShellType.SAP.ShellTypeToString()}", StringComparison.Ordinal)).Damage;
-            mainBatteryDataContainer.TheoreticalSapDpm = Math.Round(shellDamage * barrelCount * numberOfShots * rateOfFire).ToString("n0", nfi);
+            mainBatteryDataContainer.TheoreticalSapDpm = Math.Round(shellDamage * barrelCount * rateOfFire).ToString("n0", nfi);
             mainBatteryDataContainer.SapSalvo = Math.Round(shellDamage * barrelCount * numberOfShots).ToString("n0", nfi);
         }
 
