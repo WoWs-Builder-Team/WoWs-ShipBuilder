@@ -171,7 +171,7 @@ public partial class MainBatteryDataContainer : DataContainerBase
         var numberOfShots = 1;
         if (isBurstMode)
         {
-            reload = burstModeAbility.ReloadAfterBurst;
+            reload = burstModeAbility!.ReloadAfterBurst;
             numberOfShots = burstModeAbility.ShotInBurst;
         }
 
@@ -180,7 +180,7 @@ public partial class MainBatteryDataContainer : DataContainerBase
         decimal burstReload = 1.0m;
         if (shouldDisplayBurstModeReload)
         {
-            burstReload = modifiers.ApplyModifiers("MainBatteryDataContainer.Reload", burstModeAbility.ReloadDuringBurst);
+            burstReload = modifiers.ApplyModifiers("MainBatteryDataContainer.Reload", burstModeAbility!.ReloadDuringBurst);
         }
 
         decimal ammoSwitchTime = modifiers.ApplyModifiers("MainBatteryDataContainer.AmmoSwitchTime", reload * gun.AmmoSwitchCoeff);
@@ -199,7 +199,7 @@ public partial class MainBatteryDataContainer : DataContainerBase
         decimal rateOfFire = 60 / reload;
         if (isBurstMode)
         {
-            rateOfFire = 60 / (reload + (burstReload * (burstModeAbility.ShotInBurst - 1)));
+            rateOfFire = 60 / (reload + (burstReload * (burstModeAbility!.ShotInBurst - 1)));
         }
 
         var maxRangeBw = (double)(range / 30);
