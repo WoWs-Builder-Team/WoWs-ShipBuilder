@@ -25,7 +25,7 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="ReactiveUI" Version="22.3.1" />
-        <PackageReference Include="WoWsShipBuilder.DataStructures" Version="6.1.0" />
+        <PackageReference Include="WoWsShipBuilder.DataStructures" Version="6.2.0" />
     </ItemGroup>
 
     <ItemGroup>

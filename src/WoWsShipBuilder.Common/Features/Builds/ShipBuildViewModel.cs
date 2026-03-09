@@ -106,6 +106,24 @@ public partial class ShipBuildViewModel : ReactiveObject
         modifiers.AddRange(this.SignalSelectorViewModel.GetModifierList());
         modifiers.AddRange(this.CaptainSkillSelectorViewModel.GetModifiersList());
         modifiers.AddRange(this.ConsumableViewModel.GetModifiersList());
+        if (!this.SpecialAbilityActive)
+        {
+            return modifiers.ToImmutableList();
+        }
+
+        if (this.CurrentShip.SpecialAbility != null)
+        {
+            modifiers.AddRange(this.CurrentShip.SpecialAbility.Modifiers);
+            return modifiers.ToImmutableList();
+        }
+
+        // when the special ability is enabled, we want to properly handle its effects
+        var burstModeAbility = this.CurrentShip.MainBatteryModuleList.Values.FirstOrDefault(x => x.BurstModeAbility is { AlternateShells.IsEmpty: false })?.BurstModeAbility;
+        if (burstModeAbility != null)
+        {
+            modifiers.AddRange(burstModeAbility.Modifiers);
+        }
+
         return modifiers.ToImmutableList();
     }
 }

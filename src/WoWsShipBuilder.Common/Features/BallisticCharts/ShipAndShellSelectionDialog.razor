@@ -47,7 +47,8 @@
                             @if (dataWrapper.ShipBuildContainer.Ship.MainBatteryModuleList.Any())
                             {
                                 <MudButtonGroup OverrideStyles="false" Vertical Class="gap-1">
-                                    @foreach (string shell in dataWrapper.ShipBuildContainer.Ship.ShellCompatibilities.Keys)
+                                    @foreach (var (shell, _) in dataWrapper.ShipBuildContainer.Ship.ShellCompatibilities
+                                                  .Where(x => x.Value.IsSpecialAbilityShell == dataWrapper.ShipBuildContainer.SpecialAbilityActive))
                                     {
                                         <MudButton Disabled="@(disabledShells.ContainsKey(dataWrapper.ShipBuildContainer.Id) && disabledShells[dataWrapper.ShipBuildContainer.Id].Any(item => item.Value.Contains(shell)))" Color="@(GetColorFromBool(dataWrapper.SelectedShells.ContainsKey(shell)))" Variant="@(GetVariantFromBool(dataWrapper.SelectedShells.ContainsKey(shell)))" DropShadow="false" OnClick="@(() => ToggleSelection(dataWrapper, shell))">
                                             @Localizer.GetGameLocalization(shell).Localization

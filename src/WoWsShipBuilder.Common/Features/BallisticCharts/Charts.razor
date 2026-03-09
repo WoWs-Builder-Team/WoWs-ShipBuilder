@@ -440,7 +440,7 @@
                     continue;
                 }
 
-                var shellPenetration = shipToAdd.ShipBuildContainer.ShipDataContainer!.MainBatteryDataContainer!.AllShellData.First(x => x.Name.Equals(shellIndex)).Penetration;
+                var shellPenetration = shipToAdd.ShipBuildContainer.ShipDataContainer!.MainBatteryDataContainer!.ShellData.First(x => x.Name.Equals(shellIndex)).Penetration;
                 var shell = AppData.FindProjectile<ArtilleryShell>(shellIndex);
 
                 Dictionary<double, Ballistic> ballisticSeries = GetBallistic(shipToAdd, shellIndex, shell, maxRange, shellPenetration);
@@ -485,7 +485,7 @@
             //first, we change shells if needed. Some guns upgrades can change the shell, so we keep the same type
             //if the shell didn't change, we still reset the cache to account for possible new modifiers influencing the charts
             var oldShellsIndexes = shipToUpdate.SelectedShells.Keys.ToList();
-            var availableShells = buildContainer.ShipDataContainer!.MainBatteryDataContainer!.AllShellData;
+            var availableShells = buildContainer.ShipDataContainer!.MainBatteryDataContainer!.ShellData;
             foreach (var oldShellIndex in oldShellsIndexes)
             {
                 var oldShell = AppData.FindProjectile<ArtilleryShell>(oldShellIndex);
