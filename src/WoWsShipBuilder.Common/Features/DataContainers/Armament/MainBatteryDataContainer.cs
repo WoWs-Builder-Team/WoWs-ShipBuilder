@@ -92,6 +92,8 @@ public partial class MainBatteryDataContainer : DataContainerBase
 
     public decimal TaperDist { get; set; }
 
+    public ImmutableList<ShellDataContainer> AllShellData { get; init; } = ImmutableList<ShellDataContainer>.Empty;
+
     public ImmutableList<ShellDataContainer> ShellData { get; set; } = ImmutableList<ShellDataContainer>.Empty;
 
     public Dispersion DispersionData { get; set; } = default!;
@@ -207,9 +209,12 @@ public partial class MainBatteryDataContainer : DataContainerBase
         nfi.NumberGroupSeparator = "'";
 
         // Get burst mode ammo list
-        var burstModeAmmoList = burstModeAbility?.AlternateShells;
-        var ammoList = (burstModeAmmoList?.Length > 0 && isBurstMode) ? burstModeAmmoList : gun.AmmoList;
-        var shellData = ShellDataContainer.FromShellName(ammoList, modifiers, barrelCount, numberOfShots, true);
+        var burstModeAmmoList = burstModeAbility?.AlternateShells ?? ImmutableArray<string>.Empty;
+        var ammoList = (burstModeAmmoList.Length > 0 && isBurstMode) ? burstModeAmmoList : gun.AmmoList;
+        var allAmmo = gun.AmmoList.Concat(burstModeAmmoList).ToImmutableArray();
+
+        var allShellData = ShellDataContainer.FromShellName(allAmmo, modifiers, barrelCount, numberOfShots, true);
+        var shellData = allShellData.Where(x => ammoList.Contains(x.Name)).ToList();
 
         var (horizontalDispersion, verticalDispersion) = dispersion.CalculateDispersion((double)range * 1000, dispersionModifier);
 
@@ -235,6 +240,7 @@ public partial class MainBatteryDataContainer : DataContainerBase
             DispersionData = dispersion,
             DispersionModifier = dispersionModifier,
             OriginalMainBatteryData = mainBattery,
+            AllShellData = allShellData.ToImmutableList(),
             ShellData = shellData.ToImmutableList(),
             DisplayHeDpm = shellData.Select(x => x.Type).Contains($"ArmamentType_{ShellType.HE.ShellTypeToString()}"),
             DisplayApDpm = shellData.Select(x => x.Type).Contains($"ArmamentType_{ShellType.AP.ShellTypeToString()}"),
@@ -249,22 +255,22 @@ public partial class MainBatteryDataContainer : DataContainerBase
         {
             var heShell = shellData.First(x => x.Type.Equals($"ArmamentType_{ShellType.HE.ShellTypeToString()}", StringComparison.Ordinal));
             mainBatteryDataContainer.TheoreticalHeDpm = Math.Round(heShell.Damage * barrelCount * rateOfFire).ToString("n0", nfi);
-            mainBatteryDataContainer.HeSalvo = Math.Round(heShell.Damage * barrelCount * numberOfShots).ToString("n0", nfi);
-            mainBatteryDataContainer.PotentialFpm = Math.Round(heShell.ShellFireChance / 100 * barrelCount * rateOfFire, 2);
+            mainBatteryDataContainer.HeSalvo = Math.Round(heShell.Damage * barrelCount).ToString("n0", nfi);
+            mainBatteryDataContainer.PotentialFpm = Math.Round((heShell.ShellFireChance / 100) * barrelCount * rateOfFire, 2);
         }
 
         if (mainBatteryDataContainer.DisplayApDpm)
         {
             decimal shellDamage = shellData.First(x => x.Type.Equals($"ArmamentType_{ShellType.AP.ShellTypeToString()}", StringComparison.Ordinal)).Damage;
             mainBatteryDataContainer.TheoreticalApDpm = Math.Round(shellDamage * barrelCount * rateOfFire).ToString("n0", nfi);
-            mainBatteryDataContainer.ApSalvo = Math.Round(shellDamage * barrelCount * numberOfShots).ToString("n0", nfi);
+            mainBatteryDataContainer.ApSalvo = Math.Round(shellDamage * barrelCount).ToString("n0", nfi);
         }
 
         if (mainBatteryDataContainer.DisplaySapDpm)
         {
             decimal shellDamage = shellData.First(x => x.Type.Equals($"ArmamentType_{ShellType.SAP.ShellTypeToString()}", StringComparison.Ordinal)).Damage;
             mainBatteryDataContainer.TheoreticalSapDpm = Math.Round(shellDamage * barrelCount * rateOfFire).ToString("n0", nfi);
-            mainBatteryDataContainer.SapSalvo = Math.Round(shellDamage * barrelCount * numberOfShots).ToString("n0", nfi);
+            mainBatteryDataContainer.SapSalvo = Math.Round(shellDamage * barrelCount).ToString("n0", nfi);
         }
 
         if (mainBatteryDataContainer.DisplayBurstReload)
