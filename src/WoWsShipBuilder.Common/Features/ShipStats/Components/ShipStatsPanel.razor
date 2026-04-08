@@ -1,4 +1,4 @@
-﻿@using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.DataStructures
 @using static WoWsShipBuilder.Features.ShipStats.Components.SharedFragments
 @using Microsoft.Extensions.Logging.Console
 @using System.Text
@@ -248,6 +248,24 @@
                                                                         @foreach (var consumableData in consumable.DataElements)
                                                                         {
                                                                             @DataElementFragment((consumableData,Localizer))
+                                                                        }
+                                                                        <div style="margin-top: 6px"></div>
+                                                                        @foreach (var modifier in consumable.Modifiers)
+                                                                        {
+                                                                            // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
+                                                                            string modifierDesc = ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.Description, Localizer);
+                                                                            string modifierValueString = ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.Value, Localizer);
+                                                                            if (!string.IsNullOrWhiteSpace(modifierDesc) && !string.IsNullOrWhiteSpace(modifierValueString))
+                                                                            {
+                                                                                <div class="d-flex justify-space-between">
+                                                                                    <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1" Align="Align.Start">
+                                                                                        @modifierDesc
+                                                                                    </MudText>
+                                                                                    <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">
+                                                                                        @modifierValueString
+                                                                                    </MudText>
+                                                                                </div>
+                                                                            }
                                                                         }
                                                                     </MudStack>
                                                                 </MudPaper>
