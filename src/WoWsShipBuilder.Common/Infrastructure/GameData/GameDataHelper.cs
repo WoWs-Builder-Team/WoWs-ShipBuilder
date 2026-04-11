@@ -85,15 +85,25 @@ public static class GameDataHelper
 
     public static ShipClass IndexToClass(string index)
     {
-        return index[0] switch
+        return IndexToClass(index[0]);
+    }
+
+    public static ShipClass IndexToClass(char indexChar)
+    {
+        return indexChar switch
         {
             'S' => ShipClass.Submarine,
             'D' => ShipClass.Destroyer,
             'C' => ShipClass.Cruiser,
             'B' => ShipClass.Battleship,
             'A' => ShipClass.AirCarrier,
-            _ => throw new ArgumentOutOfRangeException(nameof(index), index, null),
+            _ => throw new ArgumentOutOfRangeException(nameof(indexChar), indexChar, null),
         };
+    }
+
+    public static ShipClass GetClassFromIndex(string shipIndex)
+    {
+        return IndexToClass(shipIndex[3]);
     }
 
     public static Nation IndexToNation(string index)

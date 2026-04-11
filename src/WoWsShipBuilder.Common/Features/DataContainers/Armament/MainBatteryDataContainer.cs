@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.Text;
 using WoWsShipBuilder.DataElements;
@@ -33,6 +33,14 @@ public partial class MainBatteryDataContainer : DataContainerBase
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
     public decimal Reload { get; set; }
+
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "BurstMode", UnitKey = "S")]
+    [DataElementFiltering(true, "ShouldDisplayBurstReload")]
+    public decimal BurstDuringReload { get; set; }
+
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "BurstMode", UnitKey = "S")]
+    [DataElementFiltering(true, "ShouldDisplayBurstReload")]
+    public decimal BurstAfterReload { get; set; }
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "ShotsPerMinute")]
     public decimal RoF { get; set; }
@@ -84,6 +92,8 @@ public partial class MainBatteryDataContainer : DataContainerBase
 
     public decimal TaperDist { get; set; }
 
+    public ImmutableList<ShellDataContainer> AllShellData { get; init; } = ImmutableList<ShellDataContainer>.Empty;
+
     public ImmutableList<ShellDataContainer> ShellData { get; set; } = ImmutableList<ShellDataContainer>.Empty;
 
     public Dispersion DispersionData { get; set; } = default!;
@@ -97,6 +107,8 @@ public partial class MainBatteryDataContainer : DataContainerBase
     public bool DisplayApDpm { get; set; }
 
     public bool DisplaySapDpm { get; set; }
+
+    public bool DisplayBurstReload { get; set; }
 
     public decimal GunCaliber { get; set; }
 
@@ -150,9 +162,26 @@ public partial class MainBatteryDataContainer : DataContainerBase
         }
 
         var gun = mainBattery.Guns[0];
+        var burstModeAbility = mainBattery.BurstModeAbility;
+        var isBurstMode = modifiers.Find(modifier => modifier.Name.Contains("BurstModeEnabled")) is not null && burstModeAbility is not null;
+        var shouldDisplayBurstModeReload = burstModeAbility is { ShotInBurst: > 1 } && isBurstMode;
 
         // Calculate main battery reload
-        decimal reload = modifiers.ApplyModifiers("MainBatteryDataContainer.Reload", gun.Reload);
+        decimal reload = gun.Reload;
+        var numberOfShots = 1;
+        if (isBurstMode)
+        {
+            reload = burstModeAbility!.ReloadAfterBurst;
+            numberOfShots = burstModeAbility.ShotInBurst;
+        }
+
+        reload = modifiers.ApplyModifiers("MainBatteryDataContainer.Reload", reload);
+
+        decimal burstReload = 1.0m;
+        if (shouldDisplayBurstModeReload)
+        {
+            burstReload = modifiers.ApplyModifiers("MainBatteryDataContainer.Reload", burstModeAbility!.ReloadDuringBurst);
+        }
 
         decimal ammoSwitchTime = modifiers.ApplyModifiers("MainBatteryDataContainer.AmmoSwitchTime", reload * gun.AmmoSwitchCoeff);
 
@@ -168,6 +197,10 @@ public partial class MainBatteryDataContainer : DataContainerBase
         var dispersion = gun.Dispersion;
 
         decimal rateOfFire = 60 / reload;
+        if (isBurstMode)
+        {
+            rateOfFire = 60 / (reload + (burstReload * (burstModeAbility!.ShotInBurst - 1)));
+        }
 
         var maxRangeBw = (double)(range / 30);
         double vRadiusCoeff = (dispersion.RadiusOnMax - dispersion.RadiusOnDelim) / (maxRangeBw * (1 - dispersion.Delim));
@@ -175,7 +208,13 @@ public partial class MainBatteryDataContainer : DataContainerBase
         var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
         nfi.NumberGroupSeparator = "'";
 
-        var shellData = ShellDataContainer.FromShellName(gun.AmmoList, modifiers, barrelCount, true);
+        // Get burst mode ammo list
+        var burstModeAmmoList = burstModeAbility?.AlternateShells ?? ImmutableArray<string>.Empty;
+        var ammoList = (burstModeAmmoList.Length > 0 && isBurstMode) ? burstModeAmmoList : gun.AmmoList;
+        var allAmmo = gun.AmmoList.Concat(burstModeAmmoList).ToImmutableArray();
+
+        var allShellData = ShellDataContainer.FromShellName(allAmmo, modifiers, barrelCount, numberOfShots, true);
+        var shellData = allShellData.Where(x => ammoList.Contains(x.Name)).ToList();
 
         var (horizontalDispersion, verticalDispersion) = dispersion.CalculateDispersion((double)range * 1000, dispersionModifier);
 
@@ -185,7 +224,6 @@ public partial class MainBatteryDataContainer : DataContainerBase
             Name = arrangementString.ToString(),
             TurretNames = turretNames.ToImmutableList(),
             Range = Math.Round(range, 2),
-            Reload = Math.Round(reload, 2),
             AmmoSwitchTime = Math.Round(ammoSwitchTime, 2),
             RoF = Math.Round(rateOfFire * barrelCount, 1),
             TurnTime = Math.Round(180 / traverseSpeed, 1),
@@ -202,10 +240,12 @@ public partial class MainBatteryDataContainer : DataContainerBase
             DispersionData = dispersion,
             DispersionModifier = dispersionModifier,
             OriginalMainBatteryData = mainBattery,
+            AllShellData = allShellData.ToImmutableList(),
             ShellData = shellData.ToImmutableList(),
             DisplayHeDpm = shellData.Select(x => x.Type).Contains($"ArmamentType_{ShellType.HE.ShellTypeToString()}"),
             DisplayApDpm = shellData.Select(x => x.Type).Contains($"ArmamentType_{ShellType.AP.ShellTypeToString()}"),
             DisplaySapDpm = shellData.Select(x => x.Type).Contains($"ArmamentType_{ShellType.SAP.ShellTypeToString()}"),
+            DisplayBurstReload = shouldDisplayBurstModeReload,
             GunCaliber = Math.Round(gun.BarrelDiameter * 1000),
             BarrelsCount = barrelCount,
             BarrelsLayout = string.Join(" + ", barrelLayout),
@@ -216,7 +256,7 @@ public partial class MainBatteryDataContainer : DataContainerBase
             var heShell = shellData.First(x => x.Type.Equals($"ArmamentType_{ShellType.HE.ShellTypeToString()}", StringComparison.Ordinal));
             mainBatteryDataContainer.TheoreticalHeDpm = Math.Round(heShell.Damage * barrelCount * rateOfFire).ToString("n0", nfi);
             mainBatteryDataContainer.HeSalvo = Math.Round(heShell.Damage * barrelCount).ToString("n0", nfi);
-            mainBatteryDataContainer.PotentialFpm = Math.Round(heShell.ShellFireChance / 100 * barrelCount * rateOfFire, 2);
+            mainBatteryDataContainer.PotentialFpm = Math.Round((heShell.ShellFireChance / 100) * barrelCount * rateOfFire, 2);
         }
 
         if (mainBatteryDataContainer.DisplayApDpm)
@@ -231,6 +271,16 @@ public partial class MainBatteryDataContainer : DataContainerBase
             decimal shellDamage = shellData.First(x => x.Type.Equals($"ArmamentType_{ShellType.SAP.ShellTypeToString()}", StringComparison.Ordinal)).Damage;
             mainBatteryDataContainer.TheoreticalSapDpm = Math.Round(shellDamage * barrelCount * rateOfFire).ToString("n0", nfi);
             mainBatteryDataContainer.SapSalvo = Math.Round(shellDamage * barrelCount).ToString("n0", nfi);
+        }
+
+        if (mainBatteryDataContainer.DisplayBurstReload)
+        {
+            mainBatteryDataContainer.BurstDuringReload = Math.Round(burstReload, 2);
+            mainBatteryDataContainer.BurstAfterReload = Math.Round(reload, 2);
+        }
+        else
+        {
+            mainBatteryDataContainer.Reload = Math.Round(reload, 2);
         }
 
         mainBatteryDataContainer.UpdateDataElements();
@@ -250,5 +300,10 @@ public partial class MainBatteryDataContainer : DataContainerBase
     private bool ShouldDisplaySapDpm(object obj)
     {
         return this.DisplaySapDpm;
+    }
+
+    private bool ShouldDisplayBurstReload(object obj)
+    {
+        return this.DisplayBurstReload;
     }
 }

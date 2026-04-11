@@ -15,7 +15,7 @@
         <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <RootNamespace>WoWsShipBuilder.Desktop</RootNamespace>
-        <VersionPrefix>2026.1.1</VersionPrefix>
+        <VersionPrefix>2026.2.0</VersionPrefix>
         <UseWpf>true</UseWpf>
     </PropertyGroup>
 
@@ -92,6 +92,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Tmds.DBus.Protocol" Version="0.21.3" />
         <Content Include="..\..\docs\Third-Party-Dependencies.txt">
             <Link>Third-Party-Dependencies.txt</Link>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>

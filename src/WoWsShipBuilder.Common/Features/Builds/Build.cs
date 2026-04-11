@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Versioning;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
@@ -66,7 +67,7 @@ public class Build
 
     public string Captain { get; }
 
-    public ImmutableArray<int> Skills { get; }
+    public ImmutableArray<int> Skills { get; private set; }
 
     public ImmutableArray<string> Consumables { get; }
 
@@ -176,7 +177,19 @@ public class Build
             oldBuild.BuildVersion = CurrentBuildVersion;
         }
 
+        if (ShouldFixCvBuilds(oldBuild) && oldBuild.Skills.Contains(52))
+        {
+            oldBuild.Skills = oldBuild.Skills.Replace(52, 83);
+            logger.LogDebug("Replacing skill 52 with new skill 83 (Combat Maneuver Specialist)");
+        }
+
         return oldBuild;
+    }
+
+    private static bool ShouldFixCvBuilds(Build build)
+    {
+        var minVersion = new Version(0, 15, 2);
+        return AppData.GameVersion?.MainVersion >= minVersion && GameDataHelper.GetClassFromIndex(build.ShipIndex) == ShipClass.AirCarrier;
     }
 
     private static string CreateHash(Build build)

@@ -330,7 +330,9 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
             this.SelectedCaptain = captain ?? this.CaptainList![0];
         }
 
-        var skills = selectedSkills.Select(skillId => this.SelectedCaptain!.Skills.First(captainSkill => captainSkill.Value.SkillNumber == skillId)).Select(pair => pair.Value);
+        var skills = selectedSkills
+            .Select(skillId => this.SelectedCaptain!.Skills.First(captainSkill => captainSkill.Value.SkillNumber == skillId))
+            .Select(pair => pair.Value);
         this.SkillOrderList.AddRange(skills);
         this.AssignedPoints = this.SkillOrderList.Sum(skill => skill.Tiers.First(t => t.ShipClass == this.currentClass).Tier + 1);
         this.ReorderSkillList();

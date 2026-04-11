@@ -45,6 +45,7 @@ public class ServerAppDataService : IAppDataService
         if (onlineVersionInfo.CurrentVersion is not null) // check for null for legacy compatibility
         {
             AppData.DataVersion = Helpers.ComputeFullVersionString(onlineVersionInfo);
+            AppData.GameVersion = onlineVersionInfo.CurrentVersion;
             this.logger.LogInformation("Found online version info with version {Version}", AppData.DataVersion);
         }
         else
@@ -80,6 +81,7 @@ public class ServerAppDataService : IAppDataService
         var localVersionInfo = JsonSerializer.Deserialize<VersionInfo>(versionInfoContent, AppConstants.JsonSerializerOptions)!;
 
         AppData.DataVersion = Helpers.ComputeFullVersionString(localVersionInfo);
+        AppData.GameVersion = localVersionInfo.CurrentVersion;
 
         var dataRootInfo = new DirectoryInfo(dataRoot);
         DirectoryInfo[] categories = dataRootInfo.GetDirectories();

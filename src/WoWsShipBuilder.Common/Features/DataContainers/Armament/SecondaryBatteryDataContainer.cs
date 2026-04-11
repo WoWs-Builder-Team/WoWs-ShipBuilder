@@ -126,7 +126,7 @@ public partial class SecondaryBatteryDataContainer : DataContainerBase
             ShellDataContainer? shellData;
             try
             {
-                shellData = ShellDataContainer.FromShellName(secondaryGun.AmmoList, modifiers, barrelCount, false)[0];
+                shellData = ShellDataContainer.FromShellName(secondaryGun.AmmoList, modifiers, barrelCount, 1, false)[0];
             }
             catch (KeyNotFoundException e)
             {

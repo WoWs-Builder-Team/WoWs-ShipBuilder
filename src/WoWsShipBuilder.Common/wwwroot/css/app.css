@@ -354,3 +354,7 @@ div.default-label-background label {
 .upgrade-popup-no-min-width {
     min-width: 0 !important;
 }
+
+div.mud-expand-panel div.mud-collapse-wrapper {
+    overflow-y: hidden;
+}
