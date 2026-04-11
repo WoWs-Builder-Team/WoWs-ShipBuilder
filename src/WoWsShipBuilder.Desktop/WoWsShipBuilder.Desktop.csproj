@@ -92,6 +92,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Tmds.DBus.Protocol" Version="0.21.3" />
         <Content Include="..\..\docs\Third-Party-Dependencies.txt">
             <Link>Third-Party-Dependencies.txt</Link>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
