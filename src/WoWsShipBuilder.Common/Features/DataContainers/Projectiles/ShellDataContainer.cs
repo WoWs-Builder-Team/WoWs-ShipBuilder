@@ -82,14 +82,14 @@ public partial class ShellDataContainer : DataContainerBase
 
     public bool ShowBlastPenetration { get; private set; }
 
-    public static List<ShellDataContainer> FromShellName(IEnumerable<string> shellNames, ImmutableList<Modifier> modifiers, int barrelCount, bool isMainGunShell)
+    public static List<ShellDataContainer> FromShellName(IEnumerable<string> shellNames, ImmutableList<Modifier> modifiers, int barrelCount, int numberOfShots, bool isMainGunShell)
     {
-        var shells = shellNames.Select(shellName => ProcessShell(modifiers, barrelCount, isMainGunShell, shellName)).ToList();
+        var shells = shellNames.Select(shellName => ProcessShell(modifiers, barrelCount, numberOfShots, isMainGunShell, shellName)).ToList();
         shells[^1].IsLastEntry = true;
         return shells;
     }
 
-    private static ShellDataContainer ProcessShell(ImmutableList<Modifier> modifiers, int barrelCount, bool isMainGunShell, string shellName)
+    private static ShellDataContainer ProcessShell(ImmutableList<Modifier> modifiers, int barrelCount, int numberOfShots, bool isMainGunShell, string shellName)
     {
         var shell = AppData.FindProjectile<ArtilleryShell>(shellName);
 
@@ -151,7 +151,7 @@ public partial class ShellDataContainer : DataContainerBase
         decimal minRicochet = Math.Round((decimal)shell.RicochetAngle, 1);
         decimal maxRicochet = Math.Round((decimal)shell.AlwaysRicochetAngle, 1);
 
-        var fireChancePerSalvo = (decimal)(1 - Math.Pow((double)(1 - (shellFireChance / 100)), barrelCount));
+        var fireChancePerSalvo = (decimal)(1 - Math.Pow((double)(1 - (shellFireChance / 100)), barrelCount * numberOfShots));
 
         var splashRadius = modifiers.ApplyModifiers($"ShellDataContainer.UnderwaterSplash.{gunType}", (decimal)shell.DepthSplashRadius);
 

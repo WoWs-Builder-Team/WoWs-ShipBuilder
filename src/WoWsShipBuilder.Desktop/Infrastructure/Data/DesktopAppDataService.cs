@@ -98,6 +98,7 @@ public class DesktopAppDataService : IAppDataService
         AppData.ResetCaches();
         var localVersionInfo = await this.GetCurrentVersionInfo(serverType) ?? throw new InvalidOperationException("No local data found");
         AppData.DataVersion = Helpers.ComputeFullVersionString(localVersionInfo);
+        AppData.GameVersion = localVersionInfo.CurrentVersion;
 
         var dataRootPath = this.GetDataPath(serverType);
 

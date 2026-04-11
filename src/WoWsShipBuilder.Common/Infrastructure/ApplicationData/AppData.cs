@@ -9,6 +9,7 @@ using WoWsShipBuilder.DataStructures.Exterior;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Upgrade;
+using WoWsShipBuilder.DataStructures.Versioning;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
 
@@ -30,6 +31,11 @@ public static class AppData
     /// Gets or sets the current data version name.
     /// </summary>
     public static string? DataVersion { get; set; }
+
+    /// <summary>
+    /// Gets or sets the current game version.
+    /// </summary>
+    public static GameVersion? GameVersion { get; set; }
 
     /// <summary>
     /// Gets the ship dictionary for the currently selected nation.
@@ -87,6 +93,7 @@ public static class AppData
         AircraftCache.Clear();
         ShipDictionary.Clear();
         DataVersion = null;
+        GameVersion = null;
         Logging.Logger.LogInformation("Cleared all appdata caches");
     }
 

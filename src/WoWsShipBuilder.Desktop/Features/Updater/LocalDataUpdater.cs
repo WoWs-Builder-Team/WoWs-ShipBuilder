@@ -216,7 +216,10 @@ public class LocalDataUpdater : ILocalDataUpdater
 
         if (this.SupportedDataStructureVersion.Major < onlineVersionInfo.DataStructuresVersion.Major || this.SupportedDataStructureVersion.Minor < onlineVersionInfo.DataStructuresVersion.Minor)
         {
-            this.logger.LogWarning("Online data is incompatible with this application version. Online data version: {}, maximum supported version: {}", this.SupportedDataStructureVersion, onlineVersionInfo.DataStructuresVersion);
+            this.logger.LogWarning(
+                "Online data is incompatible with this application version. Online data version: {OnlineVersion}, maximum supported version: {SupportedVersion}",
+                onlineVersionInfo.DataStructuresVersion,
+                this.SupportedDataStructureVersion);
             return new(new(), false, false, false, versionName, serverType);
         }
 
