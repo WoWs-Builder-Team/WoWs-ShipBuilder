@@ -1,8 +1,6 @@
 using System.Collections.Immutable;
-using System.Globalization;
 using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.DataElements;
-using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Aircraft;
 using WoWsShipBuilder.DataStructures.Consumable;
@@ -14,26 +12,19 @@ using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.DataContainers;
 
-[DataContainer]
-public partial class ConsumableDataContainer : DataContainerBase
+/// <summary>
+/// Shared base for consumable data containers. Concrete rendering is provided by
+/// <see cref="RegularConsumableDataContainer"/> (charge-based) and
+/// <see cref="TimeBasedConsumableDataContainer"/> (time-based / "capacity"). The base resolves the
+/// consumable, applies the build modifiers, then constructs the matching concrete container.
+/// </summary>
+public abstract class ConsumableDataContainer : DataContainerBase
 {
     public string Name { get; set; } = default!;
 
     public string IconName { get; set; } = default!;
 
     public int Slot { get; set; }
-
-    [DataElementType(DataElementTypes.KeyValue)]
-    public string NumberOfUses { get; set; } = default!;
-
-    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
-    public decimal PreparationTime { get; set; }
-
-    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
-    public decimal Cooldown { get; set; }
-
-    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
-    public decimal WorkTime { get; set; }
 
     public ImmutableList<Modifier> Modifiers { get; set; } = ImmutableList<Modifier>.Empty;
 
@@ -69,14 +60,14 @@ public partial class ConsumableDataContainer : DataContainerBase
 
         var iconName = string.IsNullOrEmpty(consumable.IconId) ? name : consumable.IconId;
         var localizationKey = string.IsNullOrEmpty(consumable.DescId) ? consumable.Name : consumable.DescId;
-        var consumableModifiers = consumable.Modifiers;
-        var consumableState = new ConsumableState(name, consumable.NumConsumables, (decimal)consumable.ReloadTime, (decimal)consumable.WorkTime, iconName, localizationKey, consumableModifiers, (decimal)consumable.PreparationTime);
 
-        if (isCvPlanes && !consumableModifiers.Exists(x => x.Name.Equals("error", StringComparison.Ordinal)))
+        var consumableState = new ConsumableState(name, consumable.NumConsumables, (decimal)consumable.ReloadTime, (decimal)consumable.WorkTime, iconName, localizationKey, consumable.Modifiers, (decimal)consumable.PreparationTime, (decimal)consumable.TimeBasedActiveTime);
+
+        if (isCvPlanes && !consumable.Modifiers.Exists(x => x.Name.Equals("error", StringComparison.Ordinal)))
         {
             consumableState = ProcessAircraftConsumable(consumableState, modifiers, consumable);
         }
-        else if (!consumableModifiers.Exists(x => x.Name.Equals("error", StringComparison.Ordinal)))
+        else if (!consumable.Modifiers.Exists(x => x.Name.Equals("error", StringComparison.Ordinal)))
         {
             consumableState = ProcessShipConsumable(consumableState, modifiers, consumable, shipClass, shipHp);
         }
@@ -85,34 +76,25 @@ public partial class ConsumableDataContainer : DataContainerBase
             Logging.Logger.LogWarning("Skipping consumable modifier calculation due to fallback consumable.");
         }
 
-        var consumableDataContainer = new ConsumableDataContainer
-        {
-            Name = consumableState.LocalizationKey,
-            NumberOfUses = consumable.NumConsumables != -1 ? consumableState.Uses.ToString(CultureInfo.InvariantCulture) : "∞",
-            IconName = consumableState.IconName,
-            Slot = slot,
-            Cooldown = Math.Round(consumableState.Cooldown, 1),
-            PreparationTime = Math.Round(consumableState.PrepTime, 1),
-            WorkTime = Math.Round(consumableState.WorkTime, 1),
-            Modifiers = consumableState.ConsumableModifiers,
-        };
-
-        consumableDataContainer.UpdateDataElements();
-        return consumableDataContainer;
+        return consumable.IsTimeBased
+            ? TimeBasedConsumableDataContainer.Create(consumableState, slot)
+            : RegularConsumableDataContainer.Create(consumableState, slot, consumable.NumConsumables);
     }
 
     private static ConsumableState ProcessAircraftConsumable(ConsumableState consumableState, ImmutableList<Modifier> modifiers, Consumable consumable)
     {
-        var (name, uses, cooldown, workTime, iconName, localizationKey, consumableModifiersTmp, _) = consumableState;
+        var (name, uses, cooldown, workTime, iconName, localizationKey, consumableModifiersTmp, _, timeBasedActiveTime) = consumableState;
         var consumableModifiers = consumableModifiersTmp.ToList();
 
         uses = modifiers.ApplyModifiers("ConsumableDataContainer.Uses.Plane", uses);
         cooldown = modifiers.ApplyModifiers("ConsumableDataContainer.Reload.Plane", cooldown);
         workTime = modifiers.ApplyModifiers("ConsumableDataContainer.WorkTime.Plane", workTime);
+        timeBasedActiveTime = modifiers.ApplyModifiers("ConsumableDataContainer.TimeBasedActiveTime.Plane", timeBasedActiveTime);
 
         uses = modifiers.ApplyModifiers($"ConsumableDataContainer.Uses.{consumable.Index}", uses);
         cooldown = modifiers.ApplyModifiers($"ConsumableDataContainer.Reload.{consumable.Index}", cooldown);
         workTime = modifiers.ApplyModifiers($"ConsumableDataContainer.WorkTime.{consumable.Index}", workTime);
+        timeBasedActiveTime = modifiers.ApplyModifiers($"ConsumableDataContainer.TimeBasedActiveTime.{consumable.Index}", timeBasedActiveTime);
 
         if (name.Contains("PCY036", StringComparison.InvariantCultureIgnoreCase))
         {
@@ -170,22 +152,24 @@ public partial class ConsumableDataContainer : DataContainerBase
             consumableModifiers.UpdateConsumableModifierValue(modifiers, "ConsumableDataContainer.Concealment.PCY035", "concealment");
         }
 
-        return consumableState with { Uses = uses, Cooldown = cooldown, WorkTime = workTime, IconName = iconName, LocalizationKey = localizationKey, ConsumableModifiers = consumableModifiers.ToImmutableList() };
+        return consumableState with { Uses = uses, Cooldown = cooldown, WorkTime = workTime, IconName = iconName, LocalizationKey = localizationKey, ConsumableModifiers = consumableModifiers.ToImmutableList(), TimeBasedActiveTime = timeBasedActiveTime };
     }
 
     private static ConsumableState ProcessShipConsumable(ConsumableState consumableState, ImmutableList<Modifier> modifiers, Consumable consumable, ShipClass shipClass, int shipHp)
     {
-        var (name, uses, cooldown, workTime, iconName, localizationKey, consumableModifiersTmp, prepTime) = consumableState;
+        var (name, uses, cooldown, workTime, iconName, localizationKey, consumableModifiersTmp, prepTime, timeBasedActiveTime) = consumableState;
         var consumableModifiers = consumableModifiersTmp.ToList();
 
         uses = modifiers.ApplyModifiers("ConsumableDataContainer.Uses.Ship", uses);
         cooldown = modifiers.ApplyModifiers($"ConsumableDataContainer.Reload.{shipClass.ShipClassToString()}", cooldown);
         cooldown = modifiers.ApplyModifiers("ConsumableDataContainer.Reload.Ship", cooldown);
         workTime = modifiers.ApplyModifiers("ConsumableDataContainer.WorkTime.Ship", workTime);
+        timeBasedActiveTime = modifiers.ApplyModifiers("ConsumableDataContainer.TimeBasedActiveTime.Ship", timeBasedActiveTime);
 
         uses = modifiers.ApplyModifiers($"ConsumableDataContainer.Uses.{consumable.Index}", uses);
         cooldown = modifiers.ApplyModifiers($"ConsumableDataContainer.Reload.{consumable.Index}", cooldown);
         workTime = modifiers.ApplyModifiers($"ConsumableDataContainer.WorkTime.{consumable.Index}", workTime);
+        timeBasedActiveTime = modifiers.ApplyModifiers($"ConsumableDataContainer.TimeBasedActiveTime.{consumable.Index}", timeBasedActiveTime);
 
         if (name.Contains("PCY010", StringComparison.InvariantCultureIgnoreCase))
         {
@@ -269,8 +253,8 @@ public partial class ConsumableDataContainer : DataContainerBase
             prepTime = modifiers.ApplyModifiers("ConsumableDataContainer.PrepTime.PCY048", prepTime);
         }
 
-        return consumableState with { Uses = uses, Cooldown = cooldown, WorkTime = workTime, IconName = iconName, LocalizationKey = localizationKey, ConsumableModifiers = consumableModifiers.ToImmutableList(), PrepTime = prepTime };
+        return consumableState with { Uses = uses, Cooldown = cooldown, WorkTime = workTime, IconName = iconName, LocalizationKey = localizationKey, ConsumableModifiers = consumableModifiers.ToImmutableList(), PrepTime = prepTime, TimeBasedActiveTime = timeBasedActiveTime };
     }
 
-    private readonly record struct ConsumableState(string Name, int Uses, decimal Cooldown, decimal WorkTime, string IconName, string LocalizationKey, ImmutableList<Modifier> ConsumableModifiers, decimal PrepTime);
+    internal readonly record struct ConsumableState(string Name, int Uses, decimal Cooldown, decimal WorkTime, string IconName, string LocalizationKey, ImmutableList<Modifier> ConsumableModifiers, decimal PrepTime, decimal TimeBasedActiveTime);
 }
