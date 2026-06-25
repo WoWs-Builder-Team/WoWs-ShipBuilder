@@ -1,4 +1,4 @@
-# Update 2026.2
+# Update 2026.3
 
 ## Download and Install
 
@@ -18,11 +18,10 @@ from the artifacts of this release, then extract it and run **WoWsShipBuilder.ex
 <summary>Click to show release notes</summary>
 
 ### Additions
-- add consumable stats tooltips for plane consumables
+- add support for time-based consumables by @toalba
 
 ### Changes
 
 ### Bugfixes
-- fix an error when loading CV builds from older versions in 15.2 and newer
 
 </details>

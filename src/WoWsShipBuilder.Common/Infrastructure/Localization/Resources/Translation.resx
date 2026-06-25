@@ -702,6 +702,9 @@
   <data name="ShipStats_WorkTime" xml:space="preserve">
     <value>Action time</value>
   </data>
+  <data name="ShipStats_TimeBasedActiveTime" xml:space="preserve">
+    <value>Total usage time</value>
+  </data>
   <data name="SettingsWindow_Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
