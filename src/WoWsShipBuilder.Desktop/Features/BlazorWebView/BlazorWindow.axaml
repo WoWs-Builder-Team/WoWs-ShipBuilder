@@ -9,14 +9,17 @@
         Background="#ff282828"
         MinHeight="720"
         Height="850"
+        CanMinimize="True"
+        CanMaximize="True"
+        WindowDecorations="Full"
         Title="WoWs ShipBuilder">
-    <Grid RowDefinitions="30, *">
-        <!-- <infrastructure:AppHeader ShowMaximizeButton="True" /> -->
-        <webView:BlazorWebView Grid.Row="1" Name="WebView"
-                                      HostPage="wwwroot\\index.html"
-                                      RootComponents="{DynamicResource rootComponents}"
-                                      Services="{DynamicResource services}"
-                                      DefaultDownloadFolderPath="{DynamicResource downloadPath}"
-                                      Margin="2 2 2 2"/>
+    <Grid RowDefinitions="30,*">
+        <webView:BlazorWebView Name="WebView"
+                               Grid.Row="1"
+                               HostPage="wwwroot\\index.html"
+                               RootComponents="{DynamicResource rootComponents}"
+                               Services="{DynamicResource services}"
+                               DefaultDownloadFolderPath="{DynamicResource downloadPath}"
+                               Margin="2 2 2 2"/>
     </Grid>
 </Window>

@@ -1,0 +1,85 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ControlTheme x:Key="{x:Type WindowDrawnDecorations}" TargetType="WindowDrawnDecorations">
+        <Setter Property="DefaultTitleBarHeight" Value="30" />
+        <Setter Property="DefaultFrameThickness" Value="0,0,0,0" />
+        <Setter Property="DefaultShadowThickness" Value="16" />
+        <Setter Property="Template">
+            <WindowDrawnDecorationsTemplate>
+                <WindowDrawnDecorationsContent>
+                    <WindowDrawnDecorationsContent.Overlay>
+                        <DockPanel Height="{TemplateBinding TitleBarHeight}" VerticalAlignment="Top" Margin="{TemplateBinding ShadowThickness}">
+                            <StackPanel Orientation="Horizontal"
+                                        DockPanel.Dock="Left"
+                                        IsHitTestVisible="False"
+                                        Spacing="5"
+                                        WindowDecorationProperties.ElementRole="TitleBar"
+                                        IsVisible="{Binding $parent[Window].Title, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                <Image Source="/Assets/ShipBuilderIcon_bg.ico"
+                                       VerticalAlignment="Center" Margin="5,5,0,0" />
+                                <TextBlock Text="{Binding $parent[Window].Title}"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                                <Button Width="50" Height="{TemplateBinding TitleBarHeight}" Padding="9,0"
+                                        HorizontalContentAlignment="Center"
+                                        BorderThickness="0"
+                                        IsVisible="{Binding $parent[Window].CanMinimize}"
+                                        x:Name="PART_MinimizeButton">
+                                    <Button.Styles>
+                                        <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                                            <Setter Property="Background" Value="#44AAAAAA" />
+                                        </Style>
+                                        <Style Selector="Button:not(:pointerover) /template/ ContentPresenter#PART_ContentPresenter">
+                                            <Setter Property="Background" Value="Transparent" />
+                                        </Style>
+                                    </Button.Styles>
+                                    <Path Margin="10,0,10,0" Stretch="Uniform" Fill="White"
+                                          Data="M2048 1229v-205h-2048v205h2048z" />
+                                </Button>
+                                <Button Width="50" Height="{TemplateBinding TitleBarHeight}" Padding="9,0"
+                                        VerticalAlignment="Stretch"
+                                        BorderThickness="0"
+                                        IsVisible="{Binding $parent[Window].CanMaximize}"
+                                        WindowDecorationProperties.ElementRole="MaximizeButton"
+                                        x:Name="PART_MaximizeButton">
+                                    <Button.Styles>
+                                        <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                                            <Setter Property="Background" Value="#44AAAAAA" />
+                                        </Style>
+                                        <Style Selector="Button:not(:pointerover) /template/ ContentPresenter#PART_ContentPresenter">
+                                            <Setter Property="Background" Value="Transparent" />
+                                        </Style>
+                                    </Button.Styles>
+                                    <Path Margin="10,0,10,0" Stretch="Uniform" Fill="White"
+                                          x:Name="PART_MaximizeIcon"
+                                          Data="M2048 2048v-2048h-2048v2048h2048zM1843 1843h-1638v-1638h1638v1638z" />
+                                </Button>
+                                <Button Width="50" Height="{TemplateBinding TitleBarHeight}" Padding="9,0"
+                                        VerticalAlignment="Stretch"
+                                        BorderThickness="0"
+                                        x:Name="PART_CloseButton">
+                                    <Button.Styles>
+                                        <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                                            <Setter Property="Background" Value="Red" />
+                                        </Style>
+                                        <Style Selector="Button:not(:pointerover) /template/ ContentPresenter#PART_ContentPresenter">
+                                            <Setter Property="Background" Value="Transparent" />
+                                        </Style>
+                                        <Style Selector="Button > Path">
+                                            <Setter Property="Fill" Value="White" />
+                                        </Style>
+                                    </Button.Styles>
+                                    <Path Margin="10,0,10,0" Stretch="Uniform"
+                                          Data="M1169 1024l879 -879l-145 -145l-879 879l-879 -879l-145 145l879 879l-879 879l145 145l879 -879l879 879l145 -145z" />
+                                </Button>
+                            </StackPanel>
+                        </DockPanel>
+                    </WindowDrawnDecorationsContent.Overlay>
+                </WindowDrawnDecorationsContent>
+            </WindowDrawnDecorationsTemplate>
+        </Setter>
+    </ControlTheme>
+
+</ResourceDictionary>

@@ -50,8 +50,6 @@ public partial class MessageBox : Window
             CanResize = false,
         };
 
-        msgbox.Header.Title = title;
-
         msgbox.Width = width;
         msgbox.Height = height;
 
