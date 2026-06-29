@@ -22,7 +22,7 @@
                             <ActivatorContent>
                                 <MudTooltip Color="Color.Transparent" Placement="Placement.Right" Delay="350">
                                     <ChildContent>
-                                        <MudButton @onmousedown="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true" Style="@(GetImageBreakpointStyle() + GetColorFromStatus(consumableSlot, true))" Variant="Variant.Outlined">
+                                        <MudButton OnClick="@context.ToggleAsync" @onmousedown="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true" Style="@(GetImageBreakpointStyle() + GetColorFromStatus(consumableSlot, true))" Variant="Variant.Outlined">
                                             <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)" @ontouchend="StopTimer" @ontouchstart="@(_ => StartTimer(consumableSlot))" draggable="false" Style="-webkit-touch-callout: none; -webkit-user-select: none;"/>
                                         </MudButton>
                                     </ChildContent>
