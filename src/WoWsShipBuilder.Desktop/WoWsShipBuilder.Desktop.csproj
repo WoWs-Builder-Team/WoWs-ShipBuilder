@@ -53,7 +53,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="22.1.1" />
-        <PackageReference Include="Velopack" Version="0.0.1298" />
+        <PackageReference Include="Velopack" Version="1.2.0" />
     </ItemGroup>
 
     <ItemGroup>

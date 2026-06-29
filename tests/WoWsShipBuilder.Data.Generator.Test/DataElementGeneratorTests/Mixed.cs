@@ -49,7 +49,7 @@ public partial class DataElementGeneratorTest
                      public partial class TestDataContainer : DataContainerBase
                      {
                          [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "FPM")]
-                         [DataElementFiltering(true, nameof(this.ShouldDisplayTest))]
+                         [DataElementFiltering(true, nameof(ShouldDisplayTest))]
                          public decimal TestProperty { get; set; }
 
                          private bool ShouldDisplayTest(object obj)
