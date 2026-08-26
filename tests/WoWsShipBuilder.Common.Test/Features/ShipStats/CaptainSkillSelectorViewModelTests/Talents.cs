@@ -145,6 +145,48 @@ public class Talents
         talent.EffectiveModifiers.Single().Value.Should().BeApproximately(0.95f, 0.0001f);
     }
 
+    /// <summary>
+    /// Two escalating effects can have ladders of different lengths. The shorter one must hold at its top value for
+    /// the remaining tiers rather than disappearing from them.
+    /// </summary>
+    [Test]
+    public void SelectedCaptain_EffectsWithUnevenLadders_HoldTheShorterOneAtItsTopTier()
+    {
+        var vm = CreateViewModel(UnevenLadderTalent());
+
+        var talent = vm.CaptainTalentsList.Single();
+
+        talent.Tiers.Should().HaveCount(3);
+        talent.Tiers[2].Modifiers.Select(modifier => modifier.Name).Should().BeEquivalentTo("GMShotDelay", "GTShotDelay");
+        talent.Tiers[2].Modifiers.Single(modifier => modifier.Name == "GTShotDelay").Value.Should().BeApproximately(0.8f, 0.0001f);
+    }
+
+    private static UniqueSkill UnevenLadderTalent() => new()
+    {
+        TranslationId = RegularId,
+        BattleGroup = TalentBattleGroup.Regular,
+        MaxTriggerNum = 3,
+        SkillEffects = ImmutableDictionary<string, UniqueSkillEffect>.Empty
+            .Add("Long", new(false, 1, ImmutableList.Create(Modifier("GMShotDelay", 0.6f)))
+            {
+                Levels = ImmutableList.Create(
+                    Level(1, "GMShotDelay", 0.9f),
+                    Level(2, "GMShotDelay", 0.75f),
+                    Level(3, "GMShotDelay", 0.6f)),
+            })
+            .Add("Short", new(false, 2, ImmutableList.Create(Modifier("GTShotDelay", 0.8f)))
+            {
+                Levels = ImmutableList.Create(
+                    Level(1, "GTShotDelay", 0.9f),
+                    Level(2, "GTShotDelay", 0.8f)),
+            }),
+    };
+
+    private static UniqueSkillEffectLevel Level(int level, string name, float cumulative)
+    {
+        return new(level, ImmutableList.Create(Modifier(name, cumulative)), ImmutableList.Create(Modifier(name, cumulative)));
+    }
+
     private static UniqueSkill MixedTalent() => new()
     {
         TranslationId = RegularId,

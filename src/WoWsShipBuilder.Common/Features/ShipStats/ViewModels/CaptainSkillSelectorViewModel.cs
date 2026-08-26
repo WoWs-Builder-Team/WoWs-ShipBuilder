@@ -222,16 +222,12 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     }
 
     /// <summary>
-    /// Drops stats that cannot be shown and keeps one entry per name, so that a stat declared by two effects of the
-    /// same talent is not applied twice.
+    /// Drops stats that cannot be shown. workTime is excluded because it belongs to talents that automatically
+    /// trigger a consumable, which is not an effect that can be rendered.
     /// </summary>
     private static ImmutableList<Modifier> DisplayableModifiers(IEnumerable<Modifier> modifiers)
     {
-        // workTime is excluded because it belongs to talents that automatically trigger a consumable.
-        return modifiers
-            .Where(modifier => !modifier.Name.Equals("workTime", StringComparison.Ordinal))
-            .DistinctBy(modifier => modifier.Name, StringComparer.Ordinal)
-            .ToImmutableList();
+        return modifiers.Where(modifier => !modifier.Name.Equals("workTime", StringComparison.Ordinal)).ToImmutableList();
     }
 
     /// <summary>
@@ -253,14 +249,18 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
 
         var constantModifiers = talent.SkillEffects.Values.Where(effect => effect.Levels.IsEmpty).SelectMany(effect => effect.Modifiers).ToList();
 
-        return tieredEffects
-            .SelectMany(effect => effect.Levels)
-            .GroupBy(level => level.Level)
-            .OrderBy(group => group.Key)
-            .Select(group => new TalentTierViewModel(
-                group.Key,
-                DisplayableModifiers(group.SelectMany(level => level.CumulativeModifiers).Concat(constantModifiers))))
-            .ToImmutableList();
+        // Effects can escalate at different rates. Grouping purely by level number would make an effect with a
+        // shorter ladder vanish above its last level; instead each effect stays at its own top tier once exhausted.
+        // Levels arrive ordered by level number, and the result is numbered 1..N contiguously.
+        int tierCount = tieredEffects.Max(effect => effect.Levels.Count);
+        var tiers = new List<TalentTierViewModel>(tierCount);
+        for (int tier = 1; tier <= tierCount; tier++)
+        {
+            var reached = tieredEffects.Select(effect => effect.Levels[Math.Min(tier, effect.Levels.Count) - 1]);
+            tiers.Add(new(tier, DisplayableModifiers(reached.SelectMany(level => level.CumulativeModifiers).Concat(constantModifiers))));
+        }
+
+        return tiers.ToImmutableList();
     }
 
     /// <summary>

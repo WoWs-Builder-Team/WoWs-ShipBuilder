@@ -3042,6 +3042,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Aimed Fire.
+        /// </summary>
+        public static string ShipStats_AimedFire {
+            get {
+                return ResourceManager.GetString("ShipStats_AimedFire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aiming.
         /// </summary>
         public static string ShipStats_Aiming {

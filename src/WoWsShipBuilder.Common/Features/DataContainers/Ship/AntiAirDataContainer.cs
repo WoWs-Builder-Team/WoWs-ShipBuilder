@@ -19,6 +19,8 @@ public class AntiAirDataContainer
 
     public AuraDataDataContainer? ShortRangeAura { get; set; }
 
+    public AimedFireDataContainer? AimedFire { get; set; }
+
     public static AntiAirDataContainer? FromShip(Ship ship, ImmutableList<ShipUpgrade> shipConfiguration, ImmutableList<Modifier> modifiers)
     {
         if (ship.ShipClass.Equals(ShipClass.Submarine))
@@ -60,8 +62,9 @@ public class AntiAirDataContainer
         aaUI.LongRangeAura = FromAura(longRange, flakDamageBonus, constantDamageBonus, flakAmount);
         aaUI.MediumRangeAura = FromAura(hull.AntiAir?.MediumRangeAura, flakDamageBonus, constantDamageBonus, 0);
         aaUI.ShortRangeAura = FromAura(hull.AntiAir?.ShortRangeAura, flakDamageBonus, constantDamageBonus, 0);
+        aaUI.AimedFire = AimedFireDataContainer.FromAimedFire(hull.AntiAir?.AimedFire);
 
-        if (aaUI.ShortRangeAura == null && aaUI.MediumRangeAura == null && aaUI.LongRangeAura == null)
+        if (aaUI.ShortRangeAura == null && aaUI.MediumRangeAura == null && aaUI.LongRangeAura == null && aaUI.AimedFire == null)
         {
             return null;
         }

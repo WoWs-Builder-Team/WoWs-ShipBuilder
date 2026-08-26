@@ -2264,4 +2264,31 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipComparison_RemoveBuildWarningPt2" xml:space="preserve">
     <value>has been reset without removing the last instance.</value>
   </data>
+  <data name="ShipStats_AimedFire" xml:space="preserve">
+    <value>Aimed Fire</value>
+  </data>
+  <data name="ShipStats_ChargeUpTime" xml:space="preserve">
+    <value>Charge-up time</value>
+  </data>
+  <data name="ShipStats_ActiveDuration" xml:space="preserve">
+    <value>Active duration</value>
+  </data>
+  <data name="ShipStats_ChargeDecayDelay" xml:space="preserve">
+    <value>Charge decay delay</value>
+  </data>
+  <data name="ShipStats_ChargeDecayTime" xml:space="preserve">
+    <value>Full charge decay time</value>
+  </data>
+  <data name="ShipStats_AuraDamageMultiplier" xml:space="preserve">
+    <value>Continuous damage multiplier</value>
+  </data>
+  <data name="ShipStats_FlakDamageMultiplier" xml:space="preserve">
+    <value>Flak damage multiplier</value>
+  </data>
+  <data name="ShipStats_InstantDamageCooldown" xml:space="preserve">
+    <value>Instant damage cooldown</value>
+  </data>
+  <data name="ShipStats_InstantDamage" xml:space="preserve">
+    <value>Instant damage vs. planes of</value>
+  </data>
 </root>
