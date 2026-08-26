@@ -720,6 +720,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tier.
+        /// </summary>
+        public static string CaptainSkillSelector_TalentTier {
+            get {
+                return ResourceManager.GetString("CaptainSkillSelector_TalentTier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Captain talents.
         /// </summary>
         public static string CaptainSkillSelector_Talents {

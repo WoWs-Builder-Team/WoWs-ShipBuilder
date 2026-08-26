@@ -1083,6 +1083,9 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
     <value>The selected custom build image path is invalid.</value>
   </data>
+  <data name="CaptainSkillSelector_TalentTier" xml:space="preserve">
+    <value>Tier</value>
+  </data>
   <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
       <value>Skills &amp; Talents</value>
   </data>

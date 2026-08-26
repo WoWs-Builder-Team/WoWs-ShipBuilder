@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Components
+﻿@using System.Linq
+@using Microsoft.AspNetCore.Components
 @using System.Text
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Utility
@@ -57,8 +58,42 @@
                         <MudItem xs="7">
                             <MudStack>
                                 <MudText Style="font-weight: bold">@Localizer.GetGameLocalization(talent.SkillName).Localization</MudText>
-                                <MudText>@Localizer.GetGameLocalization(talent.Description).Localization</MudText>
-                                @foreach (var modifier in talent.Modifiers)
+                                @{
+                                    // Routed through the fallback helper because the exact key depends on game data:
+                                    // a renamed key would otherwise render as raw text instead of simply being absent.
+                                    var talentDescription = Localizer.FirstGameLocalizationOrEmpty(talent.Description, talent.DescriptionFallback);
+                                    var progression = talent.IsTiered ? Localizer.FirstGameLocalizationOrEmpty(talent.SkillName + "_PROGRESSION_DESC") : string.Empty;
+                                }
+                                @if (!string.IsNullOrEmpty(talentDescription))
+                                {
+                                    <MudText>@talentDescription</MudText>
+                                }
+                                @if (talent.IsTiered)
+                                {
+                                    @if (!string.IsNullOrEmpty(progression))
+                                    {
+                                        <MudText Typo="Typo.caption">@progression</MudText>
+                                    }
+                                    <MudTooltip Placement="Placement.Right" Color="Color.Transparent" Delay="300" Arrow="true">
+                                        <ChildContent>
+                                            <MudText Typo="Typo.caption" Class="d-flex align-center">
+                                                @(Localizer.SimpleAppLocalization(nameof(Translation.CaptainSkillSelector_TalentTier)) + " " + (talent.ActiveTier?.Level ?? 0) + " / " + talent.Tiers.Count)
+                                                <MudIcon Icon="@Icons.Material.Outlined.Info" Size="Size.Small" Class="ml-1"/>
+                                            </MudText>
+                                        </ChildContent>
+                                        <TooltipContent>
+                                            <MudPaper Outlined="true" Class="pa-2" Style="max-width: 420px">
+                                                @foreach (var tier in talent.Tiers)
+                                                {
+                                                    <MudText Typo="Typo.body2" Style="@(tier == talent.ActiveTier ? "font-weight: bold" : null)">
+                                                        @(Localizer.SimpleAppLocalization(nameof(Translation.CaptainSkillSelector_TalentTier)) + " " + tier.Level + ": " + string.Join(", ", tier.Modifiers.Select(modifier => ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.All, Localizer)).Where(text => !string.IsNullOrEmpty(text))))
+                                                    </MudText>
+                                                }
+                                            </MudPaper>
+                                        </TooltipContent>
+                                    </MudTooltip>
+                                }
+                                @foreach (var modifier in talent.EffectiveModifiers)
                                 {
                                     // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
                                     var modifierString = ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.All, Localizer);
