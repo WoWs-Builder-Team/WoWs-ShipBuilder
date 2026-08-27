@@ -2,6 +2,8 @@
 @using Microsoft.AspNetCore.Components
 @using System.Globalization
 @using System.Text
+@using WoWsShipBuilder.Features.ShipStats.ViewModels
+@using WoWsShipBuilder.Infrastructure.Localization
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Utility
 @using CaptainSkillSelectorViewModel = WoWsShipBuilder.Features.ShipStats.ViewModels.CaptainSkillSelectorViewModel
@@ -89,6 +91,11 @@
                                                     <MudText Typo="Typo.body2" Style="@(tier == talent.ActiveTier ? "font-weight: bold" : null)">
                                                         @(Localizer.SimpleAppLocalization(nameof(Translation.CaptainSkillSelector_TalentTier)) + " " + tier.Level + ": " + string.Join(", ", tier.Modifiers.Select(modifier => ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.All, Localizer)).Where(text => !string.IsNullOrEmpty(text))))
                                                     </MudText>
+                                                    var requirement = TierRequirement(talent, tier, Localizer);
+                                                    if (!string.IsNullOrEmpty(requirement))
+                                                    {
+                                                        <MudText Typo="Typo.caption" Class="ml-3 mud-text-secondary">@requirement</MudText>
+                                                    }
                                                 }
                                             </MudPaper>
                                         </TooltipContent>
@@ -123,6 +130,40 @@
 
     [Parameter]
     public CaptainSkillSelectorViewModel ViewModel { get; set; } = default!;
+
+    /// <summary>
+    /// Describes what activates a given tier, for example "Activates upon dealing 30,000 HP of torpedo damage.".
+    /// </summary>
+    /// <remarks>
+    /// The sentence comes from the game and carries a placeholder for the number. It is a gettext plural-forms
+    /// string, so the singular is only correct for a threshold of exactly one; the extractor exposes the plural under
+    /// a _PLURAL suffix. Talents whose own description already states the thresholds ship no such sentence, and get
+    /// nothing here rather than an invented one.
+    /// </remarks>
+    private static string TierRequirement(SkillActivationItemViewModel talent, TalentTierViewModel tier, ILocalizer localizer)
+    {
+        if (tier.ActivationThreshold is not { } threshold)
+        {
+            return string.Empty;
+        }
+
+        const string activationKeySuffix = "_LEVEL_ACTIVATION";
+        string singularKey = talent.SkillName + activationKeySuffix;
+        string[] keys = threshold == 1m ? [singularKey] : [singularKey + "_PLURAL", singularKey];
+
+        string sentence = localizer.FirstGameLocalizationOrEmpty(keys);
+        if (string.IsNullOrEmpty(sentence))
+        {
+            return string.Empty;
+        }
+
+        // A share of maximum health is a ratio in the data, so it has to be scaled rather than printed as a count.
+        string formatted = tier.ActivationThresholdKey.Equals("thresholdPerMaxHealth", StringComparison.Ordinal)
+            ? (threshold * 100).ToString("N0", CultureInfo.CurrentCulture) + " %"
+            : threshold.ToString("N0", CultureInfo.CurrentCulture);
+
+        return sentence.Replace("%(_activationNum)s", formatted, StringComparison.Ordinal);
+    }
 
     /// <summary>
     /// Substitutes the tier count into a progression description.

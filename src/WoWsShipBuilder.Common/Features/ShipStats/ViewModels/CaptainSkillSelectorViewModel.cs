@@ -28,6 +28,11 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
 
     private const int FirePreventionSkillNumber = 14;
 
+    /// <summary>
+    /// Threshold keys in the order they should be preferred when describing what activates a tier.
+    /// </summary>
+    private static readonly string[] ThresholdKeysByPriority = ["requiredCount", "damageIncrement", "thresholdPerMaxHealth"];
+
     private readonly Dictionary<int, bool> canAddSkillCache = new();
 
     private readonly Dictionary<int, bool> canRemoveSkillCache = new();
@@ -231,6 +236,34 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     }
 
     /// <summary>
+    /// Reads what has to be reached for a given tier from the talent's trigger.
+    /// </summary>
+    /// <remarks>
+    /// Which entry carries the threshold depends on the activator - a ribbon activator counts events, a damage
+    /// activator counts damage - and the rest of the entries are usually zero. Preferring the known keys in a fixed
+    /// order keeps the result stable, since the threshold collection is hash-ordered.
+    /// </remarks>
+    private static (decimal? Value, string Key) ActivationThreshold(UniqueSkill talent, int tier)
+    {
+        var level = talent.Trigger?.Levels.FirstOrDefault(entry => entry.Level == tier);
+        if (level is null)
+        {
+            return (null, string.Empty);
+        }
+
+        foreach (string key in ThresholdKeysByPriority)
+        {
+            if (level.Thresholds.TryGetValue(key, out decimal preferred) && preferred != 0)
+            {
+                return (preferred, key);
+            }
+        }
+
+        var remaining = level.Thresholds.Where(entry => entry.Value != 0).OrderBy(entry => entry.Key, StringComparer.Ordinal).ToList();
+        return remaining.Count > 0 ? (remaining[0].Value, remaining[0].Key) : (null, string.Empty);
+    }
+
+    /// <summary>
     /// Flattens a tiered talent's effects into a single ladder. The game reports each tier's cumulative values, so a
     /// tier's stats are absolute rather than something to compound across activations.
     /// </summary>
@@ -252,12 +285,20 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         // Effects can escalate at different rates. Grouping purely by level number would make an effect with a
         // shorter ladder vanish above its last level; instead each effect stays at its own top tier once exhausted.
         // Levels arrive ordered by level number, and the result is numbered 1..N contiguously.
-        int tierCount = tieredEffects.Max(effect => effect.Levels.Count);
-        var tiers = new List<TalentTierViewModel>(tierCount);
-        for (int tier = 1; tier <= tierCount; tier++)
+        // Build the ladder from the level numbers the game reports rather than from list positions, so that the
+        // effect levels and the trigger's thresholds are matched on the same key.
+        var ladder = tieredEffects.SelectMany(effect => effect.Levels).Select(level => level.Level).Distinct().Order().ToList();
+        var tiers = new List<TalentTierViewModel>(ladder.Count);
+        foreach (int tier in ladder)
         {
-            var reached = tieredEffects.Select(effect => effect.Levels[Math.Min(tier, effect.Levels.Count) - 1]);
-            tiers.Add(new(tier, DisplayableModifiers(reached.SelectMany(level => level.CumulativeModifiers).Concat(constantModifiers))));
+            // An effect whose own ladder ends earlier holds at its highest level rather than dropping out.
+            var reached = tieredEffects
+                .Select(effect => effect.Levels.Where(level => level.Level <= tier).MaxBy(level => level.Level) ?? effect.Levels.MinBy(level => level.Level))
+                .OfType<UniqueSkillEffectLevel>();
+
+            var modifiers = DisplayableModifiers(reached.SelectMany(level => level.CumulativeModifiers).Concat(constantModifiers));
+            (decimal? threshold, string thresholdKey) = ActivationThreshold(talent, tier);
+            tiers.Add(new(tier, modifiers, threshold, thresholdKey));
         }
 
         return tiers.ToImmutableList();

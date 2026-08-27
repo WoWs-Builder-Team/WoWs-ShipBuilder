@@ -161,6 +161,79 @@ public class Talents
         talent.Tiers[2].Modifiers.Single(modifier => modifier.Name == "GTShotDelay").Value.Should().BeApproximately(0.8f, 0.0001f);
     }
 
+    /// <summary>
+    /// The activation threshold lives on the trigger's activator, not on the effect, and which entry holds it
+    /// depends on the activator type.
+    /// </summary>
+    [Test]
+    public void SelectedCaptain_TieredTalent_CarriesThePerTierActivationThreshold()
+    {
+        var vm = CreateViewModel(TalentWithTrigger("DamageDoneActivator", ("damageIncrement", 30000m), ("damageIncrement", 60000m)));
+
+        var talent = vm.CaptainTalentsList.Single();
+
+        talent.Tiers.Select(tier => tier.ActivationThreshold).Should().Equal(30000m, 60000m);
+    }
+
+    /// <summary>
+    /// Activators list several threshold entries, most of them zero. The chosen one has to be stable, because the
+    /// threshold collection is hash-ordered.
+    /// </summary>
+    [Test]
+    public void SelectedCaptain_ActivatorWithZeroedCompanionThresholds_PicksTheMeaningfulOne()
+    {
+        var trigger = new TalentTrigger(
+            "DamageDoneActivator",
+            ImmutableDictionary<string, decimal>.Empty,
+            -1,
+            ImmutableList.Create(
+                new TalentTriggerLevel(1, new Dictionary<string, decimal>
+                {
+                    ["damageIncrementPerTotalEnemyTeamHealth"] = 0m,
+                    ["damageIncrement"] = 30000m,
+                }.ToImmutableDictionary())));
+
+        var vm = CreateViewModel(TieredTalentWith(trigger, 1));
+
+        vm.CaptainTalentsList.Single().Tiers.Single().ActivationThreshold.Should().Be(30000m);
+    }
+
+    [Test]
+    public void SelectedCaptain_TalentWithoutTrigger_HasNoThreshold()
+    {
+        var vm = CreateViewModel(TieredTalent());
+
+        vm.CaptainTalentsList.Single().Tiers.Should().OnlyContain(tier => tier.ActivationThreshold == null);
+    }
+
+    private static UniqueSkill TalentWithTrigger(string activatorType, params (string Key, decimal Value)[] perTier)
+    {
+        var levels = perTier
+            .Select((entry, index) => new TalentTriggerLevel(index + 1, new Dictionary<string, decimal> { [entry.Key] = entry.Value }.ToImmutableDictionary()))
+            .ToImmutableList();
+
+        var trigger = new TalentTrigger(activatorType, ImmutableDictionary<string, decimal>.Empty, -1, levels);
+        return TieredTalentWith(trigger, perTier.Length);
+    }
+
+    private static UniqueSkill TieredTalentWith(TalentTrigger trigger, int tierCount)
+    {
+        var levels = Enumerable.Range(1, tierCount)
+            .Select(level => Level(level, "speedCoef", 1f + (level * 0.01f)))
+            .ToImmutableList();
+
+        return new()
+        {
+            TranslationId = RegularId,
+            BattleGroup = TalentBattleGroup.Regular,
+            MaxTriggerNum = tierCount,
+            Trigger = trigger,
+            SkillEffects = ImmutableDictionary<string, UniqueSkillEffect>.Empty.Add(
+                "Effect",
+                new(false, 1, ImmutableList.Create(Modifier("speedCoef", 1.05f))) { Levels = levels }),
+        };
+    }
+
     private static UniqueSkill UnevenLadderTalent() => new()
     {
         TranslationId = RegularId,
