@@ -2265,7 +2265,7 @@ You can use the Change builds button to manage the builds of single ships. You c
     <value>has been reset without removing the last instance.</value>
   </data>
   <data name="ShipStats_AimedFire" xml:space="preserve">
-    <value>Aimed Fire</value>
+    <value>Concentrated AA Fire</value>
   </data>
   <data name="ShipStats_ChargeUpTime" xml:space="preserve">
     <value>Charge-up time</value>

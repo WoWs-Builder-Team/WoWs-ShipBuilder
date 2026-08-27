@@ -1,5 +1,6 @@
 ﻿@using System.Linq
 @using Microsoft.AspNetCore.Components
+@using System.Globalization
 @using System.Text
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Utility
@@ -62,7 +63,7 @@
                                     // Routed through the fallback helper because the exact key depends on game data:
                                     // a renamed key would otherwise render as raw text instead of simply being absent.
                                     var talentDescription = Localizer.FirstGameLocalizationOrEmpty(talent.Description, talent.DescriptionFallback);
-                                    var progression = talent.IsTiered ? Localizer.FirstGameLocalizationOrEmpty(talent.SkillName + "_PROGRESSION_DESC") : string.Empty;
+                                    var progression = talent.IsTiered ? FormatTierCount(Localizer.FirstGameLocalizationOrEmpty(talent.SkillName + "_PROGRESSION_DESC"), talent.Tiers.Count) : string.Empty;
                                 }
                                 @if (!string.IsNullOrEmpty(talentDescription))
                                 {
@@ -122,6 +123,18 @@
 
     [Parameter]
     public CaptainSkillSelectorViewModel ViewModel { get; set; } = default!;
+
+    /// <summary>
+    /// Substitutes the tier count into a progression description.
+    /// </summary>
+    /// <remarks>
+    /// The game ships these strings with a gettext placeholder it fills in itself, so rendering one verbatim shows
+    /// a literal "%(_levelsCount)i" to the user. All three talents that have such a string use this one placeholder.
+    /// </remarks>
+    private static string FormatTierCount(string text, int tierCount)
+    {
+        return text.Replace("%(_levelsCount)i", tierCount.ToString(CultureInfo.InvariantCulture), StringComparison.Ordinal);
+    }
 
     private static string ToSnakeCase(string camelCaseString)
     {

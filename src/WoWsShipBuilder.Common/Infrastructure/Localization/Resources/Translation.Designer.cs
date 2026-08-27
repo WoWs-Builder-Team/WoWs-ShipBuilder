@@ -3042,7 +3042,7 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aimed Fire.
+        ///   Looks up a localized string similar to Concentrated AA Fire.
         /// </summary>
         public static string ShipStats_AimedFire {
             get {
