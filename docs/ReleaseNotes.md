@@ -1,4 +1,4 @@
-﻿# Update 2026.3
+# Update 2026.3
 
 ## Download and Install
 

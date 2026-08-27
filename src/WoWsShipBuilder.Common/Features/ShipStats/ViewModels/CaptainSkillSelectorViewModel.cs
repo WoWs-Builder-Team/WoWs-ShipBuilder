@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+using System.Collections.Immutable;
 using System.Collections.Specialized;
 using System.Reactive.Linq;
 using Microsoft.Extensions.Logging;

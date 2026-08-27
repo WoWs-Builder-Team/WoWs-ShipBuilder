@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+using System.Collections.Immutable;
 using WoWsShipBuilder.DataStructures.Modifiers;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;

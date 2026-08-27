@@ -1,6 +1,4 @@
-﻿using System;
 using System.Collections.Immutable;
-using System.Linq;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.Infrastructure.Utility;
