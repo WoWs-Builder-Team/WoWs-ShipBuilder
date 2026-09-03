@@ -1,8 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Testing;
+using Microsoft.CodeAnalysis.Text;
 using WoWsShipBuilder.Data.Generator.DataElementGenerator;
 using WoWsShipBuilder.DataElements;
 
@@ -47,7 +49,7 @@ public partial class DataElementGeneratorTest
                     (typeof(DataElementGenerator.DataElementGenerator), "DataContainerAttribute.g.cs", AttributeHelper.DataContainerAttribute),
                     (typeof(DataElementGenerator.DataElementGenerator), "DataElementTypeAttribute.g.cs", AttributeHelper.DataElementTypeAttribute),
                     (typeof(DataElementGenerator.DataElementGenerator), "DataElementFilteringAttribute.g.cs", AttributeHelper.DataElementFilteringAttribute),
-                    (typeof(DataElementGenerator.DataElementGenerator), "TestDataContainer.g.cs", expected),
+                    (typeof(DataElementGenerator.DataElementGenerator), "TestDataContainer.g.cs", SourceText.From(expected, Encoding.UTF8, SourceHashAlgorithm.Sha256)),
                 },
                 ReferenceAssemblies = ReferenceAssemblies.Net.Net100,
                 AdditionalReferences = { MetadataReference.CreateFromFile(typeof(IDataElement).GetTypeInfo().Assembly.Location) },

@@ -140,7 +140,7 @@
 
     <MudDataGrid @ref="dataGrid" T="GridDataWrapper" ServerData="@ReloadData" DragDropColumnReordering DragIndicatorSize="Size.Small" ApplyDropClassesOnDragStarted Groupable="false" SortMode="SortMode.Multiple" Hideable ShowColumnOptions="false" Filterable="false" ShowFilterIcons="false" FilterMode="DataGridFilterMode.Simple" Hover Outlined Bordered Dense Breakpoint="Breakpoint.None" ColumnResizeMode="ResizeMode.Column" Style="overflow-y: hidden" Class="data-grid-text-wrap">
         <ToolBarContent>
-            <MudTextField T="string" Class="ml-0 mr-auto mt-n4" ValueChanged="Search" Placeholder="@Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShip)).Localization" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Clearable="true" Immediate="true" DebounceInterval="150" Style="width: 40%"/>
+            <MudTextField T="string" Class="ml-0 mr-auto mt-n4" ValueChanged="@Search" Placeholder="@Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShip)).Localization" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Clearable="true" Immediate="true" DebounceInterval="150" Style="width: 40%"/>
             <!--suppress CssUnresolvedCustomProperty -->
             <MudButton OnClick="@(async () => await OpenHideColumnsDialog())" DropShadow="false" Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Settings" Size="Size.Small" Color="Color.Secondary" Style="margin-top: -9px; height: 40px; border-color: var(--mud-palette-lines-inputs);" Class="mx-auto">
                 @($"{Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_HideColumns))} : {hiddenColumns.Count(x => x.Value)}")
@@ -643,9 +643,9 @@
         }
     }
 
-    private async Task Search(string obj)
+    private async Task Search(string? obj)
     {
-        ViewModel!.SearchString = obj;
+        ViewModel!.SearchString = obj ?? string.Empty;
         await dataGrid.ReloadServerData();
     }
 
@@ -714,7 +714,7 @@
         isDialogOpen = false;
     }
 
-    private Task<GridData<GridDataWrapper>> ReloadData(GridState<GridDataWrapper> state)
+    private Task<GridData<GridDataWrapper>> ReloadData(GridState<GridDataWrapper> state, CancellationToken token)
     {
         using (MetricsService.ComparisonLoadDuration.NewTimer())
         {
@@ -727,22 +727,22 @@
 
             if (data.Any())
             {
-                foreach (SortDefinition<GridDataWrapper>? sortDefinition in state.SortDefinitions)
+                foreach (SortDefinition<GridDataWrapper> sortDefinition in state.SortDefinitions)
                 {
-                    object sortItem = sortDefinition.SortFunc.Invoke(data.First());
+                    var sortItem = sortDefinition.SortFunc.Invoke(data.First());
                     switch (sortItem)
                     {
                         case List<decimal> when sortDefinition.Descending:
-                            data = data.OrderByDescending(x => ((List<decimal>)sortDefinition.SortFunc.Invoke(x)).DefaultIfEmpty().Max()).ToList();
+                            data = data.OrderByDescending(x => ((List<decimal>?)sortDefinition.SortFunc.Invoke(x) ?? []).DefaultIfEmpty().Max()).ToList();
                             break;
                         case List<decimal>:
-                            data = data.OrderBy(x => ((List<decimal>)sortDefinition.SortFunc.Invoke(x)).DefaultIfEmpty().Min()).ToList();
+                            data = data.OrderBy(x => ((List<decimal>?)sortDefinition.SortFunc.Invoke(x) ?? []).DefaultIfEmpty().Min()).ToList();
                             break;
                         case List<int> when sortDefinition.Descending:
-                            data = data.OrderByDescending(x => ((List<int>)sortDefinition.SortFunc.Invoke(x)).DefaultIfEmpty().Max()).ToList();
+                            data = data.OrderByDescending(x => ((List<int>?)sortDefinition.SortFunc.Invoke(x) ?? []).DefaultIfEmpty().Max()).ToList();
                             break;
                         case List<int>:
-                            data = data.OrderBy(x => ((List<int>)sortDefinition.SortFunc.Invoke(x)).DefaultIfEmpty().Min()).ToList();
+                            data = data.OrderBy(x => ((List<int>?)sortDefinition.SortFunc.Invoke(x) ?? []).DefaultIfEmpty().Min()).ToList();
                             break;
                         default:
                             data = sortDefinition.Descending ? data.OrderByDescending(sortDefinition.SortFunc).ToList() : data.OrderBy(sortDefinition.SortFunc).ToList();

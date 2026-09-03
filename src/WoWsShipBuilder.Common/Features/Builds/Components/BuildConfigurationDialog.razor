@@ -65,7 +65,7 @@
                         </MudList>
                     </MudItem>
                     <MudItem xs="10">
-                        <MudTabs PanelClass="tab-panel-build-config-dialog" Position="Position.Left" HideSlider ActivePanelIndexChanged="@OnActivePanelChanged" Class="tab-header-limited-height" @ref="desktopTabs">
+                        <MudTabs TabPanelsClass="tab-panel-build-config-dialog" Position="Position.Left" HideSlider ActivePanelIndexChanged="@OnActivePanelChanged" Class="tab-header-limited-height" @ref="desktopTabs">
                             @tabContent
                         </MudTabs>
                     </MudItem>
@@ -201,9 +201,9 @@
                                         @Localizer.GetAppLocalization(Translation.BuildConfigurationDialog_Load).Localization
                                     </MudButton>
                                     <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Class="file-upload-full-height" Accept=".png">
-                                        <ActivatorContent>
-                                            <MudButton Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Image">@Localizer.SimpleAppLocalization(nameof(Translation.BuildImport_Import))</MudButton>
-                                        </ActivatorContent>
+                                        <CustomContent>
+                                            <MudButton Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" OnClick="@context.OpenFilePickerAsync" StartIcon="@Icons.Material.Filled.Image">@Localizer.SimpleAppLocalization(nameof(Translation.BuildImport_Import))</MudButton>
+                                        </CustomContent>
                                     </MudFileUpload>
                                 </MudStack>
                             </MudItem>

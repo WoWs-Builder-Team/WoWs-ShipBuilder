@@ -20,7 +20,7 @@
                     <ActivatorContent>
                         <MudTooltip Color="Color.Transparent" Placement="Placement.Right" Delay="350">
                             <ChildContent>
-                                <MudButton Style="@GetImageBreakpointStyle()" Variant="Variant.Outlined" >
+                                <MudButton Style="@GetImageBreakpointStyle()" Variant="Variant.Outlined" OnClick="@context.ToggleAsync">
                                     <MudImage Width="@GetImageSize(false)" Height="@GetImageSize(false)" Src="@GetSelectedUpgradeIcon(columnModernizations, ViewModel.SelectedModernizationList)"/>
                                 </MudButton>
                             </ChildContent>

@@ -1,0 +1,4 @@
+﻿.settings-dialog {
+    overflow-y: scroll;
+    max-height: calc(100vh - (2 * var(--mud-appbar-height)));
+}

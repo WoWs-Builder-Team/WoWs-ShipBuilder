@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Testing;
+using Microsoft.CodeAnalysis.Text;
 using WoWsShipBuilder.Data.Generator.PropertyChangedGenerator;
 
 namespace WoWsShipBuilder.Data.Generator.Test.PropertyChangedGeneratorTests;
@@ -87,7 +89,7 @@ public class PropertyChangedGeneratorTest
             TestState =
             {
                 Sources = { source, AttributeClass },
-                GeneratedSources = { (typeof(PropertyChangedSourceGenerator), "Test.TestViewModel.g.cs", expected) },
+                GeneratedSources = { (typeof(PropertyChangedSourceGenerator), "Test.TestViewModel.g.cs", SourceText.From(expected, Encoding.UTF8, SourceHashAlgorithm.Sha256)) },
             },
         }.RunAsync();
     }
@@ -130,7 +132,7 @@ public class PropertyChangedGeneratorTest
             TestState =
             {
                 Sources = { source, AttributeClass },
-                GeneratedSources = { (typeof(PropertyChangedSourceGenerator), "Test.TestViewModel.g.cs", expected) },
+                GeneratedSources = { (typeof(PropertyChangedSourceGenerator), "Test.TestViewModel.g.cs", SourceText.From(expected, Encoding.UTF8, SourceHashAlgorithm.Sha256)) },
             },
         }.RunAsync();
     }
@@ -173,7 +175,7 @@ public class PropertyChangedGeneratorTest
             TestState =
             {
                 Sources = { source, AttributeClass },
-                GeneratedSources = { (typeof(PropertyChangedSourceGenerator), "Test.TestViewModel.g.cs", expected) },
+                GeneratedSources = { (typeof(PropertyChangedSourceGenerator), "Test.TestViewModel.g.cs", SourceText.From(expected, Encoding.UTF8, SourceHashAlgorithm.Sha256)) },
             },
         }.RunAsync();
     }
@@ -217,7 +219,7 @@ public class PropertyChangedGeneratorTest
             TestState =
             {
                 Sources = { source, AttributeClass },
-                GeneratedSources = { (typeof(PropertyChangedSourceGenerator), "Test.TestViewModel.g.cs", expected) },
+                GeneratedSources = { (typeof(PropertyChangedSourceGenerator), "Test.TestViewModel.g.cs", SourceText.From(expected, Encoding.UTF8, SourceHashAlgorithm.Sha256)) },
             },
         }.RunAsync();
     }
@@ -269,7 +271,7 @@ public class PropertyChangedGeneratorTest
             TestState =
             {
                 Sources = { source, AttributeClass },
-                GeneratedSources = { (typeof(PropertyChangedSourceGenerator), "Test.TestViewModel.g.cs", expected) },
+                GeneratedSources = { (typeof(PropertyChangedSourceGenerator), "Test.TestViewModel.g.cs", SourceText.From(expected, Encoding.UTF8, SourceHashAlgorithm.Sha256)) },
             },
         }.RunAsync();
     }

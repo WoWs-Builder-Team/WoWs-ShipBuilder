@@ -44,7 +44,7 @@ internal sealed class Program
             .UsePlatformDetect()
             .LogToTrace()
             .UseSkia()
-            .UseReactiveUI();
+            .UseReactiveUI(_ => { });
     }
 
     public static AppBuilder BuildAvaloniaApp()

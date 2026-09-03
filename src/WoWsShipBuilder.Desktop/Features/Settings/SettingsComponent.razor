@@ -116,11 +116,11 @@
                     @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Export))
                 </MudButton>
                 <MudFileUpload T="IBrowserFile" FilesChanged="@(async file => await ImportSavedBuilds(file))" Style="margin-top: 0;" Class="file-upload-full-height" Accept=".json" MaximumFileCount="1">
-                    <ActivatorContent>
-                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Upload" Style="height: 100%;">
+                    <CustomContent>
+                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" OnClick="@context.OpenFilePickerAsync" StartIcon="@Icons.Material.Filled.Upload" Style="height: 100%;">
                             @Localizer.SimpleAppLocalization(nameof(Translation.BuildImport_Import))
                         </MudButton>
-                    </ActivatorContent>
+                    </CustomContent>
                 </MudFileUpload>
                 <MudButton Disabled="@(!savedBuilds.Any())" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Delete" OnClick="@(async () => await DeleteAllSavedBuilds())">
                     @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_DeleteAll))
@@ -372,7 +372,7 @@
         }
         catch (Exception)
         {
-            await DialogService.ShowMessageBox(
+            await DialogService.ShowMessageBoxAsync(
                 Localizer.SimpleAppLocalization(nameof(Translation.DataUpdate_ErrorTitle)),
                 Localizer.SimpleAppLocalization(nameof(Translation.DataUpdate_ErrorDescription)));
         }

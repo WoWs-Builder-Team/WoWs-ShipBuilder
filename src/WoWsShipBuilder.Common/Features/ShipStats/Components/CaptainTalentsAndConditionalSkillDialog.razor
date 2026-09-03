@@ -1,5 +1,9 @@
-﻿@using Microsoft.AspNetCore.Components
+﻿@using System.Linq
+@using Microsoft.AspNetCore.Components
+@using System.Globalization
 @using System.Text
+@using WoWsShipBuilder.Features.ShipStats.ViewModels
+@using WoWsShipBuilder.Infrastructure.Localization
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Utility
 @using CaptainSkillSelectorViewModel = WoWsShipBuilder.Features.ShipStats.ViewModels.CaptainSkillSelectorViewModel
@@ -57,8 +61,47 @@
                         <MudItem xs="7">
                             <MudStack>
                                 <MudText Style="font-weight: bold">@Localizer.GetGameLocalization(talent.SkillName).Localization</MudText>
-                                <MudText>@Localizer.GetGameLocalization(talent.Description).Localization</MudText>
-                                @foreach (var modifier in talent.Modifiers)
+                                @{
+                                    // Routed through the fallback helper because the exact key depends on game data:
+                                    // a renamed key would otherwise render as raw text instead of simply being absent.
+                                    var talentDescription = Localizer.FirstGameLocalizationOrEmpty(talent.Description, talent.DescriptionFallback);
+                                    var progression = talent.IsTiered ? FormatTierCount(Localizer.FirstGameLocalizationOrEmpty(talent.SkillName + "_PROGRESSION_DESC"), talent.Tiers.Count) : string.Empty;
+                                }
+                                @if (!string.IsNullOrEmpty(talentDescription))
+                                {
+                                    <MudText>@talentDescription</MudText>
+                                }
+                                @if (talent.IsTiered)
+                                {
+                                    @if (!string.IsNullOrEmpty(progression))
+                                    {
+                                        <MudText Typo="Typo.caption">@progression</MudText>
+                                    }
+                                    <MudTooltip Placement="Placement.Right" Color="Color.Transparent" Delay="300" Arrow="true">
+                                        <ChildContent>
+                                            <MudText Typo="Typo.caption" Class="d-flex align-center">
+                                                @(Localizer.SimpleAppLocalization(nameof(Translation.CaptainSkillSelector_TalentTier)) + " " + (talent.ActiveTier?.Level ?? 0) + " / " + talent.Tiers.Count)
+                                                <MudIcon Icon="@Icons.Material.Outlined.Info" Size="Size.Small" Class="ml-1"/>
+                                            </MudText>
+                                        </ChildContent>
+                                        <TooltipContent>
+                                            <MudPaper Outlined="true" Class="pa-2" Style="max-width: 420px">
+                                                @foreach (var tier in talent.Tiers)
+                                                {
+                                                    <MudText Typo="Typo.body2" Style="@(tier == talent.ActiveTier ? "font-weight: bold" : null)">
+                                                        @(Localizer.SimpleAppLocalization(nameof(Translation.CaptainSkillSelector_TalentTier)) + " " + tier.Level + ": " + string.Join(", ", tier.Modifiers.Select(modifier => ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.All, Localizer)).Where(text => !string.IsNullOrEmpty(text))))
+                                                    </MudText>
+                                                    var requirement = TierRequirement(talent, tier, Localizer);
+                                                    if (!string.IsNullOrEmpty(requirement))
+                                                    {
+                                                        <MudText Typo="Typo.caption" Class="ml-3 mud-text-secondary">@requirement</MudText>
+                                                    }
+                                                }
+                                            </MudPaper>
+                                        </TooltipContent>
+                                    </MudTooltip>
+                                }
+                                @foreach (var modifier in talent.EffectiveModifiers)
                                 {
                                     // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
                                     var modifierString = ModifierProcessor.GetUiModifierString(modifier, ReturnFilter.All, Localizer);
@@ -87,6 +130,52 @@
 
     [Parameter]
     public CaptainSkillSelectorViewModel ViewModel { get; set; } = default!;
+
+    /// <summary>
+    /// Describes what activates a given tier, for example "Activates upon dealing 30,000 HP of torpedo damage.".
+    /// </summary>
+    /// <remarks>
+    /// The sentence comes from the game and carries a placeholder for the number. It is a gettext plural-forms
+    /// string, so the singular is only correct for a threshold of exactly one; the extractor exposes the plural under
+    /// a _PLURAL suffix. Talents whose own description already states the thresholds ship no such sentence, and get
+    /// nothing here rather than an invented one.
+    /// </remarks>
+    private static string TierRequirement(SkillActivationItemViewModel talent, TalentTierViewModel tier, ILocalizer localizer)
+    {
+        if (tier.ActivationThreshold is not { } threshold)
+        {
+            return string.Empty;
+        }
+
+        const string activationKeySuffix = "_LEVEL_ACTIVATION";
+        string singularKey = talent.SkillName + activationKeySuffix;
+        string[] keys = threshold == 1m ? [singularKey] : [singularKey + "_PLURAL", singularKey];
+
+        string sentence = localizer.FirstGameLocalizationOrEmpty(keys);
+        if (string.IsNullOrEmpty(sentence))
+        {
+            return string.Empty;
+        }
+
+        // A share of maximum health is a ratio in the data, so it has to be scaled rather than printed as a count.
+        string formatted = tier.ActivationThresholdKey.Equals("thresholdPerMaxHealth", StringComparison.Ordinal)
+            ? (threshold * 100).ToString("N0", CultureInfo.CurrentCulture) + " %"
+            : threshold.ToString("N0", CultureInfo.CurrentCulture);
+
+        return sentence.Replace("%(_activationNum)s", formatted, StringComparison.Ordinal);
+    }
+
+    /// <summary>
+    /// Substitutes the tier count into a progression description.
+    /// </summary>
+    /// <remarks>
+    /// The game ships these strings with a gettext placeholder it fills in itself, so rendering one verbatim shows
+    /// a literal "%(_levelsCount)i" to the user. All three talents that have such a string use this one placeholder.
+    /// </remarks>
+    private static string FormatTierCount(string text, int tierCount)
+    {
+        return text.Replace("%(_levelsCount)i", tierCount.ToString(CultureInfo.InvariantCulture), StringComparison.Ordinal);
+    }
 
     private static string ToSnakeCase(string camelCaseString)
     {

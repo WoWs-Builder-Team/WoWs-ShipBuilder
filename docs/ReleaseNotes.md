@@ -1,4 +1,4 @@
-# Update 2026.3
+# Update 2026.4
 
 ## Download and Install
 
@@ -19,9 +19,13 @@ from the artifacts of this release, then extract it and run **WoWsShipBuilder.ex
 
 ### Additions
 - add support for time-based consumables by @toalba
+- add AA aimed fire stats to the AA section
+- show captain talent tiers for talents that escalate
 
 ### Changes
 
 ### Bugfixes
+- fix captain talents being listed twice and their names and descriptions showing as raw keys
+- fix consumables whose effects are defined by a referenced buff showing no effects at all
 
 </details>

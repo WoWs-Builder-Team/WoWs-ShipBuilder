@@ -5,12 +5,16 @@
              RequestedThemeVariant="Dark">
     <Application.Styles>
         <SimpleTheme />
-        <StyleInclude Source="/Common/Styles/ThemeOverride.axaml"/>
-        <StyleInclude Source="/Common/Styles/DefaultStyle.axaml"/>
+        <StyleInclude Source="/Common/Styles/ThemeOverride.axaml" />
+        <StyleInclude Source="/Common/Styles/DefaultStyle.axaml" />
     </Application.Styles>
 
     <Application.Resources>
-        <infrastructure:LocalizeConverter x:Key="Localizer" />
-    <!--     <converters:ImagePathConverter x:Key="ImageConverter" /> -->
+        <ResourceDictionary>
+            <infrastructure:LocalizeConverter x:Key="Localizer" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="/Common/AppHeaderDecorations.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
