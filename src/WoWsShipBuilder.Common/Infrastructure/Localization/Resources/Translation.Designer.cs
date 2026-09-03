@@ -720,6 +720,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tier.
+        /// </summary>
+        public static string CaptainSkillSelector_TalentTier {
+            get {
+                return ResourceManager.GetString("CaptainSkillSelector_TalentTier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Captain talents.
         /// </summary>
         public static string CaptainSkillSelector_Talents {
@@ -3029,6 +3038,15 @@ namespace WoWsShipBuilder.Infrastructure.Localization.Resources {
         public static string ShipStats_Activate {
             get {
                 return ResourceManager.GetString("ShipStats_Activate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Concentrated AA Fire.
+        /// </summary>
+        public static string ShipStats_AimedFire {
+            get {
+                return ResourceManager.GetString("ShipStats_AimedFire", resourceCulture);
             }
         }
         

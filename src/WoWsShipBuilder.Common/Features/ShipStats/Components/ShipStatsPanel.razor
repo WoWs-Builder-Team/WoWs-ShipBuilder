@@ -369,6 +369,19 @@
                                             </MudStack>
                                         </MudExpansionPanel>
                                     }
+
+                                    <!--Aimed fire-->
+                                    @if (ViewModel.CurrentShipStats.AntiAirDataContainer.AimedFire is not null)
+                                    {
+                                        <MudExpansionPanel Gutters="false" @bind-Expanded="@ExpanderStateCache["sec-aimedfire"]" Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_AimedFire)).Localization" Style="border-bottom: initial" Class="custom-child-expansion-panel-header child-expander my-2">
+                                            <MudStack Spacing="1" Class="child-expander-content-padding">
+                                                @foreach (var aimedFireData in ViewModel.CurrentShipStats.AntiAirDataContainer.AimedFire.DataElements)
+                                                {
+                                                    @DataElementFragment((aimedFireData, Localizer))
+                                                }
+                                            </MudStack>
+                                        </MudExpansionPanel>
+                                    }
                                 </MudExpansionPanels>
                             </MudExpansionPanel>
                         }

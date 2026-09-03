@@ -28,6 +28,11 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
 
     private const int FirePreventionSkillNumber = 14;
 
+    /// <summary>
+    /// Threshold keys in the order they should be preferred when describing what activates a tier.
+    /// </summary>
+    private static readonly string[] ThresholdKeysByPriority = ["requiredCount", "damageIncrement", "thresholdPerMaxHealth"];
+
     private readonly Dictionary<int, bool> canAddSkillCache = new();
 
     private readonly Dictionary<int, bool> canRemoveSkillCache = new();
@@ -105,31 +110,42 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
             this.SkillList = this.ConvertSkillToViewModel(this.currentClass, newCaptain);
             this.CaptainTalentsList.Clear();
 
-            if (!newCaptain!.UniqueSkills.IsEmpty)
+            foreach ((string _, UniqueSkill talent) in newCaptain!.UniqueSkills)
             {
-                this.CaptainWithTalents = true;
-                foreach ((string _, UniqueSkill talent) in newCaptain.UniqueSkills)
+                // Since game update 15.7 a talent tuned differently for operations ships twice, once per battle
+                // group, both sharing a translation id. The builder models random battles, so the operations copy is
+                // skipped; without this every such talent would be listed twice. This is a deny-list rather than an
+                // allow-list so that a future battle group shows up instead of silently vanishing.
+                if (talent.BattleGroup is TalentBattleGroup.Operations)
                 {
-                    SkillActivationItemViewModel talentModel;
-
-                    // get all the modifiers from the talents. workTime is excluded because it's for talents that automatically trigger a consumable, so it's not an effect we can show.
-                    var modifiers = talent.SkillEffects.SelectMany(effect => effect.Value.Modifiers.Where(modifier => !modifier.Name.Equals("workTime", StringComparison.Ordinal))).ToImmutableList();
-                    if (talent.MaxTriggerNum <= 1)
-                    {
-                        talentModel = new(talent.TranslationId, -1, modifiers, false, description: talent.TranslationId + "_DESCRIPTION");
-                    }
-                    else
-                    {
-                        talentModel = new(talent.TranslationId, -1, modifiers, false, talent.MaxTriggerNum, 1, talent.TranslationId + "_DESCRIPTION");
-                    }
-
-                    this.CaptainTalentsList.Add(talentModel);
+                    continue;
                 }
+
+                // get all the modifiers from the talents. workTime is excluded because it's for talents that automatically trigger a consumable, so it's not an effect we can show.
+                var modifiers = DisplayableModifiers(talent.SkillEffects.SelectMany(effect => effect.Value.Modifiers));
+                var tiers = BuildTiers(talent);
+
+                // The talent's own cap governs how often it can fire; the ladder may be shorter, in which case the
+                // top tier simply persists. Taking the ladder length alone would cap the user below what the game
+                // allows.
+                int maximumActivations = Math.Max(talent.MaxTriggerNum, tiers.Count);
+
+                // There is no plain _DESCRIPTION key any more; descriptions are keyed per battle group. Try this
+                // talent's own group first and fall back to the regular one, which is what a BATTLE_GROUP_EVERY
+                // talent uses since the game ships no EVERY variant.
+                string battleGroup = talent.BattleGroup.ToString().ToUpperInvariant();
+                string description = $"{talent.TranslationId}_DESCRIPTION_BATTLE_GROUP_{battleGroup}";
+                string descriptionFallback = $"{talent.TranslationId}_DESCRIPTION_BATTLE_GROUP_REGULAR";
+
+                SkillActivationItemViewModel talentModel = maximumActivations <= 1
+                    ? new(talent.TranslationId, -1, modifiers, false, description: description) { Tiers = tiers, DescriptionFallback = descriptionFallback }
+                    : new(talent.TranslationId, -1, modifiers, false, maximumActivations, 1, description) { Tiers = tiers, DescriptionFallback = descriptionFallback };
+
+                this.CaptainTalentsList.Add(talentModel);
             }
-            else
-            {
-                this.CaptainWithTalents = false;
-            }
+
+            // Derived from the filtered list: a captain whose only talents are operations-only has nothing to show.
+            this.CaptainWithTalents = this.CaptainTalentsList.Count > 0;
 
             var currentlySelectedNumbersList = this.SkillOrderList.Select(x => x.SkillNumber).ToList();
             this.SkillOrderList.Clear();
@@ -208,6 +224,84 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
             UniqueSkills = original.UniqueSkills,
             Nation = original.Nation,
         };
+    }
+
+    /// <summary>
+    /// Drops stats that cannot be shown. workTime is excluded because it belongs to talents that automatically
+    /// trigger a consumable, which is not an effect that can be rendered.
+    /// </summary>
+    private static ImmutableList<Modifier> DisplayableModifiers(IEnumerable<Modifier> modifiers)
+    {
+        return modifiers.Where(modifier => !modifier.Name.Equals("workTime", StringComparison.Ordinal)).ToImmutableList();
+    }
+
+    /// <summary>
+    /// Reads what has to be reached for a given tier from the talent's trigger.
+    /// </summary>
+    /// <remarks>
+    /// Which entry carries the threshold depends on the activator - a ribbon activator counts events, a damage
+    /// activator counts damage - and the rest of the entries are usually zero. Preferring the known keys in a fixed
+    /// order keeps the result stable, since the threshold collection is hash-ordered.
+    /// </remarks>
+    private static (decimal? Value, string Key) ActivationThreshold(UniqueSkill talent, int tier)
+    {
+        var level = talent.Trigger?.Levels.FirstOrDefault(entry => entry.Level == tier);
+        if (level is null)
+        {
+            return (null, string.Empty);
+        }
+
+        foreach (string key in ThresholdKeysByPriority)
+        {
+            if (level.Thresholds.TryGetValue(key, out decimal preferred) && preferred != 0)
+            {
+                return (preferred, key);
+            }
+        }
+
+        var remaining = level.Thresholds.Where(entry => entry.Value != 0).OrderBy(entry => entry.Key, StringComparer.Ordinal).ToList();
+        return remaining.Count > 0 ? (remaining[0].Value, remaining[0].Key) : (null, string.Empty);
+    }
+
+    /// <summary>
+    /// Flattens a tiered talent's effects into a single ladder. The game reports each tier's cumulative values, so a
+    /// tier's stats are absolute rather than something to compound across activations.
+    /// </summary>
+    /// <remarks>
+    /// A talent can mix escalating and non-escalating effects. Each tier therefore also carries the stats of the
+    /// effects that do not escalate, so that reading a tier gives the talent's complete effect and nothing is lost
+    /// by preferring the tier over the flat list.
+    /// </remarks>
+    private static ImmutableList<TalentTierViewModel> BuildTiers(UniqueSkill talent)
+    {
+        var tieredEffects = talent.SkillEffects.Values.Where(effect => !effect.Levels.IsEmpty).ToList();
+        if (tieredEffects.Count == 0)
+        {
+            return ImmutableList<TalentTierViewModel>.Empty;
+        }
+
+        var constantModifiers = talent.SkillEffects.Values.Where(effect => effect.Levels.IsEmpty).SelectMany(effect => effect.Modifiers).ToList();
+
+        // Effects can escalate at different rates. Grouping purely by level number would make an effect with a
+        // shorter ladder vanish above its last level; instead each effect stays at its own top tier once exhausted.
+        // Levels arrive ordered by level number, and the result is numbered 1..N contiguously.
+        // Build the ladder from the level numbers the game reports rather than from list positions, so that the
+        // effect levels and the trigger's thresholds are matched on the same key.
+        var ladder = tieredEffects.SelectMany(effect => effect.Levels).Select(level => level.Level).Distinct().Order().ToList();
+        var tiers = new List<TalentTierViewModel>(ladder.Count);
+        foreach (int tier in ladder)
+        {
+            // An effect whose own ladder ends earlier holds at its highest level rather than dropping out.
+            var reached = tieredEffects
+                .Select(effect => effect.Levels.Where(level => level.Level <= tier).MaxBy(level => level.Level) ?? effect.Levels.MinBy(level => level.Level))
+                .OfType<UniqueSkillEffectLevel>();
+
+            var modifiers = DisplayableModifiers(reached.SelectMany(level => level.CumulativeModifiers).Concat(constantModifiers));
+            (decimal? threshold, string thresholdKey) = ActivationThreshold(talent, tier);
+            tiers.Add(new(tier, modifiers, threshold, thresholdKey));
+        }
+
+        return tiers.ToImmutableList();
     }
 
     /// <summary>
@@ -408,15 +502,23 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     private IEnumerable<Modifier> CollectTalentModifiers()
     {
         var modifiers = new List<Modifier>();
-        var talentModifiers = this.CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: <= 1 } && !talent.Modifiers.Exists(modifier => modifier.Name.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
+
+        // A tiered talent already reports the effective values of each tier, so its stats are taken as they are.
+        // They must not reach the compounding branch below: raising an absolute tier value to the power of the
+        // activation count would silently cube a three-activation talent's modifiers.
+        var tieredModifiers = this.CaptainTalentsList.Where(talent => talent is { Status: true, IsTiered: true })
+            .SelectMany(talent => talent.EffectiveModifiers);
+        modifiers.AddRange(tieredModifiers);
+
+        var talentModifiers = this.CaptainTalentsList.Where(talent => talent is { Status: true, IsTiered: false, MaximumActivations: <= 1 } && !talent.Modifiers.Exists(modifier => modifier.Name.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
             .SelectMany(skill => skill.Modifiers);
         modifiers.AddRange(talentModifiers);
 
-        var talentMultipleActivationModifiers = this.CaptainTalentsList.Where(talent => talent is { Status: true, MaximumActivations: > 1 } && !talent.Modifiers.Exists(modifier => modifier.Name.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
+        var talentMultipleActivationModifiers = this.CaptainTalentsList.Where(talent => talent is { Status: true, IsTiered: false, MaximumActivations: > 1 } && !talent.Modifiers.Exists(modifier => modifier.Name.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
             .SelectMany(talent => talent.Modifiers.Select(modifier => new Modifier(modifier.Name, float.Pow(modifier.Value, talent.ActivationNumbers), "", modifier)));
         modifiers.AddRange(talentMultipleActivationModifiers);
 
-        var talentFireChanceModifier = this.CaptainTalentsList.Where(talent => talent.Status && talent.Modifiers.Exists(modifier => modifier.Name.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
+        var talentFireChanceModifier = this.CaptainTalentsList.Where(talent => talent is { Status: true, IsTiered: false } && talent.Modifiers.Exists(modifier => modifier.Name.Equals("burnProbabilityBonus", StringComparison.Ordinal)))
             .SelectMany(talent => talent.Modifiers.Select(modifier => new Modifier(modifier.Name, float.Round(modifier.Value * talent.ActivationNumbers, 2), "", modifier)));
         modifiers.AddRange(talentFireChanceModifier);
 
