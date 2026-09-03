@@ -15,7 +15,7 @@
         <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <RootNamespace>WoWsShipBuilder.Desktop</RootNamespace>
-        <VersionPrefix>2026.3.0</VersionPrefix>
+        <VersionPrefix>2026.4.0</VersionPrefix>
         <UseWpf>true</UseWpf>
     </PropertyGroup>
 
