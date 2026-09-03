@@ -9,9 +9,10 @@
         Title="WoWs ShipBuilder"
         Name="SplashScreenWindow"
         Height="566" Width="800" CanResize="False"
-        SystemDecorations="None"
+        x:DataType="splashScreen:SplashScreenViewModel"
         WindowStartupLocation="CenterScreen"
-        ExtendClientAreaChromeHints="NoChrome">
+        ExtendClientAreaToDecorationsHint="False"
+        WindowDecorations="None">
     <Design.DataContext>
         <splashScreen:SplashScreenViewModel />
     </Design.DataContext>
