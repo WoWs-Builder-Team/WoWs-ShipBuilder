@@ -218,7 +218,7 @@ else if (ViewModel is not null)
         MetricsService.AddShipView(shipIndex, Localizer.GetGameLocalization(shipIndex + "_FULL", AppConstants.DefaultCultureDetails).Localization);
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
-            var vm = CreateViewModel(shipIndex, Build);
+            var vm = ShipViewModel.Create(shipIndex, Build);
             BuildName = Build?.BuildName ?? string.Empty;
             Build = null;
             shipChanged = true;
@@ -349,39 +349,12 @@ else if (ViewModel is not null)
         switch (shellIndex)
         {
             case not null:
-                AppNavigator.NavigateTo(AppNavigator.AppPage.BallisticCharts, GetBuildContainer(CurrentTabId, Cache[CurrentTabId]!, calculateShipDataContainer), shellIndex, AppNavigator.AppPage.ShipStats);
+                AppNavigator.NavigateTo(AppNavigator.AppPage.BallisticCharts, ViewModel!.CreateShipBuildContainer(CurrentTabId, BuildName, calculateShipDataContainer), shellIndex, AppNavigator.AppPage.ShipStats);
                 break;
             case null:
-                AppNavigator.NavigateTo(AppNavigator.AppPage.AccelerationCharts, GetBuildContainer(CurrentTabId, Cache[CurrentTabId]!, calculateShipDataContainer), AppNavigator.AppPage.ShipStats);
+                AppNavigator.NavigateTo(AppNavigator.AppPage.AccelerationCharts, ViewModel!.CreateShipBuildContainer(CurrentTabId, BuildName, calculateShipDataContainer), AppNavigator.AppPage.ShipStats);
                 break;
         }
-    }
-
-    public static ShipBuildContainer GetBuildContainer(Guid containerId, VmCacheEntry cacheEntry, bool calculateShipDataContainer)
-    {
-        var modifiers = cacheEntry.ViewModel.GetModifiers();
-
-        bool isCustomBuild = !string.IsNullOrWhiteSpace(cacheEntry.BuildName) || cacheEntry.ViewModel.IsModified;
-
-        var ship = AppData.FindShipFromSummary(cacheEntry.ViewModel.CurrentShip);
-        var build = isCustomBuild ? cacheEntry.ViewModel.CreateBuild(cacheEntry.BuildName) : null;
-        var activeConsumables = cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.Any() ? cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.ToImmutableArray() : ImmutableArray<int>.Empty;
-        ShipDataContainer? shipDataContainer = null;
-        if (calculateShipDataContainer)
-        {
-            shipDataContainer = build is null ? DataContainerUtility.GetStockShipDataContainer(ship) : DataContainerUtility.GetShipDataContainerFromBuild(ship, build.Modules, ship.ShipUpgradeInfo.ShipUpgrades, modifiers);
-        }
-
-        return new(ship, build, containerId, activeConsumables, false, shipDataContainer, modifiers);
-    }
-
-    public static ShipViewModel CreateViewModel(string shipIndex, Build? build)
-    {
-        var shipSummary = AppData.ShipSummaryMapper[shipIndex];
-        var ship = AppData.FindShipFromSummary(shipSummary);
-        var vmParams = new ShipViewModelParams(ship, shipSummary, build);
-
-        return ShipViewModel.Create(vmParams, Logging.LoggerFactory.CreateLogger<ShipViewModel>());
     }
 
     private async Task OnBuildSaveClicked()

@@ -9,6 +9,8 @@ using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Features.Builds;
+using WoWsShipBuilder.Features.DataContainers;
+using WoWsShipBuilder.Features.Navigation;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Utility;
 
@@ -129,9 +131,59 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
         return vm;
     }
 
+    /// <summary>
+    /// Creates a new instance of the <see cref="ShipViewModel"/> for the ship with the specified index.
+    /// </summary>
+    /// <param name="shipIndex">The index of the ship to load.</param>
+    /// <param name="build">The build to load, or <see langword="null"/> to start from the default configuration.</param>
+    /// <returns>A new instance of the <see cref="ShipViewModel"/> with initialized data.</returns>
+    public static ShipViewModel Create(string shipIndex, Build? build)
+    {
+        var shipSummary = AppData.ShipSummaryMapper[shipIndex];
+        var viewModelParams = new ShipViewModelParams(AppData.FindShipFromSummary(shipSummary), shipSummary, build);
+        return Create(viewModelParams, Logging.LoggerFactory.CreateLogger<ShipViewModel>());
+    }
+
     public Build CreateBuild(string buildName)
     {
         return new(buildName, this.CurrentShipIndex, this.rawShipData.ShipNation, this.ShipModuleViewModel.SaveBuild(), this.UpgradePanelViewModel.SaveBuild(), this.ConsumableViewModel.SaveBuild(), this.CaptainSkillSelectorViewModel.GetCaptainIndex(), this.CaptainSkillSelectorViewModel.GetSkillNumberList(), this.SignalSelectorViewModel.GetFlagList());
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="ShipBuildContainer"/> describing the current state of this viewmodel,
+    /// so it can be handed to another page.
+    /// </summary>
+    /// <param name="containerId">The id identifying the new container.</param>
+    /// <param name="buildName">The name of the current build, empty if the user did not name it.</param>
+    /// <param name="calculateShipDataContainer">Whether the ship stats should be calculated for the new container.</param>
+    /// <returns>A new <see cref="ShipBuildContainer"/> for the current state of this viewmodel.</returns>
+    public ShipBuildContainer CreateShipBuildContainer(Guid containerId, string buildName, bool calculateShipDataContainer)
+    {
+        var modifiers = this.GetModifiers();
+        bool isCustomBuild = !string.IsNullOrWhiteSpace(buildName) || this.IsModified;
+        var build = isCustomBuild ? this.CreateBuild(buildName) : null;
+        var activatedConsumables = this.ConsumableViewModel.ActivatedSlots.Any() ? this.ConsumableViewModel.ActivatedSlots.ToImmutableArray() : ImmutableArray<int>.Empty;
+        var shipDataContainer = calculateShipDataContainer ? this.CreateDataContainer(build, modifiers) : null;
+
+        return new(this.rawShipData, build, containerId, activatedConsumables, false, shipDataContainer, modifiers);
+    }
+
+    /// <summary>
+    /// Refreshes the modifiers and ship stats of an existing <see cref="ShipBuildContainer"/> from the state of this viewmodel,
+    /// keeping everything else about the container unchanged.
+    /// </summary>
+    /// <param name="baseContainer">The container to refresh.</param>
+    /// <param name="calculateShipDataContainer">Whether the ship stats should be recalculated.</param>
+    /// <returns>The refreshed <see cref="ShipBuildContainer"/>.</returns>
+    public ShipBuildContainer UpdateShipBuildContainer(ShipBuildContainer baseContainer, bool calculateShipDataContainer)
+    {
+        var modifiers = this.GetModifiers();
+
+        return baseContainer with
+        {
+            Modifiers = modifiers,
+            ShipDataContainer = calculateShipDataContainer ? this.CreateDataContainer(baseContainer.Build, modifiers) : baseContainer.ShipDataContainer,
+        };
     }
 
     /// <summary>
@@ -157,6 +209,13 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
         this.tokenSource.Cancel();
         this.tokenSource.Dispose();
         this.semaphore.Dispose();
+    }
+
+    private ShipDataContainer CreateDataContainer(Build? build, ImmutableList<Modifier> modifiers)
+    {
+        return build is null
+            ? DataContainerUtility.GetStockShipDataContainer(this.rawShipData)
+            : DataContainerUtility.GetShipDataContainerFromBuild(this.rawShipData, build.Modules, this.rawShipData.ShipUpgradeInfo.ShipUpgrades, modifiers);
     }
 
     private void AddChangeListeners()
