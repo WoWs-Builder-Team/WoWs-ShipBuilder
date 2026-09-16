@@ -41,6 +41,8 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
 
     private CancellationTokenSource tokenSource;
 
+    private bool disposed;
+
     private ShipViewModel(ShipViewModelParams viewModelParams, ILogger<ShipViewModel> logger)
     {
         var ship = viewModelParams.Ship;
@@ -118,9 +120,19 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
 
     public void Dispose()
     {
+        if (this.disposed)
+        {
+            return;
+        }
+
+        this.disposed = true;
+
+        // Stop reacting to changes first, then cancel any update that is already in flight so it does not
+        // touch the semaphore or the token source after they have been disposed.
         this.disposables.Dispose();
-        this.semaphore.Dispose();
+        this.tokenSource.Cancel();
         this.tokenSource.Dispose();
+        this.semaphore.Dispose();
     }
 
     private void AddChangeListeners()
@@ -177,9 +189,9 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
                         }
                     }
                 }
-                catch (OperationCanceledException)
+                catch (Exception e) when (e is OperationCanceledException or ObjectDisposedException)
                 {
-                    // ignored
+                    // The viewmodel was disposed while an update was in flight. Nothing left to update.
                 }
             },
             token);
