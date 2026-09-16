@@ -273,11 +273,7 @@
         {
             using var viewModel = ShipStatsTab.CreateViewModel(container.Ship.Index, container.Build);
 
-            List<Modifier> modifierBuilder = viewModel.UpgradePanelViewModel.GetModifierList();
-            modifierBuilder.AddRange(viewModel.ConsumableViewModel.GetModifiersList());
-            modifierBuilder.AddRange(viewModel.CaptainSkillSelectorViewModel.GetModifiersList());
-            modifierBuilder.AddRange(viewModel.SignalSelectorViewModel.GetModifierList());
-            var modifiers = modifierBuilder.ToImmutableList();
+            var modifiers = viewModel.GetModifiers();
 
             var newDataContainer = calculateShipDataContainer ? DataContainerUtility.GetShipDataContainerFromBuild(container.Ship, container.Build.Modules, container.Ship.ShipUpgradeInfo.ShipUpgrades, modifiers) : container.ShipDataContainer;
             return container with { Modifiers = modifiers, ShipDataContainer = newDataContainer };

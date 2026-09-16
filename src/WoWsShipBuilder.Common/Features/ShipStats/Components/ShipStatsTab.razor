@@ -359,15 +359,9 @@ else if (ViewModel is not null)
 
     public static ShipBuildContainer GetBuildContainer(Guid containerId, VmCacheEntry cacheEntry, bool calculateShipDataContainer)
     {
-        List<Modifier> modifierBuilder = cacheEntry.ViewModel.UpgradePanelViewModel.GetModifierList();
-        modifierBuilder.AddRange(cacheEntry.ViewModel.ConsumableViewModel.GetModifiersList());
-        modifierBuilder.AddRange(cacheEntry.ViewModel.CaptainSkillSelectorViewModel.GetModifiersList());
-        modifierBuilder.AddRange(cacheEntry.ViewModel.SignalSelectorViewModel.GetModifierList());
-        var modifiers = modifierBuilder.ToImmutableList();
+        var modifiers = cacheEntry.ViewModel.GetModifiers();
 
-        bool isCustomBuild = !string.IsNullOrWhiteSpace(cacheEntry.BuildName) || cacheEntry.ViewModel.ShipModuleViewModel.SelectedModules.Any(m => !string.IsNullOrEmpty(m.Prev)) ||
-                             cacheEntry.ViewModel.UpgradePanelViewModel.SelectedModernizationList.Any() || cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.Any() ||
-                             cacheEntry.ViewModel.CaptainSkillSelectorViewModel.SkillOrderList.Any() || cacheEntry.ViewModel.SignalSelectorViewModel.SelectedSignals.Any();
+        bool isCustomBuild = !string.IsNullOrWhiteSpace(cacheEntry.BuildName) || cacheEntry.ViewModel.IsModified;
 
         var ship = AppData.FindShipFromSummary(cacheEntry.ViewModel.CurrentShip);
         var build = isCustomBuild ? cacheEntry.ViewModel.CreateBuild(cacheEntry.BuildName) : null;

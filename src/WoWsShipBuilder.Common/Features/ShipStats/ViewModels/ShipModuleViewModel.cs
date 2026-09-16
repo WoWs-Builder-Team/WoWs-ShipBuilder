@@ -1,14 +1,18 @@
 ﻿using System.Collections.Immutable;
+using System.Reactive.Linq;
 using DynamicData;
+using DynamicData.Binding;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.GameData;
 using WoWsShipBuilder.Infrastructure.Utility;
+using RxUnit = System.Reactive.Unit;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels
 {
-    public class ShipModuleViewModel : ReactiveObject, IBuildComponentProvider
+    public class ShipModuleViewModel : ReactiveObject, IBuildComponentProvider, IBuildComponent
     {
         #region Static Fields and Constants
 
@@ -52,6 +56,13 @@ namespace WoWsShipBuilder.Features.ShipStats.ViewModels
         }
 
         public CustomObservableCollection<ShipUpgrade> SelectedModules { get; } = new();
+
+        public IObservable<RxUnit> Changes => this.SelectedModules.ToObservableChangeSet().Select(_ => RxUnit.Default);
+
+        public bool IsModified => this.SelectedModules.Any(module => !string.IsNullOrEmpty(module.Prev));
+
+        // Modules select which components are fitted to the ship instead of contributing modifiers of their own.
+        public IEnumerable<Modifier> GetModifiers() => [];
 
         public void SelectModuleExecute(ShipUpgrade parameter)
         {

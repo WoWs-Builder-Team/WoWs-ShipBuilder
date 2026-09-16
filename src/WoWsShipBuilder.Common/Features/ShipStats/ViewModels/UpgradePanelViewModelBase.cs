@@ -1,15 +1,18 @@
 ﻿using System.Collections.Immutable;
+using System.Reactive.Linq;
 using DynamicData;
+using DynamicData.Binding;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Upgrade;
 using WoWsShipBuilder.Infrastructure.Utility;
+using RxUnit = System.Reactive.Unit;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
-public class UpgradePanelViewModelBase : ReactiveObject, IBuildComponentProvider
+public class UpgradePanelViewModelBase : ReactiveObject, IBuildComponentProvider, IBuildComponent
 {
     public static readonly Modernization PlaceholderModernization = new() { Index = null!, Name = "PlaceholderMod" };
 
@@ -69,7 +72,11 @@ public class UpgradePanelViewModelBase : ReactiveObject, IBuildComponentProvider
         set => this.RaiseAndSetIfChanged(ref this.availableModernizationList, value);
     }
 
-    public List<Modifier> GetModifierList()
+    public IObservable<RxUnit> Changes => this.SelectedModernizationList.ToObservableChangeSet().Select(_ => RxUnit.Default);
+
+    public bool IsModified => this.SelectedModernizationList.Any();
+
+    public IEnumerable<Modifier> GetModifiers()
     {
         var modifiers = this.SelectedModernizationList
             .Where(m => !string.IsNullOrEmpty(m.Index))

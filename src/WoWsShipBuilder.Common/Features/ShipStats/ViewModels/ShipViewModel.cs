@@ -16,6 +16,8 @@ namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
 public sealed partial class ShipViewModel : ReactiveObject, IDisposable
 {
+    private readonly ImmutableArray<IBuildComponent> buildComponents;
+
     private readonly CompositeDisposable disposables = new();
 
     private readonly ILogger<ShipViewModel> logger;
@@ -77,6 +79,15 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
             this.ConsumableViewModel.LoadBuild(build.Consumables);
         }
 
+        this.buildComponents =
+        [
+            this.ShipModuleViewModel,
+            this.UpgradePanelViewModel,
+            this.SignalSelectorViewModel,
+            this.CaptainSkillSelectorViewModel,
+            this.ConsumableViewModel,
+        ];
+
         var shipSummary = viewModelParams.ShipSummary;
         this.currentShipIndex = ship.Index;
         this.currentShipTier = ship.Tier;
@@ -96,6 +107,11 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
     public SignalSelectorViewModel SignalSelectorViewModel { get; }
 
     public ShipStatsControlViewModel ShipStatsControlViewModel { get; }
+
+    /// <summary>
+    /// Gets a value indicating whether the user changed any part of the build away from its default selection.
+    /// </summary>
+    public bool IsModified => this.buildComponents.Any(component => component.IsModified);
 
     /// <summary>
     /// Creates a new instance of the <see cref="ShipViewModel"/>, fully initialized and ready to use.
@@ -118,6 +134,14 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
         return new(buildName, this.CurrentShipIndex, this.rawShipData.ShipNation, this.ShipModuleViewModel.SaveBuild(), this.UpgradePanelViewModel.SaveBuild(), this.ConsumableViewModel.SaveBuild(), this.CaptainSkillSelectorViewModel.GetCaptainIndex(), this.CaptainSkillSelectorViewModel.GetSkillNumberList(), this.SignalSelectorViewModel.GetFlagList());
     }
 
+    /// <summary>
+    /// Gets the modifiers of all build components.
+    /// The special ability is not part of a build and therefore not included, see <see cref="GenerateModifierList"/>
+    /// for the list used to calculate the currently displayed ship stats.
+    /// </summary>
+    /// <returns>The combined modifiers of all build components.</returns>
+    public ImmutableList<Modifier> GetModifiers() => [.. this.buildComponents.SelectMany(component => component.GetModifiers())];
+
     public void Dispose()
     {
         if (this.disposed)
@@ -137,24 +161,17 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
 
     private void AddChangeListeners()
     {
-        this.ShipModuleViewModel.SelectedModules.ToObservableChangeSet().Do(_ => this.UpdateStatsViewModel()).Subscribe().DisposeWith(this.disposables);
-        this.UpgradePanelViewModel.SelectedModernizationList.ToObservableChangeSet().Do(_ => this.UpdateStatsViewModel()).Subscribe().DisposeWith(this.disposables);
-        this.SignalSelectorViewModel.SelectedSignals.ToObservableChangeSet().Do(_ => this.UpdateStatsViewModel()).Subscribe().DisposeWith(this.disposables);
-        this.CaptainSkillSelectorViewModel.SkillOrderList.ToObservableChangeSet().Do(_ => this.UpdateStatsViewModel()).Subscribe().DisposeWith(this.disposables);
-        this.ConsumableViewModel.ActivatedSlots.ToObservableChangeSet().Do(_ => this.UpdateStatsViewModel()).Subscribe().DisposeWith(this.disposables);
+        this.buildComponents.Select(component => component.Changes).Merge().Subscribe(_ => this.UpdateStatsViewModel()).DisposeWith(this.disposables);
         this.ShipStatsControlViewModel.WhenAnyValue(x => x.IsSpecialAbilityActive).Subscribe(_ => this.UpdateStatsViewModel()).DisposeWith(this.disposables);
-
-        this.CaptainSkillSelectorViewModel.WhenAnyValue(x => x.SkillActivationPopupOpen).Subscribe(this.HandleCaptainParamsChange).DisposeWith(this.disposables);
-        this.CaptainSkillSelectorViewModel.WhenAnyValue(x => x.CaptainWithTalents).Subscribe(this.HandleCaptainParamsChange).DisposeWith(this.disposables);
     }
 
-    private void HandleCaptainParamsChange(bool newValue)
-    {
-        if (!newValue)
-        {
-            this.UpdateStatsViewModel();
-        }
-    }
+    /// <summary>
+    /// Gets the modifiers used to calculate the currently displayed ship stats.
+    /// Unlike <see cref="GetModifiers"/>, this includes the special ability, which is a display toggle rather than part of the build.
+    /// </summary>
+    /// <returns>The combined modifiers of all build components and of the special ability.</returns>
+    private ImmutableList<Modifier> GenerateModifierList() =>
+        [.. this.buildComponents.SelectMany(component => component.GetModifiers()), .. this.ShipStatsControlViewModel.GetSpecialAbilityModifiers()];
 
     private void UpdateStatsViewModel(bool skipDelay = false)
     {
@@ -195,17 +212,5 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
                 }
             },
             token);
-    }
-
-    private ImmutableList<Modifier> GenerateModifierList()
-    {
-        var modifiers = new List<Modifier>();
-
-        modifiers.AddRange(this.UpgradePanelViewModel.GetModifierList());
-        modifiers.AddRange(this.SignalSelectorViewModel.GetModifierList());
-        modifiers.AddRange(this.CaptainSkillSelectorViewModel.GetModifiersList());
-        modifiers.AddRange(this.ConsumableViewModel.GetModifiersList());
-        modifiers.AddRange(this.ShipStatsControlViewModel.GetSpecialAbilityModifiers());
-        return modifiers.ToImmutableList();
     }
 }

@@ -1,4 +1,5 @@
 using System.Reactive.Linq;
+using DynamicData.Binding;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
@@ -6,10 +7,11 @@ using WoWsShipBuilder.DataStructures.Exterior;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Utility;
+using RxUnit = System.Reactive.Unit;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
-public class SignalSelectorViewModel : ReactiveObject
+public class SignalSelectorViewModel : ReactiveObject, IBuildComponent
 {
     private readonly ILogger<SignalSelectorViewModel> logger;
 
@@ -32,6 +34,10 @@ public class SignalSelectorViewModel : ReactiveObject
     }
 
     public CustomObservableCollection<Exterior> SelectedSignals { get; } = new();
+
+    public IObservable<RxUnit> Changes => this.SelectedSignals.ToObservableChangeSet().Select(_ => RxUnit.Default);
+
+    public bool IsModified => this.SelectedSignals.Any();
 
     // TODO: update to new nullability state
     private static List<KeyValuePair<string, SignalItemViewModel>> LoadSignalList()
@@ -60,7 +66,7 @@ public class SignalSelectorViewModel : ReactiveObject
         }
     }
 
-    public List<Modifier> GetModifierList()
+    public IEnumerable<Modifier> GetModifiers()
     {
         return this.SelectedSignals.SelectMany(m => m.Modifiers).ToList();
     }
