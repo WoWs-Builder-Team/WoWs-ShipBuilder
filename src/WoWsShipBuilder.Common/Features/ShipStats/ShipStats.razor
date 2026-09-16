@@ -275,8 +275,8 @@
 
             List<Modifier> modifierBuilder = viewModel.UpgradePanelViewModel.GetModifierList();
             modifierBuilder.AddRange(viewModel.ConsumableViewModel.GetModifiersList());
-            modifierBuilder.AddRange(viewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<Modifier>());
-            modifierBuilder.AddRange(viewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<Modifier>());
+            modifierBuilder.AddRange(viewModel.CaptainSkillSelectorViewModel.GetModifiersList());
+            modifierBuilder.AddRange(viewModel.SignalSelectorViewModel.GetModifierList());
             var modifiers = modifierBuilder.ToImmutableList();
 
             var newDataContainer = calculateShipDataContainer ? DataContainerUtility.GetShipDataContainerFromBuild(container.Ship, container.Build.Modules, container.Ship.ShipUpgradeInfo.ShipUpgrades, modifiers) : container.ShipDataContainer;

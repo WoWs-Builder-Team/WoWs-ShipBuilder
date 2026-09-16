@@ -3,34 +3,19 @@ using ReactiveUI;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Features.DataContainers;
+using WoWsShipBuilder.Infrastructure.Utility;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
-public partial class ShipStatsControlViewModel : ReactiveObject
+public partial class ShipStatsControlViewModel(Ship ship) : ReactiveObject
 {
+    [Observable]
     private ShipDataContainer? currentShipStats;
 
+    [Observable]
     private bool isSpecialAbilityActive;
 
-    public ShipStatsControlViewModel(Ship ship)
-    {
-        this.BaseShipStats = ship;
-    }
-
-    public ShipDataContainer? CurrentShipStats
-    {
-        get => this.currentShipStats;
-        set => this.RaiseAndSetIfChanged(ref this.currentShipStats, value);
-    }
-
-    public bool IsSpecialAbilityActive
-    {
-        get => this.isSpecialAbilityActive;
-        set => this.RaiseAndSetIfChanged(ref this.isSpecialAbilityActive, value);
-    }
-
-    // this is the ship base stats. do not modify after creation
-    private Ship BaseShipStats { get; set; }
+    private Ship BaseShipStats { get; } = ship;
 
     public async Task UpdateShipStats(ImmutableList<ShipUpgrade> selectedConfiguration, ImmutableList<Modifier> modifiers)
     {
@@ -40,18 +25,19 @@ public partial class ShipStatsControlViewModel : ReactiveObject
 
     public List<Modifier> GetSpecialAbilityModifiers()
     {
-        if (this.isSpecialAbilityActive )
+        if (this.IsSpecialAbilityActive)
         {
             if (this.BaseShipStats.SpecialAbility is not null)
             {
-                return this.BaseShipStats.SpecialAbility.Modifiers.ToList();
+                return [.. this.BaseShipStats.SpecialAbility.Modifiers];
             }
-            else if (this.BaseShipStats.MainBatteryModuleList.FirstOrDefault().Value.BurstModeAbility is not null)
+
+            if (this.BaseShipStats.MainBatteryModuleList.FirstOrDefault().Value.BurstModeAbility is { } burstModeAbility)
             {
-                return this.BaseShipStats.MainBatteryModuleList.FirstOrDefault().Value.BurstModeAbility!.Modifiers.ToList();
+                return [.. burstModeAbility.Modifiers];
             }
         }
 
-        return new();
+        return [];
     }
 }
