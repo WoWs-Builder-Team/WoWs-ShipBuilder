@@ -1,13 +1,16 @@
 ﻿using System.Collections.Immutable;
 using System.Collections.ObjectModel;
+using System.Reactive.Linq;
 using DynamicData;
+using DynamicData.Binding;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Infrastructure.Utility;
+using RxUnit = System.Reactive.Unit;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
@@ -16,7 +19,7 @@ namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 /// Data for each slot is stored in an individual <see cref="ConsumableSlotViewModel"/>
 /// while this viewmodel is responsible to store these individual instances and provide methods to easily interact with consumable-related data.
 /// </summary>
-public class ConsumableViewModel : ReactiveObject, IBuildComponentProvider
+public class ConsumableViewModel : ReactiveObject, IBuildComponentProvider, IBuildComponent
 {
     private readonly ILogger<ConsumableViewModel> logger;
     private readonly Ship ship;
@@ -42,6 +45,10 @@ public class ConsumableViewModel : ReactiveObject, IBuildComponentProvider
     /// Gets an ObservableCollection containing a viewmodel for each consumable slot.
     /// </summary>
     public ObservableCollection<ConsumableSlotViewModel> ConsumableSlots { get; }
+
+    public IObservable<RxUnit> Changes => this.ActivatedSlots.ToObservableChangeSet().Select(_ => RxUnit.Default);
+
+    public bool IsModified => this.ActivatedSlots.Any();
 
     /// <summary>
     /// Creates a new instance of the <see cref="ConsumableViewModel"/> and initializes its data through asynchronous methods.
@@ -86,7 +93,7 @@ public class ConsumableViewModel : ReactiveObject, IBuildComponentProvider
         Parallel.ForEach(this.ConsumableSlots, consumableSlot => consumableSlot.UpdateDataContainers(modifiers, shipHp, shipClass));
     }
 
-    public IEnumerable<Modifier> GetModifiersList()
+    public IEnumerable<Modifier> GetModifiers()
     {
         var modifiers = new List<Modifier>();
         foreach (int slot in this.ActivatedSlots)

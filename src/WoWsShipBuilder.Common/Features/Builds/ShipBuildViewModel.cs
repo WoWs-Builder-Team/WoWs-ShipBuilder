@@ -1,9 +1,10 @@
 ﻿using System.Collections.Immutable;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.Features.DataContainers;
 using WoWsShipBuilder.Features.Navigation;
+using WoWsShipBuilder.Features.ShipStats;
 using WoWsShipBuilder.Features.ShipStats.ViewModels;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Utility;
@@ -40,6 +41,9 @@ public partial class ShipBuildViewModel : ReactiveObject
 
     public Ship CurrentShip { get; }
 
+    private ImmutableArray<IBuildComponent> BuildComponents =>
+        [this.ShipModuleViewModel, this.UpgradePanelViewModel, this.SignalSelectorViewModel, this.CaptainSkillSelectorViewModel, this.ConsumableViewModel];
+
     public static ShipBuildViewModel Create(ShipBuildContainer shipBuildContainer)
     {
         var ship = shipBuildContainer.Ship;
@@ -69,7 +73,7 @@ public partial class ShipBuildViewModel : ReactiveObject
 
     private Build? DumpToBuild()
     {
-        bool isCustomBuild = !string.IsNullOrWhiteSpace(this.BuildName) || this.ShipModuleViewModel.SelectedModules.Any(m => !string.IsNullOrEmpty(m.Prev)) || this.UpgradePanelViewModel.SelectedModernizationList.Any() || this.ConsumableViewModel.ActivatedSlots.Any() || this.CaptainSkillSelectorViewModel.SkillOrderList.Any() || this.SignalSelectorViewModel.SelectedSignals.Any();
+        bool isCustomBuild = !string.IsNullOrWhiteSpace(this.BuildName) || this.BuildComponents.Any(component => component.IsModified);
         if (isCustomBuild)
         {
             return new(this.BuildName.Trim(), this.CurrentShip.Index, this.CurrentShip.ShipNation, this.ShipModuleViewModel.SaveBuild(), this.UpgradePanelViewModel.SaveBuild(), this.ConsumableViewModel.SaveBuild(), this.CaptainSkillSelectorViewModel.GetCaptainIndex(), this.CaptainSkillSelectorViewModel.GetSkillNumberList(), this.SignalSelectorViewModel.GetFlagList());
@@ -100,21 +104,16 @@ public partial class ShipBuildViewModel : ReactiveObject
 
     private ImmutableList<Modifier> GenerateModifierList()
     {
-        var modifiers = new List<Modifier>();
-
-        modifiers.AddRange(this.UpgradePanelViewModel.GetModifierList());
-        modifiers.AddRange(this.SignalSelectorViewModel.GetModifierList());
-        modifiers.AddRange(this.CaptainSkillSelectorViewModel.GetModifiersList());
-        modifiers.AddRange(this.ConsumableViewModel.GetModifiersList());
+        var modifiers = this.BuildComponents.SelectMany(component => component.GetModifiers()).ToList();
         if (!this.SpecialAbilityActive)
         {
-            return modifiers.ToImmutableList();
+            return [.. modifiers];
         }
 
         if (this.CurrentShip.SpecialAbility != null)
         {
             modifiers.AddRange(this.CurrentShip.SpecialAbility.Modifiers);
-            return modifiers.ToImmutableList();
+            return [.. modifiers];
         }
 
         // when the special ability is enabled, we want to properly handle its effects
@@ -124,6 +123,6 @@ public partial class ShipBuildViewModel : ReactiveObject
             modifiers.AddRange(burstModeAbility.Modifiers);
         }
 
-        return modifiers.ToImmutableList();
+        return [.. modifiers];
     }
 }

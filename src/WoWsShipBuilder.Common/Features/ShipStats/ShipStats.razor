@@ -5,6 +5,7 @@
 @using WoWsShipBuilder.Features.Builds
 @using WoWsShipBuilder.Features.DataContainers
 @using WoWsShipBuilder.Features.ShipStats.Components
+@using WoWsShipBuilder.Features.ShipStats.ViewModels
 @using WoWsShipBuilder.Infrastructure.ApplicationData
 @using WoWsShipBuilder.Infrastructure.Localization.Resources
 @using WoWsShipBuilder.Infrastructure.Metrics
@@ -256,7 +257,7 @@
             var vmCacheEntry = cache.GetOrDefault(container.Id);
             if (vmCacheEntry is not null)
             {
-                buildContainers.Add(ShipStatsTab.GetBuildContainer(container.Id, vmCacheEntry, calculateShipDataContainer));
+                buildContainers.Add(vmCacheEntry.ViewModel.CreateShipBuildContainer(container.Id, vmCacheEntry.BuildName, calculateShipDataContainer));
             }
             else
             {
@@ -271,16 +272,8 @@
     {
         if (container.Build is not null)
         {
-            using var viewModel = ShipStatsTab.CreateViewModel(container.Ship.Index, container.Build);
-
-            List<Modifier> modifierBuilder = viewModel.UpgradePanelViewModel.GetModifierList();
-            modifierBuilder.AddRange(viewModel.ConsumableViewModel.GetModifiersList());
-            modifierBuilder.AddRange(viewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<Modifier>());
-            modifierBuilder.AddRange(viewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<Modifier>());
-            var modifiers = modifierBuilder.ToImmutableList();
-
-            var newDataContainer = calculateShipDataContainer ? DataContainerUtility.GetShipDataContainerFromBuild(container.Ship, container.Build.Modules, container.Ship.ShipUpgradeInfo.ShipUpgrades, modifiers) : container.ShipDataContainer;
-            return container with { Modifiers = modifiers, ShipDataContainer = newDataContainer };
+            using var viewModel = ShipViewModel.Create(container.Ship.Index, container.Build);
+            return viewModel.UpdateShipBuildContainer(container, calculateShipDataContainer);
         }
 
         return calculateShipDataContainer ? container with { ShipDataContainer = DataContainerUtility.GetStockShipDataContainer(container.Ship) } : container;
