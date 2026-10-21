@@ -15,18 +15,18 @@
         </PackageReference>
         <PackageReference Include="FluentAssertions" Version="7.2.2" />
         <PackageReference Include="Moq" Version="4.18.4" />
-        <PackageReference Include="NUnit" Version="4.6.1" />
+        <PackageReference Include="NUnit" Version="5.0.0" />
         <PackageReference Include="NUnit.Analyzers" Version="4.15.0">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="NUnit3TestAdapter" Version="6.3.0" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
+        <PackageReference Include="NUnit3TestAdapter" Version="6.3.1" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="TestableIO.System.IO.Abstractions.TestingHelpers" Version="22.2.0" />
+        <PackageReference Include="TestableIO.System.IO.Abstractions.TestingHelpers" Version="22.3.0" />
     </ItemGroup>
 
     <ItemGroup>
