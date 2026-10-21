@@ -1,7 +1,7 @@
 using System.Reactive.Linq;
 using DynamicData.Binding;
 using Microsoft.Extensions.Logging;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Exterior;
 using WoWsShipBuilder.DataStructures.Modifiers;

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Immutable;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Captain;
 using WoWsShipBuilder.DataStructures.Modifiers;

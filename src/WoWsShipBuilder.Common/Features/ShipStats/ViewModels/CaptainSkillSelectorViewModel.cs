@@ -3,7 +3,7 @@ using System.Collections.Specialized;
 using System.Reactive.Linq;
 using DynamicData.Binding;
 using Microsoft.Extensions.Logging;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Captain;
 using WoWsShipBuilder.DataStructures.Modifiers;
@@ -93,7 +93,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject, IBuildCompo
         this.CaptainList = capList.Select(x => x.Value).ToList();
         this.SelectedCaptain = this.CaptainList[0];
 
-        this.WhenAnyValue(x => x.AssignedPoints).Do(_ => this.UpdateCanAddSkill()).Subscribe();
+        this.WhenAnyValueUnsafe(x => x.AssignedPoints).Do(_ => this.UpdateCanAddSkill()).Subscribe();
 
         this.CaptainTalentsList.CollectionChanged += this.CaptainTalentsListOnCollectionChanged;
         this.ConditionalModifiersList.CollectionChanged += this.ConditionalModifiersListOnCollectionChanged;
@@ -175,7 +175,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject, IBuildCompo
     public IObservable<RxUnit> Changes => Observable.Merge(
         this.SkillOrderList.ToObservableChangeSet().Select(_ => RxUnit.Default),
         this.WhenAnyValue(x => x.SkillActivationPopupOpen).Where(isOpen => !isOpen).Select(_ => RxUnit.Default),
-        this.WhenAnyValue(x => x.CaptainWithTalents).Where(hasTalents => !hasTalents).Select(_ => RxUnit.Default));
+        this.WhenAnyValueUnsafe(x => x.CaptainWithTalents).Where(hasTalents => !hasTalents).Select(_ => RxUnit.Default));
 
     public bool IsModified => this.SkillOrderList.Any();
 

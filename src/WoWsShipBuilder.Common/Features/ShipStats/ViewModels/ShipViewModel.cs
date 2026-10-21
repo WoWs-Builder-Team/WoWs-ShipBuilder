@@ -2,9 +2,8 @@ using System.Collections.Immutable;
 using System.Reactive.Disposables;
 using System.Reactive.Disposables.Fluent;
 using System.Reactive.Linq;
-using DynamicData.Binding;
 using Microsoft.Extensions.Logging;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
@@ -221,7 +220,7 @@ public sealed partial class ShipViewModel : ReactiveObject, IDisposable
     private void AddChangeListeners()
     {
         this.buildComponents.Select(component => component.Changes).Merge().Subscribe(_ => this.UpdateStatsViewModel()).DisposeWith(this.disposables);
-        this.ShipStatsControlViewModel.WhenAnyValue(x => x.IsSpecialAbilityActive).Subscribe(_ => this.UpdateStatsViewModel()).DisposeWith(this.disposables);
+        this.ShipStatsControlViewModel.WhenAnyValueUnsafe(x => x.IsSpecialAbilityActive).Subscribe(_ => this.UpdateStatsViewModel()).DisposeWith(this.disposables);
     }
 
     /// <summary>

@@ -2,7 +2,7 @@
 using System.Reactive.Linq;
 using DynamicData;
 using DynamicData.Binding;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;
