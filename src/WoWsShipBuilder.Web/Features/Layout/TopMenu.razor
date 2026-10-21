@@ -91,11 +91,10 @@
         <MudDivider DividerType="DividerType.Middle" FlexItem Vertical/>
         <MudTooltip>
             <TooltipContent>
-                <MudText Typo="Typo.body1">The replay renderer tool created by notyourfather and Trackpad.</MudText>
+                <MudText Typo="Typo.body1">The replay renderer tool created by Rias.</MudText>
             </TooltipContent>
             <ChildContent>
                 <NavLink class="d-flex me-4" href="@ShipBuilderOptions.MinimapRendererUrl" target="_blank">
-                    <MudImage Class="px-2 image-filter-invert-100" Src="/_content/WoWsShipBuilder.Common/assets/render_logo.png" Height="35"/>
                     <MudText Class="align-self-center">Replay Renderer</MudText>
                 </NavLink>
             </ChildContent>
@@ -194,10 +193,7 @@
                     break;
             }
             <MudDivider Class="my-4"/>
-            <MudButton Style="text-transform: none !important;" Size="Size.Large" Color="Color.Inherit" Href="@ShipBuilderOptions.MinimapRendererUrl" Target="_blank">
-                <MudImage Class="px-2 image-filter-invert-100" Src="/_content/WoWsShipBuilder.Common/assets/render_logo.png" Height="35"/>
-                Minimap Renderer
-            </MudButton>
+            <MudNavLink Href="@ShipBuilderOptions.MinimapRendererUrl" Target="_blank">Replay Renderer</MudNavLink>
         </MudNavMenu>
     </MudDrawer>
 </MudHidden>

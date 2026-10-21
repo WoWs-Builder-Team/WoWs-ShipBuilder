@@ -239,18 +239,16 @@ div.mud-expand-panel {
     user-select: none; /* Standard syntax */
 }
 
-.file-upload-full-height div.mud-input-control-input-container {
-    height: 100%;
-    margin-top: 6px;
-    margin-bottom: 4px;
+/* MudBlazor renders a file list next to the custom content, so the upload button cannot just claim
+   height: 100% - it would share the available height with that list. Stretch the custom content instead.
+   Vertical margins have to be applied to the MudFileUpload itself, its input container is display: contents. */
+.file-upload-full-height > .mud-input-control-input-container > .mud-file-upload-custom-content {
+    display: flex;
+    flex-grow: 1;
+}
 
-    div {
-        height: 100%;
-
-        button {
-            height: 100%;
-        }
-    }
+.file-upload-full-height .mud-file-upload-files-default-template {
+    margin-top: 0;
 }
 
 .tab-panel-build-config-dialog {

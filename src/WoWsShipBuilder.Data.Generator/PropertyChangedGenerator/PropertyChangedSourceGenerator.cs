@@ -64,7 +64,7 @@ public class PropertyChangedSourceGenerator : IIncrementalGenerator
                     using (builder.Block($"public {fieldData.Type} {fieldData.PropertyName}"))
                     {
                         builder.Line($"get => this.{fieldData.FieldName};");
-                        builder.Line($"{fieldData.VisibilityModifier}set => global::ReactiveUI.IReactiveObjectExtensions.RaiseAndSetIfChanged(this, ref this.{fieldData.FieldName}, value);");
+                        builder.Line($"{fieldData.VisibilityModifier}set => global::ReactiveUI.Reactive.IReactiveObjectExtensions.RaiseAndSetIfChanged(this, ref this.{fieldData.FieldName}, value);");
                     }
                 }
             }

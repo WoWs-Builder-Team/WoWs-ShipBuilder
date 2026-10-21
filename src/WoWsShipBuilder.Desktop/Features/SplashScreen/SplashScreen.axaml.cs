@@ -6,8 +6,8 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ReactiveUI;
-using ReactiveUI.Avalonia;
+using ReactiveUI.Avalonia.Reactive;
+using ReactiveUI.Reactive;
 using WoWsShipBuilder.Desktop.Features.BlazorWebView;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;
 using WoWsShipBuilder.Infrastructure.Utility;
@@ -19,7 +19,7 @@ public partial class SplashScreen : ReactiveWindow<SplashScreenViewModel>
     public SplashScreen(IServiceProvider services)
     {
         this.InitializeComponent(services.GetRequiredService<SplashScreenViewModel>());
-        this.WhenActivated(_ =>
+        this.WhenActivated((Action<IDisposable> _) =>
         {
             var vm = this.ViewModel ?? services.GetRequiredService<SplashScreenViewModel>();
 
