@@ -1,4 +1,4 @@
-# Update 2026.4
+# Update 2026.5
 
 ## Download and Install
 
@@ -18,14 +18,12 @@ from the artifacts of this release, then extract it and run **WoWsShipBuilder.ex
 <summary>Click to show release notes</summary>
 
 ### Additions
-- add support for time-based consumables by @toalba
-- add AA aimed fire stats to the AA section
-- show captain talent tiers for talents that escalate
 
 ### Changes
+- replace the replay renderer link with the new renderer by Rias
 
 ### Bugfixes
-- fix captain talents being listed twice and their names and descriptions showing as raw keys
-- fix consumables whose effects are defined by a referenced buff showing no effects at all
+- fix the ship and shell selection dialog of the ballistic charts sometimes selecting incompatible hull and artillery modules
+- fix errors caused by ship stats being updated after the ship was closed
 
 </details>
