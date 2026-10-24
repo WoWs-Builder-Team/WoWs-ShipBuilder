@@ -83,14 +83,14 @@ public class Talents
     /// 0.216 with no error anywhere.
     /// </summary>
     [Test]
-    public void GetModifiersList_TieredTalent_UsesTheTierValueWithoutCompounding()
+    public void GetModifiers_TieredTalent_UsesTheTierValueWithoutCompounding()
     {
         var vm = CreateViewModel(TieredTalent());
         var talent = vm.CaptainTalentsList.Single();
         talent.Status = true;
         talent.ActivationNumbers = 3;
 
-        var modifiers = vm.GetModifiersList().Where(modifier => modifier.Name.Equals("GMShotDelay", StringComparison.Ordinal)).ToList();
+        var modifiers = vm.GetModifiers().Where(modifier => modifier.Name.Equals("GMShotDelay", StringComparison.Ordinal)).ToList();
 
         modifiers.Should().ContainSingle();
         modifiers.Single().Value.Should().BeApproximately(0.6f, 0.0001f);

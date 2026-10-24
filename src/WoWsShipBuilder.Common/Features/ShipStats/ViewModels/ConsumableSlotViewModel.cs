@@ -1,6 +1,6 @@
 ﻿using System.Collections.Immutable;
 using Microsoft.Extensions.Logging;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.DataStructures.Ship;

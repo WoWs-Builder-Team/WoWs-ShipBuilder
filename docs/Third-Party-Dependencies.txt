@@ -14,9 +14,9 @@ https://www.nuget.org/packages/prometheus-net.AspNetCore
 
 ReactiveUI
 
-https://www.nuget.org/packages/ReactiveUI
+https://www.nuget.org/packages/ReactiveUI.Reactive
 
-https://www.nuget.org/packages/ReactiveUI.Blazor
+https://www.nuget.org/packages/ReactiveUI.Blazor.Reactive
 
 ----------
 

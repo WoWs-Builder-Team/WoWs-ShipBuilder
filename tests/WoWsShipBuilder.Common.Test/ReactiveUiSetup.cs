@@ -1,4 +1,4 @@
-using ReactiveUI.Builder;
+using ReactiveUI.Reactive.Builder;
 
 namespace WoWsShipBuilder.Test;
 

@@ -14,7 +14,21 @@ public sealed class VmCache : IDisposable
 
     public VmCacheEntry? GetOrDefault(Guid id) => this.cacheEntries.GetValueOrDefault(id, default);
 
-    public bool RemoveEntry(Guid id) => this.cacheEntries.Remove(id);
+    /// <summary>
+    /// Removes the entry for the specified id and disposes its viewmodel.
+    /// </summary>
+    /// <param name="id">The id of the entry to remove.</param>
+    /// <returns><see langword="true"/> if an entry was removed, <see langword="false"/> otherwise.</returns>
+    public bool RemoveEntry(Guid id)
+    {
+        if (!this.cacheEntries.Remove(id, out var removedEntry))
+        {
+            return false;
+        }
+
+        removedEntry?.ViewModel.Dispose();
+        return true;
+    }
 
     public void Dispose()
     {

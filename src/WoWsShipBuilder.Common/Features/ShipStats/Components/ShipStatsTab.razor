@@ -218,7 +218,7 @@ else if (ViewModel is not null)
         MetricsService.AddShipView(shipIndex, Localizer.GetGameLocalization(shipIndex + "_FULL", AppConstants.DefaultCultureDetails).Localization);
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
-            var vm = CreateViewModel(shipIndex, Build);
+            var vm = ShipViewModel.Create(shipIndex, Build);
             BuildName = Build?.BuildName ?? string.Empty;
             Build = null;
             shipChanged = true;
@@ -303,7 +303,7 @@ else if (ViewModel is not null)
                 var oldCacheEntry = Cache[CurrentTabId]!;
                 Cache[CurrentTabId] = oldCacheEntry with { ViewModel = ViewModel };
                 oldCacheEntry.ViewModel.Dispose();
-                await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToImmutableList(), ImmutableList<Modifier>.Empty);
+                await ViewModel.ShipStatsControlViewModel.UpdateShipStats([.. ViewModel.ShipModuleViewModel.SelectedModules], ImmutableList<Modifier>.Empty);
                 StateHasChanged();
             }
         }
@@ -349,48 +349,12 @@ else if (ViewModel is not null)
         switch (shellIndex)
         {
             case not null:
-                AppNavigator.NavigateTo(AppNavigator.AppPage.BallisticCharts, GetBuildContainer(CurrentTabId, Cache[CurrentTabId]!, calculateShipDataContainer), shellIndex, AppNavigator.AppPage.ShipStats);
+                AppNavigator.NavigateTo(AppNavigator.AppPage.BallisticCharts, ViewModel!.CreateShipBuildContainer(CurrentTabId, BuildName, calculateShipDataContainer), shellIndex, AppNavigator.AppPage.ShipStats);
                 break;
             case null:
-                AppNavigator.NavigateTo(AppNavigator.AppPage.AccelerationCharts, GetBuildContainer(CurrentTabId, Cache[CurrentTabId]!, calculateShipDataContainer), AppNavigator.AppPage.ShipStats);
+                AppNavigator.NavigateTo(AppNavigator.AppPage.AccelerationCharts, ViewModel!.CreateShipBuildContainer(CurrentTabId, BuildName, calculateShipDataContainer), AppNavigator.AppPage.ShipStats);
                 break;
         }
-    }
-
-    public static ShipBuildContainer GetBuildContainer(Guid containerId, VmCacheEntry cacheEntry, bool calculateShipDataContainer)
-    {
-        List<Modifier> modifierBuilder = cacheEntry.ViewModel.UpgradePanelViewModel.GetModifierList();
-        modifierBuilder.AddRange(cacheEntry.ViewModel.ConsumableViewModel.GetModifiersList());
-        modifierBuilder.AddRange(cacheEntry.ViewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<Modifier>());
-        modifierBuilder.AddRange(cacheEntry.ViewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<Modifier>());
-        var modifiers = modifierBuilder.ToImmutableList();
-
-        bool isCustomBuild = !string.IsNullOrWhiteSpace(cacheEntry.BuildName) || cacheEntry.ViewModel.ShipModuleViewModel.SelectedModules.Any(m => !string.IsNullOrEmpty(m.Prev)) ||
-                             cacheEntry.ViewModel.UpgradePanelViewModel.SelectedModernizationList.Any() || cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.Any() ||
-                             (cacheEntry.ViewModel.CaptainSkillSelectorViewModel?.SkillOrderList.Any() ?? false) || (cacheEntry.ViewModel.SignalSelectorViewModel?.SelectedSignals.Any() ?? false);
-
-        var ship = AppData.FindShipFromSummary(cacheEntry.ViewModel.CurrentShip);
-        var build = isCustomBuild ? cacheEntry.ViewModel.CreateBuild(cacheEntry.BuildName) : null;
-        var activeConsumables = cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.Any() ? cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.ToImmutableArray() : ImmutableArray<int>.Empty;
-        ShipDataContainer? shipDataContainer = null;
-        if (calculateShipDataContainer)
-        {
-            shipDataContainer = build is null ? DataContainerUtility.GetStockShipDataContainer(ship) : DataContainerUtility.GetShipDataContainerFromBuild(ship, build.Modules, ship.ShipUpgradeInfo.ShipUpgrades, modifiers);
-        }
-
-        return new(ship, build, containerId, activeConsumables, false, shipDataContainer, modifiers);
-    }
-
-    public static ShipViewModel CreateViewModel(string shipIndex, Build? build)
-    {
-        var shipSummary = AppData.ShipSummaryMapper[shipIndex];
-        var ship = AppData.FindShipFromSummary(shipSummary);
-        var vmParams = new ShipViewModelParams(ship, shipSummary, build);
-
-        var vm = new ShipViewModel(vmParams, Logging.LoggerFactory.CreateLogger<ShipViewModel>());
-        vm.InitializeData(vmParams);
-
-        return vm;
     }
 
     private async Task OnBuildSaveClicked()

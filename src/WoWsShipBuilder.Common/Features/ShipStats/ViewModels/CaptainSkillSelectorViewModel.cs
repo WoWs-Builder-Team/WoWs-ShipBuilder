@@ -1,18 +1,20 @@
 using System.Collections.Immutable;
 using System.Collections.Specialized;
 using System.Reactive.Linq;
+using DynamicData.Binding;
 using Microsoft.Extensions.Logging;
-using ReactiveUI;
+using ReactiveUI.Reactive;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Captain;
 using WoWsShipBuilder.DataStructures.Modifiers;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Localization.Resources;
 using WoWsShipBuilder.Infrastructure.Utility;
+using RxUnit = System.Reactive.Unit;
 
 namespace WoWsShipBuilder.Features.ShipStats.ViewModels;
 
-public partial class CaptainSkillSelectorViewModel : ReactiveObject
+public partial class CaptainSkillSelectorViewModel : ReactiveObject, IBuildComponent
 {
     private const int ArSkillNumber = 23;
 
@@ -91,7 +93,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
         this.CaptainList = capList.Select(x => x.Value).ToList();
         this.SelectedCaptain = this.CaptainList[0];
 
-        this.WhenAnyValue(x => x.AssignedPoints).Do(_ => this.UpdateCanAddSkill()).Subscribe();
+        this.WhenAnyValueUnsafe(x => x.AssignedPoints).Do(_ => this.UpdateCanAddSkill()).Subscribe();
 
         this.CaptainTalentsList.CollectionChanged += this.CaptainTalentsListOnCollectionChanged;
         this.ConditionalModifiersList.CollectionChanged += this.ConditionalModifiersListOnCollectionChanged;
@@ -164,6 +166,18 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     /// Gets the List containing the selected skill in the order they were selected.
     /// </summary>
     public CustomObservableCollection<Skill> SkillOrderList { get; } = new();
+
+    /// <summary>
+    /// Gets an observable emitting whenever the skill selection changes.
+    /// The talent and conditional skill popups only emit once they are closed again, so the stats are not
+    /// recalculated for every intermediate state while the user is still configuring them.
+    /// </summary>
+    public IObservable<RxUnit> Changes => Observable.Merge(
+        this.SkillOrderList.ToObservableChangeSet().Select(_ => RxUnit.Default),
+        this.WhenAnyValue(x => x.SkillActivationPopupOpen).Where(isOpen => !isOpen).Select(_ => RxUnit.Default),
+        this.WhenAnyValueUnsafe(x => x.CaptainWithTalents).Where(hasTalents => !hasTalents).Select(_ => RxUnit.Default));
+
+    public bool IsModified => this.SkillOrderList.Any();
 
     /// <summary>
     /// Gets or sets a value indicating whether the hp bar slider for adrenaline rush should be shown.
@@ -356,7 +370,7 @@ public partial class CaptainSkillSelectorViewModel : ReactiveObject
     /// Create a list of modifiers in a tuple format (name, value) from the currently selected skill.
     /// </summary>
     /// <returns>The List of modifiers of the currently selected skill.</returns>
-    public List<Modifier> GetModifiersList()
+    public IEnumerable<Modifier> GetModifiers()
     {
         var modifiers = this.SkillOrderList.ToList()
             .Where(skill => !skill.Modifiers.IsEmpty && skill.SkillNumber != ArSkillNumber && skill.SkillNumber != ArSkillNumberSubs && skill.SkillNumber != FuriousSkillNumber && skill.SkillNumber != ImprovedRepairPartyReadinessSkillNumber && skill.SkillNumber != ManualSecondaryBatteryAimingSkillNumber)

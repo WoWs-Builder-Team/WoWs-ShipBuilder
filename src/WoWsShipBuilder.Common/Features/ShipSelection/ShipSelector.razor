@@ -35,7 +35,7 @@
                 <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@ImportFromString" Style="margin-top: 6px; margin-bottom: 4px;">
                     @Localizer.GetAppLocalization(nameof(Translation.WebApp_LoadBuild)).Localization
                 </MudButton>
-                <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Style="margin-top: 0;" Class="file-upload-full-height" Accept=".png">
+                <MudFileUpload T="IBrowserFile" FilesChanged="@FileSelected" Style="margin-top: 6px; margin-bottom: 4px;" Class="file-upload-full-height" Accept=".png">
                     <CustomContent>
                         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@context.OpenFilePickerAsync" StartIcon="@Icons.Material.Filled.Image">@Localizer.SimpleAppLocalization(nameof(Translation.BuildImport_ImportFromImage))</MudButton>
                     </CustomContent>

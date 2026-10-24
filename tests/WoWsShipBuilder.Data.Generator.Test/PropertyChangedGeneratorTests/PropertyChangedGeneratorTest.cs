@@ -77,7 +77,7 @@ public class PropertyChangedGeneratorTest
                                public string Test
                                {
                                    get => this.test;
-                                   set => global::{|CS0400:ReactiveUI|}.IReactiveObjectExtensions.RaiseAndSetIfChanged(this, ref this.test, value);
+                                   set => global::{|CS0400:ReactiveUI|}.Reactive.IReactiveObjectExtensions.RaiseAndSetIfChanged(this, ref this.test, value);
                                }
                            }
                        }
@@ -120,7 +120,7 @@ public class PropertyChangedGeneratorTest
                                public string? Test
                                {
                                    get => this.test;
-                                   set => global::{|CS0400:ReactiveUI|}.IReactiveObjectExtensions.RaiseAndSetIfChanged(this, ref this.test, value);
+                                   set => global::{|CS0400:ReactiveUI|}.Reactive.IReactiveObjectExtensions.RaiseAndSetIfChanged(this, ref this.test, value);
                                }
                            }
                        }
@@ -163,7 +163,7 @@ public class PropertyChangedGeneratorTest
                                public int? Test
                                {
                                    get => this.test;
-                                   set => global::{|CS0400:ReactiveUI|}.IReactiveObjectExtensions.RaiseAndSetIfChanged(this, ref this.test, value);
+                                   set => global::{|CS0400:ReactiveUI|}.Reactive.IReactiveObjectExtensions.RaiseAndSetIfChanged(this, ref this.test, value);
                                }
                            }
                        }
@@ -207,7 +207,7 @@ public class PropertyChangedGeneratorTest
                                public global::System.Collections.Generic.List<string?> Test
                                {
                                    get => this.test;
-                                   set => global::{|CS0400:ReactiveUI|}.IReactiveObjectExtensions.RaiseAndSetIfChanged(this, ref this.test, value);
+                                   set => global::{|CS0400:ReactiveUI|}.Reactive.IReactiveObjectExtensions.RaiseAndSetIfChanged(this, ref this.test, value);
                                }
                            }
                        }
@@ -253,13 +253,13 @@ public class PropertyChangedGeneratorTest
                                public string Test
                                {
                                    get => this.test;
-                                   set => global::{|CS0400:ReactiveUI|}.IReactiveObjectExtensions.RaiseAndSetIfChanged(this, ref this.test, value);
+                                   set => global::{|CS0400:ReactiveUI|}.Reactive.IReactiveObjectExtensions.RaiseAndSetIfChanged(this, ref this.test, value);
                                }
 
                                public string Test2
                                {
                                    get => this.test2;
-                                   set => global::{|CS0400:ReactiveUI|}.IReactiveObjectExtensions.RaiseAndSetIfChanged(this, ref this.test2, value);
+                                   set => global::{|CS0400:ReactiveUI|}.Reactive.IReactiveObjectExtensions.RaiseAndSetIfChanged(this, ref this.test2, value);
                                }
                            }
                        }

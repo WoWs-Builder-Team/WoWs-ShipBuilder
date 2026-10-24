@@ -1,7 +1,6 @@
 using System.Globalization;
 using NLog.Web;
-using ReactiveUI;
-using ReactiveUI.Builder;
+using ReactiveUI.Reactive.Builder;
 using WoWsShipBuilder.Infrastructure.ApplicationData;
 using WoWsShipBuilder.Infrastructure.Utility;
 using WoWsShipBuilder.Web.Features.Authentication;
