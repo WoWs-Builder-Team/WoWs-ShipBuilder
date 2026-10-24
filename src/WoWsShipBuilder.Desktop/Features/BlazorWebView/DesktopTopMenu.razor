@@ -3,7 +3,6 @@
 @using System.Reactive.Linq
 @using Avalonia
 @using Avalonia.Controls.ApplicationLifetimes
-@using ReactiveUI
 @using WoWsShipBuilder.Desktop.Features.Settings
 @using WoWsShipBuilder.Desktop.Infrastructure
 @using Size = MudBlazor.Size
@@ -64,7 +63,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        updateStatusSubscription = NotificationService.WhenAnyValue(x => x.AppUpdateStatus).Do(OnUpdateStatusChanged).Subscribe();
+        updateStatusSubscription = NotificationService.WhenAnyValueUnsafe(x => x.AppUpdateStatus).Do(OnUpdateStatusChanged).Subscribe();
     }
 
     private async Task OpenSettings()

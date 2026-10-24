@@ -21,9 +21,10 @@ Please do not contact us for game issues, we are only responsible for issues dir
 ## Getting started
 
 The project consists of two main components: The WoWs-ShipBuilder application and the DataConverter project used to extract and convert game data from Wargaming into a format we can use.
-Both projects are implemented in C# and currently use .NET 7 as target framework.
+Both projects are implemented in C#. The WoWs-ShipBuilder application currently uses .NET 10 as target framework.
 
-To start contributing to this repo (the main application), make sure you have a C# IDE and the .NET 7 SDK set up on your machine.
+To start contributing to this repo (the main application), make sure you have a C# IDE and the .NET 10 SDK set up on your machine.
+The exact SDK version is specified in the `global.json` file in the repository root.
 If you do not have any of this, it might be best to check out the docs from Microsoft on how to set up the .NET SDK.
 Dependencies are managed using the nuget package manager.
 
@@ -81,9 +82,10 @@ When a change is committed, try to ensure that it does not show any new warnings
 ### Commit messages
 
 - Ensure correct spelling
-- Use the present tense ("Add new feature" not "Added new feature")
+- Start with a summary line in imperative mood that begins with a lowercase verb ("add new feature" not "Added new feature" or "Adds new feature")
 - Keep it as short as possible but as long as necessary
-  - If the change cannot be summarized within a single line or sentence, put the description in the message body (after the summary line)
+  - Only add a description body if it provides valuable information that does not fit into the summary line
+  - Separate the summary line and the description body with a blank line
 - Do not use Emojis in the commit message
 - If your commit handles an issue or pull request, reference it in the commit message using `#ID`
   - If your commit resolves an issue, reference it using `fixes #ID` or `closes #ID`
@@ -112,7 +114,7 @@ Other style rules:
 - There is a "soft" line length limit of 160 characters. This limit is not enforced but it is preferred to add line breaks if it improves readability.
   - For chained method calls, place each method call on a new line if you add a line break.
 
-**The project uses C# 9 with the Nullable Reference Types feature enabled. Do not ignore warnings regarding this feature as they will cause the production build to fail.**
+**The project uses C# 14 with the Nullable Reference Types feature enabled. Do not ignore warnings regarding this feature as they will cause the production build to fail.**
 
 If you need additional nuget dependencies, please contact the repository maintainers first before adding them.
 We want to keep the application as small as possible. If you add dependencies, ensure that they work in a trimmed release.

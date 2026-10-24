@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
-using ReactiveUI.Avalonia;
+using ReactiveUI.Avalonia.Reactive;
 using Sentry;
 using Velopack;
 using Velopack.Logging;
